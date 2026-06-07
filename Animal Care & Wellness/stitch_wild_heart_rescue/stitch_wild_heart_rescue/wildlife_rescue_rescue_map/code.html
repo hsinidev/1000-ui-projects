@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wildlife Rescue - Rescue Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,600;6..72,700&amp;family=Work+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-background": "#111c2d",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "surface-dim": "#cfdaf2",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "surface-bright": "#f9f9ff",
+                        "on-tertiary-container": "#fbfdff",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "primary": "#a43716",
+                        "surface-container": "#e7eeff",
+                        "primary-container": "#c54f2c",
+                        "outline-variant": "#dfc0b7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d8e3fb",
+                        "primary-fixed-dim": "#ffb5a0",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#727577",
+                        "secondary-container": "#d5e3fc",
+                        "surface-container-highest": "#d8e3fb",
+                        "inverse-primary": "#ffb5a0",
+                        "on-tertiary": "#ffffff",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-secondary-container": "#57657a",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed": "#3b0900",
+                        "surface-container-high": "#dee8ff",
+                        "primary-fixed": "#ffdbd1",
+                        "background": "#f9f9ff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "on-primary-fixed-variant": "#862201",
+                        "tertiary": "#595c5e",
+                        "surface-container-low": "#f0f3ff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#a73918",
+                        "on-primary-container": "#fffbff",
+                        "outline": "#8b716a",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-surface": "#111c2d",
+                        "error-container": "#ffdad6",
+                        "secondary": "#515f74",
+                        "on-surface-variant": "#58423c",
+                        "tertiary-fixed": "#e0e3e5",
+                        "inverse-surface": "#263143"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Newsreader"],
+                        "label-sm": ["Work Sans"],
+                        "display-hero": ["Newsreader"],
+                        "headline-md": ["Newsreader"],
+                        "body-md": ["Work Sans"],
+                        "body-lg": ["Work Sans"],
+                        "label-emergency": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["3rem", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-sm": ["0.75rem", {"lineHeight": "1", "fontWeight": "500"}],
+                        "display-hero": ["4.5rem", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["2rem", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["1rem", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["1.125rem", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-emergency": ["0.875rem", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .map-gradient-overlay {
+            background: linear-gradient(to right, rgba(255,255,255,0) 80%, rgba(249,249,255,1) 100%);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d5e3fc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<nav class="bg-white/95 dark:bg-slate-950/95 backdrop-blur-sm shadow-sm border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-8 py-4 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-bold font-serif text-slate-900 dark:text-slate-50">Wildlife Rescue</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-[#D95D39] border-b-2 border-[#D95D39] font-semibold font-serif hover:opacity-80 transition-opacity active:scale-95 duration-200" href="#">Rescue Map</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium font-serif hover:text-[#D95D39] hover:opacity-80 transition-opacity active:scale-95 duration-200" href="#">Emergency Guide</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium font-serif hover:text-[#D95D39] hover:opacity-80 transition-opacity active:scale-95 duration-200" href="#">Stories</a>
+<a class="text-slate-600 dark:text-slate-400 font-medium font-serif hover:text-[#D95D39] hover:opacity-80 transition-opacity active:scale-95 duration-200" href="#">About Us</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-slate-600 hover:opacity-80 transition-opacity active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+</button>
+<button class="bg-[#D95D39] text-white px-6 py-2 rounded-lg font-semibold hover:opacity-80 transition-opacity active:scale-95 duration-200">Donate Now</button>
+</div>
+</div>
+</nav>
+<main class="relative h-[calc(100vh-80px)] flex flex-col md:flex-row overflow-hidden">
+<div class="relative flex-1 bg-surface-container overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img alt="Detailed topographical map" class="w-full h-full object-cover opacity-60" data-alt="A sophisticated topographical map of an African savannah conservation area, rendered in a muted slate and charcoal color palette. Minimalist orange navigation paths are visible. High-resolution textures show subtle elevation changes, scattered watering holes, and dense thickets, creating a professional and functional emergency response aesthetic." data-location="African Savannah" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfv8prjKGuOvSwxymCDnLKZDWZPN3tUCCHHrrS7SeZ6iIAa4m3JckrRfThsPsix1ulTQvqpr0dMlgx9roTMlfO3nqvE4Q2KKtWg42qb3BDygmX1yR_W0sIgRfoR9kcoL51YxhMOPBluvTgoKM39BtNp1OENvh_0ll7DDqc_ZRGOrNgfSIvhmDKfT2et_5g229gKyUeEMl3jp3FK2LfTDfzdQ0VH4YW6ZDG8wI77q3ZWxwusOSDooAfmN7JfUS3YXWbw8-xic_5VDmN"/>
+</div>
+<div class="absolute inset-0 pointer-events-none map-gradient-overlay"></div>
+<div class="absolute top-8 left-8 z-10 flex flex-col gap-4">
+<div class="bg-white/90 backdrop-blur p-4 rounded-xl shadow-lg border border-slate-200 w-64">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Live Status</h3>
+<div class="flex items-center gap-2 mb-4">
+<span class="w-3 h-3 bg-[#D95D39] rounded-full animate-pulse"></span>
+<span class="font-label-emergency text-label-emergency uppercase text-secondary">Active Missions: 12</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center text-sm border-b border-slate-100 pb-2">
+<span class="text-secondary font-medium">Recently Released</span>
+<span class="font-bold text-on-surface">248</span>
+</div>
+<div class="flex justify-between items-center text-sm border-b border-slate-100 pb-2">
+<span class="text-secondary font-medium">In Rehabilitation</span>
+<span class="font-bold text-on-surface">42</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="bg-white shadow-md p-3 rounded-full hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="add">add</span>
+</button>
+<button class="bg-white shadow-md p-3 rounded-full hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="remove">remove</span>
+</button>
+<button class="bg-white shadow-md p-3 rounded-full hover:bg-slate-50 transition-colors">
+<span class="material-symbols-outlined text-secondary" data-icon="my_location">my_location</span>
+</button>
+</div>
+</div>
+<div class="absolute top-[30%] left-[45%] z-20">
+<div class="relative group cursor-pointer">
+<div class="bg-primary-container p-2 rounded-full border-4 border-white shadow-xl transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-white" data-icon="pets" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+<div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-4 w-48 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<div class="bg-slate-900 text-white p-3 rounded-lg text-sm shadow-2xl">
+<p class="font-bold mb-1">Golden Eagle Release</p>
+<p class="text-slate-300 text-xs">Released 2 hours ago</p>
+<div class="mt-2 h-1 bg-primary/30 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+<div class="w-3 h-3 bg-slate-900 rotate-45 mx-auto -mt-1.5"></div>
+</div>
+</div>
+</div>
+<div class="absolute top-[60%] left-[25%] z-20">
+<div class="relative group cursor-pointer">
+<div class="bg-primary-container p-2 rounded-full border-4 border-white shadow-xl transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-white" data-icon="bolt" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+</div>
+</div>
+<div class="absolute top-[45%] left-[70%] z-20">
+<div class="relative group cursor-pointer">
+<div class="bg-primary-container p-2 rounded-full border-4 border-white shadow-xl transform transition-transform group-hover:scale-110">
+<span class="material-symbols-outlined text-white" data-icon="nature" style="font-variation-settings: 'FILL' 1;">nature</span>
+</div>
+</div>
+</div>
+</div>
+<aside class="w-full md:w-[420px] bg-white z-30 border-l border-slate-200 overflow-y-auto flex flex-col h-full">
+<div class="p-8 pb-4">
+<h2 class="font-headline-lg text-headline-md text-on-surface mb-2">Recent Releases</h2>
+<p class="font-body-md text-secondary mb-6">Tracking our successful returns to the wild over the last 48 hours.</p>
+</div>
+<div class="flex-1 px-8 space-y-6 pb-24">
+<div class="group bg-surface-container-low rounded-xl overflow-hidden border border-transparent hover:border-outline-variant hover:shadow-lg transition-all duration-300">
+<div class="h-40 relative">
+<img alt="Oryx in the wild" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A majestic Arabian Oryx with long, straight horns stands proudly against a backdrop of rolling sand dunes during the golden hour. The lighting is warm and cinematic, emphasizing the animal's pristine white coat against the deep burnt orange of the desert. The image has a professional wildlife documentary aesthetic with a shallow depth of field." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ_ojfZHoP5StOB6UZ9RgLHMq-r1kcnvRnAvmruHI8TSQYCNk68n4ACMDNwULvlMVWboh5zhj4apJ6LwD3gDwdBqICjHeBmbmuuja6IGfoS-VGUM_mveukU4xl8unOh3d7rtl54VDzo2W2F7ucJIff_EyPrx_8ILZYzElwxilgaZyEtbEU47c8Ja7t3ca8J6YaF0mAaF6uYvBKCz4VT4fmyBniYf7EsJbnU7hzxsWh1OPPJEnf2cpuV1HaAuhEw-oOzh_8krMxbiVn"/>
+<span class="absolute top-4 right-4 bg-[#D95D39] text-white font-label-emergency text-[10px] px-3 py-1 rounded-full uppercase">Success Story</span>
+</div>
+<div class="p-4">
+<h4 class="font-headline-md text-xl mb-1">Luna the Oryx</h4>
+<p class="font-body-md text-sm text-secondary line-clamp-2">Returned to the Arabian Desert after 6 months of specialized rehabilitation following a severe leg injury.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="location_on">location_on</span>
+                                Sector 7-G
+                            </span>
+<a class="text-[#D95D39] font-bold text-sm flex items-center gap-1 group-hover:underline" href="#">
+                                Read Story
+                                <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<div class="group bg-surface-container-low rounded-xl overflow-hidden border border-transparent hover:border-outline-variant hover:shadow-lg transition-all duration-300">
+<div class="h-40 relative">
+<img alt="Bald Eagle flight" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A high-speed action photograph of a mature Bald Eagle taking flight from a weathered cedar branch. Its massive wings are fully extended, revealing intricate feather details. The background is a misty, cool-toned coastal forest in shades of deep slate and evergreen, perfectly contrasting with the eagle's white head. Professional wildlife photography style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLixQYOjEGw9DYG4FQvD2Joe1ENzpxDV-WsBoFWK3_ZuW35GqFwtU3U2HB8zl_65vH0t6ez4LahQUiZrYTgq6pKPTOiWxfkEVCXorhee7fAckgwCz9tLhzSsslTEWlZwKAmSjcOGzhoRa-CalZ-x83d0UvOfaFEUM3a3-32bHQc8Y1vTqRyqnw-DqZkCv-kCkafpeGesXFOE0uxShrCwek12b1oFgapAMX5odvjtAVuz-Rt-RNRwNGPOoRKhb4kCA0J21L8MfYuh2e"/>
+<span class="absolute top-4 right-4 bg-[#D95D39] text-white font-label-emergency text-[10px] px-3 py-1 rounded-full uppercase">Success Story</span>
+</div>
+<div class="p-4">
+<h4 class="font-headline-md text-xl mb-1">Sky King</h4>
+<p class="font-body-md text-sm text-secondary line-clamp-2">Eagle release at the Coastal Sanctuary. Fully recovered from wing surgery and back to the skies.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="location_on">location_on</span>
+                                North Ridge
+                            </span>
+<a class="text-[#D95D39] font-bold text-sm flex items-center gap-1 group-hover:underline" href="#">
+                                Read Story
+                                <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+<div class="group bg-surface-container-low rounded-xl overflow-hidden border border-transparent hover:border-outline-variant hover:shadow-lg transition-all duration-300">
+<div class="h-40 relative">
+<img alt="Leopard in tree" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A stealthy leopard resting on a thick Baobab tree branch during a cool dusk. The lighting is low and dramatic, highlighting the leopard's spotted fur against the darkening slate-blue sky. The overall atmosphere is serene and powerful, utilizing a high-contrast palette of natural ambers and deep shadows to convey a professional conservationist's field observation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNEEPXDL02i298FFYs3SSU4je6v0Z4SQQbcHq7grIGJbhRQ911IluSVfKJPupaDdp8QdzGTMlokoMF6_qy0pPSTA8II5i3eF0q7BIWg91naiwwvUcRuJiHQq7Uw3ttLkjbHXsr3NemDERV2kbsjibORMociuy87t9aAdYeZY7zm5u59tN0UfQWHNPGbm_yL-7ZeSpYg_D2Epp7F20xpijlQU7hIZY83bxzpx_in84nC2w9Jc9VV1HYP6-MsWZdZuLdnRe6_86jeW8q"/>
+<span class="absolute top-4 right-4 bg-[#D95D39] text-white font-label-emergency text-[10px] px-3 py-1 rounded-full uppercase">Success Story</span>
+</div>
+<div class="p-4">
+<h4 class="font-headline-md text-xl mb-1">Shadow Tracker</h4>
+<p class="font-body-md text-sm text-secondary line-clamp-2">Adult leopard relocated from urban edge back to protected deep forest reserve. Tracking collar active.</p>
+<div class="mt-4 flex items-center justify-between">
+<span class="text-xs font-medium text-slate-500 flex items-center gap-1">
+<span class="material-symbols-outlined text-xs" data-icon="location_on">location_on</span>
+                                Sector 12-F
+                            </span>
+<a class="text-[#D95D39] font-bold text-sm flex items-center gap-1 group-hover:underline" href="#">
+                                Read Story
+                                <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<div class="fixed bottom-10 right-10 z-[60]">
+<button class="bg-[#D95D39] text-white flex items-center gap-3 px-6 py-4 rounded-full shadow-[0_10px_25px_-5px_rgba(217,93,57,0.4)] hover:scale-105 active:scale-95 transition-all group">
+<span class="material-symbols-outlined" data-icon="volunteer_activism" style="font-variation-settings: 'FILL' 1;">volunteer_activism</span>
+<span class="font-label-emergency text-sm uppercase tracking-wider">Quick-Donate</span>
+</button>
+</div>
+<footer class="bg-slate-900 dark:bg-black border-t border-slate-800">
+<div class="flex flex-col md:flex-row justify-between items-center px-12 py-16 w-full max-w-screen-2xl mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="text-xl font-bold font-serif text-white mb-2">Wildlife Rescue</div>
+<p class="font-sans text-slate-400 max-w-sm">Dedicated to the emergency rescue, rehabilitation, and release of vulnerable wildlife globally.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-8 mb-8 md:mb-0">
+<a class="text-slate-400 hover:text-white transition-colors font-sans hover:text-[#D95D39]" href="#">Impact Reports</a>
+<a class="text-slate-400 hover:text-white transition-colors font-sans hover:text-[#D95D39]" href="#">Volunteer</a>
+<a class="text-slate-400 hover:text-white transition-colors font-sans hover:text-[#D95D39]" href="#">Careers</a>
+<a class="text-slate-400 hover:text-white transition-colors font-sans hover:text-[#D95D39]" href="#">Privacy Policy</a>
+<a class="text-slate-400 hover:text-white transition-colors font-sans hover:text-[#D95D39]" href="#">Contact</a>
+</div>
+<div class="text-slate-300 font-sans text-sm text-center md:text-right">
+                © 2024 Wildlife Rescue Organization. All rights reserved.
+            </div>
+</div>
+</footer>
+</body></html>
