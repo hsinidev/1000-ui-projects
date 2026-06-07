@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AppSecure | Code Analysis Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #051424;
+            color: #d4e4fa;
+        }
+        .code-syntax-keyword { color: #52ffac; }
+        .code-syntax-string { color: #c0c6dd; }
+        .code-syntax-comment { color: #45464b; }
+        .code-syntax-vulnerability { background-color: rgba(147, 0, 10, 0.3); border-left: 2px solid #ffb4ab; }
+        .neon-glow { box-shadow: 0 0 15px rgba(82, 255, 172, 0.2); }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#010f1f",
+                        "on-secondary-fixed": "#002111",
+                        "on-surface": "#d4e4fa",
+                        "error": "#ffb4ab",
+                        "on-primary": "#2c303a",
+                        "on-primary-fixed": "#181b25",
+                        "primary-fixed": "#dfe2ef",
+                        "tertiary-container": "#070d1e",
+                        "on-background": "#d4e4fa",
+                        "outline": "#909096",
+                        "inverse-surface": "#d4e4fa",
+                        "background": "#051424",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#151b2c",
+                        "surface-variant": "#273647",
+                        "on-secondary-fixed-variant": "#005231",
+                        "on-primary-container": "#777b87",
+                        "secondary": "#f5fff5",
+                        "on-tertiary": "#2a3042",
+                        "on-error": "#690005",
+                        "secondary-container": "#00ffa3",
+                        "inverse-primary": "#5a5e69",
+                        "on-tertiary-fixed-variant": "#404659",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#007146",
+                        "inverse-on-surface": "#233143",
+                        "tertiary": "#c0c6dd",
+                        "on-secondary": "#003920",
+                        "surface-bright": "#2c3a4c",
+                        "on-primary-fixed-variant": "#434751",
+                        "tertiary-fixed": "#dce2f9",
+                        "primary-container": "#0a0e17",
+                        "tertiary-fixed-dim": "#c0c6dd",
+                        "outline-variant": "#45464b",
+                        "primary": "#c3c6d3",
+                        "on-surface-variant": "#c6c6cc",
+                        "primary-fixed-dim": "#c3c6d3",
+                        "surface-dim": "#051424",
+                        "secondary-fixed": "#52ffac",
+                        "surface-container": "#122131",
+                        "on-tertiary-container": "#757a8f",
+                        "surface-tint": "#c3c6d3",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-container-low": "#0d1c2d",
+                        "surface-container-highest": "#273647",
+                        "surface": "#051424",
+                        "secondary-fixed-dim": "#00e290"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "code-sm": ["monospace"],
+                        "h2": ["Space Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "code-sm": ["12px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col h-screen overflow-hidden">
+<header class="bg-slate-950 text-emerald-400 font-['Space_Grotesk'] tracking-tight flex justify-between items-center px-4 py-2 w-full z-50 docked full-width top-0 border-b border-slate-800 flat no shadows">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-emerald-400/30">
+<img alt="Avatar" data-alt="A professional high-contrast portrait of a cybersecurity analyst shown as a stylized digital avatar. The background is a deep navy grid with neon green circuit lines. The lighting is low-key with a sharp mint green rim light highlighting the silhouette, reflecting a clinical and vigilant professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD04GTTP293cBcOamKu4mXORd1Gss8Sl9JpNPvsLirenmhVG8G8hEn5YANMZkhM82kg9q4sugba9DNICC_2YMVjdC_ZGRO3rHKU2uxYFnFwkoX0AoOsMt1nlou8URb2hJA1OlJ-bOKhqKcwZ9cWwdEy4DyOWFtwY-kPVvhMiBDfZkkcnmNYc95uCwbpYt5K0nLaGIO8iue0o1rfuvZaTqt8EBi1ND6LDYnxPLPn3Qv_rUVKhuO7mlpSktt5ITFPyWr_g1Gz-MgqUaQ"/>
+</div>
+<span class="font-mono font-bold text-emerald-400 uppercase tracking-widest">AppSecure</span>
+</div>
+<div class="flex gap-4">
+<button class="p-2 text-slate-500 hover:bg-slate-900 transition-colors active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+</button>
+<button class="p-2 text-slate-500 hover:bg-slate-900 transition-colors active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<aside class="bg-slate-950 h-full border-r w-64 border-slate-800 shadow-[4px_0_15px_rgba(0,0,0,0.5)] flex flex-col z-[60] font-['Space_Grotesk']">
+<div class="p-4 border-b border-slate-800">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-10 h-10 bg-emerald-500/10 flex items-center justify-center border border-emerald-400/20">
+<span class="material-symbols-outlined text-emerald-400" data-icon="shield">shield</span>
+</div>
+<div>
+<div class="text-on-surface font-bold text-sm">System Admin</div>
+<div class="text-slate-500 text-xs">Tier-3 Security</div>
+</div>
+</div>
+<div class="text-emerald-400 text-[10px] uppercase font-bold tracking-widest mt-2">Vigilant</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="flex items-center gap-3 px-4 py-2 text-emerald-400 bg-emerald-500/5 font-bold border-l-4 border-emerald-400 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="text-sm">Scan History</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-400 hover:bg-slate-900 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="list_alt">list_alt</span>
+<span class="text-sm">API Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-400 hover:bg-slate-900 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="text-sm">Threat Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-slate-400 hover:bg-slate-900 duration-200 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_ethernet">settings_ethernet</span>
+<span class="text-sm">Environment</span>
+</a>
+</nav>
+<div class="p-4 border-t border-slate-800 bg-surface-container-lowest">
+<div class="text-[10px] text-slate-500 mb-2 uppercase tracking-tighter font-bold">Node Status</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed animate-pulse"></div>
+<span class="text-xs font-mono text-secondary-fixed">Analyst Node 01</span>
+</div>
+</div>
+</aside>
+<main class="flex-1 bg-surface overflow-y-auto p-4 md:p-6 space-y-4">
+<div class="flex flex-col lg:flex-row gap-4">
+<section class="flex-1 bg-surface-container-low border border-slate-800 p-4 relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h2 class="font-h2 text-h2 text-on-surface mb-1">Code Analysis</h2>
+<p class="font-body-md text-code-sm text-on-surface-variant">Scanning repository: <span class="font-mono text-secondary-fixed">production-api-v4</span></p>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-secondary-fixed block mb-1">In Progress</span>
+<span class="font-code-sm text-code-sm text-slate-500">ETR: 02m 45s</span>
+</div>
+</div>
+<div class="flex items-center justify-center py-6">
+<div class="relative w-48 h-48">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-slate-900" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary-fixed" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="11.05" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-h1 text-h1 text-on-surface">98%</span>
+<span class="font-label-caps text-label-caps text-slate-500">Complete</span>
+</div>
+</div>
+</div>
+</section>
+<section class="lg:w-80 grid grid-cols-2 gap-2">
+<div class="bg-surface-container-low border border-slate-800 p-3 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-error uppercase">Critical</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-on-surface">03</span>
+<span class="material-symbols-outlined text-error text-lg" data-icon="warning">warning</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-slate-800 p-3 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-orange-400 uppercase">High</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-on-surface">12</span>
+<span class="material-symbols-outlined text-orange-400 text-lg" data-icon="error_outline">error_outline</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-slate-800 p-3 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-tertiary uppercase">Medium</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-on-surface">45</span>
+<span class="material-symbols-outlined text-tertiary text-lg" data-icon="info">info</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-slate-800 p-3 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-slate-500 uppercase">Low</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-bold text-on-surface">128</span>
+<span class="material-symbols-outlined text-slate-500 text-lg" data-icon="help_outline">help_outline</span>
+</div>
+</div>
+</section>
+</div>
+<section class="bg-surface-container-low border border-slate-800 flex flex-col overflow-hidden">
+<div class="bg-surface-container-highest px-4 py-2 border-b border-slate-800 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="w-3 h-3 rounded-full bg-error"></span>
+<span class="font-label-caps text-label-caps text-on-surface">SQL Injection Risk</span>
+</div>
+<span class="font-code-sm text-code-sm text-slate-500">/src/auth/database.py</span>
+</div>
+<div class="flex gap-2">
+<button class="bg-secondary-fixed text-on-secondary-fixed px-3 py-1 font-label-caps text-label-caps hover:brightness-110 active:scale-95 transition-all neon-glow">
+                            Create Jira Issue
+                        </button>
+</div>
+</div>
+<div class="flex-1 overflow-x-auto">
+<div class="min-w-full bg-surface-container-lowest font-mono p-4 text-[13px] leading-6">
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">12</span>
+<span class="code-syntax-keyword">def</span> <span class="text-on-surface">get_user_data</span>(user_id):
+                        </div>
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">13</span>
+<span class="ml-4 code-syntax-comment"># Connection pool initialization</span>
+</div>
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">14</span>
+<span class="ml-4 text-on-surface">db = get_db_connection()</span>
+</div>
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">15</span>
+<span class="ml-4 text-on-surface">cursor = db.cursor()</span>
+</div>
+<div class="flex code-syntax-vulnerability">
+<span class="w-10 text-error/60 text-right pr-4 select-none">16</span>
+<span class="ml-4 text-on-surface">query = <span class="code-syntax-string">f"SELECT * FROM users WHERE id = '{user_id}'"</span></span>
+<span class="ml-4 flex items-center bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-tighter">
+<span class="material-symbols-outlined text-sm mr-1" data-icon="warning">warning</span> Direct concatenation detected
+                            </span>
+</div>
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">17</span>
+<span class="ml-4 text-on-surface">cursor.execute(query)</span>
+</div>
+<div class="flex hover:bg-slate-900/50">
+<span class="w-10 text-slate-600 text-right pr-4 select-none">18</span>
+<span class="ml-4 code-syntax-keyword">return</span> <span class="text-on-surface">cursor.fetchone()</span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low p-4 border-t border-slate-800">
+<div class="flex items-start gap-4">
+<div class="bg-error-container/20 p-2 rounded">
+<span class="material-symbols-outlined text-error" data-icon="psychology">psychology</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-error mb-1">Recommendation</h4>
+<p class="font-body-md text-sm text-on-surface-variant max-w-2xl">
+                                The code uses f-strings to inject the <code class="font-mono bg-surface-variant px-1 rounded">user_id</code> variable directly into the SQL query. This is a severe vulnerability that allows for SQL injection attacks. Use parameterized queries instead to ensure data is safely escaped.
+                            </p>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-surface-container-low border border-slate-800 p-4">
+<h3 class="font-label-caps text-label-caps text-slate-500 uppercase mb-4">Vulnerability Trend</h3>
+<div class="h-32 flex items-end gap-1">
+<div class="flex-1 bg-surface-variant h-[40%]" title="Mon"></div>
+<div class="flex-1 bg-surface-variant h-[60%]" title="Tue"></div>
+<div class="flex-1 bg-secondary-fixed h-[90%] neon-glow" title="Wed"></div>
+<div class="flex-1 bg-surface-variant h-[55%]" title="Thu"></div>
+<div class="flex-1 bg-surface-variant h-[45%]" title="Fri"></div>
+<div class="flex-1 bg-surface-variant h-[30%]" title="Sat"></div>
+<div class="flex-1 bg-surface-variant h-[20%]" title="Sun"></div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-slate-800 p-4 flex flex-col">
+<h3 class="font-label-caps text-label-caps text-slate-500 uppercase mb-4">Affected Packages</h3>
+<ul class="space-y-3 font-code-sm text-code-sm">
+<li class="flex justify-between items-center">
+<span class="text-on-surface">requests@2.25.1</span>
+<span class="text-error">High</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-on-surface">pyyaml@5.3.1</span>
+<span class="text-error">Critical</span>
+</li>
+<li class="flex justify-between items-center">
+<span class="text-on-surface">flask@1.1.2</span>
+<span class="text-tertiary">Med</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container-low border border-slate-800 p-4 relative overflow-hidden group">
+<h3 class="font-label-caps text-label-caps text-slate-500 uppercase mb-4">System Telemetry</h3>
+<div class="space-y-4">
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Scanner Load</span>
+<span class="text-secondary-fixed">42%</span>
+</div>
+<div class="w-full bg-slate-900 h-1">
+<div class="bg-secondary-fixed h-full w-[42%]"></div>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-slate-500">Network IO</span>
+<span class="text-secondary-fixed">840 MB/s</span>
+</div>
+<div class="w-full bg-slate-900 h-1">
+<div class="bg-secondary-fixed h-full w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<footer class="md:hidden bg-slate-950/95 backdrop-blur-md fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 border-t border-slate-800">
+<a class="flex flex-col items-center justify-center text-emerald-400 bg-emerald-500/10 border-t-2 border-emerald-400 py-1 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 hover:text-emerald-300 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Traffic</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 hover:text-emerald-300 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Shield</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 hover:text-emerald-300 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-bold">Docs</span>
+</a>
+</footer>
+</body></html>

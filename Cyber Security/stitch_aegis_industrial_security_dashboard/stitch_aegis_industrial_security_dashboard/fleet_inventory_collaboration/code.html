@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS-IOT | Fleet Inventory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#3d392c",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "outline": "#999077",
+                    "on-primary": "#3a3000",
+                    "on-error-container": "#ffdad6",
+                    "inverse-primary": "#705d00",
+                    "on-tertiary-container": "#5e5f60",
+                    "inverse-on-surface": "#343024",
+                    "surface-container-high": "#2e2a1e",
+                    "surface-container-lowest": "#110e05",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "inverse-surface": "#eae2cf",
+                    "surface-variant": "#393528",
+                    "background": "#161308",
+                    "surface-tint": "#e9c400",
+                    "tertiary-container": "#d9dada",
+                    "outline-variant": "#4d4732",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#474747",
+                    "on-surface": "#eae2cf",
+                    "surface-container-highest": "#393528",
+                    "primary": "#fff6df",
+                    "surface-container-low": "#1f1b10",
+                    "on-secondary-container": "#b6b5b4",
+                    "secondary-fixed": "#e4e2e1",
+                    "on-background": "#eae2cf",
+                    "primary-fixed-dim": "#e9c400",
+                    "tertiary-fixed": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "on-primary-container": "#705e00",
+                    "primary-fixed": "#ffe16d",
+                    "on-error": "#690005",
+                    "secondary": "#c8c6c6",
+                    "on-primary-fixed-variant": "#544600",
+                    "secondary-fixed-dim": "#c8c6c6",
+                    "surface": "#161308",
+                    "on-surface-variant": "#d0c6ab",
+                    "secondary-container": "#474747",
+                    "primary-container": "#ffd700",
+                    "on-tertiary": "#2f3131",
+                    "on-secondary": "#303030",
+                    "surface-container": "#231f14",
+                    "on-primary-fixed": "#221b00",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "tertiary": "#f6f6f6",
+                    "surface-dim": "#161308"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "margin": "32px",
+                    "md": "24px",
+                    "xs": "4px",
+                    "lg": "48px",
+                    "gutter": "16px",
+                    "base": "8px"
+            },
+            "fontFamily": {
+                    "body-fixed": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"],
+                    "data-mono": ["Space Grotesk"],
+                    "display-lg": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body { font-family: 'Space Grotesk', sans-serif; background-color: #161308; }
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #ffd700,
+                #ffd700 10px,
+                #161308 10px,
+                #161308 20px
+            );
+        }
+        .led-glow {
+            box-shadow: 0 0 8px currentColor;
+        }
+    </style>
+</head>
+<body class="dark text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-zinc-900 dark:bg-[#1A1A1A] border-b-2 border-zinc-800 flex justify-between items-center w-full px-8 h-16 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-black text-yellow-400 dark:text-[#FFD700] tracking-tighter uppercase">AEGIS-IOT</span>
+<div class="h-6 w-px bg-zinc-700 mx-2"></div>
+<span class="font-['Space_Grotesk'] uppercase tracking-wider font-bold text-yellow-400 dark:text-[#FFD700]">Fleet Inventory</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 bg-zinc-800 px-3 py-1 border border-zinc-700">
+<span class="material-symbols-outlined text-sm text-zinc-400">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-xs font-data-mono text-zinc-300 w-48 uppercase" placeholder="SEARCH_NODES..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-zinc-400 hover:text-yellow-400 transition-colors">notifications_active</button>
+<button class="material-symbols-outlined text-zinc-400 hover:text-yellow-400 transition-colors">settings</button>
+<div class="flex items-center gap-3 border-l border-zinc-700 pl-4">
+<div class="text-right">
+<p class="text-[10px] font-bold text-zinc-500 uppercase leading-none">Operator</p>
+<p class="text-xs font-bold text-zinc-200">UNIT_042</p>
+</div>
+<img alt="Security Operator" class="w-8 h-8 border-2 border-yellow-400 grayscale" data-alt="A high-contrast profile portrait of a security operator wearing a tactical headset and visor. The lighting is low-key with sharp yellow highlights reflecting off the metallic gear, creating a rugged industrial aesthetic. The background is a dark, tech-filled command center with blurred server racks and glowing indicators. The image has a grainy, surveillance-camera texture, emphasizing a high-stakes hardware environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5qWT1hxKBixjLxmXxTGCXusHYh3fZp0X4uAGN_YSF_mVDM3tBJtYiLRuyVGh6cHB_Ly7cLJH8w8jhdj2Hh7163mCu5idFuD-QMjcpUHmLWf_0rNhw0GzuwSFLkfF1goKk1d0HSm91WOl6fYCNaZY8fdLwT6kfeXk8F4KRX0D3TCBDX8Qwi-7N4lWnXcuy-6TB39s3IcN5OAWKOEZUyvqOcWTXUS7RBoyC-qUrZGIAqdBO7-IuXb2dhz9Sgq-rbp4AoaT9mwc5ydU"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-zinc-900 dark:bg-[#1A1A1A] fixed left-0 top-0 h-full w-64 border-r-2 border-zinc-800 flex flex-col pt-20 pb-6 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 bg-zinc-800/50 border border-zinc-700">
+<div class="w-3 h-3 rounded-full bg-yellow-400 led-glow"></div>
+<div>
+<p class="text-lg font-bold text-white uppercase leading-none">NODE_AEGIS_01</p>
+<p class="text-[10px] font-medium tracking-tight text-yellow-400">OPERATIONAL / SECURE</p>
+</div>
+</div>
+</div>
+<nav class="flex-grow flex flex-col">
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-400 dark:text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all font-['Space_Grotesk'] text-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 bg-yellow-400 dark:bg-[#FFD700] text-zinc-900 font-bold border-l-4 border-white transition-all font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span>Device Logs</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-400 dark:text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all font-['Space_Grotesk'] text-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span>Admin Panel</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-400 dark:text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all font-['Space_Grotesk'] text-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span>Documentation</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-400 dark:text-zinc-500 hover:text-white hover:bg-zinc-800 transition-all font-['Space_Grotesk'] text-sm font-medium tracking-tight" href="#">
+<span class="material-symbols-outlined">help_center</span>
+<span>Support</span>
+</a>
+</nav>
+<div class="px-6">
+<button class="flex items-center gap-4 w-full px-4 py-3 border-2 border-zinc-700 text-zinc-400 hover:border-red-500 hover:text-red-500 transition-colors font-bold uppercase text-xs">
+<span class="material-symbols-outlined text-sm">power_settings_new</span>
+<span>System Logout</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 flex h-screen overflow-hidden">
+<!-- Inventory Table Section -->
+<section class="flex-grow p-8 overflow-y-auto">
+<div class="mb-8 flex justify-between items-end">
+<div>
+<h1 class="text-display-lg font-display-lg text-on-surface uppercase mb-2">Node Registry</h1>
+<p class="text-zinc-500 font-data-mono text-sm uppercase tracking-widest">Active Fleet: 1,284 Units / Syncing 0.04ms</p>
+</div>
+<div class="flex gap-2">
+<button class="px-4 py-2 border-2 border-white text-white font-bold uppercase text-xs hover:bg-white hover:text-zinc-900 transition-colors">Export DB</button>
+<button class="px-4 py-2 bg-yellow-400 text-zinc-900 font-bold uppercase text-xs flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                        Provision Node
+                    </button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="border-2 border-zinc-800 bg-surface-container-low">
+<table class="w-full text-left border-collapse">
+<thead class="bg-zinc-900 border-b-2 border-zinc-800">
+<tr>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Status</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Hardware ID</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Firmware</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Load</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Uptime</th>
+<th class="px-4 py-3 font-label-caps text-label-caps text-zinc-500 uppercase">Location</th>
+</tr>
+</thead>
+<tbody class="text-data-mono text-xs">
+<tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors cursor-pointer group bg-zinc-900/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-yellow-400 led-glow rounded-full"></div>
+<span class="text-yellow-400 font-bold">ACTIVE</span>
+</div>
+</td>
+<td class="px-4 py-4 font-bold text-zinc-200">HX-7729-ALPHA</td>
+<td class="px-4 py-4 text-zinc-400">v4.2.1-stable</td>
+<td class="px-4 py-4">
+<div class="w-24 bg-zinc-800 h-2 flex gap-0.5">
+<div class="w-1/4 bg-yellow-400"></div>
+<div class="w-1/4 bg-yellow-400"></div>
+<div class="w-1/4 bg-zinc-700"></div>
+<div class="w-1/4 bg-zinc-700"></div>
+</div>
+</td>
+<td class="px-4 py-4 text-zinc-400">142d 12h 04m</td>
+<td class="px-4 py-4 text-zinc-400 uppercase">Sector 7 / Warehouse</td>
+</tr>
+<tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors cursor-pointer group">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-yellow-400 led-glow rounded-full"></div>
+<span class="text-yellow-400 font-bold">ACTIVE</span>
+</div>
+</td>
+<td class="px-4 py-4 font-bold text-zinc-200">HX-8102-BETA</td>
+<td class="px-4 py-4 text-zinc-400">v4.2.1-stable</td>
+<td class="px-4 py-4">
+<div class="w-24 bg-zinc-800 h-2 flex gap-0.5">
+<div class="w-1/4 bg-yellow-400"></div>
+<div class="w-1/4 bg-yellow-400"></div>
+<div class="w-1/4 bg-yellow-400"></div>
+<div class="w-1/4 bg-zinc-700"></div>
+</div>
+</td>
+<td class="px-4 py-4 text-zinc-400">089d 22h 19m</td>
+<td class="px-4 py-4 text-zinc-400 uppercase">Sector 3 / Intake</td>
+</tr>
+<tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors cursor-pointer group bg-zinc-900/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-red-500 shadow-[0_0_8px_#ef4444] rounded-full"></div>
+<span class="text-red-500 font-bold">FAILURE</span>
+</div>
+</td>
+<td class="px-4 py-4 font-bold text-zinc-200">HX-0012-CRITICAL</td>
+<td class="px-4 py-4 text-zinc-400">v4.1.9-legacy</td>
+<td class="px-4 py-4">
+<div class="w-24 bg-zinc-800 h-2 flex gap-0.5">
+<div class="w-full bg-red-500"></div>
+</div>
+</td>
+<td class="px-4 py-4 text-zinc-400">000d 00h 02m</td>
+<td class="px-4 py-4 text-zinc-400 uppercase">Sector 1 / Mainframe</td>
+</tr>
+<tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors cursor-pointer group">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-zinc-600 rounded-full"></div>
+<span class="text-zinc-500 font-bold">STANDBY</span>
+</div>
+</td>
+<td class="px-4 py-4 font-bold text-zinc-200">HX-9901-GAMMA</td>
+<td class="px-4 py-4 text-zinc-400">v4.2.1-stable</td>
+<td class="px-4 py-4">
+<div class="w-24 bg-zinc-800 h-2 flex gap-0.5">
+<div class="w-px bg-zinc-700"></div>
+</div>
+</td>
+<td class="px-4 py-4 text-zinc-400">312d 04h 55m</td>
+<td class="px-4 py-4 text-zinc-400 uppercase">Sector 9 / Storage</td>
+</tr>
+<!-- Additional Rows for visual density -->
+<tr class="border-b border-zinc-800 hover:bg-zinc-800/30 transition-colors cursor-pointer group bg-zinc-900/50">
+<td class="px-4 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-yellow-400 led-glow rounded-full"></div>
+<span class="text-yellow-400 font-bold">ACTIVE</span>
+</div>
+</td>
+<td class="px-4 py-4 font-bold text-zinc-200">HX-2234-EPSILON</td>
+<td class="px-4 py-4 text-zinc-400">v4.2.1-stable</td>
+<td class="px-4 py-4">
+<div class="w-24 bg-zinc-800 h-2 flex gap-0.5">
+<div class="w-1/2 bg-yellow-400"></div>
+<div class="w-1/2 bg-zinc-700"></div>
+</div>
+</td>
+<td class="px-4 py-4 text-zinc-400">012d 18h 33m</td>
+<td class="px-4 py-4 text-zinc-400 uppercase">Sector 2 / Lab</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- System Metrics Small Panels -->
+<div class="mt-8 grid grid-cols-3 gap-6">
+<div class="border-2 border-zinc-800 p-6 bg-surface-container flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-yellow-400"></div>
+<span class="text-label-caps font-label-caps text-zinc-500 uppercase mb-2">Network Throughput</span>
+<span class="text-headline-md font-headline-md text-white">4.8 GB/s</span>
+<div class="mt-4 flex items-end gap-1 h-12">
+<div class="w-2 bg-zinc-700 h-1/2"></div>
+<div class="w-2 bg-yellow-400 h-3/4"></div>
+<div class="w-2 bg-yellow-400 h-full"></div>
+<div class="w-2 bg-zinc-700 h-2/3"></div>
+<div class="w-2 bg-yellow-400 h-1/2"></div>
+<div class="w-2 bg-yellow-400 h-3/4"></div>
+<div class="w-2 bg-zinc-700 h-full"></div>
+<div class="w-2 bg-yellow-400 h-2/3"></div>
+</div>
+</div>
+<div class="border-2 border-zinc-800 p-6 bg-surface-container flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-zinc-500"></div>
+<span class="text-label-caps font-label-caps text-zinc-500 uppercase mb-2">Cooling Array Status</span>
+<span class="text-headline-md font-headline-md text-white">NOMINAL</span>
+<div class="mt-4 flex items-center gap-2">
+<div class="flex-grow bg-zinc-800 h-2">
+<div class="w-3/4 bg-blue-400 h-full"></div>
+</div>
+<span class="text-xs font-bold text-blue-400">32°C</span>
+</div>
+</div>
+<div class="border-2 border-zinc-800 p-6 bg-surface-container flex flex-col relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-red-500"></div>
+<span class="text-label-caps font-label-caps text-zinc-500 uppercase mb-2">Hardware Alerts</span>
+<span class="text-headline-md font-headline-md text-red-500">03 CRITICAL</span>
+<div class="mt-4 hazard-stripe h-2 opacity-50"></div>
+</div>
+</div>
+</section>
+<!-- Slide-out Side Panel: Operator Logs -->
+<aside class="w-[420px] bg-[#1A1A1A] border-l-2 border-zinc-800 flex flex-col shadow-2xl">
+<!-- Header -->
+<div class="p-6 border-b-2 border-zinc-800 bg-zinc-900/80">
+<div class="flex justify-between items-start mb-4">
+<div>
+<p class="text-xs font-bold text-yellow-400 mb-1 uppercase tracking-widest">Selected Node</p>
+<h2 class="text-xl font-black text-white uppercase tracking-tighter">HX-0012-CRITICAL</h2>
+</div>
+<button class="material-symbols-outlined text-zinc-500 hover:text-white">close</button>
+</div>
+<div class="flex gap-3">
+<div class="px-3 py-1 bg-red-500/10 border border-red-500 text-red-500 text-[10px] font-bold uppercase">System Halt</div>
+<div class="px-3 py-1 bg-zinc-800 border border-zinc-700 text-zinc-400 text-[10px] font-bold uppercase">Priority: High</div>
+</div>
+</div>
+<!-- Log Thread -->
+<div class="flex-grow overflow-y-auto p-6 space-y-6 bg-[#1A1A1A]">
+<!-- System Message -->
+<div class="flex gap-4">
+<div class="w-8 h-8 flex-shrink-0 bg-red-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-zinc-900 text-sm">warning</span>
+</div>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold text-red-500 uppercase">SYS_LOG</span>
+<span class="text-[10px] font-data-mono text-zinc-600">04:22:15 UTC</span>
+</div>
+<div class="p-3 bg-red-500/5 border border-red-900/50 text-xs text-zinc-400 leading-relaxed font-data-mono">
+                            KERNEL_PANIC: I/O timeout on block 0x33A2. Primary storage unreadable. System forced into standby mode.
+                        </div>
+</div>
+</div>
+<!-- Operator Comment -->
+<div class="flex gap-4">
+<img alt="Operator J. Smith" class="w-8 h-8 border border-zinc-700 grayscale" data-alt="A close-up portrait of a female technician in a dark industrial workshop. She has a focused expression, illuminated by the dim, blueish light of several server terminals. She is wearing a dark jumpsuit with industrial badges. The background is filled with blurred electronic components and tangled wires, creating a technical, hardware-focused atmosphere consistent with the brutalist UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL4aY0YQCoOPRPyw_7-DFPrzdUEkdlWE1iBEyugrac8TKNzuV1iW8wf5CdTikoaTtmteOvOusvu8EHvUNayB4epKyUoUFvxoxBdJ2bsRD8q21YV-Ui8BTQDrn3Kz1fmcNRdkkuw_onmjmufgA8E-v_Zsl_kGCpPzUAG7O3yGdN6TsQSGK26pLI5FUHJdJcYOOGunBYnl_-XkYPid8BDkDT1miJBb6Dmm5jQriMDmOXBJ7HQ8dtjbLGpieMe3Fv2nGgji0KJ21emUU"/>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold text-zinc-200 uppercase">J_SMITH_TECH</span>
+<span class="text-[10px] font-data-mono text-zinc-600">05:10:02 UTC</span>
+</div>
+<div class="p-3 bg-zinc-800 border border-zinc-700 text-xs text-zinc-300 leading-relaxed">
+                            Attempted physical reset of the interface bridge. No change. Requesting hardware team for a module swap on Sector 1. Looks like a physical failure.
+                        </div>
+<div class="mt-2 flex gap-2">
+<button class="text-[10px] font-bold text-yellow-400 hover:underline uppercase">Acknowledge</button>
+<span class="text-zinc-700">•</span>
+<button class="text-[10px] font-bold text-zinc-500 hover:text-zinc-300 uppercase">Reply</button>
+</div>
+</div>
+</div>
+<!-- Another Operator Comment -->
+<div class="flex gap-4">
+<img alt="Senior Op M. Vance" class="w-8 h-8 border border-zinc-700 grayscale" data-alt="A portrait of a senior system administrator in a high-tech control room. The individual has short hair and a serious expression, lit by the warm, amber glow of holographic displays. He is wearing a structured tactical vest. The setting is dark and functional, emphasizing the industrial brutalism and secure environment of the AEGIS-IOT network." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApREYPQFQ9tW9-plXIZlM2_Vriar9XJ7cR72Rho464yZ0HkpqY8kVzXlTQGAf-X5ieOhFya9PvYcwLFbw9itaHCZu_3FbuAEO7hu1DS9ET8EhWsaS_IetlvJBPX9JkRNchsDWl773ir3-8-qJRuFiCkYoSh8y1Ou-x_Qdhu2DHYAy72wD5ZVzLG_tF4mWJqDBf5zYRw6i-OFr5hBlMBjZfVawgP7jb5CBMK95RoMlfNWMKn0vkGercrbELy-4b9dBNWOgTsNT2OYM"/>
+<div class="flex-grow">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs font-bold text-zinc-200 uppercase">M_VANCE_SR</span>
+<span class="text-[10px] font-data-mono text-zinc-600">06:45:30 UTC</span>
+</div>
+<div class="p-3 bg-zinc-800 border border-zinc-700 text-xs text-zinc-300 leading-relaxed italic">
+                            Approved. Hardware team dispatched. Unit will be offline for approx. 4 hours. Routing Sector 1 traffic through HX-7729-ALPHA.
+                        </div>
+</div>
+</div>
+</div>
+<!-- Log Input -->
+<div class="p-6 border-t-2 border-zinc-800 bg-zinc-900">
+<div class="relative">
+<textarea class="w-full bg-zinc-800 border-none border-b border-zinc-600 focus:border-yellow-400 focus:ring-0 text-xs text-zinc-300 p-4 font-body-fixed placeholder:text-zinc-600 h-24 resize-none mb-4" placeholder="ENTER OPERATOR NOTE..."></textarea>
+<div class="flex justify-between items-center">
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-zinc-500 hover:text-white p-1">attach_file</button>
+<button class="material-symbols-outlined text-zinc-500 hover:text-white p-1">alternate_email</button>
+</div>
+<button class="px-6 py-2 bg-yellow-400 text-zinc-900 font-bold uppercase text-xs hover:bg-white transition-colors">
+                            COMMIT LOG
+                        </button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Global Hazard Bezel (The Hardware Frame) -->
+<div class="fixed inset-0 pointer-events-none border-[32px] border-zinc-950/20 z-10"></div>
+<div class="fixed top-0 left-0 w-full h-1 hazard-stripe z-[60]"></div>
+</body></html>
