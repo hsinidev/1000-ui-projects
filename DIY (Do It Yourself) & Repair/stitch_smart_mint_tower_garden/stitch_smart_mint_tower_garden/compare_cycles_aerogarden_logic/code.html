@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AeroGarden Logic | Compare Cycles</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary-fixed": "#00201a",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary": "#ffffff",
+                      "on-surface": "#191c1d",
+                      "error": "#ba1a1a",
+                      "primary-fixed": "#93f993",
+                      "on-primary-fixed": "#002105",
+                      "background": "#f8fafa",
+                      "outline": "#6f7a6c",
+                      "inverse-surface": "#2e3131",
+                      "on-background": "#191c1d",
+                      "tertiary-container": "#d9ebea",
+                      "on-tertiary-fixed": "#0e1e1e",
+                      "error-container": "#ffdad6",
+                      "surface-variant": "#e1e3e3",
+                      "secondary": "#29695b",
+                      "on-secondary-fixed-variant": "#065043",
+                      "on-primary-container": "#007924",
+                      "on-tertiary-fixed-variant": "#3a4a49",
+                      "on-error-container": "#93000a",
+                      "inverse-primary": "#77dc7a",
+                      "secondary-container": "#acedda",
+                      "on-error": "#ffffff",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#516161",
+                      "inverse-on-surface": "#eff1f1",
+                      "on-secondary-container": "#2e6d5f",
+                      "on-secondary": "#ffffff",
+                      "tertiary-fixed-dim": "#b8cac9",
+                      "primary-container": "#98ff98",
+                      "tertiary-fixed": "#d4e6e5",
+                      "surface-bright": "#f8fafa",
+                      "on-primary-fixed-variant": "#005316",
+                      "surface-dim": "#d8dada",
+                      "secondary-fixed": "#afefdd",
+                      "primary-fixed-dim": "#77dc7a",
+                      "primary": "#006e20",
+                      "on-surface-variant": "#3f4a3d",
+                      "outline-variant": "#becab9",
+                      "surface-container": "#eceeee",
+                      "on-tertiary-container": "#5a6b6a",
+                      "surface-container-low": "#f2f4f4",
+                      "surface-container-high": "#e6e8e9",
+                      "surface-tint": "#006e20",
+                      "surface": "#f8fafa",
+                      "secondary-fixed-dim": "#94d3c1",
+                      "surface-container-highest": "#e1e3e3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-sm": "0.5rem",
+                      "unit": "8px",
+                      "container-padding": "2rem",
+                      "gutter": "1.5rem",
+                      "stack-lg": "3rem",
+                      "stack-md": "1.5rem"
+              },
+              "fontFamily": {
+                      "headline-md": ["Space Grotesk"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "headline-xl": ["Space Grotesk"],
+                      "headline-lg": ["Space Grotesk"],
+                      "label-sm": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-8 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 border-b border-emerald-50/50 dark:border-emerald-900/30 shadow-[0px_10px_30px_rgba(0,77,64,0.04)]">
+<div class="flex items-center gap-4">
+<span class="text-xl font-bold text-emerald-600 dark:text-emerald-400 font-['Space_Grotesk'] tracking-tight">AeroGarden Logic</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden md:block">
+<input class="bg-emerald-50/30 border-none rounded-full px-4 py-1.5 text-sm w-64 focus:ring-2 focus:ring-primary" placeholder="Search analytics..." type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1.5 text-emerald-600" data-icon="search">search</span>
+</div>
+<div class="flex gap-4">
+<button class="text-slate-500 hover:bg-emerald-50/50 p-2 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-500 hover:bg-emerald-50/50 p-2 rounded-full transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex pt-16 h-screen">
+<!-- SideNavBar -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col p-6 pt-20 bg-white dark:bg-slate-900 border-r border-emerald-50 dark:border-emerald-900/30 font-['Space_Grotesk'] font-medium transition-all duration-300 ease-out z-40">
+<div class="mb-8 px-2">
+<h3 class="text-lg font-bold text-emerald-600">Garden Expert</h3>
+<p class="text-xs text-slate-400">System Online</p>
+</div>
+<ul class="space-y-2">
+<li>
+<a class="flex items-center gap-3 p-3 text-slate-400 hover:text-emerald-500 hover:pl-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 p-3 text-slate-400 hover:text-emerald-500 hover:pl-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="potted_plant">potted_plant</span>
+<span>Growth Cycles</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 p-3 text-slate-400 hover:text-emerald-500 hover:pl-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+<span>Analytics</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 p-3 text-slate-400 hover:text-emerald-500 hover:pl-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span>Nutrients</span>
+</a>
+</li>
+<li>
+<a class="flex items-center gap-3 p-3 text-emerald-600 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span>Compare</span>
+</a>
+</li>
+</ul>
+<div class="mt-auto p-4 bg-primary-container/20 rounded-2xl flex items-center gap-3">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-emerald-100">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A professional portrait of a tech-savvy botanist in a clean, modern lab setting. The lighting is soft and airy, matching a light-mode UI aesthetic with hints of mint green and pure whites. The person is smiling confidently, representing an expert user of advanced garden management software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD68iqi7hCbV64Nea2hm__58kh3m8Ihz3gVW39lI6DRX3-MiBXzGP-kd5BHLtROh652s2E7VBcOCTwbG3B2BOyiWcBJYlo5LufxVGLxEFfUJSvB9EVdPZoU2LjgC03ru7qYSUD0Qex5OWxS0p8cNT771DEWROIxC2GMomfD8oLdHn9ZAdzv26MbFuKnjmAGPc8Xi1jYaG-6qAw9kKxJeuXxkMhHptkb-DTjLVSGKOeFIICEa6hDP7kX-dnUnOuwa_sFmWB6R25vC6Y"/>
+</div>
+<div>
+<p class="text-xs font-bold text-emerald-800">Dr. Aris Thorne</p>
+<p class="text-[10px] text-emerald-600 uppercase tracking-tighter">Chief Cultivator</p>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="flex-1 md:ml-64 p-8 overflow-y-auto bg-background">
+<div class="max-w-[1280px] mx-auto space-y-8 pb-20">
+<!-- Header -->
+<div class="space-y-2">
+<h1 class="font-headline-xl text-headline-xl text-on-surface">Compare Cycles</h1>
+<p class="font-body-lg text-body-lg text-tertiary">Overlay historical telemetry to identify yield-optimizing patterns.</p>
+</div>
+<!-- Selection Area -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<div class="lg:col-span-3 flex flex-wrap items-center gap-4 bg-white p-6 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50">
+<span class="text-sm font-semibold text-slate-500 uppercase tracking-wider px-2">Select Active Data Sets:</span>
+<div class="flex items-center gap-3 p-2 pr-4 bg-emerald-50 rounded-full border border-emerald-200">
+<div class="w-8 h-8 rounded-full bg-emerald-500 flex items-center justify-center text-white text-xs font-bold">A</div>
+<span class="text-sm font-medium text-emerald-800">Spring Basil 2023</span>
+<span class="material-symbols-outlined text-emerald-400 text-sm" data-icon="close">close</span>
+</div>
+<div class="flex items-center gap-3 p-2 pr-4 bg-primary-container/30 rounded-full border border-primary-container">
+<div class="w-8 h-8 rounded-full bg-secondary flex items-center justify-center text-white text-xs font-bold">B</div>
+<span class="text-sm font-medium text-emerald-900">Summer Basil 2023</span>
+<span class="material-symbols-outlined text-emerald-400 text-sm" data-icon="close">close</span>
+</div>
+<button class="flex items-center gap-2 p-2 px-4 border border-dashed border-emerald-300 rounded-full text-emerald-600 hover:bg-emerald-50 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span class="text-sm font-medium">Add Growth Cycle</span>
+</button>
+<div class="ml-auto flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-emerald-500"></span>
+<span class="text-xs font-medium text-slate-500">pH Level</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-blue-400"></span>
+<span class="text-xs font-medium text-slate-500">TDS (PPM)</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 rounded-full bg-orange-400"></span>
+<span class="text-xs font-medium text-slate-500">Temp</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Multi-Metric Chart (Bento Style) -->
+<section class="bg-white p-8 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50">
+<div class="flex justify-between items-center mb-10">
+<div class="flex flex-col">
+<h2 class="font-headline-md text-headline-md text-emerald-800">Comparative Timeline Analysis</h2>
+<p class="text-sm text-slate-400">Daily normalized telemetry from Germination to Harvest (Day 0 - Day 60)</p>
+</div>
+<div class="flex bg-emerald-50/50 p-1 rounded-lg">
+<button class="px-4 py-1.5 text-xs font-bold bg-white text-emerald-700 rounded shadow-sm">DAY VIEW</button>
+<button class="px-4 py-1.5 text-xs font-bold text-emerald-400 hover:text-emerald-700 transition-colors">WEEK VIEW</button>
+</div>
+</div>
+<div class="h-80 w-full relative">
+<!-- Simulated Chart Grid -->
+<div class="absolute inset-0 flex flex-col justify-between">
+<div class="border-b border-emerald-50 h-0"></div>
+<div class="border-b border-emerald-50 h-0"></div>
+<div class="border-b border-emerald-50 h-0"></div>
+<div class="border-b border-emerald-50 h-0"></div>
+<div class="border-b border-emerald-50 h-0"></div>
+</div>
+<!-- Chart Lines (Simulated SVG) -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none">
+<!-- Cycle A pH (Emerald) -->
+<path d="M0 250 Q 150 200, 300 220 T 600 150 T 900 180 T 1200 100" fill="none" stroke="#10b981" stroke-linecap="round" stroke-width="3"></path>
+<!-- Cycle B pH (Dashed Light Emerald) -->
+<path d="M0 280 Q 200 260, 400 240 T 800 200 T 1200 180" fill="none" stroke="#a7f3d0" stroke-dasharray="8,4" stroke-linecap="round" stroke-width="2"></path>
+<!-- Temp (Orange) -->
+<path d="M0 100 Q 300 120, 600 110 T 1200 90" fill="none" stroke="#fb923c" stroke-linecap="round" stroke-opacity="0.6" stroke-width="1.5"></path>
+</svg>
+<!-- Legend/Markers -->
+<div class="absolute top-1/2 left-1/3 group cursor-pointer">
+<div class="w-3 h-3 bg-white border-2 border-emerald-500 rounded-full"></div>
+<div class="hidden group-hover:block absolute top-6 -left-12 bg-on-secondary-fixed text-white p-3 rounded-lg text-xs whitespace-nowrap z-10">
+<p class="font-bold">Day 32: Growth Spike</p>
+<p class="opacity-80">Cycle A: 6.2 pH (Optimal)</p>
+<p class="opacity-80">Cycle B: 5.8 pH (Acidic)</p>
+</div>
+</div>
+</div>
+<div class="flex justify-between mt-6 text-[10px] text-slate-400 font-bold tracking-widest uppercase">
+<span>Day 0</span>
+<span>Day 15</span>
+<span>Day 30</span>
+<span>Day 45</span>
+<span>Day 60 (Harvest)</span>
+</div>
+</section>
+<!-- Comparison Scorecard Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Yield Card -->
+<div class="bg-white p-6 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined" data-icon="scale">scale</span>
+</div>
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Total Yield (kg)</h3>
+</div>
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-xs text-slate-400">Spring '23</p>
+<p class="text-2xl font-bold text-emerald-900">4.82</p>
+</div>
+<div class="w-px h-10 bg-emerald-50"></div>
+<div class="space-y-1 text-right">
+<p class="text-xs text-slate-400">Summer '23</p>
+<p class="text-2xl font-bold text-emerald-600">5.15</p>
+</div>
+</div>
+<div class="pt-2">
+<span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                                +6.8% EFFICIENCY
+                            </span>
+</div>
+</div>
+<!-- Stability Card -->
+<div class="bg-white p-6 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined" data-icon="vitals">vitals</span>
+</div>
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Avg. pH Stability</h3>
+</div>
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-xs text-slate-400">Spring '23</p>
+<p class="text-2xl font-bold text-emerald-900">92%</p>
+</div>
+<div class="w-px h-10 bg-emerald-50"></div>
+<div class="space-y-1 text-right">
+<p class="text-xs text-slate-400">Summer '23</p>
+<p class="text-2xl font-bold text-emerald-600">88%</p>
+</div>
+</div>
+<div class="pt-2">
+<span class="inline-flex items-center gap-1 text-[10px] font-bold text-error bg-error-container/30 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm" data-icon="trending_down">trending_down</span>
+                                -4.3% DEVIATION
+                            </span>
+</div>
+</div>
+<!-- Duration Card -->
+<div class="bg-white p-6 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+</div>
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Growth Days</h3>
+</div>
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-xs text-slate-400">Spring '23</p>
+<p class="text-2xl font-bold text-emerald-900">62</p>
+</div>
+<div class="w-px h-10 bg-emerald-50"></div>
+<div class="space-y-1 text-right">
+<p class="text-xs text-slate-400">Summer '23</p>
+<p class="text-2xl font-bold text-emerald-600">58</p>
+</div>
+</div>
+<div class="pt-2">
+<span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm" data-icon="timer">timer</span>
+                                4 DAYS FASTER
+                            </span>
+</div>
+</div>
+<!-- Efficiency Card -->
+<div class="bg-white p-6 rounded-xl shadow-[0px_10px_30px_rgba(0,77,64,0.04)] border border-emerald-50/50 space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600">
+<span class="material-symbols-outlined" data-icon="energy_savings_leaf">energy_savings_leaf</span>
+</div>
+<h3 class="text-sm font-bold text-slate-500 uppercase tracking-wide">Nutrient ROI</h3>
+</div>
+<div class="flex justify-between items-end">
+<div class="space-y-1">
+<p class="text-xs text-slate-400">Spring '23</p>
+<p class="text-2xl font-bold text-emerald-900">1.2x</p>
+</div>
+<div class="w-px h-10 bg-emerald-50"></div>
+<div class="space-y-1 text-right">
+<p class="text-xs text-slate-400">Summer '23</p>
+<p class="text-2xl font-bold text-emerald-600">1.4x</p>
+</div>
+</div>
+<div class="pt-2">
+<span class="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+                                OPTIMIZED FEEDING
+                            </span>
+</div>
+</div>
+</div>
+<!-- Insights Block -->
+<section class="bg-secondary text-white p-8 rounded-2xl flex flex-col md:flex-row items-center gap-8 shadow-xl">
+<div class="w-32 h-32 flex-shrink-0 bg-white/10 rounded-full flex items-center justify-center border border-white/20">
+<span class="material-symbols-outlined text-5xl" data-icon="lightbulb" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+<div class="space-y-4">
+<h2 class="text-2xl font-bold font-headline-md">AI Correlation Insight</h2>
+<p class="text-emerald-50 max-w-2xl">Based on the comparison between Spring and Summer cycles, the 4-day growth reduction in Summer 2023 was primarily driven by a 2.5°C increase in ambient root-zone temperature combined with a more aggressive phosphorus feeding schedule in week 4. Yield quality remained consistent despite faster harvest.</p>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary-container px-6 py-2 rounded-full font-bold text-sm hover:bg-primary-fixed transition-colors">Apply Strategy to Next Cycle</button>
+<button class="border border-white/30 text-white px-6 py-2 rounded-full font-bold text-sm hover:bg-white/10 transition-colors">Download Detailed PDF</button>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 md:hidden bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg border-t border-emerald-100/20 dark:border-emerald-800/20 shadow-[0_-4px_20px_rgba(0,77,64,0.06)] rounded-t-3xl">
+<a class="flex flex-col items-center justify-center text-slate-400 p-2 hover:scale-110 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 p-2 hover:scale-110 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="eco">eco</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest mt-1">Cycles</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-emerald-100/50 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-2xl p-2 px-6 hover:scale-110 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest mt-1">Compare</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 p-2 hover:scale-110 transition-transform active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest mt-1">Profile</span>
+</a>
+</nav>
+</body></html>

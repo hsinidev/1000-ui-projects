@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;700;800&amp;family=Space+Grotesk:wght@400;700&amp;family=Material+Symbols+Outlined:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.12;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .halftone {
+            background-image: radial-gradient(circle at center, #000 1px, transparent 1px);
+            background-size: 4px 4px;
+            opacity: 0.05;
+        }
+        .tape-edge {
+            clip-path: polygon(2% 0%, 98% 1%, 100% 15%, 99% 85%, 100% 100%, 0% 100%, 1% 85%, 0% 15%);
+        }
+        .paper-tear {
+            mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 L2 8 L5 9 L8 7 L12 10 L15 8 L18 9 L22 7 L25 10 L28 8 L32 9 L35 7 L40 10 L44 8 L48 9 L52 7 L56 10 L60 8 L64 9 L68 7 L72 10 L76 8 L80 9 L84 7 L88 10 L92 8 L96 9 L100 7 V0 H0 Z' fill='black'/%3E%3C/svg%3E");
+            -webkit-mask-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' preserveAspectRatio='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0 10 L2 8 L5 9 L8 7 L12 10 L15 8 L18 9 L22 7 L25 10 L28 8 L32 9 L35 7 L40 10 L44 8 L48 9 L52 7 L56 10 L60 8 L64 9 L68 7 L72 10 L76 8 L80 9 L84 7 L88 10 L92 8 L96 9 L100 7 V0 H0 Z' fill='black'/%3E%3C/svg%3E");
+        }
+        .scribble-underline {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M2 5 Q 25 2 50 5 Q 75 8 98 5' stroke='black' fill='none' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: bottom;
+            background-size: 100% 12px;
+        }
+        .ink-splatter {
+            position: absolute;
+            background: black;
+            filter: blur(1px);
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        .distressed-bg {
+            background-color: #fdf8f8;
+            background-image: 
+                url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.5' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23f)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#c8c6c7",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f7f3f2",
+                        "secondary-fixed": "#e5e2db",
+                        "surface-dim": "#ddd9d9",
+                        "on-surface-variant": "#46474a",
+                        "on-surface": "#1c1b1b",
+                        "surface-tint": "#5f5e5f",
+                        "tertiary-fixed-dim": "#abd600",
+                        "outline-variant": "#c7c6ca",
+                        "on-primary-fixed": "#1b1b1c",
+                        "tertiary-fixed": "#c3f400",
+                        "primary-fixed": "#e5e2e3",
+                        "surface-container-highest": "#e5e2e1",
+                        "background": "#fdf8f8",
+                        "secondary-fixed-dim": "#c9c6c0",
+                        "inverse-primary": "#c8c6c7",
+                        "tertiary": "#000000",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#161e00",
+                        "surface-bright": "#fdf8f8",
+                        "on-error-container": "#93000a",
+                        "on-secondary-container": "#65645f",
+                        "tertiary-container": "#161e00",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary-fixed": "#1c1c18",
+                        "on-primary-container": "#858384",
+                        "on-primary": "#ffffff",
+                        "surface": "#fdf8f8",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474742",
+                        "secondary-container": "#e5e2db",
+                        "primary": "#000000",
+                        "on-background": "#1c1b1b",
+                        "inverse-surface": "#313030",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed-variant": "#3c4d00",
+                        "surface-variant": "#e5e2e1",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-container": "#718e00",
+                        "secondary": "#5f5e59",
+                        "surface-container-high": "#ebe7e7",
+                        "surface-container": "#f1edec",
+                        "primary-container": "#1b1b1c",
+                        "outline": "#76777b",
+                        "inverse-on-surface": "#f4f0ef",
+                        "on-primary-fixed-variant": "#474647"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Newsreader"],
+                        "body-lg": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Newsreader"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-lg": ["Newsreader"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "label-caps": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="distressed-bg text-on-background font-body-md selection:bg-tertiary-fixed selection:text-black min-h-screen">
+<div class="grain-overlay"></div>
+<div class="halftone fixed inset-0 pointer-events-none z-[9998]"></div>
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 sticky top-0 z-50 bg-white border-b-8 border-black shadow-[8px_8px_0px_0px_#000]">
+<div class="flex items-center gap-8">
+<div class="text-3xl font-black italic tracking-tighter bg-lime-400 text-black px-6 py-2 -rotate-3 border-4 border-black relative">
+<span class="relative z-10">STITCH_PUNK</span>
+<div class="absolute inset-0 bg-black/5 mix-blend-multiply halftone"></div>
+</div>
+<nav class="hidden md:flex items-center gap-6 font-serif font-black tracking-tighter uppercase text-lg">
+<a class="text-zinc-500 hover:text-black hover:skew-x-6 transition-all" href="#">Feed</a>
+<a class="text-zinc-500 hover:text-black hover:skew-x-6 transition-all" href="#">Dictionary</a>
+<a class="text-black bg-blue-500/10 px-2 border-b-4 border-blue-600" href="#">Estimator</a>
+<a class="text-zinc-500 hover:text-black hover:skew-x-6 transition-all" href="#">Patterns</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-zinc-900 cursor-pointer hover:rotate-12 transition-transform scale-125" data-icon="shopping_bag">shopping_bag</span>
+<span class="material-symbols-outlined text-zinc-900 cursor-pointer hover:rotate-12 transition-transform scale-125" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="max-w-[1280px] mx-auto px-margin py-12 flex flex-col md:flex-row gap-gutter relative">
+<!-- Sidebar Navigation -->
+<aside class="hidden lg:flex flex-col gap-6 h-fit sticky top-32 w-64 border-r-8 border-black pr-8">
+<div class="bg-blue-600 text-white p-6 rotate-2 text-2xl font-black mb-6 border-4 border-black shadow-[4px_4px_0px_0px_black] paper-tear">
+            STITCH PUNK
+            <p class="text-[12px] uppercase font-bold tracking-[0.2em] mt-2 bg-black text-white px-2 py-1 w-fit">Upcycle or Die</p>
+</div>
+<div class="flex flex-col gap-3 font-serif font-black uppercase text-xl italic">
+<div class="text-zinc-600 p-3 hover:bg-black hover:text-white transition-all cursor-pointer flex items-center gap-4 border-2 border-transparent hover:border-black">
+<span class="material-symbols-outlined scale-110" data-icon="dynamic_feed">dynamic_feed</span> Feed
+            </div>
+<div class="text-zinc-600 p-3 hover:bg-black hover:text-white transition-all cursor-pointer flex items-center gap-4 border-2 border-transparent hover:border-black">
+<span class="material-symbols-outlined scale-110" data-icon="menu_book">menu_book</span> Dictionary
+            </div>
+<div class="bg-lime-400 text-black border-4 border-black shadow-[6px_6px_0px_0px_black] p-4 flex items-center gap-4 relative -translate-x-2">
+<span class="material-symbols-outlined scale-125" data-icon="straighten">straighten</span> Estimator
+            </div>
+<div class="text-zinc-600 p-3 hover:bg-black hover:text-white transition-all cursor-pointer flex items-center gap-4 border-2 border-transparent hover:border-black">
+<span class="material-symbols-outlined scale-110" data-icon="grid_view">grid_view</span> Patterns
+            </div>
+</div>
+<div class="mt-12 p-1 border-2 border-dashed border-zinc-400">
+<button class="w-full bg-black text-white py-6 px-4 font-black text-lg tracking-tighter hover:bg-red-600 transition-colors uppercase border-b-4 border-r-4 border-white/20">
+                JOIN THE REBELLION
+            </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<section class="flex-1 space-y-16">
+<!-- Hero Header Section -->
+<div class="relative">
+<div class="absolute -top-10 -left-6 bg-red-600 text-white px-4 py-2 text-label-caps -rotate-6 z-10 border-4 border-black font-black uppercase tracking-widest shadow-lg">
+                CALCULATOR V1.0 // LOG_B12
+            </div>
+<h1 class="font-headline-xl text-headline-xl text-primary uppercase relative">
+<span class="relative z-10">Fabric Estimator</span>
+<span class="absolute -bottom-2 left-0 w-full h-8 bg-lime-400/30 -rotate-1 -z-10 paper-tear"></span>
+</h1>
+<div class="max-w-2xl mt-8 p-6 border-l-8 border-black bg-white/50 backdrop-blur-sm italic font-medium">
+<p class="font-body-lg text-body-lg text-secondary">Stop the waste. Measure twice, cut once, and use every scrap of that reclaimed textile. Our punk-optimized estimator helps you plan your rebellion against fast fashion.</p>
+</div>
+<!-- Ink splatter effect -->
+<div class="ink-splatter w-24 h-24 top-0 right-1/4 rounded-full" style="clip-path: polygon(50% 0%, 80% 10%, 100% 35%, 80% 60%, 90% 90%, 50% 70%, 20% 90%, 10% 60%, 0% 35%, 20% 10%);"></div>
+</div>
+<!-- Bento Grid Calculator -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-10 items-start">
+<!-- Input Panel -->
+<div class="md:col-span-7 bg-white border-4 border-black p-10 shadow-[12px_12px_0px_0px_black] relative overflow-hidden">
+<div class="absolute top-0 right-0 w-32 h-32 bg-zinc-200 -mr-16 -mt-16 rotate-45 border-b-4 border-black halftone"></div>
+<h2 class="font-headline-md text-headline-md mb-10 scribble-underline inline-block pb-4">Project Specs</h2>
+<form class="space-y-12">
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps block text-black font-black uppercase">What are you making?</label>
+<div class="relative">
+<select class="w-full bg-zinc-50 border-4 border-black p-5 font-headline-md appearance-none focus:ring-0 focus:outline-none focus:bg-lime-50 transition-colors">
+<option>A-Line Skirt</option>
+<option>Boxy Crop Top</option>
+<option>Worker Jacket</option>
+<option>Patchwork Tote</option>
+<option>Reclaimed Trousers</option>
+</select>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-3xl pointer-events-none" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-10">
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps block text-black font-black uppercase">Fabric Width (Inches)</label>
+<input class="w-full bg-zinc-50 border-4 border-black p-5 font-headline-md focus:ring-0 focus:outline-none focus:bg-lime-50 placeholder:text-zinc-400" placeholder="45 or 60" type="number"/>
+</div>
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps block text-black font-black uppercase">Target Length (Inches)</label>
+<input class="w-full bg-zinc-50 border-4 border-black p-5 font-headline-md focus:ring-0 focus:outline-none focus:bg-lime-50 placeholder:text-zinc-400" placeholder="28.5" type="number"/>
+</div>
+</div>
+<button class="w-full bg-lime-400 text-black font-black text-2xl py-8 tape-edge shadow-[6px_6px_0px_0px_black] hover:bg-black hover:text-lime-400 transition-all active:translate-y-2 active:shadow-none uppercase tracking-tighter" type="button">
+                        Calculate Yardage
+                    </button>
+</form>
+</div>
+<!-- Output Panel -->
+<div class="md:col-span-5 space-y-10">
+<!-- Result Card -->
+<div class="bg-black text-white p-10 border-4 border-black shadow-[12px_12px_0px_0px_#abd600] relative transform md:rotate-2">
+<div class="absolute -top-6 -right-6 bg-red-600 text-white p-3 rotate-12 font-black border-4 border-black text-sm tracking-widest halftone">ESTIMATED_QTY</div>
+<h3 class="font-label-caps text-label-caps text-lime-400 mb-4 tracking-[0.2em]">REQUIRED YARDAGE</h3>
+<div class="flex items-baseline gap-4">
+<span class="font-headline-xl text-8xl text-white tracking-tighter">2.25</span>
+<span class="font-headline-md text-3xl text-zinc-500 italic">YDS</span>
+</div>
+<div class="mt-10 pt-10 border-t-4 border-white/20 space-y-6">
+<div class="flex justify-between items-center bg-white/5 p-2">
+<span class="text-zinc-400 text-sm font-black uppercase tracking-widest">Cutting Waste</span>
+<span class="text-lime-400 font-black text-xl">~12%</span>
+</div>
+<div class="flex justify-between items-center bg-white/5 p-2">
+<span class="text-zinc-400 text-sm font-black uppercase tracking-widest">Seam Allowance</span>
+<span class="text-white font-black text-lg">0.5" FIXED</span>
+</div>
+</div>
+</div>
+<!-- Scrapbook Tip Card -->
+<div class="bg-white p-8 border-4 border-black relative overflow-hidden transform md:-rotate-2 shadow-xl paper-tear">
+<div class="flex gap-6 items-start">
+<div class="w-24 h-24 shrink-0 bg-white border-4 border-black p-1 rotate-6 shadow-[4px_4px_0px_0px_black] relative">
+<img alt="Vintage Linen Texture" class="w-full h-full object-cover grayscale contrast-125" data-alt="A macro close-up shot of weathered, vintage off-white linen fabric showing intricate weave patterns and natural fiber imperfections. The lighting is harsh and direct, creating deep textural shadows that emphasize the tactile, repurposed quality of the material. The aesthetic is raw and organic, fitting a DIY punk upcycling theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBQIEA5AQupD4LRxS0a7ACtW7zFFTdG-li9xWFbBbHe3YJ1qMZbMT6K1u_c7FYdPlEkubgE_V23Vjn0yXtpipWyTTLJl6slyGVFYIppR2QOMKu81u13kGzn-dKZEOM74MKKeLUuQk1RrdBn7b87bicYkr8chBvyJsspU_E1Soq4yYHBeJUaElpntZaVNYv6L_f0BKT0kL7AVMIYVAtNTW4ycbdU8U8d360Y86BqHsyiTLThed4Bq3pS1K5m2GADpO8G8EbmMkJYow"/>
+<div class="absolute inset-0 halftone opacity-30"></div>
+</div>
+<div>
+<h4 class="font-black text-lg text-black bg-blue-500 text-white px-2 mb-3 inline-block uppercase">PRO_TIP</h4>
+<p class="text-md font-body-md text-black leading-relaxed italic font-bold">"Vintage linens from thrifted tablecloths have more soul than new bolts. Use the stains as history markers."</p>
+</div>
+</div>
+<!-- Adhesive Tape Effect -->
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-10 bg-yellow-200/50 backdrop-blur-sm -rotate-3 border-x-4 border-dotted border-black/20"></div>
+</div>
+</div>
+</div>
+<!-- Visualization / Gallery Section -->
+<div class="mt-24">
+<h2 class="font-headline-md text-5xl mb-12 uppercase tracking-tighter italic">
+<span class="bg-black text-white px-4 py-2">LAYOUT_INSPIRATION</span>
+</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-8">
+<div class="aspect-square bg-white border-4 border-black p-3 rotate-3 shadow-2xl group cursor-crosshair relative">
+<img class="w-full h-full object-cover grayscale brightness-90 contrast-125 group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-500" data-alt="A collage of various denim scraps in different shades of blue and black, arranged in an overlapping, haphazard pattern on a wooden workbench. The lighting is moody and dramatic with high contrast shadows, reflecting a gritty industrial workshop atmosphere. The composition feels like an artistic mood board for a punk fashion project." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSXVuypio6IP6L2S_SIMKubFwWvQknFbbckRm-UKsYsiHmvbeIF3MAlx1PMaNho7ayIhSxhCneb3ZEShzG3YmGjMUKqu0ByJW49cmrcQn97GyLa4cd7UYB4UTacL8a9xpoy03pd_HchGiEXpHjzOH1wgX1F8Z5tB8fN4YX_VASOBjpbuRf9zFiJz0hHSW52Y-8-b8KT4aMhU4MReDJIdaeKW6hPvjTMkcYc7Zrh8c-STWUu6iqQ8nmfp2xaPRkPZqDUGVgY0GyB30"/>
+<div class="absolute inset-0 pointer-events-none border-2 border-black/10 m-2"></div>
+</div>
+<div class="aspect-square bg-white border-4 border-black p-3 -rotate-6 shadow-2xl group cursor-crosshair relative">
+<img class="w-full h-full object-cover grayscale brightness-90 contrast-125 group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-500" data-alt="A detailed overhead view of a vintage metal sewing machine with visible wear and oil stains, positioned on a rough industrial table. Soft window light creates highlights on the metallic surfaces against deep, dark shadows. The overall aesthetic is retro-future punk, focusing on the mechanical beauty of old-world maker tools." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbUrrHXemyJQe-nGGN_kL5Z34AuAOm6oWRXYAHMSNGtY3ftVZfMIDBTEr1_ME8ch4lnMQTBC-BeIJzd5odY9WSIT_b18q1hU8SEuFjttKuun1TfXBAmbpqYkHNhkuxu5O-otCfCaHuxkSTtkGpP5nG7HuF4Drv7DM7pl2WClLgrjaSB9dMdQCjrBjhYqnrC27OtPOieqkQcj2E7r25qMH-uMWyFSEGlnF2OZY4xH11Xxgp2mJ_xii4dpjcS_KgS-OIB42NVF2Nhuo"/>
+<div class="absolute inset-0 halftone opacity-20 pointer-events-none"></div>
+</div>
+<div class="aspect-square bg-white border-4 border-black p-3 rotate-2 shadow-2xl group cursor-crosshair relative">
+<img class="w-full h-full object-cover grayscale brightness-90 contrast-125 group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-500" data-alt="Close-up of thick neon green thread being stitched through heavy black canvas fabric. The scene is brightly lit with high-key studio lighting that makes the vibrant green color pop against the dark background. The stitching is intentionally irregular and bold, emphasizing the handmade, rebellious 'stitch punk' design philosophy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEis3QQQTAZjSWtMRhWMV-D-5bA6gAduJgZ4NFrum-Qww7ZqH-02_LQC3yFqQZfyQwibldLw-_VDET9G0MbQ5usiac6G5_yX2i6_r_YqHxW_IiUqI9JU0FHS6UfDDmst8BVtm_ycL7dMV7borb9g_Fd3p0CbftngJ1Qy3fcNfV1E-MIlxmIWRhgNZ4m2wVSdzvnBcy780GBLmDDphtwYgMEaeM3g-nbGkxc3nB2GozRWK4by9fHjIjOZ5-9a2NX5Un_zNadLCoP5k"/>
+<div class="absolute bottom-4 right-4 bg-lime-400 text-black px-2 font-black text-[10px]">DET_03</div>
+</div>
+<div class="aspect-square bg-white border-4 border-black p-3 -rotate-3 shadow-2xl group cursor-crosshair relative">
+<img class="w-full h-full object-cover grayscale brightness-90 contrast-125 group-hover:grayscale-0 group-hover:contrast-100 transition-all duration-500" data-alt="An array of recycled buttons of various sizes, shapes, and colors spread out on a sheet of brown kraft paper. The paper has hand-drawn marker annotations and scribbles around the buttons. The lighting is warm and diffused, creating a nostalgic, creative scrapbook feel that suggests an ongoing upcycling experiment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_mll_-vyz4YPOIkq6JTNeEvhS8osifjvLYsqpTfsvNZIWSmtVdkdxpSkPfmYjCO0RspRImiYEXOsUOng6_gNf9CYSq7svdTfs29131f4_QP6UAPjSuX14Y_Q8mCZl9C44aOmUPAemyucEZwH7Y1MmgiXIZQ-Z4_CBSrbDm5WsUqD4-3Y621nsYxOoertKllVhJvzyNlHjxUPgkeHykphAcU-m4HYI3rCBV-2h0w25KulYSDu6z0yLTRzQTjbqIMh5RRl5_u1lSNc"/>
+<div class="absolute -top-4 left-4 bg-red-600 text-white p-1 rotate-12 font-bold text-[10px] border-2 border-black">ARCHIVE</div>
+</div>
+</div>
+</div>
+<!-- Large CTA -->
+<div class="mt-16 bg-blue-600 text-white p-10 text-center font-black text-3xl border-8 border-black hover:bg-black hover:text-blue-500 transition-all cursor-pointer shadow-[16px_16px_0px_0px_black] paper-tear">
+            SUBMIT YOUR YARDAGE LOG
+        </div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full py-20 px-8 flex flex-col md:flex-row justify-between items-center gap-12 bg-black text-white relative z-10 mt-32 border-t-[12px] border-double border-zinc-800">
+<div class="absolute inset-0 halftone opacity-10 pointer-events-none"></div>
+<div class="space-y-6 relative z-10">
+<div class="text-lime-400 font-black italic text-4xl tracking-tighter bg-zinc-900 px-4 py-2 border-2 border-lime-400/30 w-fit">STITCH PUNK</div>
+<p class="font-serif text-sm tracking-[0.3em] uppercase text-zinc-500 max-w-md">© 2024 RE-STITCH REBELLION. NO RIGHTS RESERVED. COPYING IS ENCOURAGED AND EXPECTED.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-10 font-serif text-sm tracking-[0.2em] uppercase text-white relative z-10">
+<a class="text-zinc-500 hover:text-white hover:underline transition-all cursor-crosshair decoration-lime-400 decoration-4" href="#">Newsletter</a>
+<a class="text-zinc-500 hover:text-white hover:underline transition-all cursor-crosshair decoration-lime-400 decoration-4" href="#">Manifesto</a>
+<a class="text-zinc-500 hover:text-white hover:underline transition-all cursor-crosshair decoration-lime-400 decoration-4" href="#">Tutorials</a>
+<a class="text-lime-400 underline decoration-double decoration-4 cursor-crosshair" href="#">The Archive</a>
+</div>
+</footer>
+<!-- FAB -->
+<div class="fixed bottom-10 right-10 z-[60]">
+<button class="bg-red-600 text-white w-20 h-20 rounded-none flex items-center justify-center shadow-[8px_8px_0px_0px_black] hover:translate-x-2 hover:translate-y-2 hover:shadow-none transition-all active:scale-95 border-4 border-black rotate-12">
+<span class="material-symbols-outlined text-4xl font-bold" data-icon="help">help</span>
+</button>
+</div>
+</body></html>

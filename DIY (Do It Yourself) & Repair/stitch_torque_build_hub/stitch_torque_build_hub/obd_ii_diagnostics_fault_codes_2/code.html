@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>REV_TECH | DIAGNOSTICS_CORE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-container": "#1493ff",
+                        "surface-variant": "#353534",
+                        "surface-dim": "#131313",
+                        "surface-tint": "#ffb3ae",
+                        "on-tertiary-fixed": "#271900",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#5e4200",
+                        "secondary": "#a3c9ff",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary-container": "#996d00",
+                        "primary": "#ffb3ae",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#68000c",
+                        "surface-container-highest": "#353534",
+                        "outline": "#ae8885",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#ffb3ae",
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#001c39",
+                        "on-primary-fixed-variant": "#930016",
+                        "tertiary-fixed-dim": "#ffba20",
+                        "tertiary-fixed": "#ffdea8",
+                        "primary-container": "#e6192e",
+                        "inverse-on-surface": "#313030",
+                        "inverse-primary": "#c00020",
+                        "surface-bright": "#393939",
+                        "on-secondary": "#00315d",
+                        "on-primary-container": "#fffcff",
+                        "error": "#ffb4ab",
+                        "tertiary": "#ffba20",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-fixed": "#410005",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#004883",
+                        "on-secondary-container": "#002a51",
+                        "surface-container": "#201f1f",
+                        "primary-fixed": "#ffdad7",
+                        "on-tertiary-container": "#fffcff",
+                        "surface": "#131313",
+                        "secondary-fixed-dim": "#a3c9ff",
+                        "secondary-fixed": "#d3e3ff",
+                        "error-container": "#93000a",
+                        "outline-variant": "#5d3f3d",
+                        "on-tertiary": "#412d00",
+                        "on-surface-variant": "#e7bcb9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "mono-data": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-base": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .carbon-texture {
+            background-color: #131313;
+            background-image: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                              linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                              linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 4px 4px;
+        }
+        .v-groove {
+            border-bottom: 1px solid #000;
+            box-shadow: 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+        .machined-edge {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 2px 4px rgba(0,0,0,0.5);
+        }
+        .led-glow-red {
+            box-shadow: 0 0 8px #e6192e;
+        }
+        .led-glow-green {
+            box-shadow: 0 0 8px #10b981;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    
+        @keyframes scan-line {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        @keyframes progress-shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        .scanning-active .scan-line-overlay {
+            display: block;
+            animation: scan-line 2s linear infinite;
+        }
+        .status-pulse {
+            animation: pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 flex justify-between items-center w-full px-6 h-16 bg-gradient-to-b from-zinc-900 to-zinc-950 border-b-2 border-zinc-800 shadow-[0_1px_0_0_rgba(255,255,255,0.05)] shadow-2xl">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-black italic text-red-600 tracking-tighter">REV_TECH</span>
+<div class="relative hidden md:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500 text-sm">search</span>
+<input class="bg-zinc-950 border border-zinc-800 rounded-none h-9 pl-10 pr-4 text-xs font-mono-data focus:ring-1 focus:ring-red-600 focus:border-red-600 transition-all w-80" placeholder="ENTER DTC CODE (e.g. P0300)" type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-zinc-900 px-4 py-2 text-xs font-label-caps text-red-600 border border-zinc-800 hover:bg-zinc-800 transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">garage</span>
+                CONNECT_VIN
+            </button>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-zinc-500 hover:text-red-400 cursor-pointer p-2 transition-colors">notifications</span>
+<span class="material-symbols-outlined text-zinc-500 hover:text-red-400 cursor-pointer p-2 transition-colors">settings</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full z-40 flex flex-col pt-20 bg-zinc-950 w-64 border-r-2 border-zinc-800 divide-y divide-zinc-900">
+<div class="px-6 py-4 flex items-center gap-3">
+<div class="w-10 h-10 bg-zinc-900 border border-zinc-800 flex items-center justify-center">
+<span class="material-symbols-outlined text-red-600">person</span>
+</div>
+<div>
+<div class="text-red-600 font-bold font-label-caps text-[11px] leading-tight">GARAGE_ALPHA</div>
+<div class="text-zinc-500 text-[10px] font-mono-data tracking-widest">V8_BITURBO_ACTIVE</div>
+</div>
+</div>
+<div class="flex-grow flex flex-col pt-4">
+<a class="text-zinc-500 flex items-center px-6 py-3 hover:bg-zinc-900/50 hover:text-zinc-200 transition-all font-label-caps text-[11px]" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">dashboard</span> Dashboard
+            </a>
+<a class="text-zinc-500 flex items-center px-6 py-3 hover:bg-zinc-900/50 hover:text-zinc-200 transition-all font-label-caps text-[11px]" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">precision_manufacturing</span> Parts Finder
+            </a>
+<a class="bg-zinc-900 border-l-4 border-red-600 text-white flex items-center px-6 py-3 ml-[-2px] font-label-caps text-[11px]" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">android_fingerprint</span> Diagnostics
+            </a>
+<a class="text-zinc-500 flex items-center px-6 py-3 hover:bg-zinc-900/50 hover:text-zinc-200 transition-all font-label-caps text-[11px]" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">calculate</span> Calculators
+            </a>
+<a class="text-zinc-500 flex items-center px-6 py-3 hover:bg-zinc-900/50 hover:text-zinc-200 transition-all font-label-caps text-[11px]" href="#">
+<span class="material-symbols-outlined mr-3 text-lg">history_edu</span> Build Logs
+            </a>
+</div>
+<div class="p-6">
+<button class="w-full bg-red-600 text-white font-label-caps text-[11px] py-3 machined-edge hover:bg-red-700 active:scale-[0.98] transition-all">
+                NEW_PROJECT
+            </button>
+</div>
+<div class="p-4 flex flex-col gap-1">
+<a class="text-zinc-600 flex items-center px-2 py-1 hover:text-zinc-400 text-[10px] font-label-caps" href="#">
+<span class="material-symbols-outlined mr-2 text-sm">build</span> Support
+            </a>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 pt-16 min-h-screen carbon-texture">
+<div class="p-8 max-w-[1400px] mx-auto"><!-- Scanning State Indicator (Hidden by default, shown during scan) -->
+<div class="hidden mb-8 bg-zinc-950 border border-red-600/50 p-4 machined-edge" id="scanning-status-bar">
+<div class="flex justify-between items-end mb-3">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] font-mono-data text-red-600 tracking-[0.2em] status-pulse">SYSTEM_SCAN_IN_PROGRESS</span>
+<div class="flex items-center gap-3">
+<span class="text-xl font-headline-md text-white italic">SCANNING_VEHICLE_BUS...</span>
+<span class="text-[10px] font-mono-data text-zinc-500">[ QUERYING ECU_ID: 0x7E8 ]</span>
+</div>
+</div>
+<span class="text-xs font-mono-data text-red-600 font-bold">74%</span>
+</div>
+<div class="w-full h-2 bg-zinc-900 border border-zinc-800 overflow-hidden relative">
+<div class="absolute inset-y-0 left-0 bg-red-600 w-3/4 led-glow-red relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent" style="animation: progress-shimmer 1.5s infinite;"></div>
+</div>
+</div>
+<div class="flex gap-4 mt-3">
+<span class="text-[9px] font-mono-data text-emerald-500/50">PROTOCOL_OK</span>
+<span class="text-[9px] font-mono-data text-emerald-500/50">ISO_15765_READY</span>
+<span class="text-[9px] font-mono-data text-red-500 status-pulse">RETRIEVING_PENDING_CODES</span>
+</div>
+</div>
+<!-- Page Header -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-headline-md text-display-lg uppercase tracking-tighter italic text-white flex items-center gap-4">
+                        SYSTEM_DIAGNOSTICS
+                        <span class="inline-flex items-center px-3 py-1 bg-red-900/30 border border-red-600 text-red-600 text-[10px] font-bold tracking-widest rounded-none uppercase">
+<span class="w-2 h-2 rounded-full bg-red-600 mr-2 animate-pulse led-glow-red"></span>
+                            3 Faults Detected
+                        </span>
+</h1>
+<p class="text-zinc-500 font-mono-data text-xs mt-2">LINKED_VEHICLE: 2023_GT_CHASSIS_S550 // PROTOCOL: ISO_15765_CAN</p>
+</div>
+<button class="bg-zinc-900 border border-zinc-800 px-6 py-2 text-xs font-label-caps text-white machined-edge hover:bg-zinc-800 flex items-center gap-2 hover:border-red-600/50 hover:text-red-600 active:bg-red-950/20" id="rescan-btn" onclick="document.getElementById('scanning-status-bar').classList.toggle('hidden'); document.querySelector('.scan-line-overlay').classList.toggle('hidden');">
+<span class="material-symbols-outlined text-sm">refresh</span> RESCAN_SYSTEM
+                </button>
+</div>
+<!-- Dashboard Grid -->
+<div class="scan-line-overlay pointer-events-none fixed top-0 left-0 w-full h-1 bg-red-600/20 shadow-[0_0_15px_2px_#e6192e] z-[60] hidden"></div><div class="grid grid-cols-12 gap-6">
+<!-- Active DTCs Column -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="bg-zinc-950 border border-zinc-800 machined-edge">
+<div class="px-4 py-3 bg-zinc-900 flex justify-between items-center v-groove">
+<span class="font-label-caps text-xs text-white">ACTIVE_DTC_LIST</span>
+<button class="text-[10px] font-bold text-zinc-500 hover:text-red-500 underline uppercase">Clear All</button>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<!-- Critical Code -->
+<div class="bg-zinc-900/50 p-4 border-l-4 border-red-600 border border-zinc-800">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-xl text-white font-bold">P0300</span>
+<span class="bg-red-600 text-white text-[9px] font-bold px-2 py-0.5 uppercase">CRITICAL</span>
+</div>
+<p class="text-zinc-300 text-xs font-medium mb-1 uppercase">Random/Multiple Cylinder Misfire Detected</p>
+<p class="text-zinc-500 text-[10px] leading-relaxed">The PCM has detected that one or more cylinders are not firing properly. Continued operation may damage catalytic converter.</p>
+</div>
+<!-- Warning Code -->
+<div class="bg-zinc-900/50 p-4 border-l-4 border-yellow-600 border border-zinc-800">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-xl text-white font-bold">P0171</span>
+<span class="bg-yellow-600 text-white text-[9px] font-bold px-2 py-0.5 uppercase">WARNING</span>
+</div>
+<p class="text-zinc-300 text-xs font-medium mb-1 uppercase">System Too Lean (Bank 1)</p>
+<p class="text-zinc-500 text-[10px] leading-relaxed">The fuel-to-air ratio is too lean on engine bank 1. Possible vacuum leak or faulty O2 sensor.</p>
+</div>
+<!-- Info Code -->
+<div class="bg-zinc-900/50 p-4 border-l-4 border-blue-600 border border-zinc-800">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-xl text-white font-bold">U0100</span>
+<span class="bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 uppercase">INFO</span>
+</div>
+<p class="text-zinc-300 text-xs font-medium mb-1 uppercase">Lost Communication With ECM/PCM</p>
+<p class="text-zinc-500 text-[10px] leading-relaxed">Stored historic code. Intermittent communication interruption detected during last cycle.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Data Grid -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+<div class="bg-zinc-950 border border-zinc-800 machined-edge">
+<div class="px-4 py-3 bg-zinc-900 flex justify-between items-center v-groove">
+<span class="font-label-caps text-xs text-white uppercase tracking-wider">REAL_TIME_SENSOR_FEED</span>
+<span class="text-[10px] font-mono-data text-emerald-500">POLLING: 50ms</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-px bg-zinc-800">
+<!-- Sensor Card -->
+<div class="bg-zinc-950 p-6 flex flex-col gap-2">
+<span class="text-[10px] font-label-caps text-zinc-500 uppercase">Engine_RPM</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-mono-data font-bold text-white tracking-tighter">842</span>
+<span class="text-xs text-zinc-600 font-bold uppercase">RPM</span>
+</div>
+<div class="w-full h-8 flex items-end gap-0.5 mt-2">
+<div class="bg-red-600 w-full h-[40%]"></div>
+<div class="bg-red-600 w-full h-[45%]"></div>
+<div class="bg-red-600 w-full h-[42%]"></div>
+<div class="bg-red-600 w-full h-[50%]"></div>
+<div class="bg-red-600 w-full h-[48%]"></div>
+</div>
+</div>
+<!-- Sensor Card -->
+<div class="bg-zinc-950 p-6 flex flex-col gap-2">
+<span class="text-[10px] font-label-caps text-zinc-500 uppercase">Coolant_Temp</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-mono-data font-bold text-white tracking-tighter">194</span>
+<span class="text-xs text-zinc-600 font-bold uppercase">°F</span>
+</div>
+<div class="w-full h-8 flex items-end gap-0.5 mt-2">
+<div class="bg-zinc-800 w-full h-[70%]"></div>
+<div class="bg-zinc-800 w-full h-[70%]"></div>
+<div class="bg-zinc-800 w-full h-[71%]"></div>
+<div class="bg-zinc-800 w-full h-[71%]"></div>
+<div class="bg-zinc-800 w-full h-[72%]"></div>
+</div>
+</div>
+<!-- Sensor Card -->
+<div class="bg-zinc-950 p-6 flex flex-col gap-2">
+<span class="text-[10px] font-label-caps text-zinc-500 uppercase">Engine_Load</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-mono-data font-bold text-white tracking-tighter">24.5</span>
+<span class="text-xs text-zinc-600 font-bold uppercase">%</span>
+</div>
+<div class="w-full h-8 flex items-end gap-0.5 mt-2">
+<div class="bg-zinc-800 w-full h-[20%]"></div>
+<div class="bg-zinc-800 w-full h-[35%]"></div>
+<div class="bg-zinc-800 w-full h-[22%]"></div>
+<div class="bg-zinc-800 w-full h-[18%]"></div>
+<div class="bg-zinc-800 w-full h-[25%]"></div>
+</div>
+</div>
+<!-- Sensor Card -->
+<div class="bg-zinc-950 p-6 flex flex-col gap-2">
+<span class="text-[10px] font-label-caps text-zinc-500 uppercase">Fuel_Trim_B1</span>
+<div class="flex items-baseline gap-2">
+<span class="text-3xl font-mono-data font-bold text-white tracking-tighter">+14</span>
+<span class="text-xs text-zinc-600 font-bold uppercase">%</span>
+</div>
+<div class="w-full h-8 flex items-end gap-0.5 mt-2">
+<div class="bg-yellow-600 w-full h-[60%]"></div>
+<div class="bg-yellow-600 w-full h-[65%]"></div>
+<div class="bg-yellow-600 w-full h-[75%]"></div>
+<div class="bg-yellow-600 w-full h-[80%]"></div>
+<div class="bg-yellow-600 w-full h-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Freeze Frame & Recommendations -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Freeze Frame -->
+<div class="bg-zinc-950 border border-zinc-800 machined-edge">
+<div class="px-4 py-3 bg-zinc-900 v-groove">
+<span class="font-label-caps text-xs text-white uppercase tracking-wider">FREEZE_FRAME_DATA [P0300]</span>
+</div>
+<div class="p-4 overflow-hidden">
+<table class="w-full text-[11px] font-mono-data text-zinc-400">
+<tbody><tr class="border-b border-zinc-900">
+<td class="py-2 uppercase text-zinc-600">Calculated_Load</td>
+<td class="py-2 text-right text-white">68.2 %</td>
+</tr>
+<tr class="border-b border-zinc-900">
+<td class="py-2 uppercase text-zinc-600">Short_Term_FT_1</td>
+<td class="py-2 text-right text-white">+8.4 %</td>
+</tr>
+<tr class="border-b border-zinc-900">
+<td class="py-2 uppercase text-zinc-600">MAP_Sensor</td>
+<td class="py-2 text-right text-white">102 kPa</td>
+</tr>
+<tr class="border-b border-zinc-900">
+<td class="py-2 uppercase text-zinc-600">Vehicle_Speed</td>
+<td class="py-2 text-right text-white">42 MPH</td>
+</tr>
+<tr>
+<td class="py-2 uppercase text-zinc-600">Ignition_Timing</td>
+<td class="py-2 text-right text-white">14.5° BTDC</td>
+</tr>
+</tbody></table>
+</div>
+</div>
+<!-- Repair Recommendations -->
+<div class="bg-zinc-950 border border-zinc-800 machined-edge">
+<div class="px-4 py-3 bg-zinc-900 v-groove flex justify-between items-center">
+<span class="font-label-caps text-xs text-white uppercase tracking-wider">REPAIR_GUIDE</span>
+<span class="material-symbols-outlined text-sm text-zinc-500">info</span>
+</div>
+<div class="p-4 flex flex-col gap-4">
+<div class="flex gap-3">
+<div class="bg-zinc-900 w-10 h-10 border border-zinc-800 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-red-600">build</span>
+</div>
+<div>
+<p class="text-xs font-bold text-white uppercase mb-1">Inspect Ignition Coils</p>
+<p class="text-[10px] text-zinc-500">The misfire pattern suggests a possible failure in Bank 1 ignition system.</p>
+</div>
+</div>
+<div class="border-t border-zinc-900 pt-4">
+<p class="text-[10px] font-bold text-zinc-600 uppercase mb-2">Required Parts</p>
+<div class="flex flex-col gap-2">
+<a class="flex justify-between items-center bg-zinc-900 p-2 border border-zinc-800 hover:bg-zinc-800 transition-colors" href="#">
+<span class="text-[10px] text-white">Performance Coil Pack Set (v8)</span>
+<span class="material-symbols-outlined text-sm text-red-600">shopping_cart</span>
+</a>
+<a class="flex justify-between items-center bg-zinc-900 p-2 border border-zinc-800 hover:bg-zinc-800 transition-colors" href="#">
+<span class="text-[10px] text-white">Iridium Spark Plug Set (Gapped)</span>
+<span class="material-symbols-outlined text-sm text-red-600">shopping_cart</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Visual Component: Waveform/Scope (Custom Section) -->
+<div class="mt-8 bg-zinc-950 border border-zinc-800 machined-edge overflow-hidden relative">
+<div class="px-4 py-3 bg-zinc-900 v-groove flex justify-between items-center">
+<span class="font-label-caps text-xs text-white uppercase tracking-wider">CYLINDER_MISFIRE_HISTOGRAM</span>
+<div class="flex gap-4">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-red-600"></span>
+<span class="text-[10px] text-zinc-400 font-mono-data uppercase">Cyl_1</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-emerald-600"></span>
+<span class="text-[10px] text-zinc-400 font-mono-data uppercase">Cyl_2</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span class="text-[10px] text-zinc-400 font-mono-data uppercase">Other</span>
+</div>
+</div>
+</div>
+<div class="h-48 relative flex items-center justify-center p-8">
+<!-- Faux Oscilloscope Grid -->
+<div class="scan-line-overlay pointer-events-none fixed top-0 left-0 w-full h-1 bg-red-600/20 shadow-[0_0_15px_2px_#e6192e] z-[60] hidden"></div><div class="absolute inset-0 grid grid-cols-12 grid-rows-6 opacity-10 pointer-events-none">
+<div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div>
+<div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div>
+<div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div>
+<div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div><div class="border border-zinc-400"></div>
+</div>
+<!-- Faux Waveform -->
+<svg class="w-full h-32 text-red-600" preserveaspectratio="none" viewbox="0 0 1000 100">
+<path d="M0,50 L50,50 L60,10 L70,90 L80,50 L150,50 L160,20 L170,80 L180,50 L250,50 L260,0 L270,100 L280,50 L350,50 L450,50 L460,30 L470,70 L480,50 L600,50 L610,10 L620,90 L630,50 L800,50 L810,20 L820,80 L830,50 L1000,50" fill="none" stroke="currentColor" stroke-width="2"></path>
+</svg>
+<div class="absolute top-4 right-4 bg-zinc-900 border border-zinc-800 p-2">
+<div class="text-[9px] font-mono-data text-red-500">MISFIRE_DETECTED: CYL_3</div>
+<div class="text-[9px] font-mono-data text-zinc-500">FREQ: 14.2Hz</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for Diagnostics/Home) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-red-600 text-white rounded-full flex items-center justify-center shadow-2xl hover:bg-red-700 hover:scale-110 active:scale-95 transition-all z-50 led-glow-red">
+<span class="material-symbols-outlined text-2xl">save</span>
+</button>
+</body></html>
