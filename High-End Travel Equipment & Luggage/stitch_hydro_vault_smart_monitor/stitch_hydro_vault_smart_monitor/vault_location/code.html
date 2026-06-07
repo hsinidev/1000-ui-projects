@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Hydro-Vault | GPS Locate</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#c6c6c7",
+                      "on-tertiary-container": "#afafb0",
+                      "on-secondary-fixed": "#351000",
+                      "on-background": "#e5e2e3",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-low": "#1b1b1c",
+                      "secondary-fixed": "#ffdbcc",
+                      "primary-fixed-dim": "#95d1ce",
+                      "primary": "#95d1ce",
+                      "on-primary-fixed-variant": "#084f4d",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-surface": "#e5e2e3",
+                      "on-surface-variant": "#bfc8c7",
+                      "outline-variant": "#3f4948",
+                      "on-secondary": "#561f00",
+                      "surface-container-highest": "#353436",
+                      "secondary-fixed-dim": "#ffb693",
+                      "on-primary-fixed": "#00201f",
+                      "inverse-on-surface": "#303031",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "error-container": "#93000a",
+                      "inverse-surface": "#e5e2e3",
+                      "secondary-container": "#fe6b00",
+                      "primary-container": "#004b49",
+                      "on-secondary-container": "#572000",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "inverse-primary": "#2a6865",
+                      "surface-dim": "#131314",
+                      "tertiary-container": "#414343",
+                      "on-error": "#690005",
+                      "background": "#131314",
+                      "surface-container-lowest": "#0e0e0f",
+                      "outline": "#899391",
+                      "error": "#ffb4ab",
+                      "primary-fixed": "#b1eeea",
+                      "on-primary-container": "#7ebab7",
+                      "on-primary": "#003735",
+                      "on-tertiary": "#2f3131",
+                      "secondary": "#ffb693",
+                      "surface-container-high": "#2a2a2b",
+                      "surface-container": "#1f1f20",
+                      "surface-tint": "#95d1ce",
+                      "surface-bright": "#39393a",
+                      "surface-variant": "#353436",
+                      "surface": "#131314",
+                      "on-secondary-fixed-variant": "#7a3000"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-desktop": "40px",
+                      "container-max": "1440px",
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Space Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-readout": ["JetBrains Mono"],
+                      "headline-lg-mobile": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "data-readout": ["20px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .carbon-texture {
+            background-image: linear-gradient(45deg, #1a1a1b 25%, transparent 25%), 
+                              linear-gradient(-45deg, #1a1a1b 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #1a1a1b 75%), 
+                              linear-gradient(-45deg, transparent 75%, #1a1a1b 75%);
+            background-size: 4px 4px;
+            background-color: #131314;
+        }
+        .milled-edge {
+            box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05), 0 2px 4px 0 rgba(0,0,0,0.5);
+        }
+        .liquid-glow {
+            box-shadow: 0 0 15px rgba(149, 209, 206, 0.3);
+        }
+        .etched-input {
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.8);
+        }
+        .scanner-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #95d1ce, transparent);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="bg-surface border-b border-outline-variant shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.05)] flex justify-between items-center w-full px-margin-mobile h-16 z-50 fixed top-0">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl">waves</span>
+<h1 class="font-display-lg text-headline-lg uppercase tracking-tight font-bold text-primary tracking-widest">HYDRO-VAULT</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 rounded-lg hover:bg-surface-container-highest transition-colors text-on-surface-variant active:opacity-80">notifications</button>
+<div class="h-8 w-px bg-outline-variant hidden md:block"></div>
+<button class="hidden md:flex items-center gap-2 px-4 py-1.5 border border-outline rounded text-label-caps font-label-caps hover:bg-surface-container-highest transition-all">
+<span class="material-symbols-outlined text-sm">settings_input_component</span>
+                SYNC STATUS
+            </button>
+</div>
+</header>
+<main class="pt-16 pb-24 min-h-screen carbon-texture">
+<!-- Main Map Container -->
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-gutter grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Sidebar: Real-time Telemetry -->
+<aside class="lg:col-span-3 flex flex-col gap-gutter order-2 lg:order-1">
+<!-- Current Coordinates Chassis -->
+<section class="bg-surface-container border border-outline-variant p-4 milled-edge rounded-xl">
+<div class="flex justify-between items-center mb-4 border-b border-outline-variant pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CURRENT POSITION</span>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_#95d1ce]"></span>
+</div>
+<div class="space-y-4">
+<div class="bg-surface-container-lowest etched-input p-3 rounded-lg">
+<label class="font-label-caps text-[10px] text-primary/70 block mb-1">LATITUDE</label>
+<span class="font-data-readout text-data-readout text-primary">24° 33' 11.2" N</span>
+</div>
+<div class="bg-surface-container-lowest etched-input p-3 rounded-lg">
+<label class="font-label-caps text-[10px] text-primary/70 block mb-1">LONGITUDE</label>
+<span class="font-data-readout text-data-readout text-primary">81° 48' 04.5" W</span>
+</div>
+<div class="flex gap-2">
+<div class="flex-1 bg-surface-container-low border border-outline-variant p-2 rounded text-center">
+<label class="text-[9px] font-label-caps text-on-surface-variant block">SPEED</label>
+<span class="font-data-readout text-lg text-secondary">14.2 KN</span>
+</div>
+<div class="flex-1 bg-surface-container-low border border-outline-variant p-2 rounded text-center">
+<label class="text-[9px] font-label-caps text-on-surface-variant block">HEADING</label>
+<span class="font-data-readout text-lg text-secondary">192° SSW</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Signal Integrity Chassis -->
+<section class="bg-surface-container border border-outline-variant p-4 milled-edge rounded-xl">
+<div class="flex justify-between items-center mb-4 border-b border-outline-variant pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">COMMS UPLINK</span>
+<span class="material-symbols-outlined text-sm text-primary">satellite_alt</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-[10px] font-label-caps mb-1">
+<span>SAT-LINK QUALITY</span>
+<span class="text-primary">94%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-lowest rounded-full overflow-hidden border border-outline-variant">
+<div class="h-full bg-primary liquid-glow w-[94%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[10px] font-label-caps mb-1">
+<span>PING LATENCY</span>
+<span class="text-on-surface-variant">120ms</span>
+</div>
+<div class="h-1 w-full bg-surface-container-lowest rounded-full flex gap-1">
+<div class="h-full bg-primary w-2"></div>
+<div class="h-full bg-primary w-2"></div>
+<div class="h-full bg-primary w-2"></div>
+<div class="h-full bg-primary/30 w-2"></div>
+<div class="h-full bg-primary/30 w-2"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Emergency Protocols -->
+<section class="bg-surface-container border border-error/30 p-4 milled-edge rounded-xl">
+<button class="w-full bg-error-container hover:bg-error transition-all p-3 rounded-lg flex items-center justify-center gap-2 border-2 border-dashed border-error group">
+<span class="material-symbols-outlined text-on-error-container group-hover:text-on-error">warning</span>
+<span class="font-label-caps text-on-error-container group-hover:text-on-error">TRIGGER BEACON</span>
+</button>
+</section>
+</aside>
+<!-- Center: Interactive Map Overlay -->
+<div class="lg:col-span-9 flex flex-col gap-gutter order-1 lg:order-2">
+<div class="relative w-full aspect-video md:aspect-auto md:h-[600px] rounded-xl overflow-hidden border border-outline-variant milled-edge bg-surface-container-lowest group">
+<!-- Map Imagery -->
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity grayscale" data-alt="A high-contrast satellite topographical map of a deep blue ocean and rugged coastline, viewed through a tactical military-grade digital interface. The image features a dark, nautical-industrial aesthetic with glowing teal grid lines and coordinates overlaying the waves. A single bright cyan icon marks the current position of the Hydro-Vault, with a faint path of historical movement dots trailing behind it across the maritime landscape." data-location="Florida Straits" src="https://lh3.googleusercontent.com/aida-public/AB6AXuArB2ArBmg2njrWDmaetIJnTH_ttIyMEcVtB5WXuyQSodA7xgoUbdUeEb3i2kT-LuarDP-5pkkhWuavtO70cUKfcAP72ofMyiGy6N5fc2Wr9tGuDVjRmK5ZbbkGleyngTwFP4jQCoBlXokEYaCFaMQYhhojbFziONZSnaAtS_P2wxr21oVaTxiih8dnxOa43svx2-cAycU7CiPWEc0CTix_hzDrnDAJt-bk4IqKJ75f7eUGfEZEnso_4YOxkvxFevG0w2MrUxbGtm8"/>
+<!-- Tactical Grid Overlay -->
+<div class="absolute inset-0 pointer-events-none opacity-20" style="background-image: radial-gradient(circle, #95d1ce 1px, transparent 1px); background-size: 32px 32px;"></div>
+<!-- HUD Elements -->
+<div class="absolute inset-0 p-6 pointer-events-none flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="bg-surface-container/80 backdrop-blur border border-outline-variant p-2 rounded">
+<div class="font-label-caps text-[10px] text-primary">MAP TYPE: BATHYMETRIC</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">GRID: WGS84</div>
+</div>
+<div class="flex flex-col gap-2">
+<button class="pointer-events-auto bg-surface-container border border-outline-variant p-2 rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface">zoom_in</span>
+</button>
+<button class="pointer-events-auto bg-surface-container border border-outline-variant p-2 rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface">zoom_out</span>
+</button>
+<button class="pointer-events-auto bg-surface-container border border-outline-variant p-2 rounded hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-on-surface">my_location</span>
+</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest/90 backdrop-blur border border-outline-variant p-4 rounded-xl max-w-sm pointer-events-auto shadow-2xl">
+<div class="flex items-center gap-3 mb-3">
+<div class="p-2 bg-primary-container rounded">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+</div>
+<div>
+<h3 class="font-bold text-on-surface">VAULT-0492</h3>
+<p class="text-xs text-on-surface-variant uppercase tracking-widest font-label-caps">Deep-Sea Hardware</p>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 text-center">
+<div class="border-r border-outline-variant">
+<p class="text-[10px] text-on-surface-variant font-label-caps">INTERNAL TEMP</p>
+<p class="font-data-readout text-primary">4.2°C</p>
+</div>
+<div>
+<p class="text-[10px] text-on-surface-variant font-label-caps">DEPTH</p>
+<p class="font-data-readout text-primary">12.5M</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Movement History List (Overlay Side) -->
+<div class="absolute right-6 top-24 bottom-6 w-64 hidden xl:block pointer-events-auto">
+<div class="bg-surface-container/90 backdrop-blur-md border border-outline-variant rounded-xl h-full flex flex-col overflow-hidden">
+<div class="p-3 border-b border-outline-variant font-label-caps text-xs text-on-surface-variant flex justify-between">
+<span>MOVEMENT LOG</span>
+<span class="material-symbols-outlined text-sm">history</span>
+</div>
+<div class="flex-1 overflow-y-auto p-3 space-y-3 custom-scrollbar">
+<div class="relative pl-4 border-l-2 border-primary/30">
+<div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-primary"></div>
+<p class="text-[10px] font-label-caps text-primary">JUST NOW</p>
+<p class="text-xs text-on-surface font-medium">Stationary at sector 7G</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">24.552, -81.801</p>
+</div>
+<div class="relative pl-4 border-l-2 border-outline-variant">
+<div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-outline"></div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">14:32:01</p>
+<p class="text-xs text-on-surface font-medium">Entering Restricted Zone A</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">24.548, -81.799</p>
+</div>
+<div class="relative pl-4 border-l-2 border-outline-variant">
+<div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-outline"></div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">12:15:44</p>
+<p class="text-xs text-on-surface font-medium">Departure from Port X</p>
+<p class="text-[10px] text-on-surface-variant font-label-caps">24.532, -81.755</p>
+</div>
+<div class="relative pl-4 border-l-2 border-outline-variant">
+<div class="absolute -left-[5px] top-0 w-2 h-2 rounded-full bg-outline"></div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">09:00:12</p>
+<p class="text-xs text-on-surface font-medium">Daily Sync Completed</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Transport Timeline/Status -->
+<div class="bg-surface-container border border-outline-variant p-6 milled-edge rounded-xl">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6">TRANSPORT PROGRESSION</h3>
+<div class="relative flex justify-between items-center px-4">
+<div class="absolute h-1 w-full bg-surface-container-lowest left-0 top-1/2 -translate-y-1/2 z-0 border border-outline-variant/30"></div>
+<div class="absolute h-1 w-[65%] bg-primary left-0 top-1/2 -translate-y-1/2 z-10 shadow-[0_0_10px_#95d1ce]"></div>
+<div class="relative z-20 flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded bg-primary flex items-center justify-center border-2 border-primary-container">
+<span class="material-symbols-outlined text-on-primary text-xs">anchor</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">PORT 01</span>
+</div>
+<div class="relative z-20 flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded bg-primary flex items-center justify-center border-2 border-primary-container">
+<span class="material-symbols-outlined text-on-primary text-xs" style="font-variation-settings: 'FILL' 1;">directions_boat</span>
+</div>
+<span class="font-label-caps text-[10px] text-primary">TRANSIT</span>
+</div>
+<div class="relative z-20 flex flex-col items-center gap-2">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center ring-4 ring-primary/20">
+<span class="material-symbols-outlined text-on-primary text-sm animate-pulse">place</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface">CURRENT</span>
+</div>
+<div class="relative z-20 flex flex-col items-center gap-2">
+<div class="w-6 h-6 rounded bg-surface-container-lowest border border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-xs">warehouse</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">DEST</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-surface-container-lowest border-t border-outline-variant z-50 rounded-t-xl shadow-[0_-4px_10px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 p-2 hover:text-on-surface hover:opacity-100 transition-all active:scale-95 active:shadow-inner" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps mt-1">STATUS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 p-2 hover:text-on-surface hover:opacity-100 transition-all active:scale-95 active:shadow-inner" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-caps text-label-caps mt-1">SEAL</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-lg px-4 py-2 ring-1 ring-primary/30 transition-all active:scale-95 active:shadow-inner" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="font-label-caps text-label-caps mt-1">LOCATE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 p-2 hover:text-on-surface hover:opacity-100 transition-all active:scale-95 active:shadow-inner" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">ASSETS</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Details/Location as per instructions) -->
+</body></html>

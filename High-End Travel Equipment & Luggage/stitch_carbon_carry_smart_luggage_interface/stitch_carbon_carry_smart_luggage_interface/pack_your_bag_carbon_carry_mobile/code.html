@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CARBON-CARRY | Weight Calc</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "tertiary-container": "#4dffab",
+                        "on-tertiary-fixed-variant": "#005231",
+                        "inverse-surface": "#e5e2e1",
+                        "surface": "#131313",
+                        "surface-variant": "#353534",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#8e9192",
+                        "primary-container": "#e2e2e2",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "tertiary-fixed-dim": "#00e290",
+                        "on-primary-container": "#636465",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "on-tertiary-container": "#007347",
+                        "surface-container-highest": "#353534",
+                        "error": "#ffb4ab",
+                        "on-surface-variant": "#c4c7c8",
+                        "surface-tint": "#c6c6c6",
+                        "tertiary-fixed": "#52ffac",
+                        "on-secondary-container": "#b7b5b4",
+                        "primary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#002111",
+                        "secondary": "#c8c6c5",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131313",
+                        "on-tertiary": "#003920",
+                        "outline-variant": "#444748",
+                        "primary-fixed-dim": "#c6c6c6",
+                        "inverse-primary": "#5d5f5f",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary": "#fffffb",
+                        "on-primary-fixed-variant": "#454747",
+                        "background": "#131313",
+                        "secondary-container": "#474746",
+                        "on-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "primary": "#ffffff",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary": "#313030",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-primary-fixed": "#1a1c1c",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary": "#2f3131",
+                        "inverse-on-surface": "#313030"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "mono-data": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .carbon-texture {
+            background-image: linear-gradient(45deg, #1a1a1a 25%, transparent 25%), 
+                              linear-gradient(-45deg, #1a1a1a 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #1a1a1a 75%), 
+                              linear-gradient(-45deg, transparent 75%, #1a1a1a 75%);
+            background-size: 4px 4px;
+            background-color: #131313;
+        }
+        .blueprint-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+        }
+        .signal-green-glow {
+            box-shadow: 0 0 10px rgba(0, 226, 144, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-tertiary-fixed-dim selection:text-on-tertiary">
+<!-- Top Navigation -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface border-b border-outline-variant flex justify-between items-center w-full px-margin h-16">
+<div class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">CARBON-CARRY</div>
+<div class="hidden md:flex gap-gutter items-center">
+<a class="text-on-surface-variant font-medium hover:text-tertiary-fixed-dim transition-colors duration-200" href="#">Materials</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-medium" href="#">Tracking</a>
+<a class="text-on-surface-variant font-medium hover:text-tertiary-fixed-dim transition-colors duration-200" href="#">Security</a>
+<a class="text-on-surface-variant font-medium hover:text-tertiary-fixed-dim transition-colors duration-200" href="#">Warranty</a>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer">account_circle</span>
+</div>
+</header>
+<!-- Side Navigation (Web) -->
+<aside class="fixed left-0 top-16 bottom-0 hidden md:flex flex-col w-64 bg-surface-container border-r border-outline-variant pt-gutter">
+<div class="px-6 mb-8">
+<div class="font-headline-md text-headline-md text-primary">AEROSPACE-SYSTEMS</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant opacity-60">ID: CC-8802-V</div>
+</div>
+<nav class="flex flex-col gap-1 px-2">
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-variant font-label-caps text-label-caps transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span> Dashboard
+            </a>
+<a class="bg-primary text-on-primary flex items-center gap-4 px-4 py-3 border border-outline font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">scale</span> Weight Calc
+            </a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">location_on</span> GPS
+            </a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">biotech</span> Material Lab
+            </a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">help_outline</span> Support
+            </a>
+<a class="text-on-surface-variant flex items-center gap-4 px-4 py-3 hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span> Admin
+            </a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 pb-32 px-gutter md:px-margin min-h-screen blueprint-grid">
+<!-- Dashboard Header -->
+<div class="mb-gutter flex justify-between items-end border-b border-outline-variant pb-unit">
+<div>
+<span class="font-label-caps text-label-caps text-tertiary-fixed-dim">SYSTEM_DIAGNOSTIC</span>
+<h1 class="font-headline-lg text-headline-lg uppercase">Weight Control</h1>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SERIAL_NO</span>
+<div class="font-mono-data text-mono-data">CC-PACK-092</div>
+</div>
+</div>
+<!-- Technical Drawing Frame & Main Tool -->
+<div class="relative border border-outline-variant p-gutter bg-surface-container-low shadow-2xl">
+<!-- Coordinate Markers -->
+<span class="absolute top-2 left-2 font-mono-data text-[10px] text-outline opacity-50">A-1</span>
+<span class="absolute top-2 right-2 font-mono-data text-[10px] text-outline opacity-50">B-1</span>
+<span class="absolute bottom-2 left-2 font-mono-data text-[10px] text-outline opacity-50">A-2</span>
+<span class="absolute bottom-2 right-2 font-mono-data text-[10px] text-outline opacity-50">B-2</span>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left: Weight Readout -->
+<div class="lg:col-span-5 space-y-gutter">
+<div class="carbon-texture border border-outline p-8 flex flex-col items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/5 to-transparent pointer-events-none"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-unit">AGGREGATE PAYLOAD</span>
+<div class="flex items-baseline gap-2">
+<span class="font-headline-lg text-[80px] leading-none text-primary font-bold">14.85</span>
+<span class="font-headline-md text-primary">KG</span>
+</div>
+<div class="w-full h-2 bg-surface-variant mt-6 relative">
+<div class="absolute top-0 left-0 h-full bg-tertiary-fixed-dim signal-green-glow" style="width: 65%;"></div>
+</div>
+<div class="w-full flex justify-between mt-2 font-mono-data text-[10px] text-on-surface-variant">
+<span>0.00 KG</span>
+<span class="text-tertiary-fixed-dim">ALLOWANCE: 23.00 KG</span>
+</div>
+</div>
+<div class="bg-surface-container-high border border-outline-variant p-4">
+<div class="flex justify-between items-center mb-unit">
+<span class="font-label-caps text-label-caps">AIRLINE COMPLIANCE</span>
+<span class="font-mono-data text-tertiary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">check_circle</span> READY
+                            </span>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2">
+<div class="px-3 py-2 border border-outline bg-primary text-on-primary font-label-caps text-[10px] whitespace-nowrap">Lufthansa Economy</div>
+<div class="px-3 py-2 border border-outline-variant text-on-surface-variant font-label-caps text-[10px] whitespace-nowrap">Delta Comfort+</div>
+<div class="px-3 py-2 border border-outline-variant text-on-surface-variant font-label-caps text-[10px] whitespace-nowrap">Emirates Biz</div>
+</div>
+</div>
+</div>
+<!-- Right: Checklist -->
+<div class="lg:col-span-7 space-y-gutter">
+<div class="border border-outline-variant">
+<div class="bg-surface-variant px-4 py-2 flex justify-between items-center">
+<span class="font-label-caps text-label-caps">INVENTORY MODULE</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">ITEMS: 08</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- Item 01 -->
+<div class="flex items-center p-4 bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="font-mono-data text-[12px] text-outline mr-4">01</span>
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant mr-4">
+<span class="material-symbols-outlined text-on-surface-variant">laptop_mac</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-primary">Precision Hardware</div>
+<div class="font-mono-data text-[10px] text-on-surface-variant">MacBook Pro 16" / Carbon Case</div>
+</div>
+<div class="text-right mr-6">
+<div class="font-mono-data text-primary">2.15 KG</div>
+</div>
+<button class="w-6 h-6 border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]" style="font-variation-settings: 'wght' 700;">check</span>
+</button>
+</div>
+<!-- Item 02 -->
+<div class="flex items-center p-4 bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="font-mono-data text-[12px] text-outline mr-4">02</span>
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant mr-4">
+<span class="material-symbols-outlined text-on-surface-variant">camera</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-primary">Imaging System</div>
+<div class="font-mono-data text-[10px] text-on-surface-variant">Mirrorless Kit + 35mm Prime</div>
+</div>
+<div class="text-right mr-6">
+<div class="font-mono-data text-primary">1.40 KG</div>
+</div>
+<button class="w-6 h-6 border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]" style="font-variation-settings: 'wght' 700;">check</span>
+</button>
+</div>
+<!-- Item 03 -->
+<div class="flex items-center p-4 bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="font-mono-data text-[12px] text-outline mr-4">03</span>
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant mr-4">
+<span class="material-symbols-outlined text-on-surface-variant">apparel</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-primary">Tech Apparel Bundle</div>
+<div class="font-mono-data text-[10px] text-on-surface-variant">Gore-Tex Shell + Base Layers</div>
+</div>
+<div class="text-right mr-6">
+<div class="font-mono-data text-primary">3.20 KG</div>
+</div>
+<button class="w-6 h-6 border-2 border-outline flex items-center justify-center hover:border-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-[18px] opacity-0 group-hover:opacity-100">add</span>
+</button>
+</div>
+<!-- Item 04 -->
+<div class="flex items-center p-4 bg-surface-container hover:bg-surface-container-high transition-colors group">
+<span class="font-mono-data text-[12px] text-outline mr-4">04</span>
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant mr-4">
+<span class="material-symbols-outlined text-on-surface-variant">power</span>
+</div>
+<div class="flex-grow">
+<div class="font-label-caps text-label-caps text-primary">Power Management</div>
+<div class="font-mono-data text-[10px] text-on-surface-variant">20,000mAh Battery + Universal PD</div>
+</div>
+<div class="text-right mr-6">
+<div class="font-mono-data text-primary">0.85 KG</div>
+</div>
+<button class="w-6 h-6 border-2 border-primary bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]" style="font-variation-settings: 'wght' 700;">check</span>
+</button>
+</div>
+</div>
+</div>
+<button class="w-full border border-silver py-4 font-label-caps text-label-caps bg-primary text-on-primary flex items-center justify-center gap-2 hover:bg-tertiary-fixed-dim hover:text-on-tertiary transition-all">
+<span class="material-symbols-outlined">add_circle</span> ADD CUSTOM COMPONENT
+                    </button>
+</div>
+</div>
+</div>
+<!-- Material Reference Cards -->
+<div class="mt-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="border border-outline-variant p-4 carbon-texture relative">
+<span class="absolute top-2 right-2 font-mono-data text-[10px] text-on-surface-variant">MAT-01</span>
+<div class="font-label-caps text-label-caps mb-2">SHELL STRENGTH</div>
+<img class="w-full h-32 object-cover border border-outline-variant mb-unit grayscale" data-alt="A close-up shot of high-grade aerospace carbon fiber weave with its distinct diagonal pattern and shimmering dark gray texture. The lighting is clinical and sharp, highlighting the precise engineering of the material. The overall aesthetic is industrial and luxurious, fitting a high-performance aerospace diagnostic interface. Minimalist framing keeps the focus on the structural integrity of the composite material." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBmhB2DF2SCRPvV3xBD5DYDWNw2I3_fm5HA02cIOmOt7ZBU1A01C6OZFj51JWxoS1fRIeDME525qtyLqkPK3QEvntZj2FH_0vqxO42FEtiynZfa14Ry24fQ6vEbuM0-hw7x9T0EpfYby6Gg7wr8YkT52Z4uL0QpqieJqKyy9Av0hE1uSCkZPiqjvy7GLyKYjjAa6SH_8xz75k6rA3jyE_NEUfXTNj3ajS3q_w8gD6Bs4h9OqY0knwsZC9ilQLuZA44zqmutzdThSOHm"/>
+<p class="font-body-md text-[13px] text-on-surface-variant leading-tight">High-tensile carbon fiber chassis ensures zero-flex containment.</p>
+</div>
+<div class="border border-outline-variant p-4 bg-surface-container-high relative">
+<span class="absolute top-2 right-2 font-mono-data text-[10px] text-on-surface-variant">SYS-99</span>
+<div class="font-label-caps text-label-caps mb-2">TELEMETRY LINK</div>
+<div class="h-32 bg-surface flex flex-col justify-center px-4 border border-outline-variant">
+<div class="flex justify-between items-center mb-unit">
+<span class="font-mono-data text-[10px]">BT-SIGNAL</span>
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-tertiary-fixed-dim"></div>
+<div class="w-1 h-3 bg-tertiary-fixed-dim"></div>
+<div class="w-1 h-3 bg-tertiary-fixed-dim"></div>
+<div class="w-1 h-3 bg-surface-variant"></div>
+</div>
+</div>
+<div class="font-mono-data text-[18px] text-primary">CONNECTED</div>
+<div class="font-mono-data text-[10px] text-on-surface-variant mt-2">SYNCING WITH CC-HANDLE-HUB...</div>
+</div>
+<p class="font-body-md text-[13px] text-on-surface-variant leading-tight mt-unit">Real-time weight sync from handle-integrated sensors.</p>
+</div>
+<div class="border border-outline-variant p-4 carbon-texture relative">
+<span class="absolute top-2 right-2 font-mono-data text-[10px] text-on-surface-variant">LUG-04</span>
+<div class="font-label-caps text-label-caps mb-2">FLIGHT ARCHIVE</div>
+<img class="w-full h-32 object-cover border border-outline-variant mb-unit grayscale" data-alt="A futuristic airport terminal at dusk seen through a large glass window, with a high-performance aircraft visible on the tarmac. The atmosphere is quiet and professional, with cool blue and deep black tones dominating the color palette. Sharp linear architecture and subtle technical overlays suggest a high-stakes aerospace environment. The lighting is low-key, creating a mood of technical authority and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAK14LBgD3Q-H0rfhd9XEca00kKzcY32az48VZiaRekJvwaEZnPRqCiLATBGfeDFgrmNQFhwYdBmrnBzBehp8u7ZBj5eglaGvaffxd-nxVXaxDLmbJhPG5OZ-G5LlJrj4mEGQ5Zpo1h_Abuf93h1-25Ri7tcsA_666DHLvrZx3FCyEu-AD1FsLeDNW8Q2xK_RIZmz5rlG2Hh_WWZkr3Pxe7On9JcoQurJj8PfB0uYAIhUZr7RSb55-3S66Doxx68fGoQrt7_QBdjJwx"/>
+<p class="font-body-md text-[13px] text-on-surface-variant leading-tight">Historical payload data for frequent traveler optimization.</p>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="fixed bottom-0 left-0 right-0 z-50 md:ml-64 bg-surface-container-lowest border-t border-outline-variant flex justify-between items-center w-full px-margin py-unit h-12">
+<div class="font-mono-data text-mono-data text-on-surface-variant opacity-70">
+            © 2024 CARBON-CARRY AEROSPACE. ALL RIGHTS RESERVED. SPEC: MIL-STD-810H.
+        </div>
+<div class="hidden md:flex gap-6">
+<a class="font-mono-data text-mono-data text-on-surface-variant opacity-70 hover:text-primary transition-opacity" href="#">FAQ</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant opacity-70 hover:text-primary transition-opacity" href="#">Technical Support</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant opacity-70 hover:text-primary transition-opacity" href="#">Privacy Protocol</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant opacity-70 hover:text-primary transition-opacity" href="#">Warranty Claim</a>
+</div>
+</footer>
+<!-- Mobile Bottom NavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-surface-container border-t border-outline-variant flex justify-around items-center h-16 z-50 px-4">
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[10px] font-label-caps">DASH</span>
+</div>
+<div class="flex flex-col items-center text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">scale</span>
+<span class="text-[10px] font-label-caps">CALC</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">location_on</span>
+<span class="text-[10px] font-label-caps">GPS</span>
+</div>
+<div class="flex flex-col items-center text-on-surface-variant">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="text-[10px] font-label-caps">USER</span>
+</div>
+</nav>
+<!-- Floating Action Button -->
+<button class="fixed right-margin bottom-20 md:bottom-16 w-14 h-14 bg-primary text-on-primary rounded-none border border-outline flex items-center justify-center signal-green-glow z-40">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">save</span>
+</button>
+</body></html>

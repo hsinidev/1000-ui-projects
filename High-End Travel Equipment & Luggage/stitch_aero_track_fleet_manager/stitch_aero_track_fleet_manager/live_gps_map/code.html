@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO-TRACK | Live GPS Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .liquid-progress {
+            background: linear-gradient(90deg, #afc8f0 0%, #476083 50%, #afc8f0 100%);
+            background-size: 200% 100%;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(19, 19, 19, 0.8);
+            border: 1px solid rgba(198, 198, 198, 0.1);
+        }
+        .map-gradient-overlay {
+            background: radial-gradient(circle at center, transparent 0%, #131313 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#353534",
+                        "surface-container-highest": "#353534",
+                        "surface": "#131313",
+                        "outline-variant": "#43474e",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-container": "#1c1f20",
+                        "background": "#131313",
+                        "on-tertiary-fixed": "#191c1d",
+                        "on-tertiary-container": "#848688",
+                        "on-secondary-fixed-variant": "#464747",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "tertiary": "#c5c7c8",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#d4e3ff",
+                        "on-tertiary-fixed-variant": "#454748",
+                        "outline": "#8e9198",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "on-secondary-container": "#b8b8b8",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#484949",
+                        "secondary": "#c6c6c6",
+                        "on-secondary": "#2f3131",
+                        "tertiary-fixed": "#e1e3e4",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#163152",
+                        "error-container": "#93000a",
+                        "surface-tint": "#afc8f0",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-bright": "#393939",
+                        "on-surface-variant": "#c4c6cf",
+                        "on-tertiary": "#2e3132",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-primary-container": "#6f88ad",
+                        "inverse-primary": "#476083",
+                        "tertiary-fixed-dim": "#c5c7c8",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#201f1f",
+                        "on-primary-fixed": "#001c3a",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "primary": "#afc8f0",
+                        "inverse-on-surface": "#313030",
+                        "primary-container": "#001f3f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-md": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "headline-lg": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface/80 dark:bg-surface/80 backdrop-blur-xl text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant/20 fixed top-0 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full z-50">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border border-primary/20">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<h1 class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-primary">AERO-TRACK</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-md text-label-md text-primary hover:text-primary transition-colors duration-300" href="#">Map</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Fleet</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Alerts</a>
+</nav>
+<button class="scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+</button>
+</div>
+</header>
+<!-- Map Canvas Container -->
+<main class="relative h-screen w-full pt-16 pb-20 md:pb-0 overflow-hidden bg-[#001F3F]">
+<!-- Synthetic Map Layer -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-30 grayscale contrast-125" data-alt="A sophisticated dark-themed global satellite map with deep navy blue oceans and charcoal continents. The map is overlaid with digital grid lines and glowing data nodes. Brushed silver trails represent historical flight and movement paths across several continents. The aesthetic is high-tech and authoritative, reflecting a corporate IoT control center for global logistics." data-location="Global Navigation Map" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXB7uWc4MBBEIoYebmecQ3_32m2yVaC3pp1uZ-9OXQPljXJnbCeRfxw-Q9TQSpc2kKZsNRi8rhL5d-iDdiKSfeOYvMNvEsx4t_jlTwv_ZGknqMgyzLqfmLiip1iLjy_94g4xNhSxu7-4Fo-6zWoDBozYEeiu3r-ouLV_qsFDTuyJcHk7ddI7T8MrTC47GqCER5sMSXof99NBPp3CkwygiKNJL3DRYuHMXF-Mf3puVD77ya7HcmOWbHmGVlIRpjwTpzGysUbv00wovs"/>
+<div class="absolute inset-0 bg-primary-container/40 mix-blend-multiply"></div>
+<div class="absolute inset-0 map-gradient-overlay"></div>
+<!-- Path History Overlay (SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" viewbox="0 0 1440 800">
+<path d="M200,400 Q400,200 600,450 T1000,300" fill="transparent" opacity="0.6" stroke="#c6c6c6" stroke-dasharray="8 4" stroke-width="2"></path>
+<path d="M300,600 Q500,500 800,550 T1200,400" fill="transparent" opacity="0.4" stroke="#afc8f0" stroke-dasharray="10 5" stroke-width="2"></path>
+</svg>
+</div>
+<!-- Floating UI Elements -->
+<div class="absolute inset-0 z-10 pointer-events-none p-margin-mobile md:p-margin-desktop">
+<!-- Search & Filter Bar -->
+<div class="flex flex-col md:flex-row gap-4 pointer-events-auto items-start">
+<div class="glass-panel rounded-xl flex items-center px-4 py-2 w-full max-w-md">
+<span class="material-symbols-outlined text-outline mr-3" data-icon="search">search</span>
+<input class="bg-transparent border-none text-on-surface placeholder-outline/50 font-label-md focus:ring-0 w-full" placeholder="SEARCH UNIT ID / LOCATION" type="text"/>
+<span class="material-symbols-outlined text-outline ml-3 cursor-pointer" data-icon="tune">tune</span>
+</div>
+<!-- Unit Status Toggles -->
+<div class="hidden md:flex gap-2">
+<button class="glass-panel px-4 py-2 rounded-xl text-primary font-label-sm uppercase flex items-center gap-2 border border-primary/40 pointer-events-auto">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                        Active Units: 14
+                    </button>
+<button class="glass-panel px-4 py-2 rounded-xl text-on-surface-variant font-label-sm uppercase flex items-center gap-2 pointer-events-auto">
+<span class="w-2 h-2 rounded-full bg-surface-variant"></span>
+                        Standby: 03
+                    </button>
+</div>
+</div>
+<!-- Unit Tracking Panel (Asymmetric Sidebar) -->
+<div class="absolute right-margin-desktop top-margin-desktop bottom-24 w-80 pointer-events-auto hidden xl:flex flex-col gap-4 overflow-y-auto pr-2">
+<div class="glass-panel p-6 rounded-xl space-y-4 border-t border-secondary/20">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-primary uppercase">Asset ID</p>
+<h2 class="font-headline-md text-headline-md text-on-surface">UNIT-4892A</h2>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="gps_fixed" style="font-variation-settings: 'FILL' 1;">gps_fixed</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-sm text-on-surface-variant">
+<span>SYNC STRENGTH</span>
+<span>98%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="liquid-progress h-full w-[98%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 pt-4 border-t border-outline-variant/20">
+<div>
+<p class="font-label-sm text-outline uppercase">LATITUDE</p>
+<p class="font-label-md text-on-surface">34.0522° N</p>
+</div>
+<div>
+<p class="font-label-sm text-outline uppercase">LONGITUDE</p>
+<p class="font-label-md text-on-surface">118.2437° W</p>
+</div>
+</div>
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed font-label-md py-3 rounded-lg hover:bg-white transition-all uppercase tracking-widest">
+                        Focus Unit
+                    </button>
+</div>
+<!-- Secondary Tracked Units -->
+<div class="glass-panel p-4 rounded-xl border-t border-secondary/10 flex items-center gap-4 group cursor-pointer hover:bg-surface-container-high/50">
+<div class="w-12 h-12 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="luggage">luggage</span>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-primary uppercase">UNIT-1022C</p>
+<p class="font-label-md text-on-surface">Moving: 14km/h</p>
+</div>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="chevron_right">chevron_right</span>
+</div>
+<div class="glass-panel p-4 rounded-xl border-t border-secondary/10 flex items-center gap-4 group cursor-pointer hover:bg-surface-container-high/50">
+<div class="w-12 h-12 rounded bg-surface-container flex items-center justify-center opacity-50">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="luggage">luggage</span>
+</div>
+<div class="flex-1">
+<p class="font-label-sm text-on-surface-variant uppercase">UNIT-9901F</p>
+<p class="font-label-md text-on-surface-variant">Signal Lost: 4m ago</p>
+</div>
+<span class="material-symbols-outlined text-error" data-icon="error" style="font-variation-settings: 'FILL' 1;">error</span>
+</div>
+</div>
+<!-- Map Controls (Bottom Left) -->
+<div class="absolute bottom-margin-desktop left-margin-desktop hidden md:flex flex-col gap-2 pointer-events-auto">
+<div class="glass-panel p-2 rounded-xl flex flex-col border border-secondary/10">
+<button class="p-3 hover:text-primary transition-colors border-b border-outline-variant/10"><span class="material-symbols-outlined" data-icon="add">add</span></button>
+<button class="p-3 hover:text-primary transition-colors"><span class="material-symbols-outlined" data-icon="remove">remove</span></button>
+</div>
+<button class="glass-panel p-4 rounded-xl text-on-surface-variant hover:text-primary transition-colors border border-secondary/10">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+</div>
+</div>
+<!-- Animated Marker (Example) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 pointer-events-none">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-24 h-24 bg-primary/20 rounded-full animate-ping"></div>
+<div class="absolute w-12 h-12 bg-primary/40 rounded-full"></div>
+<div class="relative w-6 h-6 bg-primary border-2 border-white rounded-full shadow-lg flex items-center justify-center">
+<div class="w-1.5 h-1.5 bg-on-primary rounded-full"></div>
+</div>
+<div class="absolute top-10 glass-panel px-3 py-1 rounded text-xs font-label-sm text-on-surface whitespace-nowrap border-t border-primary/50 uppercase">
+                    UNIT-4892A (Active)
+                </div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="bg-surface-container-high/90 dark:bg-surface-container-high/90 backdrop-blur-2xl text-primary dark:text-primary docked full-width bottom-0 rounded-t-xl border-t border-outline-variant/30 shadow-lg fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary border-t-2 border-primary pt-2 scale-110 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="luggage">luggage</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Fleet</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest mt-1">Sync</span>
+</a>
+</footer>
+</body></html>

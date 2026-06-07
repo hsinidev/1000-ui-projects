@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOMA-SYNC | Supplement Protocol</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#0c56d0",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b2c5ff",
+                    "on-primary-container": "#c4d2ff",
+                    "outline": "#737685",
+                    "on-secondary-container": "#003179",
+                    "on-background": "#191c1e",
+                    "tertiary": "#374559",
+                    "primary": "#003d9b",
+                    "secondary": "#285ab9",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#00419d",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#191c1e",
+                    "outline-variant": "#c3c6d6",
+                    "on-secondary-fixed": "#001946",
+                    "on-primary-fixed": "#001848",
+                    "surface": "#f7f9fb",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary-fixed-variant": "#3a485c",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "background": "#f7f9fb",
+                    "tertiary-container": "#4e5c71",
+                    "secondary-fixed": "#d9e2ff",
+                    "on-tertiary-container": "#c6d4ed",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-low": "#f2f4f6",
+                    "primary-fixed": "#dae2ff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-fixed-dim": "#b1c6ff",
+                    "surface-bright": "#f7f9fb",
+                    "secondary-container": "#709bfe",
+                    "on-surface-variant": "#434654",
+                    "tertiary-fixed-dim": "#b9c7e0",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container": "#eceef0",
+                    "tertiary-fixed": "#d5e3fd",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-dim": "#d8dadc",
+                    "on-tertiary-fixed": "#0d1c2f",
+                    "primary-container": "#0052cc",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e0e3e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xl": "40px",
+                    "max_width": "1440px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "h2": ["Space Grotesk"],
+                    "data-value": ["Space Grotesk"],
+                    "data-label": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Space Grotesk"],
+                    "display": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "data-value": ["20px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                    "data-label": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(247, 249, 251, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(115, 118, 133, 0.12);
+        }
+        .data-grid-line {
+            background-image: linear-gradient(to right, rgba(115, 118, 133, 0.05) 1px, transparent 1px);
+            background-size: 40px 100%;
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(0, 61, 155, 0.08);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/15">
+<div class="flex justify-between items-center px-lg py-sm w-full max-w-max_width mx-auto">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle">account_circle</span>
+</div>
+<h1 class="font-display text-h2 font-bold text-primary dark:text-primary-fixed tracking-tighter uppercase">SOMA-SYNC</h1>
+</div>
+<nav class="hidden md:flex gap-lg">
+<a class="font-data-label text-data-label text-on-surface-variant hover:text-primary transition-colors" href="#">DASHBOARD</a>
+<a class="font-data-label text-data-label text-on-surface-variant hover:text-primary transition-colors" href="#">BIOMARKERS</a>
+<a class="font-data-label text-data-label text-on-surface-variant hover:text-primary transition-colors" href="#">SLEEP</a>
+<a class="font-data-label text-data-label text-primary border-b-2 border-primary" href="#">SUPPLEMENTS</a>
+</nav>
+<div class="flex items-center gap-sm">
+<button class="p-xs hover:bg-primary/5 transition-colors active:scale-95 duration-200 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="settings_heart">settings_heart</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-xl pb-xl px-lg max-w-max_width mx-auto mt-16 min-h-screen">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Protocol Schedule -->
+<section class="col-span-12 lg:col-span-7 space-y-lg">
+<div class="flex justify-between items-end mb-md">
+<div>
+<p class="font-data-label text-data-label text-primary uppercase">Current Protocol</p>
+<h2 class="font-h1 text-h1 text-on-surface tracking-tight">Active Regimen</h2>
+</div>
+<button class="flex items-center gap-xs bg-primary text-on-primary px-lg py-sm rounded-lg hover:bg-primary-container transition-all active:scale-95">
+<span class="material-symbols-outlined text-[18px]" data-icon="add_circle">add_circle</span>
+<span class="font-data-label text-data-label">EDIT PROTOCOL</span>
+</button>
+</div>
+<!-- AM Schedule -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-md opacity-10">
+<span class="material-symbols-outlined text-[64px]" data-icon="wb_sunny">wb_sunny</span>
+</div>
+<div class="flex items-center gap-sm mb-lg border-b border-outline-variant/10 pb-sm">
+<span class="font-data-label text-data-label text-primary">PHASE 01:</span>
+<span class="font-h2 text-h2 uppercase tracking-widest text-on-surface">Morning (07:00)</span>
+</div>
+<div class="space-y-sm">
+<!-- Supplement Card 1 -->
+<div class="flex items-center justify-between p-md border border-outline-variant/15 rounded-lg bg-surface-container-lowest/50 hover:border-primary/30 transition-colors group">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary" data-icon="pill">pill</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface">NMN + Resveratrol</h4>
+<p class="font-data-label text-data-label text-on-surface-variant">500mg / NAD+ Precursor</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<!-- Supplement Card 2 -->
+<div class="flex items-center justify-between p-md border border-outline-variant/15 rounded-lg bg-surface-container-lowest/50 hover:border-primary/30 transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary" data-icon="opacity">opacity</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface">Omega-3 (High EPA)</h4>
+<p class="font-data-label text-data-label text-on-surface-variant">2000mg / Cardiovascular</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Mid-Day Schedule -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-md opacity-10">
+<span class="material-symbols-outlined text-[64px]" data-icon="light_mode">light_mode</span>
+</div>
+<div class="flex items-center gap-sm mb-lg border-b border-outline-variant/10 pb-sm">
+<span class="font-data-label text-data-label text-primary">PHASE 02:</span>
+<span class="font-h2 text-h2 uppercase tracking-widest text-on-surface">Mid-Day (13:00)</span>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-md border border-outline-variant/15 rounded-lg bg-surface-container-lowest/50">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary" data-icon="science">science</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface">Alpha-GPC</h4>
+<p class="font-data-label text-data-label text-on-surface-variant">300mg / Cognitive Focus</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- PM Schedule -->
+<div class="glass-panel rounded-xl p-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 p-md opacity-10">
+<span class="material-symbols-outlined text-[64px]" data-icon="bedtime">bedtime</span>
+</div>
+<div class="flex items-center gap-sm mb-lg border-b border-outline-variant/10 pb-sm">
+<span class="font-data-label text-data-label text-primary">PHASE 03:</span>
+<span class="font-h2 text-h2 uppercase tracking-widest text-on-surface">Evening (21:00)</span>
+</div>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-md border border-outline-variant/15 rounded-lg bg-surface-container-lowest/50">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary" data-icon="spa">spa</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface">Magnesium L-Threonate</h4>
+<p class="font-data-label text-data-label text-on-surface-variant">144mg / Sleep Support</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+<div class="flex items-center justify-between p-md border border-outline-variant/15 rounded-lg bg-surface-container-lowest/50">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 flex items-center justify-center rounded-lg bg-primary/5">
+<span class="material-symbols-outlined text-primary" data-icon="biotech">biotech</span>
+</div>
+<div>
+<h4 class="font-body-md font-semibold text-on-surface">Apigenin</h4>
+<p class="font-data-label text-data-label text-on-surface-variant">50mg / GABAergic</p>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-variant peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Analytics & Heatmaps -->
+<aside class="col-span-12 lg:col-span-5 space-y-lg">
+<!-- Compliance Gauge -->
+<div class="glass-panel rounded-xl p-lg">
+<h3 class="font-data-label text-data-label text-primary uppercase mb-lg">7-Day Compliance</h3>
+<div class="flex flex-col items-center justify-center py-xl">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<!-- SVG Gauge -->
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 100 100">
+<circle class="text-outline-variant/10" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="264" stroke-dashoffset="26.4" stroke-linecap="round" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display text-display text-primary leading-none">90<span class="text-h2">%</span></span>
+<span class="font-data-label text-data-label text-on-surface-variant">OPTIMAL</span>
+</div>
+</div>
+<div class="mt-lg grid grid-cols-2 gap-xl w-full">
+<div class="text-center">
+<p class="font-data-label text-data-label text-on-surface-variant">STREAK</p>
+<p class="font-data-value text-data-value text-primary">14 DAYS</p>
+</div>
+<div class="text-center">
+<p class="font-data-label text-data-label text-on-surface-variant">MISSED</p>
+<p class="font-data-value text-data-value text-error">2 DOSES</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Consistency Heatmap -->
+<div class="glass-panel rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-data-label text-data-label text-primary uppercase">Consistency Heatmap</h3>
+<span class="font-data-label text-[10px] text-on-surface-variant">PAST 8 WEEKS</span>
+</div>
+<div class="grid grid-cols-8 gap-sm">
+<!-- Iterative Week Columns -->
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/30 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/60 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/50 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/60 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/70 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/80 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/80 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/30 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/30 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/80 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/80 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/50 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/60 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/30 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/50 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/60 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/80 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/90 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/100 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/30 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/10 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/40 rounded-xs"></div>
+<div class="w-full aspect-square bg-primary/20 rounded-xs"></div>
+</div>
+<div class="space-y-sm">
+<div class="w-full aspect-square bg-primary/100 rounded-xs outline outline-2 outline-primary outline-offset-2"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+<div class="w-full aspect-square bg-surface-variant/20 rounded-xs"></div>
+</div>
+</div>
+<div class="flex justify-between items-center mt-md">
+<span class="font-data-label text-[10px] text-on-surface-variant">MON</span>
+<div class="flex gap-xs items-center">
+<span class="font-data-label text-[10px] text-on-surface-variant">Low</span>
+<div class="flex gap-[2px]">
+<div class="w-2 h-2 rounded-xs bg-primary/10"></div>
+<div class="w-2 h-2 rounded-xs bg-primary/40"></div>
+<div class="w-2 h-2 rounded-xs bg-primary/70"></div>
+<div class="w-2 h-2 rounded-xs bg-primary/100"></div>
+</div>
+<span class="font-data-label text-[10px] text-on-surface-variant">High</span>
+</div>
+</div>
+</div>
+<!-- Insights Card -->
+<div class="glass-panel rounded-xl p-lg border-l-4 border-l-primary bg-primary/5">
+<h3 class="font-data-label text-data-label text-primary uppercase flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+                        Protocol Insight
+                    </h3>
+<p class="text-body-sm font-body-sm text-on-surface leading-relaxed">
+                        Your AM compliance is 15% higher than your PM compliance. Research suggests Vitamin D absorption is 32% more efficient when paired with your current Omega-3 morning dosage. Consider syncing your Vitamin D to Phase 01.
+                    </p>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-full bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-t border-outline-variant/15 shadow-sm">
+<div class="flex justify-around items-center w-full px-md pb-md pt-sm">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-data-label text-data-label uppercase">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-data-label text-data-label uppercase">Biomarkers</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="bedtime">bedtime</span>
+<span class="font-data-label text-data-label uppercase">Sleep</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-full px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="pill">pill</span>
+<span class="font-data-label text-data-label uppercase">Supplements</span>
+</div>
+</div>
+</nav>
+<!-- Background Elements -->
+<div class="fixed top-0 left-0 w-full h-full -z-10 pointer-events-none data-grid-line opacity-20"></div>
+</body></html>

@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#0c56d0",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#b2c5ff",
+                        "on-primary-container": "#c4d2ff",
+                        "outline": "#737685",
+                        "on-secondary-container": "#003179",
+                        "on-background": "#191c1e",
+                        "tertiary": "#374559",
+                        "primary": "#003d9b",
+                        "secondary": "#285ab9",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#00419d",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c3c6d6",
+                        "on-secondary-fixed": "#001946",
+                        "on-primary-fixed": "#001848",
+                        "surface": "#f7f9fb",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#3a485c",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#4e5c71",
+                        "secondary-fixed": "#d9e2ff",
+                        "on-tertiary-container": "#c6d4ed",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed": "#dae2ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed-dim": "#b1c6ff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-container": "#709bfe",
+                        "on-surface-variant": "#434654",
+                        "tertiary-fixed-dim": "#b9c7e0",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed": "#d5e3fd",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-fixed": "#0d1c2f",
+                        "primary-container": "#0052cc",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e0e3e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "40px",
+                        "max_width": "1440px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "data-value": ["Space Grotesk"],
+                        "data-label": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "display": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-value": ["20px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                        "data-label": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(115, 118, 133, 0.15);
+        }
+        .active-glow {
+            box-shadow: 0 0 15px rgba(0, 61, 155, 0.1);
+            border-color: rgba(0, 61, 155, 0.3);
+        }
+        .gauge-ring {
+            stroke-dasharray: 283;
+            stroke-dashoffset: 32; /* (1 - 0.884) * 283 approx */
+            transition: stroke-dashoffset 1s ease-out;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/15 h-16">
+<div class="flex justify-between items-center px-lg py-sm w-full max-w-max_width mx-auto h-full">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary p-xs bg-primary/5 rounded-lg" data-icon="dna">genetics</span>
+<h1 class="font-display text-h2 font-bold text-primary tracking-tighter">SOMA-SYNC</h1>
+</div>
+<div class="hidden md:flex gap-lg items-center">
+<nav class="flex gap-md">
+<a class="text-primary font-data-label text-data-label uppercase border-b-2 border-primary pb-xs px-xs" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-data-label text-data-label uppercase hover:text-primary transition-colors pb-xs px-xs" href="#">Biomarkers</a>
+<a class="text-on-surface-variant font-data-label text-data-label uppercase hover:text-primary transition-colors pb-xs px-xs" href="#">Sleep</a>
+<a class="text-on-surface-variant font-data-label text-data-label uppercase hover:text-primary transition-colors pb-xs px-xs" href="#">Supplements</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-primary/5 p-xs rounded-full transition-colors" data-icon="notifications">notifications</span>
+<div class="flex items-center gap-sm bg-surface-container-low p-xs pr-md rounded-full border border-outline-variant/15">
+<img class="w-8 h-8 rounded-full border border-primary/20" data-alt="A professional medical portrait of a health-conscious male executive in his late 30s. The lighting is crisp and cinematic with a high-key studio feel. He is set against a clean, blurred clinical background with soft laboratory blue accents, matching the sleek and professional aesthetic of the longevity platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2se_x_GNmogUGZSXNV1OC3lQ8dMKPBLKRHmyj_m63NOxB86kDjAqE-40WSw962A5gRby7BwuvpX17xR7HY_SN6RW1UZ8scSv07hEVGpnNXzeaMOpa836Z6whycqkh88qM_I2rUhYGJfaLSGxE9qiPu6o_g01cCJFDRN_G5-uhquvEbA2HI7sjhbE2al3kfr8ZjLGoFISyEOwKEKMBkLKHSMM8-NhTfoDeV_h_RKURe92NkC00H74dMt0jBX1nYZDtFBUTzI10Qrb0"/>
+<span class="text-body-sm font-medium">User Profile</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="settings_heart">settings_heart</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation (Desktop Only) -->
+<aside class="hidden lg:flex fixed left-0 top-16 bottom-0 w-20 flex-col items-center py-lg bg-surface-container-low border-r border-outline-variant/15 z-40">
+<div class="flex flex-col gap-xl">
+<div class="group relative">
+<span class="material-symbols-outlined text-primary bg-secondary-container rounded-full p-sm" data-icon="grid_view">grid_view</span>
+<span class="absolute left-full ml-md top-1/2 -translate-y-1/2 px-sm py-xs bg-inverse-surface text-inverse-on-surface text-body-sm rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Dashboard</span>
+</div>
+<div class="group relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-sm" data-icon="biotech">biotech</span>
+</div>
+<div class="group relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-sm" data-icon="bedtime">bedtime</span>
+</div>
+<div class="group relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-sm" data-icon="pill">pill</span>
+</div>
+<div class="group relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors p-sm" data-icon="history">history</span>
+</div>
+</div>
+<div class="mt-auto">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-error transition-colors p-sm" data-icon="logout">logout</span>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="pt-24 pb-32 px-md lg:pl-28 lg:pr-lg max-w-max_width mx-auto">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Header Section -->
+<div class="col-span-12 mb-lg">
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-h1 text-h1 text-on-surface">Biological Integrity Analysis</h2>
+<p class="font-body-md text-on-surface-variant">Real-time epigenetic monitoring and metabolic delta tracking.</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-primary text-on-primary px-lg py-sm rounded-lg font-data-label text-data-label uppercase tracking-widest active:scale-95 transition-transform">Download Report</button>
+<button class="border border-primary text-primary px-lg py-sm rounded-lg font-data-label text-data-label uppercase tracking-widest active:scale-95 transition-transform">Sync Devices</button>
+</div>
+</div>
+</div>
+<!-- Left Column: Core Metrics -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Bio Age vs Chrono Age Card -->
+<div class="glass-card p-lg rounded-xl flex flex-col gap-lg active-glow">
+<div class="flex justify-between items-center">
+<span class="font-data-label text-data-label text-primary uppercase">Age Variance Matrix</span>
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+</div>
+<div class="flex justify-around items-center py-md">
+<div class="text-center">
+<span class="block font-data-label text-data-label text-on-surface-variant uppercase mb-xs">Chronological</span>
+<span class="block font-display text-h1 text-on-surface">38.0</span>
+<span class="text-body-sm text-on-surface-variant">Years</span>
+</div>
+<div class="h-12 w-px bg-outline-variant/30"></div>
+<div class="text-center">
+<span class="block font-data-label text-data-label text-primary uppercase mb-xs">Biological</span>
+<span class="block font-display text-h1 text-primary">34.2</span>
+<span class="text-body-sm text-on-surface-variant">Years</span>
+</div>
+</div>
+<div class="bg-secondary-fixed/30 p-md rounded-lg border border-primary/10">
+<div class="flex justify-between items-center mb-xs">
+<span class="text-body-sm font-medium text-on-secondary-fixed">Longevity Surplus</span>
+<span class="font-data-value text-primary">-3.8 Years</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Epigenetic Aging Graph -->
+<div class="glass-card p-lg rounded-xl flex flex-col gap-md">
+<span class="font-data-label text-data-label text-on-surface-variant uppercase">DNA Methylation Velocity</span>
+<div class="h-40 flex items-end gap-xs py-sm">
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[40%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[55%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[45%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[65%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[60%] transition-all hover:bg-primary/40"></div>
+<div class="flex-1 bg-primary/40 rounded-t-sm h-[75%] transition-all hover:bg-primary/60 border-t-2 border-primary"></div>
+<div class="flex-1 bg-primary/20 rounded-t-sm h-[70%] transition-all hover:bg-primary/40"></div>
+</div>
+<div class="flex justify-between font-data-label text-[10px] text-outline uppercase">
+<span>Jan</span>
+<span>Feb</span>
+<span>Mar</span>
+<span>Apr</span>
+<span>May</span>
+<span>Jun</span>
+<span>Jul</span>
+</div>
+</div>
+</div>
+<!-- Center Column: Main Gauge -->
+<div class="col-span-12 lg:col-span-4">
+<div class="glass-card p-xl rounded-xl flex flex-col items-center justify-center h-full relative overflow-hidden active-glow">
+<div class="absolute top-lg left-lg flex flex-col gap-xs">
+<span class="font-data-label text-data-label text-primary uppercase">Cellular Health</span>
+<span class="text-body-sm text-on-surface-variant">Aggregate Score</span>
+</div>
+<!-- Circular Gauge -->
+<div class="relative w-64 h-64 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-outline-variant/10" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-outline-variant/20" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="691" stroke-width="12"></circle>
+<circle class="text-primary" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="80" stroke-linecap="round" stroke-width="12"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-display text-[64px] font-bold text-on-surface tracking-tighter leading-none">88.4</span>
+<span class="font-data-label text-data-label text-primary uppercase mt-sm">Optimal</span>
+</div>
+</div>
+<div class="mt-xl grid grid-cols-2 gap-lg w-full">
+<div class="border-l-2 border-primary/20 pl-md">
+<span class="block font-data-label text-[10px] text-on-surface-variant uppercase">Population</span>
+<span class="block font-data-value text-body-md">Top 4.2%</span>
+</div>
+<div class="border-l-2 border-primary/20 pl-md">
+<span class="block font-data-label text-[10px] text-on-surface-variant uppercase">Stability</span>
+<span class="block font-data-value text-body-md">+2.1pts</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Biometric Pillars -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card p-lg rounded-xl flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<h3 class="font-data-label text-data-label text-on-surface uppercase">Biometric Pillars</h3>
+<span class="text-[10px] font-data-label bg-surface-variant px-sm py-xs rounded">Live Feed</span>
+</div>
+<!-- Pillar 1 -->
+<div class="space-y-sm">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-md" data-icon="energy_savings_leaf">energy_savings_leaf</span>
+<span class="text-body-sm font-medium">Metabolic Health</span>
+</div>
+<span class="font-display text-lg text-primary">A-</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[92%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-data-label text-outline uppercase">
+<span>HOMA-IR: 1.1</span>
+<span>HbA1c: 4.8%</span>
+</div>
+</div>
+<!-- Divider -->
+<hr class="border-outline-variant/10"/>
+<!-- Pillar 2 -->
+<div class="space-y-sm">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-md" data-icon="monitor_heart">monitor_heart</span>
+<span class="text-body-sm font-medium">Cardiovascular</span>
+</div>
+<span class="font-display text-lg text-primary">A</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[95%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-data-label text-outline uppercase">
+<span>HRV: 82ms</span>
+<span>VO2 Max: 52</span>
+</div>
+</div>
+<!-- Divider -->
+<hr class="border-outline-variant/10"/>
+<!-- Pillar 3 -->
+<div class="space-y-sm">
+<div class="flex justify-between items-end">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-md" data-icon="query_stats">query_stats</span>
+<span class="text-body-sm font-medium">DNA / Methylation</span>
+</div>
+<span class="font-display text-lg text-on-surface">B+</span>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-on-surface-variant h-full w-[84%]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-data-label text-outline uppercase">
+<span>GrimAge: 32.4</span>
+<span>DunedinPACE: 0.82</span>
+</div>
+</div>
+</div>
+<!-- Recommendation Card -->
+<div class="bg-primary p-lg rounded-xl text-on-primary shadow-lg">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="lightbulb">lightbulb</span>
+<div class="flex flex-col gap-xs">
+<span class="font-data-label text-[10px] uppercase text-on-primary-container">Next Protocol Adjustment</span>
+<p class="text-body-sm leading-snug">Increase Magnesium L-Threonate to 2000mg to optimize deep sleep phase transition.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Row: High Density Data -->
+<div class="col-span-12">
+<div class="glass-card rounded-xl overflow-hidden">
+<div class="p-lg border-b border-outline-variant/15 flex justify-between items-center">
+<span class="font-data-label text-data-label text-on-surface uppercase">Biomarker Deep Scan</span>
+<div class="flex gap-md">
+<button class="text-[10px] font-data-label text-primary uppercase border-b border-primary">Vascular</button>
+<button class="text-[10px] font-data-label text-on-surface-variant hover:text-primary uppercase">Hormonal</button>
+<button class="text-[10px] font-data-label text-on-surface-variant hover:text-primary uppercase">Inflammatory</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/5 bg-surface-container-low/50">
+<th class="px-lg py-md font-data-label text-[10px] text-outline uppercase">Marker</th>
+<th class="px-lg py-md font-data-label text-[10px] text-outline uppercase">Current Value</th>
+<th class="px-lg py-md font-data-label text-[10px] text-outline uppercase">Reference Range</th>
+<th class="px-lg py-md font-data-label text-[10px] text-outline uppercase">Status</th>
+<th class="px-lg py-md font-data-label text-[10px] text-outline uppercase text-right">Trend (30D)</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-lg py-md text-body-sm font-medium">Apolipoprotein B</td>
+<td class="px-lg py-md font-data-label text-data-label">68 mg/dL</td>
+<td class="px-lg py-md text-body-sm text-on-surface-variant">40 - 90 mg/dL</td>
+<td class="px-lg py-md"><span class="px-sm py-xs bg-secondary-fixed/50 text-on-secondary-fixed text-[10px] font-data-label rounded-full">OPTIMAL</span></td>
+<td class="px-lg py-md text-right text-error font-data-label">-2.4%</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-lg py-md text-body-sm font-medium">High-Sensitivity CRP</td>
+<td class="px-lg py-md font-data-label text-data-label">0.4 mg/L</td>
+<td class="px-lg py-md text-body-sm text-on-surface-variant">&lt; 1.0 mg/L</td>
+<td class="px-lg py-md"><span class="px-sm py-xs bg-secondary-fixed/50 text-on-secondary-fixed text-[10px] font-data-label rounded-full">OPTIMAL</span></td>
+<td class="px-lg py-md text-right text-primary font-data-label">-12.0%</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="px-lg py-md text-body-sm font-medium">Fasting Insulin</td>
+<td class="px-lg py-md font-data-label text-data-label">4.2 uIU/mL</td>
+<td class="px-lg py-md text-body-sm text-on-surface-variant">2.0 - 5.0 uIU/mL</td>
+<td class="px-lg py-md"><span class="px-sm py-xs bg-secondary-fixed/50 text-on-secondary-fixed text-[10px] font-data-label rounded-full">OPTIMAL</span></td>
+<td class="px-lg py-md text-right text-primary font-data-label">+0.5%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-t border-outline-variant/15 rounded-t-full shadow-sm">
+<div class="flex justify-around items-center w-full px-md pb-md pt-sm">
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-data-label text-[10px] uppercase">Dash</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-data-label text-[10px] uppercase">Bio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="bedtime">bedtime</span>
+<span class="font-data-label text-[10px] uppercase">Sleep</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant px-lg py-xs">
+<span class="material-symbols-outlined" data-icon="pill">pill</span>
+<span class="font-data-label text-[10px] uppercase">Supps</span>
+</div>
+</div>
+</nav>
+<!-- FAB -->
+<button class="fixed bottom-lg right-lg lg:bottom-xl lg:right-xl w-14 h-14 bg-primary text-on-primary rounded-full shadow-xl flex items-center justify-center active:scale-90 transition-transform z-50">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

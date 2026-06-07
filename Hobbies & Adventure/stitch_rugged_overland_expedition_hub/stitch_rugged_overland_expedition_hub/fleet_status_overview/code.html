@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OVERLAND_COMMAND | FLEET_STATUS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Public+Sans:wght@300;400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#6a5e33",
+                    "surface-bright": "#393939",
+                    "on-secondary": "#303030",
+                    "on-primary-container": "#4f441c",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#474746",
+                    "on-secondary-container": "#b6b5b4",
+                    "tertiary": "#ffc0ab",
+                    "on-surface": "#e5e2e1",
+                    "on-primary-fixed": "#231b00",
+                    "primary-fixed": "#f3e2ac",
+                    "on-tertiary-container": "#7f2700",
+                    "surface": "#131313",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "surface-container": "#20201f",
+                    "outline-variant": "#4b463b",
+                    "on-tertiary": "#5c1a00",
+                    "on-surface-variant": "#cdc6b7",
+                    "secondary-fixed": "#e4e2e1",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#474746",
+                    "surface-variant": "#353535",
+                    "surface-dim": "#131313",
+                    "secondary": "#c8c6c5",
+                    "surface-container-low": "#1c1b1b",
+                    "tertiary-container": "#ff9873",
+                    "surface-tint": "#d6c692",
+                    "on-tertiary-fixed": "#380c00",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-tertiary-fixed-variant": "#822800",
+                    "surface-container-highest": "#353535",
+                    "outline": "#969083",
+                    "background": "#131313",
+                    "primary": "#decd99",
+                    "on-background": "#e5e2e1",
+                    "on-primary": "#3a3009",
+                    "tertiary-fixed-dim": "#ffb59c",
+                    "tertiary-fixed": "#ffdbcf",
+                    "primary-container": "#c2b280",
+                    "inverse-on-surface": "#313030",
+                    "primary-fixed-dim": "#d6c692",
+                    "inverse-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#1b1c1c",
+                    "on-primary-fixed-variant": "#51461e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "margin": "32px",
+                    "container-max": "1280px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-md": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "label-caps": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bolt-corner::before, .bolt-corner::after {
+            content: 'close';
+            font-family: 'Material Symbols Outlined';
+            font-size: 10px;
+            position: absolute;
+            color: #4b463b;
+        }
+        .bolt-top-left::before { top: 4px; left: 4px; }
+        .bolt-top-right::after { top: 4px; right: 4px; }
+        .bolt-bottom-left::before { bottom: 4px; left: 4px; }
+        .bolt-bottom-right::after { bottom: 4px; right: 4px; }
+        
+        .topographic-bg {
+            background-image: radial-gradient(#2a2a2a 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-zinc-950">
+<!-- TopAppBar -->
+<header class="bg-zinc-950 text-[#C2B280] font-['Space_Grotesk'] font-bold uppercase tracking-tighter docked full-width top-0 border-b-2 border-zinc-800 shadow-[0px_4px_0px_0px_rgba(0,0,0,1)] flex justify-between items-center w-full px-6 h-16 fixed z-50">
+<div class="flex items-center h-full">
+<div class="text-2xl font-black text-[#C2B280] tracking-widest border-r-2 border-zinc-800 pr-6 mr-6 h-10 flex items-center">
+                OVERLAND_COMMAND
+            </div>
+<div class="hidden md:flex gap-6 h-full items-center">
+<a class="text-[#C2B280] border-b-2 border-[#C2B280] h-full flex items-center px-2" href="#">FLEET</a>
+<a class="text-zinc-500 hover:text-zinc-300 transition-colors h-full flex items-center px-2" href="#">RECON</a>
+<a class="text-zinc-500 hover:text-zinc-300 transition-colors h-full flex items-center px-2" href="#">ANALYTICS</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined hover:bg-zinc-900 transition-colors cursor-pointer p-2 active:translate-y-0.5" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined hover:bg-zinc-900 transition-colors cursor-pointer p-2 active:translate-y-0.5" data-icon="settings_input_component">settings_input_component</span>
+<span class="material-symbols-outlined hover:bg-zinc-900 transition-colors cursor-pointer p-2 active:translate-y-0.5" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="hidden lg:flex flex-col h-screen fixed left-0 top-0 z-40 bg-zinc-950 h-screen border-r-2 border-zinc-800 w-64 pt-20">
+<div class="p-6 border-b-2 border-zinc-800 mb-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-zinc-800 border border-zinc-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#C2B280]" data-icon="shield">shield</span>
+</div>
+<div>
+<div class="font-['Space_Grotesk'] text-[#C2B280] uppercase font-bold text-sm tracking-widest">BASE_STATION_01</div>
+<div class="text-[10px] text-zinc-500 font-bold tracking-widest">OPERATOR_ACTIVE</div>
+</div>
+</div>
+</div>
+<div class="flex-grow flex flex-col">
+<!-- Active Tab -->
+<a class="bg-[#C2B280] text-zinc-950 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] border-2 border-zinc-950 m-2 flex items-center gap-4 px-4 py-3 font-['Space_Grotesk'] text-xs font-bold tracking-widest active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+                FLEET_STATUS
+            </a>
+<a class="text-zinc-500 p-4 border-b border-zinc-900 hover:bg-zinc-900 hover:text-[#C2B280] transition-colors flex items-center gap-4 font-['Space_Grotesk'] text-xs font-bold tracking-widest active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+                MAP_RECON
+            </a>
+<a class="text-zinc-500 p-4 border-b border-zinc-900 hover:bg-zinc-900 hover:text-[#C2B280] transition-colors flex items-center gap-4 font-['Space_Grotesk'] text-xs font-bold tracking-widest active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+                REPORTS
+            </a>
+<a class="text-zinc-500 p-4 border-b border-zinc-900 hover:bg-zinc-900 hover:text-[#C2B280] transition-colors flex items-center gap-4 font-['Space_Grotesk'] text-xs font-bold tracking-widest active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+                MAINTENANCE
+            </a>
+<a class="text-zinc-500 p-4 border-b border-zinc-900 hover:bg-zinc-900 hover:text-[#C2B280] transition-colors flex items-center gap-4 font-['Space_Grotesk'] text-xs font-bold tracking-widest active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="settings_remote">settings_remote</span>
+                COMMS
+            </a>
+</div>
+<div class="p-4 mt-auto">
+<button class="w-full bg-zinc-800 border-2 border-zinc-700 text-[#C2B280] py-4 font-['Space_Grotesk'] text-[10px] font-black tracking-widest hover:bg-zinc-700 active:translate-y-1 transition-all shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] uppercase">
+                INITIATE_DEPLOYMENT
+            </button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="lg:ml-64 pt-16 pb-20 lg:pb-0 min-h-screen">
+<div class="grid grid-cols-12 h-[calc(100vh-64px)]">
+<!-- Map View (Large Center) -->
+<div class="col-span-12 xl:col-span-8 p-4 relative overflow-hidden bg-surface-container-lowest border-r-2 border-zinc-800">
+<div class="absolute inset-0 topographic-bg opacity-20 pointer-events-none"></div>
+<div class="relative w-full h-full border-2 border-zinc-800 bg-zinc-900 rounded-sm shadow-[inset_0px_0px_40px_rgba(0,0,0,0.8)] flex items-center justify-center overflow-hidden">
+<!-- Map Imagery Mock -->
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity grayscale" data-alt="A gritty, high-contrast black and white topographical map of a rugged mountain range in the Iceland Highlands. The terrain features deep glacial carved valleys and sharp, weathered peaks. Subtle glowing digital vector overlays represent elevation contour lines and tactical coordinate grids in a muted khaki tone. The overall mood is industrial and ready for exploration." data-location="Iceland Highlands" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHwEjhC27IfM2fkYM-L5AROJOy4QM66uS4bU_Om_VLFB31AJZgX2d6f2hLoqHhsUvSDW4Ek9IUXiHBFiVTLly1Z_imMKvgzcOr9a1DTmllIn2n5eTexTypviicCLKLTcGF9EIHmXZAq_q-fCvpxKfmG4_CNQbTCPkVSPq_64Y7gqJ0wzSHcu3wZ8xvGgkYQZP66UZZ-IqKcbH7scNobtu05NMecFm5r121VNjGg393ZILl1Zk1T1wl1s-mWAMuw5eomDtUi439inBT"/>
+<!-- Vehicle HUD Overlays -->
+<div class="absolute top-8 left-8 p-4 bg-zinc-950/80 border-2 border-zinc-800 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex flex-col gap-2">
+<div class="text-[10px] font-headline-xl text-[#C2B280] flex items-center gap-2">
+<span class="w-2 h-2 bg-primary animate-pulse rounded-full"></span>
+                            SCANNING_SECTOR_07
+                        </div>
+<div class="text-[10px] text-zinc-500 font-mono">LAT: 64.9631 N | LON: 19.0208 W</div>
+</div>
+<!-- Fleet Icons -->
+<div class="absolute top-[40%] left-[30%] group">
+<div class="w-8 h-8 bg-primary-container text-zinc-950 flex items-center justify-center border-2 border-zinc-950 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="directions_car">directions_car</span>
+</div>
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-950 text-[#C2B280] text-[8px] px-2 py-1 whitespace-nowrap border border-zinc-800 font-black tracking-widest hidden group-hover:block">CANYON_CRAWLER</div>
+</div>
+<div class="absolute bottom-[30%] right-[40%] group">
+<div class="w-8 h-8 bg-zinc-800 text-zinc-500 flex items-center justify-center border-2 border-zinc-800 shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] active:scale-90 transition-transform cursor-pointer">
+<span class="material-symbols-outlined text-sm" data-icon="shutter_speed">shutter_speed</span>
+</div>
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 bg-zinc-950 text-zinc-500 text-[8px] px-2 py-1 whitespace-nowrap border border-zinc-800 font-black tracking-widest hidden group-hover:block">ARCTIC_RECON</div>
+</div>
+<!-- Map Compass UI -->
+<div class="absolute bottom-8 right-8 flex flex-col gap-2">
+<div class="w-12 h-12 bg-zinc-950 border-2 border-zinc-800 flex items-center justify-center shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined text-[#C2B280]" data-icon="north">north</span>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 bg-zinc-950 border-2 border-zinc-800 text-zinc-400 hover:text-primary transition-colors flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined text-xs" data-icon="add">add</span>
+</button>
+<button class="w-8 h-8 bg-zinc-950 border-2 border-zinc-800 text-zinc-400 hover:text-primary transition-colors flex items-center justify-center shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
+<span class="material-symbols-outlined text-xs" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Dashboard Modules (Right Side) -->
+<div class="col-span-12 xl:col-span-4 p-4 flex flex-col gap-4 overflow-y-auto bg-surface">
+<!-- Fleet Manifest -->
+<section class="bg-surface-container relative border-2 border-zinc-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="bolt-corner bolt-top-left"></div><div class="bolt-corner bolt-top-right"></div>
+<div class="bolt-corner bolt-bottom-left"></div><div class="bolt-corner bolt-bottom-right"></div>
+<div class="flex items-center justify-between mb-4 pb-2 border-b-2 border-zinc-800">
+<h2 class="font-headline-md text-sm text-[#C2B280] tracking-widest uppercase">FLEET_MANIFEST</h2>
+<span class="text-[10px] text-zinc-500 font-black">ACTIVE: 03</span>
+</div>
+<div class="flex flex-col gap-2">
+<!-- Rig Item -->
+<div class="bg-zinc-900 border-2 border-zinc-950 p-3 flex items-center justify-between cursor-pointer hover:bg-zinc-800 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary-container text-zinc-950 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="local_shipping">local_shipping</span>
+</div>
+<div>
+<div class="text-xs font-bold tracking-wider text-[#C2B280]">THE CANYON CRAWLER</div>
+<div class="text-[9px] text-zinc-500 font-mono">VIN: 88-ALPHA-092</div>
+</div>
+</div>
+<div class="bg-tertiary-container/10 border border-tertiary-container px-2 py-0.5">
+<span class="text-[8px] font-black text-tertiary-container">MISSION_READY</span>
+</div>
+</div>
+<!-- Rig Item -->
+<div class="bg-zinc-950 border-2 border-zinc-800 opacity-70 p-3 flex items-center justify-between cursor-pointer hover:bg-zinc-900 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-zinc-800 text-zinc-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="ac_unit">ac_unit</span>
+</div>
+<div>
+<div class="text-xs font-bold tracking-wider text-zinc-400">ARCTIC RECON</div>
+<div class="text-[9px] text-zinc-600 font-mono">VIN: 42-OMEGA-115</div>
+</div>
+</div>
+<div class="bg-error-container/10 border border-error-container px-2 py-0.5">
+<span class="text-[8px] font-black text-error">MAINTENANCE_REQUIRED</span>
+</div>
+</div>
+<!-- Rig Item -->
+<div class="bg-zinc-950 border-2 border-zinc-800 opacity-70 p-3 flex items-center justify-between cursor-pointer hover:bg-zinc-900 transition-colors">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-zinc-800 text-zinc-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="explore">explore</span>
+</div>
+<div>
+<div class="text-xs font-bold tracking-wider text-zinc-400">DESERT_RUNNER</div>
+<div class="text-[9px] text-zinc-600 font-mono">VIN: 12-DELTA-004</div>
+</div>
+</div>
+<div class="bg-zinc-800 border border-zinc-700 px-2 py-0.5">
+<span class="text-[8px] font-black text-zinc-500 uppercase">IN_TRANSIT</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Rig Telemetry Widget -->
+<section class="bg-surface-container relative border-2 border-zinc-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] flex-grow">
+<div class="bolt-corner bolt-top-left"></div><div class="bolt-corner bolt-top-right"></div>
+<div class="bolt-corner bolt-bottom-left"></div><div class="bolt-corner bolt-bottom-right"></div>
+<div class="flex items-center justify-between mb-6 pb-2 border-b-2 border-zinc-800">
+<h2 class="font-headline-md text-sm text-[#C2B280] tracking-widest uppercase">RIG_TELEMETRY</h2>
+<span class="text-[10px] text-zinc-400 font-mono">ID: C_CRAWLER_V1</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<!-- Gauge 1 -->
+<div class="border-2 border-zinc-800 p-3 bg-zinc-950">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[9px] font-black text-zinc-500">FUEL_CELL</span>
+<span class="text-[9px] font-mono text-[#C2B280]">82%</span>
+</div>
+<div class="h-4 w-full bg-zinc-900 border border-zinc-800 flex gap-0.5 p-0.5">
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-primary"></div>
+<div class="h-full w-1/12 bg-zinc-800"></div>
+<div class="h-full w-1/12 bg-zinc-800"></div>
+</div>
+</div>
+<!-- Gauge 2 -->
+<div class="border-2 border-zinc-800 p-3 bg-zinc-950">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[9px] font-black text-zinc-500">TIRE_PSI</span>
+<span class="text-[9px] font-mono text-tertiary-container">LOW</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-tertiary-container" data-icon="tire_repair">tire_repair</span>
+<span class="text-xs font-mono font-bold">18.5 PSI</span>
+</div>
+</div>
+<!-- Coordinates -->
+<div class="col-span-2 border-2 border-zinc-800 p-3 bg-zinc-950">
+<div class="text-[9px] font-black text-zinc-500 mb-2 uppercase">CURRENT_POSITION</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col">
+<span class="text-[8px] text-zinc-600">ALTITUDE</span>
+<span class="text-md font-mono font-bold text-[#C2B280]">1,240M</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[8px] text-zinc-600">HEADING</span>
+<span class="text-md font-mono font-bold text-[#C2B280]">284° WNW</span>
+</div>
+</div>
+</div>
+<!-- Environment -->
+<div class="col-span-2 border-2 border-zinc-800 p-3 bg-zinc-950">
+<div class="text-[9px] font-black text-zinc-500 mb-2 uppercase">EXTERNAL_ENVIRONMENT</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#C2B280]" data-icon="thermostat">thermostat</span>
+<span class="text-xl font-headline-md">-12°C</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-zinc-500" data-icon="air">air</span>
+<span class="text-md font-mono">42KM/H</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Global Alerts -->
+<section class="bg-zinc-950 border-2 border-zinc-800 p-4 shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning">warning</span>
+<h2 class="text-[10px] font-black text-error tracking-widest uppercase">GLOBAL_ALERTS</h2>
+</div>
+<div class="space-y-2">
+<div class="text-[10px] font-mono p-2 bg-zinc-900 border-l-2 border-error text-zinc-300">
+<div class="flex justify-between mb-1">
+<span class="text-error font-bold">[CRITICAL]</span>
+<span class="text-[8px] text-zinc-600">14:02 UTC</span>
+</div>
+                            STORM_CELL_APPROACHING_SECTOR_07. SEEK_SHELTER_IMMEDIATELY.
+                        </div>
+<div class="text-[10px] font-mono p-2 bg-zinc-900 border-l-2 border-zinc-600 text-zinc-500 opacity-70">
+<div class="flex justify-between mb-1">
+<span class="font-bold">[INFO]</span>
+<span class="text-[8px] text-zinc-600">12:30 UTC</span>
+</div>
+                            COMMS_RELAY_3_ONLINE. LATENCY_STABLE.
+                        </div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full h-20 z-50 flex justify-around items-stretch bg-zinc-950 border-t-4 border-zinc-800 shadow-[0px_-4px_0px_0px_rgba(0,0,0,1)]">
+<a class="flex flex-col items-center justify-center bg-[#C2B280] text-zinc-950 h-full w-full border-t-2 border-zinc-950 font-['Space_Grotesk'] text-[10px] font-black uppercase" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="directions_car">directions_car</span>
+            FLEET
+        </a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full font-['Space_Grotesk'] text-[10px] font-black uppercase hover:bg-zinc-900" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="distance">distance</span>
+            MAP
+        </a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full font-['Space_Grotesk'] text-[10px] font-black uppercase hover:bg-zinc-900" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="warning">warning</span>
+            ALERTS
+        </a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full font-['Space_Grotesk'] text-[10px] font-black uppercase hover:bg-zinc-900" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="receipt_long">receipt_long</span>
+            LOGS
+        </a>
+</nav>
+<!-- Floating Action Button (Contextual: Home/Dashboard) -->
+<button class="fixed bottom-24 right-6 lg:bottom-10 lg:right-10 w-16 h-16 bg-[#C2B280] text-zinc-950 flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] border-2 border-zinc-950 active:translate-x-[2px] active:translate-y-[2px] active:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all z-40 group">
+<span class="material-symbols-outlined text-3xl transition-transform group-hover:rotate-90" data-icon="add">add</span>
+<div class="absolute right-full mr-4 bg-zinc-950 text-[#C2B280] px-3 py-1 border-2 border-zinc-800 text-[10px] font-black tracking-widest opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+            NEW_MISSION_PARAMS
+        </div>
+</button>
+</body></html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global-Comms Signal Finder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      background-color: #0d1515;
+      color: #dce4e4;
+      overflow-x: hidden;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(0, 242, 255, 0.1);
+    }
+    .scanning-line {
+      height: 1px;
+      width: 100%;
+      background: #00f2ff;
+      box-shadow: 0 0 12px #00f2ff;
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: 0.4;
+    }
+    .circular-ring {
+      border: 1px solid rgba(225, 253, 255, 0.1);
+      border-radius: 50%;
+    }
+    .active-segment {
+      border-color: #00f2ff;
+      box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary-container": "#5e6060",
+                  "secondary-container": "#44474b",
+                  "secondary": "#c5c6cb",
+                  "surface-container-low": "#151d1e",
+                  "error-container": "#93000a",
+                  "on-tertiary-fixed": "#1a1c1c",
+                  "inverse-on-surface": "#2a3232",
+                  "surface-container": "#192122",
+                  "error": "#ffb4ab",
+                  "tertiary-fixed-dim": "#c6c6c7",
+                  "on-secondary-container": "#b3b5ba",
+                  "on-secondary-fixed-variant": "#44474b",
+                  "tertiary": "#f7f8f8",
+                  "primary-container": "#00f2ff",
+                  "secondary-fixed-dim": "#c5c6cb",
+                  "surface": "#0d1515",
+                  "inverse-primary": "#00696f",
+                  "background": "#0d1515",
+                  "on-surface-variant": "#b9cacb",
+                  "surface-container-lowest": "#080f10",
+                  "surface-bright": "#333b3b",
+                  "surface-container-high": "#232b2c",
+                  "outline": "#849495",
+                  "surface-dim": "#0d1515",
+                  "on-secondary-fixed": "#191c1f",
+                  "tertiary-container": "#dbdbdb",
+                  "on-secondary": "#2e3134",
+                  "outline-variant": "#3a494b",
+                  "surface-variant": "#2e3637",
+                  "on-primary-fixed-variant": "#004f54",
+                  "on-surface": "#dce4e4",
+                  "primary": "#e1fdff",
+                  "on-tertiary-fixed-variant": "#454747",
+                  "inverse-surface": "#dce4e4",
+                  "primary-fixed": "#74f5ff",
+                  "on-tertiary": "#2f3131",
+                  "on-error": "#690005",
+                  "primary-fixed-dim": "#00dbe7",
+                  "on-primary": "#00363a",
+                  "secondary-fixed": "#e1e2e7",
+                  "on-primary-fixed": "#002022",
+                  "tertiary-fixed": "#e2e2e2",
+                  "surface-tint": "#00dbe7",
+                  "on-error-container": "#ffdad6",
+                  "on-primary-container": "#006a71",
+                  "on-background": "#dce4e4",
+                  "surface-container-highest": "#2e3637"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "margin-desktop": "64px",
+                  "margin-mobile": "20px",
+                  "container-max": "1440px",
+                  "gutter": "24px",
+                  "unit": "8px"
+          },
+          "fontFamily": {
+                  "body-md": ["Inter"],
+                  "display-xl": ["Space Grotesk"],
+                  "data-mono": ["Space Grotesk"],
+                  "headline-lg": ["Space Grotesk"],
+                  "body-lg": ["Inter"],
+                  "headline-md": ["Space Grotesk"],
+                  "label-caps": ["Space Grotesk"]
+          },
+          "fontSize": {
+                  "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                  "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "data-mono": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                  "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "body-md": ["16px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                  "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 bg-surface/10 backdrop-blur-md border-b border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary-container/30">
+<img alt="User Profile" data-alt="A professional close-up portrait of a high-tech communication specialist against a dark, minimalist background. The lighting is moody with subtle cyan rim lights, highlighting sharp features and a sophisticated, futuristic aesthetic. The overall mood is one of quiet expertise and advanced technological integration, consistent with an elite satellite telemetry brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHDZiRT-dia1wFD-uVWEr5Z0TMYrDMVnTTnLYCEafJFH6y6dSESBLcz2aZhlrzgDWwJhp4_Qb8-oaXVsYyEErlPLe6rOq0Ghk5mywfwCsAlJLQ7x2MMmYuABLvzXa3q7zAeM5vemXIvIy0U2j62dPCK0wI-HcgCdRUDYOpF4kXoXedpvtcl5YOfkH6Xpy_exqIRE1v27mjxvbFz6GujfkJQGneqp7nFsxUL42I-Rtfs8SbmOnbn9E8c6KMzPlOk7AnuE7MQmtgt5xd"/>
+</div>
+<h1 class="font-headline-lg text-primary-container tracking-[0.2em] uppercase text-[18px] md:text-[24px]">GLOBAL-COMMS</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="hidden md:flex font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300 cursor-pointer">TELEMETRY</span>
+<span class="hidden md:flex font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300 cursor-pointer">SATELLITES</span>
+<span class="material-symbols-outlined text-primary-container cursor-pointer" data-icon="notifications">notifications</span>
+</div>
+</header>
+<main class="relative min-h-screen pt-24 pb-32 px-margin-mobile md:px-margin-desktop overflow-hidden">
+<!-- Ambient Void Background Elements -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-primary-container/5 rounded-full blur-[120px] pointer-events-none"></div>
+<div class="max-w-container-max mx-auto grid grid-cols-1 lg:grid-cols-12 gap-gutter relative z-10">
+<!-- Left Column: Status & Signal Metrics -->
+<div class="lg:col-span-3 flex flex-col gap-gutter order-2 lg:order-1">
+<div class="glass-panel p-6 rounded-lg relative overflow-hidden">
+<div class="scanning-line opacity-20"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">SYSTEM STATUS</p>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-2 h-2 bg-primary-container rounded-full animate-pulse shadow-[0_0_8px_#00f2ff]"></div>
+<span class="font-data-mono text-data-mono text-primary-container">ACTIVE_SCANNING</span>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">BANDWIDTH</span>
+<span class="font-data-mono text-data-mono">48.2 GBPS</span>
+</div>
+<div class="h-1 bg-surface-variant w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[72%] shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LATENCY</span>
+<span class="font-data-mono text-data-mono">14 MS</span>
+</div>
+<div class="h-1 bg-surface-variant w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[15%] shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-lg">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">SATELLITE MAPPING</p>
+<div class="space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant/10 pb-2">
+<span class="font-data-mono text-data-mono">COMMS-SAT-01</span>
+<span class="text-primary-container material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/10 pb-2">
+<span class="font-data-mono text-data-mono">COMMS-SAT-04</span>
+<span class="text-primary-container material-symbols-outlined text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/10 pb-2">
+<span class="font-data-mono text-on-surface-variant/40">COMMS-SAT-09</span>
+<span class="text-on-surface-variant/40 material-symbols-outlined text-sm" data-icon="sync">sync</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Column: Radar Simulation -->
+<div class="lg:col-span-6 flex flex-col items-center justify-center order-1 lg:order-2 py-12 lg:py-0">
+<div class="relative w-full aspect-square max-w-[500px] flex items-center justify-center">
+<!-- Concentric Rings -->
+<div class="absolute w-full h-full circular-ring opacity-20"></div>
+<div class="absolute w-[80%] h-[80%] circular-ring opacity-30"></div>
+<div class="absolute w-[60%] h-[60%] circular-ring opacity-40"></div>
+<div class="absolute w-[40%] h-[40%] circular-ring active-segment opacity-60"></div>
+<!-- Scanning Beam (Decorative representation of the request) -->
+<div class="absolute w-1/2 h-1 bg-gradient-to-r from-transparent to-primary-container/40 origin-left -rotate-45 blur-sm" style="left: 50%; top: 50%;"></div>
+<div class="absolute w-[2px] h-1/2 bg-gradient-to-t from-transparent to-primary-container/80 origin-bottom -rotate-45 shadow-[0_0_15px_#00f2ff]" style="left: 50%; bottom: 50%;"></div>
+<!-- Satellites (Neon dots) -->
+<div class="absolute top-[20%] left-[30%] w-2 h-2 bg-primary-container rounded-full shadow-[0_0_10px_#00f2ff]"></div>
+<div class="absolute top-[15%] right-[25%] w-2 h-2 bg-primary-container rounded-full shadow-[0_0_10px_#00f2ff] opacity-40"></div>
+<div class="absolute bottom-[35%] right-[15%] w-2 h-2 bg-primary-container rounded-full shadow-[0_0_10px_#00f2ff]"></div>
+<div class="absolute bottom-[20%] left-[45%] w-3 h-3 bg-white rounded-full shadow-[0_0_20px_#fff]"></div> <!-- Current Target -->
+<!-- Central Content -->
+<div class="z-20 text-center">
+<h2 class="font-headline-md text-primary-container mb-2 tracking-widest">SIGNAL LOCK</h2>
+<div class="px-4 py-2 bg-primary-container text-on-primary font-label-caps text-label-caps tracking-tighter shadow-[0_0_20px_rgba(0,242,255,0.4)]">
+              OPTIMAL SIGNAL ACQUIRED
+            </div>
+<p class="mt-4 font-data-mono text-data-mono text-on-surface-variant/60">ALIGNED TO AZIMUTH 184.2°</p>
+</div>
+<!-- Vertical Scanning decorative line -->
+<div class="scanning-line top-1/4 animate-none opacity-20 h-[2px]"></div>
+</div>
+<div class="mt-12 flex flex-col items-center gap-4">
+<button class="px-10 py-4 bg-primary-container text-on-primary font-label-caps text-label-caps tracking-widest hover:shadow-[0_0_20px_#00f2ff] transition-all duration-300">
+            INITIATE UPLINK
+          </button>
+<p class="font-data-mono text-data-mono text-on-surface-variant/40 uppercase">Secure encrypted channel priority alpha</p>
+</div>
+</div>
+<!-- Right Column: Telemetry Feed & Map -->
+<div class="lg:col-span-3 flex flex-col gap-gutter order-3">
+<div class="glass-panel h-64 rounded-lg relative overflow-hidden group">
+<img alt="Global Coverage" class="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="A sophisticated, high-contrast digital map of the earth from orbit at night. The continents are traced with glowing cyan outlines of urban activity and data networks. The aesthetic is deep space black with vibrant neon cyan highlights, reflecting a futuristic satellite tracking interface. No text is visible on the map, only pure data visualization and glowing topographic features." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdJRIothBYuivByUphvDwjNXcM2b4X5jjnXkws2WQN8DzTtjinC_m74kh6LGGhODo7g7_tChPSwHvPxwT184sAhDt8vK3M-o_ltXleCsQKJhNbqyn_BVvTaKdXOjY3tlLGVNlGdFAFI-qQL0xnPxisVoi5d1wBRBJ_0xwS_cZdF0Wr3pZ58T4K-dLIuWq-eVtzb6f6xh172Hh3wpevc8nWe0VOnP2wTNJseXZrvocEbWg0huq6J7Rf_IakTg--C3AGaLWRffxee3cE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-80"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-label-caps text-label-caps text-on-surface-variant">COVERAGE MAP</p>
+<p class="font-data-mono text-data-mono text-primary-container">REGION: NORTH_ATLANTIC</p>
+</div>
+<div class="scanning-line group-hover:top-full transition-all duration-[2000ms]"></div>
+</div>
+<div class="glass-panel p-6 rounded-lg flex-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">LIVE TELEMETRY FEED</p>
+<div class="space-y-3 font-data-mono text-[10px] text-on-surface-variant leading-relaxed">
+<p class="text-primary-container/80">[ 09:14:02 ] SYNCHRONIZING WITH G-COM-12</p>
+<p>[ 09:14:05 ] DATA PACKET RECIEVED: HEX_7A92</p>
+<p>[ 09:14:09 ] HANDSHAKE COMPLETE</p>
+<p class="text-primary-container/80">[ 09:14:12 ] OPTIMIZING AZIMUTH_OFFSET...</p>
+<p>[ 09:14:18 ] NOISE_FLOOR: -114dBm</p>
+<p>[ 09:14:22 ] SIGNAL_STRENGTH: 98.4%</p>
+<p class="text-error/60">[ 09:14:25 ] WARNING: IONOSPHERIC INTERFERENCE DETECTED</p>
+<p>[ 09:14:29 ] REROUTING VIA NODE_DELTA_02</p>
+<p class="text-primary-container">[ 09:14:32 ] CONNECTION STABILIZED</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface/20 backdrop-blur-2xl border-t border-outline-variant/10 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px]">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="public">public</span>
+<span class="font-label-caps text-[10px]">MAP</span>
+</div>
+<!-- Active State: SIGNAL -->
+<div class="flex flex-col items-center justify-center text-primary-container drop-shadow-[0_0_8px_#00F2FF] after:content-[''] after:w-full after:h-[2px] after:bg-primary-container after:absolute after:top-0 after:animate-pulse scale-105 duration-200 cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-[10px]">SIGNAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="payments">payments</span>
+<span class="font-label-caps text-[10px]">PLANS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all cursor-pointer">
+<span class="material-symbols-outlined mb-1" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-[10px]">GUIDE</span>
+</div>
+</nav>
+</body></html>

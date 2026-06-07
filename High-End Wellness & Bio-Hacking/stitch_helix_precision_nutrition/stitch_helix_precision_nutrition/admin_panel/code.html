@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gene-Logic Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Literata:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed": "#1b1d0e",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-lowest": "#ffffff",
+                        "outline-variant": "#c2c8c4",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#636451",
+                        "on-primary-fixed": "#0b1f18",
+                        "inverse-primary": "#b5ccc1",
+                        "error": "#ba1a1a",
+                        "surface-container-high": "#e9e8e6",
+                        "inverse-surface": "#303130",
+                        "on-primary-fixed-variant": "#374b43",
+                        "surface-container-low": "#f5f3f1",
+                        "secondary-container": "#e1e1c9",
+                        "surface-container": "#efeeec",
+                        "surface-variant": "#e4e2e0",
+                        "error-container": "#ffdad6",
+                        "secondary": "#5e604d",
+                        "outline": "#727875",
+                        "primary-fixed": "#d1e8dd",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#424845",
+                        "on-surface": "#1b1c1b",
+                        "secondary-fixed-dim": "#c8c8b0",
+                        "surface": "#fbf9f7",
+                        "primary-container": "#8da399",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#dbdad8",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-primary": "#ffffff",
+                        "on-background": "#1b1c1b",
+                        "on-secondary-fixed-variant": "#474836",
+                        "tertiary": "#5d5f5f",
+                        "on-primary-container": "#263932",
+                        "surface-container-highest": "#e4e2e0",
+                        "primary-fixed-dim": "#b5ccc1",
+                        "primary": "#4e635a",
+                        "on-tertiary-container": "#343536",
+                        "inverse-on-surface": "#f2f0ef",
+                        "surface-tint": "#4e635a",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "tertiary-container": "#9d9e9e",
+                        "secondary-fixed": "#e4e4cc",
+                        "background": "#fbf9f7",
+                        "surface-bright": "#fbf9f7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max-width": "1280px",
+                        "margin": "40px",
+                        "section-gap": "80px",
+                        "base": "8px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Literata"],
+                        "h1": ["Literata"],
+                        "body-md": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "label": ["Inter"],
+                        "h3": ["Literata"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c2c8c4; border-radius: 10px; }
+        .active-nav { @apply bg-primary-container text-on-primary-container; }
+        .dna-card { box-shadow: 0 4px 12px rgba(141, 163, 153, 0.06); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-inverse-surface border-b border-outline-variant dark:border-outline fixed top-0 w-full z-40">
+<div class="flex justify-between items-center px-gutter py-4 w-full max-w-container-max-width mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary font-h3 text-h3" data-icon="biotech">biotech</span>
+<h1 class="font-h3 text-h3 font-semibold text-primary dark:text-inverse-primary tracking-tight">Gene-Logic</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex items-center gap-6">
+<a class="text-primary font-bold font-label text-label hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Nutrients</a>
+<a class="text-on-surface-variant font-label text-label hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Meals</a>
+<a class="text-on-surface-variant font-label text-label hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Metabolic</a>
+<a class="text-on-surface-variant font-label text-label hover:bg-surface-container-low transition-colors px-3 py-2 rounded-lg" href="#">Labs</a>
+</nav>
+<div class="h-8 w-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional headshot of a female clinical doctor in her late 30s wearing a clean white lab coat and a subtle stethoscope. The background is a soft-focus medical office with botanical sage green accents and warm, natural sunlight. The image quality is high-resolution, conveying trust, expertise, and a modern healthcare aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYPDcnkCj1a1qkMPzo24ieIchOCc--Gk4bNAoDTxXDMosaW_oxnBbe0Jb0TI8omg2ucH1p1gz8i9PAjbM2FLFSLv2fq_TqpM8Z_4QrkIKjqjzrKpWHf86do9xvXy23gDtnSjo8ofT75pnKoe62fsmKMT8fVozEN_V1sBoAzVOpSerVEP3QYxVNn8yFCkAXMIJq-dDb7MWARhpT3gvp6GJciE2iGoEe84flA2trl6onZbkvwcD__nKXsEr-FBVcQknCNOOFEOP2Pg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Grid -->
+<main class="flex-1 mt-[72px] grid grid-cols-12 max-w-container-max-width w-full mx-auto bg-surface">
+<!-- SideNav (Internal Management) -->
+<aside class="col-span-3 border-r border-outline-variant p-gutter bg-surface flex flex-col gap-8">
+<!-- Lab Uploads Section -->
+<section>
+<h2 class="font-h3 text-h3 mb-4 text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="upload_file">upload_file</span>
+                    Lab Uploads
+                </h2>
+<div class="border-2 border-dashed border-outline-variant rounded-xl p-6 bg-surface-container-lowest flex flex-col items-center justify-center text-center gap-3 hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-4xl text-outline group-hover:text-primary" data-icon="cloud_upload">cloud_upload</span>
+<p class="font-label text-label text-on-surface-variant">Drag DNA Sequencing raw files (.fasta, .csv)</p>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-full font-label text-label hover:opacity-90 transition-opacity">Select Files</button>
+</div>
+<div class="mt-4 space-y-2">
+<div class="p-3 bg-surface-container rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="description">description</span>
+<span class="text-xs font-medium truncate w-32">lab_result_v4.csv</span>
+</div>
+<span class="text-[10px] text-primary font-bold uppercase">Processing</span>
+</div>
+</div>
+</section>
+<!-- Nutritional Target Overrides -->
+<section>
+<h2 class="font-h3 text-h3 mb-4 text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="rule">rule</span>
+                    Target Overrides
+                </h2>
+<div class="space-y-4">
+<div class="p-4 bg-secondary-container rounded-xl border border-outline-variant">
+<label class="block text-[10px] font-bold text-on-secondary-container mb-2 uppercase tracking-wider">Vitamin D Baseline (IU)</label>
+<div class="flex items-center gap-4">
+<input class="w-full accent-primary" type="range"/>
+<span class="font-data-mono text-data-mono text-primary">5000</span>
+</div>
+</div>
+<div class="p-4 bg-secondary-container rounded-xl border border-outline-variant">
+<label class="block text-[10px] font-bold text-on-secondary-container mb-2 uppercase tracking-wider">Glucose Tolerance Threshold</label>
+<select class="w-full bg-surface border-outline-variant rounded-lg text-sm p-2 focus:ring-primary focus:border-primary">
+<option>Aggressive (95 mg/dL)</option>
+<option selected="">Moderate (110 mg/dL)</option>
+<option>Liberal (125 mg/dL)</option>
+</select>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary rounded-full font-label text-label shadow-sm hover:opacity-90 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="save">save</span>
+                        Apply Global Overrides
+                    </button>
+</div>
+</section>
+</aside>
+<!-- Main Dashboard Canvas -->
+<div class="col-span-9 p-gutter bg-surface-bright flex flex-col gap-gutter">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end">
+<div>
+<h2 class="font-h2 text-h2 text-primary">Patient DNA Profiles</h2>
+<p class="text-on-surface-variant font-body-md italic mt-1">Analyzing 1,248 genetic markers across current cohort.</p>
+</div>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline text-sm" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 border border-outline-variant rounded-full text-sm bg-surface-container-lowest focus:ring-primary w-64" placeholder="Search by name or SNP..." type="text"/>
+</div>
+<button class="p-2 border border-outline-variant rounded-full hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<!-- Data Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant overflow-hidden dna-card">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-low border-b border-outline-variant">
+<tr>
+<th class="px-6 py-4 font-label text-label text-on-surface-variant uppercase tracking-widest">Patient Name</th>
+<th class="px-6 py-4 font-label text-label text-on-surface-variant uppercase tracking-widest text-center">Status Flags</th>
+<th class="px-6 py-4 font-label text-label text-on-surface-variant uppercase tracking-widest">Metabolic Risk</th>
+<th class="px-6 py-4 font-label text-label text-on-surface-variant uppercase tracking-widest">Inflammation</th>
+<th class="px-6 py-4 font-label text-label text-on-surface-variant uppercase tracking-widest text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<!-- Patient Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed-dim flex items-center justify-center font-bold text-on-primary-fixed-variant">EH</div>
+<div>
+<div class="font-medium text-on-surface">Elena Henderson</div>
+<div class="text-[10px] text-outline font-data-mono">ID: 8829-QX</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="flex justify-center gap-1">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[85%]"></div>
+</div>
+<span class="font-data-mono text-data-mono text-primary">85%</span>
+</div>
+<span class="text-[10px] text-on-surface-variant italic">High (FOXO3 Variant)</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-[10px] font-bold uppercase">Chronic</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary hover:underline font-label text-label">View Markers</button>
+</td>
+</tr>
+<!-- Patient Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center font-bold text-secondary">MJ</div>
+<div>
+<div class="font-medium text-on-surface">Marcus Jensen</div>
+<div class="text-[10px] text-outline font-data-mono">ID: 4410-ZL</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="flex justify-center gap-1">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-[22%]"></div>
+</div>
+<span class="font-data-mono text-data-mono text-secondary">22%</span>
+</div>
+<span class="text-[10px] text-on-surface-variant italic">Optimal</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-surface-container-high text-on-surface-variant rounded-full text-[10px] font-bold uppercase">Normal</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary hover:underline font-label text-label">View Markers</button>
+</td>
+</tr>
+<!-- Patient Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center font-bold text-primary">SC</div>
+<div>
+<div class="font-medium text-on-surface">Sarah Chen</div>
+<div class="text-[10px] text-outline font-data-mono">ID: 1192-PK</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5 text-center">
+<div class="flex justify-center gap-1">
+<span class="material-symbols-outlined text-error text-sm" data-icon="emergency" style="font-variation-settings: 'FILL' 1;">emergency</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1.5 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[64%]"></div>
+</div>
+<span class="font-data-mono text-data-mono text-primary">64%</span>
+</div>
+<span class="text-[10px] text-on-surface-variant italic">Elevated</span>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 bg-error-container text-on-error-container rounded-full text-[10px] font-bold uppercase">Severe</span>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="text-primary hover:underline font-label text-label">View Markers</button>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-low flex justify-between items-center">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest">Showing 3 of 842 profiles</span>
+<div class="flex gap-2">
+<button class="p-1 rounded bg-surface border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-1 rounded bg-surface border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Epigenetic Tips (Fluid Container) -->
+<section class="bg-primary-container/10 border border-primary/20 rounded-[40px] p-8 flex items-center gap-8">
+<div class="w-24 h-24 bg-primary text-on-primary rounded-full flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-4xl" data-icon="lightbulb">lightbulb</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-primary mb-2">Epigenetic Focus: Cohort Inflammation</h3>
+<p class="text-on-primary-container font-body-md leading-relaxed">
+                        Data indicates a 14% increase in CRP levels among the current cohort. Review genetic predisposition for <span class="font-bold">IL-6 SNP RS1800795</span> before finalizing nutritional overrides for this quarter. Early intervention suggests a 22% reduction in long-term metabolic strain.
+                    </p>
+<button class="mt-4 flex items-center gap-2 text-primary font-bold font-label text-label uppercase tracking-widest hover:gap-3 transition-all">
+                        Generate Report <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-8 right-8 w-16 h-16 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-2xl" data-icon="add" style="font-variation-settings: 'FILL' 0; font-weight: 700;">add</span>
+</button>
+<!-- BottomNavBar (Hidden on desktop as per rules, but included for system integrity) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe-area pt-2 bg-surface-container-lowest shadow-[0_-4px_12px_rgba(141,163,153,0.06)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="pill">pill</span>
+<span class="font-label text-label">Nutrients</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+<span class="font-label text-label">Meals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label text-label">Metabolic</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label text-label">Labs</span>
+</a>
+</nav>
+</body></html>

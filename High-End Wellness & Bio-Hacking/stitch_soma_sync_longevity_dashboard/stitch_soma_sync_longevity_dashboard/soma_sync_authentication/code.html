@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOMA-SYNC | Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#0c56d0",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-primary": "#b2c5ff",
+                    "on-primary-container": "#c4d2ff",
+                    "outline": "#737685",
+                    "on-secondary-container": "#003179",
+                    "on-background": "#191c1e",
+                    "tertiary": "#374559",
+                    "primary": "#003d9b",
+                    "secondary": "#285ab9",
+                    "error": "#ba1a1a",
+                    "on-secondary-fixed-variant": "#00419d",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#191c1e",
+                    "outline-variant": "#c3c6d6",
+                    "on-secondary-fixed": "#001946",
+                    "on-primary-fixed": "#001848",
+                    "surface": "#f7f9fb",
+                    "inverse-on-surface": "#eff1f3",
+                    "on-tertiary-fixed-variant": "#3a485c",
+                    "on-secondary": "#ffffff",
+                    "surface-variant": "#e0e3e5",
+                    "on-error": "#ffffff",
+                    "background": "#f7f9fb",
+                    "tertiary-container": "#4e5c71",
+                    "secondary-fixed": "#d9e2ff",
+                    "on-tertiary-container": "#c6d4ed",
+                    "on-primary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "surface-container-low": "#f2f4f6",
+                    "primary-fixed": "#dae2ff",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e6e8ea",
+                    "secondary-fixed-dim": "#b1c6ff",
+                    "surface-bright": "#f7f9fb",
+                    "secondary-container": "#709bfe",
+                    "on-surface-variant": "#434654",
+                    "tertiary-fixed-dim": "#b9c7e0",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "surface-container": "#eceef0",
+                    "tertiary-fixed": "#d5e3fd",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "surface-dim": "#d8dadc",
+                    "on-tertiary-fixed": "#0d1c2f",
+                    "primary-container": "#0052cc",
+                    "on-error-container": "#93000a",
+                    "surface-container-highest": "#e0e3e5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "xl": "40px",
+                    "max_width": "1440px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "body-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "h2": ["Space Grotesk"],
+                    "data-value": ["Space Grotesk"],
+                    "data-label": ["JetBrains Mono"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Space Grotesk"],
+                    "display": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "data-value": ["20px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                    "data-label": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background-color: rgba(247, 249, 251, 0.75);
+            border: 1px solid rgba(115, 118, 133, 0.15);
+        }
+        .ghost-border {
+            border: 1px solid rgba(0, 61, 155, 0.1);
+        }
+        .ghost-border:focus-within {
+            border-color: #003d9b;
+            box-shadow: 0 0 8px rgba(0, 61, 155, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed overflow-hidden">
+<main class="flex min-h-screen">
+<!-- Left Side: Brand Imagery -->
+<section class="relative hidden lg:flex flex-col w-1/2 p-xl justify-between overflow-hidden bg-primary overflow-hidden">
+<div class="absolute inset-0 z-0">
+<img alt="Abstract cellular structure" class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A highly detailed 3D visualization of microscopic cellular structures and genetic sequences glowing in deep laboratory blue and sterile white. The lighting is cold and clinical, highlighting the geometric precision of the biological forms. The overall aesthetic is futuristic, scientific, and high-fidelity, suggesting advanced longevity research and biometric data mapping." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMRbQxBdnerAA_goLT6DkkxGl2Tpqqk2kI05zXSE3A3ySipFemBJItm83xR8p3hUDs5RZO-Fgxwgr9pgovBtuSIs0JyFxBRtAt7FklER6JDcFn9nrxhwb7C7qA0Unh-p0o43Xd89hEFQd0F5At38bxJHeOpSycxLZEkeBdsMRgQV0Ic0FjtkH29bCLQ0u-6zgNqwFwtLtVZ_DKE2VhstEcEWFqeEd5ge4hbztz6EOfCrYD5dGgvpsIbn0jA850fQtNAgSehVlNCBz1"/>
+<div class="absolute inset-0 bg-gradient-to-br from-primary via-transparent to-primary-container opacity-80"></div>
+</div>
+<!-- Header Content -->
+<div class="relative z-10">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-surface text-display" style="font-variation-settings: 'FILL' 1;">health_metrics</span>
+<h1 class="font-display text-h1 text-surface tracking-tighter uppercase">SOMA-SYNC</h1>
+</div>
+</div>
+<!-- Hero Copy -->
+<div class="relative z-10 max-w-lg">
+<h2 class="font-display text-display text-surface leading-[1.05] mb-lg">
+                    Join the Longevity Revolution
+                </h2>
+<div class="h-xs w-xl bg-secondary-container mb-md"></div>
+<p class="font-body-lg text-secondary-fixed-dim opacity-90">
+                    High-precision biological monitoring for the professional biohacker. Synchronize your biomarkers with clinical-grade accuracy and actionable longevity science.
+                </p>
+</div>
+<!-- Footer Stats (Lab High Density Style) -->
+<div class="relative z-10 grid grid-cols-3 gap-gutter pt-lg border-t border-surface/10">
+<div>
+<span class="block font-data-label text-data-label text-surface/60 uppercase">Active Nodes</span>
+<span class="font-data-value text-data-value text-surface">14,209</span>
+</div>
+<div>
+<span class="block font-data-label text-data-label text-surface/60 uppercase">Data Points/Sec</span>
+<span class="font-data-value text-data-value text-surface">840.4k</span>
+</div>
+<div>
+<span class="block font-data-label text-data-label text-surface/60 uppercase">Precision</span>
+<span class="font-data-value text-data-value text-surface">99.98%</span>
+</div>
+</div>
+</section>
+<!-- Right Side: Auth Forms -->
+<section class="w-full lg:w-1/2 flex flex-col justify-center items-center px-lg lg:px-xl py-xl bg-surface">
+<div class="w-full max-w-md">
+<!-- Form Header -->
+<header class="mb-xl">
+<div class="flex lg:hidden items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary text-h1" style="font-variation-settings: 'FILL' 1;">health_metrics</span>
+<h1 class="font-display text-h2 text-primary tracking-tighter uppercase">SOMA-SYNC</h1>
+</div>
+<span class="font-data-label text-data-label text-primary uppercase tracking-widest block mb-xs">Protocol: Authorization</span>
+<h2 class="font-h1 text-h1 text-on-surface">Initialize Session</h2>
+<p class="text-on-surface-variant font-body-md mt-xs">Access your metabolic dashboard and biomarker analytics.</p>
+</header>
+<!-- Auth Tabs -->
+<div class="flex gap-md mb-lg border-b border-outline-variant/15">
+<button class="font-data-label text-data-label uppercase pb-sm border-b-2 border-primary text-primary">Sign In</button>
+<button class="font-data-label text-data-label uppercase pb-sm border-b-2 border-transparent text-outline hover:text-on-surface transition-colors">Register</button>
+</div>
+<!-- Form Fields -->
+<form class="space-y-lg">
+<div class="space-y-xs">
+<label class="font-data-label text-data-label text-on-surface-variant uppercase" for="email">Operator ID (Email)</label>
+<div class="group relative">
+<input class="w-full bg-surface-container-low ghost-border py-md px-lg text-on-surface font-body-md focus:outline-none transition-all duration-200" id="email" placeholder="operator@somasync.io" type="email"/>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between items-center">
+<label class="font-data-label text-data-label text-on-surface-variant uppercase" for="password">Access Key (Password)</label>
+<a class="font-data-label text-data-label text-primary lowercase hover:underline" href="#">Reset Sequence</a>
+</div>
+<div class="group relative">
+<input class="w-full bg-surface-container-low ghost-border py-md px-lg text-on-surface font-body-md focus:outline-none transition-all duration-200" id="password" placeholder="••••••••••••" type="password"/>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary hover:bg-surface-tint text-on-primary py-lg px-xl font-data-label text-data-label uppercase tracking-widest flex justify-between items-center transition-all duration-200 active:scale-[0.98]" type="submit">
+                        Authorize Session
+                        <span class="material-symbols-outlined text-[18px]">arrow_forward_ios</span>
+</button>
+</form>
+<!-- Biometric Section -->
+<div class="mt-xl pt-xl border-t border-outline-variant/15">
+<span class="font-data-label text-data-label text-on-surface-variant uppercase block mb-md text-center">Alternative Authentication</span>
+<div class="grid grid-cols-2 gap-md">
+<button class="flex items-center justify-center gap-sm py-md px-lg ghost-border bg-white hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-primary">fingerprint</span>
+<span class="font-data-label text-data-label uppercase">Biometric</span>
+</button>
+<button class="flex items-center justify-center gap-sm py-md px-lg ghost-border bg-white hover:bg-surface-container-high transition-colors text-on-surface">
+<span class="material-symbols-outlined text-primary">face</span>
+<span class="font-data-label text-data-label uppercase">Scan ID</span>
+</button>
+</div>
+</div>
+<!-- Legal/Support Footer -->
+<footer class="mt-xl text-center">
+<p class="font-data-label text-[10px] text-outline uppercase leading-relaxed">
+                        Secure connection established via 256-bit encryption.<br/>
+                        By authorizing, you agree to the <a class="text-primary hover:underline" href="#">Longevity Protocol Terms</a>.
+                    </p>
+</footer>
+</div>
+</section>
+</main>
+<!-- Contextual Health Status Overlay (Visual Polish) -->
+<div class="fixed top-lg right-lg pointer-events-none hidden md:block">
+<div class="glass-panel p-md flex items-center gap-md">
+<div class="relative w-md h-md">
+<div class="absolute inset-0 bg-primary opacity-20 rounded-full animate-ping"></div>
+<div class="relative w-md h-md bg-primary rounded-full"></div>
+</div>
+<div>
+<span class="block font-data-label text-[10px] text-on-surface-variant uppercase">Server Cluster</span>
+<span class="block font-data-label text-data-label text-primary uppercase">Sync: Operational</span>
+</div>
+</div>
+</div>
+</body></html>

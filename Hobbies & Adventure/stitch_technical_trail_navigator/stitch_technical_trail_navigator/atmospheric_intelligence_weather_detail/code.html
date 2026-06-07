@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SUMMIT_OS | WEATHER_DETAIL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#393939",
+                        "on-secondary": "#3f2d1e",
+                        "on-primary-container": "#531a00",
+                        "inverse-primary": "#a63b00",
+                        "error": "#ffb4ab",
+                        "tertiary": "#c1c8c7",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-fixed": "#370e00",
+                        "on-secondary-container": "#ccb09c",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#574333",
+                        "surface-container": "#20201f",
+                        "surface": "#131313",
+                        "secondary-fixed-dim": "#dec1ac",
+                        "primary-fixed": "#ffdbce",
+                        "on-tertiary-container": "#272e2e",
+                        "error-container": "#93000a",
+                        "secondary-fixed": "#fbddc7",
+                        "on-surface-variant": "#e4bfb1",
+                        "outline-variant": "#5b4137",
+                        "on-tertiary": "#2b3232",
+                        "surface-variant": "#353535",
+                        "surface-dim": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-container": "#574333",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#414848",
+                        "surface-tint": "#ffb599",
+                        "on-tertiary-fixed": "#161d1d",
+                        "tertiary-container": "#8e9595",
+                        "secondary": "#dec1ac",
+                        "surface-container-low": "#1c1b1b",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#5a1c00",
+                        "primary": "#ffb599",
+                        "background": "#131313",
+                        "surface-container-highest": "#353535",
+                        "outline": "#ab8a7d",
+                        "on-secondary-fixed": "#28180b",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "primary-fixed-dim": "#ffb599",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-container": "#ff5f00",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-fixed-dim": "#c1c8c7",
+                        "tertiary-fixed": "#dde4e3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "4px",
+                        "unit-12": "48px",
+                        "unit-16": "64px",
+                        "unit-1": "4px",
+                        "gutter": "24px",
+                        "unit-4": "16px",
+                        "unit-6": "24px",
+                        "unit-8": "32px",
+                        "unit-2": "8px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"],
+                        "h3": ["Space Grotesk"],
+                        "code-tech": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "code-tech": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .grid-pattern {
+            background-image: radial-gradient(rgba(255, 95, 0, 0.1) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .technical-border {
+            border: 1px solid rgba(228, 191, 177, 0.15);
+        }
+        .corner-bracket {
+            position: relative;
+        }
+        .corner-bracket::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 8px;
+            height: 8px;
+            border-top: 2px solid #ff5f00;
+            border-left: 2px solid #ff5f00;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="bg-zinc-950 border-b-2 border-zinc-800 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1440px] mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-orange-600" data-icon="menu">menu</span>
+<h1 class="font-['Space_Grotesk'] uppercase tracking-widest font-black text-xl text-white">SUMMIT_OS</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-['Space_Grotesk'] text-xs font-bold tracking-widest text-zinc-500 hover:text-orange-400" href="#">DASHBOARD</a>
+<a class="font-['Space_Grotesk'] text-xs font-bold tracking-widest text-orange-500" href="#">WEATHER</a>
+<a class="font-['Space_Grotesk'] text-xs font-bold tracking-widest text-zinc-500 hover:text-orange-400" href="#">CARTOGRAPHY</a>
+</nav>
+<button class="bg-primary-container text-white px-6 py-2 font-['Space_Grotesk'] font-bold text-sm tracking-tighter active:scale-95 transition-transform duration-75">SOS</button>
+</div>
+</div>
+</header>
+<div class="flex max-w-[1440px] mx-auto min-h-screen">
+<!-- SideNavBar (Desktop Only) -->
+<aside class="hidden lg:flex flex-col h-[calc(100vh-74px)] sticky top-[74px] py-8 w-64 border-r border-zinc-800 bg-zinc-950">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 p-3 bg-zinc-900 technical-border">
+<div class="w-10 h-10 bg-orange-900/30 flex items-center justify-center border border-orange-600">
+<span class="material-symbols-outlined text-orange-600" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-zinc-500">EXPEDITION LEADER</p>
+<p class="font-code-tech text-white leading-none">ALPHA-01</p>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<div class="bg-zinc-900 text-orange-500 border-l-4 border-orange-600 px-6 py-3 flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps">WEATHER</span>
+</div>
+<a class="text-zinc-500 px-6 py-3 flex items-center gap-3 hover:bg-zinc-900 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps">DASHBOARD</span>
+</a>
+<a class="text-zinc-500 px-6 py-3 flex items-center gap-3 hover:bg-zinc-900 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps">CARTOGRAPHY</span>
+</a>
+<a class="text-zinc-500 px-6 py-3 flex items-center gap-3 hover:bg-zinc-900 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps">VITALS</span>
+</a>
+<a class="text-zinc-500 px-6 py-3 flex items-center gap-3 hover:bg-zinc-900 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps">COMMS</span>
+</a>
+</nav>
+<div class="mt-auto px-6 space-y-2 border-t border-zinc-800 pt-6">
+<button class="w-full bg-zinc-800 py-3 text-white font-label-caps text-center border border-zinc-700 active:bg-zinc-700">LOG DATA</button>
+<div class="flex justify-between py-2">
+<span class="material-symbols-outlined text-zinc-600 cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-zinc-600 cursor-pointer" data-icon="logout">logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-6 lg:p-10 grid-pattern">
+<!-- Breadcrumb / System Header -->
+<div class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<p class="font-code-tech text-orange-600 text-xs mb-1">LOCATION_ID: 45.8327° N, 6.8651° E</p>
+<h2 class="font-h1 text-white uppercase">MONT BLANC MASSIF</h2>
+</div>
+<div class="flex gap-4">
+<div class="px-4 py-2 bg-surface-container technical-border">
+<p class="font-label-caps text-zinc-500 text-[10px]">SYSTEM_STATUS</p>
+<p class="font-code-tech text-green-500">OPERATIONAL</p>
+</div>
+<div class="px-4 py-2 bg-surface-container technical-border">
+<p class="font-label-caps text-zinc-500 text-[10px]">LAST_SYNC</p>
+<p class="font-code-tech text-white">02m_44s_AGO</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 xl:grid-cols-12 gap-6">
+<!-- Main Weather Display -->
+<section class="xl:col-span-8 space-y-6">
+<!-- Current Conditions Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 bg-zinc-950 technical-border corner-bracket p-8 relative overflow-hidden group">
+<div class="absolute top-4 right-4 text-orange-600/20 font-black text-6xl select-none group-hover:text-orange-600/30 transition-colors">CURRENT</div>
+<p class="font-label-caps text-orange-600 mb-6">CURRENT_CONDITIONS</p>
+<div class="flex items-center gap-8">
+<span class="material-symbols-outlined text-white text-8xl" data-icon="ac_unit" style="font-variation-settings: 'wght' 200;">ac_unit</span>
+<div>
+<div class="flex items-start">
+<span class="font-h1 text-white text-7xl">-14</span>
+<span class="font-h3 text-zinc-500 mt-2">°C</span>
+</div>
+<p class="font-body-lg text-on-surface-variant uppercase tracking-widest">SEVERE_SNOW_FALL</p>
+</div>
+</div>
+</div>
+<div class="bg-zinc-950 technical-border p-6 flex flex-col justify-between">
+<div>
+<p class="font-label-caps text-zinc-500 mb-4">VISIBILITY_INDEX</p>
+<div class="w-full bg-zinc-900 h-2 mb-2">
+<div class="bg-red-600 h-full w-1/5"></div>
+</div>
+<p class="font-code-tech text-red-500 text-lg">LOW_DANGER</p>
+<p class="font-label-caps text-[10px] text-zinc-600 mt-1">APPROX. 150M RANGE</p>
+</div>
+<div class="pt-6 border-t border-zinc-800">
+<p class="font-label-caps text-zinc-500 mb-1">WIND_SPEED</p>
+<p class="font-h3 text-white">45 <span class="text-sm font-normal text-zinc-500">KM/H</span></p>
+</div>
+</div>
+</div>
+<!-- Atmospheric Pressure Chart -->
+<div class="bg-zinc-950 technical-border p-6">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-label-caps text-white tracking-widest">ATMOSPHERIC_PRESSURE (24H_TREND)</h3>
+<div class="flex gap-2">
+<span class="w-3 h-3 bg-orange-600 inline-block"></span>
+<span class="font-code-tech text-[10px] text-zinc-400">BAROMETRIC_HPA</span>
+</div>
+</div>
+<div class="h-64 w-full relative">
+<!-- SVG Placeholder for Technical Chart -->
+<svg class="w-full h-full opacity-60" viewbox="0 0 1000 200">
+<polyline fill="none" points="0,150 50,140 100,160 150,155 200,120 250,110 300,115 350,90 400,100 450,130 500,140 550,145 600,135 650,120 700,90 750,70 800,85 850,100 900,110 950,105 1000,120" stroke="#ff5f00" stroke-width="2"></polyline>
+<line stroke="#333" stroke-dasharray="4" stroke-width="1" x1="0" x2="0" y1="0" y2="200"></line>
+<line stroke="#333" stroke-dasharray="4" stroke-width="1" x1="200" x2="200" y1="0" y2="200"></line>
+<line stroke="#333" stroke-dasharray="4" stroke-width="1" x1="400" x2="400" y1="0" y2="200"></line>
+<line stroke="#333" stroke-dasharray="4" stroke-width="1" x1="600" x2="600" y1="0" y2="200"></line>
+<line stroke="#333" stroke-dasharray="4" stroke-width="1" x1="800" x2="800" y1="0" y2="200"></line>
+</svg>
+<div class="absolute inset-0 flex items-end justify-between font-code-tech text-[10px] text-zinc-600 pointer-events-none">
+<span>T-24H</span>
+<span>T-18H</span>
+<span>T-12H</span>
+<span>T-06H</span>
+<span>REAL_TIME</span>
+</div>
+</div>
+</div>
+<!-- 5-Day Forecast -->
+<div>
+<p class="font-label-caps text-zinc-500 mb-4">5-DAY_FORECAST</p>
+<div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+<!-- Forecast Item -->
+<div class="bg-zinc-950 technical-border p-4 flex flex-col items-center group hover:bg-zinc-900 transition-colors">
+<p class="font-label-caps text-[10px] text-zinc-500 mb-3">THU_12</p>
+<span class="material-symbols-outlined text-orange-600 text-4xl mb-3" data-icon="cloud_snow">cloudy_snowing</span>
+<p class="font-code-tech text-white">-16°</p>
+<p class="font-label-caps text-[8px] text-zinc-500 uppercase mt-1">SNOW</p>
+</div>
+<div class="bg-zinc-950 technical-border p-4 flex flex-col items-center group hover:bg-zinc-900 transition-colors">
+<p class="font-label-caps text-[10px] text-zinc-500 mb-3">FRI_13</p>
+<span class="material-symbols-outlined text-red-500 text-4xl mb-3" data-icon="cyclone">cyclone</span>
+<p class="font-code-tech text-white">-22°</p>
+<p class="font-label-caps text-[8px] text-zinc-500 uppercase mt-1">BLIZZARD</p>
+</div>
+<div class="bg-zinc-950 technical-border p-4 flex flex-col items-center group hover:bg-zinc-900 transition-colors">
+<p class="font-label-caps text-[10px] text-zinc-500 mb-3">SAT_14</p>
+<span class="material-symbols-outlined text-orange-600 text-4xl mb-3" data-icon="cloud_snow">cloudy_snowing</span>
+<p class="font-code-tech text-white">-18°</p>
+<p class="font-label-caps text-[8px] text-zinc-500 uppercase mt-1">SNOW</p>
+</div>
+<div class="bg-zinc-950 technical-border p-4 flex flex-col items-center group hover:bg-zinc-900 transition-colors">
+<p class="font-label-caps text-[10px] text-zinc-500 mb-3">SUN_15</p>
+<span class="material-symbols-outlined text-yellow-500 text-4xl mb-3" data-icon="wb_sunny">wb_sunny</span>
+<p class="font-code-tech text-white">-08°</p>
+<p class="font-label-caps text-[8px] text-zinc-500 uppercase mt-1">CLEAR</p>
+</div>
+<div class="bg-zinc-950 technical-border p-4 flex flex-col items-center group hover:bg-zinc-900 transition-colors">
+<p class="font-label-caps text-[10px] text-zinc-500 mb-3">MON_16</p>
+<span class="material-symbols-outlined text-blue-400 text-4xl mb-3" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+<p class="font-code-tech text-white">-05°</p>
+<p class="font-label-caps text-[8px] text-zinc-500 uppercase mt-1">PART_CLOUD</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Sidebar Content -->
+<aside class="xl:col-span-4 space-y-6">
+<!-- Emergency Alert Box -->
+<div class="bg-red-950/20 border-2 border-red-600 p-6 relative">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-red-600" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h3 class="font-h3 text-red-600 uppercase">EMERGENCY_ALERT</h3>
+</div>
+<div class="space-y-4">
+<div>
+<p class="font-label-caps text-red-600/70 text-[10px]">THREAT_TYPE</p>
+<p class="font-code-tech text-white text-lg font-bold">HIGH_WINDS &gt; 100 KM/H</p>
+</div>
+<div class="bg-red-600/10 p-4 border border-red-600/30">
+<p class="font-label-caps text-red-600 text-[10px] mb-2">PROTOCOL_INSTRUCTIONS</p>
+<ul class="font-body-md text-on-surface-variant text-sm space-y-2 list-none">
+<li class="flex gap-2"><span class="text-red-600">01</span> CEASE ALL VERTICAL MOVEMENT.</li>
+<li class="flex gap-2"><span class="text-red-600">02</span> SECURE HIGH-ALTITUDE CAMP GEAR.</li>
+<li class="flex gap-2"><span class="text-red-600">03</span> ACTIVATE EMERGENCY BEACON.</li>
+</ul>
+</div>
+</div>
+</div>
+<!-- Data Details Sidebar Section -->
+<div class="bg-zinc-950 border border-zinc-800 p-6 space-y-8">
+<div>
+<p class="font-label-caps text-zinc-500 mb-2">WIND_CHILL</p>
+<div class="flex items-baseline gap-2">
+<span class="font-h2 text-white">-28°</span>
+<span class="font-code-tech text-orange-600 text-xs">EXTREME</span>
+</div>
+</div>
+<div>
+<p class="font-label-caps text-zinc-500 mb-2">HUMIDITY</p>
+<div class="flex items-baseline gap-2">
+<span class="font-h2 text-white">82%</span>
+<span class="font-code-tech text-zinc-500 text-xs">SATURATED</span>
+</div>
+</div>
+<div>
+<p class="font-label-caps text-zinc-500 mb-2">UV_INDEX</p>
+<div class="flex items-baseline gap-2">
+<span class="font-h2 text-white">LOW_1</span>
+<span class="font-code-tech text-green-500 text-xs">SAFE_LEVEL</span>
+</div>
+</div>
+<div>
+<p class="font-label-caps text-zinc-500 mb-2">SUNRISE_SUNSET</p>
+<div class="flex justify-between font-code-tech text-white">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-orange-600" data-icon="wb_sunny">wb_sunny</span>
+<span>06:44</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs text-blue-600" data-icon="nights_stay">nights_stay</span>
+<span>17:12</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-zinc-800">
+<p class="font-label-caps text-zinc-500 mb-4">TERRAIN_VISUALIZATION</p>
+<div class="w-full aspect-video bg-zinc-900 border border-zinc-800 relative group overflow-hidden">
+<img class="w-full h-full object-cover opacity-50 grayscale group-hover:scale-110 transition-transform duration-1000" data-alt="A detailed, technical 3D wireframe terrain map of the Mont Blanc Massif mountain range, rendered in a dark tactical interface style with neon orange elevation markers and coordinate grid overlays. The aesthetic is monochromatic charcoal gray with sharp safety-orange accents, conveying a high-precision expeditionary navigation tool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjTkFN_cdvpBld1JUXum4u1eqlAIYVZY_TgozSaAud6fGlW1R2XjLQFbiJ4E42uK9YqKvl234aysDC2FwQNFi558Ojp8wHxh_bGeuRXnfgxJOE2h6KOQFab_N_fXf3sTUEk1KLbcehkhd0pa8pH9uhYTKbes_DSVUHgcLwu92zIkMC0e5ZXnuQPGJ1kj9-dMG61PYiG1iOW3RCldZxX8mts60PH5oxxwtQs-abD_X0AaRe7LBBw-a0V4FECnwnSb8DCU_shcno6uhv"/>
+<div class="absolute inset-0 bg-gradient-to-t from-zinc-950 to-transparent"></div>
+<div class="absolute bottom-4 left-4 font-code-tech text-[10px] text-orange-600">LIVE_CAM_01_FEED</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 right-0 bg-zinc-950 border-t border-zinc-800 px-6 py-4 flex justify-around items-center z-50">
+<span class="material-symbols-outlined text-zinc-500" data-icon="grid_view">grid_view</span>
+<span class="material-symbols-outlined text-orange-600" data-icon="thermostat" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="material-symbols-outlined text-zinc-500" data-icon="explore">explore</span>
+<span class="material-symbols-outlined text-zinc-500" data-icon="monitor_heart">monitor_heart</span>
+</nav>
+</body></html>

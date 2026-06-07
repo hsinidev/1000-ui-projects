@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GLOBAL-COMMS | Setup Guide</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#5e6060",
+                        "secondary-container": "#44474b",
+                        "secondary": "#c5c6cb",
+                        "surface-container-low": "#151d1e",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#2a3232",
+                        "surface-container": "#192122",
+                        "error": "#ffb4ab",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-secondary-container": "#b3b5ba",
+                        "on-secondary-fixed-variant": "#44474b",
+                        "tertiary": "#f7f8f8",
+                        "primary-container": "#00f2ff",
+                        "secondary-fixed-dim": "#c5c6cb",
+                        "surface": "#0d1515",
+                        "inverse-primary": "#00696f",
+                        "background": "#0d1515",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container-lowest": "#080f10",
+                        "surface-bright": "#333b3b",
+                        "surface-container-high": "#232b2c",
+                        "outline": "#849495",
+                        "surface-dim": "#0d1515",
+                        "on-secondary-fixed": "#191c1f",
+                        "tertiary-container": "#dbdbdb",
+                        "on-secondary": "#2e3134",
+                        "outline-variant": "#3a494b",
+                        "surface-variant": "#2e3637",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-surface": "#dce4e4",
+                        "primary": "#e1fdff",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "inverse-surface": "#dce4e4",
+                        "primary-fixed": "#74f5ff",
+                        "on-tertiary": "#2f3131",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-primary": "#00363a",
+                        "secondary-fixed": "#e1e2e7",
+                        "on-primary-fixed": "#002022",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-tint": "#00dbe7",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#006a71",
+                        "on-background": "#dce4e4",
+                        "surface-container-highest": "#2e3637"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-desktop": "64px",
+                        "margin-mobile": "20px",
+                        "container-max": "1440px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "display-xl": ["Space Grotesk"],
+                        "data-mono": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(0, 242, 255, 0.1);
+        }
+        .scanning-line {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #00f2ff;
+            box-shadow: 0 0 8px #00f2ff;
+            opacity: 0.5;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .signal-ring {
+            border: 2px solid rgba(0, 242, 255, 0.1);
+            border-radius: 50%;
+        }
+        .signal-ring-active {
+            border-color: #00f2ff;
+            box-shadow: 0 0 12px #00f2ff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container min-h-screen font-body-md">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16 z-50 fixed top-0 bg-surface/10 backdrop-blur-md border-b border-outline-variant/20 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg text-primary-container tracking-[0.2em] uppercase text-headline-lg">GLOBAL-COMMS</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300 cursor-pointer">TERMINAL</span>
+<span class="font-label-caps text-label-caps text-primary-container hover:text-primary-fixed-dim transition-colors duration-300 border-b border-primary-container cursor-pointer">SETUP</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300 cursor-pointer">NETWORK</span>
+</div>
+<div class="h-8 w-8 rounded-full border border-primary-container/30 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional close-up portrait of a high-tech communication specialist in a dark, minimalist setting. The lighting is moody with subtle neon cyan accents reflecting off the person's features. The overall style is futuristic and high-end, matching the deep space black and neon blue aesthetic of the global communication brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNSM_hw8rh8j3t99ZcXteG6pZGS-ZAXEKw4E7nAk4ehvRaSkBk56aVaQavf_9iH_QUS9tsImCRYXvD_iHqJzfp0kFkh7PiHLI7ubMscwaNmn5ximOFethbvpYHvtXFPZGY8Q_TXn8LTZgREeihf9jt0bVOoVZwSlzSoggMiQUcjdSbSIgqSKXlaZtJ0bsq-6q8aADTrOq8xaf-U66alDSSaruMCvZnGnkHGxMFipFSpa16UQKS94YbusOFX1h-804KdPOv-oQK4C_s"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-40 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col gap-16">
+<!-- Header Section -->
+<section class="max-w-3xl">
+<p class="font-label-caps text-label-caps text-primary-container mb-4 tracking-widest">INITIALIZATION SEQUENCE</p>
+<h1 class="font-display-xl text-display-xl text-on-surface mb-6 uppercase">Portable Device <br/>Deployment Guide</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed">
+                    Follow this technical protocol to establish a secure link with the Global-Comms satellite constellation. Ensure your environment is clear of significant electromagnetic interference.
+                </p>
+</section>
+<!-- Onboarding Steps: High-Tech Technical Manual Style -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8 relative">
+<!-- Vertical scanning line decorative element -->
+<div class="hidden lg:block absolute -left-8 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-primary-container/30 to-transparent"></div>
+<!-- Step 1: Power On -->
+<div class="glass-panel p-8 flex flex-col gap-8 relative overflow-hidden group">
+<div class="scanning-line top-4 group-hover:top-full transition-all duration-[3000ms] ease-linear"></div>
+<div class="flex justify-between items-start">
+<span class="font-data-mono text-data-mono text-primary-container">PROT-01</span>
+<span class="font-display-xl text-display-xl text-on-surface/10 select-none">01</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest border border-outline-variant/30 relative flex items-center justify-center p-8">
+<img class="w-full h-full object-contain opacity-80 group-hover:opacity-100 transition-opacity" data-alt="A highly detailed technical schematic of a sleek, futuristic portable satellite device. The image is rendered in a minimalist technical manual style with white line art and subtle blue glowing indicators on a deep black background. The device features premium metallic finishes and integrated status displays, emphasizing high-performance aerospace engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe23F0dU9fJsQTVSVaChR2wYE7m_a2xSxVhKQUQE810i4yhu33u8KT1b5ZEhrD0DtvKaSgV1sdKIMLNnxoxUkZKWjI5tOzZJk2QOufFoSyj40MD-1C3Ql9NX3jtoXj9d7D5CVuCTUBbCNiKdSZWmp-bY_WTQoMB5uelXBG1B97b14fMCBjikzFzLJvX1krA20Ps8mW-CwItBhCGzWuBNLOEaS6LK8lxifQJbB5vUb2cxRbEx1znpRKx76goc_tiWb9qxpigz25Tp_-"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent opacity-40"></div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-center">
+<div class="h-1 w-1/2 bg-primary-container shadow-[0_0_10px_#00f2ff]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Power On</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Depress the recessed ignition contact for 3 seconds. Observe the LED diagnostic pulse to confirm internal battery integrity.</p>
+</div>
+</div>
+<!-- Step 2: Signal Alignment -->
+<div class="glass-panel p-8 flex flex-col gap-8 relative overflow-hidden group">
+<div class="scanning-line top-10 group-hover:top-full transition-all duration-[3000ms] ease-linear"></div>
+<div class="flex justify-between items-start">
+<span class="font-data-mono text-data-mono text-primary-container">PROT-02</span>
+<span class="font-display-xl text-display-xl text-on-surface/10 select-none">02</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest border border-outline-variant/30 relative flex items-center justify-center">
+<!-- Circular Signal Metric Component -->
+<div class="relative w-48 h-48 flex items-center justify-center">
+<div class="absolute inset-0 signal-ring"></div>
+<div class="absolute inset-4 signal-ring border-dashed"></div>
+<div class="absolute inset-8 signal-ring-active"></div>
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="satellite_alt">satellite_alt</span>
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-full mb-2">
+<span class="font-data-mono text-[10px] text-primary-container">AZIMUTH 142.8°</span>
+</div>
+</div>
+<div class="absolute inset-0 bg-gradient-to-br from-primary-container/5 to-transparent"></div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Signal Alignment</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Position device with an unobstructed view of the sky. The telemetry ring will pulse cyan once the satellite handshake is verified.</p>
+</div>
+</div>
+<!-- Step 3: Device Pairing -->
+<div class="glass-panel p-8 flex flex-col gap-8 relative overflow-hidden group border-primary-container/30">
+<div class="scanning-line top-20 group-hover:top-full transition-all duration-[3000ms] ease-linear"></div>
+<div class="flex justify-between items-start">
+<span class="font-data-mono text-data-mono text-primary-container">PROT-03</span>
+<span class="font-display-xl text-display-xl text-on-surface/10 select-none">03</span>
+</div>
+<div class="aspect-square bg-surface-container-lowest border border-outline-variant/30 relative flex items-center justify-center p-8">
+<div class="flex flex-col gap-4 w-full">
+<div class="flex items-center gap-4 bg-primary-container/5 p-3 border-l-2 border-primary-container">
+<span class="material-symbols-outlined text-primary-container" data-icon="phonelink_setup">phonelink_setup</span>
+<div class="flex-1 h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-primary-container shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 opacity-40">
+<span class="material-symbols-outlined text-on-surface" data-icon="sync">sync</span>
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full"></div>
+</div>
+<div class="flex items-center gap-4 p-3 opacity-40">
+<span class="material-symbols-outlined text-on-surface" data-icon="done_all">done_all</span>
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase">Device Pairing</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Initialize the mobile terminal app. Scan for the broadcasted G-COMMS signal and enter the encrypted key found on the base plate.</p>
+</div>
+</div>
+</div>
+<!-- Action Section -->
+<div class="flex flex-col md:flex-row items-center justify-between p-8 glass-panel border-t-2 border-t-primary-container">
+<div class="mb-6 md:mb-0">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">SYSTEM STATUS</p>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_5px_#00f2ff]"></div>
+<span class="font-data-mono text-data-mono text-on-surface uppercase">Ready for deployment</span>
+</div>
+</div>
+<button class="w-full md:w-auto px-12 py-4 bg-primary-container text-on-primary-container font-label-caps text-label-caps tracking-[0.2em] hover:shadow-[0_0_20px_rgba(0,242,255,0.4)] transition-all duration-300 transform hover:scale-[1.02] active:scale-[0.98]">
+                    BEGIN SYSTEM TEST
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Hidden on desktop, shown on mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 pb-safe bg-surface/20 backdrop-blur-2xl z-50 border-t border-outline-variant/10 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px]">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all">
+<span class="material-symbols-outlined mb-1" data-icon="public">public</span>
+<span class="font-label-caps text-[10px]">MAP</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container/80 transition-all">
+<span class="material-symbols-outlined mb-1" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-[10px]">SIGNAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-container drop-shadow-[0_0_8px_#00F2FF] relative scale-105 duration-200">
+<div class="absolute -top-3 w-full h-[2px] bg-primary-container animate-pulse"></div>
+<span class="material-symbols-outlined mb-1" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-[10px]">GUIDE</span>
+</div>
+</nav>
+<!-- Scanning line aesthetic element across entire background -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] overflow-hidden">
+<div class="h-1 w-full bg-primary-container absolute top-1/4 shadow-[0_0_20px_#00f2ff]"></div>
+</div>
+</body></html>

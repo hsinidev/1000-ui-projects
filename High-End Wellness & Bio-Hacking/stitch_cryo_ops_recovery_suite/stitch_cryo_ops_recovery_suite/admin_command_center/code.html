@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed": "#1a1c1c",
+                    "primary": "#e1f0ff",
+                    "on-tertiary-fixed": "#291800",
+                    "tertiary": "#ffebd4",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-error": "#690005",
+                    "on-background": "#e1e2e5",
+                    "on-primary": "#00344d",
+                    "surface-variant": "#333537",
+                    "on-secondary-container": "#b5b5b5",
+                    "surface-bright": "#37393c",
+                    "primary-fixed": "#c9e6ff",
+                    "surface-container": "#1d2022",
+                    "primary-container": "#a5d8ff",
+                    "on-surface-variant": "#c1c7ce",
+                    "on-secondary": "#2f3131",
+                    "surface-dim": "#111416",
+                    "error": "#ffb4ab",
+                    "surface-tint": "#9accf3",
+                    "error-container": "#93000a",
+                    "on-tertiary-fixed-variant": "#624000",
+                    "tertiary-fixed-dim": "#f1be75",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "on-primary-fixed": "#001e2f",
+                    "outline": "#8b9198",
+                    "primary-fixed-dim": "#9accf3",
+                    "tertiary-container": "#fdc97f",
+                    "surface-container-highest": "#333537",
+                    "on-primary-fixed-variant": "#0c4b6c",
+                    "inverse-on-surface": "#2e3133",
+                    "on-tertiary": "#442b00",
+                    "surface-container-high": "#282a2d",
+                    "surface-container-low": "#191c1e",
+                    "inverse-surface": "#e1e2e5",
+                    "surface": "#111416",
+                    "on-tertiary-container": "#785313",
+                    "background": "#111416",
+                    "on-surface": "#e1e2e5",
+                    "secondary-fixed": "#e2e2e2",
+                    "inverse-primary": "#2e6385",
+                    "outline-variant": "#41484d",
+                    "on-primary-container": "#285f80",
+                    "secondary-container": "#454747",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#ffddb2",
+                    "surface-container-lowest": "#0c0e11",
+                    "secondary": "#c6c6c6"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xl": "40px",
+                    "container-padding": "32px",
+                    "md": "16px",
+                    "gutter": "20px",
+                    "unit": "4px",
+                    "sm": "8px",
+                    "xs": "4px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist"],
+                    "headline-lg": ["Space Grotesk"],
+                    "display-xl": ["Space Grotesk"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #111416;
+            color: #e1e2e5;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .glass-card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+        }
+        .status-glow {
+            box-shadow: 0 0 12px rgba(225, 240, 255, 0.4);
+        }
+        .active-glow {
+            box-shadow: 0 0 20px rgba(154, 204, 243, 0.6);
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-20 bg-surface/30 backdrop-blur-[40px] border-b border-outline-variant/30">
+<div class="flex items-center gap-md">
+<span class="font-headline-lg text-headline-lg font-bold tracking-tighter text-on-surface">Cryo-Ops</span>
+<div class="ml-lg flex gap-md">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 hover:text-primary transition-colors duration-300" href="#">Command Center</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Operations</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300" href="#">Analytics</a>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant p-sm cursor-pointer hover:text-primary transition-all">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full status-glow"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant p-sm cursor-pointer hover:text-primary transition-all">thermostat</span>
+<span class="material-symbols-outlined text-on-surface-variant p-sm cursor-pointer hover:text-primary transition-all">account_circle</span>
+</div>
+</header>
+<div class="flex h-screen pt-20">
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-20 h-[calc(100vh-80px)] z-40 flex flex-col pt-lg pb-xl bg-surface-container-lowest/10 backdrop-blur-[20px] border-r border-outline-variant/20 w-64">
+<div class="px-lg mb-xl">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant opacity-60 tracking-widest uppercase">Management</h2>
+</div>
+<div class="flex flex-col flex-grow">
+<!-- Navigation Items -->
+<a class="text-primary bg-primary-container/10 border-r-4 border-primary px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all Active: translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Command Center</span>
+</a>
+<a class="text-on-surface-variant px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-label-caps text-label-caps">Session Logs</span>
+</a>
+<a class="text-on-surface-variant px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+<span class="font-label-caps text-label-caps">Booking</span>
+</a>
+<a class="text-on-surface-variant px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">Community</span>
+</a>
+<a class="text-on-surface-variant px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</a>
+<a class="text-on-surface-variant px-lg py-md flex items-center gap-md hover:bg-surface-variant/20 hover:text-primary transition-all mt-auto" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</div>
+<div class="mt-xl px-lg">
+<button class="w-full py-md bg-error-container text-on-error-container font-label-caps text-label-caps rounded-lg hover:opacity-90 transition-all flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+                    Emergency Stop
+                </button>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 flex-grow p-xl overflow-y-auto scroll-hide">
+<div class="max-w-7xl mx-auto space-y-xl">
+<!-- Dashboard Header -->
+<header class="flex justify-between items-end border-b border-outline-variant/10 pb-lg">
+<div>
+<h1 class="font-display-xl text-display-xl text-primary">Cryo-Ops Admin</h1>
+<div class="flex items-center gap-sm mt-xs">
+<span class="w-2 h-2 rounded-full bg-primary status-glow"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">Facility Active: Sector 07-A</span>
+</div>
+</div>
+<div class="flex gap-md">
+<div class="glass-card px-md py-sm rounded-lg flex items-center gap-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">System Time:</span>
+<span class="font-data-mono text-data-mono text-primary">14:32:05 UTC</span>
+</div>
+<div class="glass-card px-md py-sm rounded-lg flex items-center gap-sm border-primary/20">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Liquid N2:</span>
+<span class="font-data-mono text-data-mono text-primary">88.4%</span>
+</div>
+</div>
+</header>
+<!-- Cryo Pods Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-lg">
+<!-- Chamber 1 -->
+<div class="glass-card p-lg rounded-xl flex flex-col justify-between group hover:border-primary/40 transition-all duration-300">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-50 block mb-xs">POD_UNIT</span>
+<h3 class="font-headline-lg text-headline-lg text-primary leading-none">Chamber 1</h3>
+</div>
+<span class="px-sm py-1 bg-primary/10 border border-primary/20 text-primary font-label-caps text-[10px] rounded uppercase">Active</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Temperature</span>
+<span class="font-data-mono text-[28px] text-primary tracking-tighter">-112.4°C</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary status-glow"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps opacity-60">Oxygen Lev.</span>
+<span class="font-data-mono text-data-mono">20.8%</span>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Occupied</span>
+</div>
+<button class="text-primary hover:underline font-label-caps text-label-caps">Details</button>
+</div>
+</div>
+<!-- Chamber 2 -->
+<div class="glass-card p-lg rounded-xl flex flex-col justify-between group hover:border-primary/40 transition-all duration-300">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-50 block mb-xs">POD_UNIT</span>
+<h3 class="font-headline-lg text-headline-lg text-primary leading-none">Chamber 2</h3>
+</div>
+<span class="px-sm py-1 bg-surface-container-highest border border-outline-variant text-on-surface-variant font-label-caps text-[10px] rounded uppercase">Idle</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Temperature</span>
+<span class="font-data-mono text-[28px] text-on-surface-variant tracking-tighter">-14.2°C</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-outline-variant"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps opacity-60">Oxygen Lev.</span>
+<span class="font-data-mono text-data-mono">21.0%</span>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-sm opacity-50">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">person_off</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Vacant</span>
+</div>
+<button class="text-primary hover:underline font-label-caps text-label-caps">Standby</button>
+</div>
+</div>
+<!-- Chamber 3 -->
+<div class="glass-card p-lg rounded-xl flex flex-col justify-between group hover:border-primary/40 transition-all duration-300">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-50 block mb-xs">POD_UNIT</span>
+<h3 class="font-headline-lg text-headline-lg text-primary leading-none">Chamber 3</h3>
+</div>
+<span class="px-sm py-1 bg-primary/10 border border-primary/20 text-primary font-label-caps text-[10px] rounded uppercase">Active</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Temperature</span>
+<span class="font-data-mono text-[28px] text-primary tracking-tighter">-110.8°C</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-full h-full bg-primary status-glow"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps opacity-60">Oxygen Lev.</span>
+<span class="font-data-mono text-data-mono">20.9%</span>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-surface-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px]">person</span>
+</div>
+<span class="font-label-caps text-label-caps text-on-surface">Occupied</span>
+</div>
+<button class="text-primary hover:underline font-label-caps text-label-caps">Details</button>
+</div>
+</div>
+<!-- Chamber 4 -->
+<div class="glass-card p-lg rounded-xl flex flex-col justify-between group hover:border-primary/40 transition-all duration-300 border-error/30">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant opacity-50 block mb-xs">POD_UNIT</span>
+<h3 class="font-headline-lg text-headline-lg text-primary leading-none">Chamber 4</h3>
+</div>
+<span class="px-sm py-1 bg-error-container/20 border border-error/50 text-error font-label-caps text-[10px] rounded uppercase">Alarm</span>
+</div>
+<div class="space-y-md">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-label-caps text-error">Temp Flux</span>
+<span class="font-data-mono text-[28px] text-error tracking-tighter">-88.2°C</span>
+</div>
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-error"></div>
+</div>
+<div class="flex justify-between text-on-surface-variant">
+<span class="font-label-caps text-label-caps opacity-60">Oxygen Lev.</span>
+<span class="font-data-mono text-data-mono text-error">18.2%</span>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant/10 flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-error-container/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-[16px] text-error">warning</span>
+</div>
+<span class="font-label-caps text-label-caps text-error">Warning</span>
+</div>
+<button class="text-error hover:underline font-label-caps text-label-caps">Override</button>
+</div>
+</div>
+</section>
+<!-- System Health & Telemetry Grid -->
+<section class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Nitrogen Feed -->
+<div class="lg:col-span-2 glass-card rounded-xl p-lg">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-lg text-[20px] text-on-surface uppercase tracking-wider font-medium">Nitrogen Distribution Network</h2>
+<span class="font-data-mono text-data-mono text-primary">Flow Rate: 4.2 L/min</span>
+</div>
+<div class="h-48 w-full bg-surface-container-lowest/50 rounded-lg relative overflow-hidden flex items-center justify-center">
+<!-- Visual placeholder for a technical graph -->
+<div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(circle, #8b9198 1px, transparent 1px); background-size: 20px 20px;"></div>
+<svg class="w-full h-full" viewbox="0 0 1000 200">
+<path class="opacity-50" d="M0 100 Q 150 50 300 120 T 600 80 T 900 130 L 1000 100" fill="none" stroke="#e1f0ff" stroke-width="2"></path>
+<path class="opacity-30" d="M0 110 Q 120 70 280 140 T 580 90 T 880 150 L 1000 120" fill="none" stroke="#e1f0ff" stroke-width="1"></path>
+</svg>
+<div class="absolute inset-0 flex items-center justify-center">
+<p class="font-label-caps text-label-caps opacity-30">Real-time Spectral Telemetry</p>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-md mt-lg">
+<div class="p-md bg-surface-container/30 rounded border border-outline-variant/10">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">TANK_PRESSURE</span>
+<span class="font-data-mono text-lg text-primary">2.4 MPA</span>
+</div>
+<div class="p-md bg-surface-container/30 rounded border border-outline-variant/10">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">FEED_VALVE</span>
+<span class="font-data-mono text-lg text-primary">OPEN_AUTO</span>
+</div>
+<div class="p-md bg-surface-container/30 rounded border border-outline-variant/10">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">RESERVE_CAP</span>
+<span class="font-data-mono text-lg text-primary">12,400L</span>
+</div>
+</div>
+</div>
+<!-- System Health Grid -->
+<div class="glass-card rounded-xl p-lg flex flex-col">
+<h2 class="font-headline-lg text-[20px] text-on-surface uppercase tracking-wider font-medium mb-lg">Health Status</h2>
+<div class="grid grid-cols-1 gap-sm flex-grow">
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">filter_alt</span>
+<span class="font-label-caps text-label-caps">Filtration System</span>
+</div>
+<span class="text-primary font-data-mono text-data-mono">NOMINAL</span>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">detector_smoke</span>
+<span class="font-label-caps text-label-caps">Safety Sensors</span>
+</div>
+<span class="text-primary font-data-mono text-data-mono">ONLINE (24)</span>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">compress</span>
+<span class="font-label-caps text-label-caps">Compressors</span>
+</div>
+<span class="text-primary font-data-mono text-data-mono">OPTIMAL</span>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-error">bolt</span>
+<span class="font-label-caps text-label-caps">Power Supply</span>
+</div>
+<span class="text-error font-data-mono text-data-mono">GRID FALLBACK</span>
+</div>
+<div class="flex items-center justify-between p-sm border-b border-outline-variant/10">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">smart_ventilation</span>
+<span class="font-label-caps text-label-caps">Air Exchange</span>
+<span class="material-symbols-outlined text-primary text-[14px]">check_circle</span>
+</div>
+<span class="text-primary font-data-mono text-data-mono">PASSIVE</span>
+</div>
+</div>
+<div class="mt-lg pt-lg border-t border-outline-variant/20">
+<div class="flex items-center justify-between mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Maintenance Cycle</span>
+<span class="font-data-mono text-data-mono">14 Days Rem.</span>
+</div>
+<div class="w-full h-1.5 bg-surface-container rounded-full overflow-hidden">
+<div class="w-[85%] h-full bg-primary/40"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Recent Activity Floor Plan Visual -->
+<section class="glass-card rounded-xl overflow-hidden">
+<div class="flex flex-col md:flex-row h-64">
+<div class="md:w-1/3 p-lg border-r border-outline-variant/10 flex flex-col justify-center">
+<h3 class="font-headline-lg text-[20px] text-on-surface mb-md">Facility Oversight</h3>
+<p class="text-on-surface-variant text-sm opacity-80 mb-lg">Visual map of Sector 07-A cryo-containment zone with active thermal mapping.</p>
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-sm rounded-lg hover:opacity-90 transition-all">Expand Map</button>
+</div>
+<div class="md:w-2/3 relative bg-surface-dim">
+<img alt="Facility Overview Map" class="w-full h-full object-cover opacity-30 grayscale" data-alt="A futuristic blueprints architectural rendering of a cryogenic facility floor plan seen from a top-down perspective. The map is rendered in high-tech glowing blue lines against a deep matte black background. Subtle heat map overlays show circular thermal gradients where pods are located. The overall aesthetic is sterile, high-precision, and technical, reminiscent of an advanced control room interface in a sci-fi laboratory." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgzk7H60WHmc4nxqUL1n_Qqvlb9eJwGAruqtOo8zbN02Tf5JvlpoAQ8S1CG5sPnRCS9UO1AldTHlaMuZ1JgjcYU9B_mBrolYuUq8yjeKVYGudHVaNYpWxp5KWle6GKwH6UQUQmJ-xkVNPcLdgeS5pmfJ1YUr1ZptM3w5bJIoCds4y4Otacnxc7liTVexe_m8iZyNmrmZrapcasGwg7gUhaprEmYhNhQHmMvBeIKua_-x2ShfzojtzDn9eoMNtLm14DvUNPmFnzDwM"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="grid grid-cols-2 gap-xl">
+<div class="w-12 h-12 rounded-full border-2 border-primary active-glow animate-pulse"></div>
+<div class="w-12 h-12 rounded-full border-2 border-outline-variant"></div>
+<div class="w-12 h-12 rounded-full border-2 border-primary active-glow animate-pulse"></div>
+<div class="w-12 h-12 rounded-full border-2 border-error status-glow"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- Contextual FAB -->
+<div class="fixed bottom-lg right-lg z-50">
+<button class="w-16 h-16 bg-primary text-on-primary rounded-full flex items-center justify-center shadow-xl status-glow hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[32px]">add</span>
+</button>
+</div>
+</body></html>

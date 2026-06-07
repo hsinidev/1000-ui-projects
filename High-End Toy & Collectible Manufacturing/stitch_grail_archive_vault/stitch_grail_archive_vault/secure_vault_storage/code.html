@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vault Storage | Grail-Archive</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Manrope:wght@600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-slab {
+            background: rgba(26, 16, 51, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(233, 195, 73, 0.2);
+            box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
+        }
+        .holographic-shimmer {
+            background: linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0) 100%);
+        }
+        .vault-gradient {
+            background: radial-gradient(circle at top center, #1a1033 0%, #131313 100%);
+        }
+        .accent-gold-glow {
+            box-shadow: 0 0 20px rgba(233, 195, 73, 0.15);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#3c2f00",
+                        "background": "#131313",
+                        "primary-container": "#1a1033",
+                        "primary": "#cdc0ed",
+                        "primary-fixed-dim": "#cdc0ed",
+                        "surface-tint": "#cdc0ed",
+                        "on-secondary-fixed": "#241a00",
+                        "tertiary": "#4edea3",
+                        "on-primary-container": "#867aa3",
+                        "on-surface-variant": "#cac4ce",
+                        "surface-container-highest": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "on-background": "#e5e2e1",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#e9c349",
+                        "primary-fixed": "#e9ddff",
+                        "surface": "#131313",
+                        "secondary-fixed": "#ffe088",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary-fixed": "#6ffbbe",
+                        "surface-variant": "#353534",
+                        "on-error-container": "#ffdad6",
+                        "secondary-container": "#af8d11",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-fixed-variant": "#574500",
+                        "secondary": "#e9c349",
+                        "on-primary": "#342a4f",
+                        "surface-dim": "#131313",
+                        "on-tertiary-fixed": "#002113",
+                        "tertiary-fixed-dim": "#4edea3",
+                        "on-primary-fixed-variant": "#4b4166",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#635880",
+                        "surface-container": "#201f1f",
+                        "on-primary-fixed": "#1f1538",
+                        "outline": "#948f98",
+                        "outline-variant": "#49454d",
+                        "on-tertiary-container": "#009265",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary": "#003824",
+                        "tertiary-container": "#001b0f",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#005236"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-margin": "20px",
+                        "stack-md": "16px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "section-padding": "64px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "display-lg": ["Manrope"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Manrope"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary/30">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/30 fixed top-0 w-full z-50 flex items-center justify-between px-container-margin h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-display-lg text-headline-sm tracking-tight text-secondary">Grail-Archive</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors active:scale-95 duration-200" data-icon="search">search</button>
+<div class="h-8 w-8 rounded-full bg-primary-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up of a high-security user profile avatar icon styled after a luxury bank vault seal. The icon features deep purple and metallic gold highlights, reflecting the prestigious and secure nature of the Grail-Archive platform. Lighting is dramatic, casting soft shadows to emphasize the 3D texture of the digital emblem against a dark background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDp-dtkqlMmdYqJKU4ZsU0OCf5w6mXrg9_UtqUP1w3eUU1XRyD5OIQxLK73UxTLd-wnshc4pHgDH4srHOYyus2xU3GqoM6-RF8jyWdN_-lcETipTGYjVeJ66Ad15RdwWZbYJYtybjv491Zo08L1J2vIdJsR4IZR0HE9OBA7dWNIl9YX_lbYwh90zoERWJyw47xPqUwPBsaD8t80_nX9r1rV7TMO5rG6vlQoSdSAVFziHs8JsQYs8nBgghMo_oduqWZMBnu4mpcJLcA"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-margin min-h-screen vault-gradient">
+<!-- Vault Hero Summary -->
+<section class="mb-stack-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-gutter border-l-4 border-secondary pl-6 py-4 bg-surface-container-low/50 glass-slab">
+<div>
+<span class="font-label-caps text-label-caps text-secondary">SECURE VAULT STATUS: ACTIVE</span>
+<h2 class="font-display-lg text-headline-md text-on-surface mt-unit">Private Collection</h2>
+<p class="text-on-surface-variant font-body-md mt-unit">14 Assets | $284,500.00 Insured Value</p>
+</div>
+<div class="flex gap-stack-sm mt-stack-md md:mt-0">
+<div class="flex items-center gap-2 bg-tertiary-container text-on-tertiary-container px-3 py-1 rounded-full border border-tertiary/20">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified_user">verified_user</span>
+<span class="font-label-caps text-label-caps">FULLY INSURED</span>
+</div>
+<div class="flex items-center gap-2 bg-primary-container text-primary px-3 py-1 rounded-full border border-primary/20">
+<span class="material-symbols-outlined text-[16px]" data-icon="lock_open">lock_open</span>
+<span class="font-label-caps text-label-caps">BIO-AUTHENTICATED</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Vault Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Slab Card 1 -->
+<div class="glass-slab rounded-xl overflow-hidden group relative transition-transform duration-300 hover:-translate-y-1">
+<div class="absolute top-0 right-0 w-24 h-24 holographic-shimmer pointer-events-none opacity-50 group-hover:opacity-100 transition-opacity"></div>
+<!-- Card Header (Grading) -->
+<div class="bg-surface-container-highest/60 px-4 py-2 flex justify-between items-center border-b border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PSA GRADE</span>
+<span class="font-display-lg text-headline-sm text-secondary leading-none">GEM MT 10</span>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="qr_code_2">qr_code_2</span>
+</div>
+<!-- Card Image Area -->
+<div class="aspect-[3/4] w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.2] group-hover:grayscale-0 transition-all duration-500" data-alt="A macro photograph of an ultra-rare holographic trading card encased in a thick, crystal-clear professional grading slab. The card depicts a majestic dragon creature illuminated by shimmering rainbow prismatic light. The setting is a dark, high-security vault with subtle metallic reflections. The lighting is precise, highlighting the sharp edges of the slab and the intricate details of the artwork." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_CwRu6VoXsa1jUqFalubt-s3Kcb_FW6XAG8IpgG8iqQX41rT13aUdaiD1nCBwHlf05zlGdWCnCtO4X2FgmFFu-kYUcp6gTJpDc7zpSBDIDFgMkOutNh21Kwpf9lIg3xVse4FQdglbodoI-I8uuRVgqo7hSyUq2x21hWcSB8JRbUM_ozAFQfYNQwV8Y0iihQ9hb4QkXfntTj3hDu6_EMAfpw9jP3HLNO1lP83ZIUQaFfWXHiAtfvchmqStTc-roBRJOgoc6oot5cM"/>
+</div>
+<!-- Card Info -->
+<div class="p-stack-md space-y-unit">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-on-surface text-[18px]">Base Set Charizard</h3>
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-data-mono text-tertiary border border-tertiary/30">1st ED</span>
+</div>
+<p class="font-data-mono text-on-surface-variant text-[14px]">Cert: #48291044</p>
+<div class="flex items-center justify-between mt-4">
+<span class="font-label-caps text-on-surface text-[16px]">$145,000.00</span>
+<span class="text-tertiary text-[12px] font-data-mono">+4.2% (30d)</span>
+</div>
+</div>
+<!-- Actions -->
+<div class="grid grid-cols-2 border-t border-outline-variant/30">
+<button class="py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container hover:text-secondary border-r border-outline-variant/30 flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span> VIEW
+                    </button>
+<button class="py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-secondary hover:text-on-secondary flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="sell">sell</span> SELL
+                    </button>
+</div>
+</div>
+<!-- Slab Card 2 - Featured -->
+<div class="glass-slab rounded-xl overflow-hidden group relative transition-transform duration-300 hover:-translate-y-1 accent-gold-glow ring-1 ring-secondary/50">
+<div class="absolute top-0 right-0 w-32 h-32 holographic-shimmer pointer-events-none opacity-80 z-10"></div>
+<div class="bg-secondary/10 px-4 py-2 flex justify-between items-center border-b border-secondary/30">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-secondary">BGS GRADE</span>
+<span class="font-display-lg text-headline-sm text-secondary leading-none">PRISTINE 10</span>
+</div>
+<div class="bg-secondary text-on-secondary px-2 py-1 rounded-sm">
+<span class="font-label-caps text-[10px]">BLACK LABEL</span>
+</div>
+</div>
+<div class="aspect-[3/4] w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="High-resolution close-up of a rare black-border trading card featuring a mythical wizard figure. The card is held in a premium Beckett Black Label grading slab, with gold foil lettering. The environment is a professional studio with dark, moody lighting and focused spotlights that create a high-contrast, luxury aesthetic. Deep shadows and metallic gold accents reinforce the 'Grail' status of the asset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAleIlI4-Py5D8iUtw78eZ6jzRQ_JEpB3DnJ9NmaaLnQpCsi37ci_CMQbfJQXOwiWGV04ajCcE6LnqNrpaZpM97ZLUx_lYDyOV4UfwVGwa_IX0ovl9ubK30eSVyOQ7tgKpkCgcPBLupPyXCh9EGxgyR0Kf7kTK74rSJTNnYVCrus9SqgWA7p6N3A9_DLDHUjq_GeFKO4jmLXAG7i3JFKYC4mNSg241i0iYY3nljVG-fQnrwlJnpSPxGxsPhh9AbJeGaCTFQq5hksGg"/>
+</div>
+<div class="p-stack-md space-y-unit">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-on-surface text-[18px]">LOB Blue-Eyes</h3>
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-data-mono text-secondary border border-secondary/30">POP 1</span>
+</div>
+<p class="font-data-mono text-on-surface-variant text-[14px]">Cert: #0012948</p>
+<div class="flex items-center justify-between mt-4">
+<span class="font-label-caps text-on-surface text-[16px]">$82,000.00</span>
+<span class="text-tertiary text-[12px] font-data-mono">+12.8% (30d)</span>
+</div>
+</div>
+<div class="grid grid-cols-2 border-t border-outline-variant/30">
+<button class="py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container hover:text-secondary border-r border-outline-variant/30 flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span> VIEW
+                    </button>
+<button class="py-3 font-label-caps text-label-caps bg-secondary text-on-secondary flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="storefront">storefront</span> LIST NOW
+                    </button>
+</div>
+</div>
+<!-- Slab Card 3 -->
+<div class="glass-slab rounded-xl overflow-hidden group relative transition-transform duration-300 hover:-translate-y-1">
+<div class="bg-surface-container-highest/60 px-4 py-2 flex justify-between items-center border-b border-outline-variant/30">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PSA GRADE</span>
+<span class="font-display-lg text-headline-sm text-on-surface leading-none">MINT 9</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="verified">verified</span>
+</div>
+<div class="aspect-[3/4] w-full bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[0.5] group-hover:grayscale-0 transition-all duration-500" data-alt="A portrait-style image of a vintage sports trading card featuring a legendary basketball player. The card is protected by a heavy-duty plastic slab with a tamper-evident seal. The setting is a clean, corporate modern vault interior with sleek glass shelving and soft midnight purple backlighting. The aesthetic is extremely polished and secure, emphasizing the asset's preserved condition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFcal7j1yY8rMfpdTdt4rXBWHEFsB0WUZYmmldnuXexKjUsT0Gq0lpm0ak75IYY2xdB3HePJN-C_opLM01jQgC9_ZDTGgtjGyKcSf2Sw97kxO8m4odc5PmQEAQeh1jIYIDi_GzxFc_UKEt5e51QfLOEL8thbzJqhy2B_WhZczvhfUyaSMCQ-hJUlR7M_ZclyqgZBmF7dlNAjv_Q6cAz9SPA9fU6UtJJdCFFKPJWFI7tIpB6TOqAcKjMkzrHkx7GDRyV950tH-tvAs"/>
+</div>
+<div class="p-stack-md space-y-unit">
+<div class="flex justify-between items-start">
+<h3 class="font-headline-sm text-on-surface text-[18px]">1986 Fleer MJ</h3>
+<span class="bg-surface-container-high px-2 py-0.5 rounded text-[10px] font-data-mono text-on-surface-variant border border-outline-variant/30">VINTAGE</span>
+</div>
+<p class="font-data-mono text-on-surface-variant text-[14px]">Cert: #9903211</p>
+<div class="flex items-center justify-between mt-4">
+<span class="font-label-caps text-on-surface text-[16px]">$34,500.00</span>
+<span class="text-error text-[12px] font-data-mono">-1.2% (30d)</span>
+</div>
+</div>
+<div class="grid grid-cols-2 border-t border-outline-variant/30">
+<button class="py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container hover:text-secondary border-r border-outline-variant/30 flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span> VIEW
+                    </button>
+<button class="py-3 font-label-caps text-label-caps text-on-surface-variant hover:bg-secondary hover:text-on-secondary flex items-center justify-center gap-2 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="sell">sell</span> SELL
+                    </button>
+</div>
+</div>
+<!-- Empty / Locked Slot -->
+<div class="glass-slab rounded-xl overflow-hidden border-dashed border-outline-variant flex flex-col items-center justify-center p-8 text-center bg-transparent group cursor-pointer hover:bg-surface-container-low transition-colors">
+<div class="h-16 w-16 rounded-full bg-surface-container flex items-center justify-center mb-4 border border-outline-variant group-hover:border-secondary transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-secondary" data-icon="add_moderator">add_moderator</span>
+</div>
+<h3 class="font-headline-sm text-headline-sm text-on-surface-variant group-hover:text-on-surface">Secure New Asset</h3>
+<p class="text-[12px] text-outline mt-2 font-body-md px-4">Ship your graded slabs to our high-security physical vault in Delaware.</p>
+<button class="mt-6 font-label-caps text-label-caps text-secondary border border-secondary/30 px-6 py-2 rounded-full hover:bg-secondary/10 transition-colors">
+                    START DEPOSIT
+                </button>
+</div>
+</div>
+<!-- Security Management Console -->
+<section class="mt-section-padding">
+<h3 class="font-headline-md text-headline-sm text-on-surface mb-stack-md flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="admin_panel_settings">admin_panel_settings</span>
+                Vault Management
+            </h3>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<div class="glass-slab p-stack-md rounded-xl space-y-stack-sm border-l-2 border-l-tertiary">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">INSURANCE COVERAGE</span>
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="flex flex-col">
+<span class="font-data-mono text-[24px] text-on-surface">$500,000.00</span>
+<span class="text-[12px] text-on-surface-variant">Tier: Diamond Lloyds of London</span>
+</div>
+<button class="w-full mt-4 bg-surface-container-high py-2 rounded text-[12px] font-label-caps hover:bg-surface-container-highest transition-colors">MANAGE POLICY</button>
+</div>
+<div class="glass-slab p-stack-md rounded-xl space-y-stack-sm border-l-2 border-l-secondary">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ACCESS LOGS</span>
+<span class="material-symbols-outlined text-secondary" data-icon="history">history</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[11px] font-data-mono border-b border-outline-variant/10 pb-1">
+<span class="text-on-surface-variant">VIEW: Base Set Char...</span>
+<span class="text-outline">2m ago</span>
+</div>
+<div class="flex justify-between text-[11px] font-data-mono border-b border-outline-variant/10 pb-1">
+<span class="text-on-surface-variant">LOGIN: Fingerprint</span>
+<span class="text-outline">1h ago</span>
+</div>
+</div>
+<button class="w-full mt-4 bg-surface-container-high py-2 rounded text-[12px] font-label-caps hover:bg-surface-container-highest transition-colors">FULL AUDIT TRAIL</button>
+</div>
+<div class="glass-slab p-stack-md rounded-xl space-y-stack-sm border-l-2 border-l-primary">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VAULT WITHDRAWAL</span>
+<span class="material-symbols-outlined text-primary" data-icon="local_shipping">local_shipping</span>
+</div>
+<p class="text-[12px] text-on-surface-variant leading-relaxed">Schedule insured delivery of your physical assets back to your primary residence.</p>
+<button class="w-full mt-4 bg-primary-container text-primary py-2 rounded text-[12px] font-label-caps hover:bg-primary-fixed-dim/20 transition-colors">REQUEST DELIVERY</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar (Mobile Focused) -->
+<nav class="bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/20 fixed bottom-0 w-full z-50 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)] flex justify-around items-center h-20 pb-safe px-4 w-full">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-tertiary active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="home_storage">home_storage</span>
+<span class="font-label-caps text-label-caps mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-tertiary active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-label-caps mt-1">Auctions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-bold active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-tertiary active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps mt-1">Profile</span>
+</a>
+</nav>
+<!-- Floating Security Status (Contextual) -->
+<div class="fixed right-6 bottom-24 z-40 hidden md:block">
+<div class="bg-surface-container-highest/80 backdrop-blur border border-secondary/30 p-4 rounded-xl shadow-2xl flex items-center gap-4">
+<div class="h-10 w-10 bg-secondary/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary" data-icon="encrypted">encrypted</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">ENCRYPTION</p>
+<p class="font-data-mono text-[12px] text-on-surface">AES-256 BIT ACTIVE</p>
+</div>
+</div>
+</div>
+</body></html>

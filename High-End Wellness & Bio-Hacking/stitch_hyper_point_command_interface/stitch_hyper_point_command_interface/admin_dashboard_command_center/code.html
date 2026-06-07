@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO_CONTROL_V1.0 - COMMAND_CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&amp;family=Inter:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0A0A0A;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .vfd-segment {
+            background: linear-gradient(90deg, rgba(255, 103, 0, 0.2) 0%, rgba(255, 103, 0, 0.8) 50%, rgba(255, 103, 0, 0.2) 100%);
+        }
+        .noise-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+        }
+        .glow-orange {
+            box-shadow: 0 0 15px rgba(255, 181, 149, 0.2);
+        }
+        .grid-lines {
+            background-image: linear-gradient(rgba(192, 192, 192, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(192, 192, 192, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#ffb595",
+                    "outline-variant": "#5a4136",
+                    "surface-variant": "#353534",
+                    "on-secondary": "#2f3131",
+                    "primary-fixed-dim": "#ffb595",
+                    "surface-dim": "#131313",
+                    "surface-container-high": "#2a2a2a",
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#a23f00",
+                    "surface-container": "#201f1f",
+                    "outline": "#aa8a7d",
+                    "tertiary": "#00e639",
+                    "primary-container": "#ff6700",
+                    "on-error-container": "#ffdad6",
+                    "secondary-fixed": "#e3e2e2",
+                    "inverse-surface": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-error": "#690005",
+                    "tertiary-container": "#00af29",
+                    "on-tertiary-fixed": "#002203",
+                    "on-secondary-container": "#b8b8b8",
+                    "secondary": "#c6c6c6",
+                    "on-tertiary": "#003907",
+                    "tertiary-fixed-dim": "#00e639",
+                    "surface-tint": "#ffb595",
+                    "background": "#131313",
+                    "on-primary-fixed": "#351000",
+                    "inverse-on-surface": "#313030",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-surface": "#e5e2e1",
+                    "error-container": "#93000a",
+                    "on-surface-variant": "#e3bfb1",
+                    "surface": "#131313",
+                    "secondary-container": "#484949",
+                    "tertiary-fixed": "#72ff70",
+                    "on-primary": "#571e00",
+                    "on-tertiary-fixed-variant": "#00530e",
+                    "on-primary-fixed-variant": "#7c2e00",
+                    "on-tertiary-container": "#003807",
+                    "primary-fixed": "#ffdbcd",
+                    "on-primary-container": "#561e00",
+                    "surface-container-highest": "#353534",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-background": "#e5e2e1",
+                    "surface-bright": "#393939"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "border_width": "1px",
+                    "unit": "4px",
+                    "gutter": "16px",
+                    "grid_columns": "12",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "heading-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "data-lg": ["JetBrains Mono"],
+                    "display-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                    "heading-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "data-lg": ["32px", {"lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-surface-container-lowest min-h-screen relative">
+<div class="fixed inset-0 noise-texture"></div>
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-8 h-12 z-50 fixed top-0 border-b border-outline-variant bg-surface-container-highest transition-all duration-75 active:scale-95">
+<div class="font-label-caps text-label-caps text-primary border border-primary px-2 py-1">
+            AERO_CONTROL_V1.0
+        </div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-[20px]">search</span>
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim">SEARCH_SYSTEM...</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-3 py-1 bg-surface-container text-tertiary border border-tertiary/30 hover:bg-tertiary hover:text-on-tertiary transition-colors">
+<span class="material-symbols-outlined text-[18px]">sensors</span>
+<span class="font-label-caps text-label-caps">SYSTEM_STATUS</span>
+</button>
+<button class="flex items-center gap-2 px-3 py-1 bg-error-container text-error border border-error/50 hover:bg-error hover:text-on-error transition-colors">
+<span class="material-symbols-outlined text-[18px]">potted_plant</span>
+<span class="font-label-caps text-label-caps">EMERGENCY_STOP</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-12 h-[calc(100vh-48px)] w-64 border-r border-outline-variant bg-surface-container flex flex-col z-40 transition-all duration-100 ease-linear">
+<div class="p-6 border-b border-outline-variant/30">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary/20 border border-primary/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">account_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">OPERATOR_01</p>
+<p class="font-label-caps text-[10px] text-secondary-fixed-dim">HYPERBARIC_LEAD</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="flex items-center gap-4 px-6 py-4 bg-primary text-on-primary shadow-[0_0_15px_rgba(255,181,149,0.3)] font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span>COMMAND_CENTER</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant hover:border-l-4 hover:border-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span>TRAINEE_LOGS</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant hover:border-l-4 hover:border-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span>FLEET_MGMT</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant hover:border-l-4 hover:border-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span>COMMUNITY</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant hover:border-l-4 hover:border-primary transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">support_agent</span>
+<span>SUPPORT</span>
+</a>
+</nav>
+<div class="p-6">
+<button class="w-full py-3 bg-primary-container text-on-primary-container font-label-caps text-label-caps border border-primary-container hover:bg-primary hover:text-on-primary transition-all">
+                INITIATE_SESSION
+            </button>
+</div>
+<div class="mt-auto border-t border-outline-variant/30 py-4">
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span>SETTINGS</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>LOGOUT</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 mt-12 p-8 grid grid-cols-12 gap-gutter min-h-[calc(100vh-48px)] grid-lines">
+<!-- Top Metrics Header -->
+<div class="col-span-12 grid grid-cols-3 gap-gutter mb-4">
+<!-- Active Sessions -->
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 bg-outline-variant/20 font-label-caps text-[10px] text-secondary">METRIC_01</div>
+<p class="font-label-caps text-label-caps text-primary mb-2">ACTIVE_SESSIONS</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">14</span>
+<span class="font-label-caps text-[12px] text-tertiary">/ 20 MAX</span>
+</div>
+<div class="mt-4 flex gap-1 h-2">
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-tertiary"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+<div class="flex-1 bg-surface-variant"></div>
+</div>
+</div>
+<!-- Utilization -->
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-1 bg-outline-variant/20 font-label-caps text-[10px] text-secondary">METRIC_02</div>
+<p class="font-label-caps text-label-caps text-primary mb-2">CHAMBER_UTILIZATION</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-on-surface">82.4</span>
+<span class="font-label-caps text-[12px] text-secondary-fixed-dim">% EFFICIENCY</span>
+</div>
+<div class="mt-4 h-2 bg-surface-variant flex">
+<div class="h-full bg-primary-container glow-orange" style="width: 82%"></div>
+</div>
+</div>
+<!-- System Alerts -->
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-1 bg-outline-variant/20 font-label-caps text-[10px] text-secondary">METRIC_03</div>
+<p class="font-label-caps text-label-caps text-primary mb-2">SYSTEM_ALERTS</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-lg text-data-lg text-error">03</span>
+<span class="font-label-caps text-[12px] text-error/70">ACTIVE_WARNINGS</span>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<div class="w-2 h-2 bg-error rounded-full animate-pulse"></div>
+<p class="font-label-caps text-[10px] text-error uppercase">Action required in beta_04</p>
+</div>
+</div>
+</div>
+<!-- Main Chamber Grid -->
+<div class="col-span-9 grid grid-cols-3 gap-gutter">
+<!-- Chamber Card Template (Repeated 6 times with variations) -->
+<script>
+                const chambers = [
+                    { id: 'BETA_01', o2: '21.4', pressure: '1.2', status: 'NOMINAL', color: 'tertiary' },
+                    { id: 'BETA_02', o2: '20.9', pressure: '2.4', status: 'NOMINAL', color: 'tertiary' },
+                    { id: 'BETA_03', o2: '22.1', pressure: '1.0', status: 'NOMINAL', color: 'tertiary' },
+                    { id: 'BETA_04', o2: '18.4', pressure: '3.1', status: 'ALERT', color: 'error' },
+                    { id: 'BETA_05', o2: '21.0', pressure: '1.1', status: 'NOMINAL', color: 'tertiary' },
+                    { id: 'BETA_06', o2: '21.2', pressure: '1.2', status: 'NOMINAL', color: 'tertiary' }
+                ];
+            </script>
+<!-- Rendered via HTML for the model output requirements -->
+<!-- Chamber 01 -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="h-6 bg-secondary-fixed text-on-secondary font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_01]</span>
+<span class="material-symbols-outlined text-[14px]">more_vert</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-on-surface">21.4<span class="text-[12px] text-secondary ml-1">%</span></p>
+</div>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">1.2<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-tertiary w-1/3"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-tertiary px-2 py-1 border border-tertiary/20 bg-tertiary/5">STATUS: NOMINAL</span>
+<span class="font-label-caps text-[10px] text-secondary">IDLE: 04:12:00</span>
+</div>
+</div>
+</div>
+<!-- Chamber 02 -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="h-6 bg-secondary-fixed text-on-secondary font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_02]</span>
+<span class="material-symbols-outlined text-[14px]">more_vert</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-on-surface">20.9<span class="text-[12px] text-secondary ml-1">%</span></p>
+</div>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">2.4<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-primary-container w-2/3"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-tertiary px-2 py-1 border border-tertiary/20 bg-tertiary/5">STATUS: NOMINAL</span>
+<span class="font-label-caps text-[10px] text-primary">SESSION: 01:22:45</span>
+</div>
+</div>
+</div>
+<!-- Chamber 03 -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="h-6 bg-secondary-fixed text-on-secondary font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_03]</span>
+<span class="material-symbols-outlined text-[14px]">more_vert</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-on-surface">22.1<span class="text-[12px] text-secondary ml-1">%</span></p>
+</div>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">1.0<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-tertiary w-1/4"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-tertiary px-2 py-1 border border-tertiary/20 bg-tertiary/5">STATUS: NOMINAL</span>
+<span class="font-label-caps text-[10px] text-secondary">IDLE: 00:05:12</span>
+</div>
+</div>
+</div>
+<!-- Chamber 04 ALERT -->
+<div class="bg-surface-container border border-error/50 shadow-[0_0_15px_rgba(255,180,171,0.1)]">
+<div class="h-6 bg-error text-on-error font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_04]</span>
+<span class="material-symbols-outlined text-[14px]">warning</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-error">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-error">18.4<span class="text-[12px] text-error/70 ml-1">%</span></p>
+</div>
+<div class="w-2 h-2 bg-error animate-pulse rounded-full"></div>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">3.1<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-error w-full"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-error px-2 py-1 bg-error">STATUS: CRITICAL</span>
+<span class="font-label-caps text-[10px] text-error">VENTING...</span>
+</div>
+</div>
+</div>
+<!-- Chamber 05 -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="h-6 bg-secondary-fixed text-on-secondary font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_05]</span>
+<span class="material-symbols-outlined text-[14px]">more_vert</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-on-surface">21.0<span class="text-[12px] text-secondary ml-1">%</span></p>
+</div>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">1.1<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-tertiary w-1/4"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-tertiary px-2 py-1 border border-tertiary/20 bg-tertiary/5">STATUS: NOMINAL</span>
+<span class="font-label-caps text-[10px] text-secondary">IDLE: 12:44:09</span>
+</div>
+</div>
+</div>
+<!-- Chamber 06 -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="h-6 bg-secondary-fixed text-on-secondary font-label-caps text-[10px] px-3 flex justify-between items-center">
+<span>[CHAMBER_BETA_06]</span>
+<span class="material-symbols-outlined text-[14px]">more_vert</span>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</p>
+<p class="font-data-lg text-[24px] text-on-surface">21.2<span class="text-[12px] text-secondary ml-1">%</span></p>
+</div>
+<span class="material-symbols-outlined text-tertiary">check_circle</span>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-secondary">INTERNAL_PRESSURE</p>
+<p class="font-data-lg text-[24px] text-on-surface">1.2<span class="text-[12px] text-secondary ml-1">ATA</span></p>
+<div class="mt-2 h-1 bg-surface-variant">
+<div class="h-full bg-tertiary w-1/3"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-tertiary px-2 py-1 border border-tertiary/20 bg-tertiary/5">STATUS: NOMINAL</span>
+<span class="font-label-caps text-[10px] text-primary">SESSION: 00:44:12</span>
+</div>
+</div>
+</div>
+<!-- Large Visualization Section -->
+<div class="col-span-3 bg-surface-container border border-outline-variant relative overflow-hidden h-64">
+<div class="h-6 bg-secondary-fixed/5 text-secondary font-label-caps text-[10px] px-3 flex items-center border-b border-outline-variant/30">
+                    [REAL_TIME_TELEMETRY_STREAM]
+                </div>
+<div class="p-4 h-full relative">
+<img alt="Telemetry Stream" class="w-full h-full object-cover grayscale opacity-40 mix-blend-screen" data-alt="A sophisticated data visualization dashboard showing multiple real-time scientific graphs and telemetry streams. The interface uses a deep charcoal and matte black theme with vibrant orange and lime green digital readouts. Oscilloscope waves and segmented progress bars are laid out in a precise technical grid, suggesting high-altitude flight or medical chamber monitoring software in an industrial aerospace setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJZtnSmeLs2swJ5OttPNBfOYsuoiFBx_WVh-48xGXLY3PjtGml3pOgwrVLgUojPuG_mtdl813Jt9d4MNkliX2frbYi8rtUGiWfswmzCBCUIt4bJ-U-pBXsLeQMV5UuBBk6rx9CGOlACOmxQC41dsSt12oksfeAcMNF74NQORy-7C7g8jv8PRorj1SPNlLLHHDRSv3uZZQsdyI-aefhgW3OGWFMNRyUTQJKKSNCSARmrxvkMMGi-VMVLHBFw9qFmZhW4-51GH3pZmas"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="text-center">
+<span class="material-symbols-outlined text-primary text-[48px] block mb-2">monitoring</span>
+<p class="font-label-caps text-[10px] text-primary">SATELLITE_UPLINK_STABLE</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Activity Log Sidebar -->
+<aside class="col-span-3 bg-surface-container border border-outline-variant flex flex-col">
+<div class="h-8 bg-surface-container-high border-b border-outline-variant px-4 flex items-center justify-between">
+<span class="font-label-caps text-label-caps text-on-surface">RECENT_ACTIVITY</span>
+<span class="font-label-caps text-[10px] text-tertiary">LIVE</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<div class="border-l-2 border-tertiary pl-3 py-1">
+<p class="font-label-caps text-[10px] text-secondary">14:22:01</p>
+<p class="font-body-sm text-[12px] text-on-surface">CHAMBER_BETA_01 session initiated by OPERATOR_01.</p>
+</div>
+<div class="border-l-2 border-error pl-3 py-1">
+<p class="font-label-caps text-[10px] text-error">14:18:55</p>
+<p class="font-body-sm text-[12px] text-error">PRESSURE_OVERFLOW in BETA_04. Auto-venting triggered.</p>
+</div>
+<div class="border-l-2 border-secondary pl-3 py-1">
+<p class="font-label-caps text-[10px] text-secondary">14:05:12</p>
+<p class="font-body-sm text-[12px] text-on-surface">System diagnostic complete. All hardware nominal.</p>
+</div>
+<div class="border-l-2 border-primary pl-3 py-1">
+<p class="font-label-caps text-[10px] text-secondary">13:58:30</p>
+<p class="font-body-sm text-[12px] text-on-surface">FLEET_UPDATE: Chamber firmware patch 2.4.1 applied.</p>
+</div>
+<div class="border-l-2 border-tertiary pl-3 py-1">
+<p class="font-label-caps text-[10px] text-secondary">13:45:00</p>
+<p class="font-body-sm text-[12px] text-on-surface">CHAMBER_BETA_06 session complete. Sanitization starting.</p>
+</div>
+<div class="border-l-2 border-secondary pl-3 py-1">
+<p class="font-label-caps text-[10px] text-secondary">13:30:11</p>
+<p class="font-body-sm text-[12px] text-on-surface">Shift rotation: OPERATOR_01 assigned to CC_DASHBOARD.</p>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full py-2 bg-transparent border border-outline text-outline font-label-caps text-[10px] hover:bg-outline hover:text-on-primary transition-all">
+                    EXPORT_LOG_CSV
+                </button>
+</div>
+</aside>
+</main>
+<!-- Footer Status Bar -->
+<footer class="fixed bottom-0 left-64 right-0 h-6 bg-surface-container-lowest border-t border-outline-variant flex items-center px-4 justify-between z-40">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-tertiary rounded-full shadow-[0_0_5px_#00e639]"></div>
+<span class="font-label-caps text-[9px] text-secondary">CORE_PROCESSOR: 22%</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-tertiary rounded-full shadow-[0_0_5px_#00e639]"></div>
+<span class="font-label-caps text-[9px] text-secondary">MEMORY_LOAD: 4.1GB</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-tertiary rounded-full shadow-[0_0_5px_#00e639]"></div>
+<span class="font-label-caps text-[9px] text-secondary">NETWORK_LATENCY: 12ms</span>
+</div>
+</div>
+<div class="flex items-center gap-4 font-label-caps text-[9px] text-secondary">
+<span>2023-10-27 | 14:24:33 UTC</span>
+<span class="text-primary">ENCRYPTED_AES_256</span>
+</div>
+</footer>
+</body></html>

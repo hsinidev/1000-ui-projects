@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gene-Logic | Metabolic Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Literata:opsz,wght@7..72,400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#b5ccc1",
+                        "surface-container": "#efeeec",
+                        "secondary-fixed": "#e4e4cc",
+                        "inverse-surface": "#303130",
+                        "outline-variant": "#c2c8c4",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "primary": "#4e635a",
+                        "on-primary-container": "#263932",
+                        "on-primary-fixed-variant": "#374b43",
+                        "background": "#fbf9f7",
+                        "tertiary-fixed": "#e2e2e2",
+                        "tertiary-container": "#9d9e9e",
+                        "secondary-container": "#e1e1c9",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#f2f0ef",
+                        "tertiary": "#5d5f5f",
+                        "surface-container-low": "#f5f3f1",
+                        "outline": "#727875",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#636451",
+                        "surface-bright": "#fbf9f7",
+                        "surface-container-highest": "#e4e2e0",
+                        "on-surface-variant": "#424845",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#4e635a",
+                        "surface-dim": "#dbdad8",
+                        "surface-variant": "#e4e2e0",
+                        "primary-fixed-dim": "#b5ccc1",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-tertiary-container": "#343536",
+                        "secondary-fixed-dim": "#c8c8b0",
+                        "on-background": "#1b1c1b",
+                        "on-error-container": "#93000a",
+                        "on-secondary-fixed-variant": "#474836",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#fbf9f7",
+                        "secondary": "#5e604d",
+                        "surface-container-high": "#e9e8e6",
+                        "on-primary-fixed": "#0b1f18",
+                        "primary-fixed": "#d1e8dd",
+                        "on-secondary-fixed": "#1b1d0e",
+                        "primary-container": "#8da399",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#1b1c1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-gap": "80px",
+                        "base": "8px",
+                        "margin": "40px",
+                        "container-max-width": "1280px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Inter"],
+                        "label": ["Inter"],
+                        "h1": ["Literata"],
+                        "body-lg": ["Inter"],
+                        "h3": ["Literata"],
+                        "h2": ["Literata"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .organic-shape {
+            border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+        }
+        .ambient-shadow {
+            box-shadow: 0 10px 30px -10px rgba(141, 163, 153, 0.15);
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<header class="bg-background border-b border-outline-variant docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center px-gutter py-4 w-full max-w-container-max-width mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="biotech">biotech</span>
+<h1 class="font-h3 text-h3 font-semibold text-primary tracking-tight">Gene-Logic</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label text-label text-on-surface-variant hover:text-primary transition-colors" href="#">RESEARCH</a>
+<a class="font-label text-label text-on-surface-variant hover:text-primary transition-colors" href="#">GENOMICS</a>
+<a class="font-label text-label text-primary font-bold" href="#">METABOLIC</a>
+</nav>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant">
+<img alt="User profile photo" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZaGUJHl3U1ZbPRXl9JQT-68LnFpbmdqR-mpcTEmu0ySr1nPAH7EQBdMwzBNmbE-vH6OEB133LSyi7wYwYGAhmLjz-BKy8RYzgIV5D_X2tt4jrSsdUIS2y12jR8hPORYQvg6es2pisv6Pwt_v--dI3E9NsiiXymaioxFgQa-lxGoWP2iSnI0yeqYLiWDTeWLSB676ysgKgLxxmpEp1SAThY1B3PsxDaw7B9COi6NQcbeyNXenc22ubRdFNFzijIspUfR3VieJGfg"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-container-max-width mx-auto px-gutter py-12">
+<section class="mb-section-gap">
+<div class="max-w-3xl">
+<h2 class="font-h1 text-h1 text-primary mb-4">Scientific Summary</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant leading-relaxed italic border-l-4 border-primary-container pl-6 py-2">
+                    "Your metabolic profile exhibits exceptional plasticity in response to circadian nutritional cycles. Current data suggests a high efficiency in oxidative phosphorylation, supported by stable blood glucose maintenance during extended fasting windows. This state reflects an optimized epigenetic expression of the PPAR-gamma pathways."
+                </p>
+</div>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-12 gap-8 mb-section-gap">
+<div class="md:col-span-4 flex flex-col gap-8">
+<div class="bg-surface-container-lowest border border-outline-variant p-8 rounded-xl ambient-shadow flex flex-col items-center text-center">
+<h3 class="font-label text-label text-outline uppercase tracking-widest mb-6">Metabolic Score</h3>
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-high" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary-container" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="82.93" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-h1 text-h1 text-on-surface">85</span>
+<span class="font-label text-label text-primary uppercase">Optimal</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mt-6">Top 5% of your genetic peer group.</p>
+</div>
+<div class="organic-shape bg-primary-container/10 p-10 border border-primary-container/20">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="lightbulb">lightbulb</span>
+<h4 class="font-h3 text-h3 text-on-primary-container text-lg">Epigenetic Tip</h4>
+</div>
+<p class="font-body-md text-body-md text-on-primary-container opacity-90">
+                        Exposure to high-intensity intervals before your first meal can further upregulate your glucose transporters (GLUT4).
+                    </p>
+</div>
+</div>
+<div class="md:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="bg-secondary-fixed/30 border border-outline-variant p-6 rounded-xl ambient-shadow flex flex-col justify-between">
+<div>
+<h3 class="font-h3 text-h3 text-primary text-xl mb-1">Glucose Stability</h3>
+<p class="font-label text-label text-on-surface-variant mb-6">7-DAY VARIABILITY</p>
+</div>
+<div class="h-32 w-full flex items-end gap-1">
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 60%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 45%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 70%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 65%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 80%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 55%"></div>
+<div class="bg-primary flex-1 rounded-t-sm" style="height: 62%"></div>
+</div>
+<div class="mt-4 flex justify-between">
+<span class="font-data-mono text-data-mono text-primary">Stable</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant">4.2 mmol/L</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl ambient-shadow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-primary text-xl mb-1">Efficiency</h3>
+<p class="font-label text-label text-on-surface-variant mb-6">SUBSTRATE UTILIZATION</p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="trending_up">trending_up</span>
+</div>
+</div>
+<div class="relative h-32 w-full">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<path d="M0 35 Q 25 10 50 30 T 100 5" fill="none" stroke="#4e635a" stroke-width="2"></path>
+<path d="M0 35 Q 25 10 50 30 T 100 5 V 40 H 0 Z" fill="rgba(78, 99, 90, 0.1)"></path>
+</svg>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<span class="font-data-mono text-data-mono text-primary">Fat Oxidation</span>
+<span class="font-data-mono text-data-mono text-primary">+12%</span>
+</div>
+</div>
+<div class="md:col-span-2 bg-surface-container-lowest border border-outline-variant p-8 rounded-xl ambient-shadow overflow-hidden relative group">
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-center gap-8">
+<div class="flex-1">
+<h3 class="font-h3 text-h3 text-primary text-2xl mb-2">Resting Heart Rate</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-md">Your RHR indicates high vagal tone and excellent recovery. Maintaining this range ensures longevity markers remain positive.</p>
+<div class="flex gap-4 mt-6">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-full font-label text-label hover:opacity-90 transition-opacity">VIEW FULL LABS</button>
+<button class="bg-transparent border border-primary text-primary px-6 py-3 rounded-full font-label text-label hover:bg-primary-fixed transition-colors">SET GOAL</button>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex flex-col items-center">
+<span class="font-h1 text-h1 text-on-surface">52</span>
+<span class="font-label text-label text-primary">BPM Avg</span>
+</div>
+<div class="w-px h-16 bg-outline-variant"></div>
+<div class="flex flex-col items-center">
+<span class="font-h1 text-h1 text-on-surface">48</span>
+<span class="font-label text-label text-on-surface-variant">Sleep Min</span>
+</div>
+</div>
+</div>
+<div class="absolute -right-20 -bottom-20 opacity-5 pointer-events-none group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-[300px]" data-icon="monitor_heart">monitor_heart</span>
+</div>
+</div>
+</div>
+</section>
+<section class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-section-gap">
+<div class="md:col-span-3">
+<h3 class="font-h2 text-h2 text-primary mb-8">Bio-Markers</h3>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+<img class="w-full h-48 object-cover rounded-lg mb-6 grayscale hover:grayscale-0 transition-all duration-500" data-alt="Microscopic view of cellular structures and glowing molecules in a laboratory setting, featuring a soft sage green and white color palette. The lighting is diffused and professional, evoking a sense of scientific precision and medical clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyzU1ijDceCSsYIfAvyP0nhRsmwc_I0MC2CxLQ0S7JKoitbxxygkI-80UMvpWDECGtHFq_g3YI6H8_TMR11EDQGJHqP3bHLPkRIRPs4ll_OQXOSwcOC5vQ-zKBQBvmL-L5wQ1FbBJiOMkyJy3qzXYM_75VFwDnUnFEUtF694uY_9MqcD3z8P5KnHmjp6YW8cfDi_-4t66nSq2GujHjVpLTALjhbeSvdKEt2EP7e_OwH1AIMFZHm27vLCS1cOnzYaZMo5c9gXLq7A"/>
+<h4 class="font-h3 text-h3 text-primary text-lg mb-2">Lipid Panel</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Last updated 4 days ago. All levels within optimal genetic reference range.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+<img class="w-full h-48 object-cover rounded-lg mb-6 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A clean, minimalist petri dish on a laboratory bench with soft botanical shadows playing across the surface. The aesthetic is organic minimalism with pale wood accents and a palette of sage green and pristine whites. The mood is calm and informative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwcr5dydiV7MoL34eSzBcgSV04H3sdcakU754bn50OsL3l2KcuZu_LSHMvKih_KnQlgzSomqU13SnIDCjdizay0_z9PVbk1vEM3drGcKfHuHANj3H6jc4MTUZSiobCxsh3M2de96UAVXeGiZzHf7XvEg3bTac-2BBwauZNC8WYUmnSG7GuoUVjSrRRVWbwXcwXqhY0XLUq6XBtWSASHdeyOisGHXT5R_4O7ghQvlJOqCV86sCYX1c7IQj4Go4ELkrW9DKduQ-6Sw"/>
+<h4 class="font-h3 text-h3 text-primary text-lg mb-2">Hormonal Balance</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Cortisol levels indicate low systemic stress during the reporting period.</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant">
+<img class="w-full h-48 object-cover rounded-lg mb-6 grayscale hover:grayscale-0 transition-all duration-500" data-alt="Abstract DNA double helix structure rendered in thin continuous lines with soft curves, glowing softly against a minimalist white background. The visual style is scientific and modern, using Sage Green accents and high-key lighting to create a feeling of clinical peace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqBkPCTgfs-0KOOg4C_EAmzc49Tl_1PxgYkCNSk0s4ZRKVuQw6RwbuJ9GppDLMkUM3EtvEAitUh5hdKSdM-vGYuxNTqHwsckm0-FjVVyiG7es_tncU8CEnFXHVThMeYDnFcg4PNG0PdogyUYsumCGmPW-zK7fZFaKE3RuJIU04PDC1JpmO1mHf5ONUOK-svs14tk4ONLGsy6mf7woAzdmSslm6kMKuXoMtJd6QO6Q7oDwXLoT-N1Dq-KxIxKiPorZSuXXoKQw3rg"/>
+<h4 class="font-h3 text-h3 text-primary text-lg mb-2">Genetic Predisposition</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Refining metabolic insights based on your unique SLC2A4 gene variant.</p>
+</div>
+</section>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe-area pt-2 bg-surface-container-lowest shadow-[0_-4px_12px_rgba(141,163,153,0.06)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="pill">pill</span>
+<span class="font-label text-label mt-1">Nutrients</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="restaurant">restaurant</span>
+<span class="font-label text-label mt-1">Meals</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-6 py-2 transition-all scale-105" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="insights">insights</span>
+<span class="font-label text-label mt-1 font-bold">Metabolic</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-2xl" data-icon="science">science</span>
+<span class="font-label text-label mt-1">Labs</span>
+</a>
+</nav>
+</body></html>

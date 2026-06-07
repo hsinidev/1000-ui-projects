@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FIELD_LOG_EDITOR // CANYON_CRAWLER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Public+Sans:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#822800",
+                        "primary-fixed": "#f3e2ac",
+                        "outline-variant": "#4b463b",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#3a3009",
+                        "tertiary-fixed": "#ffdbcf",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-container": "#4f441c",
+                        "on-secondary-container": "#b6b5b4",
+                        "surface-container-highest": "#353535",
+                        "on-primary-fixed-variant": "#51461e",
+                        "primary-fixed-dim": "#d6c692",
+                        "error-container": "#93000a",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "background": "#131313",
+                        "surface-variant": "#353535",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "outline": "#969083",
+                        "tertiary": "#ffc0ab",
+                        "on-primary-fixed": "#231b00",
+                        "inverse-primary": "#6a5e33",
+                        "surface-container": "#20201f",
+                        "surface-bright": "#393939",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-surface": "#e5e2e1",
+                        "primary": "#decd99",
+                        "secondary": "#c8c6c5",
+                        "on-tertiary": "#5c1a00",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#303030",
+                        "primary-container": "#c2b280",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-tertiary-container": "#7f2700",
+                        "surface-tint": "#d6c692",
+                        "on-tertiary-fixed": "#380c00",
+                        "on-secondary-fixed-variant": "#474746",
+                        "tertiary-fixed-dim": "#ffb59c",
+                        "tertiary-container": "#ff9873",
+                        "secondary-container": "#474746",
+                        "on-surface-variant": "#cdc6b7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Public Sans"],
+                        "body-lg": ["Public Sans"],
+                        "headline-xl": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "mono-tactical": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .tactical-texture {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .hard-shadow {
+            box-shadow: 4px 4px 0px 0px #000000;
+        }
+        .hard-shadow-active {
+            box-shadow: 0px 0px 0px 0px #000000;
+            transform: translate(2px, 2px);
+        }
+        .recessed {
+            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.6);
+        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #1c1b1b; }
+        ::-webkit-scrollbar-thumb { background: #4b463b; border: 2px solid #1c1b1b; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-black">
+<!-- TopAppBar -->
+<header class="bg-stone-950 text-[#C2B280] font-['Space_Grotesk'] uppercase tracking-widest text-xs font-bold docked full-width top-0 border-b-2 border-stone-800 shadow-[4px_0px_0px_0px_#000000] flex justify-between items-center w-full px-6 h-16 z-50 fixed">
+<div class="flex items-center gap-4">
+<span class="text-2xl font-black italic tracking-tighter text-[#C2B280]">OVERLAND_OPS</span>
+<div class="hidden md:flex gap-6 ml-8">
+<a class="text-[#C2B280] border-b-2 border-[#C2B280] active:translate-y-0.5 transition-all" href="#">TERMINAL</a>
+<a class="text-stone-500 hover:text-[#C2B280] active:translate-y-0.5 transition-all" href="#">FLEET_COMMS</a>
+<a class="text-stone-500 hover:text-[#C2B280] active:translate-y-0.5 transition-all" href="#">SYSTEM_HEALTH</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex bg-stone-900 border-2 border-stone-800 px-3 py-1 items-center gap-2">
+<span class="material-symbols-outlined text-sm">search</span>
+<input class="bg-transparent border-none outline-none text-[10px] w-48 uppercase tracking-widest placeholder-stone-600 focus:ring-0" placeholder="SEARCH_LOGS..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-stone-900 transition-all active:translate-y-0.5"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<button class="p-2 hover:bg-stone-900 transition-all active:translate-y-0.5"><span class="material-symbols-outlined" data-icon="sync">sync</span></button>
+<button class="p-2 hover:bg-stone-900 transition-all active:translate-y-0.5"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-stone-900 border-r-2 border-stone-800 w-64 fixed left-0 top-16 h-[calc(100vh-64px)] hidden md:flex flex-col z-40 shadow-[4px_0px_0px_0px_#000000]">
+<div class="p-6 border-b-2 border-stone-800">
+<div class="flex items-center gap-3 mb-1">
+<div class="w-2 h-2 bg-[#C2B280] rounded-full animate-pulse"></div>
+<h2 class="font-['Space_Grotesk'] font-bold uppercase text-sm tracking-widest text-[#C2B280]">OPERATOR_01</h2>
+</div>
+<p class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter text-stone-500">MK-IV_EXPEDITION</p>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<a class="text-stone-400 flex items-center gap-3 p-4 m-2 border-2 border-transparent hover:border-stone-700 hover:bg-stone-800 transition-transform active:translate-x-0.5 active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined" data-icon="construction">construction</span>
+<span class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter">CHASSIS_LOGS</span>
+</a>
+<a class="bg-[#C2B280] text-black flex items-center gap-3 p-4 border-2 border-black m-2 shadow-[2px_2px_0px_0px_#000000] active:translate-x-0.5 active:translate-y-0.5 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="terrain">terrain</span>
+<span class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter">TRAIL_REPORTS</span>
+</a>
+<a class="text-stone-400 flex items-center gap-3 p-4 m-2 border-2 border-transparent hover:border-stone-700 hover:bg-stone-800 transition-transform active:translate-x-0.5 active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter">MOD_SPECS</span>
+</a>
+<a class="text-stone-400 flex items-center gap-3 p-4 m-2 border-2 border-transparent hover:border-stone-700 hover:bg-stone-800 transition-transform active:translate-x-0.5 active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter">GPS_WAYPOINTS</span>
+</a>
+<a class="text-stone-400 flex items-center gap-3 p-4 m-2 border-2 border-transparent hover:border-stone-700 hover:bg-stone-800 transition-transform active:translate-x-0.5 active:translate-y-0.5" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-['Space_Grotesk'] font-bold uppercase text-[10px] tracking-tighter">RIG_STATUS</span>
+</a>
+</nav>
+<div class="p-4 border-t-2 border-stone-800">
+<button class="w-full bg-[#C2B280] text-black font-['Space_Grotesk'] font-bold uppercase text-xs p-4 border-2 border-black shadow-[4px_4px_0px_0px_#000000] active:shadow-none active:translate-x-1 active:translate-y-1 transition-all">
+                NEW_ENTRY
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 mt-16 p-6 pb-24 tactical-texture min-h-[calc(100vh-64px)] grid grid-cols-12 gap-6">
+<!-- Editor Section -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+<!-- Tactical Header -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<div class="bg-stone-900 border-2 border-stone-800 p-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 bg-[#C2B280] text-black px-2 py-0.5 font-label-caps text-[8px]">ENTRY_ID</div>
+<div class="mt-2 font-mono-tactical text-primary-fixed uppercase text-lg">LOG-CC-7742-X</div>
+</div>
+<div class="bg-stone-900 border-2 border-stone-800 p-4 relative">
+<div class="absolute top-0 left-0 bg-[#C2B280] text-black px-2 py-0.5 font-label-caps text-[8px]">TIMESTAMP</div>
+<div class="mt-2 font-mono-tactical text-primary-fixed uppercase text-lg">2024-10-24 // 14:22:04</div>
+</div>
+<div class="bg-stone-900 border-2 border-stone-800 p-4 relative">
+<div class="absolute top-0 left-0 bg-[#C2B280] text-black px-2 py-0.5 font-label-caps text-[8px]">GPS_COORDINATES</div>
+<div class="mt-2 font-mono-tactical text-primary-fixed uppercase text-lg">36.1627° N, 112.1130° W</div>
+</div>
+</div>
+<!-- Main Editor Container -->
+<div class="flex flex-col flex-1 bg-stone-900 border-2 border-stone-800 shadow-[8px_8px_0px_0px_#000000]">
+<!-- Title Bar -->
+<div class="bg-stone-800 p-3 flex justify-between items-center border-b-2 border-black">
+<h1 class="font-headline-md text-primary-fixed text-sm uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">edit_note</span>
+                        FIELD_LOG_EDITOR // CANYON_CRAWLER
+                    </h1>
+<div class="flex gap-1">
+<div class="w-3 h-3 border border-[#C2B280]"></div>
+<div class="w-3 h-3 bg-[#C2B280]"></div>
+</div>
+</div>
+<!-- Industrial Toolbar -->
+<div class="bg-stone-950 p-2 flex flex-wrap gap-2 border-b-2 border-stone-800">
+<div class="flex gap-1 border-r-2 border-stone-800 pr-2">
+<button class="w-8 h-8 flex items-center justify-center border-2 border-stone-800 hover:bg-stone-900 text-stone-400 hover:text-primary active:bg-stone-800"><span class="material-symbols-outlined text-sm">format_bold</span></button>
+<button class="w-8 h-8 flex items-center justify-center border-2 border-stone-800 hover:bg-stone-900 text-stone-400 hover:text-primary active:bg-stone-800"><span class="material-symbols-outlined text-sm">format_italic</span></button>
+<button class="w-8 h-8 flex items-center justify-center border-2 border-stone-800 hover:bg-stone-900 text-stone-400 hover:text-primary active:bg-stone-800"><span class="material-symbols-outlined text-sm">format_list_bulleted</span></button>
+</div>
+<div class="flex gap-2">
+<button class="px-3 h-8 flex items-center gap-2 border-2 border-stone-800 hover:bg-stone-900 text-[10px] font-label-caps text-stone-400 hover:text-primary transition-all uppercase">
+<span class="material-symbols-outlined text-xs">analytics</span>
+                            ADD_TELEMETRY
+                        </button>
+<button class="px-3 h-8 flex items-center gap-2 border-2 border-stone-800 hover:bg-stone-900 text-[10px] font-label-caps text-stone-400 hover:text-primary transition-all uppercase">
+<span class="material-symbols-outlined text-xs">add_a_photo</span>
+                            ATTACH_PHOTO
+                        </button>
+<button class="px-3 h-8 flex items-center gap-2 border-2 border-stone-800 hover:bg-stone-900 text-[10px] font-label-caps text-stone-400 hover:text-primary transition-all uppercase">
+<span class="material-symbols-outlined text-xs">location_on</span>
+                            TAG_LOCATION
+                        </button>
+</div>
+</div>
+<!-- Text Area -->
+<div class="flex-1 p-6 relative">
+<textarea class="w-full h-[500px] bg-transparent border-none focus:ring-0 text-primary-fixed font-mono-tactical text-base leading-relaxed resize-none p-0 scrollbar-tactical" placeholder="ENTER_FIELD_OBSERVATIONS_HERE...">// INITIALIZING_LOG_ENTRY...
+// STATUS: OPERATIONAL
+// LOCATION: TOROWEAP_OVERLOOK
+
+Traversed the western rim of the inner gorge today. Canyon Crawler handling the descent with impressive articulation. The MK-IV suspension mods are definitely paying off on the stepped limestone sections.
+
+Observed unusual mineral deposits near the 3400ft mark. Sample collected for telemetry analysis. 
+
+Transmission fluid temperatures reached 215F on the ascent. Monitoring closely.
+
+NOTES: 
+- Check winch cable tension at next stop.
+- Calibrate GPS compass offset.</textarea>
+<!-- Corner Brackets (Stylistic) -->
+<div class="absolute top-2 left-2 w-4 h-4 border-t-2 border-l-2 border-[#C2B280]/20"></div>
+<div class="absolute top-2 right-2 w-4 h-4 border-t-2 border-r-2 border-[#C2B280]/20"></div>
+<div class="absolute bottom-2 left-2 w-4 h-4 border-b-2 border-l-2 border-[#C2B280]/20"></div>
+<div class="absolute bottom-2 right-2 w-4 h-4 border-b-2 border-r-2 border-[#C2B280]/20"></div>
+</div>
+<!-- Footer Status Bar -->
+<div class="bg-stone-950 p-2 border-t-2 border-stone-800 flex justify-between items-center px-4">
+<div class="flex gap-4 text-[9px] font-label-caps text-stone-600">
+<span>WORDS: 84</span>
+<span>CHARS: 562</span>
+<span>ENCRYPTION: AES-256</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[9px] font-label-caps text-primary-fixed/50">SYNC_STATUS:</span>
+<span class="text-[9px] font-label-caps text-[#C2B280]">UPLINK_READY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Log Sidebar -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-4">
+<div class="bg-stone-900 border-2 border-stone-800 flex flex-col h-full shadow-[4px_4px_0px_0px_#000000]">
+<div class="p-4 border-b-2 border-stone-800 bg-stone-950 flex justify-between items-center">
+<h3 class="font-headline-md text-sm uppercase text-primary-fixed flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span>
+                        PREVIOUS_LOGS
+                    </h3>
+<span class="text-[10px] bg-stone-800 px-2 py-0.5 text-stone-400 font-label-caps">COUNT: 14</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 flex flex-col gap-4">
+<!-- Log Card 1 -->
+<div class="bg-stone-950 border-2 border-stone-800 p-4 hover:border-primary-container transition-colors cursor-pointer group relative">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] font-label-caps text-[#C2B280]">2024-10-23</span>
+<span class="material-symbols-outlined text-stone-600 group-hover:text-primary-container text-xs">arrow_forward</span>
+</div>
+<h4 class="font-mono-tactical text-xs text-white uppercase mb-2">NORTH_RIM_SCOUT</h4>
+<p class="text-[10px] text-stone-500 line-clamp-2 leading-relaxed font-body-md italic">Successful navigation of the rock crawl section at point Alpha. Minor cosmetic damage to rear bumper...</p>
+<div class="absolute -right-1 -bottom-1 w-2 h-2 bg-stone-800"></div>
+</div>
+<!-- Log Card 2 -->
+<div class="bg-stone-950 border-2 border-stone-800 p-4 hover:border-primary-container transition-colors cursor-pointer group relative">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] font-label-caps text-[#C2B280]">2024-10-22</span>
+<span class="material-symbols-outlined text-stone-600 group-hover:text-primary-container text-xs">arrow_forward</span>
+</div>
+<h4 class="font-mono-tactical text-xs text-white uppercase mb-2">SUSPENSION_CALIB</h4>
+<p class="text-[10px] text-stone-500 line-clamp-2 leading-relaxed font-body-md italic">Adjusted nitrogen pressure in rear shocks. Articulation increased by 15% on lateral incline test...</p>
+</div>
+<!-- Log Card 3 -->
+<div class="bg-stone-950 border-2 border-stone-800 p-4 hover:border-primary-container transition-colors cursor-pointer group relative">
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] font-label-caps text-[#C2B280]">2024-10-20</span>
+<span class="material-symbols-outlined text-stone-600 group-hover:text-primary-container text-xs">arrow_forward</span>
+</div>
+<h4 class="font-mono-tactical text-xs text-white uppercase mb-2">TIRE_PRESSURE_LOG</h4>
+<p class="text-[10px] text-stone-500 line-clamp-2 leading-relaxed font-body-md italic">Dropped to 12PSI for the dune section. Traction superior, though heat buildup is notable in OAT 95F...</p>
+</div>
+<!-- Visual Accent Card -->
+<div class="mt-4 border-2 border-stone-800 bg-stone-950/50 p-4">
+<div class="text-[10px] font-label-caps text-stone-500 mb-2 uppercase">Rig_System_Snapshot</div>
+<div class="aspect-video bg-stone-900 border border-stone-800 relative flex items-center justify-center overflow-hidden">
+<img class="opacity-40 grayscale sepia brightness-50 contrast-125 object-cover w-full h-full" data-alt="A gritty, high-contrast, black and white photograph of a rugged off-road exploration vehicle parked on a rocky desert plateau at sunset. The lighting is dramatic and low-key, highlighting the mechanical textures and mud splatters on the vehicle's body. The overall mood is industrial and adventurous, with a focus on durability and tactical functionality within a harsh wilderness environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB29wFKrJfY2N639oprkQvKXd_bvCW3b6X07au-ifIhsXZtyah9vEvVXHDkUhPqVT6mAFKylAto6dwLuoHq4PtgbnXGZeBASJt6dgs-TBMG6XbK16t_bprpwXLFxaXyLiZeVWmSjahtLWUFyPtOsjG43tpH4yFAX8rSjiSb33FUrrnInxkCKj6z0Cz5lgIzIlKFjjV0NAt_g-UJZT0zQxjnssM4cTXQ7T0w5aaHulJtkzKFo9ea_wbydmqOS6rghNvIaze5dc9HUiJD"/>
+<div class="absolute inset-0 bg-gradient-to-t from-stone-950 to-transparent"></div>
+<div class="absolute bottom-2 left-2 flex gap-1 items-center">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+<span class="text-[8px] font-label-caps text-error">ENGINE_CAM_01_FEED</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-stone-950 border-t-2 border-stone-800">
+<button class="w-full border-2 border-stone-700 py-3 font-label-caps text-[10px] text-stone-400 hover:bg-stone-900 hover:text-primary-container transition-all">VIEW_ALL_ARCHIVES</button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-16 bg-stone-950 border-t-2 border-stone-800 flex justify-around items-center z-50">
+<a class="flex flex-col items-center justify-center text-stone-500 p-2 h-full hover:bg-stone-900 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-['Space_Grotesk'] font-black uppercase text-[10px]">NOTES</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 p-2 h-full hover:bg-stone-900 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Space_Grotesk'] font-black uppercase text-[10px]">MAPS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 p-2 h-full hover:bg-stone-900 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-['Space_Grotesk'] font-black uppercase text-[10px]">DIAGS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-500 p-2 h-full hover:bg-stone-900 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-['Space_Grotesk'] font-black uppercase text-[10px]">COMMS</span>
+</a>
+</nav>
+</body></html>

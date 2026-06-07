@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC-POWER | TELEMETRY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .milled-edge {
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+        }
+        .glass-panel {
+            background: rgba(54, 69, 79, 0.6);
+            backdrop-filter: blur(20px);
+        }
+        .energy-glow {
+            box-shadow: 0 0 8px #ff6700;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .pulse-warning {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .3; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#a23f00",
+                      "error-container": "#93000a",
+                      "background": "#1d100a",
+                      "tertiary-container": "#999798",
+                      "surface-dim": "#1d100a",
+                      "secondary-container": "#3c4b55",
+                      "outline-variant": "#5a4136",
+                      "on-surface": "#f8ddd2",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#d5e5f1",
+                      "primary-fixed-dim": "#ffb595",
+                      "on-secondary-fixed": "#0e1d26",
+                      "tertiary": "#c8c6c7",
+                      "outline": "#aa8a7d",
+                      "on-tertiary-fixed-variant": "#474647",
+                      "surface-container-high": "#362620",
+                      "on-secondary-container": "#abbbc7",
+                      "error": "#ffb4ab",
+                      "primary-container": "#ff6700",
+                      "on-background": "#f8ddd2",
+                      "surface-bright": "#46352e",
+                      "surface": "#1d100a",
+                      "on-tertiary-fixed": "#1b1b1c",
+                      "on-primary-container": "#561e00",
+                      "on-tertiary-container": "#303031",
+                      "tertiary-fixed-dim": "#c8c6c7",
+                      "on-primary": "#571e00",
+                      "surface-container-lowest": "#170b06",
+                      "on-primary-fixed": "#351000",
+                      "surface-container-low": "#261812",
+                      "secondary": "#b9c9d5",
+                      "secondary-fixed-dim": "#b9c9d5",
+                      "on-secondary": "#23323c",
+                      "primary": "#ffb595",
+                      "tertiary-fixed": "#e5e2e3",
+                      "surface-container": "#2b1c16",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary": "#303031",
+                      "on-secondary-fixed-variant": "#3a4953",
+                      "surface-tint": "#ffb595",
+                      "on-primary-fixed-variant": "#7c2e00",
+                      "surface-variant": "#42312a",
+                      "on-surface-variant": "#e3bfb1",
+                      "primary-fixed": "#ffdbcd",
+                      "surface-container-highest": "#42312a",
+                      "inverse-surface": "#f8ddd2",
+                      "inverse-on-surface": "#3d2d26"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "margin-desktop": "40px",
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["JetBrains Mono"],
+                      "display-lg": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "mono-data": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "mono-data": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full h-16 z-50 flex justify-between items-center px-margin-desktop bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<h1 class="font-display-lg text-display-lg font-bold text-primary-container leading-none">KINETIC-POWER</h1>
+<span class="font-headline-md text-headline-md tracking-tight text-on-surface-variant ml-4">SYSTEM STATUS</span>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant transition-colors p-2 cursor-pointer">signal_cellular_alt</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant transition-colors p-2 cursor-pointer">sync</span>
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high rounded border border-outline-variant">
+<span class="font-mono-data text-primary-container">98%</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">battery_charging_full</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<nav class="fixed left-0 top-0 h-full w-64 bg-surface-container border-r border-outline-variant py-margin-desktop flex flex-col pt-24 z-40">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 bg-surface-variant border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps uppercase text-primary-container">OPERATOR_01</p>
+<p class="font-mono-data text-xs text-on-surface-variant">SECTOR-DELTA</p>
+</div>
+</div>
+</div>
+<div class="flex-1 flex flex-col space-y-1">
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+                DASHBOARD
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 bg-surface-bright text-primary-container border-r-2 border-primary-container font-bold font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+                TELEMETRY
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+                OPERATIONS
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">router</span>
+                HARDWARE
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-150 font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+                LOGS
+            </a>
+</div>
+<div class="mt-auto flex flex-col space-y-1 border-t border-outline-variant pt-4">
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">settings</span>
+                SETTINGS
+            </a>
+<a class="flex items-center gap-4 px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-all font-label-caps text-label-caps uppercase" href="#">
+<span class="material-symbols-outlined">power_settings_new</span>
+                POWER
+            </a>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="pl-64 pt-16 h-screen overflow-y-auto no-scrollbar bg-surface-container-lowest">
+<div class="max-w-container-max mx-auto p-margin-desktop space-y-gutter">
+<!-- Top HUD: Energy Flow & Real-time Graph -->
+<section class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-8 bg-surface-container-high milled-edge p-6 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container"></span>
+                            REAL-TIME ENERGY FLOW
+                        </h2>
+<div class="flex gap-4">
+<div class="px-3 py-1 bg-surface-variant border border-outline-variant font-mono-data text-xs text-primary-container">LIVE_FEED_01</div>
+<div class="px-3 py-1 bg-surface-variant border border-outline-variant font-mono-data text-xs text-on-surface-variant">UTC +0:00</div>
+</div>
+</div>
+<!-- Graph Placeholder (Energy Flow Visualization) -->
+<div class="h-64 w-full relative bg-surface-container-lowest rounded overflow-hidden">
+<div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle, #ff6700 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Kinetic Line -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none">
+<path class="energy-glow" d="M0,180 Q100,120 200,160 T400,100 T600,140 T800,80 T1000,120" fill="none" stroke="#ff6700" stroke-width="3"></path>
+<path d="M0,180 Q100,120 200,160 T400,100 T600,140 T800,80 T1000,120 L1000,256 L0,256 Z" fill="url(#energyGradient)" opacity="0.1"></path>
+<defs>
+<lineargradient id="energyGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ff6700"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Data Points -->
+<div class="absolute top-1/4 left-1/4 w-2 h-2 bg-primary-container energy-glow"></div>
+<div class="absolute top-1/2 left-2/3 w-2 h-2 bg-primary-container energy-glow"></div>
+<div class="absolute bottom-1/3 left-1/2 w-2 h-2 bg-primary-container energy-glow"></div>
+</div>
+<div class="mt-4 grid grid-cols-4 gap-4">
+<div class="p-3 border-l-2 border-primary-container bg-surface-variant/30">
+<p class="font-label-caps text-xs text-on-surface-variant uppercase">Input Current</p>
+<p class="font-mono-data text-headline-md text-primary-container">142.4W</p>
+</div>
+<div class="p-3 border-l-2 border-primary-container bg-surface-variant/30">
+<p class="font-label-caps text-xs text-on-surface-variant uppercase">Output Total</p>
+<p class="font-mono-data text-headline-md text-primary-container">88.9W</p>
+</div>
+<div class="p-3 border-l-2 border-primary-container bg-surface-variant/30">
+<p class="font-label-caps text-xs text-on-surface-variant uppercase">Efficiency</p>
+<p class="font-mono-data text-headline-md text-primary-container">94.2%</p>
+</div>
+<div class="p-3 border-l-2 border-primary-container bg-surface-variant/30">
+<p class="font-label-caps text-xs text-on-surface-variant uppercase">Temp Delta</p>
+<p class="font-mono-data text-headline-md text-primary-container">+2.4°C</p>
+</div>
+</div>
+</div>
+<!-- Right HUD: Port Status -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-high milled-edge p-6 flex flex-col">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-6 uppercase flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container"></span>
+                        PORT MONITOR
+                    </h2>
+<div class="space-y-4 flex-1 overflow-y-auto no-scrollbar">
+<!-- USB-C Ports -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-xs text-on-surface-variant">USB-C 1</span>
+<div class="w-1.5 h-1.5 bg-primary-container energy-glow"></div>
+</div>
+<div class="font-mono-data text-xl text-primary-container">45.0W</div>
+<div class="h-1 bg-surface-variant mt-2 overflow-hidden">
+<div class="h-full bg-primary-container w-[45%]"></div>
+</div>
+</div>
+<div class="p-3 bg-surface border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-xs text-on-surface-variant">USB-C 2</span>
+<div class="w-1.5 h-1.5 bg-on-surface-variant opacity-20"></div>
+</div>
+<div class="font-mono-data text-xl text-on-surface-variant">0.0W</div>
+<div class="h-1 bg-surface-variant mt-2"></div>
+</div>
+<div class="p-3 bg-surface border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-xs text-on-surface-variant">USB-C 3</span>
+<div class="w-1.5 h-1.5 bg-primary-container energy-glow"></div>
+</div>
+<div class="font-mono-data text-xl text-primary-container">18.5W</div>
+<div class="h-1 bg-surface-variant mt-2 overflow-hidden">
+<div class="h-full bg-primary-container w-[18%]"></div>
+</div>
+</div>
+<div class="p-3 bg-surface border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-label-caps text-xs text-on-surface-variant">USB-C 4</span>
+<div class="w-1.5 h-1.5 bg-primary-container energy-glow"></div>
+</div>
+<div class="font-mono-data text-xl text-primary-container">25.4W</div>
+<div class="h-1 bg-surface-variant mt-2 overflow-hidden">
+<div class="h-full bg-primary-container w-[25%]"></div>
+</div>
+</div>
+</div>
+<!-- AC Port -->
+<div class="p-4 bg-surface-variant border border-primary-container/30 relative">
+<div class="absolute top-0 right-0 px-2 py-1 bg-primary-container text-on-primary-container font-label-caps text-[10px]">HIGH VOLTAGE</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container">bolt</span>
+<div class="flex-1">
+<p class="font-label-caps text-xs text-on-surface">AC OUTPUT 110V</p>
+<p class="font-mono-data text-2xl text-on-surface">OFFLINE</p>
+</div>
+<button class="px-4 py-2 bg-outline-variant hover:bg-primary-container hover:text-on-primary-container transition-all font-label-caps text-xs uppercase">Engage</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Grid: Battery Health & Generation Forecast -->
+<section class="grid grid-cols-12 gap-gutter">
+<!-- Battery Cell Health -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-high milled-edge p-6">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container"></span>
+                            CELL HEALTH MONITOR
+                        </h2>
+<span class="font-mono-data text-xs text-on-surface-variant">MOD_B_74</span>
+</div>
+<div class="grid grid-cols-8 gap-2">
+<!-- 32 Cells visualization -->
+<div class="aspect-square bg-primary-container energy-glow" title="Cell 01: 4.12V"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-surface-variant border border-outline-variant"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-surface border border-error/50 pulse-warning"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+<div class="aspect-square bg-primary-container energy-glow"></div>
+</div>
+<div class="mt-6 p-4 bg-surface border border-outline-variant flex justify-between">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">AVERAGE TEMP</p>
+<p class="font-mono-data text-lg text-on-surface">32.4°C</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant">CYCLES</p>
+<p class="font-mono-data text-lg text-on-surface">142/1000</p>
+</div>
+</div>
+</div>
+<!-- Generation Forecast -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-high milled-edge p-6 overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container"></span>
+                            GENERATION FORECAST
+                        </h2>
+<span class="font-mono-data text-xs text-on-surface-variant">ROUTE: DELTA-9</span>
+</div>
+<div class="space-y-4">
+<!-- Forecast Card -->
+<div class="relative p-4 bg-surface border border-outline-variant overflow-hidden">
+<div class="flex justify-between items-center relative z-10">
+<div>
+<p class="font-label-caps text-xs text-primary-container">T+24 HOURS (HIGH ALTITUDE)</p>
+<p class="font-body-md text-on-surface">Solar Gain: +450Wh</p>
+</div>
+<div class="text-right">
+<span class="material-symbols-outlined text-primary-container">wb_sunny</span>
+<p class="font-mono-data text-xl text-on-surface">CLEAR</p>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 h-1 bg-primary-container w-[85%] energy-glow"></div>
+</div>
+<div class="relative p-4 bg-surface border border-outline-variant overflow-hidden">
+<div class="flex justify-between items-center relative z-10">
+<div>
+<p class="font-label-caps text-xs text-on-surface-variant">T+48 HOURS (VALLEY DESCENT)</p>
+<p class="font-body-md text-on-surface-variant">Solar Gain: +120Wh</p>
+</div>
+<div class="text-right">
+<span class="material-symbols-outlined text-on-surface-variant">cloud</span>
+<p class="font-mono-data text-xl text-on-surface-variant">PARTIAL</p>
+</div>
+</div>
+<div class="absolute bottom-0 left-0 h-1 bg-surface-variant w-[25%]"></div>
+</div>
+<!-- Terrain Graph Mini -->
+<div class="pt-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2 uppercase">Terrain Impact on Gen</p>
+<div class="h-12 bg-surface-container-lowest flex items-end gap-1 px-2">
+<div class="flex-1 bg-primary-container opacity-40 h-[40%]"></div>
+<div class="flex-1 bg-primary-container opacity-60 h-[60%]"></div>
+<div class="flex-1 bg-primary-container h-[90%]"></div>
+<div class="flex-1 bg-primary-container h-[100%]"></div>
+<div class="flex-1 bg-primary-container opacity-80 h-[80%]"></div>
+<div class="flex-1 bg-primary-container opacity-50 h-[50%]"></div>
+<div class="flex-1 bg-primary-container opacity-30 h-[30%]"></div>
+<div class="flex-1 bg-primary-container opacity-20 h-[20%]"></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Actions -->
+<section class="flex gap-4">
+<button class="px-8 py-4 bg-primary-container text-on-primary-container font-label-caps text-sm font-bold uppercase transition-all hover:shadow-[0_0_15px_rgba(255,103,0,0.5)] active:scale-95">
+                    INITIATE DISCHARGE
+                </button>
+<button class="px-8 py-4 bg-surface-container-high border border-primary-container text-primary-container font-label-caps text-sm font-bold uppercase transition-all hover:bg-primary-container hover:text-on-primary-container active:scale-95">
+                    EXPORT TELEMETRY
+                </button>
+<div class="ml-auto flex items-center gap-4 px-6 bg-surface-container border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container pulse-warning"></span>
+<p class="font-mono-data text-xs text-on-surface-variant">ENCRYPTED UPLINK STABLE // LATENCY: 24ms</p>
+</div>
+</section>
+</div>
+</main>
+</body></html>

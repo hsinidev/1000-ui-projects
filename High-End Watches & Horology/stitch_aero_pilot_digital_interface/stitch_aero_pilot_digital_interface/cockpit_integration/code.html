@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Pilot Cockpit Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .lume-glow {
+            text-shadow: 0 0 8px rgba(185, 199, 228, 0.5);
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(31, 31, 33, 0.7);
+            border: 1px solid rgba(228, 226, 228, 0.1);
+        }
+        .hud-border {
+            border-left: 4px solid #b9c7e4;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-surface": "#e4e2e4",
+                      "on-secondary-fixed-variant": "#444749",
+                      "secondary-fixed": "#e0e3e5",
+                      "on-error-container": "#ffdad6",
+                      "primary-container": "#0a192f",
+                      "outline": "#8f9097",
+                      "tertiary": "#c6c6c7",
+                      "surface-container": "#1f1f21",
+                      "inverse-primary": "#515f78",
+                      "surface-dim": "#131315",
+                      "surface-container-high": "#2a2a2c",
+                      "error": "#ffb4ab",
+                      "primary-fixed-dim": "#b9c7e4",
+                      "on-secondary": "#2d3133",
+                      "surface-variant": "#343536",
+                      "outline-variant": "#44474d",
+                      "primary": "#b9c7e4",
+                      "on-background": "#e4e2e4",
+                      "surface-bright": "#39393b",
+                      "on-secondary-fixed": "#181c1e",
+                      "secondary-fixed-dim": "#c4c7c9",
+                      "primary-fixed": "#d6e3ff",
+                      "on-primary-container": "#74829d",
+                      "surface-container-highest": "#343536",
+                      "on-primary-fixed-variant": "#39475f",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-tertiary-container": "#808282",
+                      "on-primary": "#233148",
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface": "#131315",
+                      "secondary-container": "#464a4b",
+                      "surface-container-lowest": "#0e0e10",
+                      "on-surface": "#e4e2e4",
+                      "error-container": "#93000a",
+                      "on-surface-variant": "#c5c6cd",
+                      "surface-container-low": "#1b1b1d",
+                      "inverse-on-surface": "#303032",
+                      "on-primary-fixed": "#0d1c32",
+                      "surface-tint": "#b9c7e4",
+                      "background": "#131315",
+                      "secondary": "#c4c7c9",
+                      "on-tertiary": "#2f3131",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-secondary-container": "#b6b9bb",
+                      "on-error": "#690005",
+                      "tertiary-container": "#171919",
+                      "on-tertiary-fixed": "#1a1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit-xl": "2.5rem",
+                      "grid_columns": "12",
+                      "unit-lg": "1.5rem",
+                      "unit-md": "1rem",
+                      "base": "4px",
+                      "mobile_margin": "1rem",
+                      "unit-xs": "0.25rem",
+                      "unit-sm": "0.5rem",
+                      "desktop_margin": "2rem"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Grotesk"],
+                      "data-mono": ["JetBrains Mono"],
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "display-hud": ["Space Grotesk"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "display-hud": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="bg-surface-container dark:bg-surface-container docked full-width top-0 border-b border-outline-variant/30 shadow-[0_0_15px_rgba(185,199,228,0.1)] z-50 fixed">
+<div class="flex justify-between items-center w-full px-mobile_margin md:px-desktop_margin py-unit-sm">
+<div class="flex items-center gap-unit-md haptic-press active:scale-95 duration-75">
+<span class="material-symbols-outlined text-primary dark:text-primary">flight_takeoff</span>
+<h1 class="font-headline-lg text-headline-lg tracking-tighter text-on-surface dark:text-on-surface">AERO-PILOT</h1>
+</div>
+<div class="flex items-center gap-unit-md">
+<div class="hidden md:flex gap-unit-lg mr-unit-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant hover:bg-secondary-container/50 transition-colors cursor-pointer px-2 py-1 rounded">FLEET</span>
+<span class="font-label-caps text-label-caps text-primary dark:text-primary hover:bg-secondary-container/50 transition-colors cursor-pointer px-2 py-1 rounded">COCKPIT</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant hover:bg-secondary-container/50 transition-colors cursor-pointer px-2 py-1 rounded">LOGS</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary hover:bg-secondary-container/50 transition-colors p-unit-xs rounded-full">light_mode</button>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 px-mobile_margin md:px-desktop_margin min-h-screen">
+<!-- HUD Header Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-unit-md mb-unit-lg">
+<!-- UTC Clock Card -->
+<div class="glass-panel rounded-xl p-unit-md flex flex-col justify-between hud-border">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM TIME (UTC)</span>
+<span class="material-symbols-outlined text-primary text-sm">schedule</span>
+</div>
+<div class="mt-unit-sm">
+<div class="font-display-hud text-primary lume-glow leading-none">14:42:08</div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mt-1">ZULU PHASE ACTIVE</div>
+</div>
+</div>
+<!-- Sync Status -->
+<div class="glass-panel rounded-xl p-unit-md flex flex-col justify-between hud-border">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">WATCH SYNC STATUS</span>
+<span class="material-symbols-outlined text-primary text-sm" style="font-variation-settings: 'FILL' 1;">bluetooth_connected</span>
+</div>
+<div class="mt-unit-sm">
+<div class="font-headline-md text-on-surface flex items-center gap-unit-sm">
+                        CHRONO-7 ACTIVE
+                        <span class="w-2 h-2 rounded-full bg-[#4CAF50] animate-pulse"></span>
+</div>
+<div class="font-data-mono text-data-mono text-on-surface-variant mt-1">LAST SYNC: 0.4s AGO</div>
+</div>
+</div>
+<!-- Battery Level -->
+<div class="glass-panel rounded-xl p-unit-md flex flex-col justify-between hud-border">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MODULE ENERGY</span>
+<span class="material-symbols-outlined text-primary text-sm">battery_charging_80</span>
+</div>
+<div class="mt-unit-sm">
+<div class="font-display-hud text-on-surface leading-none">84%</div>
+<div class="w-full bg-surface-variant h-1 mt-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[84%] shadow-[0_0_8px_rgba(185,199,228,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main HUD Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-unit-md">
+<!-- Left Panel: Gauges -->
+<div class="md:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-unit-md">
+<!-- Flight Log Summary (Bento Style) -->
+<div class="glass-panel rounded-xl p-unit-lg col-span-1 sm:col-span-2 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-unit-md opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-[120px]">airplanemode_active</span>
+</div>
+<h2 class="font-label-caps text-label-caps text-primary mb-unit-md">MISSION LOG SUMMARY</h2>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-unit-md relative z-10">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">FLIGHT HOURS</p>
+<p class="font-headline-md text-on-surface">1,248.5</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">SORTIES</p>
+<p class="font-headline-md text-on-surface">412</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">NEXT SVC</p>
+<p class="font-headline-md text-on-surface">42H</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">RATING</p>
+<p class="font-headline-md text-primary">ACE</p>
+</div>
+</div>
+</div>
+<!-- Circular HUD Gauges -->
+<div class="glass-panel rounded-xl p-unit-lg flex flex-col items-center justify-center min-h-[300px]">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-unit-lg">ALTIMETER (FT x100)</span>
+<div class="relative w-48 h-48 border-4 border-surface-variant rounded-full flex items-center justify-center">
+<div class="absolute inset-2 border border-outline-variant/30 rounded-full"></div>
+<div class="text-center">
+<span class="font-display-hud text-primary lume-glow">320</span>
+<p class="font-data-mono text-xs text-on-surface-variant">STABLE</p>
+</div>
+<!-- Needle SVG Mockup -->
+<div class="absolute inset-0 rotate-[120deg] flex justify-center">
+<div class="w-1 h-24 bg-primary rounded-full origin-bottom shadow-[0_0_10px_rgba(185,199,228,0.8)]"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel rounded-xl p-unit-lg flex flex-col items-center justify-center min-h-[300px]">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-unit-lg">AIRSPEED (KNOTS)</span>
+<div class="relative w-48 h-48 border-4 border-surface-variant rounded-full flex items-center justify-center">
+<div class="absolute inset-2 border border-outline-variant/30 rounded-full"></div>
+<div class="text-center">
+<span class="font-display-hud text-on-surface">450</span>
+<p class="font-data-mono text-xs text-on-surface-variant">CRUISE</p>
+</div>
+<!-- Needle SVG Mockup -->
+<div class="absolute inset-0 rotate-[45deg] flex justify-center">
+<div class="w-1 h-24 bg-on-surface rounded-full origin-bottom"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Controls & Telemetry -->
+<div class="md:col-span-4 flex flex-col gap-unit-md">
+<!-- Lume-Mode Toggle Panel -->
+<div class="bg-primary-container border border-primary/20 rounded-xl p-unit-md flex items-center justify-between">
+<div class="flex items-center gap-unit-md">
+<div class="p-unit-xs bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">visibility</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">LUME-MODE</p>
+<p class="text-[10px] text-on-primary-container font-data-mono">NIGHT MISSION VISIBILITY</p>
+</div>
+</div>
+<button class="w-12 h-6 bg-primary rounded-full relative transition-colors">
+<div class="absolute right-1 top-1 w-4 h-4 bg-on-primary rounded-full shadow-sm"></div>
+</button>
+</div>
+<!-- Technical Readouts -->
+<div class="glass-panel rounded-xl p-unit-lg flex-grow flex flex-col gap-unit-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant/20 pb-2">AVIONICS STATUS</h3>
+<div class="flex justify-between items-center py-1">
+<span class="font-data-mono text-data-mono text-on-surface-variant">NAV-COMPUTER</span>
+<span class="font-data-mono text-data-mono text-[#4CAF50]">NOMINAL</span>
+</div>
+<div class="flex justify-between items-center py-1">
+<span class="font-data-mono text-data-mono text-on-surface-variant">LIDAR-SENSOR</span>
+<span class="font-data-mono text-data-mono text-[#4CAF50]">ONLINE</span>
+</div>
+<div class="flex justify-between items-center py-1">
+<span class="font-data-mono text-data-mono text-on-surface-variant">O2-PRESSURE</span>
+<span class="font-data-mono text-data-mono text-on-surface">101.3 kPa</span>
+</div>
+<div class="flex justify-between items-center py-1">
+<span class="font-data-mono text-data-mono text-on-surface-variant">CABIN-TEMP</span>
+<span class="font-data-mono text-data-mono text-on-surface">22.4 °C</span>
+</div>
+<div class="mt-auto pt-unit-md">
+<img alt="Flight Map" class="w-full h-32 object-cover rounded-lg border border-outline-variant/50 grayscale opacity-60" data-alt="A high-contrast, technical satellite map view of mountainous terrain rendered in deep navy and glowing cyan tones. Overlaid on the map are digital HUD elements including grid lines, flight path vectors in aviation orange, and coordinate data in a clean mono typeface. The overall aesthetic is professional, utilitarian, and designed for high-stakes navigation in a modern aircraft cockpit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlSLopSgVF3-kuFJvYxzeiDBcL5kJudnyM6D3X3-k7lR1PJFgP5jpU2cP52KHzc76ZrgStcSmhpRrKLaTl9xN7KDN254CsO_zZvwr35JvkemsfAUBAhagmNJbrxCltbP2i0t0UUr_6-WyOIbtFib1-uiTnQslDOfnyIQr9_JJF8NF5v0EiG9bjNklJ-yDWFCGhkbUarpAwcejS5-Bg7Y6cjhk8C4PPDvYwSVSHQDGbC2AtB05TeVHb0NzOxMW9lkJuVga9ZjvWBQ"/>
+<div class="flex justify-between mt-2">
+<span class="font-data-mono text-[10px] text-on-surface-variant">LAT: 51.5074° N</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">LONG: 0.1278° W</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-unit-md pb-6 pt-2 bg-surface-container-lowest/90 backdrop-blur-xl border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(0,0,0,0.4)] rounded-t-xl md:hidden">
+<div class="flex flex-col items-center justify-center text-on-secondary-fixed-variant dark:text-on-secondary-fixed-variant py-1 px-4 scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">watch</span>
+<span class="font-label-caps text-label-caps mt-1">COLLECTION</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-fixed-variant dark:text-on-secondary-fixed-variant py-1 px-4 scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span class="font-label-caps text-label-caps mt-1">FEATURES</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary bg-primary-container/20 rounded-lg py-1 px-4 border-l-2 border-primary scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_remote</span>
+<span class="font-label-caps text-label-caps mt-1">COCKPIT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-fixed-variant dark:text-on-secondary-fixed-variant py-1 px-4 scale-110 active:scale-90 transition-transform">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps mt-1">SERVICE</span>
+</div>
+</nav>
+<!-- Background Subtle Grain Texture Overlay -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] bg-[url('https://www.transparenttextures.com/patterns/brushed-alum.png')] z-[-1]"></div>
+</body></html>

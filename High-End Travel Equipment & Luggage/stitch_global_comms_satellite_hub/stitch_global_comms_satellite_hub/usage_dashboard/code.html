@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global-Comms | Real-time Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e5e2e1",
+                    "secondary": "#c6c6c7",
+                    "surface-bright": "#393939",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "on-surface-variant": "#b9cacb",
+                    "surface-container-highest": "#353535",
+                    "surface-container-high": "#2a2a2a",
+                    "on-primary-fixed": "#002022",
+                    "on-tertiary-container": "#605e5e",
+                    "tertiary": "#f9f5f5",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-container": "#b4b5b5",
+                    "surface-container": "#20201f",
+                    "surface-dim": "#131313",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "error-container": "#93000a",
+                    "surface-tint": "#00dbe9",
+                    "primary-fixed-dim": "#00dbe9",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-secondary-fixed-variant": "#454747",
+                    "primary": "#dbfcff",
+                    "surface-variant": "#353535",
+                    "inverse-on-surface": "#313030",
+                    "tertiary-container": "#dcd9d8",
+                    "background": "#131313",
+                    "error": "#ffb4ab",
+                    "surface": "#131313",
+                    "secondary-container": "#454747",
+                    "on-primary-container": "#006970",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-tertiary": "#313030",
+                    "on-primary-fixed-variant": "#004f54",
+                    "on-primary": "#00363a",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface": "#e5e2e1",
+                    "inverse-primary": "#006970",
+                    "primary-container": "#00f0ff",
+                    "primary-fixed": "#7df4ff",
+                    "secondary-fixed": "#e2e2e2",
+                    "inverse-surface": "#e5e2e1",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#849495",
+                    "outline-variant": "#3b494b",
+                    "on-secondary": "#2f3131"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "lg": "48px",
+                    "md": "24px",
+                    "sm": "16px",
+                    "base": "4px",
+                    "gutter": "24px",
+                    "xl": "80px",
+                    "margin": "32px"
+            },
+            "fontFamily": {
+                    "display-xl": ["Space Grotesk"],
+                    "mono-technical": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Space Grotesk"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "mono-technical": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { background-color: #050505; color: #e5e2e1; -webkit-font-smoothing: antialiased; }
+        .glass { background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(12px); border: 1px solid #1A1A1A; }
+        .glass-cyan { border: 1px solid rgba(0, 240, 255, 0.3); box-shadow: 0 0 15px rgba(0, 240, 255, 0.1); }
+        .scanning-line {
+            height: 2px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+        .pulse-glow {
+            box-shadow: 0 0 8px #00f0ff;
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.33); opacity: 0.8; }
+            80%, 100% { opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar from JSON -->
+<header class="docked full-width top-0 sticky z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant dark:border-outline-variant flex justify-between items-center w-full px-margin h-16">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="satellite_alt">satellite_alt</span>
+<h1 class="font-display-xl text-headline-md tracking-tighter text-on-surface dark:text-on-surface">GLOBAL-COMMS</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary-container transition-colors duration-300" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+</div>
+</header>
+<main class="px-margin pt-sm pb-xl space-y-gutter max-w-lg mx-auto">
+<!-- Connection Status Module -->
+<section class="glass glass-cyan rounded-xl p-md relative overflow-hidden">
+<div class="scanning-line"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<p class="font-label-caps text-label-caps text-primary mb-xs">SYSTEM STATUS</p>
+<h2 class="font-headline-md text-headline-md text-on-surface">CONNECTED</h2>
+</div>
+<div class="relative flex items-center justify-center h-12 w-12">
+<div class="absolute inset-0 bg-primary-container/20 rounded-full animate-ping"></div>
+<div class="w-4 h-4 bg-primary-container rounded-full pulse-glow"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-base">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SATELLITE ID</p>
+<p class="font-mono-technical text-mono-technical text-primary">K-ORB-2884</p>
+</div>
+<div class="space-y-base text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ALTITUDE</p>
+<p class="font-mono-technical text-mono-technical text-primary">550.2 KM</p>
+</div>
+</div>
+<!-- Visualization: Constellation Map Placeholder -->
+<div class="mt-md h-32 w-full glass rounded-lg bg-surface-container-low flex items-center justify-center relative">
+<img class="absolute inset-0 w-full h-full object-cover opacity-30 rounded-lg grayscale" data-alt="A technical heads-up display showing a schematic orbital map of the Earth in deep indigo and neon cyan. Digital data overlays and satellite trajectory lines crisscross the globe, which glows softly against the black void of space. The aesthetic is ultra-modern, high-precision technical interface design with glowing nodes and thin vector lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWA2eCbnAUdS369p9v0g7d9wLVmTi7nY4WveRSYd9staj40URcKnKIRXWu46VaHWPlyaiLCU0M1WHCUQbdkTYtong7v1la8FR25A4ksR73EnDaTBgoTht-8agPvg3epgamv9XsdLUR0Xk7GCrJwUNcegwOsoKdWhEHozjJRzbxB8P_naNSG4SY9RoeQcB1wgm3G2uaSfSwPNo0__QNj9Xr8N8We9d4gsdIBYUYfr_j-G_GlDtdnjjuOP0E2tKZhp__WtxqrjPV2KQ"/>
+<div class="relative flex flex-col items-center">
+<span class="material-symbols-outlined text-primary text-headline-lg animate-pulse" data-icon="public">public</span>
+<p class="font-label-caps text-label-caps text-primary mt-xs">SYNCING CONSTELLATION</p>
+</div>
+</div>
+</section>
+<!-- Speed Metrics (Asymmetric Layout) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass rounded-xl p-md border-l-4 border-l-primary-container">
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="arrow_downward">arrow_downward</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">DOWNLOAD</span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-xl text-display-xl text-on-surface">342</span>
+<span class="font-label-caps text-label-caps text-primary-container">MBPS</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high mt-md rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[70%]" style="box-shadow: 0 0 10px #00f0ff;"></div>
+</div>
+</div>
+<div class="glass rounded-xl p-md border-l-4 border-l-tertiary">
+<div class="flex items-center gap-xs mb-sm">
+<span class="material-symbols-outlined text-tertiary" data-icon="arrow_upward">arrow_upward</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">UPLOAD</span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-xl text-display-xl text-on-surface">48</span>
+<span class="font-label-caps text-label-caps text-tertiary">MBPS</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high mt-md rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[30%]"></div>
+</div>
+</div>
+</div>
+<!-- Latency & Data Module -->
+<section class="glass rounded-xl p-md space-y-md">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="history">history</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LATENCY</span>
+</div>
+<span class="font-mono-technical text-mono-technical text-primary-container">24 MS</span>
+</div>
+<hr class="border-outline-variant"/>
+<div>
+<div class="flex justify-between items-center mb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">DATA UTILIZATION</span>
+<span class="font-mono-technical text-mono-technical text-on-surface">42.5 GB / 100 GB</span>
+</div>
+<div class="relative h-2 w-full bg-surface-container-high rounded-full">
+<div class="absolute h-full bg-primary-container rounded-full" style="width: 42.5%;"></div>
+<div class="absolute h-full w-8 bg-gradient-to-r from-transparent via-white/40 to-transparent animate-[shimmer_2s_infinite]"></div>
+</div>
+</div>
+</section>
+<!-- Technical Metadata Bento -->
+<div class="grid grid-cols-2 gap-sm">
+<div class="glass rounded-lg p-sm bg-surface-container-lowest/40">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">SIGNAL SNR</p>
+<p class="font-mono-technical text-headline-md text-primary">12.4 DB</p>
+</div>
+<div class="glass rounded-lg p-sm bg-surface-container-lowest/40">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">BEAM ID</p>
+<p class="font-mono-technical text-headline-md text-primary">772-AX</p>
+</div>
+</div>
+<!-- Call to Action -->
+<button class="w-full py-md bg-on-surface text-surface font-label-caps text-label-caps rounded-xl hover:shadow-[0_0_20px_rgba(0,240,255,0.4)] hover:border-primary-container border border-transparent transition-all duration-300">
+            OPTIMIZE CONNECTION
+        </button>
+</main>
+<!-- BottomNavBar from JSON -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-safe h-20 bg-surface-container-lowest/80 dark:bg-surface-container-lowest/80 backdrop-blur-lg border-t border-outline-variant dark:border-outline-variant shadow-[0_-4px_20px_rgba(0,219,233,0.15)] z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-primary-container dark:text-primary-container border-t-2 border-primary-container pt-2 scale-110 transition-transform duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 hover:bg-surface-container-high/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps">COVERAGE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 hover:bg-surface-container-high/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-label-caps text-label-caps">PLANS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 hover:bg-surface-container-high/50 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-label-caps text-label-caps">SUPPORT</span>
+</a>
+</nav>
+<style>
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+    </style>
+</body></html>

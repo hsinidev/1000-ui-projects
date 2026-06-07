@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith-Auction | Bidding History</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#930100",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-primary-fixed-variant": "#474646",
+                    "secondary-fixed-dim": "#ffb4a8",
+                    "surface-container": "#20201f",
+                    "outline-variant": "#444748",
+                    "inverse-primary": "#5f5e5e",
+                    "tertiary-container": "#080a0a",
+                    "tertiary": "#c6c6c7",
+                    "on-secondary-fixed": "#410000",
+                    "on-primary-fixed": "#1c1b1b",
+                    "secondary-fixed": "#ffdad4",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-primary": "#313030",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "primary": "#c9c6c5",
+                    "inverse-on-surface": "#313030",
+                    "on-secondary-container": "#fff6f5",
+                    "surface-variant": "#353535",
+                    "on-error": "#690005",
+                    "on-background": "#e5e2e1",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#353535",
+                    "background": "#131313",
+                    "on-surface-variant": "#c4c7c7",
+                    "error-container": "#93000a",
+                    "surface-tint": "#c9c6c5",
+                    "inverse-surface": "#e5e2e1",
+                    "primary-fixed": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "surface": "#131313",
+                    "on-error-container": "#ffdad6",
+                    "primary-container": "#0a0a0a",
+                    "surface-bright": "#393939",
+                    "on-tertiary": "#2f3131",
+                    "outline": "#8e9192",
+                    "secondary-container": "#e60000",
+                    "surface-dim": "#131313",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface": "#e5e2e1",
+                    "primary-fixed-dim": "#c9c6c5",
+                    "secondary": "#ffb4a8",
+                    "surface-container-high": "#2a2a2a",
+                    "on-secondary": "#690000",
+                    "on-primary-container": "#7b7979",
+                    "on-tertiary-container": "#78797a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "32px",
+                    "container-max": "1440px",
+                    "gutter": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Oswald"],
+                    "label-sm": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-md": ["Oswald"],
+                    "data-display": ["JetBrains Mono"],
+                    "headline-xl": ["Oswald"]
+            },
+            "fontSize": {
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "data-display": ["20px", {"lineHeight": "1.0", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                    "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0A0A0A;
+            color: #e5e2e1;
+        }
+        .bento-card {
+            background-color: #1A1A1A;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-bid-border {
+            border: 1px solid #E60000;
+        }
+        .zebra-even { background-color: #0A0A0A; }
+        .zebra-odd { background-color: #141414; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-margin py-gutter bg-surface dark:bg-surface border-b border-outline-variant fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary" data-icon="gavel">gavel</span>
+<h1 class="font-headline-lg text-headline-lg text-secondary-container dark:text-secondary-container tracking-tighter">CHRONOS LIVE</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface hover:text-secondary-container transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="pt-24 pb-20 px-margin max-w-container-max mx-auto">
+<!-- Hero Context Section (Asymmetric) -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-8">
+<div class="md:col-span-8 bento-card p-6 flex flex-col justify-end min-h-[240px] relative overflow-hidden active-bid-border">
+<div class="absolute inset-0 opacity-40 z-0">
+<img alt="Luxury Watch Close-up" class="w-full h-full object-cover" data-alt="A macro high-detail shot of a sophisticated mechanical watch movement with intricate silver gears and red rubies visible. The lighting is cinematic with sharp highlights and deep shadows, emphasizing the precision engineering against a matte black background. The aesthetic is high-contrast minimalism, featuring a monochromatic silver palette with aggressive red mechanical accents to match the elite auction theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC0_s7gq_E3y1M_Rx7KloPxX-rL2Ilf0AbXUgW5VaEw8Jxx699cmlIlhoFegUG9M61h2EF_U1EEMgMA-QqIkwwu1NCG3QYZJNZsiIMO1NaWYAWRjYlt3trdZ1x1pZxVu9ztX_Hd2eT_IX8Pk7uGUre9Orqbr_vFM1cAIPVsj812DL-zbF3YB09qLidZUkxFUbkFpeHTPuEReUsXextHVkfkcB2pb28l4kwmgs1cSqitWu5lyhL_lV3qW5lTgSceeReGVjZbxBq7dfS"/>
+</div>
+<div class="relative z-10">
+<div class="inline-block bg-secondary-container text-white px-2 py-1 font-label-sm text-label-sm mb-4">LIVE AUCTION</div>
+<h2 class="font-headline-xl text-headline-xl text-on-surface uppercase mb-2">Patek Philippe Ref. 5270P</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-xl">Grand Complications Perpetual Calendar Chronograph. Current high bid recorded 2 minutes ago.</p>
+</div>
+</div>
+<div class="md:col-span-4 bento-card p-6 flex flex-col justify-between border-l-4 border-l-secondary-container">
+<div>
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">CURRENT HIGHEST BID</span>
+<div class="font-headline-xl text-headline-xl text-secondary-container">$184,500</div>
+</div>
+<div class="mt-4">
+<span class="font-label-sm text-label-sm text-on-surface-variant block mb-1">TIME REMAINING</span>
+<div class="font-data-display text-headline-md text-on-surface animate-pulse">00:42:15</div>
+</div>
+<button class="w-full bg-secondary-container hover:bg-on-secondary-fixed-variant text-white font-headline-md py-4 mt-6 transition-colors uppercase">
+                    PLACE COUNTER BID
+                </button>
+</div>
+</section>
+<!-- Bid History List -->
+<section class="bento-card overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-widest">Transaction Log</h3>
+<span class="font-label-sm text-label-sm text-on-surface-variant">24 TOTAL BIDS</span>
+</div>
+<!-- Table Header (Desktop Only) -->
+<div class="hidden md:grid grid-cols-12 px-6 py-3 border-b border-outline-variant bg-surface-container font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">
+<div class="col-span-2">Status</div>
+<div class="col-span-4">Bidder Identity</div>
+<div class="col-span-3">Bid Amount</div>
+<div class="col-span-3 text-right">Precision Timestamp</div>
+</div>
+<!-- Scrollable List -->
+<div class="flex flex-col">
+<!-- Bid Row 1 -->
+<div class="grid grid-cols-1 md:grid-cols-12 px-6 py-5 zebra-odd items-center border-l-4 border-l-secondary-container group transition-all">
+<div class="md:col-span-2 mb-2 md:mb-0">
+<span class="bg-secondary-container text-white px-2 py-0.5 font-label-sm text-label-sm uppercase">Leading</span>
+</div>
+<div class="md:col-span-4 font-headline-md text-on-surface">
+                        CN-4***92
+                    </div>
+<div class="md:col-span-3 font-data-display text-headline-md text-secondary-container">
+                        $184,500
+                    </div>
+<div class="md:col-span-3 text-right font-label-sm text-on-surface-variant opacity-60">
+                        14:22:04.12
+                    </div>
+</div>
+<!-- Bid Row 2 -->
+<div class="grid grid-cols-1 md:grid-cols-12 px-6 py-5 zebra-even items-center border-l-4 border-l-transparent group">
+<div class="md:col-span-2 mb-2 md:mb-0">
+<span class="text-on-surface-variant border border-outline-variant px-2 py-0.5 font-label-sm text-label-sm uppercase">Outbid</span>
+</div>
+<div class="md:col-span-4 font-headline-md text-on-surface opacity-70">
+                        JP-1***05
+                    </div>
+<div class="md:col-span-3 font-data-display text-headline-md text-on-surface">
+                        $182,000
+                    </div>
+<div class="md:col-span-3 text-right font-label-sm text-on-surface-variant opacity-60">
+                        14:21:45.88
+                    </div>
+</div>
+<!-- Bid Row 3 -->
+<div class="grid grid-cols-1 md:grid-cols-12 px-6 py-5 zebra-odd items-center border-l-4 border-l-transparent group">
+<div class="md:col-span-2 mb-2 md:mb-0">
+<span class="text-on-surface-variant border border-outline-variant px-2 py-0.5 font-label-sm text-label-sm uppercase">Outbid</span>
+</div>
+<div class="md:col-span-4 font-headline-md text-on-surface opacity-70">
+                        US-9***44
+                    </div>
+<div class="md:col-span-3 font-data-display text-headline-md text-on-surface">
+                        $181,500
+                    </div>
+<div class="md:col-span-3 text-right font-label-sm text-on-surface-variant opacity-60">
+                        14:20:12.04
+                    </div>
+</div>
+<!-- Bid Row 4 -->
+<div class="grid grid-cols-1 md:grid-cols-12 px-6 py-5 zebra-even items-center border-l-4 border-l-transparent group">
+<div class="md:col-span-2 mb-2 md:mb-0">
+<span class="text-on-surface-variant border border-outline-variant px-2 py-0.5 font-label-sm text-label-sm uppercase">Outbid</span>
+</div>
+<div class="md:col-span-4 font-headline-md text-on-surface opacity-70">
+                        CN-4***92
+                    </div>
+<div class="md:col-span-3 font-data-display text-headline-md text-on-surface">
+                        $179,000
+                    </div>
+<div class="md:col-span-3 text-right font-label-sm text-on-surface-variant opacity-60">
+                        14:18:55.33
+                    </div>
+</div>
+<!-- Bid Row 5 -->
+<div class="grid grid-cols-1 md:grid-cols-12 px-6 py-5 zebra-odd items-center border-l-4 border-l-transparent group">
+<div class="md:col-span-2 mb-2 md:mb-0">
+<span class="text-on-surface-variant border border-outline-variant px-2 py-0.5 font-label-sm text-label-sm uppercase">Outbid</span>
+</div>
+<div class="md:col-span-4 font-headline-md text-on-surface opacity-70">
+                        CH-7***21
+                    </div>
+<div class="md:col-span-3 font-data-display text-headline-md text-on-surface">
+                        $175,000
+                    </div>
+<div class="md:col-span-3 text-right font-label-sm text-on-surface-variant opacity-60">
+                        14:15:30.00
+                    </div>
+</div>
+<!-- Load More / Pagination -->
+<div class="p-6 text-center bg-surface-container-lowest">
+<button class="px-8 py-3 border border-outline-variant font-label-sm text-label-sm text-on-surface-variant hover:border-on-surface hover:text-on-surface transition-all uppercase tracking-widest">
+                        Load Complete History
+                    </button>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-2 bg-surface-container dark:bg-surface-container border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-all active:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-label-sm text-label-sm uppercase">LIVE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-all active:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="watch">watch</span>
+<span class="font-label-sm text-label-sm uppercase">LOTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary-container font-bold border-t-2 border-secondary-container pt-1" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-sm text-label-sm uppercase">HISTORY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-all active:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-label-sm text-label-sm uppercase">TRUST</span>
+</a>
+</nav>
+<!-- Floating Urgency Indicator -->
+<div class="fixed bottom-24 right-8 z-40 hidden md:block">
+<div class="bg-secondary-container p-4 flex items-center gap-4 border border-white border-opacity-20 shadow-2xl">
+<span class="material-symbols-outlined text-white animate-pulse" data-icon="priority_high">priority_high</span>
+<div>
+<p class="font-label-sm text-label-sm text-white uppercase opacity-80">Quick Action</p>
+<p class="font-headline-md text-headline-md text-white">RE-BID +$1,000</p>
+</div>
+</div>
+</div>
+</body></html>

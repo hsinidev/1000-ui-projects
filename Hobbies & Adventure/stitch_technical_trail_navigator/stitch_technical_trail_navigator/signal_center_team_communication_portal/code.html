@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SUMMIT_OS | Signal Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;family=Space+Mono&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-secondary-fixed": "#28180b",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-variant": "#353535",
+                        "background": "#131313",
+                        "on-tertiary-fixed-variant": "#414848",
+                        "surface-bright": "#393939",
+                        "error": "#ffb4ab",
+                        "surface-container-high": "#2a2a2a",
+                        "outline": "#ab8a7d",
+                        "on-primary": "#5a1c00",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#a63b00",
+                        "on-tertiary-container": "#272e2e",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-highest": "#353535",
+                        "primary": "#ffb599",
+                        "on-secondary-fixed-variant": "#574333",
+                        "on-surface": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-container": "#ccb09c",
+                        "surface-tint": "#ffb599",
+                        "tertiary-container": "#8e9595",
+                        "outline-variant": "#5b4137",
+                        "on-tertiary-fixed": "#161d1d",
+                        "on-primary-container": "#531a00",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#ffdbce",
+                        "secondary-fixed": "#fbddc7",
+                        "tertiary-fixed": "#dde4e3",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb599",
+                        "surface-container": "#20201f",
+                        "on-primary-fixed": "#370e00",
+                        "tertiary-fixed-dim": "#c1c8c7",
+                        "tertiary": "#c1c8c7",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed-variant": "#7f2b00",
+                        "secondary-fixed-dim": "#dec1ac",
+                        "on-error": "#690005",
+                        "secondary": "#dec1ac",
+                        "on-tertiary": "#2b3232",
+                        "on-secondary": "#3f2d1e",
+                        "surface": "#131313",
+                        "on-surface-variant": "#e4bfb1",
+                        "secondary-container": "#574333",
+                        "primary-container": "#ff5f00"
+                    },
+                    "fontFamily": {
+                        "code-tech": ["Space Mono", "monospace"],
+                        "h3": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .grid-overlay {
+            background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 50%, rgba(255, 255, 255, 0.02) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-white overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-neutral-950 dark:bg-black border-b-2 border-zinc-800 dark:border-zinc-900">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-orange-600 dark:text-orange-500 italic font-['Space_Grotesk']">EXPEDITION_OS</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-4 bg-zinc-900 px-3 py-1 rounded border border-zinc-800">
+<span class="material-symbols-outlined text-orange-500 text-sm">search</span>
+<input class="bg-transparent border-none text-xs font-code-tech focus:ring-0 text-zinc-400 placeholder-zinc-600 w-48" placeholder="QUERY_SYSTEM..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-500" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-zinc-500" data-icon="battery_charging_full">battery_charging_full</span>
+<button class="bg-orange-600 text-black font-['Space_Grotesk'] uppercase tracking-widest text-sm font-bold px-4 py-1 active:opacity-80 scale-[0.99] transition-all">SOS_SIGNAL</button>
+</div>
+</div>
+</header>
+<div class="flex flex-1 pt-16 h-full">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 bottom-0 w-64 z-40 hidden md:flex flex-col bg-zinc-900 dark:bg-neutral-950 border-r-2 border-zinc-800">
+<div class="p-6 border-b border-zinc-800">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 bg-zinc-800 border border-zinc-700 flex items-center justify-center">
+<span class="material-symbols-outlined text-orange-600" data-icon="hub">hub</span>
+</div>
+<div>
+<div class="text-orange-600 font-black font-['Space_Grotesk'] text-[12px] uppercase tracking-tight">BASE_STATION_ALPHA</div>
+<div class="text-zinc-500 text-[10px] font-code-tech">COORD: 27.9881° N, 86.9250° E</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="text-zinc-400 flex items-center px-4 py-3 hover:bg-zinc-800 transition-colors duration-150 font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-tight" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="explore">explore</span> Expeditions
+                </a>
+<a class="text-zinc-400 flex items-center px-4 py-3 hover:bg-zinc-800 transition-colors duration-150 font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-tight" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="map">map</span> Chart
+                </a>
+<a class="text-zinc-400 flex items-center px-4 py-3 hover:bg-zinc-800 transition-colors duration-150 font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-tight" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="inventory_2">inventory_2</span> Logistics
+                </a>
+<a class="bg-orange-600 text-black rounded-none flex items-center px-4 py-3 border-l-4 border-white font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-tight" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="hub">hub</span> Comms
+                </a>
+</nav>
+<div class="p-4 border-t border-zinc-800">
+<button class="w-full bg-zinc-800 text-orange-600 font-bold text-[12px] py-2 border border-orange-600/30 hover:bg-zinc-700 cursor-crosshair active:bg-orange-700 active:text-white transition-all">DATA_SYNC</button>
+</div>
+<div class="py-4">
+<a class="text-zinc-500 flex items-center px-4 py-2 hover:bg-zinc-800 text-[11px] font-bold uppercase tracking-tight font-['Space_Grotesk']" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="settings">settings</span> Settings
+                </a>
+<a class="text-zinc-500 flex items-center px-4 py-2 hover:bg-zinc-800 text-[11px] font-bold uppercase tracking-tight font-['Space_Grotesk']" href="#">
+<span class="material-symbols-outlined mr-3 text-sm" data-icon="help_center">help_center</span> Support
+                </a>
+</div>
+</aside>
+<!-- Main Canvas: Signal Center -->
+<main class="flex-1 md:ml-64 flex flex-col h-full bg-surface-container-lowest grid-overlay">
+<!-- Signal Center Header -->
+<div class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-surface-container/50 backdrop-blur-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-orange-500" data-icon="sensors">sensors</span>
+<h1 class="font-h3 text-h3 text-white uppercase tracking-wider">Signal Center</h1>
+<div class="px-2 py-0.5 bg-secondary-container text-on-secondary-container text-[10px] font-code-tech border border-outline-variant">ENCRYPTION_ACTIVE</div>
+</div>
+<div class="flex gap-4">
+<div class="text-[10px] font-code-tech text-zinc-500 flex flex-col items-end">
+<span>LATENCY: 42MS</span>
+<span>PACKET_LOSS: 0.00%</span>
+</div>
+</div>
+</div>
+<div class="flex flex-1 overflow-hidden">
+<!-- Active Channels Sidebar -->
+<div class="w-64 border-r border-zinc-800 bg-surface-container-low flex flex-col">
+<div class="p-4 border-b border-zinc-800">
+<span class="font-label-caps text-label-caps text-zinc-500">ACTIVE_CHANNELS</span>
+</div>
+<div class="flex-1 overflow-y-auto">
+<button class="w-full text-left p-4 border-b border-zinc-800/50 hover:bg-zinc-800 transition-colors group">
+<div class="flex justify-between items-center">
+<span class="font-code-tech text-sm text-on-surface">COMMAND_MAIN</span>
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+</div>
+<div class="text-[10px] text-zinc-500 mt-1 uppercase">HQ_RELAY</div>
+</button>
+<button class="w-full text-left p-4 border-b border-zinc-800/50 hover:bg-zinc-800 transition-colors bg-zinc-800/40">
+<div class="flex justify-between items-center">
+<span class="font-code-tech text-sm text-primary">FIELD_UNIT_ALPHA</span>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_rgba(255,95,0,0.6)]"></div>
+</div>
+<div class="text-[10px] text-zinc-500 mt-1 uppercase">ACTIVE_COMMS</div>
+</button>
+<button class="w-full text-left p-4 border-b border-zinc-800/50 hover:bg-zinc-800 transition-colors">
+<div class="flex justify-between items-center">
+<span class="font-code-tech text-sm text-on-surface">WEATHER_DATA_LINK</span>
+<div class="w-2 h-2 rounded-full bg-zinc-600"></div>
+</div>
+<div class="text-[10px] text-zinc-500 mt-1 uppercase">STANDBY</div>
+</button>
+<button class="w-full text-left p-4 border-b border-zinc-800 transition-colors bg-error-container/20 group">
+<div class="flex justify-between items-center">
+<span class="font-code-tech text-sm text-error font-bold">EMERGENCY_SOS</span>
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+</div>
+<div class="text-[10px] text-error/70 mt-1 uppercase">PRIORITY_1</div>
+</button>
+</div>
+<!-- Frequency Control Panel -->
+<div class="p-4 border-t border-zinc-800 bg-surface-container">
+<span class="font-label-caps text-label-caps text-zinc-500 mb-3 block">RADIO_FREQ_CONTROL</span>
+<div class="space-y-3">
+<div class="bg-black p-2 border border-zinc-800 rounded">
+<div class="flex justify-between text-[10px] font-code-tech text-zinc-400 mb-1">
+<span>VHF_PRIMARY</span>
+<span>144.250 MHz</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden flex gap-0.5">
+<div class="h-full bg-primary w-[80%]"></div>
+<div class="h-full bg-zinc-700 w-[5%]"></div>
+<div class="h-full bg-zinc-700 w-[15%]"></div>
+</div>
+</div>
+<div class="bg-black p-2 border border-zinc-800 rounded">
+<div class="flex justify-between text-[10px] font-code-tech text-zinc-400 mb-1">
+<span>UHF_BACKUP</span>
+<span>433.100 MHz</span>
+</div>
+<div class="h-1 bg-zinc-900 overflow-hidden flex gap-0.5">
+<div class="h-full bg-primary-container w-[40%]"></div>
+<div class="h-full bg-zinc-700 w-[60%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Encrypted Message Feed -->
+<div class="flex-1 flex flex-col min-w-0 bg-surface-dim relative overflow-hidden">
+<div class="absolute inset-0 scanline pointer-events-none opacity-10"></div>
+<!-- Feed Header -->
+<div class="p-3 border-b border-zinc-800 bg-surface-container-low flex justify-center">
+<span class="font-code-tech text-[10px] text-primary/80 uppercase tracking-widest">ENCRYPTION_PROTOCOL_AES256_ACTIVE</span>
+</div>
+<!-- Messages -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Message 1 -->
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="font-code-tech text-[10px] text-primary font-bold">OPERATOR_MV_01</span>
+<span class="font-code-tech text-[10px] text-zinc-500">14:22:15 UTC</span>
+<div class="flex gap-0.5 ml-2">
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-zinc-700"></div>
+</div>
+</div>
+<div class="bg-zinc-900/50 border border-zinc-800 p-4 font-body-md text-on-surface">
+                                Reached South Col. Wind speeds increasing to 45 knots. Visibility dropping. Requesting weather update.
+                            </div>
+</div>
+<!-- System Notification -->
+<div class="flex justify-center">
+<div class="px-4 py-1 border border-zinc-800 bg-surface-container-high/40 font-code-tech text-[10px] text-zinc-500 uppercase italic">
+                                SYSTEM: Weather relay re-established. Signal strength optimal.
+                            </div>
+</div>
+<!-- Message 2 -->
+<div class="flex flex-col gap-1 max-w-2xl ml-auto items-end">
+<div class="flex items-center gap-2">
+<div class="flex gap-0.5 mr-2">
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+</div>
+<span class="font-code-tech text-[10px] text-zinc-400">14:24:02 UTC</span>
+<span class="font-code-tech text-[10px] text-primary font-bold">BASE_STATION</span>
+</div>
+<div class="bg-primary/5 border border-primary/30 p-4 font-body-md text-on-surface text-right">
+                                Copy Marcus. Meteorological data shows a 12-hour window of stability before the jet stream drops. Stay at South Col for the next cycle.
+                            </div>
+</div>
+<!-- Message 3 -->
+<div class="flex flex-col gap-1 max-w-2xl">
+<div class="flex items-center gap-2">
+<span class="font-code-tech text-[10px] text-primary font-bold">OPERATOR_SC_04</span>
+<span class="font-code-tech text-[10px] text-zinc-500">14:25:30 UTC</span>
+<div class="flex gap-0.5 ml-2">
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-primary"></div>
+<div class="w-1 h-2 bg-zinc-700"></div>
+<div class="w-1 h-2 bg-zinc-700"></div>
+</div>
+</div>
+<div class="bg-zinc-900/50 border border-zinc-800 p-4 font-body-md text-on-surface">
+                                Unit Alpha Team 2 GPS ping confirmed at 7,900m. Oxygen levels at 65%. Proceeding to Camp 4.
+                            </div>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-4 border-t border-zinc-800 bg-surface-container/50">
+<div class="flex items-center gap-4 bg-black border border-zinc-700 p-2 focus-within:border-primary transition-colors">
+<span class="material-symbols-outlined text-zinc-600 ml-2" data-icon="terminal">terminal</span>
+<input class="flex-1 bg-transparent border-none text-sm font-code-tech text-on-surface focus:ring-0 placeholder:text-zinc-700" placeholder="ENTER MESSAGE / BROADCAST PROTOCOL..." type="text"/>
+<div class="flex gap-2">
+<button class="p-2 text-zinc-500 hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="attachment">attachment</span>
+</button>
+<button class="bg-primary text-black px-6 py-2 font-['Space_Grotesk'] text-[12px] font-black uppercase tracking-widest hover:bg-orange-600 transition-colors">SEND</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Team Status Monitor Sidebar -->
+<div class="w-80 border-l border-zinc-800 bg-surface-container-low flex flex-col">
+<div class="p-4 border-b border-zinc-800 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-zinc-500">TEAM_STATUS_MONITOR</span>
+<span class="material-symbols-outlined text-xs text-zinc-500" data-icon="sync">sync</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- Marcus Voss Card -->
+<div class="bg-zinc-900 border border-zinc-800 p-4 relative group">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 border-2 border-primary/40 p-0.5 bg-black">
+<img alt="Marcus Voss Profile" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 transition-all" data-alt="A gritty, cinematic portrait of a mountain climber with a rugged beard and weathered skin. He is wearing high-altitude mountaineering gear with reflective patches. The lighting is harsh and directional, casting strong shadows against a dark, industrial background. The overall aesthetic is tactical and high-contrast, fitting a professional expedition operating system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBuVgdDSsBnPPOX16musEfu309sZBplYx_fkkLxCTaYNtojBZwtNUcmdClAbFTK7o9xyOBobgb1lhxj0rZm3umdtxa7BwnmeYGcNr9zbNwN0VJJ6l3Vekjqiepxb2iwEwp4inIxXNUnsF90TKPuMjG0chcjBqsl3mEkYT976aqVAYtz2WGNVyaeL_FSV0YJBHw3XNZYEOeMYMT571mu5KI3JfIAKeuBi1Zgv2FuzqjE8DZjUaju7ThAEk12ugzm_ZkMe1H3AGWaYN9Y"/>
+</div>
+<div>
+<div class="font-h3 text-sm text-white font-bold">MARCUS VOSS</div>
+<div class="font-code-tech text-[10px] text-green-500 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span> ACTIVE
+                                    </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-y-3">
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">ALTITUDE</div>
+<div class="font-code-tech text-xs text-on-surface">7,910M</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">HEART_RATE</div>
+<div class="font-code-tech text-xs text-on-surface">114 BPM</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">SPO2</div>
+<div class="font-code-tech text-xs text-orange-500">88%</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">GPS_STATUS</div>
+<div class="font-code-tech text-xs text-white">LOCK_ON</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-zinc-800">
+<div class="h-1 bg-zinc-950 flex">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="font-code-tech text-[9px] text-zinc-600 uppercase tracking-tight">O2_RESERVE</span>
+<span class="font-code-tech text-[9px] text-zinc-400">65%</span>
+</div>
+</div>
+</div>
+<!-- Sarah Chen Card -->
+<div class="bg-zinc-900 border border-zinc-800 p-4 relative group">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 border-2 border-zinc-700 p-0.5 bg-black">
+<img alt="Sarah Chen Profile" class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 transition-all" data-alt="A focused female mountaineer in technical winter clothing, looking into the distance with determination. Her face shows slight frostbite and exhaustion, emphasizing the harsh expedition conditions. The lighting is cool-toned and atmospheric, with a dark, textured background suggesting a technical tent interior. The portrait is framed like a security badge or a tactical dossier entry." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcTQ9311bYo6ORGw801ZbYemqoRilN1kqIl1M9-_dSlauGdHEBsadalt7b7A7yVcRKZgToGdjS6jnPKlwb_M2A8w2J2J9j9073CG8xSgauBSVxC-VcY_308yuibOerOYqt9_yDWRnpTUkGl0AJeAgsG82VyOjIQ41O6QpZIxNSN5N9Shb-hZgMHmNnek6l7pySzbkpaNmI-fAGhFl4iNp7Ku7p1ewq_S5YkHC7BITxrVpGS4DUmJJeQo1NLzuxSd1QgpjFxZo33zWQ"/>
+</div>
+<div>
+<div class="font-h3 text-sm text-white font-bold">SARAH CHEN</div>
+<div class="font-code-tech text-[10px] text-orange-500 flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-orange-500 rounded-full animate-pulse"></span> RESTING
+                                    </div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-y-3">
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">ALTITUDE</div>
+<div class="font-code-tech text-xs text-on-surface">6,400M</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">HEART_RATE</div>
+<div class="font-code-tech text-xs text-on-surface">82 BPM</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">SPO2</div>
+<div class="font-code-tech text-xs text-green-500">96%</div>
+</div>
+<div class="space-y-1">
+<div class="font-label-caps text-[9px] text-zinc-500 uppercase tracking-tighter">GPS_STATUS</div>
+<div class="font-code-tech text-xs text-white">LOCK_ON</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-zinc-800">
+<div class="h-1 bg-zinc-950 flex">
+<div class="h-full bg-primary w-[92%]"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="font-code-tech text-[9px] text-zinc-600 uppercase tracking-tight">O2_RESERVE</span>
+<span class="font-code-tech text-[9px] text-zinc-400">92%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Protocol Actions -->
+<div class="p-4 border-t border-zinc-800 bg-surface-container">
+<span class="font-label-caps text-label-caps text-zinc-500 mb-3 block">QUICK_PROTOCOL_ACTIONS</span>
+<div class="space-y-2">
+<button class="w-full flex items-center justify-between px-4 py-2 bg-error text-black font-['Space_Grotesk'] text-[11px] font-black uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all">
+                                BROADCAST_ALERT
+                                <span class="material-symbols-outlined text-sm" data-icon="campaign">campaign</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-2 border border-zinc-700 text-zinc-300 font-['Space_Grotesk'] text-[11px] font-bold uppercase tracking-widest hover:bg-zinc-800 active:scale-[0.98] transition-all">
+                                INITIATE_DATA_SYNC
+                                <span class="material-symbols-outlined text-sm" data-icon="cloud_sync">cloud_sync</span>
+</button>
+<button class="w-full flex items-center justify-between px-4 py-2 border border-primary text-primary font-['Space_Grotesk'] text-[11px] font-bold uppercase tracking-widest hover:bg-primary hover:text-black active:scale-[0.98] transition-all">
+                                OPEN_VOICE_BRIDGE
+                                <span class="material-symbols-outlined text-sm" data-icon="mic">mic</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Bottom Notification Bar -->
+<footer class="h-8 bg-black border-t border-zinc-800 flex items-center justify-between px-6 fixed bottom-0 w-full z-50">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="font-code-tech text-[9px] text-zinc-500">SYSTEM_NOMINAL</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[10px] text-zinc-500" data-icon="wifi">wifi</span>
+<span class="font-code-tech text-[9px] text-zinc-500">RELAY_SAT_SUMMIT_01</span>
+</div>
+</div>
+<div class="font-code-tech text-[9px] text-zinc-600 uppercase tracking-widest">
+            LOG_ENTRY: 0x8FA42 // BUFFER_CLEAR
+        </div>
+</footer>
+</body></html>

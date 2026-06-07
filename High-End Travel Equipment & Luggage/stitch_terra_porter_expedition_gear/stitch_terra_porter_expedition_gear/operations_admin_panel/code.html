@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TERRA-PORTER | Logistics Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .industrial-grid {
+            background-image: radial-gradient(circle, #57423e 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .brushed-metal {
+            background-image: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 50%, rgba(255,255,255,0.05) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#a68b85",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#25313f",
+                        "outline-variant": "#57423e",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface": "#e2e2e2",
+                        "secondary-fixed": "#d7e3f6",
+                        "primary-fixed": "#ffdad4",
+                        "primary-container": "#c24e3a",
+                        "inverse-primary": "#a63a28",
+                        "on-primary": "#650901",
+                        "on-tertiary": "#303030",
+                        "on-primary-fixed-variant": "#862213",
+                        "surface-container-low": "#1a1c1c",
+                        "on-primary-container": "#fff9f8",
+                        "secondary-container": "#3c4857",
+                        "surface-container-lowest": "#0d0f0f",
+                        "error": "#ffb4ab",
+                        "tertiary-container": "#747373",
+                        "background": "#121414",
+                        "surface": "#121414",
+                        "primary": "#ffb4a6",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-secondary-fixed-variant": "#3c4857",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-variant": "#333535",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#ffb4a6",
+                        "on-secondary-fixed": "#101c2a",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "error-container": "#93000a",
+                        "surface-tint": "#ffb4a6",
+                        "surface-container": "#1e2020",
+                        "surface-dim": "#121414",
+                        "tertiary": "#c8c6c6",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary-container": "#fdfaf9",
+                        "on-primary-fixed": "#3f0300",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-secondary-container": "#aab6c8",
+                        "on-background": "#e2e2e2",
+                        "surface-container-highest": "#333535",
+                        "surface-bright": "#38393a",
+                        "secondary": "#bbc7da",
+                        "tertiary-fixed": "#e4e2e1",
+                        "secondary-fixed-dim": "#bbc7da",
+                        "on-surface-variant": "#dec0ba"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "modular-gap": "1px",
+                        "unit": "4px",
+                        "margin": "48px",
+                        "container-max": "1440px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["32px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h2": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h1": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background industrial-grid font-body-md overflow-x-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 h-screen w-64 border-r border-outline-variant bg-surface-container-high shadow-none">
+<div class="p-6 border-b border-outline-variant">
+<h2 class="text-label-caps font-bold text-on-surface font-h2 uppercase tracking-tight">OPERATIONS</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-widest mt-1">Base Camp Alpha</p>
+</div>
+<nav class="flex-1 px-4 py-6 space-y-2">
+<!-- Active State Logic: Dashboard is currently active -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container rounded-lg font-bold border-l-4 border-primary transition-transform Active: translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-label-caps">Logistics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-surface-variant hover:text-on-surface rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container py-4 rounded font-label-caps text-label-caps uppercase border-2 border-on-primary transition-transform Active: scale-95 brushed-metal shadow-[4px_4px_0px_#650901]">
+                Sync Field Data
+            </button>
+<div class="flex items-center gap-3 mt-6 pt-6 border-t border-outline-variant">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline">
+<img alt="Admin User Profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a logistics commander in a high-tech expedition base camp. He is wearing a ruggedized tactical jacket with a TERRA-PORTER emblem. The lighting is dramatic and cinematic, with cool blue ambient tones from nearby monitors reflecting on his face. The overall aesthetic is elite, resilient, and authoritative, matching the dark-mode industrial theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHzUienO0SqLAwLnKPt-Oc_WtR1g4VnXtbuNAWkjxbEs0GZonHSxgnDNQBrj9n209k2XSu8UqKiWgRT1Cp6F0Qv0TY_l1GIIG13r_tbtc4NfM2eGMwL6KtUUfSxkhVOHo3vuxxLulZogWluQSXSM5BjKC2LjcTi5pAzqu7tB7cY4krRULa5JPni2pkedatFqyu8o9rtm7hb2WjoidfLJPBNGDQp89N6g9y4n_kx11pgun6IVhO_2zyfF9JyU-dS-ntK8YzVSUzO2w"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">COMMANDER_01</p>
+<p class="font-label-caps text-[10px] text-primary">SYSTEM ACTIVE</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopNavBar Shell -->
+<header class="flex justify-between items-center px-margin py-4 w-full sticky top-0 z-50 bg-surface-container-lowest border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<h1 class="font-h2 text-h3 font-bold text-primary dark:text-primary uppercase tracking-tighter">TERRA-PORTER</h1>
+<nav class="hidden lg:flex gap-6">
+<a class="font-h3 text-label-caps tracking-widest text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Shop</a>
+<a class="font-h3 text-label-caps tracking-widest text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Gear Labs</a>
+<a class="font-h3 text-label-caps tracking-widest text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Expeditions</a>
+<a class="font-h3 text-label-caps tracking-widest text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative flex items-center border border-outline-variant rounded bg-surface px-3 py-1">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-caps text-on-surface placeholder:text-outline-variant w-48" placeholder="SECURE SEARCH..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="shopping_bag">shopping_bag</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary" data-icon="person">person</button>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 rounded font-label-caps text-label-caps uppercase Active: scale-95 transition-transform border border-on-primary">Kit Builder</button>
+</div>
+</div>
+</header>
+<!-- Dashboard Content -->
+<div class="p-margin space-y-gutter">
+<!-- Hero Stats & Map Section -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Global Telemetry Map -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-high border border-outline-variant relative overflow-hidden h-[500px]">
+<div class="absolute top-0 left-0 w-full p-4 z-10 flex justify-between items-start bg-gradient-to-b from-surface-container-lowest to-transparent">
+<div>
+<h3 class="font-h3 text-on-surface uppercase text-xl">Global Telemetry</h3>
+<p class="font-label-caps text-[10px] text-primary tracking-[0.2em]">LIVE FEED // SAT-LINK 09</p>
+</div>
+<div class="flex gap-2">
+<span class="bg-error px-2 py-1 text-on-error font-label-caps text-[10px] rounded">3 ALERTS</span>
+<span class="bg-surface-variant border border-outline-variant px-2 py-1 text-on-surface font-label-caps text-[10px] rounded">ALPHA_SECTOR</span>
+</div>
+</div>
+<!-- Image Placeholder for Map -->
+<div class="w-full h-full bg-surface-container-low relative">
+<img class="w-full h-full object-cover opacity-50 grayscale contrast-125" data-alt="A top-down technical satellite view of a rugged mountain range, rendered in a high-contrast monochromatic emerald and slate palette with glowing terracotta waypoints. Digital data overlays including coordinate grids, altitude heatmaps, and moving logistics vectors are visible across the landscape. The aesthetic is inspired by high-end military tactical interfaces and expedition equipment screens, conveying precision and extreme durability." data-location="Himalayas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcnsn1bLUpImSnnQw-KdQJdQPoKYSpJzYQSrLWEG5wEoK5sa51bdTdPtlkbpxyCn75_82sXNne4tvIu-rP74LPYz3dT2SHYV0tfS1NNMMKzQwglWQwSTZLYrumQivqXylFA4RZ_pnrXAentuy9z2UraNXb4iWnlF1bWTSqkD4Of798irheuvQ33HIdbgVW2_Ud0z1hcVwiDYM9FsoNkowXOXEyTIzeMYQeJRjYFNr5ck4bh7UYPQIQ55ugrqP0LCpjGDLYuWHr6C8"/>
+<div class="absolute inset-0 industrial-grid opacity-30 pointer-events-none"></div>
+<!-- UI Elements on Map -->
+<div class="absolute bottom-6 left-6 flex flex-col gap-2">
+<div class="bg-surface-container-highest/90 border border-outline-variant p-3 backdrop-blur-md">
+<p class="font-label-caps text-[10px] text-outline-variant mb-1 uppercase">Atmospheric Pressure</p>
+<p class="font-h3 text-2xl text-on-surface">1013.2 <span class="text-xs text-outline">hPa</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Feed Gauges -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container-high border border-outline-variant p-6 flex flex-col justify-between h-full relative brushed-metal">
+<div class="flex justify-between items-center mb-6">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Power Reserve</span>
+<span class="material-symbols-outlined text-primary" data-icon="bolt">bolt</span>
+</div>
+<div class="flex items-end justify-center mb-6 h-32">
+<div class="flex gap-1 items-end h-full w-full px-4">
+<div class="w-full bg-primary h-[40%] rounded-sm"></div>
+<div class="w-full bg-primary h-[55%] rounded-sm"></div>
+<div class="w-full bg-primary h-[45%] rounded-sm"></div>
+<div class="w-full bg-primary h-[85%] rounded-sm"></div>
+<div class="w-full bg-primary h-[70%] rounded-sm"></div>
+<div class="w-full bg-primary h-[95%] rounded-sm"></div>
+<div class="w-full bg-primary-container h-[60%] rounded-sm"></div>
+<div class="w-full bg-primary-container h-[40%] rounded-sm"></div>
+</div>
+</div>
+<div class="flex justify-between items-center border-t border-outline-variant pt-4">
+<p class="font-h3 text-3xl">88%</p>
+<p class="font-label-caps text-[10px] text-primary">STABLE</p>
+</div>
+</div>
+<div class="bg-surface-container-high border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse inline-block"></span>
+<span class="font-label-caps text-[10px] text-error ml-1">LIVE</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-outline-variant mb-4 uppercase">Field Comms</h4>
+<div class="space-y-4">
+<div class="flex gap-3">
+<div class="w-1px bg-outline-variant h-10"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">UNIT_07_EN_ROUTE</p>
+<p class="text-[11px] text-outline">ETA: 04:22 // COORDINATE: 44.2N</p>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-1px bg-primary h-10 shadow-[0_0_8px_#c24e3a]"></div>
+<div>
+<p class="text-sm font-bold text-on-surface">SUPPLY_DROP_SUCCESS</p>
+<p class="text-[11px] text-outline">ZONE: DELTA_9 // CONFIRMED</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inventory Status - Bento Grid Style -->
+<section class="space-y-6">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<h3 class="font-h1 text-h3 text-on-surface uppercase">Inventory Status</h3>
+<button class="font-label-caps text-label-caps text-primary flex items-center gap-2 hover:opacity-80">
+                        VIEW FULL MANIFEST <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Item 1 -->
+<div class="bg-surface-container border border-outline-variant group hover:border-primary transition-colors cursor-pointer">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A premium heavy-duty terracotta expedition duffel bag positioned in a cold industrial setting with harsh directional lighting. The bag features ruggedized fabric textures, reinforced webbing, and matte black hardware. Technical labels and a TERRA-PORTER branding badge are prominent. The atmosphere is elite and high-performance, emphasizing durability in extreme weather conditions." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvhD6J9l9M2Rd9ozCYlJLX5FUe-osTL-uYLPSdr4vbrj7HMLGIfrc26zpvmQvfX3OE6hqrJ7cA1R2U0oUijmRfMojnEojBzwGMFI34m5q03zD6POpEEZHL-BzcC3g7yL3z1q3BwrcgrHwCKZhe8d34vWMHUS0bGrQbZj6f9tVfB6vB5O6bxR_u07PvHaUVG08S5smki2iWnYuZwGZ2zh9qmGXpoVVBu6fZEePkkXwix_1f_3jwDlGQ3zvXuvPSmqUZBOt39c9MuAs"/>
+<div class="absolute bottom-2 left-2 flex gap-1">
+<span class="bg-surface-container-lowest/80 backdrop-blur text-on-surface font-label-caps text-[10px] px-2 py-1 border border-outline-variant">95L</span>
+<span class="bg-primary text-on-primary font-label-caps text-[10px] px-2 py-1">IN STOCK</span>
+</div>
+</div>
+<div class="p-4 space-y-2">
+<p class="font-label-caps text-[10px] text-outline-variant tracking-widest">SERIES: APEX-R</p>
+<h4 class="font-h3 text-lg text-on-surface uppercase">A-7 Logistics Duffel</h4>
+<div class="flex justify-between items-center pt-2 border-t border-outline-variant">
+<span class="text-sm font-bold text-on-surface">QTY: 142</span>
+<span class="text-xs text-outline">$450.00</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="bg-surface-container border border-outline-variant group hover:border-primary transition-colors cursor-pointer">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Close-up of high-performance technical expedition gear focusing on a black modular carbon-reinforced backpack shell. The lighting highlights the intricate weave of the materials and the precision of the CNC-machined metal components. The background is a dark, weathered concrete floor with subtle metallic reflections. The image captures a sense of elite engineering and rugged luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrs7SushJEH-ZA678ngReZfwwyzIBnFxJejmve1DabWJKqHhUiHSY6xtHe9YVrimyRiRFqRVSZ9ao52YwcgBIiO_-wrcTPxbLL9CX1vJz0442ej22YurVNEx8CDZC3K6jk3enPvNdEgRBILhXPnNe75C3U3csbROoSePaNBYx7hO-V2owssXghHkphRF6lWXtsWV2wPw2AthrDsjiEf5N6Op-g8KJFHx4x5wDMN4DEw-UITjmr_QEy7YchrMW8FBoeisN-RIeW0F4"/>
+<div class="absolute bottom-2 left-2 flex gap-1">
+<span class="bg-surface-container-lowest/80 backdrop-blur text-on-surface font-label-caps text-[10px] px-2 py-1 border border-outline-variant">45L</span>
+<span class="bg-error text-on-error font-label-caps text-[10px] px-2 py-1 uppercase">Low Stock</span>
+</div>
+</div>
+<div class="p-4 space-y-2">
+<p class="font-label-caps text-[10px] text-outline-variant tracking-widest">SERIES: TITAN-V</p>
+<h4 class="font-h3 text-lg text-on-surface uppercase">Carbon Exo-Shell</h4>
+<div class="flex justify-between items-center pt-2 border-t border-outline-variant">
+<span class="text-sm font-bold text-on-surface">QTY: 12</span>
+<span class="text-xs text-outline">$895.00</span>
+</div>
+</div>
+</div>
+<!-- Item 3 -->
+<div class="bg-surface-container border border-outline-variant group hover:border-primary transition-colors cursor-pointer">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="Tactical organization of high-end expedition gear inside a ruggedized storage case. The shot features multiple rolled technical blankets and storage pods in slate and charcoal tones, secured with heavy-duty elastic straps. The case has an industrial metal finish with visible rivets and a matte black coating. The lighting is cold and clinical, emphasizing the organized, mission-ready nature of the gear." src="https://lh3.googleusercontent.com/aida-public/AB6AXuArSFathhYP0wRuEukUAvbeciO-gSgShGBcWJDOvvfdZy0Yn9NzEZ2dNzKZAYwB1C3dm3H-k_gwYI08lGDnZYmoFFT-lIdIs2ptGfGazaccpSXdoNOOECwpsTAcYTBxTRu4IW9CxO4FdOc6PxDzChhfvq48r0VkIEcZpsGUw8BHnmNv0z5XgRdJhRZ3isudSXNqilq3GdPBf2niU7KpMya4yRiPLanS6zZyiOC2vHjZhljvcXz7-DTNCqgbJoH5DBTuYrhKE5hMdRo"/>
+<div class="absolute bottom-2 left-2 flex gap-1">
+<span class="bg-surface-container-lowest/80 backdrop-blur text-on-surface font-label-caps text-[10px] px-2 py-1 border border-outline-variant">UNIT</span>
+<span class="bg-primary text-on-primary font-label-caps text-[10px] px-2 py-1 uppercase">Allocated</span>
+</div>
+</div>
+<div class="p-4 space-y-2">
+<p class="font-label-caps text-[10px] text-outline-variant tracking-widest">SERIES: CORE-S</p>
+<h4 class="font-h3 text-lg text-on-surface uppercase">Base Modular Pod</h4>
+<div class="flex justify-between items-center pt-2 border-t border-outline-variant">
+<span class="text-sm font-bold text-on-surface">QTY: 34</span>
+<span class="text-xs text-outline">$120.00</span>
+</div>
+</div>
+</div>
+<!-- Item 4 -->
+<div class="bg-surface-container border border-outline-variant group hover:border-primary transition-colors cursor-pointer">
+<div class="h-48 bg-surface-variant relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A sleek, high-tech handheld logistics tablet and scanner device sitting on a metallic mesh surface. The device is glowing with a terracotta interface displaying data charts. The environment is a dimly lit expedition cargo hold with atmospheric smoke and focused industrial lighting. The aesthetic is extremely high-tech, rugged, and elite, conveying a sense of advanced field operations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXxDM5zeVR5c4agyY4vgoZltlZYOda7wBkm-31EXO06n7ZbJ7yNjj-Ddn57u1ZTbr4d891zHlRestuuxbZbQcYMY0ZjMr66ZNP5vGxhoY_6ynfy6OaGDT4vs2Qjz_eUuPx0PVmMXpjc9KSK4YLHlKSH49s-2Us8ndV33QgOnwSzDMFRjLFTagtIhHfwwYvwcWG-QAORhLc1tSQX5d3csgnRVu_VHAEiM7xmKcDk-iH1wRw_fNEg2Lqi8JcgqG1F2mm5oShmfyqfcM"/>
+<div class="absolute bottom-2 left-2 flex gap-1">
+<span class="bg-surface-container-lowest/80 backdrop-blur text-on-surface font-label-caps text-[10px] px-2 py-1 border border-outline-variant">DEV</span>
+<span class="bg-secondary-container text-on-secondary-container font-label-caps text-[10px] px-2 py-1 uppercase">Reserved</span>
+</div>
+</div>
+<div class="p-4 space-y-2">
+<p class="font-label-caps text-[10px] text-outline-variant tracking-widest">SERIES: LINK-G</p>
+<h4 class="font-h3 text-lg text-on-surface uppercase">Field Comms Unit</h4>
+<div class="flex justify-between items-center pt-2 border-t border-outline-variant">
+<span class="text-sm font-bold text-on-surface">QTY: 5</span>
+<span class="text-xs text-outline">$2,150.00</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Test Queue & Personnel Management -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Test Queue Table -->
+<div class="col-span-12 lg:col-span-7 bg-surface-container-high border border-outline-variant p-6">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-h3 text-xl uppercase text-on-surface">Test Queue</h3>
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-on-surface-variant p-1 border border-outline-variant rounded" data-icon="filter_list">filter_list</button>
+<button class="material-symbols-outlined text-on-surface-variant p-1 border border-outline-variant rounded" data-icon="download">download</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="py-3 font-label-caps text-[10px] text-outline-variant uppercase tracking-widest">Asset ID</th>
+<th class="py-3 font-label-caps text-[10px] text-outline-variant uppercase tracking-widest">Operation</th>
+<th class="py-3 font-label-caps text-[10px] text-outline-variant uppercase tracking-widest">Personnel</th>
+<th class="py-3 font-label-caps text-[10px] text-outline-variant uppercase tracking-widest">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-4 font-label-caps text-xs text-on-surface">#TP-9923</td>
+<td class="py-4 text-sm font-medium text-on-surface">Stress Test: Alpine 7</td>
+<td class="py-4 text-xs text-outline">K. Vance</td>
+<td class="py-4"><span class="text-[10px] font-label-caps text-primary border border-primary px-2 py-1 rounded">IN PROGRESS</span></td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-4 font-label-caps text-xs text-on-surface">#TP-1054</td>
+<td class="py-4 text-sm font-medium text-on-surface">Thermal Cycle: Phase 2</td>
+<td class="py-4 text-xs text-outline">M. Ross</td>
+<td class="py-4"><span class="text-[10px] font-label-caps text-secondary border border-outline px-2 py-1 rounded">QUEUED</span></td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-4 font-label-caps text-xs text-on-surface">#TP-0881</td>
+<td class="py-4 text-sm font-medium text-on-surface">Load Bearing: 500KG</td>
+<td class="py-4 text-xs text-outline">S. Chen</td>
+<td class="py-4"><span class="text-[10px] font-label-caps text-on-surface border border-outline-variant px-2 py-1 rounded">PENDING</span></td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-4 font-label-caps text-xs text-on-surface">#TP-4420</td>
+<td class="py-4 text-sm font-medium text-on-surface">Waterproof Immersion</td>
+<td class="py-4 text-xs text-outline">A. Jora</td>
+<td class="py-4"><span class="text-[10px] font-label-caps text-error border border-error px-2 py-1 rounded">FAILED</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Field Personnel Tracking -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-high border border-outline-variant p-6 relative">
+<div class="absolute top-0 right-0 w-32 h-32 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[128px]" data-icon="groups">groups</span>
+</div>
+<h3 class="font-h3 text-xl uppercase text-on-surface mb-6">Field Personnel</h3>
+<div class="space-y-4">
+<!-- Personnel 1 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Field Operative" class="w-full h-full object-cover" data-alt="A close-up portrait of a female field operative with protective eyewear and a technical headband. She is set against a blurred background of a snow-covered base camp. The lighting is bright and cold, reflecting the harsh environment. The style is consistent with high-end editorial photography for outdoor elite gear brands." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWKDfdTb5YK6pU4y-h8uaua1-eOeuJRPayv2sPug60Wr0q30fpaBHni-llX_r6FJE1pfXsj1vNvmRfbTlC6gudBc9ZYiOTAVGSMzeT27hROPyIFj5DVfpayFtcGypWGF2SNijpGWIg1q2XSiIgALCYTUypjW9dhYXVyyIa7tIvQKnwPH3ghK7oWvbGX5Lalqd-_md6ZX_hQpI8AwFL3xNe8zr586Oi2hZHiRGpHOp6eZPd94tcno4OmbWGfZbuhUIhWife0J9_reM"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">VANCE, KATHERINE</p>
+<p class="text-[10px] text-outline uppercase tracking-tighter">LEAD EXPLORER // SECTOR 4</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-primary">HEART: 74 BPM</p>
+<p class="text-[10px] text-outline">ALT: 4,520m</p>
+</div>
+</div>
+<!-- Personnel 2 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Field Operative" class="w-full h-full object-cover" data-alt="A portrait of a male field technician wearing a ruggedized beanie and a heavy thermal jacket. He is working with a handheld technical device. The background shows blurred industrial equipment and a cold, misty atmosphere. The lighting focuses on his determined expression and the glowing screen of his device, maintaining a high-performance industrial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkRlQe6EqgKCtZ2OOfDmOImE-X-qnxOy5X5LFOTkR3EaiosTjyl_ODP_mCAvVn_7ScrdtWcd4nZLeNb_WwzaJWmWQLKBCqQEYyK0JYUpQ4791MfVNTNSGPsvORdlzd_Mg6HDTlm8KImsBWSlfDvHX3f4HH3mbKYqOSx_MUfKcTIS7bINeDmuPxEwQMhOxr16U98o5W2W48TMACgkXkzhoYacSFXWnPWh3gu-0NMt3H7NFQCf_8rtXUqpa27ItWCnNmaoDGup4WmYU"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">ROSS, MARCUS</p>
+<p class="text-[10px] text-outline uppercase tracking-tighter">TECH SUPPORT // BASE CAMP</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-secondary">HEART: 68 BPM</p>
+<p class="text-[10px] text-outline">ALT: 3,200m</p>
+</div>
+</div>
+<!-- Personnel 3 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-sm bg-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Field Operative" class="w-full h-full object-cover" data-alt="A portrait of a female logistics coordinator in a high-tech equipment room. She is surrounded by organized expedition duffels and gear racks. The lighting is dramatic and clinical, highlighting the metallic textures of the storage units. Her expression is focused and professional, embodying the TERRA-PORTER brand's elite and authoritative persona." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgftlChuD_PuLA1J67xzP6WPBE35TbOzP_BuWG8NoLkHMiRIq9RExeEvQf6WeCxUuMudy3vYqOh2BsmzKSqK_b1ak0-cmSQ5Yigk5Vr3DNqs2CQA_ZH1hTSuJK8d-CrlslzijNX6Dh2ZJktk8NTo0Zw0zXPkNqIC-jGna53MSHpxLLcPP2VexfkobuCicaAqTRlopPLNGXGZtWk4QqEWm4t3jtXvpFQdGSsT-pXG6iU_lEAoNeNF_orEnYr_uAG0mk-AUPZ9_N4_A"/>
+</div>
+<div>
+<p class="text-sm font-bold text-on-surface">CHEN, SARAH</p>
+<p class="text-[10px] text-outline uppercase tracking-tighter">LOGISTICS // SECTOR 9</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-xs font-bold text-primary">HEART: 82 BPM</p>
+<p class="text-[10px] text-outline">ALT: 4,100m</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-dashed border-outline-variant text-outline hover:border-primary hover:text-primary font-label-caps text-[10px] transition-colors">
+                        + DEPLOY ADDITIONAL PERSONNEL
+                    </button>
+</div>
+</div>
+</div>
+<!-- Footer Shell -->
+<footer class="w-full px-margin py-12 flex flex-col md:flex-row justify-between items-center bg-surface-container-lowest border-t border-outline-variant mt-margin">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<span class="text-h3 font-bold text-on-surface font-h3 tracking-tighter">TERRA-PORTER</span>
+<p class="font-body-md text-label-caps text-on-surface-variant text-[10px] tracking-widest">© 2024 TERRA-PORTER EXPEDITION SYSTEMS. ALL RIGHTS RESERVED.</p>
+</div>
+<nav class="flex gap-6 mt-8 md:mt-0">
+<a class="font-body-md text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Compliance</a>
+<a class="font-body-md text-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">Warranty</a>
+</nav>
+</footer>
+</main>
+<!-- Contextual FAB (Only on relevant screens) -->
+<div class="fixed bottom-10 right-10 z-50">
+<button class="w-16 h-16 bg-primary text-on-primary rounded-full shadow-[6px_6px_0px_#650901] flex items-center justify-center group relative overflow-hidden transition-transform Active: scale-90">
+<span class="material-symbols-outlined text-3xl transition-transform group-hover:rotate-90" data-icon="add">add</span>
+<!-- Tooltip / Label -->
+<span class="absolute right-20 bg-surface-container-highest border border-outline-variant px-4 py-2 font-label-caps text-xs text-on-surface whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity translate-x-2 group-hover:translate-x-0">CREATE MISSION</span>
+</button>
+</div>
+</body></html>

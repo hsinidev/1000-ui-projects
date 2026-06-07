@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHRONO-BRICK | Inventory Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Inter:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for technical feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #121414; }
+        ::-webkit-scrollbar-thumb { background: #8d909e; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-container": "#bebebe",
+                      "outline": "#8d909e",
+                      "surface-container-lowest": "#0c0f0f",
+                      "tertiary-fixed": "#e3e2e2",
+                      "on-tertiary": "#2f3131",
+                      "inverse-surface": "#e2e2e2",
+                      "primary-container": "#0047ab",
+                      "on-error": "#690005",
+                      "on-primary": "#002c70",
+                      "on-secondary-fixed": "#071c37",
+                      "primary-fixed-dim": "#b1c5ff",
+                      "surface-dim": "#121414",
+                      "inverse-primary": "#2559bd",
+                      "on-secondary": "#1f314d",
+                      "error": "#ffb4ab",
+                      "inverse-on-surface": "#2f3131",
+                      "primary": "#b1c5ff",
+                      "primary-fixed": "#dae2ff",
+                      "surface-container-high": "#282a2b",
+                      "on-background": "#e2e2e2",
+                      "on-surface": "#e2e2e2",
+                      "on-primary-container": "#a5bdff",
+                      "background": "#121414",
+                      "surface-container-low": "#1a1c1c",
+                      "secondary-fixed": "#d6e3ff",
+                      "outline-variant": "#434653",
+                      "on-primary-fixed-variant": "#00419e",
+                      "on-secondary-container": "#a4b6d8",
+                      "secondary-fixed-dim": "#b5c7ea",
+                      "on-tertiary-fixed-variant": "#464747",
+                      "on-primary-fixed": "#001946",
+                      "on-secondary-fixed-variant": "#364765",
+                      "tertiary-container": "#4c4d4d",
+                      "error-container": "#93000a",
+                      "surface-container": "#1e2020",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "surface": "#121414",
+                      "tertiary": "#c6c6c6",
+                      "surface-container-highest": "#333535",
+                      "secondary": "#b5c7ea",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "secondary-container": "#364765",
+                      "surface-variant": "#333535",
+                      "surface-bright": "#37393a",
+                      "on-surface-variant": "#c3c6d5",
+                      "surface-tint": "#b1c5ff"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "margin": "40px",
+                      "md": "24px",
+                      "sm": "12px",
+                      "base": "8px",
+                      "xs": "4px",
+                      "lg": "48px",
+                      "xl": "80px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "headline-sm": ["Space Grotesk"],
+                      "label-caps": ["Inter"],
+                      "headline-lg": ["Space Grotesk"],
+                      "body-lg": ["Inter"],
+                      "technical-mono": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "technical-mono": ["13px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary border-b border-outline fixed top-0 left-0 w-full z-50 h-16 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="architecture">architecture</span>
+<h1 class="text-headline-sm font-headline-sm tracking-tighter font-bold uppercase">CHRONO-BRICK_V1.0</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">SYS_STATUS: OPTIMAL</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary cursor-pointer transition-colors">SYNC: 100%</span>
+</div>
+<div class="w-10 h-10 bg-secondary-container border border-outline flex items-center justify-center overflow-hidden">
+<img alt="User Technical Profile" class="w-full h-full object-cover" data-alt="A clinical, close-up portrait of a high-tech architectural user profile icon. The aesthetic is extremely minimalist and modern, featuring clean lines and a grayscale palette with blueprint blue accents. The lighting is cold and professional, reflecting an engineering-focused digital workstation environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATFRXacm6JOv_cL0Npv317NLaZYgEkcwgc_Xo_04acVygus9I6tgvFMeJt6zvWgGPivym93piY0H0BBJTGdFbrgYRckY5jcVJyrwJRjE1t1hsCd3guatezcaCdXLDojnl90ufQHrrNYvggPmby-8RGEuq4ZHMDNG3eP4qcWdTJrC0X8_1XGnBd4frZQQAkI_Ty6ogPbVKwAk_GM_Ppq7QPRay-yo8j9yn3Rmc6eFoGV9FXHl_05iIcgO_xSf3Qdm7mWn6f09vrpjA"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-gutter max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Header Section & Scanner CTA -->
+<section class="md:col-span-12 flex flex-col md:flex-row justify-between items-end gap-md pb- base border-b border-outline-variant">
+<div>
+<span class="font-label-caps text-label-caps text-primary mb-2 block">MODULE_01 &gt; INVENTORY_CONTROL</span>
+<h2 class="font-headline-lg text-headline-lg">Piece Repository</h2>
+</div>
+<button class="bg-primary text-on-primary px-lg py-sm flex items-center gap-base active:scale-95 transition-transform group">
+<span class="font-technical-mono text-technical-mono">CMD_SCAN</span>
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps ml-2">SCAN_NEW_COMPONENT</span>
+</button>
+</section>
+<!-- Alert Banner: Missing Pieces -->
+<section class="md:col-span-12 bg-error-container/20 border border-error p-md flex items-start gap-md">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-error block mb-1">CRITICAL_ALERT: COMPONENT_GAP</span>
+<p class="text-on-error-container font-body-md">Missing 12x <span class="font-bold underline">Technic Axle 5L</span> for active project "ORBITAL_STATION_V4". Procurement required.</p>
+</div>
+<button class="border border-error text-error px-sm py-xs font-label-caps text-label-caps hover:bg-error hover:text-on-error transition-colors">ORDER_PARTS</button>
+</section>
+<!-- Sidebar / Stats -->
+<aside class="md:col-span-3 space-y-gutter">
+<!-- Piece Count Tracking -->
+<div class="border border-outline p-md bg-surface-container">
+<span class="font-label-caps text-label-caps text-primary block mb-md">PIECE_METRICS</span>
+<div class="space-y-lg">
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">TOTAL_OWNED</span>
+<span class="font-headline-sm text-headline-sm">14,202</span>
+</div>
+<div class="h-2 bg-surface-container-highest w-full overflow-hidden flex gap-1">
+<div class="h-full bg-primary w-2/3"></div>
+<div class="h-full bg-primary w-1/12"></div>
+<div class="h-full bg-primary w-1/6"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-2">
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">ACTIVE_KIT_REQD</span>
+<span class="font-headline-sm text-headline-sm">842 / 1,200</span>
+</div>
+<div class="h-2 bg-surface-container-highest w-full overflow-hidden flex gap-0.5">
+<div class="h-full bg-secondary w-[70%]"></div>
+<div class="h-full bg-surface-container-high w-[30%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-xl pt-md border-t border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-2">ACTIVE_SCHEMA: ORBITAL_STATION_V4</span>
+<div class="flex items-center gap-xs text-xs font-technical-mono text-primary">
+<span class="material-symbols-outlined text-sm" data-icon="location_on">location_on</span>
+<span>GRID_REF: 44.02 // 19.88</span>
+</div>
+</div>
+</div>
+<!-- Quick Filters -->
+<div class="border border-outline p-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-md">CATEGORICAL_FILTERS</span>
+<div class="grid grid-cols-1 gap-xs">
+<div class="flex items-center justify-between p-sm bg-primary-container/10 border-l-4 border-primary cursor-pointer hover:bg-primary-container/20">
+<span class="font-label-caps text-label-caps text-primary">ALL_COMPONENTS</span>
+<span class="font-technical-mono text-technical-mono">822</span>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container cursor-pointer transition-colors">
+<span class="font-label-caps text-label-caps">PLATES</span>
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">241</span>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container cursor-pointer transition-colors">
+<span class="font-label-caps text-label-caps">BRICKS</span>
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">412</span>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container cursor-pointer transition-colors">
+<span class="font-label-caps text-label-caps">TECHNIC</span>
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">108</span>
+</div>
+<div class="flex items-center justify-between p-sm hover:bg-surface-container cursor-pointer transition-colors">
+<span class="font-label-caps text-label-caps">DECORATIVE</span>
+<span class="font-technical-mono text-technical-mono text-on-surface-variant">61</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Grid -->
+<section class="md:col-span-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-md">
+<!-- Piece Card 1 -->
+<div class="border border-outline bg-surface-container flex flex-col group hover:border-primary transition-colors">
+<div class="h-48 relative border-b border-outline overflow-hidden bg-slate-900">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #8d909e 1px, transparent 1px); background-size: 20px 20px;"></div>
+<img class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform" data-alt="A highly detailed technical CAD-style rendering of a 2x4 plastic construction brick. The brick is rendered in a deep blueprint blue color with sharp, clinical edges. The background features subtle engineering grid lines and technical coordinate markings. The lighting is top-down and sharp, highlighting the modular studs of the brick." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQiKGjRUtwEByH2Cgo52wdFLoD0fkY4cMfEwwFkF19PNu3BeZ0llLMWXiErlB25R2WzrtyMGUEvD9u7DjR8jA-4-_lnbeJComqhdoAUOgS6gVxHOfmYM5E0hbRsfmSm6PDxOYWAx78rKTljnK64gnX2UF7XZBr6oW4lyj6EkL50sTdL_sCTQUFXVDPJcE6eWCPaG7y7OdTCkH_s2WBq2y0cnQkVj1p1Fwkd--KUlo89XOhT_gs5HqcMFubCKB6UapwOLlJ7AsnwA4"/>
+<div class="absolute top-2 left-2 bg-background/80 border border-outline px-2 py-1 flex items-center gap-1">
+<span class="font-technical-mono text-[10px] text-on-surface-variant">ID: 3001</span>
+</div>
+<div class="absolute bottom-2 right-2 flex gap-1">
+<div class="w-3 h-3 bg-red-600 border border-outline"></div>
+<div class="w-3 h-3 bg-blue-600 border border-outline"></div>
+<div class="w-3 h-3 bg-yellow-400 border border-outline"></div>
+</div>
+</div>
+<div class="p-md space-y-sm">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps">BRICK 2X4</h3>
+<span class="text-xs font-technical-mono text-primary bg-primary/10 px-1">IN_STOCK</span>
+</div>
+<div class="flex justify-between items-baseline pt-md border-t border-outline-variant/30">
+<span class="text-xs font-technical-mono text-on-surface-variant">QTY_OWNED</span>
+<span class="text-headline-sm font-headline-sm">124</span>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-technical-mono text-on-surface-variant">REQD_FOR_ACTIVE</span>
+<span class="text-body-md font-bold">12</span>
+</div>
+</div>
+</div>
+<!-- Piece Card 2 -->
+<div class="border border-outline bg-surface-container flex flex-col group hover:border-primary transition-colors">
+<div class="h-48 relative border-b border-outline overflow-hidden bg-slate-900">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #8d909e 1px, transparent 1px); background-size: 20px 20px;"></div>
+<img class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform" data-alt="A technical, schematic illustration of an 8-module long cross-axle component. The image shows the axle from a 45-degree architectural perspective, emphasizing the cross-sectional shape and precise length measurements. The style is clinical and professional, set against a dark slate blue background with white technical annotations." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIGdxGTeG9KGXx71bDrg_ra6ZVUwZfcQqZVy_jwVL1N23EOhrzFCMuvoygEXg-pK06G06HMMEzvUXOiF24jEk-lucFH6QWBCmgltZH44_69If0duMADfs3wLDzms_62GIiAsHqj0LLAX1CsxeDjso2TkQjDDbF55XiSlnrG53ly1oLsvwtcXaP1Lq8VmFjj-MZR4-lFgFIzby4_uGEBiV7y_aQnd0U4s7c7rRtz_cxkEO63Khapyix5i88n2Sime4xPBlYEdGa6yw"/>
+<div class="absolute top-2 left-2 bg-background/80 border border-outline px-2 py-1 flex items-center gap-1">
+<span class="font-technical-mono text-[10px] text-on-surface-variant">ID: 3706</span>
+</div>
+</div>
+<div class="p-md space-y-sm">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps">TECHNIC AXLE 6L</h3>
+<span class="text-xs font-technical-mono text-error bg-error/10 px-1">LOW_STOCK</span>
+</div>
+<div class="flex justify-between items-baseline pt-md border-t border-outline-variant/30">
+<span class="text-xs font-technical-mono text-on-surface-variant">QTY_OWNED</span>
+<span class="text-headline-sm font-headline-sm">8</span>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-technical-mono text-on-surface-variant">REQD_FOR_ACTIVE</span>
+<span class="text-body-md font-bold">32</span>
+</div>
+</div>
+</div>
+<!-- Piece Card 3 -->
+<div class="border border-outline bg-surface-container flex flex-col group hover:border-primary transition-colors">
+<div class="h-48 relative border-b border-outline overflow-hidden bg-slate-900">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #8d909e 1px, transparent 1px); background-size: 20px 20px;"></div>
+<img class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform" data-alt="A precise, orthographic engineering view of a 1x2 flat plate construction piece. The render is sleek and modern, with high-contrast surfaces reflecting a surgical white light. Technical notations and dimension lines frame the component, reinforcing its role as an architectural sub-unit. The background is a solid, deep Slate Blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBg2dVhlT5EHt41iTX9h5TRu0MqHQCiQ8IJEXf_c6fle1hmJfCFAqmyRBg9LMKsT6WWaGg1nW0XRc-pf063Bz55HWld7HX_PXgbEN2DPoyF-p_GhZGkAhzmh_GwgjMtHPs_c8n36r5RlBrCM6tgSnUFa_aLtkKw0_QHZzZ2X3iruYDGAqb3wFO5R5pakyTecm0_-3-5TJvIuRbMvunLRQpPkSf8sdlIl9X0MzRZG2Q9PL1zQeq1p6wNslz36Egn0eLzfqvnZ1WGr5U"/>
+<div class="absolute top-2 left-2 bg-background/80 border border-outline px-2 py-1 flex items-center gap-1">
+<span class="font-technical-mono text-[10px] text-on-surface-variant">ID: 3023</span>
+</div>
+</div>
+<div class="p-md space-y-sm">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps">PLATE 1X2</h3>
+<span class="text-xs font-technical-mono text-primary bg-primary/10 px-1">IN_STOCK</span>
+</div>
+<div class="flex justify-between items-baseline pt-md border-t border-outline-variant/30">
+<span class="text-xs font-technical-mono text-on-surface-variant">QTY_OWNED</span>
+<span class="text-headline-sm font-headline-sm">512</span>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-technical-mono text-on-surface-variant">REQD_FOR_ACTIVE</span>
+<span class="text-body-md font-bold">144</span>
+</div>
+</div>
+</div>
+<!-- Piece Card 4 (Decorative) -->
+<div class="border border-outline bg-surface-container flex flex-col group hover:border-primary transition-colors">
+<div class="h-48 relative border-b border-outline overflow-hidden bg-slate-900">
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: radial-gradient(circle, #8d909e 1px, transparent 1px); background-size: 20px 20px;"></div>
+<img class="w-full h-full object-contain p-4 group-hover:scale-105 transition-transform" data-alt="A transparent 1x2x2 window pane piece for architectural modeling, shown in a sterile, modern environment. The transparency is rendered with realistic light refraction and professional caustics. Thin silver border lines define the viewport, and a technical identification number is visible in the corner. The aesthetic is high-end CAD software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtei8HUDwjVeqIMWAqj42MJgVsfWCfQptQMq0vo-4sEPadEOQ7h1SpIV1LJJTDYSZqnj2G48bsJ9MmUzdjOzFnPxN2vsJqXRc4o6zweT7y5DxQgPWb61I-yEtouaVb2XYvJ-x9F6y6JKJfzWLyIqVacyj2hk4L-RSoqzkOxphYeuwnYxLmvkGS7PnPvE7pE6t6CVYszVJsObI7jn7UTo5aEkyJ4vMglEgCe4EOa6L00jAPhy9lvAMKD_xnQnFKyANld8iGS50gOII"/>
+<div class="absolute top-2 left-2 bg-background/80 border border-outline px-2 py-1 flex items-center gap-1">
+<span class="font-technical-mono text-[10px] text-on-surface-variant">ID: 60601</span>
+</div>
+</div>
+<div class="p-md space-y-sm">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps">WINDOW 1X2X2</h3>
+<span class="text-xs font-technical-mono text-on-surface-variant bg-surface-variant px-1">LIMITED</span>
+</div>
+<div class="flex justify-between items-baseline pt-md border-t border-outline-variant/30">
+<span class="text-xs font-technical-mono text-on-surface-variant">QTY_OWNED</span>
+<span class="text-headline-sm font-headline-sm">14</span>
+</div>
+<div class="flex justify-between items-baseline">
+<span class="text-xs font-technical-mono text-on-surface-variant">REQD_FOR_ACTIVE</span>
+<span class="text-body-md font-bold">14</span>
+</div>
+</div>
+</div>
+<!-- Piece Card 5 (Grid pattern placeholder) -->
+<div class="border border-outline border-dashed bg-surface/50 flex flex-col items-center justify-center h-[350px] p-md group hover:bg-surface transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors text-4xl mb-4" data-icon="add_box">add_box</span>
+<span class="font-label-caps text-label-caps text-outline group-hover:text-primary">MANUAL_ADD_COMPONENT</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full h-20 bg-surface border-t border-outline grid grid-cols-4 items-center justify-items-stretch z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant h-full w-full hover:bg-surface-container-high transition-all cursor-pointer active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">SHOWCASE</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant h-full w-full hover:bg-surface-container-high transition-all cursor-pointer active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps mt-1">MANUALS</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary h-full w-full cursor-pointer active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="inventory_2" data-weight="fill">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">INVENTORY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant h-full w-full hover:bg-surface-container-high transition-all cursor-pointer active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps text-label-caps mt-1">GALLERY</span>
+</div>
+</nav>
+<!-- Coordinate Marks (Visual Flair) -->
+<div class="fixed top-20 left-4 text-[10px] font-technical-mono text-outline/30 hidden md:block">LAT: 52.5200° N</div>
+<div class="fixed top-20 right-4 text-[10px] font-technical-mono text-outline/30 hidden md:block">LON: 13.4050° E</div>
+<div class="fixed bottom-24 left-4 text-[10px] font-technical-mono text-outline/30 hidden md:block">VER: CHRONO_V1.0.4</div>
+<div class="fixed bottom-24 right-4 text-[10px] font-technical-mono text-outline/30 hidden md:block">Z-AXIS: CALIBRATED</div>
+</body></html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>The Focused Path - Lane Selection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;600;700&amp;family=Manrope:wght@400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#fbf9f8",
+                        "tertiary": "#3f412f",
+                        "surface-container-highest": "#e4e2e1",
+                        "secondary-container": "#ffbf87",
+                        "primary-fixed": "#d4eca2",
+                        "on-error": "#ffffff",
+                        "on-background": "#1b1c1c",
+                        "primary": "#33450d",
+                        "tertiary-container": "#565845",
+                        "surface-container": "#f0eded",
+                        "outline-variant": "#c6c8b8",
+                        "on-tertiary-fixed-variant": "#474836",
+                        "on-primary-fixed": "#141f00",
+                        "secondary-fixed": "#ffdcc1",
+                        "error": "#ba1a1a",
+                        "on-surface": "#1b1c1c",
+                        "secondary-fixed-dim": "#f9ba82",
+                        "tertiary-fixed": "#e4e4cc",
+                        "surface-container-low": "#f6f3f2",
+                        "on-tertiary-container": "#cdceb6",
+                        "tertiary-fixed-dim": "#c8c8b0",
+                        "surface-variant": "#e4e2e1",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-surface-variant": "#45483c",
+                        "secondary": "#835425",
+                        "surface-bright": "#fbf9f8",
+                        "primary-container": "#4a5d23",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1b1d0e",
+                        "surface-tint": "#52652a",
+                        "on-primary-fixed-variant": "#3b4d14",
+                        "on-secondary-container": "#7a4b1e",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#76786b",
+                        "surface-container-high": "#eae8e7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "section-gap": "128px",
+                        "gutter": "24px",
+                        "unit": "8px",
+                        "margin-page": "64px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Noto Serif"],
+                        "headline-md": ["Noto Serif"],
+                        "label-md": ["Manrope"],
+                        "headline-lg": ["Noto Serif"],
+                        "body-lg": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-md": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .ghost-border {
+            border: 1px solid rgba(118, 120, 107, 0.15);
+        }
+        body {
+            background-color: #fbf9f8;
+            color: #1b1c1c;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-background bg-background min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-stone-50 dark:bg-stone-950 border-b border-stone-200/50 dark:border-stone-800/50 sticky top-0 z-50">
+<nav class="flex justify-between items-center w-full px-6 py-4 max-w-[1200px] mx-auto">
+<div class="text-lg font-serif uppercase tracking-widest text-[#4A5D23] dark:text-[#6b8535]">The Focused Path</div>
+<div class="flex items-center gap-6">
+<button class="text-stone-500 dark:text-stone-400 hover:bg-stone-100 dark:hover:bg-stone-900 transition-colors duration-300 p-2 rounded-full active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined">account_circle</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="flex-grow w-full max-w-[1200px] mx-auto px-6 py-12">
+<!-- Header Section -->
+<div class="mb-16 text-center max-w-2xl mx-auto">
+<span class="font-label-sm text-secondary uppercase tracking-[0.2em] mb-4 block">Select Your Environment</span>
+<h1 class="font-headline-lg text-primary mb-6">Where will your arrow fly?</h1>
+<p class="font-body-lg text-on-surface-variant">Choose between the disciplined silence of our indoor range or the rugged challenge of the 3D terrain course.</p>
+</div>
+<!-- Selection Cards (Asymmetric Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
+<!-- Indoor Sanctuary Card -->
+<div class="group flex flex-col bg-surface-container-lowest ghost-border overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Indoor Archery Range" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A high-end indoor archery range with polished light wood flooring and architectural wooden ceiling beams. The targets are perfectly aligned at the end of 30-yard lanes under soft, focused warm spotlighting. The aesthetic is minimalist and serene, utilizing a palette of natural wood tones and moss greens, evoking a professional zen-like atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZF4tgU7zn7elNxB50DOl9Nk78DHtnzOrfa1jakS3kZbEvHt7ZpOnMXI_gpT74XN9tyPaIOjeOx3r6Bdd_OZEC_2XT1t1uAAl3vupYVeBMVIUV0yAVxquPYLbDZqSo6y0W2KSutI66LRJf_SfYiiJm_bfn2kdWl1ZOHTjC3ztCpTX5OxUah_tubpPnlIfAHRSU1rkJyQgqFMdgy08__nuxxlK1QjGctfLER4frRi10DioNIVR7rAjiWSiUwujxBgvQSqo0PcdBg-Ch"/>
+<div class="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-4 py-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-sm text-primary">8 Lanes Available</span>
+</div>
+</div>
+<div class="p-10 flex flex-col flex-grow text-center">
+<h2 class="font-headline-md text-primary mb-4">Indoor Sanctuary</h2>
+<p class="font-label-md text-secondary mb-6">30-Yard Precision Lanes</p>
+<p class="font-body-md text-on-surface-variant mb-8 flex-grow">A climate-controlled environment designed for the serious marksman. Polished cedar accents and sound-dampening panels ensure total focus on your form and follow-through.</p>
+<div class="pt-6 border-t border-outline-variant/30">
+<button class="w-full bg-primary text-background py-4 px-8 font-label-md uppercase tracking-widest hover:bg-tertiary transition-all duration-300 active:scale-[0.98]">
+                            Select Lane
+                        </button>
+</div>
+</div>
+</div>
+<!-- Outdoor Trail Card -->
+<div class="group flex flex-col bg-surface-container-lowest ghost-border overflow-hidden transition-all duration-500 hover:shadow-2xl hover:shadow-primary/5">
+<div class="aspect-[4/3] overflow-hidden relative">
+<img alt="Outdoor Archery Course" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A lush, sun-dappled forest trail featuring professional 3D archery targets of deer and elk placed realistically within the terrain. Tall pine trees create a natural canopy with golden light filtering through the leaves. The scene is atmospheric and wild, capturing a rugged but high-quality outdoor experience with earthy tones of deep green and warm browns." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlBwjAqmMNG6d_v16wRMJWbIs_Nb5CbJk1PNbpEskDfcm9gPAChkvEjylYqMexj1ZsPbNnAyLtG5lvnDDqEVuHp9WSb2jIM-FH_-xdlqU47-P6HTWfLcaKkGDaphKam6j9hFLizkv_zuyraw4Zfa7O3z1n8uXvzFO3bIG03NzeNwKK-AoVuNLsMKzAm6X63AyDo_RzuYjh4NGOzsWbRER1vBWn1UFi2KNVflxPFf8sS6Qds6VI_q-bJzcSR1eNiygbihmygMX7lckG"/>
+<div class="absolute top-4 left-4 bg-background/90 backdrop-blur-sm px-4 py-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-secondary">2 Slots Left Today</span>
+</div>
+</div>
+<div class="p-10 flex flex-col flex-grow text-center">
+<h2 class="font-headline-md text-primary mb-4">Outdoor Trail</h2>
+<p class="font-label-md text-secondary mb-6">3D Terrain Course</p>
+<p class="font-body-md text-on-surface-variant mb-8 flex-grow">Experience the rigor of the field. Our 3D course winds through 2 miles of rolling forest, featuring 24 lifelike targets positioned at varying elevations and distances.</p>
+<div class="pt-6 border-t border-outline-variant/30">
+<button class="w-full border border-primary text-primary py-4 px-8 font-label-md uppercase tracking-widest hover:bg-primary hover:text-background transition-all duration-300 active:scale-[0.98]">
+                            Select Lane
+                        </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Spec List (Zen Progress Style) -->
+<div class="mt-section-gap max-w-4xl mx-auto">
+<h3 class="font-headline-sm text-primary mb-12 text-center">Booking Progress</h3>
+<div class="relative flex justify-between items-center px-4">
+<!-- Arrow Shaft Line -->
+<div class="absolute h-[1px] bg-outline-variant left-0 right-0 top-1/2 -translate-y-1/2 z-0"></div>
+<!-- Nodes -->
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white border-4 border-background">
+<span class="material-symbols-outlined text-[16px]">check</span>
+</div>
+<span class="font-label-sm text-primary">Membership</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white border-4 border-background">
+<span class="material-symbols-outlined text-[16px]" style="font-variation-settings: 'FILL' 1;">target</span>
+</div>
+<span class="font-label-sm text-primary">Lane Type</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-4 border-background"></div>
+<span class="font-label-sm text-stone-400">Date &amp; Time</span>
+</div>
+<div class="relative z-10 flex flex-col items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest border-4 border-background"></div>
+<span class="font-label-sm text-stone-400">Equipment</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-stone-50/95 dark:bg-stone-950/95 border-t border-stone-200/60 dark:border-stone-800/60 flex justify-around items-center px-4">
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 pt-3 pb-2 transition-all duration-200 ease-in-out active:scale-95" href="#">
+<span class="material-symbols-outlined">home_pin</span>
+<span class="font-serif text-[10px] uppercase tracking-widest font-medium mt-1">Range</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#4A5D23] dark:text-[#6b8535] border-t-2 border-[#4A5D23] dark:border-[#6b8535] -mt-[2px] pt-3 pb-2 transition-all duration-200 ease-in-out active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="font-serif text-[10px] uppercase tracking-widest font-medium mt-1">Book</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 pt-3 pb-2 transition-all duration-200 ease-in-out active:scale-95" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-serif text-[10px] uppercase tracking-widest font-medium mt-1">History</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 pt-3 pb-2 transition-all duration-200 ease-in-out active:scale-95" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-serif text-[10px] uppercase tracking-widest font-medium mt-1">Profile</span>
+</a>
+</footer>
+</body></html>

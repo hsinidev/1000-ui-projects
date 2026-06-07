@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HYPER_POINT_v1.0 | LOGS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0A0A0A;
+            background-image: 
+                linear-gradient(rgba(192, 192, 192, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(192, 192, 192, 0.05) 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            opacity: 0.02;
+            z-index: 9999;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .safety-glow {
+            box-shadow: 0 0 20px rgba(255, 103, 0, 0.3);
+        }
+        .segmented-progress-bg {
+            background: repeating-linear-gradient(90deg, transparent, transparent 4px, #0A0A0A 4px, #0A0A0A 6px);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#aa8a7d",
+                        "surface-variant": "#353534",
+                        "on-secondary": "#2f3131",
+                        "primary-fixed": "#ffdbcd",
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#484949",
+                        "inverse-on-surface": "#313030",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#00af29",
+                        "tertiary-fixed-dim": "#00e639",
+                        "on-primary-container": "#561e00",
+                        "surface-container-highest": "#353534",
+                        "secondary": "#c6c6c6",
+                        "primary-container": "#ff6700",
+                        "on-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#571e00",
+                        "background": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-container": "#003807",
+                        "on-error": "#690005",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-fixed-variant": "#00530e",
+                        "outline-variant": "#5a4136",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "inverse-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "surface": "#131313",
+                        "surface-tint": "#ffb595",
+                        "surface-bright": "#393939",
+                        "on-primary-fixed": "#351000",
+                        "tertiary": "#00e639",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-tertiary-fixed": "#002203",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "tertiary-fixed": "#72ff70",
+                        "primary": "#ffb595",
+                        "inverse-primary": "#a23f00",
+                        "on-tertiary": "#003907",
+                        "on-surface-variant": "#e3bfb1",
+                        "secondary-fixed": "#e3e2e2",
+                        "primary-fixed-dim": "#ffb595",
+                        "on-secondary-container": "#b8b8b8",
+                        "surface-container": "#201f1f"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "heading-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "heading-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "data-lg": ["32px", {"lineHeight": "1.0", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<div class="noise-overlay"></div>
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background text-primary dark:text-primary docked full-width top-0 border-b border-outline-variant flex justify-between items-center px-margin py-unit w-full sticky z-50">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps tracking-widest text-primary dark:text-primary">HYPER_POINT_v1.0</span>
+</div>
+<button class="bg-primary-container text-on-primary px-gutter py-2 font-label-caps text-label-caps border border-primary-container safety-glow">
+            EMERGENCY_STOP
+        </button>
+</header>
+<main class="h-[calc(100vh-140px)] overflow-y-auto px-margin pt-gutter pb-32 space-y-gutter">
+<!-- Live Readouts Grid -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- Pressure Module -->
+<div class="bg-surface-container border border-outline-variant/30 flex flex-col">
+<div class="bg-secondary/10 px-2 py-1 border-b border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-secondary">CHAMBER_PRESSURE</span>
+<span class="w-2 h-2 bg-primary safety-glow"></span>
+</div>
+<div class="p-gutter flex flex-col items-center">
+<span class="font-data-lg text-display-lg text-primary">2.45</span>
+<span class="font-label-caps text-secondary text-[10px]">ATA_UNIT</span>
+</div>
+<div class="h-1 bg-surface-variant w-full overflow-hidden relative">
+<div class="absolute inset-0 bg-primary w-[72%]" style="box-shadow: 0 0 10px rgba(255,181,149,0.5)"></div>
+<div class="absolute inset-0 segmented-progress-bg"></div>
+</div>
+</div>
+<!-- O2 Concentration Module -->
+<div class="bg-surface-container border border-outline-variant/30 flex flex-col">
+<div class="bg-secondary/10 px-2 py-1 border-b border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-secondary">O2_CONCENTRATION</span>
+<span class="w-2 h-2 bg-tertiary shadow-[0_0_8px_#00e639]"></span>
+</div>
+<div class="p-gutter flex flex-col items-center">
+<span class="font-data-lg text-display-lg text-tertiary">98.2</span>
+<span class="font-label-caps text-secondary text-[10px]">PERCENTAGE</span>
+</div>
+<div class="h-1 bg-surface-variant w-full overflow-hidden relative">
+<div class="absolute inset-0 bg-tertiary w-[98%]" style="box-shadow: 0 0 10px rgba(0,230,57,0.5)"></div>
+<div class="absolute inset-0 segmented-progress-bg"></div>
+</div>
+</div>
+</div>
+<!-- System Status Summary -->
+<div class="bg-surface-container border border-outline-variant/30 p-gutter">
+<div class="flex justify-between items-center mb-unit">
+<span class="font-label-caps text-[10px] text-secondary">SESSION_METRICS</span>
+<span class="font-label-caps text-[10px] text-primary">ELAPSED: 00:42:15</span>
+</div>
+<div class="grid grid-cols-3 gap-2">
+<div class="border-l border-primary/40 pl-2">
+<p class="font-label-caps text-[8px] text-secondary">AVG_P</p>
+<p class="font-data-lg text-heading-md">2.41</p>
+</div>
+<div class="border-l border-primary/40 pl-2">
+<p class="font-label-caps text-[8px] text-secondary">MAX_P</p>
+<p class="font-data-lg text-heading-md">2.50</p>
+</div>
+<div class="border-l border-tertiary/40 pl-2">
+<p class="font-label-caps text-[8px] text-secondary">STAB_IDX</p>
+<p class="font-data-lg text-heading-md text-tertiary">0.98</p>
+</div>
+</div>
+</div>
+<!-- High-Density Logs Table -->
+<div class="border border-outline-variant/30">
+<div class="bg-surface-variant px-gutter py-2 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LOG_STREAM_01</span>
+<span class="font-label-caps text-[10px] text-secondary">v1.2.0_SYNC_ACTIVE</span>
+</div>
+<div class="bg-surface-container-lowest font-data-lg text-[10px] leading-tight divide-y divide-outline-variant/10 overflow-hidden">
+<div class="grid grid-cols-4 px-2 py-1 bg-surface-container-high/50 text-secondary">
+<span>TIMESTAMP</span>
+<span class="text-right">PRES_ATA</span>
+<span class="text-right">O2_%</span>
+<span class="text-right">STATUS</span>
+</div>
+<!-- Log Entry 1 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:45.0</span>
+<span class="text-right text-primary">2.451</span>
+<span class="text-right text-tertiary">98.2</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+<!-- Log Entry 2 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:44.5</span>
+<span class="text-right text-primary">2.450</span>
+<span class="text-right text-tertiary">98.1</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+<!-- Log Entry 3 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:44.0</span>
+<span class="text-right text-primary">2.449</span>
+<span class="text-right text-tertiary">98.2</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+<!-- Log Entry 4 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:43.5</span>
+<span class="text-right text-primary">2.445</span>
+<span class="text-right text-tertiary">98.0</span>
+<span class="text-right text-primary-container">ADJUST_</span>
+</div>
+<!-- Log Entry 5 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:43.0</span>
+<span class="text-right text-primary">2.442</span>
+<span class="text-right text-tertiary">98.1</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+<!-- Log Entry 6 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:42.5</span>
+<span class="text-right text-primary">2.440</span>
+<span class="text-right text-tertiary">98.2</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+<!-- Log Entry 7 -->
+<div class="grid grid-cols-4 px-2 py-1 font-mono hover:bg-surface-variant transition-colors group">
+<span class="text-secondary opacity-70">14:22:42.0</span>
+<span class="text-right text-primary">2.438</span>
+<span class="text-right text-tertiary">98.0</span>
+<span class="text-right text-tertiary">NOMINAL</span>
+</div>
+</div>
+</div>
+<!-- Technical Schematic Image Content -->
+<div class="relative w-full h-40 border border-outline-variant/30 overflow-hidden bg-surface-container-lowest">
+<img alt="Chamber monitoring schematic" class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A highly detailed 3D technical schematic of an industrial hyperbaric chamber cockpit, rendered in a dark aerospace aesthetic. The image features a matte black and dark grey color palette with vibrant safety orange and tactical green highlights. Transparent HUD elements with scrolling telemetry data are overlaid on heavy-duty mechanical controls. The lighting is low and moody, emphasizing a professional, mission-critical environment for high-altitude physiological testing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy0luUbHl1053okZ07kGcO8LoXTQfRXRUPh2hRDZo1RlszP0qVgaFumig4BcNqnynAYXD2N4xMF9UKAIWfg9Gd2yfg8_LGIRnc0xQNk3CzzgDuLnQ-NTaUesX0jl4Twoq0VAOgS4Fi6-uc6h4eQByjF-HZG0BIcQC3l0tBwIjm1N3P3apIsWU7_-pRWMM4K4et0NbjztN3ElsOvvZBVaYmRJZnWlIx_WjL4LjSG3kRXhgZXKkotlLtskOT4M7t5SvGyLT34w44C_Dg"/>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-full border-t border-primary/20 absolute"></div>
+<div class="h-full border-l border-primary/20 absolute"></div>
+<div class="border border-primary safety-glow w-16 h-16 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-primary scale-150" data-icon="search">search</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Equivalent / Action Layer -->
+<div class="fixed bottom-20 left-0 right-0 px-margin z-40 pointer-events-none">
+<button class="w-full bg-primary-container text-on-primary py-4 font-label-caps text-label-caps safety-glow flex items-center justify-center gap-2 pointer-events-auto active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="play_arrow" data-weight="fill" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+            START_SESSION_SEQUENCE
+        </button>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-gutter py-2 bg-surface-container-lowest dark:bg-surface-container-lowest border-t border-outline-variant">
+<!-- Active Tab: LOGS -->
+<button class="flex flex-col items-center justify-center text-primary bg-surface-variant border-t-2 border-primary p-2 scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="analytics" data-weight="fill" style="font-variation-settings: 'FILL' 1;">analytics</span>
+<span class="font-label-caps text-[8px] mt-1">LOGS</span>
+</button>
+<!-- Inactive: CHECKLIST -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-primary-fixed-dim transition-colors scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="font-label-caps text-[8px] mt-1">CHECKLIST</span>
+</button>
+<!-- Inactive: TRENDS -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-primary-fixed-dim transition-colors scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="show_chart">show_chart</span>
+<span class="font-label-caps text-[8px] mt-1">TRENDS</span>
+</button>
+<!-- Inactive: EQUIPMENT -->
+<button class="flex flex-col items-center justify-center text-secondary p-2 hover:text-primary-fixed-dim transition-colors scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="font-label-caps text-[8px] mt-1">EQUIPMENT</span>
+</button>
+</nav>
+</body></html>

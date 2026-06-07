@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEURO-FLOW // ADMIN COMMAND CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(190, 242, 100, 0.1);
+        }
+        .neural-path {
+            filter: blur(1px);
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+        .hud-border {
+            border: 1px solid rgba(190, 242, 100, 0.2);
+            position: relative;
+        }
+        .hud-border::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #BEF264;
+            border-left: 2px solid #BEF264;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #354e00; border-radius: 10px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e5e2e1",
+                        "surface": "#131313",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#3323cc",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131313",
+                        "surface-variant": "#353534",
+                        "on-surface-variant": "#c3c9b2",
+                        "on-secondary-fixed": "#16173d",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-container": "#4b6e00",
+                        "surface-bright": "#393939",
+                        "inverse-on-surface": "#313030",
+                        "outline": "#8d937e",
+                        "tertiary-container": "#e1deff",
+                        "outline-variant": "#434938",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed-variant": "#42436b",
+                        "secondary-container": "#44456e",
+                        "secondary": "#c2c2f2",
+                        "on-primary-fixed": "#131f00",
+                        "secondary-fixed": "#e1e0ff",
+                        "on-tertiary-fixed": "#0f0069",
+                        "tertiary-fixed": "#e2dfff",
+                        "primary-fixed": "#bff365",
+                        "on-primary": "#233600",
+                        "inverse-primary": "#476800",
+                        "tertiary": "#fffdff",
+                        "primary-fixed-dim": "#a4d64c",
+                        "background": "#131313",
+                        "tertiary-fixed-dim": "#c3c0ff",
+                        "surface-tint": "#a4d64c",
+                        "on-error": "#690005",
+                        "primary-container": "#bef264",
+                        "on-tertiary-container": "#534ae9",
+                        "secondary-fixed-dim": "#c2c2f2",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary": "#1d00a5",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-container": "#b4b4e4",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#354e00",
+                        "primary": "#fefff1",
+                        "on-secondary": "#2b2d53"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "md": "16px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "margin": "32px",
+                        "xl": "40px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "data-lg": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body": ["Inter"],
+                        "h2": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-lg": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body min-h-screen overflow-x-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-[60] bg-surface/60 backdrop-blur-2xl border-r border-outline-variant/20 flex flex-col p-md gap-lg">
+<div class="flex flex-col gap-xs mb-xl">
+<h1 class="font-h1 text-h1 font-bold text-primary-container text-[24px]">NEURO-CORE</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-70">V2.04 ACTIVE</p>
+</div>
+<nav class="flex flex-col gap-sm flex-grow">
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full group" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps uppercase">DASHBOARD</span>
+</a>
+<a class="bg-primary-container text-on-primary-container rounded-full px-md py-sm flex items-center gap-md" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps uppercase">ADMIN PANEL</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps uppercase">COMMUNITY</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps uppercase">NEURAL SYNC</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps uppercase">DOCUMENTATION</span>
+</a>
+</nav>
+<button class="bg-primary-container text-on-primary font-label-caps text-label-caps font-bold py-md rounded-lg shadow-[0_0_15px_rgba(190,242,100,0.3)] hover:shadow-[0_0_25px_rgba(190,242,100,0.5)] transition-all uppercase tracking-widest">
+            INITIALIZE SYNC
+        </button>
+<div class="mt-auto border-t border-outline-variant/20 pt-md flex flex-col gap-sm">
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps uppercase">SYSTEM SETTINGS</span>
+</a>
+<a class="text-on-surface-variant hover:text-primary flex items-center gap-md px-md py-sm transition-all hover:bg-surface-variant/30 rounded-full" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps uppercase">LOGOUT</span>
+</a>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface/40 backdrop-blur-xl border-b border-outline-variant/20 flex justify-between items-center w-full px-lg py-sm ml-64">
+<div class="flex items-center gap-lg flex-1">
+<h2 class="font-h2 text-h2 font-bold text-primary tracking-tighter uppercase text-[20px]">NEURO-FLOW</h2>
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/30 rounded-lg pl-xl pr-md py-xs font-label-caps text-label-caps focus:border-primary-container focus:ring-0 text-on-surface" placeholder="QUERY NEURAL DATABASE..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps text-primary-container px-sm py-1 bg-primary-container/10 border border-primary-container/30 rounded">[SYNC: OPTIMAL]</span>
+<div class="flex items-center gap-sm">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">settings</button>
+<button class="material-symbols-outlined text-primary-container">account_circle</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-xl px-lg pb-xl mt-12 grid grid-cols-12 gap-gutter relative">
+<!-- Background Decor -->
+<div class="fixed inset-0 pointer-events-none opacity-10 z-0">
+<svg class="w-full h-full" viewbox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg">
+<path class="neural-path opacity-50" d="M100,500 Q250,100 500,500 T900,500" fill="none" stroke="#BEF264" stroke-width="1"></path>
+<path class="neural-path opacity-30" d="M50,300 Q300,600 550,200 T950,400" fill="none" stroke="#BEF264" stroke-width="1"></path>
+</svg>
+</div>
+<!-- Section Header -->
+<div class="col-span-12 flex justify-between items-end mb-sm z-10">
+<div>
+<p class="font-label-caps text-label-caps text-primary-container mb-xs">ADMINISTRATION // CORE_COMMAND</p>
+<h1 class="font-h1 text-h1 text-primary">System Command Center</h1>
+</div>
+<div class="flex gap-sm">
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">UPTIME</p>
+<p class="font-data-lg text-data-lg text-primary-container">402:12:05:11</p>
+</div>
+</div>
+</div>
+<!-- System Status Grid (Bento) -->
+<div class="col-span-12 lg:col-span-3 glass-panel bg-surface/40 p-md hud-border z-10">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SERVER LOAD</span>
+<span class="font-label-caps text-label-caps text-primary-container">82%</span>
+</div>
+<div class="h-24 flex items-end gap-1 mb-md">
+<div class="flex-1 bg-primary-container/20 h-1/2"></div>
+<div class="flex-1 bg-primary-container/40 h-2/3"></div>
+<div class="flex-1 bg-primary-container/60 h-3/4"></div>
+<div class="flex-1 bg-primary-container/80 h-full"></div>
+<div class="flex-1 bg-primary-container/40 h-1/2"></div>
+<div class="flex-1 bg-primary-container/20 h-1/4"></div>
+<div class="flex-1 bg-primary-container/90 h-5/6"></div>
+<div class="flex-1 bg-primary-container/30 h-1/3"></div>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">REAL-TIME TELEMETRY FEED</p>
+</div>
+<div class="col-span-12 lg:col-span-3 glass-panel bg-surface/40 p-md hud-border z-10 flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">NEURAL SYNC COUNT</span>
+<div>
+<h3 class="font-data-lg text-[48px] text-primary-container leading-none font-bold">14,204</h3>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-sm">+12% FROM PREVIOUS HOUR</p>
+</div>
+<div class="flex gap-xs mt-md">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<div class="w-2 h-2 rounded-full bg-primary-container/50"></div>
+<div class="w-2 h-2 rounded-full bg-primary-container/30"></div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-6 glass-panel bg-surface/40 p-md hud-border z-10">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">GLOBAL FOCUS AVERAGES</span>
+<div class="flex gap-md">
+<span class="font-label-caps text-label-caps text-primary-container flex items-center gap-xs"><span class="w-2 h-2 bg-primary-container"></span> DELTA</span>
+<span class="font-label-caps text-label-caps text-secondary flex items-center gap-xs"><span class="w-2 h-2 bg-secondary"></span> THETA</span>
+</div>
+</div>
+<div class="relative h-32 w-full overflow-hidden">
+<img alt="Neural Waveform Data" class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="A sophisticated digital visualization of complex neural waveforms and data patterns. The image features glowing mint-green and soft indigo lines pulsating across a deep black grid background. The style is reminiscent of high-tech medical imaging and cybernetic interfaces, with sharp geometric details and a subtle crystalline aesthetic. High contrast, cinematic lighting, and technical accuracy define this immersive HUD-style data visualization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwcAzBuUaKFX86jbgktp8mlw07Pt_hFsy-LOFQmoiONAPE7CT3S0b3lWM0GBX0c8zh-kIb9Kz9wTsAUgDrCLQdsHmdFCiWwCfMu2U76hVwtcW_4kqQnJ4kMb05AiO_ZQNJX-fsnOCTDOOKsjc3tYp-ApT1XOCtGrT0oyq-XCWKWtJJ_cTfzX1sh0PHJAKUfaOESNd38NqRRpEcWerhfFZ4LYVe1-7p5ySI29N-j-qM1nxlqmmd2KxdvXHSAP9z9cR0s1CzGw6TACBm"/>
+</div>
+</div>
+<!-- User Neural Management Table -->
+<div class="col-span-12 glass-panel bg-surface/40 hud-border z-10">
+<div class="p-md border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">USER NEURAL MANAGEMENT</h3>
+<div class="flex gap-sm">
+<button class="bg-surface-variant/30 hover:bg-primary-container hover:text-on-primary-container transition-all text-on-surface px-md py-xs font-label-caps text-label-caps rounded flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> FILTER
+                    </button>
+<button class="bg-surface-variant/30 hover:bg-primary-container hover:text-on-primary-container transition-all text-on-surface px-md py-xs font-label-caps text-label-caps rounded flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">download</span> EXPORT LOGS
+                    </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 font-label-caps text-label-caps text-on-surface-variant">
+<th class="p-md">USER IDENTITY</th>
+<th class="p-md">SYNC STATUS</th>
+<th class="p-md">COGNITIVE LOAD</th>
+<th class="p-md">SESSION DURATION</th>
+<th class="p-md">SECURITY CLEARANCE</th>
+<th class="p-md text-right">COMMANDS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Table Row 1 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-primary-container/20 flex items-center justify-center border border-primary-container/30">
+<span class="material-symbols-outlined text-primary-container">biotech</span>
+</div>
+<div>
+<p class="font-body text-primary font-bold">XJ-9042_ANDERSON</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant">IP: 192.168.4.12</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-primary-container/10 text-primary-container font-label-caps text-[10px] border border-primary-container/30 inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-primary-container rounded-full animate-pulse"></span> ACTIVE_LINK
+                                </span>
+</td>
+<td class="p-md">
+<div class="w-32 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[64%]"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant mt-1 block">64% INTENSITY</span>
+</td>
+<td class="p-md font-data-lg text-sm text-on-surface">04:12:33</td>
+<td class="p-md">
+<span class="font-label-caps text-label-caps text-secondary opacity-80">LEVEL_04</span>
+</td>
+<td class="p-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">monitoring</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error ml-md transition-colors">cancel</button>
+</td>
+</tr>
+<!-- Table Row 2 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-secondary-container/20 flex items-center justify-center border border-secondary-container/30">
+<span class="material-symbols-outlined text-secondary">memory</span>
+</div>
+<div>
+<p class="font-body text-primary font-bold">SY-1182_VOX</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant">IP: 172.20.0.41</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-surface-variant/30 text-on-surface-variant font-label-caps text-[10px] border border-outline-variant/30 inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-on-surface-variant rounded-full"></span> STANDBY
+                                </span>
+</td>
+<td class="p-md">
+<div class="w-32 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="bg-primary-container h-full w-[12%]"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant mt-1 block">12% INTENSITY</span>
+</td>
+<td class="p-md font-data-lg text-sm text-on-surface">12:04:11</td>
+<td class="p-md">
+<span class="font-label-caps text-label-caps text-secondary opacity-80">LEVEL_02</span>
+</td>
+<td class="p-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">monitoring</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error ml-md transition-colors">cancel</button>
+</td>
+</tr>
+<!-- Table Row 3 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded bg-error-container/20 flex items-center justify-center border border-error-container/30">
+<span class="material-symbols-outlined text-error">warning</span>
+</div>
+<div>
+<p class="font-body text-primary font-bold">KT-7700_NOVA</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant">IP: 10.0.2.115</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<span class="px-sm py-1 rounded bg-error-container/20 text-error font-label-caps text-[10px] border border-error-container/30 inline-flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-error rounded-full animate-ping"></span> SYNC_LOSS
+                                </span>
+</td>
+<td class="p-md">
+<div class="w-32 h-1.5 bg-surface-variant rounded-full overflow-hidden">
+<div class="bg-error h-full w-[98%]"></div>
+</div>
+<span class="font-label-caps text-[10px] text-error mt-1 block">98% CRITICAL</span>
+</td>
+<td class="p-md font-data-lg text-sm text-on-surface">00:15:02</td>
+<td class="p-md">
+<span class="font-label-caps text-label-caps text-secondary opacity-80">LEVEL_09</span>
+</td>
+<td class="p-md text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">monitoring</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-error ml-md transition-colors">cancel</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-md border-t border-outline-variant/20 flex justify-between items-center bg-surface-container-low/30">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SHOWING 3 OF 14,204 NEURAL NODES</p>
+<div class="flex gap-xs">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/20 rounded hover:bg-primary-container/10"><span class="material-symbols-outlined text-sm">chevron_left</span></button>
+<button class="w-8 h-8 flex items-center justify-center border border-primary-container bg-primary-container text-on-primary-container rounded font-label-caps text-[10px]">1</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/20 rounded hover:bg-primary-container/10 font-label-caps text-[10px]">2</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/20 rounded hover:bg-primary-container/10 font-label-caps text-[10px]">3</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/20 rounded hover:bg-primary-container/10"><span class="material-symbols-outlined text-sm">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- System Alerts Sidebar Area (Asymetric layout element) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter z-10">
+<div class="glass-panel bg-surface/40 p-md hud-border">
+<h3 class="font-label-caps text-label-caps text-primary-container mb-md border-b border-primary-container/20 pb-sm">LIVE FEED : SYSTEM_LOG</h3>
+<div class="flex flex-col gap-sm">
+<div class="border-l-2 border-primary-container pl-md py-xs">
+<p class="font-label-caps text-[10px] text-on-surface-variant">14:22:01</p>
+<p class="font-body text-xs text-primary">Node XJ-9042 successfully re-calibrated delta sync.</p>
+</div>
+<div class="border-l-2 border-secondary pl-md py-xs">
+<p class="font-label-caps text-[10px] text-on-surface-variant">14:21:45</p>
+<p class="font-body text-xs text-primary">Documentation manifest V2.04 published to local cache.</p>
+</div>
+<div class="border-l-2 border-error pl-md py-xs">
+<p class="font-label-caps text-[10px] text-on-surface-variant">14:20:12</p>
+<p class="font-body text-xs text-primary">Critical threshold reached on Node KT-7700. Auto-dampening active.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-8 glass-panel bg-surface/40 p-md hud-border z-10">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">REGIONAL SYNC DISTRIBUTION</h3>
+<span class="font-label-caps text-label-caps text-on-surface-variant">GLOBAL OVERVIEW</span>
+</div>
+<div class="h-48 relative overflow-hidden rounded border border-outline-variant/20">
+<img alt="Global Distribution" class="w-full h-full object-cover grayscale brightness-50" data-alt="A futuristic holographic world map showing global data traffic and neural sync distribution. The map glows with neon mint-green pulses at major metropolitan hubs, connected by thin, electric blue lines representing data pathways. The aesthetic is dark and technical, featuring a matte black finish with semi-transparent layers and HUD-style metadata floating over various regions. High precision, sleek engineering, and futuristic digital cartography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4qsRe2wz4cTbyl750QgB15VDHlBPB3ReJFK1MeZHyn0aUeA85PtwqHZFVB1zqlw3ofBSEz2H9ethzbVTlv8lZJ8gVpoZP-aE4OyAAEtYeRy1densMOZKysLPKnLVN6a0MbECYgbr5_lPqzS3_XBxp-IICC1DvFrfE648Eu3W1Q5ybtMnHrHim5AzA4ktGTQ_rgz3yKcpxAxVp6dnot8hoA__tNDpKr0HcfpGAjed_LyT1MTaa2a4BqQzm1cx8756_v7u8uxQjJjoV"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+</div>
+</main>
+<!-- Floating HUD Accents -->
+<div class="fixed bottom-lg right-lg z-50 flex flex-col items-end pointer-events-none">
+<div class="glass-panel bg-surface/80 p-sm border border-primary-container/30 mb-sm">
+<p class="font-label-caps text-[10px] text-primary-container">COGNITIVE LOAD AVG</p>
+<p class="font-data-lg text-primary text-xl">42.8%</p>
+</div>
+<div class="flex gap-sm">
+<div class="w-12 h-1 bg-primary-container"></div>
+<div class="w-12 h-1 bg-primary-container/30"></div>
+<div class="w-12 h-1 bg-primary-container/10"></div>
+</div>
+</div>
+</body></html>

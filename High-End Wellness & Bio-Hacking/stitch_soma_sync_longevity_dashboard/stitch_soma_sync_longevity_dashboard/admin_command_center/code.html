@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOMA-SYNC Admin | Practitioner Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(115, 118, 133, 0.15);
+        }
+        .data-grid-divider {
+            border-bottom: 1px solid rgba(195, 198, 214, 0.3);
+        }
+        .gauge-container {
+            position: relative;
+            display: inline-flex;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#0c56d0",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#b2c5ff",
+                        "on-primary-container": "#c4d2ff",
+                        "outline": "#737685",
+                        "on-secondary-container": "#003179",
+                        "on-background": "#191c1e",
+                        "tertiary": "#374559",
+                        "primary": "#003d9b",
+                        "secondary": "#285ab9",
+                        "error": "#ba1a1a",
+                        "on-secondary-fixed-variant": "#00419d",
+                        "error-container": "#ffdad6",
+                        "on-surface": "#191c1e",
+                        "outline-variant": "#c3c6d6",
+                        "on-secondary-fixed": "#001946",
+                        "on-primary-fixed": "#001848",
+                        "surface": "#f7f9fb",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-tertiary-fixed-variant": "#3a485c",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "background": "#f7f9fb",
+                        "tertiary-container": "#4e5c71",
+                        "secondary-fixed": "#d9e2ff",
+                        "on-tertiary-container": "#c6d4ed",
+                        "on-primary": "#ffffff",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-low": "#f2f4f6",
+                        "primary-fixed": "#dae2ff",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-fixed-dim": "#b1c6ff",
+                        "surface-bright": "#f7f9fb",
+                        "secondary-container": "#709bfe",
+                        "on-surface-variant": "#434654",
+                        "tertiary-fixed-dim": "#b9c7e0",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface-container": "#eceef0",
+                        "tertiary-fixed": "#d5e3fd",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-fixed": "#0d1c2f",
+                        "primary-container": "#0052cc",
+                        "on-error-container": "#93000a",
+                        "surface-container-highest": "#e0e3e5"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "40px",
+                        "max_width": "1440px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "data-value": ["Space Grotesk"],
+                        "data-label": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "display": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "data-value": ["20px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                        "data-label": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-md border-b border-outline-variant/15">
+<div class="flex justify-between items-center px-lg py-sm w-full max-w-max_width mx-auto">
+<div class="flex items-center gap-md">
+<span class="font-display text-h2 font-bold text-primary tracking-tighter">SOMA-SYNC</span>
+<span class="h-4 w-[1px] bg-outline-variant/50"></span>
+<span class="font-data-label text-data-label text-outline uppercase">Practitioner Portal v2.4</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-sm bg-surface-container rounded-full px-md py-xs">
+<span class="material-symbols-outlined text-primary" style="font-size: 18px;">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-64 text-on-surface-variant" placeholder="Search patients, metrics, protocols..." type="text"/>
+</div>
+<button class="p-xs rounded-full hover:bg-primary/5 transition-colors text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="flex items-center gap-sm pl-sm">
+<div class="text-right hidden lg:block">
+<p class="font-h2 text-[14px] leading-none text-on-surface">Dr. Aris Thorne</p>
+<p class="font-data-label text-[10px] text-outline uppercase">Endocrinology</p>
+</div>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">
+                        AT
+                    </div>
+</div>
+</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-20 lg:w-64 pt-24 pb-lg bg-surface-container-lowest border-r border-outline-variant/15 z-40 hidden md:flex flex-col">
+<nav class="flex-1 px-md flex flex-col gap-xs">
+<a class="flex flex-col lg:flex-row items-center lg:gap-md bg-secondary-container text-on-secondary-container rounded-full px-lg py-sm transition-colors group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-data-label text-data-label uppercase hidden lg:block">Dashboard</span>
+</a>
+<a class="flex flex-col lg:flex-row items-center lg:gap-md text-on-surface-variant hover:bg-primary/5 rounded-full px-lg py-sm transition-colors group" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-data-label text-data-label uppercase hidden lg:block">Patient Population</span>
+</a>
+<a class="flex flex-col lg:flex-row items-center lg:gap-md text-on-surface-variant hover:bg-primary/5 rounded-full px-lg py-sm transition-colors group" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-data-label text-data-label uppercase hidden lg:block">Biomarkers</span>
+</a>
+<a class="flex flex-col lg:flex-row items-center lg:gap-md text-on-surface-variant hover:bg-primary/5 rounded-full px-lg py-sm transition-colors group" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-data-label text-data-label uppercase hidden lg:block">Protocols</span>
+</a>
+<div class="my-md border-t border-outline-variant/10"></div>
+<a class="flex flex-col lg:flex-row items-center lg:gap-md text-on-surface-variant hover:bg-primary/5 rounded-full px-lg py-sm transition-colors group" href="#">
+<span class="material-symbols-outlined">settings_heart</span>
+<span class="font-data-label text-data-label uppercase hidden lg:block">System Config</span>
+</a>
+</nav>
+<div class="px-md mt-auto">
+<div class="glass-panel p-md rounded-xl hidden lg:block border-primary/10">
+<p class="font-data-label text-[10px] text-primary uppercase mb-xs">Storage Capacity</p>
+<div class="w-full bg-surface-container-high h-1 rounded-full mb-sm">
+<div class="bg-primary w-3/4 h-full rounded-full shadow-[0_0_8px_rgba(0,61,155,0.4)]"></div>
+</div>
+<p class="font-data-label text-[10px] text-outline">742 GB of 1 TB used</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-20 lg:pl-64 pt-24 pb-xl min-h-screen">
+<div class="max-w-max_width mx-auto px-lg">
+<!-- Page Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-lg gap-md">
+<div>
+<h1 class="font-h1 text-h1 text-on-surface">Population Overview</h1>
+<p class="text-on-surface-variant font-body-md">Clinical monitoring for 1,284 active longevity subjects.</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-lg py-sm bg-surface-container-high text-on-surface border border-outline-variant/30 rounded-full font-data-label text-data-label uppercase flex items-center gap-xs hover:bg-surface-dim transition-colors">
+<span class="material-symbols-outlined text-[18px]">download</span> Export CSV
+                    </button>
+<button class="px-lg py-sm bg-primary text-on-primary rounded-full font-data-label text-data-label uppercase flex items-center gap-xs hover:bg-primary-container transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-[18px]">add</span> New Patient
+                    </button>
+</div>
+</div>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-lg">
+<!-- Status Gauge -->
+<div class="glass-panel p-lg rounded-xl flex flex-col items-center justify-center text-center">
+<div class="gauge-container mb-md">
+<svg class="w-24 h-24 transform -rotate-90">
+<circle class="text-surface-container-high" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-primary" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="30.1" stroke-width="6"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-data-value text-data-value text-primary">88%</span>
+</div>
+</div>
+<span class="font-data-label text-data-label text-outline uppercase">Adherence Rate</span>
+<span class="text-body-sm text-on-surface-variant mt-xs">Protocol Compliance</span>
+</div>
+<!-- Metric Card 1 -->
+<div class="glass-panel p-lg rounded-xl">
+<div class="flex justify-between items-start mb-md">
+<div class="p-xs bg-secondary-container/20 rounded-lg">
+<span class="material-symbols-outlined text-secondary">warning</span>
+</div>
+<span class="text-error font-data-label text-[10px] bg-error-container px-sm py-xs rounded-full uppercase">+12% vs LW</span>
+</div>
+<p class="font-data-value text-[32px] text-on-surface leading-none mb-xs">42</p>
+<p class="font-data-label text-data-label text-outline uppercase">System Alerts</p>
+<p class="text-body-sm text-on-surface-variant mt-sm">Critical biomarker deviations detected in last 24h.</p>
+</div>
+<!-- Metric Card 2 -->
+<div class="glass-panel p-lg rounded-xl">
+<div class="flex justify-between items-start mb-md">
+<div class="p-xs bg-primary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-primary">analytics</span>
+</div>
+<span class="text-primary font-data-label text-[10px] bg-primary-fixed-dim/20 px-sm py-xs rounded-full uppercase">Stable</span>
+</div>
+<p class="font-data-value text-[32px] text-on-surface leading-none mb-xs">18.4</p>
+<p class="font-data-label text-data-label text-outline uppercase">Avg. Biological Age Delta</p>
+<p class="text-body-sm text-on-surface-variant mt-sm">Average years gained against chronological baseline.</p>
+</div>
+<!-- Metric Card 3 -->
+<div class="glass-panel p-lg rounded-xl">
+<div class="flex justify-between items-start mb-md">
+<div class="p-xs bg-tertiary-container/10 rounded-lg">
+<span class="material-symbols-outlined text-tertiary">inventory_2</span>
+</div>
+</div>
+<p class="font-data-value text-[32px] text-on-surface leading-none mb-xs">15</p>
+<p class="font-data-label text-data-label text-outline uppercase">Active Protocols</p>
+<div class="flex gap-xs mt-sm">
+<div class="h-2 w-8 bg-primary rounded-full"></div>
+<div class="h-2 w-8 bg-secondary rounded-full"></div>
+<div class="h-2 w-4 bg-surface-container-high rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Patient Table Section -->
+<div class="glass-panel rounded-xl overflow-hidden mb-lg">
+<div class="px-lg py-md border-b border-outline-variant/15 flex flex-col md:flex-row justify-between items-center gap-md">
+<div class="flex gap-sm overflow-x-auto w-full md:w-auto pb-xs md:pb-0">
+<button class="px-md py-xs bg-primary text-on-primary rounded-full font-data-label text-[11px] uppercase">All Patients</button>
+<button class="px-md py-xs text-on-surface-variant hover:bg-surface-container-high rounded-full font-data-label text-[11px] uppercase transition-colors">Critical Alerts (4)</button>
+<button class="px-md py-xs text-on-surface-variant hover:bg-surface-container-high rounded-full font-data-label text-[11px] uppercase transition-colors">In Review (12)</button>
+<button class="px-md py-xs text-on-surface-variant hover:bg-surface-container-high rounded-full font-data-label text-[11px] uppercase transition-colors">Stable</button>
+</div>
+<div class="flex items-center gap-md w-full md:w-auto">
+<div class="flex items-center gap-xs text-on-surface-variant border border-outline-variant/20 rounded px-sm py-xs">
+<span class="material-symbols-outlined text-[16px]">filter_list</span>
+<span class="font-data-label text-[11px] uppercase">Filters</span>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-lg py-md font-data-label text-data-label text-outline uppercase border-b border-outline-variant/15">Patient Identifier</th>
+<th class="px-lg py-md font-data-label text-data-label text-outline uppercase border-b border-outline-variant/15">Status</th>
+<th class="px-lg py-md font-data-label text-data-label text-outline uppercase border-b border-outline-variant/15">Active Protocol</th>
+<th class="px-lg py-md font-data-label text-data-label text-outline uppercase border-b border-outline-variant/15 text-right">Glucose (Avg)</th>
+<th class="px-lg py-md font-data-label text-data-label text-outline uppercase border-b border-outline-variant/15 text-right">Last Sync</th>
+<th class="px-lg py-md border-b border-outline-variant/15"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a woman with a serene expression, illuminated by soft cinematic lighting. The visual style is high-definition and clinical, featuring a palette of cool blues and pristine whites. The mood is sophisticated and technological, fitting a futuristic healthcare environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnmgcGDiqcM60xHJcgdvlLJeMmwY79Vwyq7HU3Z1tCZWOdch0OohEmktY8JxERuBwtUpGlNG-AsmA95furjvPC18T-MiX69qAqsFPL4WGMCRWdQygkMCzFGyX0CElB3FzFthXwNUFacKTT2Mye7GCkaE32PaXwFeNA2nPpNqZ0htyUVknTMHP8EYenAiteGhTYz0NSaA1PWhKVwbtyKBp2orlzVTKfl7TK04WEnez8Bqt145Z3PladqfC89UmczieT4D526zBfX0HU"/>
+</div>
+<div>
+<p class="font-h2 text-[14px] text-on-surface">ELARA-942-X</p>
+<p class="font-data-label text-[10px] text-outline">FEMALE, 42Y</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center gap-xs px-sm py-xs bg-error-container text-error rounded-full font-data-label text-[10px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-error"></span> Critical Alert
+                                    </span>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-primary/10 text-primary rounded font-data-label text-[10px] uppercase border border-primary/20">Metabolic Reset v4.1</span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-value">
+<span class="text-error">118 <span class="text-[10px] opacity-60">mg/dL</span></span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-label text-on-surface-variant uppercase">
+                                    2m ago
+                                </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A detailed portrait of a professional man in a medical or laboratory setting. The background is slightly blurred with hints of high-tech laboratory equipment. Lighting is crisp and bright, conveying a sense of scientific rigor and professional reliability. The color scheme focuses on sterile whites and deep laboratory blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2AYIDl8WoroKYD0GRm9z_k_E72cKdPUm8pU2PPJe0hXWmgscIgOJ7AaJwr4lr9Fw8DBGNznQWTyP2Y1LZgxO3uf0n6_1wUgyqzLokw87UI6bamn_VSMsmDHBn7_Plwn5zTCdzGjbkMQqJx8PYgvHaOqFsV7PHmXA9qkko2_LFJepWevtZ5dx17pbIb7TJoehBRbaF6ObE9hvqIR-7d1INj7UWGwBIwxkE2cFKZ0Y8gO7mgAFfyzH3lsZ5Ocpv54NMbPHZlV69qIVD"/>
+</div>
+<div>
+<p class="font-h2 text-[14px] text-on-surface">JULIAN-108-Y</p>
+<p class="font-data-label text-[10px] text-outline">MALE, 55Y</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center gap-xs px-sm py-xs bg-surface-container-high text-on-surface-variant rounded-full font-data-label text-[10px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span> Stable
+                                    </span>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-secondary-container/10 text-secondary rounded font-data-label text-[10px] uppercase border border-secondary/20">Telomere Ext. B</span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-value">
+<span class="text-on-surface">92 <span class="text-[10px] opacity-60">mg/dL</span></span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-label text-on-surface-variant uppercase">
+                                    14m ago
+                                </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="px-lg py-md">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-lg overflow-hidden flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female doctor in a high-tech medical office. The lighting is bright and airy with a cool white light-mode aesthetic. The background features minimalist, glass-walled office spaces. The overall style is clean and futuristic, emphasizing trust and scientific precision in healthcare." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNf-3wLZ4eFkAPvR9avq0YwCSQbHAgomXqvWrN1TfWzBc5vMrpHtU8OQ1yO8nFByQF9L1w0OMyws9SrXsFyXNxB8lqMVM6p-65zyZT_sagUqZnh61cHIvq3UIGa0gIXP8uC0WZnGs2LPRQy8141jzOG65xJtFbDfsw577CRsVrPzHqdqKLU8ovNd5WJ0fLnvshLGXcrGEX7vUxtjc0dhSR0AUxHPhlzrOVVw-VuO8Hy0XtTUEQWy2szIWsQ3J9iUVl8p1bHUXObNe8"/>
+</div>
+<div>
+<p class="font-h2 text-[14px] text-on-surface">SARENE-311-Z</p>
+<p class="font-data-label text-[10px] text-outline">FEMALE, 29Y</p>
+</div>
+</div>
+</td>
+<td class="px-lg py-md">
+<span class="inline-flex items-center gap-xs px-sm py-xs bg-secondary/10 text-secondary rounded-full font-data-label text-[10px] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Review Req.
+                                    </span>
+</td>
+<td class="px-lg py-md">
+<span class="px-sm py-xs bg-surface-container-highest text-on-surface-variant rounded font-data-label text-[10px] uppercase border border-outline-variant/30">NMN Optimization</span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-value">
+<span class="text-on-surface">104 <span class="text-[10px] opacity-60">mg/dL</span></span>
+</td>
+<td class="px-lg py-md text-right font-data-label text-data-label text-on-surface-variant uppercase">
+                                    4h ago
+                                </td>
+<td class="px-lg py-md text-right">
+<button class="p-xs text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-lg py-md border-t border-outline-variant/15 flex justify-between items-center bg-surface-container-lowest">
+<p class="font-data-label text-data-label text-outline uppercase">Showing 1-10 of 1,284 patients</p>
+<div class="flex gap-xs">
+<button class="p-xs rounded hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded bg-primary text-on-primary font-data-label text-data-label">1</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-high text-on-surface-variant font-data-label text-data-label">2</button>
+<button class="w-8 h-8 rounded hover:bg-surface-container-high text-on-surface-variant font-data-label text-data-label">3</button>
+<button class="p-xs rounded hover:bg-surface-container-high text-on-surface-variant">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Protocols and Alerts -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Protocol Template Management -->
+<div class="glass-panel p-lg rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface">Protocol Templates</h2>
+<button class="text-primary font-data-label text-data-label uppercase hover:underline">View Library</button>
+</div>
+<div class="space-y-sm">
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/10 flex justify-between items-center group hover:border-primary/30 transition-all">
+<div class="flex items-center gap-md">
+<div class="w-2 h-12 bg-primary rounded-full"></div>
+<div>
+<p class="font-h2 text-[16px] text-on-surface">Neuro-Longevity Focus v2</p>
+<p class="text-body-sm text-on-surface-variant">Last updated: Oct 12, 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-data-label text-[11px] text-outline uppercase">142 Users</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">edit</span>
+</div>
+</div>
+<div class="p-md bg-surface-container-low rounded-lg border border-outline-variant/10 flex justify-between items-center group hover:border-primary/30 transition-all">
+<div class="flex items-center gap-md">
+<div class="w-2 h-12 bg-secondary rounded-full"></div>
+<div>
+<p class="font-h2 text-[16px] text-on-surface">Cardio-Respiratory Alpha</p>
+<p class="text-body-sm text-on-surface-variant">Last updated: Sept 28, 2023</p>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-data-label text-[11px] text-outline uppercase">89 Users</span>
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors">edit</span>
+</div>
+</div>
+</div>
+</div>
+<!-- System Logs/Alerts -->
+<div class="glass-panel p-lg rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-h2 text-h2 text-on-surface">Sync Integrity</h2>
+<span class="px-sm py-xs bg-secondary/10 text-secondary rounded font-data-label text-[10px] uppercase">All Systems Active</span>
+</div>
+<div class="relative pl-lg border-l-2 border-outline-variant/15 space-y-lg py-sm">
+<div class="relative">
+<div class="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-error border-4 border-surface shadow-[0_0_8px_rgba(186,26,26,0.3)]"></div>
+<p class="font-data-label text-[10px] text-outline uppercase">08:42 AM</p>
+<p class="font-h2 text-[14px] text-on-surface">Critical deviation: Patient JULIAN-108-Y</p>
+<p class="text-body-sm text-on-surface-variant">Cortisol levels exceeded 95th percentile threshold during sleep cycle.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-primary border-4 border-surface"></div>
+<p class="font-data-label text-[10px] text-outline uppercase">06:15 AM</p>
+<p class="font-h2 text-[14px] text-on-surface">Bulk sync completed: 428 nodes</p>
+<p class="text-body-sm text-on-surface-variant">Wearable integration data successfully parsed for morning cohort.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[33px] top-1 w-4 h-4 rounded-full bg-primary border-4 border-surface"></div>
+<p class="font-data-label text-[10px] text-outline uppercase">Yesterday 11:30 PM</p>
+<p class="font-h2 text-[14px] text-on-surface">Protocol update: Rapamycin cycling v2</p>
+<p class="text-body-sm text-on-surface-variant">Automated scheduling adjustments deployed to 45 patients.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Suppressing on Admin Dashboard as per instructions, but placeholder logic if needed) -->
+<!-- <button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center transition-transform hover:scale-110 active:scale-95 z-50">
+        <span class="material-symbols-outlined">add</span>
+    </button> -->
+</body></html>

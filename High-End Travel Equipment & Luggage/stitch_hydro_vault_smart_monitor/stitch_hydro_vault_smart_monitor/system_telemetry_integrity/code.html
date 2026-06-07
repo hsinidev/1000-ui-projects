@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MARITIME_CORE - Environment &amp; Seal Status</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#00201f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#572000",
+                        "on-background": "#e5e2e3",
+                        "on-secondary": "#561f00",
+                        "primary-fixed-dim": "#95d1ce",
+                        "surface-container-high": "#2a2a2b",
+                        "on-primary-fixed-variant": "#084f4d",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-fixed": "#351000",
+                        "surface-container-highest": "#353436",
+                        "primary-fixed": "#b1eeea",
+                        "on-tertiary": "#2f3131",
+                        "inverse-on-surface": "#303031",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#1b1b1c",
+                        "surface-dim": "#131314",
+                        "on-surface": "#e5e2e3",
+                        "surface-container-lowest": "#0e0e0f",
+                        "inverse-primary": "#2a6865",
+                        "surface-tint": "#95d1ce",
+                        "primary-container": "#004b49",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#899391",
+                        "surface": "#131314",
+                        "tertiary-container": "#414343",
+                        "secondary-container": "#fe6b00",
+                        "secondary": "#ffb693",
+                        "primary": "#95d1ce",
+                        "on-tertiary-container": "#afafb0",
+                        "secondary-fixed-dim": "#ffb693",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e3",
+                        "tertiary": "#c6c6c7",
+                        "on-primary": "#003735",
+                        "surface-variant": "#353436",
+                        "outline-variant": "#3f4948",
+                        "background": "#131314",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "secondary-fixed": "#ffdbcc",
+                        "surface-bright": "#39393a",
+                        "on-secondary-fixed-variant": "#7a3000",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container": "#1f1f20",
+                        "on-surface-variant": "#bfc8c7",
+                        "on-primary-container": "#7ebab7"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-desktop": "40px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "data-readout": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "data-readout": ["20px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #131314;
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+            background-size: 24px 24px;
+            color: #e5e2e3;
+        }
+        .milled-edge {
+            box-shadow: inset 0 1px 0 0 rgba(255,255,255,0.05), 0 2px 4px 0 rgba(0,0,0,0.3);
+        }
+        .liquid-gauge {
+            filter: drop-shadow(0 0 8px rgba(149, 209, 206, 0.4));
+        }
+        .etched-well {
+            box-shadow: inset 0 2px 4px 0 rgba(0,0,0,0.5);
+        }
+        .carbon-texture {
+            background: linear-gradient(45deg, #1a1a1b 25%, #161617 25%, #161617 50%, #1a1a1b 50%, #1a1a1b 75%, #161617 75%, #161617 100%);
+            background-size: 4px 4px;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 h-16 w-full flex justify-between items-center px-margin-desktop bg-surface-container border-b border-outline-variant shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.05)]">
+<div class="flex items-center gap-8">
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">MARITIME_CORE</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-primary-fixed-dim transition-colors duration-200" href="#">Operations</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:text-primary-fixed-dim transition-colors duration-200" href="#">Logistics</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-1" href="#">Telemetry</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:opacity-80 transition-all active:scale-95" data-icon="notifications_active">notifications_active</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:opacity-80 transition-all active:scale-95" data-icon="emergency">emergency</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:opacity-80 transition-all active:scale-95" data-icon="help_outline">help_outline</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 flex flex-col pt-16 pb-4 bg-surface-container-low border-r border-outline-variant shadow-[2px_0_10px_rgba(0,0,0,0.5)]">
+<div class="p-6 border-b border-outline-variant/30">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-lg bg-surface-container-highest border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Operator" class="w-8 h-8" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFETpFm7w_uRbF_UXECAYqhymaJdhQ9eTOlSXnThVPcZ50CXSh7IIlsaStaFO2RQGWnr2ZVpXHo6k7J0Bv55uSOwghKLIBL6fH-vYj7QW118IdLIDJEJ60fgrudsbbVfzlmvLYMCQEp-PxbsuA2Vf7ueGdYRLJFUjcWjgegJSDMWW1hDQ0IFfXlZKzNEqePi95l3WzfwbhxhyyurlQah5yE1WeAaJhIeay_nM7uZ7w_BBZ_xz0M6LykX3g2m3t4gUHl2LaXKN6KnE"/>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-primary tracking-widest">MC-OPERATOR-01</div>
+<div class="text-[10px] text-primary/70 uppercase">Vessel Status: Nominal</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 mt-4">
+<div class="px-4 py-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</div>
+<div class="bg-primary-container text-on-primary-container border-l-4 border-primary px-4 py-3 flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="directions_boat">directions_boat</span>
+<span class="font-label-caps text-label-caps">Fleet Ops</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Asset Registry</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">System Admin</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+</nav>
+<div class="px-4 mb-6">
+<button class="w-full bg-secondary text-on-secondary py-3 font-label-caps text-label-caps rounded-lg shadow-lg border-2 border-secondary hover:brightness-110 active:scale-95 transition-all">
+                INITIATE EMERGENCY
+            </button>
+</div>
+<footer class="border-t border-outline-variant/30 pt-4">
+<div class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]" data-icon="memory">memory</span>
+<span class="font-label-caps text-[10px]">Diagnostics</span>
+</div>
+<div class="px-4 py-2 flex items-center gap-3 text-on-surface-variant hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-[10px]">Terminal</span>
+</div>
+</footer>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 h-[calc(100vh-64px)] overflow-y-auto">
+<!-- Header & Breadcrumbs -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="waves">waves</span>
+                    Environment &amp; Seal Status
+                </h1>
+<p class="text-on-surface-variant font-label-caps text-label-caps mt-2">REAL-TIME TELEMETRY // SUB-SURFACE ANALYTICS</p>
+</div>
+<div class="flex gap-4">
+<div class="etched-well bg-surface-container-lowest px-4 py-2 border border-outline-variant rounded flex items-center gap-3">
+<span class="w-3 h-3 bg-primary rounded-full animate-pulse"></span>
+<span class="font-data-readout text-data-readout text-primary">LIVE CONNECT</span>
+</div>
+<div class="etched-well bg-surface-container-lowest px-4 py-2 border border-outline-variant rounded flex items-center gap-3">
+<span class="font-data-readout text-data-readout text-on-surface">VAULT: BETA-09</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6 pb-12">
+<!-- Primary Hull Stress Chart (Large) -->
+<div class="col-span-8 bg-surface-container-low border border-outline-variant rounded-xl p-6 milled-edge relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="architecture">architecture</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">Hull Stress Analysis (MPa)</h2>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface-container-highest px-3 py-1 font-label-caps text-[10px] border border-outline-variant">HISTORICAL</button>
+<button class="bg-primary-container text-on-primary-container px-3 py-1 font-label-caps text-[10px] border border-primary">REAL-TIME</button>
+</div>
+</div>
+<div class="h-64 flex items-end gap-1 px-2 relative">
+<!-- Faux Bar Chart with Glow -->
+<div class="w-full bg-primary/20 h-32 rounded-t liquid-gauge relative group">
+<div class="absolute bottom-0 left-0 w-full bg-primary h-[80%] rounded-t opacity-80"></div>
+</div>
+<div class="w-full bg-primary/20 h-40 rounded-t liquid-gauge relative group">
+<div class="absolute bottom-0 left-0 w-full bg-primary h-[75%] rounded-t opacity-80"></div>
+</div>
+<div class="w-full bg-primary/20 h-36 rounded-t liquid-gauge relative group">
+<div class="absolute bottom-0 left-0 w-full bg-primary h-[90%] rounded-t opacity-80"></div>
+</div>
+<div class="w-full bg-secondary/20 h-56 rounded-t relative group overflow-hidden">
+<div class="absolute bottom-0 left-0 w-full bg-secondary h-[85%] rounded-t animate-pulse"></div>
+<div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,transparent,transparent_5px,rgba(0,0,0,0.1)_5px,rgba(0,0,0,0.1)_10px)]"></div>
+</div>
+<div class="w-full bg-primary/20 h-44 rounded-t liquid-gauge relative group">
+<div class="absolute bottom-0 left-0 w-full bg-primary h-[60%] rounded-t opacity-80"></div>
+</div>
+<div class="w-full bg-primary/20 h-32 rounded-t liquid-gauge relative group">
+<div class="absolute bottom-0 left-0 w-full bg-primary h-[40%] rounded-t opacity-80"></div>
+</div>
+<!-- Y-Axis labels -->
+<div class="absolute -left-2 top-0 bottom-0 flex flex-col justify-between text-[10px] font-label-caps text-on-surface-variant opacity-50">
+<span>500</span><span>400</span><span>300</span><span>200</span><span>100</span><span>0</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 grid grid-cols-4 gap-4">
+<div class="text-center">
+<div class="text-[10px] font-label-caps text-on-surface-variant">MAX STRESS</div>
+<div class="font-data-readout text-data-readout text-on-surface">412.5</div>
+</div>
+<div class="text-center border-l border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-on-surface-variant">ELASTIC LIMIT</div>
+<div class="font-data-readout text-data-readout text-on-surface">650.0</div>
+</div>
+<div class="text-center border-l border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-on-surface-variant">STRUCT. INTEGRITY</div>
+<div class="font-data-readout text-data-readout text-primary">98.2%</div>
+</div>
+<div class="text-center border-l border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-on-surface-variant">ALERT STATUS</div>
+<div class="font-data-readout text-data-readout text-secondary">CAUTION</div>
+</div>
+</div>
+</div>
+<!-- Internal Atmosphere (Medium) -->
+<div class="col-span-4 bg-surface-container-low border border-outline-variant rounded-xl p-6 milled-edge carbon-texture">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="air">air</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">Atmosphere Control</h2>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-2">
+<span class="text-on-surface-variant">OXYGEN (O2)</span>
+<span class="text-primary">21.4%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden etched-well">
+<div class="h-full bg-primary liquid-gauge" style="width: 21.4%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-2">
+<span class="text-on-surface-variant">NITROGEN (N2)</span>
+<span class="text-on-surface">78.1%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden etched-well">
+<div class="h-full bg-on-surface-variant" style="width: 78.1%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-2">
+<span class="text-on-surface-variant">PRESSURE (kPa)</span>
+<span class="text-secondary">102.3</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden etched-well">
+<div class="h-full bg-secondary" style="width: 65%"></div>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-4 rounded border border-outline-variant/50">
+<div class="flex items-center justify-between">
+<div class="font-label-caps text-[10px] text-on-surface-variant">SCRUBBER SYSTEM</div>
+<span class="font-data-readout text-[14px] text-primary">ACTIVE</span>
+</div>
+<div class="mt-2 flex gap-1">
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-primary"></div>
+<div class="h-1 flex-1 bg-surface-variant"></div>
+<div class="h-1 flex-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Submersion Depth (Medium) -->
+<div class="col-span-4 bg-surface-container-low border border-outline-variant rounded-xl p-6 milled-edge">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="sailing">sailing</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">Depth Telemetry</h2>
+</div>
+<div class="flex flex-col items-center justify-center h-48 relative">
+<svg class="w-32 h-32 rotate-180" viewbox="0 0 100 100">
+<circle class="text-outline-variant" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-primary liquid-gauge" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="210 282" stroke-width="8" style="stroke-dashoffset: 0;"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-data-readout text-[32px] text-on-surface">1,482</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">METERS</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-6">
+<div class="bg-surface-container-highest p-3 rounded border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-on-surface-variant">CRUSH DEPTH</div>
+<div class="font-data-readout text-data-readout text-error">4,200m</div>
+</div>
+<div class="bg-surface-container-highest p-3 rounded border border-outline-variant/30">
+<div class="text-[10px] font-label-caps text-on-surface-variant">SURFACE TIME</div>
+<div class="font-data-readout text-data-readout">04:12:00</div>
+</div>
+</div>
+</div>
+<!-- Multi-Vault Comparison (Wide) -->
+<div class="col-span-8 bg-surface-container-low border border-outline-variant rounded-xl p-6 milled-edge">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="grid_view">grid_view</span>
+<h2 class="font-label-caps text-label-caps text-on-surface">Fleet Vault Comparison</h2>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="filter_list">filter_list</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">VAULT ID</th>
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">TEMP (°C)</th>
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">HUMIDITY</th>
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">SEAL STATUS</th>
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">POWER LOAD</th>
+<th class="pb-3 font-label-caps text-[10px] text-on-surface-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="font-data-readout text-[14px]">
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="py-4 text-on-surface">BETA-09</td>
+<td class="py-4">18.4</td>
+<td class="py-4">42%</td>
+<td class="py-4"><span class="text-primary flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+<td class="py-4">88 kW</td>
+<td class="py-4"><span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer" data-icon="monitoring">monitoring</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="py-4 text-on-surface">ALPHA-02</td>
+<td class="py-4">19.1</td>
+<td class="py-4">39%</td>
+<td class="py-4"><span class="text-primary flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+<td class="py-4">92 kW</td>
+<td class="py-4"><span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer" data-icon="monitoring">monitoring</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 bg-secondary/5 hover:bg-secondary/10 transition-colors">
+<td class="py-4 text-secondary font-bold">GAMMA-04</td>
+<td class="py-4 text-secondary">24.8</td>
+<td class="py-4 text-secondary">68%</td>
+<td class="py-4"><span class="text-secondary flex items-center gap-2"><span class="w-2 h-2 bg-secondary rounded-full animate-pulse"></span> COMPROMISED</span></td>
+<td class="py-4 text-secondary">114 kW</td>
+<td class="py-4"><span class="material-symbols-outlined text-[18px] text-secondary cursor-pointer" data-icon="report_problem">report_problem</span></td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="py-4 text-on-surface">DELTA-01</td>
+<td class="py-4">18.2</td>
+<td class="py-4">41%</td>
+<td class="py-4"><span class="text-primary flex items-center gap-2"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+<td class="py-4">85 kW</td>
+<td class="py-4"><span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer" data-icon="monitoring">monitoring</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Real-time Visual Feed (Small Cards) -->
+<div class="col-span-12 grid grid-cols-4 gap-6">
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden milled-edge">
+<img class="w-full h-32 object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A cinematic low-angle shot of a heavy industrial air scrubber system inside a dark maritime vessel. The scene is illuminated by teal and amber status lights reflecting off brushed steel pipes and bolts. The mood is mechanical and mission-critical, capturing the rugged nautical-industrial aesthetic with high-contrast shadows and sharp metallic details." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5vncTrwBJOMLnkm8BkvYl5KevHtuPAvjMwMqcSM7_4bosbAhspCy9cG0eNdPETOqiq5HYYu-l_HpQfjyjuBMIuxMWci77hnlY0u25SMwOf5QuZv6QlmPNXBzXYcmKCLMpJSmRkjCO1nD0p4nzXyjvLewpzHXNoj7VlW0oa86ZAjUeq0tLYwj2rnsdT0gpXiqHVUH8a22peNG-hcGen9p89TgQDKsM1GBT_ULwiUiufw88OYml8lT-9q7PqHLGv6gKxYtl_VSRFJs"/>
+<div class="p-4 bg-surface-container-low">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">CAM-01: SEAL-MAIN</span>
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden milled-edge">
+<img class="w-full h-32 object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500" data-alt="Detailed macro photography of a thick, pressure-resistant glass porthole on a deep-sea submersible. Outside, the water is a dark, crushing blue. The glass shows subtle micro-fractures glowing under the interface's primary teal light. The environment is high-stakes and industrial, emphasizing the over-engineered reliability of the hardware." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBO6Bi0frkpHWqWOiiN_Hu8WLjCsl7WWi3fmix9RiOnxs7svaw6-ldf1NOpUf9EZnt3VSofV-pgsqRHOwbl9ZjzDjYiRkT0tlcLFL7bSA2097GB-t-6snqsu8bVP6z4Z5ntBa5Y5OhQqiuwF5Xz2cIj_UD-s2PS5rR37cozCesgsF0gCTF_byjdcRwErdte-9navOFTVgJKTUzQYAsniCiaVpz3mK_2gdya-MZaR8oMX-vKnXHpXAraWAKnBZ7rQHaC6aY_QyjFwU0"/>
+<div class="p-4 bg-surface-container-low">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">CAM-02: VIEWPORT-C</span>
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden milled-edge">
+<img class="w-full h-32 object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A wide angle view of an underwater server vault room with rows of stacked modular equipment chassis. Cables are organized in high-density rack mounts, glowing with rhythmic LED activity. The color palette is dominated by deep carbon blacks and sharp primary teal highlights, creating a sense of advanced digital precision in a harsh nautical environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJEOqr2pJPysv4Ae5NN7mMJ6Ch-WePJyljHCUOa4LQN_cH3KSJV-kGUpsFZZkVoT5dYEE3vcTLPAQJPz44wSceuBez3TVxw_v837qSUVYWDCbm2zZGH6D7jg2m7VI-OGCHZpOS5C6MPqiQKpbZETBkCBX7oEn6kHR5kb5OX5hcFJ4ITk7a64FTuaB6c60-bdDgm3PALqj1E_6i8jc924dKV0B9wyba_3NThzM1PWmMWo4Oi91QO93wxsCKS39qMe5K8WnF2l2VEyY"/>
+<div class="p-4 bg-surface-container-low">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">CAM-03: DATA-CORE</span>
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-xl overflow-hidden milled-edge group cursor-pointer relative">
+<div class="absolute inset-0 flex items-center justify-center bg-surface-container-lowest/80 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+<span class="font-label-caps text-label-caps text-primary">EXPAND GALLERY</span>
+</div>
+<img class="w-full h-32 object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="An industrial mechanical rocker switch on a textured carbon fiber panel, set to the 'On' position with a glowing primary teal LED indicator. The surface shows a subtle milled texture with 1px highlights on the edges. The scene represents a tactile, rugged user interface where every interaction is substantial and intentional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu8LtyLkNA97iAie9tlzUXWSfNVJimL20Ub34gb19A-EKbj9CaOS0Q5GB5ZKoSjIJEx-2M1eV8mrHjlTF9aXBSuBTLmxTCDDIM3DIqCfr8gIeYkK0646PBcYKiGXHNX16Vz9420V6p30uiijjO8x_Tq4lE2eiK9cl3U7zAAcgWxK4_sdi2MjNpQ9hqWbqvjGzBJ_BM-p6plyy8Cm9-AgY0LzYF3LSRnl3Q8-SU5OSfMEil81VwydSGWQO-_r7COGXiL_PQgJpp3rI"/>
+<div class="p-4 bg-surface-container-low">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">FEED OVERVIEW</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="add_a_photo">add_a_photo</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Control Panel (Floating Right) -->
+<div class="fixed right-8 top-24 w-72 flex flex-col gap-6 z-30">
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-6 milled-edge shadow-2xl">
+<h3 class="font-label-caps text-label-caps text-primary mb-4 border-b border-outline-variant pb-2">COMMAND OVERRIDE</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-on-surface">SEAL INTEGRITY LOCK</span>
+<div class="w-12 h-6 bg-primary-container rounded-full relative p-1 etched-well cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-primary rounded-full shadow-[0_0_8px_rgba(149,209,206,0.8)]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-label-caps text-[10px] text-on-surface">EMERGENCY VENT</span>
+<div class="w-12 h-6 bg-surface-container-highest rounded-full relative p-1 etched-well cursor-pointer">
+<div class="absolute left-1 top-1 w-4 h-4 bg-outline-variant rounded-full"></div>
+</div>
+</div>
+<button class="w-full bg-surface-container-lowest border border-outline-variant text-on-surface py-2 font-label-caps text-[10px] hover:bg-primary/10 transition-all active:scale-95">
+                    CALIBRATE SENSORS
+                </button>
+</div>
+</div>
+<div class="bg-surface-container-high border border-outline-variant rounded-xl p-6 milled-edge shadow-2xl">
+<h3 class="font-label-caps text-label-caps text-on-surface mb-4 border-b border-outline-variant pb-2">TELEMETRY LOG</h3>
+<div class="space-y-3 max-h-48 overflow-y-auto pr-2 custom-scrollbar">
+<div class="text-[10px] font-data-readout text-primary">
+                    [14:22:01] SEAL CHECK COMPLETE
+                </div>
+<div class="text-[10px] font-data-readout text-on-surface-variant">
+                    [14:21:45] PRESSURE ADJUSTED +0.2kPa
+                </div>
+<div class="text-[10px] font-data-readout text-secondary">
+                    [14:20:12] MINOR VIBRATION DETECTED
+                </div>
+<div class="text-[10px] font-data-readout text-on-surface-variant">
+                    [14:18:30] O2 LEVELS STABILIZED
+                </div>
+</div>
+</div>
+</div>
+</body></html>

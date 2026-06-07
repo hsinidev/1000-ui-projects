@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GRAVEN ARCHIVE | Custom Mini-Builder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&amp;family=Manrope:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .stone-texture {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100' height='100' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+        }
+        .parchment-texture {
+            background-color: #e8e2cf;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Cfilter id='paper'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.04' numOctaves='5' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='1 0 0 0 0 0 1 0 0 0 0 0 1 0 0 0 0 0 0.2 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23paper)' opacity='0.1'/%3E%3C/svg%3E");
+        }
+        .notched-corner {
+            clip-path: polygon(8px 0%, calc(100% - 8px) 0%, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0% calc(100% - 8px), 0% 8px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#e8e2cf",
+                      "on-primary": "#203527",
+                      "primary-fixed": "#d0e9d4",
+                      "outline-variant": "#434843",
+                      "surface-tint": "#b4cdb8",
+                      "surface": "#131313",
+                      "on-secondary-container": "#bab5a3",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed": "#1e1c10",
+                      "surface-variant": "#353534",
+                      "primary-container": "#1b3022",
+                      "surface-bright": "#3a3939",
+                      "secondary": "#ccc6b3",
+                      "on-secondary-container": "#bab5a3",
+                      "on-primary-container": "#819986",
+                      "primary": "#b4cdb8",
+                      "error": "#ffb4ab",
+                      "inverse-on-surface": "#313030",
+                      "on-secondary": "#333123",
+                      "tertiary-fixed": "#ffdbcd",
+                      "on-secondary-fixed-variant": "#4a4738",
+                      "surface-container-lowest": "#0e0e0e",
+                      "error-container": "#93000a",
+                      "surface-container": "#201f1f",
+                      "on-surface": "#e5e2e1",
+                      "primary-fixed-dim": "#b4cdb8",
+                      "background": "#131313",
+                      "inverse-surface": "#e5e2e1",
+                      "secondary-fixed-dim": "#ccc6b3",
+                      "inverse-primary": "#4d6453",
+                      "on-tertiary-fixed": "#360f00",
+                      "on-tertiary-container": "#d47b53",
+                      "on-surface-variant": "#c3c8c1",
+                      "on-tertiary": "#581e00",
+                      "secondary-container": "#4a4738",
+                      "outline": "#8d928c",
+                      "on-background": "#e5e2e1",
+                      "surface-container-highest": "#353534",
+                      "surface-container-low": "#1c1b1b",
+                      "on-tertiary-fixed-variant": "#76320f",
+                      "surface-container-high": "#2a2a2a",
+                      "on-primary-fixed": "#0b2013",
+                      "surface-dim": "#131313",
+                      "tertiary-container": "#501a00",
+                      "on-primary-fixed-variant": "#364c3c",
+                      "tertiary-fixed-dim": "#ffb596",
+                      "tertiary": "#ffb596",
+                      "on-error": "#690005",
+                      "burnt-sienna": "#964b36"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "stack-md": "32px",
+                      "stack-sm": "16px",
+                      "gutter": "24px",
+                      "container-max": "1280px",
+                      "margin-edge": "40px",
+                      "stack-lg": "64px"
+              },
+              "fontFamily": {
+                      "h3-subheading": ["Newsreader"],
+                      "body-md": ["Manrope"],
+                      "h2-heading": ["Newsreader"],
+                      "body-lg": ["Manrope"],
+                      "h1-display": ["Newsreader"],
+                      "label-caps": ["Manrope"]
+              },
+              "fontSize": {
+                      "h3-subheading": ["1.75rem", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "body-md": ["1rem", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "h2-heading": ["2.5rem", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "500"}],
+                      "body-lg": ["1.125rem", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "h1-display": ["4rem", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                      "label-caps": ["0.75rem", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-edge h-20 bg-surface-container-high dark:bg-surface-container-high shadow-lg">
+<button class="flex items-center justify-center w-10 h-10 active:scale-95 duration-150 ease-in-out">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+</button>
+<h1 class="font-h3-subheading text-h3-subheading text-primary dark:text-primary-fixed-dim tracking-widest uppercase">GRAVEN ARCHIVE</h1>
+<div class="w-10 h-10 rounded-full border border-outline/30 overflow-hidden active:scale-95 duration-150 ease-in-out">
+<img alt="Ancient scholar profile" class="w-full h-full object-cover" data-alt="A portrait of a weathered, scholarly man with a short grey beard, wearing dark velvet robes in a dimly lit, atmospheric library setting. The lighting is dramatic and moody, with warm candlelight reflecting in his intelligent eyes. The visual style is high-fantasy and tactile, with rich textures of old paper and leather in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgQVwD9mUnB7yznxqxYIE3y1yGLk-mZx1l4xZIpfCWprTyiSrbZKE9SzaHOYHKeilUgh2wEAD3Pxhj21AmaVDX-ZC6Gp4fBm8YRScoLrN6nKjCuY_Kch4lDMtyPY8V5GORaHhWshfaujMF6Q0g8vuVgFFHl7eXDE5HPK3BKasx3Qi-2DQSaBWHJZExDQTbXDtS_NBq9rQZnKEw4N-O4_k4id4-gdkeOLesNMEk6E-BP4UrnRZtNt7fp1kY3WtQZ5e7Ti91GuTbZVla"/>
+</div>
+</header>
+<main class="pt-20 pb-48 px-4 md:px-margin-edge max-w-container-max mx-auto">
+<!-- Hero 3D Preview Area -->
+<section class="relative mt-stack-sm rounded-xl overflow-hidden bg-surface-container-lowest shadow-2xl aspect-[4/5] md:aspect-video flex items-center justify-center stone-texture border border-outline-variant/20">
+<!-- Background Atmosphere -->
+<div class="absolute inset-0 opacity-40 pointer-events-none">
+<img alt="Ethereal fog" class="w-full h-full object-cover grayscale" data-alt="A deep forest at night, filled with thick, swirling ethereal fog and ancient gnarled tree roots. The scene is illuminated by a faint green bioluminescent glow from moss and fungi. The atmosphere is heavy and mysterious, perfectly matching a dark fantasy aesthetic with light-absorbing surfaces and deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBE2HHi_sabX5Ty07czKwmKYnmk_qAuW2SSooVizu5OqcVNO4Z9wXm7YSaYE_xtsvhfu6bs41YyRo0Bdta4BWRHSj90Fhc6HN_I8GUqq_NNHv5_6ribK3cry7BOwddHF9eVicOztH-08UWmXDJ5t6DiDhQcJ4sjkCYETmBKHM9XxnA4_mVJ174JYPDhYulpfTPuX6SrOyJ3_CJoKxvwa0eHVOSSFloqiI8oHL__8CzE1Ji0sfhCkqdehQZMRa7069AHW65c3Emc2MWe"/>
+</div>
+<!-- The Miniature Preview -->
+<div class="relative z-10 w-4/5 h-4/5 flex flex-col items-center justify-end">
+<img alt="Custom Miniature Preview" class="w-full h-full object-contain drop-shadow-[0_20px_50px_rgba(0,0,0,0.8)]" data-alt="A highly detailed, macro photograph of a dark fantasy miniature warrior figurine, unpainted in a cold grey resin. The warrior wears ornate, heavy plate armor with Gothic engravings and holds a massive spiked mace. The figurine stands on a detailed stone ruin base. The lighting is focused and dramatic, highlighting the intricate sculptural details against a dark, atmospheric background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtkqIbt-ZVQOg3cT9vZNz-_2QEFrOV4AE98HYoyi6gcwigTn2McN688As7FqfZLX9RK2JkM-SAf9wFKgGpHeSOwwBI9LWG6lwk_M40fCuX0-Z1H1yZpykG3MQuUbhrZO-98CgIk39JSkglwBJ4-kW_Viae3tVL-GQBseYAlWBQYB2zSqN5Dz0Bnd2PaRwGGCiap-HB6_jIIEz61GMqPotfonWbloNyphiO6QCKk2lL6ml32Z3F9cuKaey6QBWb-KC66OdjA4CkHI3U"/>
+<!-- Size Comparison Overlay (D6 Die) -->
+<div class="absolute bottom-4 right-4 flex flex-col items-center opacity-90 transition-opacity">
+<div class="w-12 h-12 bg-white/10 backdrop-blur-md rounded border border-white/20 flex items-center justify-center shadow-lg transform rotate-12">
+<div class="grid grid-cols-3 gap-1 p-2">
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface"></div>
+<div class="w-1.5 h-1.5"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface"></div>
+<div class="w-1.5 h-1.5"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface"></div>
+<div class="w-1.5 h-1.5"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface"></div>
+<div class="w-1.5 h-1.5"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-on-surface"></div>
+</div>
+</div>
+<span class="font-label-caps text-label-caps mt-2 text-primary opacity-60">28MM SCALE</span>
+</div>
+</div>
+<!-- Model Interaction Controls -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="w-12 h-12 bg-surface-container/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="3d_rotation">3d_rotation</span>
+</button>
+<button class="w-12 h-12 bg-surface-container/80 backdrop-blur-sm rounded-full flex items-center justify-center text-on-surface hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+</div>
+</section>
+<!-- Selection Tabs -->
+<section class="mt-stack-md">
+<div class="flex space-x-2 overflow-x-auto pb-4 no-scrollbar">
+<button class="flex-none px-6 py-3 bg-primary-container text-primary font-label-caps text-label-caps rounded-t-lg border-b-2 border-primary">HEAD</button>
+<button class="flex-none px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps rounded-t-lg hover:bg-surface-container transition-colors">TORSO</button>
+<button class="flex-none px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps rounded-t-lg hover:bg-surface-container transition-colors">LEGS</button>
+<button class="flex-none px-6 py-3 bg-surface-container-low text-on-surface-variant font-label-caps text-label-caps rounded-t-lg hover:bg-surface-container transition-colors">WEAPON</button>
+</div>
+<!-- Parts Grid (Bento Style) -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4 p-4 bg-surface-container rounded-b-xl border border-outline-variant/20 stone-texture">
+<!-- Part Item -->
+<div class="group relative aspect-square bg-surface-container-high rounded-lg overflow-hidden border-2 border-primary shadow-[0_0_15px_rgba(180,205,184,0.15)] cursor-pointer">
+<img alt="Knight Helm" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A close-up photograph of a knight's visor helmet cast in dark resin. The helmet features narrow eye slits and ornate engraving along the brow. It is presented in a scholarly, macro style with high material honesty, suggesting a carved stone or weathered metal surface. The background is a soft, deep forest green shadow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBHzLecDqnq3GXoLtaDEb_wCppTzS8bS9YKVfpjqXr64t-onizHmj7aafCVrkaKQ3qQdZ1c4gzIc0RSIq89_vJyeH0FEL-Lw9PZ8pV_IWredS2DDdTnbwuPOBlTYkF9i38bS2mJlCo239JdToBOA1AvYvjMpDMEqtvl5m2T2y5MWoRvl_UC3eMhSfLlKZhMM961-FijIGjs96WHe7ebxAUIj5JQUYwYBO4DHDlxRiKsij9kbwLtgv1kLr39Xr1xwrycXFJDJhumL7Z7"/>
+<div class="absolute inset-x-0 bottom-0 bg-primary-container/90 backdrop-blur-sm p-2">
+<p class="text-[10px] font-label-caps text-primary text-center">ANCIENT VISOR</p>
+</div>
+</div>
+<!-- Part Item -->
+<div class="group relative aspect-square bg-surface-container-high rounded-lg overflow-hidden border border-outline-variant/30 cursor-pointer hover:border-primary/50 transition-all">
+<img alt="Hooded Skull" class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 transition-all" data-alt="A macro shot of a miniature's head featuring a deep, ragged cowl over a skeletal face. The sculpting is extremely fine, showing cracked bone textures and tattered fabric edges. Dark fantasy aesthetic with heavy moody lighting. The color palette is composed of cold greys and deep charcoal shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHDxNN699aiYRtA0x8ffbRKxMXrVM6NF1PwRKh8-gnn3yRUHEYxPnkLzsispLYBlFDfcklEcW9BSJUhneL9F_82UJACbYOLleimeoBXCbNUfv5dkABav__GOPRFwd6cGkcmcBGOseuoE3rk3XZXdpfWcD0afklvhrtDGza1PTi_2BeAupoRwYkJyoMYs1W5v-W7xCT5l-qT0ou5fDpi6JgnSzywNlR359eXf-GjomXBoHKPW4EySUS29PkjxmkIJ-iBY7xQs8HQtCQ"/>
+<div class="absolute inset-x-0 bottom-0 bg-surface-container-highest/90 backdrop-blur-sm p-2">
+<p class="text-[10px] font-label-caps text-on-surface-variant text-center">VOIDCRAWLER</p>
+</div>
+</div>
+<!-- Part Item -->
+<div class="group relative aspect-square bg-surface-container-high rounded-lg overflow-hidden border border-outline-variant/30 cursor-pointer hover:border-primary/50 transition-all">
+<img alt="Gothic Crown" class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 transition-all" data-alt="A miniature head part showcasing a tall, spiked iron crown fused to a withered, eyeless face. The design is jagged and aggressive, typical of high-fantasy grimdark settings. The lighting highlights the sharp edges of the crown against a light-absorbing dark surface. Visual style is permanent and heavy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAKLILMX3B_Dd1wPOfpYQH01fjhSN_282jzxFPUbtNNZjdaAJjdXMz4YhTUm-EA0EAb_tMeibGKC_LdKQy7NW3yHhVnh7qBlplb3awFnOmE4rX1bzoQYd7XRMKBg3OWHCLUvmQ7uFJ2_iAw6oD2Vb86MV0JgVxEjwR5514WgQ-Rbv6z_70bv6pWrRNcMKbAL9GyvRFMbEJX-yH-vD98y0yOdic_AgsaoEXIyhVLm2IhJNL0RqZbfihrhGOr41HBnf9-mjtecsRtUNsP"/>
+<div class="absolute inset-x-0 bottom-0 bg-surface-container-highest/90 backdrop-blur-sm p-2">
+<p class="text-[10px] font-label-caps text-on-surface-variant text-center">IRON MONARCH</p>
+</div>
+</div>
+<!-- Part Item -->
+<div class="group relative aspect-square bg-surface-container-high rounded-lg overflow-hidden border border-outline-variant/30 cursor-pointer hover:border-primary/50 transition-all">
+<img alt="Beast Mask" class="w-full h-full object-cover grayscale opacity-70 group-hover:opacity-100 transition-all" data-alt="A miniature head component representing a stylized wolf mask carved from dark wood or stone. Fine grain textures are visible on the surface. The mood is reverence-filled and scholarly, as if this were an artifact in a forbidden tome. The lighting is soft but directional, creating deep contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA45Z09ZBUCGIA0z8A1wcSUZA1FRungNb150ZTNoGXb8KC_Xj85-ytJl48PkZqeC8C6-d-P6e4cuk1G-yE7dj42Lv5xQDpuFjmf0R6bAsxPuGW0VN3nHwezPLjhBvKUlPmgQnC1pBiNQCL-J-I_0yTm5olq9XkqeE36J6L6EQrBekFrMx11YJ-q4iRqS7xul_JahCipxz4U237IWTlpos1SI5h7KU2x9d4OpdmBHRf6UMM_Y2PFEUeJUZkYsjNHFU6-hJDegCmc5S2i"/>
+<div class="absolute inset-x-0 bottom-0 bg-surface-container-highest/90 backdrop-blur-sm p-2">
+<p class="text-[10px] font-label-caps text-on-surface-variant text-center">BESTIAL RITE</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats & Info -->
+<section class="mt-stack-md grid grid-cols-1 md:grid-cols-2 gap-6">
+<div class="p-6 parchment-texture rounded-lg shadow-inner border border-burnt-sienna/20">
+<h3 class="font-h3-subheading text-h3-subheading text-on-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+                    Artifact Lore
+                </h3>
+<p class="text-on-secondary/80 italic font-body-md leading-relaxed">
+                    "This assemblage represents the Silent Guard of the Oakhaven Archives. Each plate is etched with the names of the forgotten, forged in the hearth of the Great Sunder."
+                </p>
+</div>
+<div class="p-6 bg-surface-container-high rounded-lg border border-outline-variant/20 flex flex-col justify-center">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">COMPLEXITY</span>
+<div class="flex gap-1">
+<div class="w-2 h-4 bg-primary rounded-full"></div>
+<div class="w-2 h-4 bg-primary rounded-full"></div>
+<div class="w-2 h-4 bg-primary rounded-full"></div>
+<div class="w-2 h-4 bg-primary-container rounded-full"></div>
+<div class="w-2 h-4 bg-primary-container rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">EST. PRINT TIME</span>
+<span class="font-body-md text-primary">4h 12m</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Actions / Footer -->
+<footer class="fixed bottom-24 left-0 w-full z-40 bg-surface-container-high/95 backdrop-blur-md border-t border-outline-variant/30 stone-texture py-4 px-margin-edge shadow-[0_-10px_40px_rgba(0,0,0,0.6)]">
+<div class="max-w-container-max mx-auto flex flex-col sm:flex-row gap-4">
+<button class="flex-1 notched-corner bg-surface-variant text-on-surface border border-outline-variant py-4 font-label-caps text-label-caps tracking-widest flex items-center justify-center gap-2 hover:bg-surface-bright transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+                SAVE TO BOX
+            </button>
+<button class="flex-1 notched-corner bg-burnt-sienna text-on-primary py-4 font-label-caps text-label-caps tracking-widest flex items-center justify-center gap-2 shadow-[0_4px_15px_rgba(150,75,54,0.3)] hover:brightness-110 transition-all active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="shopping_cart" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+                ORDER NOW — $34.00
+            </button>
+</div>
+</footer>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-24 px-gutter pb-safe bg-surface-container dark:bg-surface-container border-t border-outline-variant/30 shadow-[0_-8px_24px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-variant transition-all rounded-lg px-4 py-2">
+<span class="material-symbols-outlined" data-icon="auto_stories">auto_stories</span>
+<span class="font-label-caps text-label-caps">Lore</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-variant transition-all rounded-lg px-4 py-2">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Guides</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-container text-primary dark:text-primary-fixed-dim rounded-lg px-4 py-2 shadow-[0_0_15px_rgba(180,205,184,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined" data-icon="architecture" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<span class="font-label-caps text-label-caps">Builder</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-variant transition-all rounded-lg px-4 py-2">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Boxes</span>
+</div>
+</nav>
+</body></html>

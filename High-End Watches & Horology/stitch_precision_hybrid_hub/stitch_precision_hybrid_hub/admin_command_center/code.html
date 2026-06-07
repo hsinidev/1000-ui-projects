@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHRONOS-OS V1.0 | COMMAND CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #050505;
+            color: #e5e2e1;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+        .glow-border {
+            border: 1px solid #00dbe9;
+            box-shadow: 0 0 8px rgba(0, 219, 233, 0.3);
+        }
+        .hud-grid {
+            background-image: linear-gradient(rgba(0, 219, 233, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(0, 219, 233, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f0ff, transparent);
+            position: absolute;
+            opacity: 0.2;
+            pointer-events: none;
+        }
+        .corner-bracket {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #00dbe9;
+        }
+        .bracket-tl { top: 0; left: 0; border-top-width: 1px; border-left-width: 1px; }
+        .bracket-tr { top: 0; right: 0; border-top-width: 1px; border-right-width: 1px; }
+        .bracket-bl { bottom: 0; left: 0; border-bottom-width: 1px; border-left-width: 1px; }
+        .bracket-br { bottom: 0; right: 0; border-bottom-width: 1px; border-right-width: 1px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-tint": "#00dbe9",
+                        "on-error": "#690005",
+                        "outline-variant": "#3b494b",
+                        "secondary": "#c6c6c7",
+                        "primary-container": "#00f0ff",
+                        "primary": "#dbfcff",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#eac324",
+                        "surface-container-high": "#2a2a2a",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#353534",
+                        "surface": "#131313",
+                        "on-tertiary-fixed-variant": "#554500",
+                        "surface-dim": "#131313",
+                        "primary-fixed": "#7df4ff",
+                        "outline": "#849495",
+                        "on-secondary-container": "#b4b5b5",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed-dim": "#00dbe9",
+                        "on-primary-fixed": "#002022",
+                        "secondary-container": "#454747",
+                        "on-secondary": "#2f3131",
+                        "tertiary-fixed": "#ffe179",
+                        "surface-container-lowest": "#0e0e0e",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-fixed-variant": "#004f54",
+                        "background": "#131313",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-fixed-variant": "#454747",
+                        "error-container": "#93000a",
+                        "on-primary": "#00363a",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary": "#3b2f00",
+                        "tertiary-container": "#fed639",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-primary": "#006970",
+                        "on-tertiary-fixed": "#231b00",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-container": "#201f1f",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary": "#fff5de",
+                        "on-tertiary-container": "#715d00",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-primary-container": "#006970"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "safe-area": "12%",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Mono"],
+                        "body-tech": ["Space Mono"],
+                        "nav-item": ["Hanken Grotesk"],
+                        "headline-nav": ["Hanken Grotesk"],
+                        "display-data": ["Space Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["10px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "body-tech": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "nav-item": ["16px", {"lineHeight": "1.0", "letterSpacing": "0px", "fontWeight": "500"}],
+                        "headline-nav": ["20px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-data": ["42px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="hud-grid min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-lg py-sm w-full sticky top-0 z-50 bg-surface/10 backdrop-blur-xl border-b border-outline-variant/30 docked full-width">
+<div class="flex items-center gap-md">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim tracking-[0.2em]">CHRONOS-OS V1.0</span>
+</div>
+<div class="hidden md:flex items-center gap-xl">
+<nav class="flex gap-lg">
+<a class="font-headline-nav text-headline-nav tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">DASHBOARD</a>
+<a class="font-headline-nav text-headline-nav tracking-widest text-primary-container font-bold Active: ring-1 ring-primary-fixed-dim/50" href="#">COMMAND</a>
+<a class="font-headline-nav text-headline-nav tracking-widest text-on-surface-variant hover:text-primary-fixed transition-colors duration-300" href="#">REPORTS</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="settings_input_component">settings_input_component</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-primary-container" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-24 pb-lg bg-surface-container-lowest/80 backdrop-blur-2xl border-r border-outline-variant/20 docked h-screen left-0 w-64 z-40 transition-all duration-500 ease-in-out">
+<div class="px-md mb-xl">
+<div class="flex items-center gap-sm mb-xs">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 border border-primary-fixed-dim/40 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-primary">OPERATOR-01</div>
+<div class="text-[8px] text-surface-tint opacity-70">SYNC: ACTIVE</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-xs">
+<a class="flex items-center gap-md bg-primary-container/10 text-primary-fixed-dim border-l-2 border-primary-fixed-dim px-md py-sm shadow-[0_0_8px_rgba(0,219,233,0.3)] font-body-tech text-body-tech uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="precision_manufacturing">precision_manufacturing</span>
+                CHRONOMETRY
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant/60 px-md py-sm font-body-tech text-body-tech uppercase hover:bg-surface-variant/30 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="ecg_heart">ecg_heart</span>
+                BIOMETRICS
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant/60 px-md py-sm font-body-tech text-body-tech uppercase hover:bg-surface-variant/30 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="wb_twilight">wb_twilight</span>
+                ASTROMETRY
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant/60 px-md py-sm font-body-tech text-body-tech uppercase hover:bg-surface-variant/30 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+                TELEMETRY
+            </a>
+<a class="flex items-center gap-md text-on-surface-variant/60 px-md py-sm font-body-tech text-body-tech uppercase hover:bg-surface-variant/30 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined" data-icon="settings_suggest">settings_suggest</span>
+                DIAGNOSTICS
+            </a>
+</nav>
+<div class="px-md mt-auto">
+<button class="w-full py-sm border border-primary-fixed-dim/50 text-primary-fixed-dim font-label-caps text-[10px] hover:bg-primary-container/10 transition-all">
+                RUN SYSTEM SCAN
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-4 min-h-screen">
+<div class="px-lg pb-xl max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h1 class="font-display-data text-display-data text-primary-container uppercase">COMMAND_CRTR</h1>
+<p class="font-body-tech text-body-tech text-on-surface-variant">ACTIVE MISSION: DEEP_SPACE_HOROLOGY_V4</p>
+</div>
+<div class="text-right">
+<div class="font-label-caps text-label-caps text-outline mb-xs">SYSTEM CLOCK</div>
+<div class="font-display-data text-[24px] text-primary">22:48:15.004</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-md">
+<!-- Telemetry Graph (Primary Focus) -->
+<div class="col-span-12 lg:col-span-8 glass-panel relative p-lg min-h-[400px]">
+<div class="corner-bracket bracket-tl"></div><div class="corner-bracket bracket-tr"></div>
+<div class="corner-bracket bracket-bl"></div><div class="corner-bracket bracket-br"></div>
+<div class="flex justify-between items-start mb-md">
+<div>
+<span class="font-label-caps text-label-caps text-surface-tint">SYSTEM TELEMETRY</span>
+<div class="text-[12px] font-body-tech text-on-surface-variant/50">CPU LOAD / THERMAL DISPERSION</div>
+</div>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm" data-icon="fullscreen">fullscreen</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="more_vert">more_vert</span>
+</div>
+</div>
+<!-- SVG Telemetry Simulation -->
+<div class="w-full h-[300px] relative overflow-hidden flex items-end px-md">
+<svg class="w-full h-full" viewbox="0 0 800 300">
+<!-- Background Grid -->
+<defs>
+<lineargradient id="glow" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#00f0ff;stop-opacity:0.3"></stop>
+<stop offset="100%" style="stop-color:#00f0ff;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,250 Q100,220 200,240 T400,180 T600,220 T800,150 L800,300 L0,300 Z" fill="url(#glow)"></path>
+<path class="glow-path" d="M0,250 Q100,220 200,240 T400,180 T600,220 T800,150" fill="none" stroke="#00dbe9" stroke-width="2"></path>
+<path d="M0,280 Q150,260 300,270 T500,230 T800,260" fill="none" stroke="#eac324" stroke-dasharray="4 4" stroke-width="1"></path>
+</svg>
+<div class="scan-line top-1/2 left-0"></div>
+</div>
+</div>
+<!-- Status Readout Sidebar (Part of Bento) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-md">
+<!-- Biometric Core -->
+<div class="glass-panel p-md flex-1 relative overflow-hidden">
+<div class="corner-bracket bracket-tl"></div>
+<span class="font-label-caps text-label-caps text-surface-tint mb-md block">BIOMETRIC_CORE</span>
+<div class="flex items-center justify-between">
+<div class="relative w-24 h-24">
+<!-- Circular Progress -->
+<svg class="w-full h-full transform -rotate-90">
+<circle cx="48" cy="48" fill="transparent" r="40" stroke="#1A1A1A" stroke-width="4"></circle>
+<circle cx="48" cy="48" fill="transparent" r="40" stroke="#00F0FF" stroke-dasharray="251.2" stroke-dashoffset="60" stroke-width="4" style="filter: drop-shadow(0 0 4px #00F0FF);"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-data text-[18px] text-primary">72</span>
+<span class="font-label-caps text-[8px] text-on-surface-variant">BPM</span>
+</div>
+</div>
+<div class="flex-1 ml-lg">
+<div class="mb-sm">
+<div class="font-label-caps text-[10px] text-on-surface-variant">OXYGEN</div>
+<div class="flex gap-1 mt-1">
+<div class="h-1 w-4 bg-primary-container glow-border"></div>
+<div class="h-1 w-4 bg-primary-container glow-border"></div>
+<div class="h-1 w-4 bg-primary-container glow-border"></div>
+<div class="h-1 w-4 bg-primary-container glow-border"></div>
+<div class="h-1 w-4 bg-surface-variant"></div>
+</div>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">STRESS</div>
+<div class="font-body-tech text-body-tech text-primary">0.14_LOW</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Controls -->
+<div class="glass-panel p-md relative">
+<div class="corner-bracket bracket-tr"></div>
+<span class="font-label-caps text-label-caps text-surface-tint mb-md block">QUICK_ACTIONS</span>
+<div class="grid grid-cols-2 gap-sm">
+<button class="p-sm bg-primary-container/5 border border-primary-fixed-dim/20 hover:border-primary-fixed-dim transition-all flex flex-col items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="update">update</span>
+<span class="font-label-caps text-[9px] mt-1">PUSH_FW</span>
+</button>
+<button class="p-sm bg-primary-container/5 border border-primary-fixed-dim/20 hover:border-primary-fixed-dim transition-all flex flex-col items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="storage">storage</span>
+<span class="font-label-caps text-[9px] mt-1">DB_SYNC</span>
+</button>
+<button class="p-sm bg-primary-container/5 border border-primary-fixed-dim/20 hover:border-primary-fixed-dim transition-all flex flex-col items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="lock_open">lock_open</span>
+<span class="font-label-caps text-[9px] mt-1">SEC_BYPASS</span>
+</button>
+<button class="p-sm bg-primary-container/5 border border-primary-fixed-dim/20 hover:border-primary-fixed-dim transition-all flex flex-col items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="power_settings_new">power_settings_new</span>
+<span class="font-label-caps text-[9px] mt-1">REBOOT</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Live Log Stream -->
+<div class="col-span-12 lg:col-span-12 glass-panel p-md font-body-tech text-[12px] relative min-h-[160px] overflow-hidden">
+<div class="flex justify-between border-b border-outline-variant/30 pb-xs mb-sm">
+<span class="font-label-caps text-surface-tint">REAL_TIME_LOG_STREAM</span>
+<span class="text-on-surface-variant/50">V_CORE_8.2.1</span>
+</div>
+<div class="space-y-1 opacity-80">
+<div class="flex gap-md"><span class="text-primary-fixed-dim">[22:48:12]</span> <span class="text-on-surface">SYS_INIT: Initializing hardware abstraction layer...</span></div>
+<div class="flex gap-md"><span class="text-primary-fixed-dim">[22:48:13]</span> <span class="text-on-surface">COM_SYNC: Handshake established with Satellite-7.</span></div>
+<div class="flex gap-md"><span class="text-primary-fixed-dim">[22:48:14]</span> <span class="text-tertiary-fixed-dim">WARN: Latency spike detected in Biometric_A.</span></div>
+<div class="flex gap-md"><span class="text-primary-fixed-dim">[22:48:15]</span> <span class="text-primary-container font-bold">SUCCESS: User database migrated to secure enclave.</span></div>
+<div class="flex gap-md"><span class="text-primary-fixed-dim">[22:48:16]</span> <span class="text-on-surface">Waiting for operator authentication...</span></div>
+</div>
+<div class="scan-line bottom-0 left-0 h-4 bg-gradient-to-t from-primary-container/10 to-transparent"></div>
+</div>
+<!-- User Database Table -->
+<div class="col-span-12 glass-panel relative overflow-hidden">
+<div class="p-md border-b border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-surface-tint">AUTHORIZED_OPERATORS</span>
+<div class="flex items-center glass-panel px-sm py-1 gap-sm">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none text-[10px] font-body-tech focus:ring-0 p-0 w-32" placeholder="FILTER_UUID" type="text"/>
+</div>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant/10">
+<th class="p-md">STATUS</th>
+<th class="p-md">IDENTIFIER</th>
+<th class="p-md">RANK</th>
+<th class="p-md">UPTIME</th>
+<th class="p-md">ACTION</th>
+</tr>
+</thead>
+<tbody class="font-body-tech text-[12px]">
+<tr class="border-b border-outline-variant/5 hover:bg-primary-container/5 transition-colors">
+<td class="p-md"><span class="w-2 h-2 rounded-full bg-primary-container inline-block mr-2 animate-pulse"></span>ONLINE</td>
+<td class="p-md text-primary">#USR_8829_ALPHA</td>
+<td class="p-md">COMMANDER</td>
+<td class="p-md">142h 12m</td>
+<td class="p-md"><span class="material-symbols-outlined text-sm cursor-pointer" data-icon="edit">edit</span></td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-primary-container/5 transition-colors">
+<td class="p-md"><span class="w-2 h-2 rounded-full bg-primary-container inline-block mr-2"></span>ONLINE</td>
+<td class="p-md text-primary">#USR_4410_BETA</td>
+<td class="p-md">NAVIGATOR</td>
+<td class="p-md">88h 05m</td>
+<td class="p-md"><span class="material-symbols-outlined text-sm cursor-pointer" data-icon="edit">edit</span></td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="p-md text-on-surface-variant/50"><span class="w-2 h-2 rounded-full bg-surface-variant inline-block mr-2"></span>OFFLINE</td>
+<td class="p-md text-on-surface-variant/50">#USR_1192_DELTA</td>
+<td class="p-md text-on-surface-variant/50">ENGINEER</td>
+<td class="p-md text-on-surface-variant/50">00h 00m</td>
+<td class="p-md"><span class="material-symbols-outlined text-sm cursor-pointer text-on-surface-variant/50" data-icon="edit">edit</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Detail View / Hardware Visual -->
+<div class="col-span-12 md:col-span-6 glass-panel relative p-lg flex items-center justify-center overflow-hidden">
+<div class="corner-bracket bracket-tl"></div>
+<div class="absolute top-md left-md">
+<span class="font-label-caps text-[10px] text-surface-tint">HARDWARE_RENDER</span>
+</div>
+<div class="relative w-48 h-48">
+<div class="absolute inset-0 rounded-full border-2 border-primary-fixed-dim/20 flex items-center justify-center">
+<div class="w-40 h-40 rounded-full border border-primary-fixed-dim/40 border-dashed animate-[spin_20s_linear_infinite]"></div>
+</div>
+<img alt="Mechanical watch movement" class="w-32 h-32 object-contain mix-blend-screen opacity-80" data-alt="A macro photography shot of a complex high-horology mechanical watch movement with visible gears, rubies, and springs. The lighting is dramatic, high-contrast neon cyan and deep space black, highlighting the precision metallic textures. The style is technical and futuristic, suggesting an advanced spacecraft instrument panel. The mood is cold, sophisticated, and engineering-focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0XGAMc63KBH8f18UciS8N9qcPYrcUeOzSDeVkYvK43v5YKsFoGbVGO4hHKiSkRf147m9MfrQxl0VjPkAMP9qtPS5nmVjc4jptXQtggst6PWxvGyQKr9iK0OzSTNY3Sj2Pzdm_jH4tARgRHbcxC2NkGAGrQi2Pr74cBhMqemZN4IHT_vJ60KLc8qX9SBW9cdyWOgChXE5cLGjxgDdXSUjUaFWcmjiuM7WzOBlyIEg9BLTu3Gs5sje8Dw6vuu5bHLBxRfxO9S6MJQ"/>
+</div>
+</div>
+<!-- Management Controls -->
+<div class="col-span-12 md:col-span-6 glass-panel p-lg relative">
+<div class="corner-bracket bracket-tr"></div>
+<span class="font-label-caps text-label-caps text-surface-tint block mb-lg">SYSTEM_MANAGEMENT</span>
+<div class="space-y-md">
+<div class="flex items-center justify-between p-sm border border-outline-variant/30">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="router">router</span>
+<div>
+<div class="font-body-tech text-[12px]">FIRMWARE_CHANNEL</div>
+<div class="font-label-caps text-[8px] text-on-surface-variant">STABLE_RELEASE</div>
+</div>
+</div>
+<button class="px-md py-xs bg-primary-container text-on-primary font-label-caps text-[9px] rounded-sm">V1.4.2</button>
+</div>
+<div class="flex items-center justify-between p-sm border border-outline-variant/30">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="cloud_sync">cloud_sync</span>
+<div>
+<div class="font-body-tech text-[12px]">AUTO_BACKUP</div>
+<div class="font-label-caps text-[8px] text-on-surface-variant">EVERY 6H</div>
+</div>
+</div>
+<div class="w-10 h-5 bg-primary-container/20 border border-primary-container rounded-full relative">
+<div class="absolute right-1 top-1 w-3 h-3 bg-primary-container rounded-full shadow-[0_0_8px_#00f0ff]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-sm border border-outline-variant/30">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="security">security</span>
+<div>
+<div class="font-body-tech text-[12px]">ENCRYPTION_LEVEL</div>
+<div class="font-label-caps text-[8px] text-on-surface-variant">AES_256_QUANTUM</div>
+</div>
+</div>
+<span class="text-tertiary-fixed font-label-caps text-[9px]">ACTIVE_MAX</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Scanning Overlay Elements -->
+<div class="fixed inset-0 pointer-events-none opacity-10">
+<div class="w-full h-full" style="background: radial-gradient(circle at 50% 50%, transparent 60%, #00dbe9 100%);"></div>
+</div>
+</body></html>
