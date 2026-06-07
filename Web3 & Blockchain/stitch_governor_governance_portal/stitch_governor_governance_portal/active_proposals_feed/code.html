@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DAO Governor - Active Proposals</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-background": "#0b1c30",
+                    "tertiary-fixed": "#e1e3e4",
+                    "secondary-fixed": "#d5e5ef",
+                    "primary-fixed": "#dae2ff",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#ccd8ff",
+                    "secondary-container": "#d2e2ec",
+                    "primary-container": "#0056d2",
+                    "surface": "#f8f9ff",
+                    "on-surface-variant": "#424654",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#516169",
+                    "on-error": "#ffffff",
+                    "secondary-fixed-dim": "#b9c9d3",
+                    "on-primary-fixed-variant": "#0040a1",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-fixed-dim": "#c4c7c8",
+                    "tertiary": "#444749",
+                    "on-primary-fixed": "#001847",
+                    "surface-container": "#e5eeff",
+                    "on-tertiary-container": "#d7d9da",
+                    "inverse-on-surface": "#eaf1ff",
+                    "inverse-primary": "#b2c5ff",
+                    "on-primary": "#ffffff",
+                    "outline": "#737785",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#dce9ff",
+                    "surface-bright": "#f8f9ff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed-variant": "#444748",
+                    "background": "#f8f9ff",
+                    "surface-variant": "#d3e4fe",
+                    "surface-container-lowest": "#ffffff",
+                    "inverse-surface": "#213145",
+                    "on-secondary-fixed": "#0e1d25",
+                    "outline-variant": "#c3c6d6",
+                    "tertiary-container": "#5c5f60",
+                    "on-tertiary-fixed": "#191c1d",
+                    "surface-tint": "#0056d2",
+                    "on-secondary-container": "#55656d",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "on-secondary-fixed-variant": "#3a4951",
+                    "primary": "#0040a1",
+                    "surface-container-highest": "#d3e4fe"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "density-compact": "4px",
+                    "container-max": "1280px",
+                    "gutter": "24px",
+                    "density-comfortable": "16px",
+                    "margin": "40px"
+            },
+            "fontFamily": {
+                    "body-md": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "headline-sm": ["Public Sans"],
+                    "label-bold": ["Public Sans"],
+                    "display-lg": ["Public Sans"],
+                    "headline-md": ["Public Sans"],
+                    "data-mono": ["monospace"]
+            },
+            "fontSize": {
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-sm": ["18px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                    "label-bold": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Public Sans', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .vote-progress-for { width: 68%; }
+        .vote-progress-against { width: 32%; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-white border-b border-slate-200 h-16 flex justify-between items-center px-5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="account_balance">account_balance</span>
+<span class="text-lg font-black tracking-tighter text-slate-900">DAO Governor</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-blue-700 font-bold font-public-sans text-sm tracking-tight" href="#">Proposals</a>
+<a class="text-slate-500 hover:bg-slate-50 transition-colors duration-200 font-public-sans text-sm font-bold tracking-tight px-2 py-1" href="#">Voting</a>
+<a class="text-slate-500 hover:bg-slate-50 transition-colors duration-200 font-public-sans text-sm font-bold tracking-tight px-2 py-1" href="#">Treasury</a>
+<a class="text-slate-500 hover:bg-slate-50 transition-colors duration-200 font-public-sans text-sm font-bold tracking-tight px-2 py-1" href="#">Directory</a>
+</nav>
+<div class="flex items-center gap-3">
+<div class="hidden md:flex flex-col items-end">
+<span class="font-label-bold text-slate-900">0x71C...4f2</span>
+<span class="text-[10px] text-primary font-bold">Voter Weight: 2.4M</span>
+</div>
+<img alt="User Profile Avatar" class="w-10 h-10 rounded-full border border-slate-200" data-alt="A professional headshot of a corporate governance leader in a modern, brightly lit office environment. The lighting is high-key and clean, matching a sophisticated light-mode UI. The individual wears a sharp navy blazer, suggesting authority and institutional trust. The background is softly blurred with hints of glass and steel architecture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUioiZYpEYAJ-4FwSxyT8q5NkdJ8UYMkFukqK0OAmlUaSe6xCd09qNwstJZnqO6cN3XK0ngmRF4pMUHZZdRBJ9pSYWQ9TuFHqLFRUQ2Q4MhDwcSh-WT9dx5nWtw2zenUqGJ42_t3yqKyI_f8uwzCa1QepkoQIJ50hKcAA0VNX3wCSaboHyxMQJsXNH7pwldppC61boas9-Xm9RifUIL622InWAe8Cf4DtUBcF5dvsIPnwLmQWcsTUe0n8qC-E6Gt681c2sxOXcAV5v"/>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="pt-24 pb-32 px-5 md:px-10 container-max mx-auto">
+<!-- Dashboard Header -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+<div class="space-y-2">
+<span class="font-label-bold text-primary tracking-widest uppercase">Governance Hub</span>
+<h1 class="font-display-lg text-on-background">Active Proposals</h1>
+<p class="font-body-lg text-secondary max-w-2xl">Shape the future of the protocol. Review ongoing initiatives, analyze treasury allocations, and cast your institutional vote.</p>
+</div>
+<div class="flex gap-3">
+<button class="bg-white border border-outline px-6 py-3 rounded-lg font-label-bold text-on-surface hover:bg-slate-50 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                    Filter
+                </button>
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-bold shadow-sm hover:opacity-90 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="add">add</span>
+                    New Proposal
+                </button>
+</div>
+</div>
+<!-- Proposals Grid (Bento Style) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Featured Proposal (Large) -->
+<div class="lg:col-span-8 bg-white border border-slate-200 rounded-xl p-8 shadow-sm hover:shadow-md transition-all flex flex-col justify-between group">
+<div>
+<div class="flex justify-between items-start mb-6">
+<div class="flex gap-2">
+<span class="bg-blue-100 text-blue-700 font-label-bold px-3 py-1 rounded-full border border-blue-200">Active</span>
+<span class="bg-slate-100 text-slate-600 font-label-bold px-3 py-1 rounded-full">DGP-42</span>
+</div>
+<div class="flex items-center text-error font-data-mono gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="schedule">schedule</span>
+                            Ends in 14h 22m
+                        </div>
+</div>
+<h2 class="font-headline-md text-on-background mb-4 group-hover:text-primary transition-colors">Treasury Allocation for Q3 Infrastructure Expansion &amp; Node Security</h2>
+<p class="font-body-md text-secondary mb-8 line-clamp-3">This proposal seeks approval for a 2.5M USDT allocation to upgrade core network nodes and implement advanced security protocols. The expansion includes geographic diversification of validator clusters and enhanced dDoS protection for the primary governance interface.</p>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between font-label-bold text-on-background mb-1">
+<span>Voting Progress</span>
+<span>Quorum Met (72%)</span>
+</div>
+<div class="h-3 w-full bg-slate-100 rounded-full overflow-hidden flex">
+<div class="vote-progress-for bg-primary h-full"></div>
+<div class="vote-progress-against bg-slate-300 h-full border-l border-white"></div>
+</div>
+<div class="flex justify-between font-data-mono text-[12px]">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-primary font-bold">For: 12.4M VOTE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-slate-400"></span>
+<span class="text-slate-500">Against: 5.8M VOTE</span>
+</div>
+</div>
+</div>
+<div class="pt-6 border-t border-slate-100 flex justify-between items-center">
+<div class="flex -space-x-3">
+<img alt="Voter 1" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A close-up portrait of a diverse male professional in a minimalist white architectural setting. Soft natural daylighting creates a high-contrast but professional mood, aligned with a corporate blue and white design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyOHQrkl5TlXu1ToQgEK3zu5Ywlzg78o34cvqMU-sKO7FNOWqqGN5sx-AOzVGFWb5C2aO_RwsGHYjdgiEZbRuXMfgeLprEICvBIZ6cXVKc0TzlXxysLEH3BW-mOgEYDakrJHJ3Fxwj9_OgKZ9Lnre4lBcLjdzydyoeVZ_iO-72gaXmZ0IozbPubCuEctbGQw9WhrKK6rnKL_OKy_pfqRPePuT6diTXlqI8FmWpvHPLKs0yX5jlpRVC5h1iKfCb9T06UOt013eauKKc"/>
+<img alt="Voter 2" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A portrait of a professional woman in a modern corporate office with soft background bokeh. The image is bright and airy, utilizing a neutral and royal blue color palette to maintain institutional trust and brand consistency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqJlyOSwHOCpwQ03P3ZrkRCr5r4_4bF8P1J6AYZq1cwlYuaVDf0PjwlxJyi_ClGka2MWCJhkXddMIyEHKWS9Byj8cQUK4mp2Cn-zWKpFdYfvOomxGvBZVHLlQcdb3P6E9b2VJTzp2FAa8ikHEIBFh60dS9Hu2eSLw_Zrl_yxPdisAEqivHTcBarHHJk-1pXoOWfIN3tCIDbP8toNG-4v__L82yLGpKEFAX8w5125WKk3FNa7dJTZft_Q18sdfnxPzLdn8FrpdJ6VIC"/>
+<img alt="Voter 3" class="w-8 h-8 rounded-full border-2 border-white" data-alt="A professional male figure in a clean, modern workspace. The lighting is diffused and professional, emphasizing a clean and authoritative visual style that fits into a high-end governance platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9-WNVwBfSKmo4lvkTHOXalCseSZvRledC6zehIfhqzwAFFC-FsCq4hN4j-fPjmCx3i5x3W6PIlhpUJk8nQ-k5Xxz-glNw8-vYh1VUybrAkOtNA3lxmub_REpRiNxrdnrdXlIuHiBUDl5jJln5jbS5aS-tvphu9Q_lisvAKzVeMg9WXcsS6wu60wUIUqW23x_6P1WD3trcfUcaGTEeYUehDW1qqz6EgR6iz-3zROvZWDcMpECJJaEVPq_lMkY-S23BUKdG5ewUpgX1"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500">+452</div>
+</div>
+<button class="text-primary font-label-bold hover:underline">View Details →</button>
+</div>
+</div>
+</div>
+<!-- Side Stats / Quick Info -->
+<div class="lg:col-span-4 space-y-6">
+<!-- Proposal Stats Card -->
+<div class="bg-inverse-surface text-inverse-on-surface rounded-xl p-6 shadow-sm">
+<h3 class="font-label-bold text-primary-fixed-dim mb-4 tracking-widest uppercase">Global Stats</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<span class="font-body-md opacity-80">Total Voted</span>
+<span class="font-headline-sm">42.8M</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md opacity-80">Active Proposals</span>
+<span class="font-headline-sm">12</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="font-body-md opacity-80">Treasury Balance</span>
+<span class="font-headline-sm">$142.5M</span>
+</div>
+</div>
+</div>
+<!-- Delegate Ad/Invite -->
+<div class="bg-primary-container text-white rounded-xl p-6 relative overflow-hidden group">
+<div class="relative z-10">
+<h3 class="font-headline-sm mb-2">Passive Governance</h3>
+<p class="font-body-md mb-4 opacity-90">Delegate your voting power to expert leaders to ensure your voice is heard even when you're away.</p>
+<button class="bg-white text-primary font-label-bold px-4 py-2 rounded-lg text-sm group-hover:bg-slate-100 transition-colors">Find Delegates</button>
+</div>
+<div class="absolute -right-4 -bottom-4 opacity-20 transform group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[120px]" data-icon="diversity_3">diversity_3</span>
+</div>
+</div>
+</div>
+<!-- Small Proposal Cards Row -->
+<div class="lg:col-span-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="bg-emerald-100 text-emerald-700 font-label-bold px-2 py-0.5 rounded text-[10px] uppercase">Active</span>
+<span class="text-error font-data-mono text-[11px] font-bold">2d remaining</span>
+</div>
+<h4 class="font-headline-sm text-on-background mb-3">Core Protocol V2.1 Migration</h4>
+<p class="font-body-md text-secondary line-clamp-2 mb-6">Execution of the final phase of the layer-2 migration bridge...</p>
+</div>
+<div class="space-y-3">
+<div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden flex">
+<div class="w-[85%] bg-primary h-full"></div>
+<div class="w-[15%] bg-slate-200 h-full border-l border-white"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-data-mono text-[12px] text-slate-500">85% Support</span>
+<span class="material-symbols-outlined text-primary" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="bg-amber-100 text-amber-700 font-label-bold px-2 py-0.5 rounded text-[10px] uppercase">Pending</span>
+<span class="text-slate-500 font-data-mono text-[11px] font-bold">Starts in 4h</span>
+</div>
+<h4 class="font-headline-sm text-on-background mb-3">Marketing Guild Budget Increase</h4>
+<p class="font-body-md text-secondary line-clamp-2 mb-6">Requesting an additional 50k VOTE for community outreach programs...</p>
+</div>
+<div class="space-y-3">
+<div class="h-1.5 w-full bg-slate-100 rounded-full"></div>
+<div class="flex justify-between items-center">
+<span class="font-data-mono text-[12px] text-slate-500">0% Support</span>
+<span class="material-symbols-outlined text-primary" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 bg-white border border-slate-200 rounded-xl p-6 shadow-sm flex flex-col justify-between hover:border-primary transition-all">
+<div>
+<div class="flex justify-between items-start mb-4">
+<span class="bg-slate-100 text-slate-500 font-label-bold px-2 py-0.5 rounded text-[10px] uppercase">Ended</span>
+<span class="text-slate-400 font-data-mono text-[11px] font-bold">Passed 2d ago</span>
+</div>
+<h4 class="font-headline-sm text-on-background mb-3">Liquidity Pool Incentive Rebalance</h4>
+<p class="font-body-md text-secondary line-clamp-2 mb-6">Reallocating rewards from ETH/BTC to stablecoin pairs...</p>
+</div>
+<div class="space-y-3">
+<div class="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden flex">
+<div class="w-[52%] bg-slate-400 h-full"></div>
+<div class="w-[48%] bg-slate-200 h-full border-l border-white"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-data-mono text-[12px] text-slate-500">52% Support (Met)</span>
+<span class="material-symbols-outlined text-primary" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Activity Feed (List Pattern for Contrast) -->
+<section class="mt-16">
+<h3 class="font-headline-md mb-8 text-on-background">Recent Activity</h3>
+<div class="bg-white border border-slate-200 rounded-xl overflow-hidden">
+<div class="divide-y divide-slate-100">
+<div class="p-6 hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-white">
+<span class="material-symbols-outlined" data-icon="how_to_vote">how_to_vote</span>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-background">Vitalik.eth voted <span class="text-primary">FOR</span> on DGP-42</p>
+<p class="text-[12px] text-slate-500">2 minutes ago • 1.2M Voting Power</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300" data-icon="open_in_new">open_in_new</span>
+</div>
+<div class="p-6 hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="post_add">post_add</span>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-background">New Proposal: Treasury Diversification Phase II</p>
+<p class="text-[12px] text-slate-500">1 hour ago • Proposed by 0x4f...a3e</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300" data-icon="open_in_new">open_in_new</span>
+</div>
+<div class="p-6 hover:bg-slate-50 transition-colors flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center text-slate-500">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-background">DGP-40 has been <span class="text-emerald-600">EXECUTED</span></p>
+<p class="text-[12px] text-slate-500">3 hours ago • 2.5M USDT transferred</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-slate-300" data-icon="open_in_new">open_in_new</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Drawer (Hidden on Mobile, Visible on Web if needed) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-80 bg-white border-r border-slate-200 hidden lg:flex flex-col z-40 transform -translate-x-full">
+<!-- Content for drawer if triggered -->
+</aside>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-white h-20 px-2 pb-safe border-t border-slate-200">
+<a class="flex flex-col items-center justify-center text-blue-700 border-t-2 border-blue-700 pt-2 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="ballot">ballot</span>
+<span class="font-public-sans text-[10px] font-bold uppercase tracking-widest mt-1">Proposals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 pt-2 active:opacity-70 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="how_to_vote">how_to_vote</span>
+<span class="font-public-sans text-[10px] font-bold uppercase tracking-widest mt-1">Voting</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 pt-2 active:opacity-70 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-public-sans text-[10px] font-bold uppercase tracking-widest mt-1">Treasury</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 pt-2 active:opacity-70 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-public-sans text-[10px] font-bold uppercase tracking-widest mt-1">Directory</span>
+</a>
+</nav>
+<!-- FAB (Contextual for Home/Dashboard) -->
+<div class="fixed right-6 bottom-24 md:bottom-8">
+<button class="w-14 h-14 bg-primary text-white rounded-full shadow-xl flex items-center justify-center hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

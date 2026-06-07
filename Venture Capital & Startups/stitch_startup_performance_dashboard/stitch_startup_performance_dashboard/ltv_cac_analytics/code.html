@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GROWTH_METRICS | LTV/CAC Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#c6c4df",
+                        "surface": "#051424",
+                        "surface-container-highest": "#273647",
+                        "surface-container-low": "#0d1c2d",
+                        "surface-container-high": "#1c2b3c",
+                        "surface-tint": "#00dbe7",
+                        "on-tertiary-container": "#605f5f",
+                        "surface-container": "#122131",
+                        "primary": "#e1fdff",
+                        "on-surface-variant": "#b9cacb",
+                        "primary-fixed-dim": "#00dbe7",
+                        "secondary-fixed": "#e2e0fc",
+                        "surface-dim": "#051424",
+                        "outline-variant": "#3a494b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-bright": "#2c3a4c",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "primary-container": "#00f2ff",
+                        "on-secondary": "#2f2e43",
+                        "inverse-on-surface": "#233143",
+                        "tertiary": "#faf6f6",
+                        "on-secondary-container": "#b8b6d0",
+                        "inverse-primary": "#00696f",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-tertiary": "#313030",
+                        "secondary-container": "#47475d",
+                        "on-error": "#690005",
+                        "secondary": "#c6c4df",
+                        "on-primary-container": "#006a71",
+                        "on-secondary-fixed-variant": "#45455b",
+                        "surface-variant": "#273647",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "outline": "#849495",
+                        "inverse-surface": "#d4e4fa",
+                        "background": "#051424",
+                        "tertiary-container": "#dddad9",
+                        "on-background": "#d4e4fa",
+                        "primary-fixed": "#74f5ff",
+                        "on-primary-fixed": "#002022",
+                        "on-surface": "#d4e4fa",
+                        "error": "#ffb4ab",
+                        "on-primary": "#00363a",
+                        "on-secondary-fixed": "#1a1a2e",
+                        "surface-container-lowest": "#010f1f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "container-margin": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "metric-lg": ["Inter"],
+                        "body-main": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-xl": ["Space Grotesk"],
+                        "label-xs": ["Inter"]
+                    },
+                    "fontSize": {
+                        "metric-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-xs": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(13, 28, 45, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(185, 202, 203, 0.1);
+        }
+        .neon-glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.2);
+        }
+        .neon-line {
+            background: linear-gradient(90deg, rgba(0,242,255,0) 0%, rgba(0,242,255,1) 50%, rgba(0,242,255,0) 100%);
+            height: 2px;
+            filter: drop-shadow(0 0 5px #00f2ff);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-main selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-[#030712]/80 backdrop-blur-md border-b border-indigo-500/30">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-[1440px] mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-400" data-icon="analytics">analytics</span>
+<h1 class="text-xl font-bold tracking-widest text-cyan-400 drop-shadow-[0_0_8px_rgba(0,242,255,0.4)] font-['Space_Grotesk'] uppercase">GROWTH_METRICS</h1>
+</div>
+<div class="w-8 h-8 rounded-full border border-primary-container/30 overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A futuristic profile avatar representing a startup founder, rendered in a high-tech UI style with holographic interface overlays. The image uses a dark color palette with glowing cyan and deep indigo accents, maintaining a clinical and authoritative financial dashboard aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdjoojrR41ntHbkFDxtuqC3KTMzH6paOxi4MBGKylC1NDOd2Z3Xs9xkEsbIHuFkHKG56GuyfUED16aZk33G-X_d_qv45YQennQp5Cbc5hdefcpQKXZ0W5EehdSl7E3-67bcoCWaY7PfHw3ZGVsrBtuV6iJwMNwUsEHP4fYhSdbXmG0PTLRd6LWmgkFNekvdaZbUWwgtJVw6PN3oL0VEPHfA_NNaK2YJtiTZwGAhqAe8PlBhoICT1ED2RcFQMzKVG9RlvqviysFfcE"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 space-y-stack-lg max-w-md mx-auto">
+<!-- Weekly Growth Summary Section -->
+<section class="glass-card rounded-xl p-stack-md relative overflow-hidden">
+<div class="flex justify-between items-start mb-unit">
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase tracking-widest">Weekly Growth</span>
+<span class="material-symbols-outlined text-primary-container text-sm" data-icon="show_chart">show_chart</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-display-xl text-primary-container">+14.2%</span>
+<span class="font-label-xs text-label-xs text-on-surface-variant">vs LW</span>
+</div>
+<div class="mt-stack-md w-full relative h-16 flex items-end">
+<!-- SVG Sparkline with Neon Cyan Glow -->
+<svg class="w-full h-full" viewbox="0 0 100 40">
+<defs>
+<lineargradient id="cyan-glow" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" stop-color="rgba(0, 242, 255, 0)"></stop>
+<stop offset="50%" stop-color="rgba(0, 242, 255, 1)"></stop>
+<stop offset="100%" stop-color="rgba(0, 242, 255, 0)"></stop>
+</lineargradient>
+<filter id="neon-filter">
+<fegaussianblur result="blur" stddeviation="1.5"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<path d="M0 35 Q 25 30, 40 15 T 70 25 T 100 5" fill="none" filter="url(#neon-filter)" stroke="url(#cyan-glow)" stroke-width="2"></path>
+</svg>
+</div>
+</section>
+<!-- KPI Metric Grid (High-Density) -->
+<div class="grid grid-cols-2 gap-gutter">
+<!-- LTV Card -->
+<div class="bg-[#030712] border border-indigo-500/30 rounded-lg p-stack-md flex flex-col justify-between">
+<div>
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase">LTV</span>
+<div class="font-metric-lg text-metric-lg text-on-surface mt-unit">$1,420</div>
+</div>
+<div class="mt-stack-sm flex items-center gap-1 text-primary-container">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+<span class="font-data-mono text-data-mono text-[10px]">8.4%</span>
+</div>
+</div>
+<!-- CAC Card -->
+<div class="bg-[#030712] border border-indigo-500/30 rounded-lg p-stack-md flex flex-col justify-between">
+<div>
+<span class="font-label-xs text-label-xs text-on-surface-variant uppercase">CAC</span>
+<div class="font-metric-lg text-metric-lg text-on-surface mt-unit">$342</div>
+</div>
+<div class="mt-stack-sm flex items-center gap-1 text-error">
+<span class="material-symbols-outlined text-xs" data-icon="trending_down">trending_down</span>
+<span class="font-data-mono text-data-mono text-[10px]">2.1%</span>
+</div>
+</div>
+<!-- Ratio Card - Full Width -->
+<div class="col-span-2 bg-[#030712] border border-indigo-500/30 rounded-lg p-stack-md flex items-center justify-between neon-glow-cyan">
+<div>
+<span class="font-label-xs text-label-xs text-cyan-400 uppercase font-bold">LTV/CAC Ratio</span>
+<div class="font-display-xl text-display-xl text-primary-container mt-unit">4.15<span class="text-body-main font-metric-lg text-on-surface-variant">x</span></div>
+</div>
+<div class="h-12 w-12 rounded-full border-2 border-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-2xl" data-icon="verified_user">verified_user</span>
+</div>
+</div>
+</div>
+<!-- Unit Economics Breakdown -->
+<section class="space-y-stack-md">
+<div class="flex items-center justify-between border-b border-indigo-500/20 pb-unit">
+<h3 class="font-headline-md text-headline-md text-on-surface">Unit Economics</h3>
+<span class="font-label-xs text-label-xs text-primary-container bg-primary-container/10 px-2 py-0.5 rounded">Q3 REPORT</span>
+</div>
+<div class="space-y-unit">
+<!-- List Item -->
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low/40 border-l-2 border-cyan-400/50 hover:bg-surface-container transition-colors">
+<div class="flex flex-col">
+<span class="font-body-main text-sm text-on-surface">Average Order Value</span>
+<span class="font-label-xs text-[10px] text-on-surface-variant">Subscription-based model</span>
+</div>
+<span class="font-data-mono text-data-mono text-primary-container">$89.00</span>
+</div>
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low/40 border-l-2 border-transparent hover:border-cyan-400/50 transition-colors">
+<div class="flex flex-col">
+<span class="font-body-main text-sm text-on-surface">Churn Rate</span>
+<span class="font-label-xs text-[10px] text-on-surface-variant">Monthly recurring</span>
+</div>
+<span class="font-data-mono text-data-mono text-on-surface">2.4%</span>
+</div>
+<div class="flex items-center justify-between p-stack-md bg-surface-container-low/40 border-l-2 border-transparent hover:border-cyan-400/50 transition-colors">
+<div class="flex flex-col">
+<span class="font-body-main text-sm text-on-surface">Payback Period</span>
+<span class="font-label-xs text-[10px] text-on-surface-variant">Time to recover CAC</span>
+</div>
+<span class="font-data-mono text-data-mono text-on-surface">4.2 Mo</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-[#030712]/90 backdrop-blur-lg border-t border-indigo-500/30 rounded-t-lg shadow-[0_-10px_30px_-5px_rgba(0,242,255,0.1)]">
+<div class="flex justify-around items-center px-4 py-3 pb-safe">
+<!-- Nav Item: LTV/CAC (ACTIVE) -->
+<div class="flex flex-col items-center justify-center text-cyan-400 drop-shadow-[0_0_5px_rgba(0,242,255,0.6)] bg-cyan-500/5 rounded-md p-1 transition-transform active:translate-y-0.5">
+<span class="material-symbols-outlined mb-1" data-icon="query_stats">query_stats</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-medium tracking-tight">LTV/CAC</span>
+</div>
+<!-- Nav Item: MRR -->
+<div class="flex flex-col items-center justify-center text-indigo-400/50 p-1 hover:text-cyan-200 transition-transform active:translate-y-0.5">
+<span class="material-symbols-outlined mb-1" data-icon="trending_up">trending_up</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-medium tracking-tight">MRR</span>
+</div>
+<!-- Nav Item: Runway -->
+<div class="flex flex-col items-center justify-center text-indigo-400/50 p-1 hover:text-cyan-200 transition-transform active:translate-y-0.5">
+<span class="material-symbols-outlined mb-1" data-icon="timer">timer</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-medium tracking-tight">Runway</span>
+</div>
+<!-- Nav Item: Cohorts -->
+<div class="flex flex-col items-center justify-center text-indigo-400/50 p-1 hover:text-cyan-200 transition-transform active:translate-y-0.5">
+<span class="material-symbols-outlined mb-1" data-icon="group_work">group_work</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase font-medium tracking-tight">Cohorts</span>
+</div>
+</div>
+</nav>
+</body></html>

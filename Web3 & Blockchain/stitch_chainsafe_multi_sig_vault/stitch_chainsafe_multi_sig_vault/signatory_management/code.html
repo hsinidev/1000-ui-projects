@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHAINSAFE | Signatory Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#282a2d",
+                        "secondary-container": "#464746",
+                        "surface-variant": "#333538",
+                        "surface-dim": "#111316",
+                        "surface-tint": "#ffb595",
+                        "on-tertiary-fixed": "#131d22",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0c0e11",
+                        "on-tertiary-fixed-variant": "#3e484d",
+                        "secondary": "#c7c6c4",
+                        "surface-container-low": "#1a1c1f",
+                        "tertiary-container": "#8e999f",
+                        "primary": "#ffb595",
+                        "on-background": "#e2e2e6",
+                        "on-primary": "#571e00",
+                        "surface-container-highest": "#333538",
+                        "outline": "#aa8a7d",
+                        "background": "#111316",
+                        "primary-fixed-dim": "#ffb595",
+                        "inverse-surface": "#e2e2e6",
+                        "on-secondary-fixed": "#1b1c1b",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "tertiary-fixed-dim": "#bdc8ce",
+                        "tertiary-fixed": "#d9e4ea",
+                        "primary-container": "#ff6700",
+                        "inverse-on-surface": "#2f3034",
+                        "inverse-primary": "#a23f00",
+                        "on-secondary": "#303130",
+                        "on-primary-container": "#561e00",
+                        "surface-bright": "#37393d",
+                        "error": "#ffb4ab",
+                        "on-surface": "#e2e2e6",
+                        "tertiary": "#bdc8ce",
+                        "on-primary-fixed": "#351000",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed-variant": "#464746",
+                        "on-secondary-container": "#b5b5b3",
+                        "surface-container": "#1e2023",
+                        "on-tertiary-container": "#273136",
+                        "primary-fixed": "#ffdbcd",
+                        "surface": "#111316",
+                        "secondary-fixed-dim": "#c7c6c4",
+                        "secondary-fixed": "#e3e2e0",
+                        "error-container": "#93000a",
+                        "outline-variant": "#5a4136",
+                        "on-tertiary": "#283237",
+                        "on-surface-variant": "#e3bfb1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "border-width-thick": "3px",
+                        "unit": "8px",
+                        "gutter": "16px",
+                        "border-width-thin": "1px",
+                        "container-margin": "32px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Space Grotesk"],
+                        "mono-data": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "h3": ["24px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hardened-button {
+            box-shadow: 3px 3px 0px 0px #e2e2e6;
+        }
+        .hardened-button:active {
+            transform: translate(2px, 2px);
+            box-shadow: 1px 1px 0px 0px #e2e2e6;
+        }
+        .vault-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-6 py-4 border-b-2 border-zinc-800 bg-zinc-950 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#FF6700]" data-icon="lock_person">lock_person</span>
+<h1 class="text-xl font-black text-[#FF6700] tracking-widest font-['Space_Grotesk'] uppercase">CHAINSAFE</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-widest text-zinc-500 hover:text-[#FF6700] transition-colors" href="#">VAULT</a>
+<a class="font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-widest text-[#FF6700]" href="#">SIGNATORIES</a>
+<a class="font-['Space_Grotesk'] text-[12px] font-bold uppercase tracking-widest text-zinc-500 hover:text-[#FF6700] transition-colors" href="#">POLICIES</a>
+</nav>
+<span class="material-symbols-outlined text-[#FF6700] cursor-pointer hover:bg-zinc-800 p-2 transition-colors active:scale-95 duration-75" data-icon="emergency_home">emergency_home</span>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden md:flex flex-col gap-2 p-6 h-full w-80 border-r-4 border-zinc-800 bg-zinc-950 sticky top-20">
+<div class="mb-8 p-4 bg-zinc-900 border border-zinc-800">
+<div class="flex items-center gap-3 mb-3">
+<div class="w-10 h-10 bg-zinc-800 flex items-center justify-center border border-[#FF6700]">
+<span class="material-symbols-outlined text-[#FF6700]" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-['Space_Grotesk'] font-bold uppercase text-on-surface text-sm">ADMIN_0821</p>
+<p class="text-[10px] text-zinc-500 font-bold uppercase">Multi-Sig Level 3</p>
+</div>
+</div>
+<div class="py-1 px-2 bg-zinc-800 inline-block">
+<p class="text-[9px] font-black text-[#FF6700] tracking-tighter uppercase">ACTIVE_SECURE</p>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 p-3 font-['Space_Grotesk'] font-bold uppercase text-[#FF6700] bg-zinc-900 border-l-4 border-[#FF6700] transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                    SECURITY_LEVEL
+                </a>
+<a class="flex items-center gap-3 p-3 font-['Space_Grotesk'] font-bold uppercase text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+                    NODES
+                </a>
+<a class="flex items-center gap-3 p-3 font-['Space_Grotesk'] font-bold uppercase text-zinc-400 hover:text-white hover:bg-zinc-800 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+                    POLICIES
+                </a>
+<div class="mt-auto pt-8">
+<a class="flex items-center gap-3 p-3 font-['Space_Grotesk'] font-bold uppercase text-zinc-400 hover:text-error hover:bg-zinc-800 transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                        LOGOUT
+                    </a>
+</div>
+</nav>
+</aside>
+<!-- Content Canvas -->
+<main class="flex-1 p-8 md:p-12 bg-surface-dim">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="h-2 w-2 bg-primary-container inline-block"></span>
+<span class="font-label-caps text-on-surface-variant uppercase tracking-[0.2em]">Institutional Management</span>
+</div>
+<h2 class="font-h1 text-h1 text-on-surface tracking-tighter uppercase">SIGNATORIES</h2>
+</div>
+<button class="hardened-button bg-primary-container text-on-primary-container font-label-caps py-4 px-8 uppercase flex items-center gap-3 border border-zinc-900">
+<span class="material-symbols-outlined" data-icon="person_add">person_add</span>
+                        Authorize New Signer
+                    </button>
+</div>
+<!-- Industrial List View -->
+<section class="border-t-4 border-zinc-800">
+<!-- List Header -->
+<div class="vault-grid py-4 px-6 bg-zinc-950 border-x border-zinc-800 uppercase font-label-caps text-zinc-500 tracking-widest text-[10px]">
+<div class="col-span-1">Status</div>
+<div class="col-span-4">Authorized Entity</div>
+<div class="col-span-2">Security Level</div>
+<div class="col-span-3">Key Identifier</div>
+<div class="col-span-2 text-right">Actions</div>
+</div>
+<!-- List Items -->
+<div class="flex flex-col">
+<!-- Signer Row 1 -->
+<div class="vault-grid items-center py-6 px-6 bg-surface-container border-b-2 border-zinc-800 border-x border-zinc-800 hover:bg-surface-container-high transition-colors group">
+<div class="col-span-1">
+<div class="w-4 h-4 bg-green-500 border-2 border-zinc-900" title="Active"></div>
+</div>
+<div class="col-span-4">
+<p class="font-mono-data text-on-surface text-lg font-bold">JONATHAN_VANCE_SEC</p>
+<p class="text-xs text-zinc-500 font-medium">Principal Guardian • Institutional</p>
+</div>
+<div class="col-span-2">
+<div class="inline-flex items-center gap-1 bg-zinc-900 px-2 py-1 border border-zinc-800">
+<span class="text-[10px] font-black text-[#FF6700] uppercase">Tier_01</span>
+</div>
+</div>
+<div class="col-span-3">
+<code class="font-mono text-xs text-zinc-400">HSM-8821-X99-A012</code>
+</div>
+<div class="col-span-2 flex justify-end gap-4">
+<button class="text-zinc-500 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="text-zinc-500 hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</button>
+</div>
+</div>
+<!-- Signer Row 2 -->
+<div class="vault-grid items-center py-6 px-6 bg-surface-container border-b-2 border-zinc-800 border-x border-zinc-800 hover:bg-surface-container-high transition-colors group">
+<div class="col-span-1">
+<div class="w-4 h-4 bg-primary-container border-2 border-zinc-900" title="Pending Verification"></div>
+</div>
+<div class="col-span-4">
+<p class="font-mono-data text-on-surface text-lg font-bold">SARAH_K_NODEMASTER</p>
+<p class="text-xs text-zinc-500 font-medium">Secondary Signer • External Audit</p>
+</div>
+<div class="col-span-2">
+<div class="inline-flex items-center gap-1 bg-zinc-900 px-2 py-1 border border-zinc-800">
+<span class="text-[10px] font-black text-zinc-400 uppercase">Tier_02</span>
+</div>
+</div>
+<div class="col-span-3">
+<code class="font-mono text-xs text-zinc-400">HSM-0192-P04-B449</code>
+</div>
+<div class="col-span-2 flex justify-end gap-4">
+<button class="text-zinc-500 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="text-zinc-500 hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</button>
+</div>
+</div>
+<!-- Signer Row 3 -->
+<div class="vault-grid items-center py-6 px-6 bg-surface-container border-b-2 border-zinc-800 border-x border-zinc-800 hover:bg-surface-container-high transition-colors group">
+<div class="col-span-1">
+<div class="w-4 h-4 bg-zinc-700 border-2 border-zinc-900" title="Disabled"></div>
+</div>
+<div class="col-span-4">
+<p class="font-mono-data text-zinc-500 text-lg font-bold line-through">MARCUS_TREVOR_OPS</p>
+<p class="text-xs text-zinc-600 font-medium italic">Decommissioned 2023-11-12</p>
+</div>
+<div class="col-span-2">
+<div class="inline-flex items-center gap-1 bg-zinc-900 px-2 py-1 border border-zinc-800">
+<span class="text-[10px] font-black text-zinc-600 uppercase">Tier_03</span>
+</div>
+</div>
+<div class="col-span-3">
+<code class="font-mono text-xs text-zinc-600">--- REVOKED ---</code>
+</div>
+<div class="col-span-2 flex justify-end gap-4">
+<button class="text-zinc-500 hover:text-primary-container transition-colors">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+<button class="text-zinc-700 cursor-not-allowed">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</button>
+</div>
+</div>
+<!-- Signer Row 4 -->
+<div class="vault-grid items-center py-6 px-6 bg-surface-container border-b-4 border-zinc-800 border-x border-zinc-800 hover:bg-surface-container-high transition-colors group">
+<div class="col-span-1">
+<div class="w-4 h-4 bg-green-500 border-2 border-zinc-900" title="Active"></div>
+</div>
+<div class="col-span-4">
+<p class="font-mono-data text-on-surface text-lg font-bold">AUTOMATED_CUSTODY_01</p>
+<p class="text-xs text-zinc-500 font-medium">System Oracle • Programmatic</p>
+</div>
+<div class="col-span-2">
+<div class="inline-flex items-center gap-1 bg-zinc-900 px-2 py-1 border border-zinc-800">
+<span class="text-[10px] font-black text-[#FF6700] uppercase">Tier_01</span>
+</div>
+</div>
+<div class="col-span-3">
+<code class="font-mono text-xs text-zinc-400">AWS-KMS-ENCLAVE-882</code>
+</div>
+<div class="col-span-2 flex justify-end gap-4">
+<button class="text-zinc-500 hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+<button class="text-zinc-500 hover:text-error transition-colors">
+<span class="material-symbols-outlined" data-icon="delete_forever">delete_forever</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- System Meta Info -->
+<div class="mt-12 p-8 border-2 border-zinc-800 bg-zinc-950 grid grid-cols-1 md:grid-cols-3 gap-8">
+<div class="border-l-2 border-primary-container pl-6">
+<p class="font-label-caps text-zinc-500 mb-1">M-OF-N QUORUM</p>
+<p class="font-h3 text-h3 text-on-surface uppercase">3 of 5 Required</p>
+</div>
+<div class="border-l-2 border-zinc-800 pl-6">
+<p class="font-label-caps text-zinc-500 mb-1">NETWORK LATENCY</p>
+<p class="font-h3 text-h3 text-on-surface uppercase">12ms Secure</p>
+</div>
+<div class="border-l-2 border-zinc-800 pl-6">
+<p class="font-label-caps text-zinc-500 mb-1">LAST AUDIT</p>
+<p class="font-h3 text-h3 text-on-surface uppercase">02 Hours Ago</p>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-stretch h-20 bg-zinc-950 border-t-4 border-zinc-800 z-50">
+<button class="flex flex-col items-center justify-center text-zinc-500 p-2 hover:bg-zinc-800 transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest">VAULT</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 p-2 hover:bg-zinc-800 transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest">ACTIVITY</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-zinc-900 text-[#FF6700] border-t-2 border-[#FF6700] p-2 hover:bg-zinc-800 transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="ink_pen">ink_pen</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest">SIGN</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 p-2 hover:bg-zinc-800 transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-widest">ASSETS</span>
+</button>
+</nav>
+<!-- FAB Contextual (Mobile Only) -->
+<div class="md:hidden fixed bottom-24 right-6">
+<button class="w-14 h-14 bg-primary-container text-on-primary-container shadow-2xl flex items-center justify-center border-2 border-zinc-900 active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

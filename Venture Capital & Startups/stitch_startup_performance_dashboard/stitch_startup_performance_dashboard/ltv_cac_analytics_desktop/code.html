@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GrowthMetrics | LTV/CAC Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-surface-variant": "#b9cacb",
+                        "inverse-surface": "#d4e4fa",
+                        "secondary": "#c6c4df",
+                        "on-surface": "#d4e4fa",
+                        "error-container": "#93000a",
+                        "outline": "#849495",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary-container": "#006a71",
+                        "surface-tint": "#00dbe7",
+                        "surface-container-low": "#0d1c2d",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#004f54",
+                        "inverse-on-surface": "#233143",
+                        "tertiary": "#faf6f6",
+                        "background": "#051424",
+                        "surface-container-high": "#1c2b3c",
+                        "primary-fixed": "#74f5ff",
+                        "on-primary-fixed": "#002022",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#00363a",
+                        "on-secondary-container": "#b8b6d0",
+                        "secondary-fixed-dim": "#c6c4df",
+                        "on-tertiary": "#313030",
+                        "secondary-container": "#47475d",
+                        "surface-container-highest": "#273647",
+                        "inverse-primary": "#00696f",
+                        "tertiary-container": "#dddad9",
+                        "surface-variant": "#273647",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#010f1f",
+                        "outline-variant": "#3a494b",
+                        "primary-container": "#00f2ff",
+                        "surface-container": "#122131",
+                        "primary": "#e1fdff",
+                        "on-secondary-fixed": "#1a1a2e",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-bright": "#2c3a4c",
+                        "on-tertiary-container": "#605f5f",
+                        "surface": "#051424",
+                        "secondary-fixed": "#e2e0fc",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-dim": "#051424",
+                        "on-secondary": "#2f2e43",
+                        "on-background": "#d4e4fa",
+                        "on-secondary-fixed-variant": "#45455b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "stack-lg": "32px",
+                        "gutter": "16px",
+                        "stack-md": "16px",
+                        "container-margin": "32px"
+                    },
+                    "fontFamily": {
+                        "body-main": ["Inter"],
+                        "metric-lg": ["Inter"],
+                        "label-xs": ["Inter"],
+                        "display-xl": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "data-mono": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "metric-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-xs": ["11px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(13, 28, 45, 0.6);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(0, 242, 255, 0.2);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.1);
+        }
+        .neon-glow-critical {
+            box-shadow: 0 0 20px rgba(255, 180, 171, 0.2);
+            border-color: rgba(255, 180, 171, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #1c2b3c; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-main selection:bg-primary-container selection:text-on-primary-container">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-slate-950 border-r border-indigo-500/30 flex flex-col z-[60]">
+<div class="px-6 py-8">
+<h1 class="text-cyan-400 font-black text-xl tracking-tighter uppercase font-headline-md">GrowthMetrics</h1>
+<p class="text-[10px] text-slate-500 font-label-xs mt-1">V2.0.4-Alpha</p>
+</div>
+<nav class="flex-1 px-4 space-y-1 mt-4">
+<a class="bg-indigo-500/10 text-cyan-400 border-l-2 border-cyan-400 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="insights">insights</span>
+                Analytics
+            </a>
+<a class="text-slate-500 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest hover:bg-indigo-500/5 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="payments">payments</span>
+                MRR
+            </a>
+<a class="text-slate-500 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest hover:bg-indigo-500/5 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="timer">timer</span>
+                Runway
+            </a>
+<a class="text-slate-500 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest hover:bg-indigo-500/5 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="groups">groups</span>
+                Cohorts
+            </a>
+<a class="text-slate-500 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest hover:bg-indigo-500/5 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="admin_panel_settings">admin_panel_settings</span>
+                Admin
+            </a>
+<a class="text-slate-500 flex items-center px-4 py-3 font-label-xs uppercase tracking-widest hover:bg-indigo-500/5 hover:text-cyan-200 transition-all" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="help">help</span>
+                FAQ
+            </a>
+</nav>
+<div class="p-4 mt-auto">
+<button class="w-full bg-primary-container text-on-primary-fixed py-3 font-label-xs uppercase tracking-widest rounded-sm hover:brightness-110 transition-all">
+                New Report
+            </button>
+</div>
+</aside>
+<div class="ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-slate-950/60 backdrop-blur-md sticky top-0 z-50 border-b border-indigo-500/30 h-16 flex justify-between items-center px-6">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-full max-w-md">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm" data-icon="search">search</span>
+<input class="bg-surface-container-lowest border border-indigo-500/20 text-xs text-on-surface-variant w-full pl-10 pr-4 py-2 focus:ring-1 focus:ring-cyan-500/50 outline-none transition-all font-data-mono" placeholder="Global metrics search..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-3">
+<button class="text-slate-400 hover:text-cyan-300 transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-cyan-300 transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-cyan-400/30">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A close-up professional profile headshot of a software engineer in a high-tech office setting. The background shows blurred holographic terminal displays with glowing cyan lines. The lighting is cold and clinical, with subtle blue rim lighting on the subject. Minimalist and corporate futuristic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2dCW_ak2jduAJOZtpgiGe3VZ70TCRWm3vBpg9UlFjn-zROmKEZG0SJpeTWjX_CiNyYEvltorsHre5ZE_86AvlY3_11mFQBsg7gEE_G_A-_IcZEfDZPc4wJ6Gc08q9HBuVwd99nwUr3V6H9KRTbiPC8X48LKbf8bLq0LjCxNxnWb6nor4C5U7pyF67itlqi5Dhf2drKRm3wXJLk050V-SaLpGuQOgPlItLxKJ8C8zUgbHZWKXZdQf0rL1S8VUb0UvXrCNpO1ki9vk"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-1 p-8 space-y-8 max-w-[1600px]">
+<!-- Hero Stats Row -->
+<div class="grid grid-cols-12 gap-gutter">
+<div class="col-span-12 lg:col-span-8 flex flex-col justify-center">
+<h2 class="font-display-xl text-display-xl text-primary leading-none uppercase tracking-tighter">LTV/CAC Engine</h2>
+<p class="text-on-surface-variant text-body-main mt-4 max-w-2xl">Visualizing unit economic efficiency across customer segments. Real-time parity analysis between lifetime value generation and acquisition expenditure.</p>
+</div>
+<!-- Payback Period Widget -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 border-l-4 border-l-cyan-400 neon-glow">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-xs text-cyan-400 uppercase tracking-widest">Payback Period</span>
+<span class="material-symbols-outlined text-cyan-400" data-icon="speed">speed</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-display-xl text-primary">5.2</span>
+<span class="text-on-surface-variant text-headline-md font-headline-md">Months</span>
+</div>
+<div class="mt-4 bg-surface-container-highest h-1 rounded-full overflow-hidden">
+<div class="bg-cyan-400 h-full w-[82%] shadow-[0_0_10px_rgba(0,242,255,0.5)]"></div>
+</div>
+<div class="mt-2 flex justify-between text-[10px] font-data-mono text-slate-500 uppercase">
+<span>Optimal: &lt; 6.0</span>
+<span class="text-cyan-400">Current: 5.2</span>
+</div>
+</div>
+</div>
+<!-- Main Charts Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- LTV vs CAC Trend Chart -->
+<div class="col-span-12 lg:col-span-9 glass-card p-6 min-h-[400px] flex flex-col">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-4">
+<h3 class="font-headline-md text-headline-md text-primary">Efficiency Trends</h3>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-[10px] font-label-xs text-cyan-400 border border-cyan-400/30 px-2 py-0.5 rounded-full uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400"></span> LTV
+                                </span>
+<span class="flex items-center gap-1 text-[10px] font-label-xs text-secondary border border-secondary/30 px-2 py-0.5 rounded-full uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> CAC
+                                </span>
+</div>
+</div>
+<select class="bg-surface-container-low border-none text-[10px] font-label-xs text-on-surface uppercase focus:ring-0 cursor-pointer">
+<option>Last 12 Months</option>
+<option>Quarterly</option>
+</select>
+</div>
+<!-- Chart Placeholder Visual -->
+<div class="flex-1 flex items-end gap-2 px-2 relative">
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-t border-cyan-400/50 w-full"></div>
+<div class="border-t border-cyan-400/50 w-full"></div>
+<div class="border-t border-cyan-400/50 w-full"></div>
+<div class="border-t border-cyan-400/50 w-full"></div>
+</div>
+<!-- Mock Chart Bars -->
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[45%] rounded-t-sm relative group">
+<div class="absolute -top-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 px-2 py-1 rounded text-[10px] border border-cyan-400/50">LTV: $4.2k</div>
+</div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[55%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[28%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[32%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[35%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[75%] rounded-t-sm shadow-[0_0_20px_rgba(0,242,255,0.2)]"></div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[38%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-cyan-400/20 to-cyan-400/60 h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-gradient-to-t from-secondary/20 to-secondary/60 h-[40%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- LTV/CAC Ratio Card -->
+<div class="col-span-12 lg:col-span-3 glass-card p-6 flex flex-col items-center justify-center text-center">
+<span class="font-label-xs text-slate-500 uppercase tracking-widest mb-2">Overall Ratio</span>
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-cyan-400 drop-shadow-[0_0_8px_rgba(0,242,255,0.5)]" cx="80" cy="80" fill="transparent" r="70" stroke="currentColor" stroke-dasharray="440" stroke-dashoffset="132" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-display-xl font-display-xl text-primary leading-none">3.4x</span>
+<span class="text-[10px] font-label-xs text-cyan-400 mt-1 uppercase">Health: Good</span>
+</div>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-6 px-4">Ratio increased by <span class="text-cyan-400">12%</span> since last quarter due to improved churn retention.</p>
+</div>
+</div>
+<!-- Unit Economics Table -->
+<section class="glass-card overflow-hidden">
+<div class="px-6 py-4 border-b border-indigo-500/10 flex justify-between items-center bg-surface-container-low/30">
+<h3 class="font-headline-md text-headline-md text-primary">Unit Economics Detail</h3>
+<div class="flex gap-4">
+<button class="text-slate-400 hover:text-cyan-300 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+</button>
+<button class="text-slate-400 hover:text-cyan-300 transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead class="bg-slate-950/40">
+<tr class="text-[10px] font-label-xs uppercase tracking-widest text-slate-500">
+<th class="px-6 py-4 border-b border-indigo-500/10">Segment</th>
+<th class="px-6 py-4 border-b border-indigo-500/10">Avg CAC</th>
+<th class="px-6 py-4 border-b border-indigo-500/10">LTV (Predicted)</th>
+<th class="px-6 py-4 border-b border-indigo-500/10">Gross Margin</th>
+<th class="px-6 py-4 border-b border-indigo-500/10">Efficiency Index</th>
+<th class="px-6 py-4 border-b border-indigo-500/10">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-indigo-500/10">
+<tr class="hover:bg-indigo-500/5 group transition-colors cursor-default">
+<td class="px-6 py-4 font-data-mono text-sm border-l-2 border-transparent group-hover:border-cyan-400 transition-all">Enterprise Alpha</td>
+<td class="px-6 py-4 font-data-mono text-sm">$2,450.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">$12,800.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">84.2%</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-container-highest h-1 rounded-full">
+<div class="bg-cyan-400 h-full w-[90%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-400/10 text-[10px] font-bold text-cyan-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_rgba(0,242,255,0.8)]"></span> Robust
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-indigo-500/5 group transition-colors cursor-default">
+<td class="px-6 py-4 font-data-mono text-sm border-l-2 border-transparent group-hover:border-cyan-400 transition-all">Mid-Market B</td>
+<td class="px-6 py-4 font-data-mono text-sm">$840.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">$2,100.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">76.5%</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-container-highest h-1 rounded-full">
+<div class="bg-cyan-400 h-full w-[45%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary/10 text-[10px] font-bold text-secondary uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Neutral
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-indigo-500/5 group transition-colors cursor-default">
+<td class="px-6 py-4 font-data-mono text-sm border-l-2 border-transparent group-hover:border-cyan-400 transition-all">Self-Serve Core</td>
+<td class="px-6 py-4 font-data-mono text-sm">$125.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">$320.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">62.0%</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-container-highest h-1 rounded-full">
+<div class="bg-error/30 h-full w-[25%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-error-container/20 text-[10px] font-bold text-error uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-error shadow-[0_0_5px_rgba(255,180,171,0.8)]"></span> Critical
+                                    </span>
+</td>
+</tr>
+<tr class="hover:bg-indigo-500/5 group transition-colors cursor-default">
+<td class="px-6 py-4 font-data-mono text-sm border-l-2 border-transparent group-hover:border-cyan-400 transition-all">Legacy Enterprise</td>
+<td class="px-6 py-4 font-data-mono text-sm">$1,100.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">$6,500.00</td>
+<td class="px-6 py-4 font-data-mono text-sm">81.1%</td>
+<td class="px-6 py-4">
+<div class="w-24 bg-surface-container-highest h-1 rounded-full">
+<div class="bg-cyan-400 h-full w-[80%]"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-400/10 text-[10px] font-bold text-cyan-400 uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_rgba(0,242,255,0.8)]"></span> Robust
+                                    </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-950/80 border-t border-indigo-500/20 px-8 py-4 w-full flex justify-between items-center mt-auto">
+<span class="text-slate-600 font-label-xs uppercase tracking-widest text-[10px]">© 2024 GrowthMetrics Systems. Terminal v4.2</span>
+<div class="flex gap-6">
+<a class="text-slate-600 hover:text-cyan-300 font-label-xs uppercase tracking-widest text-[10px] transition-opacity duration-300" href="#">FAQ</a>
+<a class="text-slate-600 hover:text-cyan-300 font-label-xs uppercase tracking-widest text-[10px] transition-opacity duration-300" href="#">Support</a>
+<a class="text-slate-600 hover:text-cyan-300 font-label-xs uppercase tracking-widest text-[10px] transition-opacity duration-300" href="#">Documentation</a>
+<a class="text-slate-600 hover:text-cyan-300 font-label-xs uppercase tracking-widest text-[10px] transition-opacity duration-300" href="#">Security</a>
+</div>
+</footer>
+</div>
+</body></html>

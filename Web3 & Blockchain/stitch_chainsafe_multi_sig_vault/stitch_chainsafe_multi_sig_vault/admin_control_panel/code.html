@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ChainSafe Vault Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800;900&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#351000",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#282a2d",
+                        "primary-fixed": "#ffdbcd",
+                        "background": "#111316",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "inverse-on-surface": "#2f3034",
+                        "tertiary": "#bdc8ce",
+                        "secondary-fixed-dim": "#c7c6c4",
+                        "on-tertiary": "#283237",
+                        "on-secondary-container": "#b5b5b3",
+                        "on-primary": "#571e00",
+                        "on-surface": "#e2e2e6",
+                        "error-container": "#93000a",
+                        "secondary": "#c7c6c4",
+                        "tertiary-fixed": "#d9e4ea",
+                        "on-surface-variant": "#e3bfb1",
+                        "inverse-surface": "#e2e2e6",
+                        "surface-container-low": "#1a1c1f",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#ffb595",
+                        "outline": "#aa8a7d",
+                        "on-tertiary-fixed": "#131d22",
+                        "on-primary-container": "#561e00",
+                        "surface": "#111316",
+                        "surface-bright": "#37393d",
+                        "on-tertiary-container": "#273136",
+                        "on-secondary-fixed": "#1b1c1b",
+                        "tertiary-fixed-dim": "#bdc8ce",
+                        "on-secondary-fixed-variant": "#464746",
+                        "on-background": "#e2e2e6",
+                        "secondary-fixed": "#e3e2e0",
+                        "on-tertiary-fixed-variant": "#3e484d",
+                        "surface-dim": "#111316",
+                        "on-secondary": "#303130",
+                        "surface-container-lowest": "#0c0e11",
+                        "tertiary-container": "#8e999f",
+                        "surface-variant": "#333538",
+                        "primary-fixed-dim": "#ffb595",
+                        "on-error": "#690005",
+                        "secondary-container": "#464746",
+                        "surface-container-highest": "#333538",
+                        "inverse-primary": "#a23f00",
+                        "primary": "#ffb595",
+                        "surface-container": "#1e2023",
+                        "primary-container": "#ff6700",
+                        "outline-variant": "#5a4136"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "border-width-thick": "3px",
+                        "gutter": "16px",
+                        "container-margin": "32px",
+                        "border-width-thin": "1px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-data": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "h3": ["24px", {"lineHeight": "1.2", "letterSpacing": "0em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .block-shadow {
+            box-shadow: 4px 4px 0px 0px #e2e2e6;
+        }
+        .inset-panel {
+            box-shadow: inset 0px 2px 4px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- TopNavBar Shell -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-slate-900 dark:bg-zinc-950 border-b-4 border-zinc-800 dark:border-zinc-800 font-['Space_Grotesk'] tracking-tight">
+<div class="flex items-center gap-8">
+<div class="text-2xl font-black uppercase tracking-tighter text-orange-600 dark:text-orange-500">ChainSafe</div>
+<nav class="hidden md:flex gap-6 items-center">
+<span class="text-zinc-400 font-medium px-2 py-1 border-b-2 border-transparent">Network Status: Secure</span>
+<span class="text-zinc-400 font-medium px-2 py-1 border-b-2 border-transparent">Latency: 12ms</span>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-zinc-400 hover:bg-zinc-800 dark:hover:bg-zinc-900 hover:text-white transition-colors duration-150 ease-in-out">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-zinc-400 hover:bg-zinc-800 dark:hover:bg-zinc-900 hover:text-white transition-colors duration-150 ease-in-out">
+<span class="material-symbols-outlined">security</span>
+</button>
+<button class="p-2 text-zinc-400 hover:bg-zinc-800 dark:hover:bg-zinc-900 hover:text-white transition-colors duration-150 ease-in-out">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="ml-4 flex items-center gap-3 border-l border-zinc-800 pl-4">
+<div class="text-right hidden sm:block">
+<p class="text-[10px] font-bold text-orange-500 uppercase tracking-widest">Administrator</p>
+<p class="text-xs text-on-surface">SYS_ADMIN_01</p>
+</div>
+<img alt="Administrator Avatar" class="w-8 h-8 rounded bg-zinc-800" data-alt="A high-contrast profile avatar of a cybersecurity professional, depicted as a dark silhouette against a glowing orange digital interface. The style is industrial and minimalist, using a color palette of gunmetal grey, deep black, and safety orange. The mood is serious and professional, emphasizing the authoritative role of a system administrator in a secure facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAT8cqiY2EaI6imcDevk5WxWPd9GYpFfoU1Kw2j0kpkh1OxW1o73QEHEj8DlTlLu59mQsEB_iVD_M8l2yXpdawCHks9YHSB5p2s-E0Wzl6M5JhcMowptvudAJnnnCICspXCF0HpYQiLDn4y35rbKXG0ePuXiwO-hPGJX6QzV7nKg7UKBy18xufvm4ViRcJQjEsV6xbTYmRRqeMkpqjZkPtmc1upbNdJRDtC1wSUwQM61maFGOmGrf0r0HMCBFQW9BzXvCYi88RVYI4"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 flex flex-col z-40 bg-zinc-900 dark:bg-black border-r-4 border-zinc-800 dark:border-zinc-900">
+<div class="p-6 border-b border-zinc-800">
+<p class="text-orange-500 font-black font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest">VAULT TERMINAL</p>
+<p class="text-[10px] text-zinc-500 font-mono">V.2.0.4-STABLE</p>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<a class="flex items-center gap-4 bg-zinc-800 text-orange-500 border-l-4 border-orange-500 px-4 py-3 ml-[-4px] active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span>Admin Control</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-3 hover:bg-zinc-800/50 active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span>Transaction Queue</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-3 hover:bg-zinc-800/50 active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span>Signatories</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-3 hover:bg-zinc-800/50 active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span>Asset Overview</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-3 hover:bg-zinc-800/50 active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">security_update_good</span>
+<span>Security Logs</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-3 hover:bg-zinc-800/50 active:translate-x-1 transition-transform font-['Space_Grotesk'] uppercase text-xs font-bold tracking-widest" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span>Community</span>
+</a>
+</nav>
+<div class="p-4 border-t border-zinc-800 flex flex-col gap-2">
+<button class="w-full py-3 bg-primary-container text-on-primary-fixed font-bold text-xs uppercase tracking-widest block-shadow active:translate-y-1 active:translate-x-1 active:shadow-none transition-all">
+                INITIATE TRANSACTION
+            </button>
+</div>
+<div class="p-4 border-t border-zinc-800">
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-2 text-xs font-bold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">help_center</span>
+<span>Help &amp; FAQ</span>
+</a>
+<a class="flex items-center gap-4 text-zinc-500 hover:text-zinc-200 px-4 py-2 text-xs font-bold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-8 h-[calc(100vh-64px)] overflow-y-auto bg-background">
+<div class="max-w-7xl mx-auto space-y-gutter">
+<!-- Page Header Section -->
+<div class="flex justify-between items-end mb-8 border-b-3 border-zinc-800 pb-4">
+<div>
+<h1 class="font-h1 text-h1 text-on-surface uppercase mb-1">COMMAND CENTER</h1>
+<p class="font-mono-data text-mono-data text-zinc-500 uppercase tracking-[0.2em]">GLOBAL NETWORK PERIMETER &amp; SECURITY CORE</p>
+</div>
+<div class="flex gap-4">
+<div class="px-4 py-2 bg-surface-container-low border-border-width-thin border-zinc-800 flex items-center gap-3">
+<div class="w-3 h-3 bg-green-500 rounded-sm"></div>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">SYSTEMS NOMINAL</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Network Health (Primary Bento) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container border-2 border-zinc-800 p-6 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h3 text-h3 text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-orange-500">hub</span>
+                            NETWORK HEALTH
+                        </h3>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-zinc-900 border border-zinc-700 font-mono-data text-[10px] text-zinc-400">REAL-TIME TELEMETRY</span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+<div class="p-4 bg-zinc-900/50 border border-zinc-800 inset-panel">
+<p class="font-label-caps text-label-caps text-zinc-500 uppercase mb-2">Active Nodes</p>
+<p class="font-h2 text-h2 text-orange-500">1,204 <span class="text-sm font-normal text-zinc-600">/ 1,250</span></p>
+</div>
+<div class="p-4 bg-zinc-900/50 border border-zinc-800 inset-panel">
+<p class="font-label-caps text-label-caps text-zinc-500 uppercase mb-2">Avg Latency</p>
+<p class="font-h2 text-h2 text-orange-500">12.4 <span class="text-sm font-normal text-zinc-600">MS</span></p>
+</div>
+<div class="p-4 bg-zinc-900/50 border border-zinc-800 inset-panel">
+<p class="font-label-caps text-label-caps text-zinc-500 uppercase mb-2">Sync Status</p>
+<p class="font-h2 text-h2 text-green-500">99.8%</p>
+</div>
+</div>
+<div class="h-48 w-full bg-zinc-950 border border-zinc-800 relative p-4 flex flex-col justify-end">
+<!-- Simulated Data Graph -->
+<div class="absolute inset-0 opacity-20 pointer-events-none" style="background-image: linear-gradient(to right, #333 1px, transparent 1px), linear-gradient(to bottom, #333 1px, transparent 1px); background-size: 20px 20px;"></div>
+<div class="flex items-end gap-1 h-32">
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 60%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 65%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 70%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 55%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 80%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 90%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 85%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 75%"></div>
+<div class="flex-1 bg-orange-600/30 border-t border-orange-500" style="height: 80%"></div>
+</div>
+<div class="flex justify-between mt-2 font-mono-data text-[10px] text-zinc-600">
+<span>00:00 UTC</span>
+<span>06:00 UTC</span>
+<span>12:00 UTC</span>
+<span>18:00 UTC</span>
+<span>NOW</span>
+</div>
+</div>
+</div>
+<!-- Emergency Actions (Right Sidebar Bento) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border-2 border-zinc-800 p-6 flex-1">
+<h3 class="font-h3 text-h3 text-on-surface mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-red-500">emergency</span>
+                            QUICK ACTIONS
+                        </h3>
+<div class="space-y-4">
+<button class="w-full flex items-center justify-between p-4 bg-error-container/20 border-2 border-error-container text-error hover:bg-error-container/30 transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-caps text-label-caps">EMERGENCY LOCKDOWN</span>
+</div>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-zinc-900 border-2 border-zinc-800 text-on-surface hover:border-orange-500 transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">upgrade</span>
+<span class="font-label-caps text-label-caps">PROTOCOL UPDATE</span>
+</div>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+<button class="w-full flex items-center justify-between p-4 bg-zinc-900 border-2 border-zinc-800 text-on-surface hover:border-orange-500 transition-all group">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined">refresh</span>
+<span class="font-label-caps text-label-caps">REKEY VALIDATORS</span>
+</div>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+<!-- Security Thresholds -->
+<div class="bg-surface-container border-2 border-zinc-800 p-6">
+<h3 class="font-h3 text-h3 text-on-surface mb-4">SECURITY</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] text-zinc-500 mb-2 uppercase">
+<span>M-of-N Threshold</span>
+<span class="text-orange-500">7 / 10 ACTIVE</span>
+</div>
+<div class="flex gap-1 h-3">
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-orange-600 border border-orange-400"></div>
+<div class="flex-1 bg-zinc-800 border border-zinc-700"></div>
+<div class="flex-1 bg-zinc-800 border border-zinc-700"></div>
+<div class="flex-1 bg-zinc-800 border border-zinc-700"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- High-Level Alerts (Full Width Bento) -->
+<div class="col-span-12 bg-surface-container border-2 border-zinc-800">
+<div class="px-6 py-4 border-b border-zinc-800 bg-zinc-900/50 flex justify-between items-center">
+<h3 class="font-h3 text-[18px] text-on-surface flex items-center gap-2 uppercase tracking-widest">
+<span class="material-symbols-outlined text-orange-500">warning</span>
+                            Critical Alerts
+                        </h3>
+<button class="text-xs font-bold text-zinc-500 hover:text-white uppercase tracking-widest">Archive All</button>
+</div>
+<div class="divide-y border-zinc-800">
+<div class="grid grid-cols-12 p-4 hover:bg-zinc-800/30 transition-colors group">
+<div class="col-span-1 flex items-start pt-1">
+<span class="w-3 h-3 bg-red-600 border border-red-400 block" title="Critical Priority"></span>
+</div>
+<div class="col-span-8">
+<p class="font-mono-data text-on-surface uppercase mb-1">LATENCY_THRESHOLD_EXCEEDED: US-EAST-1</p>
+<p class="text-xs text-zinc-500">Intermittent connectivity issues detected on validator cluster #41. Network impact: Low.</p>
+</div>
+<div class="col-span-2 flex items-center">
+<span class="font-mono-data text-[10px] text-zinc-600 uppercase">12:45:02 UTC</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="opacity-0 group-hover:opacity-100 material-symbols-outlined text-zinc-500 hover:text-white transition-opacity">more_vert</button>
+</div>
+</div>
+<div class="grid grid-cols-12 p-4 hover:bg-zinc-800/30 transition-colors group">
+<div class="col-span-1 flex items-start pt-1">
+<span class="w-3 h-3 bg-orange-600 border border-orange-400 block" title="Medium Priority"></span>
+</div>
+<div class="col-span-8">
+<p class="font-mono-data text-on-surface uppercase mb-1">PROPOSED_PROTOCOL_UPGRADE: V.2.1.0</p>
+<p class="text-xs text-zinc-500">Signatory consensus reached 6/10. Pending 1 final signature for automatic execution.</p>
+</div>
+<div class="col-span-2 flex items-center">
+<span class="font-mono-data text-[10px] text-zinc-600 uppercase">11:20:55 UTC</span>
+</div>
+<div class="col-span-1 flex justify-end">
+<button class="opacity-0 group-hover:opacity-100 material-symbols-outlined text-zinc-500 hover:text-white transition-opacity">more_vert</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Nodes Map Section -->
+<div class="col-span-12 lg:col-span-12 h-96 bg-surface-container-low border-2 border-zinc-800 relative overflow-hidden flex flex-col">
+<div class="absolute inset-0 z-0 grayscale contrast-125 opacity-30">
+<img class="w-full h-full object-cover" data-alt="A stylized, architectural digital map of the world with glowing circuit-like connections between major global financial hubs. The background is a deep gunmetal grey with subtle grid patterns. Connections are rendered in thin, sharp safety orange lines, suggesting a secure global network. The mood is highly technical, authoritative, and secure, reminiscent of a high-tech surveillance or command center interface." data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC0msJJD2xGhS6rqBhOu7trVXVjqLbqPdF3y6noq7fpKI2p0klLop8DwDdBhCmaHN895no4Mx8gXn5lvfWlITEXW4ECg8GPD-qAXMKtrfpmxFjKBeRAlnC8ZV3oei4at3pUmAnwcA2LHRSUyjuXi0hhQqFkJa-lOaI3CELTiDyoT447rDa6URMEq2u8QwLWOfHxfq-w9MqcxM5HBR0YZB-QQrCJslUSU8ifikLSNHSxeSrqS4vN7UizGAibc5wlNJa_4bmjTtMpESs"/>
+</div>
+<div class="relative z-10 p-6 flex flex-col h-full">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">NODE DISTRIBUTION</h3>
+<p class="font-label-caps text-label-caps text-orange-500">GLOBAL COVERAGE: ACTIVE</p>
+</div>
+<div class="bg-zinc-950/80 border border-zinc-800 p-4 block-shadow">
+<div class="flex items-center gap-4 mb-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs font-bold uppercase tracking-widest">Americas: 450</span>
+</div>
+<div class="flex items-center gap-4 mb-2">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-xs font-bold uppercase tracking-widest">Europe: 380</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-2 h-2 rounded-full bg-orange-500"></div>
+<span class="text-xs font-bold uppercase tracking-widest">Asia: 374</span>
+</div>
+</div>
+</div>
+<div class="mt-auto flex gap-4">
+<div class="px-3 py-1 bg-zinc-900 border border-zinc-800 font-mono-data text-[10px] text-zinc-400">COORD: 34.0522° N, 118.2437° W</div>
+<div class="px-3 py-1 bg-zinc-900 border border-zinc-800 font-mono-data text-[10px] text-zinc-400">UPTIME: 99.998%</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</body></html>
