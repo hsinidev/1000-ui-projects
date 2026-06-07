@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARENA-OPS | Turf &amp; Facility Health</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed-dim": "#ffb693",
+                        "surface-dim": "#1d100a",
+                        "on-secondary": "#293041",
+                        "inverse-primary": "#a04100",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#3d2d26",
+                        "primary": "#ffb693",
+                        "on-tertiary-container": "#313131",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#f8ddd2",
+                        "on-tertiary": "#303030",
+                        "tertiary-fixed": "#e4e2e1",
+                        "primary-container": "#ff6b00",
+                        "surface-container-lowest": "#170b06",
+                        "outline": "#a98a7d",
+                        "on-secondary-fixed": "#151b2b",
+                        "on-primary": "#561f00",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "surface-container": "#2b1c16",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#9a9999",
+                        "tertiary": "#c8c6c6",
+                        "surface": "#1d100a",
+                        "surface-container-highest": "#41312a",
+                        "secondary": "#c0c6db",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "secondary-container": "#42495a",
+                        "surface-variant": "#41312a",
+                        "on-surface-variant": "#e2bfb0",
+                        "surface-bright": "#46362e",
+                        "surface-tint": "#ffb693",
+                        "on-background": "#f8ddd2",
+                        "surface-container-high": "#362720",
+                        "primary-fixed": "#ffdbcc",
+                        "on-primary-container": "#572000",
+                        "on-surface": "#f8ddd2",
+                        "background": "#1d100a",
+                        "secondary-fixed": "#dce2f8",
+                        "surface-container-low": "#261812",
+                        "on-secondary-container": "#b2b8cd",
+                        "secondary-fixed-dim": "#c0c6db",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "outline-variant": "#5a4136",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "on-primary-fixed": "#351000",
+                        "on-secondary-fixed-variant": "#404758"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-page": "32px",
+                        "stack-sm": "8px",
+                        "gutter": "16px",
+                        "container-padding": "20px",
+                        "unit": "4px",
+                        "stack-md": "16px",
+                        "stack-lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "display-xl": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "mono-data": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                -45deg,
+                #93000a,
+                #93000a 10px,
+                #1d100a 10px,
+                #1d100a 20px
+            );
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #1d100a; }
+        ::-webkit-scrollbar-thumb { background: #5a4136; border-radius: 3px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center px-margin-page h-20 w-full z-50 bg-background dark:bg-background border-b-2 border-outline-variant dark:border-outline-variant fixed top-0 left-0">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h1 class="font-headline-md text-headline-md font-bold uppercase tracking-wider text-primary">ARENA-OPS</h1>
+</div>
+<div class="flex items-center gap-stack-lg">
+<button class="p-2 hover:bg-secondary-container rounded-lg transition-colors duration-150">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+</button>
+<div class="hidden md:flex flex-col items-end">
+<span class="font-label-caps text-label-caps uppercase text-primary">COMMANDER ONE</span>
+<span class="text-[10px] text-on-surface-variant opacity-70">SECTOR 7 ALPHA</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation Shell (Hidden on Mobile) -->
+<aside class="fixed left-0 top-0 h-full w-80 z-[60] flex flex-col p-stack-lg bg-surface-container-high border-r-2 border-outline-variant hidden md:flex pt-24">
+<div class="flex items-center gap-stack-md mb-stack-lg p-stack-md bg-surface-container-highest rounded-lg">
+<div class="w-12 h-12 rounded bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="badge">badge</span>
+</div>
+<div>
+<p class="font-headline-lg text-[18px] text-primary tracking-widest leading-none">COMMANDER ONE</p>
+<p class="text-body-sm text-on-surface-variant">Sector 7 Alpha • <span class="text-primary">98% Live</span></p>
+</div>
+</div>
+<nav class="space-y-stack-sm">
+<a class="flex items-center gap-stack-md p-stack-md text-on-surface-variant hover:pl-6 transition-all duration-200 hover:bg-surface-variant rounded" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-body-md font-semibold">Incident Logs</span>
+</a>
+<a class="flex items-center gap-stack-md p-stack-md text-on-surface-variant hover:pl-6 transition-all duration-200 hover:bg-surface-variant rounded" href="#">
+<span class="material-symbols-outlined" data-icon="badge">badge</span>
+<span class="font-body-md font-semibold">Staff Roster</span>
+</a>
+<a class="flex items-center gap-stack-md p-stack-md bg-secondary-container text-on-secondary-container border-l-4 border-primary pl-6 transition-all duration-200 rounded" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-body-md font-semibold">Zone Presets</span>
+</a>
+<a class="flex items-center gap-stack-md p-stack-md text-on-surface-variant hover:pl-6 transition-all duration-200 hover:bg-surface-variant rounded" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-body-md font-semibold">Sensor History</span>
+</a>
+<a class="flex items-center gap-stack-md p-stack-md text-on-surface-variant hover:pl-6 transition-all duration-200 hover:bg-surface-variant rounded" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md font-semibold">Admin Tools</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-80 pt-20 pb-24 min-h-screen">
+<div class="p-margin-page">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-stack-lg gap-stack-md border-l-4 border-primary-container pl-stack-md">
+<div>
+<h2 class="font-display-xl text-display-xl tracking-tighter text-on-background">TURF &amp; FACILITY HEALTH</h2>
+<p class="font-mono-data text-on-surface-variant uppercase tracking-[0.2em]">MISSION CONTROL // SYSTEM STATUS: NOMINAL</p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="bg-primary-container text-on-primary-container px-gutter py-stack-sm font-label-caps text-label-caps uppercase rounded-sm hover:brightness-110 active:scale-95 transition-all">
+                        RUN DIAGNOSTICS
+                    </button>
+<button class="border border-outline-variant text-on-surface-variant px-gutter py-stack-sm font-label-caps text-label-caps uppercase rounded-sm hover:bg-surface-variant transition-all">
+                        EXPORT DATA
+                    </button>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Action Required / Critical Alerts -->
+<section class="col-span-12 lg:col-span-4 space-y-gutter">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-error rounded-full animate-pulse"></span> PRIORITY ALERTS
+                    </h3>
+<!-- Alert Card 1 -->
+<div class="bg-surface-container border-l-4 border-error p-stack-lg relative overflow-hidden group">
+<div class="absolute top-0 right-0 hazard-stripe w-24 h-6 opacity-20"></div>
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<span class="font-mono-data text-error text-[10px] bg-error-container/20 px-2 py-0.5 rounded">CRITICAL</span>
+</div>
+<h4 class="font-headline-md text-[18px] text-on-surface mb-stack-sm">SECTOR 4 PUMP FAILURE</h4>
+<p class="text-body-sm text-on-surface-variant mb-stack-md">Main irrigation pressure dropped below 15 PSI. Potential root zone hypoxia in high-traffic zones.</p>
+<button class="w-full bg-error text-on-error py-stack-sm font-label-caps text-label-caps uppercase hover:brightness-110">DISPATCH REPAIR</button>
+</div>
+<!-- Alert Card 2 -->
+<div class="bg-surface-container border-l-4 border-primary-container p-stack-lg group">
+<div class="flex justify-between items-start mb-stack-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="hvac">hvac</span>
+<span class="font-mono-data text-primary-container text-[10px] bg-primary-container/10 px-2 py-0.5 rounded">WARNING</span>
+</div>
+<h4 class="font-headline-md text-[18px] text-on-surface mb-stack-sm">HVAC FILTER CONGESTION</h4>
+<p class="text-body-sm text-on-surface-variant mb-stack-md">Unit 12B reporting 85% airflow restriction. Efficiency degradation detected.</p>
+<button class="w-full border border-primary-container text-primary-container py-stack-sm font-label-caps text-label-caps uppercase hover:bg-primary-container/10">SCHEDULE REPLACEMENT</button>
+</div>
+</section>
+<!-- Sensor Grid / Turf Health (Bento) -->
+<section class="col-span-12 lg:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-1 md:col-span-3">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">TURF SENSOR NETWORK</h3>
+</div>
+<!-- Soil Moisture Chart Placeholder -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low border border-outline-variant p-stack-lg flex flex-col justify-between min-h-[280px]">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">AVERAGE MOISTURE</p>
+<p class="font-display-xl text-primary leading-none">24.2%</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="water_drop">water_drop</span>
+</div>
+<div class="h-32 flex items-end gap-1">
+<div class="flex-1 bg-primary-container/20 h-[40%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[55%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[45%]"></div>
+<div class="flex-1 bg-primary-container h-[70%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[50%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[65%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[40%]"></div>
+<div class="flex-1 bg-primary-container h-[85%]"></div>
+</div>
+<p class="text-[10px] font-mono-data text-on-surface-variant uppercase text-center mt-stack-sm">24H HISTORICAL MOISTURE VARIANCE</p>
+</div>
+<!-- Temperature Block -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-lg flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SOIL TEMP</p>
+<span class="material-symbols-outlined text-primary" data-icon="thermometer">thermometer</span>
+</div>
+<div class="text-center">
+<p class="font-display-xl text-on-surface leading-none">19°<span class="text-headline-md font-light text-on-surface-variant">C</span></p>
+<p class="text-body-sm text-primary">OPTIMAL RANGE</p>
+</div>
+<div class="w-full bg-surface-variant h-1 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+</div>
+<!-- Grass Health Index -->
+<div class="bg-surface-container-low border border-outline-variant p-stack-lg flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-label-caps text-on-surface-variant">NDVI HEALTH</p>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="grass">grass</span>
+</div>
+<div class="text-center">
+<p class="font-display-xl text-on-surface leading-none">0.82</p>
+<p class="text-body-sm text-on-surface-variant">PHOTOSYNTHETIC ACT.</p>
+</div>
+<p class="text-[10px] font-mono-data text-primary uppercase text-center">+0.04 FROM LAST SCAN</p>
+</div>
+<!-- Spatial Map Placeholder -->
+<div class="col-span-1 md:col-span-2 bg-surface-container-low border border-outline-variant h-64 relative group overflow-hidden">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:scale-105 transition-transform duration-700" data-alt="An overhead architectural visualization of a massive sports stadium field in dark mode style. The turf is overlaid with a glowing orange grid pattern indicating sensor data points. The lighting is cinematic and focused, suggesting high-tech monitoring in a mission control setting. Deep shadows define the stadium seating while the field is illuminated by digital status overlays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDNQD87CFfyFwXgAfRdydb22ApHOYXxmjLyl6Yhe27w7AgqxIs6ajuZ6JqrkYrNVU5hcUCOrAqPfGAP8a-fOOF6kX0hOC1mbBeK7L4oWQ06nP5D_o_15D7iVz5lxLLxhEl_-fr5vtVZWwNF56ZlqvbeuQ0yzOajX2IMzJxC4uLuF1jRLTsHcoVOW8IP5pQ0kT6cZZ4MBo5BD3V7O_THHck4XMmrvMP6osU9SwJDUoFOQlBVVUIDYvt1muqIPlmU6gUQH7UCpUVX90I"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+<div class="absolute bottom-stack-md left-stack-md">
+<p class="font-label-caps text-label-caps text-on-primary">SECTOR HEALTH OVERLAY</p>
+<p class="text-[10px] font-mono-data text-primary tracking-widest">LIVE LIDAR FEEDS: ACTIVE</p>
+</div>
+<!-- UI elements on map -->
+<div class="absolute top-1/2 left-1/3 w-4 h-4 bg-error rounded-full border-2 border-white animate-ping"></div>
+<div class="absolute top-1/4 right-1/4 w-3 h-3 bg-primary-container rounded-full border border-white"></div>
+</div>
+</section>
+<!-- HVAC & Facility Indicators -->
+<section class="col-span-12 grid grid-cols-2 md:grid-cols-4 gap-gutter mt-stack-lg">
+<div class="col-span-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">FACILITY SYSTEMS</h3>
+</div>
+<div class="bg-surface-container p-stack-md border border-outline-variant flex items-center gap-stack-md">
+<div class="p-stack-sm bg-surface-variant rounded">
+<span class="material-symbols-outlined text-primary" data-icon="air_purifier_gen">air_purifier_gen</span>
+</div>
+<div>
+<p class="text-[10px] font-mono-data text-on-surface-variant">AIR FLOW</p>
+<p class="font-headline-md text-[16px] text-on-surface">NOMINAL</p>
+</div>
+</div>
+<div class="bg-surface-container p-stack-md border border-outline-variant flex items-center gap-stack-md">
+<div class="p-stack-sm bg-surface-variant rounded">
+<span class="material-symbols-outlined text-primary" data-icon="plumbing">plumbing</span>
+</div>
+<div>
+<p class="text-[10px] font-mono-data text-on-surface-variant">WATER PSIG</p>
+<p class="font-headline-md text-[16px] text-on-surface">42 PSI</p>
+</div>
+</div>
+<div class="bg-surface-container p-stack-md border border-outline-variant flex items-center gap-stack-md">
+<div class="p-stack-sm bg-surface-variant rounded">
+<span class="material-symbols-outlined text-error" data-icon="electric_bolt">electric_bolt</span>
+</div>
+<div>
+<p class="text-[10px] font-mono-data text-on-surface-variant">POWER LOAD</p>
+<p class="font-headline-md text-[16px] text-error">94% CAP</p>
+</div>
+</div>
+<div class="bg-surface-container p-stack-md border border-outline-variant flex items-center gap-stack-md">
+<div class="p-stack-sm bg-surface-variant rounded">
+<span class="material-symbols-outlined text-primary" data-icon="nest_eco_leaf">nest_eco_leaf</span>
+</div>
+<div>
+<p class="text-[10px] font-mono-data text-on-surface-variant">ECO MODE</p>
+<p class="font-headline-md text-[16px] text-on-surface">ACTIVE</p>
+</div>
+</div>
+</section>
+<!-- Maintenance Log -->
+<section class="col-span-12 mt-stack-lg">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">MAINTENANCE LOG</h3>
+<button class="text-primary font-label-caps text-[10px] hover:underline">VIEW FULL HISTORY</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-highest border-b border-outline-variant">
+<tr>
+<th class="p-stack-md font-label-caps text-[10px] text-on-surface-variant">TIMESTAMP</th>
+<th class="p-stack-md font-label-caps text-[10px] text-on-surface-variant">TASK DESCRIPTION</th>
+<th class="p-stack-md font-label-caps text-[10px] text-on-surface-variant">PERSONNEL</th>
+<th class="p-stack-md font-label-caps text-[10px] text-on-surface-variant">STATUS</th>
+</tr>
+</thead>
+<tbody class="bg-surface-container">
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant transition-colors">
+<td class="p-stack-md font-mono-data text-[12px] text-on-surface-variant">08:14 AM</td>
+<td class="p-stack-md text-on-surface font-semibold">Pitch Aeration - Zone Alpha</td>
+<td class="p-stack-md text-on-surface-variant">J. Miller (T2)</td>
+<td class="p-stack-md"><span class="px-2 py-1 bg-primary/20 text-primary text-[10px] font-bold rounded">COMPLETED</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant transition-colors">
+<td class="p-stack-md font-mono-data text-[12px] text-on-surface-variant">10:45 AM</td>
+<td class="p-stack-md text-on-surface font-semibold">Chiller Unit #4 Coolant Flush</td>
+<td class="p-stack-md text-on-surface-variant">A. Chen (T1)</td>
+<td class="p-stack-md"><span class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] font-bold rounded">PENDING</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant transition-colors">
+<td class="p-stack-md font-mono-data text-[12px] text-on-surface-variant">11:02 AM</td>
+<td class="p-stack-md text-on-surface font-semibold">Pest Management - Fertilizer Cycle</td>
+<td class="p-stack-md text-on-surface-variant">Automated Sys</td>
+<td class="p-stack-md"><span class="px-2 py-1 bg-primary-container/40 text-on-background text-[10px] font-bold rounded animate-pulse">IN PROGRESS</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-stack-md bg-surface-dim border-t-2 border-outline-variant">
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-stack-sm opacity-70 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps text-label-caps uppercase text-[8px] mt-1">Crowd</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-stack-sm opacity-70 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps uppercase text-[8px] mt-1">Dispatch</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-stack-sm opacity-70 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-label-caps text-label-caps uppercase text-[8px] mt-1">AV Control</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-lg p-stack-sm scale-105">
+<span class="material-symbols-outlined" data-icon="Agriculture" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+<span class="font-label-caps text-label-caps uppercase text-[8px] mt-1">Facility</span>
+</button>
+</nav>
+<!-- Contextual FAB - Only for specific screens as per mandate -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-[70] border-2 border-primary">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

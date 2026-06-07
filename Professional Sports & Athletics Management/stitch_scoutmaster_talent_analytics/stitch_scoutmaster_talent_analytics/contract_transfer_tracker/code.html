@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScoutMaster | Contract &amp; Transfer Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-container": "#bbcae1",
+                        "outline-variant": "#c4c6cd",
+                        "on-error": "#ffffff",
+                        "surface-container-highest": "#e0e3e5",
+                        "surface-variant": "#e0e3e5",
+                        "tertiary-fixed": "#d8e3fb",
+                        "on-surface": "#191c1e",
+                        "on-secondary": "#ffffff",
+                        "on-primary-fixed": "#0d1c2e",
+                        "on-primary-fixed-variant": "#3a485b",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "surface-dim": "#d8dadc",
+                        "on-error-container": "#93000a",
+                        "secondary": "#565f6a",
+                        "inverse-on-surface": "#eff1f3",
+                        "surface-container": "#eceef0",
+                        "outline": "#75777d",
+                        "inverse-surface": "#2d3133",
+                        "surface": "#f7f9fb",
+                        "secondary-fixed-dim": "#bdc8d3",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b9c7df",
+                        "on-secondary-fixed-variant": "#3e4852",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#495468",
+                        "on-surface-variant": "#44474c",
+                        "surface-bright": "#f7f9fb",
+                        "on-tertiary-container": "#bdc8e0",
+                        "surface-container-high": "#e6e8ea",
+                        "surface-container-low": "#f2f4f6",
+                        "secondary-fixed": "#dae3f0",
+                        "on-tertiary-fixed": "#111c2d",
+                        "secondary-container": "#dae3f0",
+                        "primary": "#303e51",
+                        "background": "#f7f9fb",
+                        "on-primary": "#ffffff",
+                        "primary-fixed": "#d5e3fc",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "primary-fixed-dim": "#b9c7df",
+                        "on-secondary-fixed": "#131d25",
+                        "surface-tint": "#515f74",
+                        "error": "#ba1a1a",
+                        "on-secondary-container": "#5c6570",
+                        "tertiary": "#323d50",
+                        "on-background": "#191c1e",
+                        "primary-container": "#475569"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "grid-margin": "32px",
+                        "base": "4px",
+                        "grid-columns": "12",
+                        "grid-gutter": "16px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "md": "16px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "data-tabular": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h3": ["18px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "data-tabular": ["13px", {"lineHeight": "1", "letterSpacing": "0", "fontWeight": "500"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chart-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- Desktop Navigation Drawer -->
+<aside class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex flex-col p-lg bg-surface border-r border-outline-variant h-full w-80">
+<div class="mb-xl">
+<h2 class="font-h2 text-h2 text-primary">ScoutMaster</h2>
+</div>
+<div class="flex items-center gap-md mb-xl p-md bg-surface-container rounded-lg">
+<img class="w-10 h-10 rounded-full" data-alt="A professional headshot of a senior football recruitment scout in a sharp charcoal suit. The background is a blurred high-end corporate office with soft, natural lighting. The overall mood is clinical and authoritative, reflecting the modern minimalist design of the ScoutMaster platform with its clean Slate Blue and silver accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDzyvujnoWDh7Uaryb2tVllxUvcOKrO7BAdlQxO_3jZzy5_gGq-rp4Zsu7vejbdc1NnscMnlblBreXnqpXOIJ9AfbTEp19sec5MYtzt1lzFhO-3u-Gxr0Z_YAIazMcueSqPGU1tnPWJOy9Xwu33CAb8EKTElwk1rpA9mn4gCRcxFVqyCO9Eqf9qSWP8iLr2S5OQnF4V4SnmBrx6DbB-gMn7sgOrrvZ1OGtIQcSboP8OPHTVk5-wGciMICGqBxhrffTPYfCYEJKLHQs"/>
+<div>
+<p class="font-h3 text-h3 text-primary">Lead Scout</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Global Talent Ops</p>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md p-md bg-secondary-container text-on-secondary-container font-bold rounded-r-full transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Talent Pipeline</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-md text-body-md">Agent Network</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">assessment</span>
+<span class="font-body-md text-body-md">Reports</span>
+</a>
+<a class="flex items-center gap-md p-md text-on-surface-variant hover:bg-surface-container transition-all duration-300 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="md:ml-80 flex flex-col min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-grid-margin w-full h-16 bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="flex items-center gap-md">
+<button class="md:hidden p-sm hover:bg-surface-container-high transition-colors active:opacity-80">
+<span class="material-symbols-outlined text-primary">menu</span>
+</button>
+<h1 class="font-h3 text-h3 font-bold text-primary">Tracker</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="hidden lg:flex items-center gap-md text-on-surface-variant">
+<span class="material-symbols-outlined">search</span>
+<span class="font-body-md">Market Search</span>
+</div>
+<img class="w-8 h-8 rounded-full border border-outline" data-alt="A clean, minimalist profile avatar represention for a system user. The style is professional and corporate, using a neutral Slate Blue color palette against a bright, high-key white background. The image is crisp and devoid of any unnecessary decorative elements, maintaining a clinical and efficient visual tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBdD72MrhNsuyITTlnZj4NSWePsHa_99XjrThiqvZ7aBgNTDBFmYpmUw7L-udeqhvrlJADerIGOyygvKETb2QI2nNWoaNj4NmMeucNn2GVa__E4fvDYszEi294Ht8Tg0g9Y42aMhilzKD-Lar6z7zLTvDD5YHKSxA7Ni6HLmIEZ7ZecCaJJieticKD1rsyXbv7U4F1BNjaM9UJq_EXg4a2Qjouhn2UGqjUO_5uxv4r0nx-NPpWSbVUg9oMoXvipyBdawuZ8-CIwEik"/>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-grid-margin space-y-xl">
+<!-- Section 1: Market Intelligence & Interactive Chart -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-grid-gutter">
+<div class="lg:col-span-8 bg-surface-container-lowest border border-outline-variant rounded p-lg space-y-lg">
+<div class="flex justify-between items-end">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs">AGGREGATE DATA</p>
+<h2 class="font-h2 text-h2 text-primary">Market Value Momentum</h2>
+</div>
+<div class="flex gap-sm">
+<span class="bg-primary text-on-primary px-sm py-xs text-[10px] rounded-sm font-bold">LIVE</span>
+<span class="text-on-surface-variant text-sm font-medium">Jan 2024 - June 2024</span>
+</div>
+</div>
+<!-- Market Value Trend Line Chart (SVG) -->
+<div class="relative h-64 w-full bg-surface-container-low/30 rounded flex flex-col justify-end">
+<svg class="w-full h-48" preserveaspectratio="none" viewbox="0 0 800 200">
+<!-- Gradient Area Fill -->
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#303e51;stop-opacity:0.1"></stop>
+<stop offset="100%" style="stop-color:#303e51;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,180 L50,160 L150,170 L250,130 L350,140 L450,90 L550,100 L650,40 L750,50 L800,20 L800,200 L0,200 Z" fill="url(#chartGradient)"></path>
+<!-- Trend Line -->
+<polyline class="chart-line" fill="none" points="0,180 50,160 150,170 250,130 350,140 450,90 550,100 650,40 750,50 800,20" stroke="#303e51" stroke-width="2"></polyline>
+<!-- Interactivity Point -->
+<circle cx="650" cy="40" fill="#303e51" r="4" stroke="#ffffff" stroke-width="2"></circle>
+</svg>
+<!-- Tooltip Overlay (Dashboard mentality) -->
+<div class="absolute top-10 left-[75%] bg-surface border border-outline p-sm shadow-sm rounded-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant">PEAK VALUATION</p>
+<p class="font-data-tabular text-data-tabular text-primary font-bold">€142.5M (+12.4%)</p>
+</div>
+<!-- X-Axis Labels -->
+<div class="flex justify-between mt-sm border-t border-outline-variant pt-sm px-xs">
+<span class="font-label-caps text-label-caps text-on-surface-variant">JAN</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">FEB</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MAR</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">APR</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MAY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">JUN</span>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 flex flex-col gap-grid-gutter">
+<!-- Quick Capture Stats -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded p-lg">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-md">RENEWAL URGENCY</p>
+<div class="space-y-md">
+<div class="flex items-center justify-between border-l-4 border-error pl-md">
+<div>
+<p class="font-body-md font-semibold text-primary">Marcus H.</p>
+<p class="text-xs text-on-surface-variant">Exp: 06/2025</p>
+</div>
+<span class="material-symbols-outlined text-error">priority_high</span>
+</div>
+<div class="flex items-center justify-between border-l-4 border-primary pl-md">
+<div>
+<p class="font-body-md font-semibold text-primary">Elias V.</p>
+<p class="text-xs text-on-surface-variant">Exp: 12/2025</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">schedule</span>
+</div>
+</div>
+<button class="w-full mt-lg border border-outline text-primary py-sm font-label-caps hover:bg-surface-container-high transition-colors">VIEW ALL RENEWALS</button>
+</div>
+<div class="bg-primary text-on-primary rounded p-lg relative overflow-hidden">
+<p class="font-label-caps text-label-caps opacity-80 mb-sm">ACTIVE TRANSACTIONS</p>
+<h3 class="text-h1 font-h1">€84.2M</h3>
+<p class="text-xs opacity-70 mt-xs">Pending approval across 4 talent nodes</p>
+<div class="mt-lg flex -space-x-2">
+<img class="w-8 h-8 rounded-full border-2 border-primary" data-alt="Close-up portrait of a young professional athlete, appearing focused and determined. The lighting is crisp and cool, utilizing a Slate Blue and Silver color scheme. The composition is minimalist, emphasizing professional data-driven scouting. The background is a very soft, light-gray neutral tone." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrjeQ41uIBlC1LuoprpTqk5Jx2J6ePoMV9inxEOp7ZMOzjTPjWSCQPqPjYzvjDQeIxp698pYZL2Mwn9pL_6XfElzFn6_4sUpvO3ccWkUqbFBrIfy_rgRVDQj8LRi2g5UUsTNeIjx7v7tIlpYaYZ8lHOxDkC81AkznIUkM5mL2_afv8uRR-BN9aQmJM-TZrA-5gjLQwzFTsLtsN5Mncue0VrnxeqvaVbt8bspJpARSwHc-rlo8cOKXMjnnJ56FjXzhRXdTxPaeG7q8"/>
+<img class="w-8 h-8 rounded-full border-2 border-primary" data-alt="Close-up portrait of a mid-career professional athlete with a calm, clinical expression. Lighting is balanced and professional, adhering to the corporate minimalist style. The colors are strictly aligned with the ScoutMaster palette: Slate Blue, deep grays, and pristine whites. The mood is serious and results-oriented." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDwWFkCGcJCxSa8J4y132xKBgiO0rD1PDBfgo-G1yH9x6WBrwWSXuOwPNbBF5lY8NwHV2gJkiUpJ6TRqTw1HMMZOnKhIEhqCHkykeaxtp823-4KLQ7edcsuGFj15J8CezjmI_YgF3iTdWb4gWhp18VuipWFWUx_5BJkoDC2wPiatG3aIcRI4-G1jjKFXaWFozgLaOmpdAtBXAac_V_i4de7dy9BS7E8y1XmmP9KRjohRK23NFz0Rx1f_zpOeMLIXTldMn5uj2gejk"/>
+<div class="w-8 h-8 rounded-full bg-surface-container-high text-primary flex items-center justify-center text-[10px] font-bold border-2 border-primary">+2</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Section 2: Player Tracker List View -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low/50">
+<h3 class="font-h3 text-h3 text-primary">Tracked Talent &amp; Contractual Status</h3>
+<div class="flex gap-md">
+<button class="text-xs font-bold text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">filter_list</span> FILTER
+                        </button>
+<button class="text-xs font-bold text-on-surface-variant flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">download</span> EXPORT
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">PLAYER IDENTITY</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">CURRENT VALUATION</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">CONTRACT END</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">BUYOUT CLAUSE</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">MARKET STATUS</th>
+<th class="p-md font-label-caps text-label-caps text-on-surface-variant">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-secondary-container rounded-sm flex items-center justify-center font-bold text-on-secondary-container">AL</div>
+<div>
+<p class="font-data-tabular text-data-tabular text-primary">Aris Lehmann</p>
+<p class="text-[10px] text-on-surface-variant">Bundesliga | Midfielder</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-baseline gap-sm">
+<span class="font-data-tabular text-data-tabular text-primary">€42.5M</span>
+<span class="text-[10px] text-error">▼ 1.2%</span>
+</div>
+</td>
+<td class="p-md font-data-tabular text-data-tabular">Jun 2027</td>
+<td class="p-md font-data-tabular text-data-tabular">€65.0M</td>
+<td class="p-md">
+<span class="bg-surface-container-highest text-on-surface px-sm py-xs text-[10px] rounded-sm font-bold border border-outline-variant">VETTED</span>
+</td>
+<td class="p-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="bg-surface-container-low/20 hover:bg-surface-container transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-tertiary-fixed rounded-sm flex items-center justify-center font-bold text-on-tertiary-fixed">JC</div>
+<div>
+<p class="font-data-tabular text-data-tabular text-primary">Julian Costa</p>
+<p class="text-[10px] text-on-surface-variant">La Liga | Forward</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-baseline gap-sm">
+<span class="font-data-tabular text-data-tabular text-primary">€28.0M</span>
+<span class="text-[10px] text-primary">▲ 8.4%</span>
+</div>
+</td>
+<td class="p-md font-data-tabular text-data-tabular">Dec 2026</td>
+<td class="p-md font-data-tabular text-data-tabular">€40.0M</td>
+<td class="p-md">
+<span class="bg-primary text-on-primary px-sm py-xs text-[10px] rounded-sm font-bold">IN-PROGRESS</span>
+</td>
+<td class="p-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-outline-variant rounded-sm flex items-center justify-center font-bold text-on-surface-variant">TM</div>
+<div>
+<p class="font-data-tabular text-data-tabular text-primary">Thierry Moss</p>
+<p class="text-[10px] text-on-surface-variant">Premier League | Defender</p>
+</div>
+</div>
+</td>
+<td class="p-md">
+<div class="flex items-baseline gap-sm">
+<span class="font-data-tabular text-data-tabular text-primary">€12.5M</span>
+<span class="text-[10px] text-on-surface-variant">NC</span>
+</div>
+</td>
+<td class="p-md font-data-tabular text-data-tabular text-error font-bold">Jun 2025</td>
+<td class="p-md font-data-tabular text-data-tabular">—</td>
+<td class="p-md">
+<span class="bg-error-container text-on-error-container px-sm py-xs text-[10px] rounded-sm font-bold border border-error/20">URGENT</span>
+</td>
+<td class="p-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Mobile BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center py-2 bg-surface border-t border-outline-variant z-50">
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">search</span>
+<span class="font-label-caps text-label-caps">Discovery</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">movie</span>
+<span class="font-label-caps text-label-caps">Archive</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 transition-transform duration-200 scale-95" href="#">
+<span class="material-symbols-outlined">handshake</span>
+<span class="font-label-caps text-label-caps">Tracker</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Compare</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:text-primary transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-caps text-label-caps">Notes</span>
+</a>
+</nav>
+</body></html>

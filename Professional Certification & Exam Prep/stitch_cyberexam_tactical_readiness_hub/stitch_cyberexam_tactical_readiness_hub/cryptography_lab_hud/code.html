@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CYBEREXAM // HUD - Cryptography Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-fixed": "#e3e2e7",
+                      "inverse-on-surface": "#303032",
+                      "on-tertiary-fixed-variant": "#004e5e",
+                      "inverse-primary": "#bf0024",
+                      "surface-container-highest": "#353437",
+                      "secondary-fixed-dim": "#c6c6cb",
+                      "on-background": "#e4e2e4",
+                      "error-container": "#93000a",
+                      "surface-variant": "#353437",
+                      "on-secondary-fixed-variant": "#46464b",
+                      "on-tertiary": "#003641",
+                      "tertiary-container": "#2b9db9",
+                      "primary-container": "#ff5357",
+                      "on-secondary-fixed": "#1a1b1f",
+                      "on-primary": "#68000e",
+                      "outline-variant": "#5f3e3d",
+                      "on-primary-fixed": "#410006",
+                      "primary": "#ffb3af",
+                      "on-secondary-container": "#b5b4ba",
+                      "tertiary-fixed-dim": "#6ed4f1",
+                      "surface-container-low": "#1b1b1d",
+                      "background": "#131315",
+                      "on-primary-container": "#5c000b",
+                      "inverse-surface": "#e4e2e4",
+                      "surface-container": "#1f1f21",
+                      "on-error": "#690005",
+                      "on-primary-fixed-variant": "#930019",
+                      "tertiary-fixed": "#b1ecff",
+                      "surface-tint": "#ffb3af",
+                      "surface-dim": "#131315",
+                      "primary-fixed-dim": "#ffb3af",
+                      "tertiary": "#6ed4f1",
+                      "primary-fixed": "#ffdad8",
+                      "surface-container-high": "#2a2a2c",
+                      "on-tertiary-container": "#002e39",
+                      "surface": "#131315",
+                      "on-secondary": "#2f3034",
+                      "surface-bright": "#39393b",
+                      "on-surface-variant": "#e9bcb9",
+                      "surface-container-lowest": "#0e0e10",
+                      "secondary-container": "#46464b",
+                      "on-error-container": "#ffdad6",
+                      "error": "#ffb4ab",
+                      "secondary": "#c6c6cb",
+                      "outline": "#b08784",
+                      "on-tertiary-fixed": "#001f27",
+                      "on-surface": "#e4e2e4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "container-margin": "20px",
+                      "section-gap": "32px",
+                      "element-gap": "16px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Grotesk"],
+                      "mono-data": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .scanline-overlay {
+            background: repeating-linear-gradient(0deg, rgba(0,0,0,0.03) 0px, rgba(0,0,0,0.03) 1px, transparent 1px, transparent 2px);
+            pointer-events: none;
+        }
+        .micro-grid {
+            background-image: radial-gradient(rgba(255, 179, 175, 0.05) 1px, transparent 0);
+            background-size: 16px 16px;
+        }
+        .laser-glow {
+            box-shadow: 0 0 8px rgba(255, 179, 175, 0.4);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2c2c2e;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #ffb3af;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen micro-grid">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-container-margin w-full sticky top-0 z-50 border-b border-outline-variant bg-surface-container-lowest">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">CYBEREXAM // HUD</span>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<span class="font-mono-data text-mono-data text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]" style="font-variation-settings: 'FILL' 1;">sensors</span>
+                SYS_STATUS: OPTIMAL
+            </span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 border border-primary/30 rounded bg-primary/5">
+<span class="material-symbols-outlined text-primary text-[18px]">timer</span>
+<span class="font-mono-data text-mono-data text-primary">00:54:12</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined hover:text-primary cursor-pointer transition-colors duration-200">sensors</span>
+<span class="material-symbols-outlined hover:text-primary cursor-pointer transition-colors duration-200">account_tree</span>
+</div>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- SideNavBar -->
+<nav class="flex flex-col h-screen w-64 pt-4 z-40 border-r border-outline-variant bg-surface-container-low shrink-0">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<div class="font-headline-md text-[14px] text-primary">OPERATOR_01</div>
+<div class="font-label-caps text-[10px] text-error">THREAT LEVEL: CRITICAL</div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-1 px-2">
+<a class="flex items-center gap-element-gap px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">quiz</span>
+<span class="font-label-caps">Quizzes</span>
+</a>
+<a class="flex items-center gap-element-gap px-4 py-3 bg-primary-container text-on-primary-container border-l-4 border-primary shadow-[0_0_8px_rgba(255,179,175,0.4)] scale-[0.99]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+<span class="font-label-caps">Labs</span>
+</a>
+<a class="flex items-center gap-element-gap px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">gavel</span>
+<span class="font-label-caps">Ethics</span>
+</a>
+<a class="flex items-center gap-element-gap px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">trending_up</span>
+<span class="font-label-caps">Readiness</span>
+</a>
+<a class="flex items-center gap-element-gap px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">admin_panel_settings</span>
+<span class="font-label-caps">Admin</span>
+</a>
+<a class="flex items-center gap-element-gap px-4 py-3 text-on-surface-variant hover:bg-surface-container-highest transition-all group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">help</span>
+<span class="font-label-caps">FAQ</span>
+</a>
+</div>
+<div class="mt-auto p-4 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary font-headline-md py-3 text-[14px] tracking-widest hover:brightness-110 transition-all laser-glow">
+                    INITIATE EXAM
+                </button>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 flex flex-col overflow-hidden">
+<!-- Upper Section (Editor & Flowchart) -->
+<div class="flex flex-1 overflow-hidden border-b border-outline-variant">
+<!-- Code Editor -->
+<section class="w-1/2 border-r border-outline-variant flex flex-col bg-[#111111]">
+<div class="flex items-center justify-between px-4 h-10 border-b border-outline-variant bg-surface-container">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-on-surface-variant text-[10px]">AES256_STRICT.PY</span>
+<span class="px-2 py-0.5 rounded-sm bg-primary/10 text-primary text-[10px] font-mono-data">MODIFIED</span>
+</div>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer hover:text-primary">save</span>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant cursor-pointer hover:text-primary">play_arrow</span>
+</div>
+</div>
+<div class="flex-1 p-4 font-mono-data text-[14px] leading-relaxed custom-scrollbar overflow-y-auto scanline-overlay">
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">1</span>
+<span class="text-tertiary">from</span> <span class="text-on-surface">Crypto.Cipher</span> <span class="text-tertiary">import</span> AES
+                        </div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">2</span>
+<span class="text-tertiary">from</span> <span class="text-on-surface">Crypto.Util.Padding</span> <span class="text-tertiary">import</span> pad
+                        </div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">3</span>
+<span> </span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">4</span>
+<span class="text-on-surface-variant italic"># TASK: Initialize AES-256 in CBC Mode</span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">5</span>
+<span class="text-primary">key</span> = b<span class="text-secondary">'SIXTEEN_BYTE_KEY'</span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">6</span>
+<span class="text-primary">iv</span> = b<span class="text-secondary">'RANDOM_IV_VECTOR'</span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">7</span>
+<span class="text-primary">cipher</span> = AES.new(key, AES.MODE_CBC, iv)
+                        </div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">8</span>
+<span> </span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">9</span>
+<span class="text-primary">plaintext</span> = b<span class="text-secondary">'SECURE_DATA_PACKET_091'</span>
+</div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">10</span>
+<span class="text-primary">padded_data</span> = pad(plaintext, AES.block_size)
+                        </div>
+<div class="flex">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">11</span>
+<span class="text-primary">ciphertext</span> = cipher.encrypt(padded_data)
+                        </div>
+<div class="flex mt-2 animate-pulse">
+<span class="text-on-surface-variant/30 select-none mr-4 w-6 text-right">12</span>
+<span class="w-2 h-5 bg-primary"></span>
+</div>
+</div>
+<div class="h-24 border-t border-outline-variant bg-surface-container-lowest p-3 font-mono-data text-[12px]">
+<div class="text-primary mb-1">[SYSTEM_DEBUG]: AES session initialized.</div>
+<div class="text-on-surface-variant">[CONSOLE]: Waiting for input byte array...</div>
+</div>
+</section>
+<!-- Threat Logic Flowchart -->
+<section class="flex-1 flex flex-col bg-surface relative overflow-hidden">
+<div class="flex items-center justify-between px-4 h-10 border-b border-outline-variant bg-surface-container">
+<span class="font-label-caps text-on-surface-variant text-[10px]">THREAT LOGIC: DATA_ENCRYPTION_FLOW</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-mono-data text-[10px] text-primary">LIVE MONITORING</span>
+</div>
+</div>
+<!-- Flowchart visualization area -->
+<div class="flex-1 flex items-center justify-center p-8 relative">
+<div class="absolute inset-0 micro-grid opacity-30"></div>
+<div class="relative z-10 flex flex-col items-center gap-12">
+<!-- Plaintext Node -->
+<div class="w-48 p-3 border border-outline bg-surface-container-low text-center">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-1">INPUT</div>
+<div class="font-mono-data text-primary text-[14px]">PLAINTEXT</div>
+<div class="mt-2 h-[2px] w-full bg-outline-variant overflow-hidden">
+<div class="h-full bg-primary w-1/3 animate-ping"></div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">south</span>
+<!-- AES Transform Node -->
+<div class="w-64 p-4 border-2 border-primary bg-primary/5 text-center laser-glow relative">
+<div class="absolute -top-3 -left-3 p-1 bg-background border border-primary text-[10px] text-primary font-bold">CORE_01</div>
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-1">TRANSFORM</div>
+<div class="font-headline-md text-primary text-[18px]">AES-256 / CBC</div>
+<div class="mt-3 grid grid-cols-4 gap-1">
+<div class="h-4 bg-primary/20"></div>
+<div class="h-4 bg-primary"></div>
+<div class="h-4 bg-primary/20"></div>
+<div class="h-4 bg-primary/60"></div>
+</div>
+</div>
+<div class="flex gap-8 items-center">
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-outline-variant">south_west</span>
+<div class="p-2 border border-outline bg-surface-container-low mt-2">
+<div class="font-mono-data text-[10px] text-on-surface-variant">INIT_VECTOR</div>
+</div>
+</div>
+<div class="flex flex-col items-center">
+<span class="material-symbols-outlined text-outline-variant">south_east</span>
+<div class="p-2 border border-outline bg-surface-container-low mt-2">
+<div class="font-mono-data text-[10px] text-on-surface-variant">SALT_APPEND</div>
+</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant">south</span>
+<!-- Ciphertext Node -->
+<div class="w-48 p-3 border border-primary bg-surface-container-low text-center">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-1">OUTPUT</div>
+<div class="font-mono-data text-on-surface text-[14px] truncate">0xAF82BC...E2</div>
+</div>
+</div>
+<!-- Floating Data Cards -->
+<div class="absolute top-10 right-10 w-40 p-3 border border-outline-variant bg-surface-container-lowest/80 backdrop-blur-sm">
+<div class="font-label-caps text-[10px] text-on-surface-variant border-b border-outline-variant pb-1 mb-2">METRICS</div>
+<div class="flex justify-between font-mono-data text-[11px] mb-1">
+<span>ENTROPY:</span>
+<span class="text-primary">0.992</span>
+</div>
+<div class="flex justify-between font-mono-data text-[11px]">
+<span>LATENCY:</span>
+<span class="text-primary">1.2ms</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Bottom Section (Docs & References) -->
+<section class="h-64 bg-surface-container-lowest flex flex-col">
+<div class="flex items-center px-4 h-10 border-b border-outline-variant bg-surface-container">
+<span class="font-label-caps text-on-surface-variant text-[10px]">DOCUMENTATION LIBRARY // PROTOCOL_REF</span>
+</div>
+<div class="flex-1 grid grid-cols-4 gap-gutter p-gutter overflow-y-auto custom-scrollbar">
+<!-- Documentation Card 1 -->
+<div class="border border-outline-variant p-4 bg-surface-container-low hover:border-primary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">lock</span>
+<span class="text-[10px] font-mono-data text-on-surface-variant">REF_ID: 1024</span>
+</div>
+<h3 class="font-headline-md text-[16px] text-on-surface mb-1">Symmetric Encryption</h3>
+<p class="text-[12px] text-on-surface-variant font-body-md line-clamp-3">A type of encryption where only one key (a secret key) is used to both encrypt and decrypt electronic data. The key must be exchanged between entities.</p>
+</div>
+<!-- Documentation Card 2 -->
+<div class="border border-outline-variant p-4 bg-surface-container-low hover:border-primary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">shuffle</span>
+<span class="text-[10px] font-mono-data text-on-surface-variant">REF_ID: 1025</span>
+</div>
+<h3 class="font-headline-md text-[16px] text-on-surface mb-1">Initialization Vector</h3>
+<p class="text-[12px] text-on-surface-variant font-body-md line-clamp-3">A random or pseudo-random fixed-size input to a cryptographic primitive to ensure that distinct ciphertexts are produced even if the same message is encrypted multiple times.</p>
+</div>
+<!-- Documentation Card 3 -->
+<div class="border border-outline-variant p-4 bg-surface-container-low hover:border-primary transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-3">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">view_module</span>
+<span class="text-[10px] font-mono-data text-on-surface-variant">REF_ID: 1026</span>
+</div>
+<h3 class="font-headline-md text-[16px] text-on-surface mb-1">Cipher Block Chaining</h3>
+<p class="text-[12px] text-on-surface-variant font-body-md line-clamp-3">A mode of operation for a block cipher where each block of plaintext is XORed with the previous ciphertext block before being encrypted.</p>
+</div>
+<!-- Documentation Card 4 -->
+<div class="border border-outline-variant p-4 bg-surface-container-low flex flex-col items-center justify-center border-dashed group hover:border-primary transition-all">
+<span class="material-symbols-outlined text-on-surface-variant mb-2 group-hover:text-primary">library_add</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">BROWSE MORE RESOURCES</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- UI Overlay Assets (HUD indicators) -->
+<div class="fixed bottom-4 right-4 flex flex-col gap-2 z-50 pointer-events-none">
+<div class="bg-background/80 border border-primary p-2 flex items-center gap-3 backdrop-blur-md">
+<div class="w-3 h-3 bg-primary animate-pulse"></div>
+<div class="font-mono-data text-[12px] text-primary tracking-widest">ENCRYPTOR_ACTIVE</div>
+</div>
+<div class="bg-background/80 border border-outline-variant p-2 flex items-center gap-3 backdrop-blur-md opacity-60">
+<div class="w-3 h-3 bg-on-surface-variant"></div>
+<div class="font-mono-data text-[12px] text-on-surface-variant tracking-widest">PACKET_SNIFFER_OFF</div>
+</div>
+</div>
+<div class="fixed top-20 right-8 pointer-events-none">
+<img alt="Crypto visualization" class="hidden" data-alt="A sophisticated digital interface visualization of complex cryptographic data structures and encryption algorithms. The scene is dominated by deep black and graphite surfaces with sharp, glowing red lines and nodes representing data packets being secured. High-tech industrial aesthetic with subtle lens flares and a focused, professional cybersecurity operations atmosphere. Professional lighting emphasizes technical textures and micro-details of the user interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMGYZdeBYe6X0SApYGetv6kV2ni_u9Gu_53Gcz18iD-AZr-8emQWB221v22CeI_uWv7-sKiCEao8XJeDFVOix75qlrFN12xTzCzRmct22rAxXONYVXqNKkGk5qLRpp5u1yfK2XlBRMmJtMqoA2z1URjKgQG8lluQKPMNc2WlmnNwgy5VYWVkRFzDhBMVg_izSd6iqp2KIbKya-gDg3-wDjwgcPMUQQ0jX7Y9tot3aEyhBHx5dh3skbjQ6G1QyldocNXY3ZLAozS8y8"/>
+</div>
+</body></html>

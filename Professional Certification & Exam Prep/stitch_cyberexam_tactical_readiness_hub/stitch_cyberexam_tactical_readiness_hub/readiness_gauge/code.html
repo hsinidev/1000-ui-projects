@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CyberExam // HUD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#6ed4f1",
+                      "on-error-container": "#ffdad6",
+                      "tertiary": "#6ed4f1",
+                      "on-tertiary": "#003641",
+                      "error-container": "#93000a",
+                      "on-secondary": "#2f3034",
+                      "surface-variant": "#353437",
+                      "surface-container-high": "#2a2a2c",
+                      "secondary-container": "#46464b",
+                      "primary-container": "#ff5357",
+                      "on-error": "#690005",
+                      "tertiary-fixed": "#b1ecff",
+                      "surface-tint": "#ffb3af",
+                      "on-primary-fixed-variant": "#930019",
+                      "on-tertiary-fixed": "#001f27",
+                      "surface-bright": "#39393b",
+                      "inverse-surface": "#e4e2e4",
+                      "surface": "#131315",
+                      "surface-container-low": "#1b1b1d",
+                      "on-secondary-container": "#b5b4ba",
+                      "on-primary-container": "#5c000b",
+                      "on-secondary-fixed-variant": "#46464b",
+                      "inverse-primary": "#bf0024",
+                      "primary-fixed": "#ffdad8",
+                      "outline": "#b08784",
+                      "inverse-on-surface": "#303032",
+                      "on-background": "#e4e2e4",
+                      "error": "#ffb4ab",
+                      "surface-container": "#1f1f21",
+                      "surface-dim": "#131315",
+                      "background": "#131315",
+                      "on-tertiary-fixed-variant": "#004e5e",
+                      "on-tertiary-container": "#002e39",
+                      "primary": "#ffb3af",
+                      "secondary-fixed-dim": "#c6c6cb",
+                      "surface-container-lowest": "#0e0e10",
+                      "tertiary-container": "#2b9db9",
+                      "on-secondary-fixed": "#1a1b1f",
+                      "secondary": "#c6c6cb",
+                      "on-primary": "#68000e",
+                      "primary-fixed-dim": "#ffb3af",
+                      "outline-variant": "#5f3e3d",
+                      "secondary-fixed": "#e3e2e7",
+                      "surface-container-highest": "#353437",
+                      "on-surface-variant": "#e9bcb9",
+                      "on-primary-fixed": "#410006",
+                      "on-surface": "#e4e2e4"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "12px",
+                      "element-gap": "16px",
+                      "container-margin": "20px",
+                      "unit": "4px",
+                      "section-gap": "32px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Space Grotesk"],
+                      "mono-data": ["Space Grotesk"],
+                      "body-lg": ["Inter"],
+                      "headline-md": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 0, 0, 0.05) 51%);
+            background-size: 100% 4px;
+        }
+        .dot-grid {
+            background-image: radial-gradient(circle, #2C2C2E 1px, transparent 1px);
+            background-size: 16px 16px;
+        }
+        .laser-glow {
+            box-shadow: 0 0 12px rgba(255, 179, 175, 0.4);
+        }
+        .active-glow {
+            text-shadow: 0 0 8px rgba(255, 179, 175, 0.8);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary dot-grid min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-margin h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="security" data-weight="fill" style="font-variation-settings: 'FILL' 1;">security</span>
+<h1 class="font-headline-md text-primary tracking-tighter uppercase">THREAT LOGIC // HUD</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 font-label-caps text-secondary">
+<span class="text-primary active-glow">DASHBOARD</span>
+<span class="hover:text-primary transition-colors cursor-pointer">RESOURCES</span>
+<span class="hover:text-primary transition-colors cursor-pointer">REPORTS</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+</div>
+</header>
+<main class="pt-24 px-container-margin max-w-5xl mx-auto space-y-section-gap">
+<!-- High-Performance Exam Countdown -->
+<section class="relative bg-surface-container border border-outline-variant p-gutter scanline laser-glow">
+<div class="flex justify-between items-start mb-4">
+<div class="space-y-1">
+<span class="font-label-caps text-secondary-fixed-dim">SYSTEM STATUS: ACTIVE MONITORING</span>
+<h2 class="font-headline-md text-on-surface">CISSP CERTIFICATION EXAM</h2>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-primary">T-MINUS</span>
+</div>
+</div>
+<div class="flex items-baseline justify-center gap-4 py-4 border-y border-outline-variant/30">
+<div class="flex flex-col items-center">
+<span class="font-mono-data text-5xl md:text-7xl text-primary active-glow tracking-widest">14</span>
+<span class="font-label-caps text-secondary text-[10px]">DAYS</span>
+</div>
+<span class="text-5xl text-outline-variant">:</span>
+<div class="flex flex-col items-center">
+<span class="font-mono-data text-5xl md:text-7xl text-primary active-glow tracking-widest">08</span>
+<span class="font-label-caps text-secondary text-[10px]">HRS</span>
+</div>
+<span class="text-5xl text-outline-variant">:</span>
+<div class="flex flex-col items-center">
+<span class="font-mono-data text-5xl md:text-7xl text-primary active-glow tracking-widest">42</span>
+<span class="font-label-caps text-secondary text-[10px]">MIN</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout for Gauges and Analytics -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-element-gap">
+<!-- Exam Readiness Gauge -->
+<div class="md:col-span-1 bg-surface-container border border-outline-variant p-gutter flex flex-col items-center justify-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-2">
+<span class="material-symbols-outlined text-outline-variant text-sm" data-icon="analytics">analytics</span>
+</div>
+<span class="font-label-caps text-secondary mb-6">READINESS GAUGE</span>
+<div class="relative w-40 h-40 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle cx="80" cy="80" fill="transparent" r="70" stroke="#2C2C2E" stroke-width="8"></circle>
+<circle class="drop-shadow-[0_0_8px_rgba(255,179,175,0.6)]" cx="80" cy="80" fill="transparent" r="70" stroke="#ffb3af" stroke-dasharray="440" stroke-dashoffset="110" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-headline-lg text-primary text-5xl">75%</span>
+<span class="font-label-caps text-secondary text-[10px]">OPTIMAL</span>
+</div>
+</div>
+<button class="mt-8 w-full py-3 bg-primary text-on-primary font-label-caps hover:bg-primary-container transition-all uppercase tracking-widest">Deploy Simulation</button>
+</div>
+<!-- Score History Trend Lines -->
+<div class="md:col-span-2 bg-surface-container border border-outline-variant p-gutter relative scanline">
+<div class="flex justify-between items-center mb-6">
+<span class="font-label-caps text-secondary">30D THREAT PERFORMANCE</span>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-caps text-primary text-[10px]">LIVE FEED</span>
+</div>
+</div>
+<div class="h-48 w-full flex items-end justify-between relative">
+<!-- Faux SVG Trendline -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 100 100">
+<path class="drop-shadow-[0_0_5px_rgba(255,179,175,0.8)]" d="M0,80 L10,75 L20,85 L30,60 L40,65 L50,40 L60,45 L70,30 L80,35 L90,20 L100,25" fill="none" stroke="#ffb3af" stroke-width="2"></path>
+<lineargradient id="grad" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:rgba(255,179,175,0.2);stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:rgba(255,179,175,0);stop-opacity:0"></stop>
+</lineargradient>
+<path d="M0,80 L10,75 L20,85 L30,60 L40,65 L50,40 L60,45 L70,30 L80,35 L90,20 L100,25 V100 H0 Z" fill="url(#grad)"></path>
+</svg>
+<div class="h-full w-full border-b border-l border-outline-variant/50 relative z-10">
+<!-- Y-Axis markers -->
+<div class="absolute -left-6 top-0 font-mono-data text-[10px] text-outline-variant">100</div>
+<div class="absolute -left-6 top-1/2 font-mono-data text-[10px] text-outline-variant">50</div>
+<div class="absolute -left-6 bottom-0 font-mono-data text-[10px] text-outline-variant">0</div>
+</div>
+</div>
+<div class="flex justify-between mt-4 font-mono-data text-[10px] text-secondary">
+<span>DAY 01</span>
+<span>DAY 15</span>
+<span>DAY 30 (CURRENT)</span>
+</div>
+</div>
+</div>
+<!-- Domain Performance Section -->
+<section class="bg-surface-container border border-outline-variant p-gutter">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="grid_view">grid_view</span>
+<h3 class="font-headline-md text-on-surface uppercase tracking-tight">Domain Performance Nodes</h3>
+</div>
+<div class="space-y-4">
+<!-- Domain Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="font-label-caps text-secondary text-[10px]">DOMAIN 01</span>
+<span class="font-body-md text-on-surface font-semibold">Security &amp; Risk Management</span>
+</div>
+<span class="font-mono-data text-primary">88%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary laser-glow" style="width: 88%"></div>
+</div>
+</div>
+<!-- Domain Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="font-label-caps text-secondary text-[10px]">DOMAIN 02</span>
+<span class="font-body-md text-on-surface font-semibold">Asset Security</span>
+</div>
+<span class="font-mono-data text-primary">62%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary laser-glow" style="width: 62%"></div>
+</div>
+</div>
+<!-- Domain Item -->
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="font-label-caps text-secondary text-[10px]">DOMAIN 03</span>
+<span class="font-body-md text-on-surface font-semibold">Security Architecture &amp; Engineering</span>
+</div>
+<span class="font-mono-data text-primary">94%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary laser-glow" style="width: 94%"></div>
+</div>
+</div>
+<!-- Domain Item (Low Performance Alert) -->
+<div class="group cursor-pointer">
+<div class="flex justify-between items-end mb-2">
+<div class="flex flex-col">
+<span class="font-label-caps text-primary text-[10px]">CRITICAL // DOMAIN 04</span>
+<span class="font-body-md text-on-surface font-semibold">Communication &amp; Network Security</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm animate-pulse" data-icon="error">error</span>
+<span class="font-mono-data text-primary">41%</span>
+</div>
+</div>
+<div class="h-2 w-full bg-surface-variant border border-outline-variant/30 overflow-hidden">
+<div class="h-full bg-primary opacity-50" style="width: 41%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Aesthetic Technical Background Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-element-gap">
+<div class="relative h-40 bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A dark, high-tech control room environment with multiple monitors glowing in a deep matte black space. The screens display complex cybersecurity code and network diagrams in a high-contrast palette of charcoal and vivid red. The atmosphere is professional, urgent, and technically advanced, with a subtle digital grain across the entire composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV5aMdOS0dNaAyaKmJe_TS1o2wKttCzCO3Cyn0XkZ9fcT_tSbpjZva9pwy0_yreELheCLWfwJv2GtudO2OuUdmt9TBweHytgiXzmuLRKEtIYReb7qHQDNA19BXoz2OF4XlVIzfBYqb-hDUVa8XjkPzshzZE9WCy3zkRQG12ZXrhGSPBDecF8Dl-YoX-zNxF0XZ13c5QTukqYeuP8F9rPNvOIkBemSkb5ZgG3QLddunADPCD7qcfimuqR3LxHER8phrbPnAd-BspHR9"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-label-caps text-primary">STATION 09 // SECTOR_A</span>
+<p class="font-mono-data text-xs text-secondary">NO ACTIVE BREACHES DETECTED</p>
+</div>
+</div>
+<div class="relative h-40 bg-surface border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover opacity-30 grayscale hover:grayscale-0 transition-all duration-500" data-alt="Close-up of a high-performance computer circuit board with neon red light pathways pulsing through dark metallic components. The lighting is low-key and dramatic, highlighting the industrial brutalism of the hardware design. The aesthetic is focused and mission-critical, using a sophisticated dark color scheme punctuated by laser red accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD5MauOKluI2NtkgnMFKhd89xUPzr5z0qhMVdgGJ9LdhVSE_oiCEgNcYTXDkEk2ErHDdRVo6AEVQTk1zzI_5uFHB5AvFgzuNntEQYy-Z12_sRXZeL8V7g1QPAh-U9wN2oK4iMWbetbXKEkROVOuf--TLWStmMlIPRFFv1KeprCqhIlIYRgy3FmCsx9uURA9_98ZD_jojU7xHkSMz315HcJwHlZIFY8k_mYhL48SuB2-RUjviem7gWLN6gyyHOQBEhGxMslA9rpXgNRJ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-label-caps text-primary">STATION 11 // CORE_ANALYSIS</span>
+<p class="font-mono-data text-xs text-secondary">ENCRYPTION PROTOCOLS: OPTIMAL</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-surface-container border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-primary drop-shadow-[0_0_5px_rgba(255,179,175,0.8)] font-bold scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="quiz" data-weight="fill" style="font-variation-settings: 'FILL' 1;">quiz</span>
+<span class="font-label-caps mt-1">QUIZ</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:bg-surface-variant transition-all rounded-lg p-2" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps mt-1">LABS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:bg-surface-variant transition-all rounded-lg p-2" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps mt-1">ETHICS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:bg-surface-variant transition-all rounded-lg p-2" href="#">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-label-caps mt-1">READY</span>
+</a>
+</nav>
+</body></html>

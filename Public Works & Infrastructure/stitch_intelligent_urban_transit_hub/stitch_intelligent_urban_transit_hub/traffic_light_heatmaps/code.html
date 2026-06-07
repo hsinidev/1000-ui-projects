@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>UrbanPulse - Traffic Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e4e2e1",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#2f3131",
+                        "primary-fixed": "#dbe1ff",
+                        "surface": "#f9f9f9",
+                        "secondary-fixed-dim": "#c8c6c6",
+                        "on-background": "#1a1c1c",
+                        "on-error": "#ffffff",
+                        "on-surface-variant": "#444650",
+                        "surface-container-highest": "#e2e2e2",
+                        "surface-container-high": "#e8e8e8",
+                        "tertiary": "#111518",
+                        "on-primary-container": "#758dd5",
+                        "primary": "#00113a",
+                        "primary-container": "#002366",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "surface-tint": "#435b9f",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-secondary": "#ffffff",
+                        "background": "#f9f9f9",
+                        "tertiary-container": "#26292c",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed-variant": "#44474a",
+                        "on-secondary-container": "#656464",
+                        "outline-variant": "#c5c6d2",
+                        "on-tertiary-container": "#8d9094",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "error-container": "#ffdad6",
+                        "inverse-primary": "#b3c5ff",
+                        "surface-container": "#eeeeee",
+                        "on-primary-fixed": "#00174a",
+                        "outline": "#757682",
+                        "secondary": "#5f5e5e",
+                        "on-primary": "#ffffff",
+                        "surface-dim": "#dadada",
+                        "on-tertiary-fixed": "#191c1f",
+                        "tertiary-fixed-dim": "#c4c7ca",
+                        "surface-container-low": "#f3f3f4",
+                        "on-surface": "#1a1c1c",
+                        "surface-bright": "#f9f9f9",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-secondary-fixed-variant": "#474747",
+                        "tertiary-fixed": "#e0e2e6",
+                        "on-error-container": "#93000a",
+                        "surface-variant": "#e2e2e2",
+                        "secondary-container": "#e4e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "gutter": "16px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "margin": "24px",
+                        "base": "4px",
+                        "xl": "32px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "h2": ["Inter"],
+                        "h3": ["Inter"],
+                        "body-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "mono-data": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h3": ["18px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-sm": ["12px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "mono-data": ["13px", {"lineHeight": "1", "letterSpacing": "0", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .heatmap-overlay {
+            background: radial-gradient(circle at 30% 40%, rgba(186, 26, 26, 0.4) 0%, transparent 40%),
+                        radial-gradient(circle at 70% 60%, rgba(0, 17, 58, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 50% 20%, rgba(95, 94, 94, 0.2) 0%, transparent 30%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-20">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-md h-16 bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="analytics">analytics</span>
+<h1 class="font-h2 text-h2 font-bold text-primary">UrbanPulse</h1>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-16 px-md space-y-md">
+<!-- Page Title Section -->
+<section class="mt-md">
+<div class="flex justify-between items-end">
+<div>
+<span class="font-label-caps text-label-caps text-secondary uppercase">Network Status</span>
+<h2 class="font-h3 text-h3 text-primary">Sector Alpha Traffic Command</h2>
+</div>
+<div class="flex items-center gap-xs bg-surface-container border border-outline-variant px-sm py-xs rounded">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-mono-data text-mono-data text-primary">LIVE</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid: Map & Status -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Heatmap Visualization Card -->
+<div class="bg-surface border border-outline-variant rounded relative overflow-hidden h-64 group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale opacity-40" data-alt="A high-angle bird's eye view of a dense metropolitan city grid at twilight. The city layout is highly structured with long arterial roads and compact urban blocks. The image has a technical, command-center aesthetic with high-contrast lighting. The streetlights create a sharp, grid-like pattern across the urban landscape, emphasizing the municipal transit network's complexity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFM1gbhuBGzlW_vE2fHjBm-Xp4tmptYS26MHApy-laucn9CxH20m0VHzVtpMILokWQxCzPZBym9jdfY2NckYkqvulHse00gJr7cy3XVIJxskuOcDpqnHf5CT6cqyfIIExcHyikbhvHD7_0ulKdzVgiMGHKfJDxzILbFZQh95DDfF2VypAksol4QAYtLXUItK11XMy7A5cAR--uhRowjDzssemwoPEYGVcy47bKYcsb1T3ZEFQbBZSdb2eP-hwhHuHwCFAamtqnYbY"/>
+<div class="absolute inset-0 heatmap-overlay mix-blend-multiply"></div>
+</div>
+<!-- Map UI Elements -->
+<div class="absolute top-sm right-sm flex flex-col gap-xs z-10">
+<button class="bg-surface border border-outline-variant p-xs rounded shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="layers">layers</span>
+</button>
+<button class="bg-surface border border-outline-variant p-xs rounded shadow-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="my_location">my_location</span>
+</button>
+</div>
+<div class="absolute bottom-sm left-sm right-sm z-10 flex justify-between items-end">
+<div class="bg-surface/90 backdrop-blur-sm border border-outline-variant p-sm rounded shadow-sm">
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-secondary rounded-full border border-white"></div>
+<span class="font-label-caps text-[9px] text-secondary uppercase">Light</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-primary rounded-full border border-white"></div>
+<span class="font-label-caps text-[9px] text-primary uppercase">Steady</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 bg-error rounded-full border border-white"></div>
+<span class="font-label-caps text-[9px] text-error uppercase">Heavy</span>
+</div>
+</div>
+</div>
+<div class="bg-primary text-on-primary px-sm py-xs rounded-full">
+<span class="font-mono-data text-[10px]">98.2% Coverage</span>
+</div>
+</div>
+</div>
+<!-- Synchronization Status Panel -->
+<div class="bg-surface-container-low border border-outline-variant rounded p-md">
+<div class="flex justify-between items-start mb-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="sync">sync</span>
+<h3 class="font-h3 text-h3 text-primary">Synchronization</h3>
+</div>
+<span class="font-mono-data text-mono-data text-primary-container bg-primary-fixed px-sm py-[2px] rounded-full">ACTIVE_OPT</span>
+</div>
+<p class="font-body-sm text-on-surface-variant mb-md">
+                    Automated timing cycles are currently optimized for peak evening outflow.
+                </p>
+<div class="grid grid-cols-2 gap-sm">
+<div class="border border-outline-variant bg-surface p-sm rounded">
+<span class="font-label-caps text-label-caps text-secondary block mb-xs">EFFICIENCY</span>
+<span class="font-mono-data text-h2 text-primary">+14.2%</span>
+<div class="w-full bg-surface-container-highest h-1 mt-xs rounded-full">
+<div class="bg-primary h-full w-[84%] rounded-full"></div>
+</div>
+</div>
+<div class="border border-outline-variant bg-surface p-sm rounded">
+<span class="font-label-caps text-label-caps text-secondary block mb-xs">ADAPTIVE MODE</span>
+<span class="font-mono-data text-h2 text-error">ENABLED</span>
+<div class="flex items-center gap-xs mt-xs">
+<span class="material-symbols-outlined text-[12px] text-error" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-body-sm text-[10px] text-on-surface-variant">Real-time Override</span>
+</div>
+</div>
+</div>
+</div>
+<!-- High-Density Traffic Data List -->
+<div class="bg-surface border border-outline-variant rounded overflow-hidden">
+<div class="px-md py-sm border-b border-outline-variant flex justify-between items-center bg-surface-container-high">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CRITICAL INTERSECTIONS</span>
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant" data-icon="sort">sort</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-sm flex justify-between items-center bg-white hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 flex items-center justify-center rounded bg-error-container text-error">
+<span class="material-symbols-outlined text-[20px]" data-icon="traffic">traffic</span>
+</div>
+<div>
+<div class="font-h3 text-body-md text-primary font-bold">5th &amp; Madison</div>
+<div class="font-mono-data text-body-sm text-secondary">ID: TS-4882</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-error font-mono-data font-bold">182s</div>
+<div class="font-label-caps text-[9px] text-secondary uppercase">Delay</div>
+</div>
+</div>
+<div class="p-sm flex justify-between items-center bg-white hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 flex items-center justify-center rounded bg-primary-fixed text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="traffic">traffic</span>
+</div>
+<div>
+<div class="font-h3 text-body-md text-primary font-bold">Broadway Ext.</div>
+<div class="font-mono-data text-body-sm text-secondary">ID: TS-4890</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-primary font-mono-data font-bold">42s</div>
+<div class="font-label-caps text-[9px] text-secondary uppercase">Delay</div>
+</div>
+</div>
+<div class="p-sm flex justify-between items-center bg-white hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-md">
+<div class="w-8 h-8 flex items-center justify-center rounded bg-secondary-fixed text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="traffic">traffic</span>
+</div>
+<div>
+<div class="font-h3 text-body-md text-primary font-bold">Harbor Bridge</div>
+<div class="font-mono-data text-body-sm text-secondary">ID: TS-4901</div>
+</div>
+</div>
+<div class="text-right">
+<div class="text-secondary font-mono-data font-bold">12s</div>
+<div class="font-label-caps text-[9px] text-secondary uppercase">Delay</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-gutter pb-safe bg-surface border-t border-outline-variant z-50">
+<!-- Command -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Command</span>
+</a>
+<!-- Traffic (Active) -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="traffic">traffic</span>
+<span class="font-label-caps text-label-caps">Traffic</span>
+</a>
+<!-- Transit -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="directions_bus">directions_bus</span>
+<span class="font-label-caps text-label-caps">Transit</span>
+</a>
+<!-- Alerts -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-highest transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+</nav>
+</body></html>

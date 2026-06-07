@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ScoutMaster | Player Comparison Tool</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed-dim": "#bdc8d3",
+                        "primary": "#303e51",
+                        "on-surface-variant": "#44474c",
+                        "tertiary-container": "#495468",
+                        "surface-bright": "#f7f9fb",
+                        "surface-variant": "#e0e3e5",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-error-container": "#93000a",
+                        "on-surface": "#191c1e",
+                        "surface": "#f7f9fb",
+                        "surface-container": "#eceef0",
+                        "on-secondary-container": "#5c6570",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#d8e3fb",
+                        "on-primary-container": "#bbcae1",
+                        "on-secondary-fixed": "#131d25",
+                        "surface-container-high": "#e6e8ea",
+                        "secondary-container": "#dae3f0",
+                        "surface-tint": "#515f74",
+                        "secondary-fixed": "#dae3f0",
+                        "primary-container": "#475569",
+                        "on-primary-fixed-variant": "#3a485b",
+                        "on-secondary-fixed-variant": "#3e4852",
+                        "surface-dim": "#d8dadc",
+                        "surface-container-highest": "#e0e3e5",
+                        "tertiary-fixed-dim": "#bcc7de",
+                        "on-tertiary-container": "#bdc8e0",
+                        "outline-variant": "#c4c6cd",
+                        "on-background": "#191c1e",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#0d1c2e",
+                        "inverse-surface": "#2d3133",
+                        "primary-fixed-dim": "#b9c7df",
+                        "primary-fixed": "#d5e3fc",
+                        "on-tertiary-fixed-variant": "#3c475a",
+                        "background": "#f7f9fb",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f2f4f6",
+                        "outline": "#75777d",
+                        "inverse-primary": "#b9c7df",
+                        "on-primary": "#ffffff",
+                        "tertiary": "#323d50",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#111c2d",
+                        "secondary": "#565f6a",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "grid-gutter": "16px",
+                        "base": "4px",
+                        "xl": "32px",
+                        "grid-margin": "32px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "grid-columns": "12",
+                        "xs": "4px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "h1": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "data-tabular": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "h3": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "data-tabular": ["13px", {"lineHeight": "1", "letterSpacing": "0", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h3": ["18px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .radar-grid {
+            background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #CBD5E1;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- SideNavBar Component -->
+<aside class="flex flex-col h-full py-lg bg-surface dark:bg-inverse-surface h-screen w-64 fixed left-0 top-0 border-r border-outline-variant dark:border-on-surface-variant z-50">
+<div class="px-lg mb-xl">
+<h1 class="font-h2 text-h2 font-black text-primary dark:text-inverse-primary tracking-tighter">ScoutMaster</h1>
+<p class="text-[10px] uppercase tracking-widest text-secondary font-bold">Elite Intelligence</p>
+</div>
+<div class="px-md mb-lg">
+<button class="w-full flex items-center justify-center gap-sm bg-primary text-on-primary py-sm px-md rounded-lg font-bold hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-md">add</span>
+                New Report
+            </button>
+</div>
+<nav class="flex-grow space-y-base px-sm">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">person_search</span>
+<span class="font-body-md">Discovery</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">movie_filter</span>
+<span class="font-body-md">Highlights</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">monitoring</span>
+<span class="font-body-md">Tracker</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-primary dark:text-inverse-primary font-bold border-r-4 border-primary dark:border-inverse-primary bg-secondary-container dark:bg-secondary-container-highest" href="#">
+<span class="material-symbols-outlined">compare_arrows</span>
+<span class="font-body-md">Compare</span>
+</a>
+</nav>
+<div class="px-sm pt-lg mt-auto border-t border-outline-variant">
+<a class="flex items-center gap-md px-md py-sm rounded-lg text-secondary dark:text-secondary-fixed-dim hover:bg-surface-container-high transition-colors duration-200 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<div class="mt-md px-md py-sm flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-xs">SM</div>
+<div class="overflow-hidden">
+<p class="text-xs font-bold truncate">Elite Admin</p>
+<p class="text-[10px] text-secondary truncate">Global Scouting Dir.</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center w-full px-lg py-md sticky top-0 z-40 bg-surface-bright dark:bg-surface-dim border-b border-outline-variant dark:border-on-surface-variant">
+<div class="flex items-center gap-xl flex-grow">
+<h2 class="font-h3 text-h3 font-bold text-primary">Player Comparison</h2>
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-sm top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-xl pr-md py-sm text-body-md focus:ring-2 focus:ring-primary" placeholder="Search and add a player..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<nav class="hidden xl:flex items-center gap-lg mr-lg">
+<a class="text-on-surface-variant font-bold hover:text-primary transition-all" href="#">Players</a>
+<a class="text-on-surface-variant font-bold hover:text-primary transition-all" href="#">Teams</a>
+<a class="text-on-surface-variant font-bold hover:text-primary transition-all" href="#">Leagues</a>
+<a class="text-on-surface-variant font-bold hover:text-primary transition-all" href="#">Reports</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="p-base hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+<button class="p-base hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined text-on-surface-variant">history</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-sm"></div>
+<button class="flex items-center gap-sm bg-primary text-on-primary px-md py-sm rounded-lg font-bold hover:opacity-90">
+<span class="material-symbols-outlined text-md">add_circle</span>
+                        Add Entry
+                    </button>
+</div>
+</div>
+</header>
+<!-- Canvas Container -->
+<div class="p-grid-margin space-y-grid-gutter">
+<!-- Comparison Hero: Asymmetric Layout -->
+<div class="grid grid-cols-12 gap-grid-gutter">
+<!-- Player A -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-md">
+<span class="bg-primary text-white text-[10px] font-bold px-sm py-xs rounded">PRIMARY</span>
+</div>
+<div class="w-48 h-48 rounded-full overflow-hidden border-4 border-primary mb-md bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A sharp, high-resolution professional portrait of a professional male football player in a sleek modern team kit. The athlete has a focused, intense expression, set against a blurred stadium background with dramatic, high-key directional lighting. The color palette is dominated by cool slate blues and pristine whites, emphasizing a clean, authoritative sports-intelligence aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrjVUbU3d9Sjlo9FAgG_f0SRf61tukxOJhnS132gkruvC_eFNQqGf8KDz_e_1bl2hKUWcDAdLcKPYKEs5Vd8TCaGDEXuGGrsmPp6bBP7aTuPncGKLOOEaWsExelppIVvQuDymyg76MEu9IQbE72CsQWS-gmBH2P0L7YIKOTr7BIwukL8APvgikxMqF2rnyTUZ5oVu3uDJpfE2f9Vqgs6gnjGy4ssR-cFRtXlcSZJYr2F_Svft2iO_dZrN2znxA26rFMnnC9AEQo3I"/>
+</div>
+<h3 class="font-h1 text-h1 text-primary mb-xs">Julian Vance</h3>
+<p class="font-label-caps text-secondary mb-md">CF • BAYERN MÜNCHEN • 23 YRS</p>
+<div class="flex gap-md w-full">
+<div class="flex-1 text-center bg-surface-container-low p-sm rounded border border-outline-variant">
+<p class="text-[10px] text-secondary font-bold uppercase">Market Value</p>
+<p class="font-h3 text-h3 text-primary">€84.5M</p>
+</div>
+<div class="flex-1 text-center bg-surface-container-low p-sm rounded border border-outline-variant">
+<p class="text-[10px] text-secondary font-bold uppercase">Contract Exp.</p>
+<p class="font-h3 text-h3 text-primary">2028</p>
+</div>
+</div>
+</div>
+<!-- Radar Chart Comparison -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center">
+<div class="flex items-center justify-between w-full mb-md">
+<h4 class="font-label-caps text-secondary">COMPETENCY MAP</h4>
+<div class="flex gap-sm">
+<span class="flex items-center gap-xs text-[10px] font-bold text-primary">
+<span class="w-2 h-2 rounded-full bg-primary"></span> Vance
+                            </span>
+<span class="flex items-center gap-xs text-[10px] font-bold text-secondary">
+<span class="w-2 h-2 rounded-full bg-outline"></span> Rossi
+                            </span>
+</div>
+</div>
+<div class="w-full aspect-square relative radar-grid border border-outline-variant rounded-full flex items-center justify-center p-md">
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Web -->
+<polygon fill="none" points="50,10 84,30 84,70 50,90 16,70 16,30" stroke="#CBD5E1" stroke-width="0.5"></polygon>
+<polygon fill="none" points="50,25 71,37 71,63 50,75 29,63 29,37" stroke="#CBD5E1" stroke-width="0.5"></polygon>
+<polygon fill="none" points="50,40 58,45 58,55 50,60 42,55 42,45" stroke="#CBD5E1" stroke-width="0.5"></polygon>
+<!-- Player A Vance (Primary) -->
+<polygon fill="rgba(48, 62, 81, 0.2)" points="50,15 80,35 78,65 50,85 20,68 22,35" stroke="#303e51" stroke-width="1.5"></polygon>
+<!-- Player B Rossi -->
+<polygon fill="rgba(86, 95, 106, 0.15)" points="50,20 75,40 70,72 50,80 25,75 30,45" stroke="#565f6a" stroke-dasharray="2 2" stroke-width="1.5"></polygon>
+</svg>
+<!-- Labels -->
+<span class="absolute top-2 text-[10px] font-bold">PHYS</span>
+<span class="absolute bottom-2 text-[10px] font-bold">DEF</span>
+<span class="absolute left-2 top-1/3 text-[10px] font-bold -rotate-60">DRI</span>
+<span class="absolute right-2 top-1/3 text-[10px] font-bold rotate-60">SHO</span>
+<span class="absolute left-2 bottom-1/3 text-[10px] font-bold rotate-60">PAS</span>
+<span class="absolute right-2 bottom-1/3 text-[10px] font-bold -rotate-60">TAC</span>
+</div>
+<p class="text-[11px] text-on-surface-variant mt-md text-center">Vance shows 14% higher proficiency in transitional shooting efficiency.</p>
+</div>
+<!-- Player B -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col items-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-md">
+<button class="bg-surface-container-high text-secondary hover:text-primary transition-all p-xs rounded">
+<span class="material-symbols-outlined text-sm">swap_horiz</span>
+</button>
+</div>
+<div class="w-48 h-48 rounded-full overflow-hidden border-4 border-outline-variant mb-md bg-surface-container-high opacity-80 group-hover:opacity-100 transition-opacity">
+<img class="w-full h-full object-cover" data-alt="A sharp cinematic portrait of a professional soccer player from a rival team in a clean white and silver jersey. The lighting is focused and crisp, emphasizing athletic definition and a serious professional demeanor. The composition is clean and minimalist, set against a dark, out-of-focus background with blue tonal shifts, maintaining the elite corporate dashboard aesthetic of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0jFDFfEmNg66v9Hh1TCNs1bW2QhEZGOoOl0A0LW1E71GwW4ZUIVMtEo2Y3rKb3Jh0pUwhmvgA9zDbe1o3o719jgs-t38NyuKoh0F595NwtGY7GaSZ_6LnmMPc-W7l-p9tuYdcMu8htkdoxHLBtOMY2hWDKK3egFJPj23GCsL4Qrw8knH1xShmBWbVd5u25YQD0YIbCv2NHzlQqdsouhvP1SUbYvJ1j5QVKHqaHVP4S5aEugAIllNjXXhhL-ex6kFiiYDkfc1k-2o"/>
+</div>
+<h3 class="font-h1 text-h1 text-secondary mb-xs">Marco Rossi</h3>
+<p class="font-label-caps text-secondary mb-md">CF • AC MILAN • 21 YRS</p>
+<div class="flex gap-md w-full">
+<div class="flex-1 text-center bg-surface-container-low p-sm rounded border border-outline-variant">
+<p class="text-[10px] text-secondary font-bold uppercase">Market Value</p>
+<p class="font-h3 text-h3 text-secondary">€62.0M</p>
+</div>
+<div class="flex-1 text-center bg-surface-container-low p-sm rounded border border-outline-variant">
+<p class="text-[10px] text-secondary font-bold uppercase">Contract Exp.</p>
+<p class="font-h3 text-h3 text-secondary">2027</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Statistical Breakdown Table -->
+<section class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden">
+<div class="px-lg py-md border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<h3 class="font-h3 text-h3 text-primary">Statistical Breakdown (Per 90)</h3>
+<div class="flex gap-sm">
+<button class="bg-white border border-outline-variant text-[11px] font-bold px-md py-xs rounded hover:bg-surface-container-high transition-all">Export PDF</button>
+<button class="bg-primary text-white text-[11px] font-bold px-md py-xs rounded hover:opacity-90 transition-all">Filter Metrics</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container text-secondary">
+<tr>
+<th class="p-md font-label-caps uppercase border-b border-outline-variant">Core Metric</th>
+<th class="p-md font-label-caps uppercase border-b border-outline-variant text-center bg-secondary-container/30">Julian Vance</th>
+<th class="p-md font-label-caps uppercase border-b border-outline-variant text-center">Marco Rossi</th>
+<th class="p-md font-label-caps uppercase border-b border-outline-variant text-right">Differential</th>
+</tr>
+</thead>
+<tbody class="text-body-md">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-md font-bold text-primary border-b border-outline-variant">Expected Goals (xG)</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant bg-secondary-container/20">0.74</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant">0.62</td>
+<td class="p-md text-right font-data-tabular border-b border-outline-variant text-error font-bold">+19.3%</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<td class="p-md font-bold text-primary border-b border-outline-variant">Successful Dribbles</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant bg-secondary-container/20">2.14</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant">2.88</td>
+<td class="p-md text-right font-data-tabular border-b border-outline-variant text-primary font-bold">-25.6%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-md font-bold text-primary border-b border-outline-variant">Pass Completion %</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant bg-secondary-container/20">82.4%</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant">76.1%</td>
+<td class="p-md text-right font-data-tabular border-b border-outline-variant text-error font-bold">+6.3%</td>
+</tr>
+<tr class="bg-surface-container-low/50 hover:bg-surface-container-low transition-colors">
+<td class="p-md font-bold text-primary border-b border-outline-variant">Sprints per Match</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant bg-secondary-container/20">32.1</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant">34.5</td>
+<td class="p-md text-right font-data-tabular border-b border-outline-variant text-primary font-bold">-7.4%</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-md font-bold text-primary border-b border-outline-variant">Aerial Duels Won</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant bg-secondary-container/20">54.2%</td>
+<td class="p-md text-center font-data-tabular border-b border-outline-variant">31.8%</td>
+<td class="p-md text-right font-data-tabular border-b border-outline-variant text-error font-bold">+22.4%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Analytical Summary & Trends -->
+<div class="grid grid-cols-12 gap-grid-gutter">
+<!-- Analytical Summary Card -->
+<div class="col-span-12 md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg">
+<h3 class="font-h3 text-h3 text-primary mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">analytics</span>
+                        Analytical Summary
+                    </h3>
+<div class="space-y-md text-body-lg text-on-surface-variant leading-relaxed">
+<p>
+                            Julian Vance continues to exhibit elite-level positional intelligence and clinical finishing, significantly outperforming Marco Rossi in high-pressure goal-scoring opportunities. His <strong>0.74 xG per 90</strong> places him in the top 5% of strikers globally under age 25.
+                        </p>
+<p>
+                            Conversely, Rossi offers a more dynamic transitional profile. His high volume of successful dribbles (2.88) and progressive carries suggests a player better suited for a counter-attacking system that requires a focal point capable of carrying the ball under pressure.
+                        </p>
+<div class="bg-surface-container-low p-md border-l-4 border-primary rounded-r">
+<p class="font-bold text-primary text-sm uppercase mb-xs">Scout Verdict</p>
+<p class="text-body-md italic">"Vance is the superior tactical investment for possession-heavy systems requiring aerial dominance, whereas Rossi represents higher speculative value for high-intensity direct transition teams."</p>
+</div>
+</div>
+</div>
+<!-- Recruitment Velocity Trend -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded-xl p-lg flex flex-col">
+<h4 class="font-label-caps text-secondary mb-md">RECRUITMENT VELOCITY</h4>
+<div class="flex-grow flex items-end gap-xs h-40 pb-sm">
+<!-- Simple Trend Bars -->
+<div class="flex-1 bg-primary/20 h-1/4 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-2/5 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-1/3 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-3/5 rounded-t-sm"></div>
+<div class="flex-1 bg-primary/80 h-4/5 rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-full rounded-t-sm"></div>
+</div>
+<div class="pt-md border-t border-outline-variant">
+<div class="flex justify-between items-center mb-xs">
+<span class="text-xs font-bold">Interests</span>
+<span class="text-xs font-bold text-error">+42%</span>
+</div>
+<p class="text-[10px] text-secondary">Global inquiry volume has spiked for Vance over the last 30 days following Champions League performance.</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual Action Button (FAB) - Hidden as per suppression rules for Detail screens -->
+</body></html>

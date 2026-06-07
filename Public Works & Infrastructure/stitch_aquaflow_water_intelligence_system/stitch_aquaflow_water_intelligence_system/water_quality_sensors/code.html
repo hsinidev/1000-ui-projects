@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AquaFlow Intelligence - Water Quality</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e0e3e5",
+                        "on-surface-variant": "#43474e",
+                        "secondary-fixed-dim": "#bcc7dd",
+                        "tertiary-fixed": "#d2e4ff",
+                        "surface-bright": "#f7fafc",
+                        "secondary": "#545f72",
+                        "on-secondary-container": "#586377",
+                        "on-background": "#181c1e",
+                        "on-tertiary-fixed": "#001d37",
+                        "surface-container-high": "#e5e9eb",
+                        "on-tertiary-container": "#58a2f0",
+                        "on-primary-fixed": "#001b3c",
+                        "tertiary": "#00213e",
+                        "surface-tint": "#455f88",
+                        "tertiary-fixed-dim": "#9fcaff",
+                        "error-container": "#ffdad6",
+                        "surface-dim": "#d7dadc",
+                        "surface-container": "#ebeef0",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#111c2c",
+                        "primary-fixed-dim": "#adc7f7",
+                        "surface": "#f7fafc",
+                        "background": "#f7fafc",
+                        "tertiary-container": "#003762",
+                        "error": "#ba1a1a",
+                        "surface-variant": "#e0e3e5",
+                        "inverse-on-surface": "#eef1f3",
+                        "primary": "#002045",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-tertiary-fixed-variant": "#00497e",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#d5e0f7",
+                        "on-primary-container": "#86a0cd",
+                        "inverse-primary": "#adc7f7",
+                        "primary-container": "#1a365d",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#d8e3fa",
+                        "on-surface": "#181c1e",
+                        "surface-container-low": "#f1f4f6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c4c6cf",
+                        "on-secondary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "outline": "#74777f",
+                        "inverse-surface": "#2d3133"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "8px",
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "stack-lg": "32px",
+                        "margin": "32px",
+                        "gutter": "24px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "body-base": ["Inter"],
+                        "data-mono": ["Space Grotesk"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-xl": ["Inter"],
+                        "label-caps": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(0, 32, 69, 0.1);
+        }
+        .liquid-wave {
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-wave::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 200%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: wave-flow 2s infinite linear;
+        }
+        @keyframes wave-flow {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(50%); }
+        }
+        .chart-node {
+            box-shadow: 0 0 0 2px white, 0 0 0 4px currentColor;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-base text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-surface-dim docked full-width top-0 border-b border-outline-variant dark:border-outline z-40 sticky">
+<div class="flex justify-between items-center w-full px-margin py-stack-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="water_drop">water_drop</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary dark:text-primary-fixed-dim">AquaFlow Intelligence</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<button class="material-symbols-outlined p-stack-sm rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors active:scale-95 duration-100 text-on-surface-variant dark:text-surface-variant" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined p-stack-sm rounded-full hover:bg-surface-container-high dark:hover:bg-surface-variant transition-colors active:scale-95 duration-100 text-on-surface-variant dark:text-surface-variant" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</header>
+<div class="flex max-w-container-max mx-auto min-h-screen">
+<!-- NavigationDrawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-screen sticky top-0 w-64 bg-surface-container dark:bg-surface-dim p-stack-md gap-stack-sm border-r border-outline-variant shadow-sm z-30">
+<div class="mb-stack-lg px-stack-sm">
+<p class="font-headline-md text-headline-md text-primary">Infrastructure Control</p>
+</div>
+<nav class="flex flex-col gap-unit">
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-on-surface-variant hover:text-primary hover:bg-secondary-container/50 transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+                    Reservoirs
+                </a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm bg-primary-container text-on-primary-container font-bold rounded-full transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+                    Water Quality
+                </a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-on-surface-variant hover:text-primary hover:bg-secondary-container/50 transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+                    Sewage Flow
+                </a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-on-surface-variant hover:text-primary hover:bg-secondary-container/50 transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+                    Network Map
+                </a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-on-surface-variant hover:text-primary hover:bg-secondary-container/50 transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+                    Leak Reports
+                </a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-on-surface-variant hover:text-primary hover:bg-secondary-container/50 transition-all duration-200 ease-in-out font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+                    Technician Dispatch
+                </a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-margin overflow-x-hidden">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-stack-md mb-stack-lg">
+<div>
+<h2 class="font-display-xl text-display-xl text-primary mb-unit">Water Quality Sensors</h2>
+<p class="text-on-surface-variant font-data-mono uppercase">Live Network Feed • System Status: Nominal</p>
+</div>
+<div class="flex gap-stack-sm">
+<div class="px-stack-md py-stack-sm bg-surface-container-high rounded border border-outline-variant flex items-center gap-stack-sm">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Real-time sync</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Sensor Block: pH -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded p-stack-md flex flex-col justify-between">
+<div class="flex justify-between items-start border-b border-outline-variant pb-stack-sm mb-stack-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SENSOR ID: PH-0922</span>
+<span class="px-stack-sm py-unit bg-primary-container text-on-primary-container font-label-caps text-[10px] rounded">POTABLE</span>
+</div>
+<div class="flex items-baseline gap-stack-sm">
+<span class="font-display-xl text-display-xl text-primary font-data-mono">7.24</span>
+<span class="font-headline-md text-on-surface-variant">pH</span>
+</div>
+<div class="mt-stack-lg">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>ALKALINE LIMIT</span>
+<span>8.5</span>
+</div>
+<div class="h-stack-sm bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[72%] bg-primary liquid-wave transition-all duration-1000"></div>
+</div>
+</div>
+<div class="mt-stack-md flex items-center gap-unit text-on-tertiary-container">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span>
+<span class="font-label-caps text-[10px]">SAFE RANGE</span>
+</div>
+</div>
+<!-- Sensor Block: Chlorine -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded p-stack-md flex flex-col justify-between">
+<div class="flex justify-between items-start border-b border-outline-variant pb-stack-sm mb-stack-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SENSOR ID: CL-4401</span>
+<span class="px-stack-sm py-unit bg-secondary-container text-on-secondary-container font-label-caps text-[10px] rounded">RESIDUAL</span>
+</div>
+<div class="flex items-baseline gap-stack-sm">
+<span class="font-display-xl text-display-xl text-primary font-data-mono">1.82</span>
+<span class="font-headline-md text-on-surface-variant">mg/L</span>
+</div>
+<div class="mt-stack-lg">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit">
+<span>CONCENTRATION</span>
+<span>MAX 4.0</span>
+</div>
+<div class="h-stack-sm bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[45%] bg-on-tertiary-container liquid-wave transition-all duration-1000"></div>
+</div>
+</div>
+<div class="mt-stack-md flex items-center gap-unit text-on-tertiary-container">
+<span class="material-symbols-outlined text-[16px]" data-icon="check_circle">check_circle</span>
+<span class="font-label-caps text-[10px]">OPTIMAL DOSAGE</span>
+</div>
+</div>
+<!-- Sensor Block: Lead -->
+<div class="md:col-span-4 bg-surface-container-lowest border border-outline-variant rounded p-stack-md flex flex-col justify-between">
+<div class="flex justify-between items-start border-b border-outline-variant pb-stack-sm mb-stack-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SENSOR ID: PB-1104</span>
+<span class="px-stack-sm py-unit bg-error-container text-on-error-container font-label-caps text-[10px] rounded">HEAVY METAL</span>
+</div>
+<div class="flex items-baseline gap-stack-sm">
+<span class="font-display-xl text-display-xl text-error font-data-mono">0.012</span>
+<span class="font-headline-md text-on-surface-variant">ppm</span>
+</div>
+<div class="mt-stack-lg">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant mb-unit text-error font-bold">
+<span>WARNING THRESHOLD</span>
+<span>0.015</span>
+</div>
+<div class="h-stack-sm bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[80%] bg-error transition-all duration-1000"></div>
+</div>
+</div>
+<div class="mt-stack-md flex items-center gap-unit text-error">
+<span class="material-symbols-outlined text-[16px]" data-icon="warning">warning</span>
+<span class="font-label-caps text-[10px]">CRITICAL MONITORING</span>
+</div>
+</div>
+<!-- Network Trend Visualization -->
+<div class="md:col-span-8 bg-surface-container-lowest border border-outline-variant rounded p-stack-md">
+<div class="flex justify-between items-center mb-stack-lg border-b border-outline-variant pb-stack-sm">
+<h3 class="font-label-caps text-label-caps text-primary">NETWORK PURITY TRENDS (24H)</h3>
+<div class="flex gap-stack-sm">
+<span class="flex items-center gap-unit font-label-caps text-[10px]"><span class="w-2 h-2 rounded-full bg-primary"></span> pH</span>
+<span class="flex items-center gap-unit font-label-caps text-[10px]"><span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span> Chlorine</span>
+</div>
+</div>
+<div class="relative h-64 w-full flex items-end justify-between px-stack-sm border-l border-b border-outline-variant">
+<!-- Simulated Pipeline Chart Graph -->
+<svg class="absolute inset-0 w-full h-full" preserveaspectratio="none" viewbox="0 0 800 200">
+<!-- Background Grid -->
+<line stroke="#c4c6cf" stroke-dasharray="4" x1="0" x2="800" y1="50" y2="50"></line>
+<line stroke="#c4c6cf" stroke-dasharray="4" x1="0" x2="800" y1="100" y2="100"></line>
+<line stroke="#c4c6cf" stroke-dasharray="4" x1="0" x2="800" y1="150" y2="150"></line>
+<!-- Trend Lines (Pipes) -->
+<path d="M0 140 Q 100 120, 200 150 T 400 130 T 600 145 T 800 120" fill="none" stroke="#002045" stroke-width="3"></path>
+<path d="M0 100 Q 150 110, 300 80 T 500 100 T 700 90 T 800 110" fill="none" stroke="#58a2f0" stroke-width="3"></path>
+</svg>
+<!-- Nodes -->
+<div class="absolute left-[25%] bottom-[45%] w-3 h-3 rounded-full bg-white border-2 border-primary chart-node"></div>
+<div class="absolute left-[50%] bottom-[60%] w-3 h-3 rounded-full bg-white border-2 border-primary chart-node"></div>
+<div class="absolute left-[75%] bottom-[35%] w-3 h-3 rounded-full bg-white border-2 border-primary chart-node"></div>
+<div class="absolute left-[30%] bottom-[50%] w-3 h-3 rounded-full bg-white border-2 border-on-tertiary-container chart-node"></div>
+<div class="absolute left-[60%] bottom-[55%] w-3 h-3 rounded-full bg-white border-2 border-on-tertiary-container chart-node"></div>
+</div>
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant mt-stack-sm">
+<span>00:00</span>
+<span>06:00</span>
+<span>12:00</span>
+<span>18:00</span>
+<span>24:00</span>
+</div>
+</div>
+<!-- Zone Surveillance -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded p-stack-md flex flex-col relative overflow-hidden">
+<div class="relative z-10">
+<h3 class="font-label-caps text-label-caps border-b border-primary-container pb-unit mb-stack-md">ZONE SURVEILLANCE</h3>
+<div class="space-y-stack-md">
+<div class="flex justify-between items-center bg-primary-container p-stack-sm rounded">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-data-mono">North Sector B-4</span>
+</div>
+<span class="px-stack-sm py-unit bg-on-tertiary-container text-primary font-bold text-[10px] rounded">SAFE</span>
+</div>
+<div class="flex justify-between items-center border border-primary-container p-stack-sm rounded">
+<div class="flex items-center gap-stack-sm text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-data-mono text-on-primary">West Loop R-1</span>
+</div>
+<span class="px-stack-sm py-unit bg-error text-white font-bold text-[10px] rounded">ALARM</span>
+</div>
+<div class="flex justify-between items-center border border-primary-container p-stack-sm rounded">
+<div class="flex items-center gap-stack-sm text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-data-mono text-on-primary">South Hub S-9</span>
+</div>
+<span class="px-stack-sm py-unit bg-primary-container text-on-primary-container font-bold text-[10px] rounded">CHECKING</span>
+</div>
+</div>
+<button class="mt-stack-lg w-full py-stack-sm bg-primary-fixed text-primary font-bold uppercase tracking-widest text-[12px] hover:bg-white transition-colors">
+                            DOWNLOAD LOG DATA (.CSV)
+                        </button>
+</div>
+<!-- Abstract Background Graphic -->
+<div class="absolute -right-10 -bottom-10 opacity-10">
+<span class="material-symbols-outlined text-[180px]" data-icon="water_drop">water_drop</span>
+</div>
+</div>
+<!-- Secondary Map Layer (Glassmorphic) -->
+<div class="md:col-span-12 h-64 rounded overflow-hidden relative border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A top-down satellite mapping visualization of a modern city's water infrastructure grid, featuring glowing blue utility lines and highlighted circular nodes representing sensor locations. The aesthetic is highly technical and industrial, with a cool blue and dark grey color palette that suggests a nocturnal or high-contrast monitoring environment. Precision digital overlays and faint topographical grid lines provide a sense of geospatial accuracy and high-tech municipal control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeSfL-NMeHfkg9UVEZfFKaGsbIuinEZ-eDcpVC_GhjhbRoQhReHlkUndnTMOaUVedJignipqB4pazXjUx_0ymMPG7fF5PiQiwGRR52jQdXw7RjeMFGm1ztIqDkMb-lg37r23sa59qo-bw9IPw-9cd9TRp-YqLdbPEUcE9v8tcYa_4XCmT9rC5hpTiC2It7w50ow2tdcI-O1S3i6eKnNwgk0zV7tU0r5bFlhIC0qHhqVAfRJyEuGrx8TxumyrmxkMAXrY2hVnM_Zys"/>
+<div class="absolute inset-0 bg-primary/20 pointer-events-none"></div>
+<div class="absolute top-stack-md left-stack-md glass-panel p-stack-md rounded-lg max-w-xs shadow-lg">
+<h4 class="font-label-caps text-label-caps text-primary mb-stack-sm">ACTIVE INFRASTRUCTURE</h4>
+<p class="text-[12px] text-on-surface-variant mb-stack-md">Visualizing sensor density across the metro aquifer. All systems reporting operational data.</p>
+<div class="flex items-center gap-stack-sm">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 rounded-full border-2 border-white bg-on-tertiary-container"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-primary"></div>
+<div class="w-6 h-6 rounded-full border-2 border-white bg-secondary"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">+14 Active Units</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-stack-sm md:hidden bg-surface-container-lowest/80 backdrop-blur-xl border-t border-outline-variant dark:border-outline shadow-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="water_full">water_full</span>
+<span class="font-label-caps text-[10px]">Levels</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-4 py-1 active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-caps text-[10px]">Quality</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="opacity">opacity</span>
+<span class="font-label-caps text-[10px]">Sewage</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="distance">distance</span>
+<span class="font-label-caps text-[10px]">Maps</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-caps text-[10px]">Reports</span>
+</a>
+</nav>
+</body></html>

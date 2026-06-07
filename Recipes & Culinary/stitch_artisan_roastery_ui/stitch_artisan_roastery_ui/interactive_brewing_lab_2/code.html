@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Slow Coffee - Brewing Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,500;1,400&amp;family=Work+Sans:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-tint": "#5f5e5e",
+                    "on-tertiary-fixed": "#2c160e",
+                    "on-secondary-container": "#785f35",
+                    "on-primary-fixed-variant": "#474746",
+                    "surface-container-lowest": "#ffffff",
+                    "outline": "#747878",
+                    "surface-dim": "#dbdad7",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "inverse-primary": "#c8c6c5",
+                    "on-secondary-fixed-variant": "#59431c",
+                    "on-primary-container": "#858383",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed": "#281900",
+                    "inverse-surface": "#2f312f",
+                    "surface-container-high": "#e9e8e5",
+                    "surface": "#faf9f6",
+                    "background": "#faf9f6",
+                    "tertiary": "#000000",
+                    "surface-container-highest": "#e3e2e0",
+                    "primary": "#000000",
+                    "tertiary-container": "#2c160e",
+                    "surface-container": "#efeeeb",
+                    "secondary-container": "#fddba7",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#e5e2e1",
+                    "on-background": "#1a1c1a",
+                    "outline-variant": "#c4c7c7",
+                    "on-primary-fixed": "#1c1b1b",
+                    "on-tertiary-fixed-variant": "#5d4037",
+                    "secondary-fixed": "#ffdeac",
+                    "secondary-fixed-dim": "#e3c290",
+                    "surface-container-low": "#f4f3f1",
+                    "tertiary-fixed": "#ffdbd0",
+                    "error": "#ba1a1a",
+                    "on-surface": "#1a1c1a",
+                    "tertiary-fixed-dim": "#e7bdb1",
+                    "surface-variant": "#e3e2e0",
+                    "on-tertiary-container": "#9f7c71",
+                    "inverse-on-surface": "#f2f1ee",
+                    "on-primary": "#ffffff",
+                    "primary-container": "#1c1b1b",
+                    "surface-bright": "#faf9f6",
+                    "error-container": "#ffdad6",
+                    "on-surface-variant": "#444748",
+                    "secondary": "#735a31"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-mobile": "20px",
+                    "unit": "8px",
+                    "margin-desktop": "64px",
+                    "section-gap": "120px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Noto Serif"],
+                    "body-md": ["Work Sans"],
+                    "headline-lg": ["Noto Serif"],
+                    "body-lg": ["Work Sans"],
+                    "label-sm": ["Work Sans"],
+                    "headline-md": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        body {
+            background-color: #faf9f6;
+            background-image: radial-gradient(#dbdad7 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .grain-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .wood-accent {
+            background: linear-gradient(135deg, #735a31 0%, #59431c 100%);
+        }
+        .glass-panel {
+            backdrop-filter: blur(8px);
+            background: rgba(250, 249, 246, 0.7);
+        }
+        .timer-glow {
+            text-shadow: 0 0 30px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<div class="grain-overlay"></div>
+<!-- Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200/40 shadow-sm shadow-stone-200/20">
+<div class="flex justify-between items-center w-full px-8 md:px-16 h-20 max-w-screen-2xl mx-auto">
+<div class="text-2xl font-serif tracking-widest text-stone-900 uppercase">SLOW COFFEE</div>
+<div class="hidden md:flex gap-12">
+<a class="font-serif tracking-tight text-sm uppercase text-stone-500 hover:text-stone-900 transition-all duration-300" href="#">Collection</a>
+<a class="font-serif tracking-tight text-sm uppercase text-stone-950 border-b border-stone-950 pb-1" href="#">Brewing Lab</a>
+<a class="font-serif tracking-tight text-sm uppercase text-stone-500 hover:text-stone-900 transition-all duration-300" href="#">Subscription</a>
+<a class="font-serif tracking-tight text-sm uppercase text-stone-500 hover:text-stone-900 transition-all duration-300" href="#">Our Story</a>
+</div>
+<div class="flex items-center gap-6">
+<button class="scale-95 active:opacity-80 transition-transform">
+<span class="material-symbols-outlined text-stone-900" data-icon="shopping_bag">shopping_bag</span>
+</button>
+<button class="scale-95 active:opacity-80 transition-transform">
+<span class="material-symbols-outlined text-stone-900" data-icon="person">person</span>
+</button>
+</div>
+</div>
+</nav>
+<main class="pt-32 max-w-screen-2xl mx-auto px-8 md:px-16">
+<!-- Hero Section / Header -->
+<header class="mb-section-gap text-center max-w-2xl mx-auto">
+<span class="font-label-sm text-secondary uppercase mb-4 block tracking-[0.2em]">Crafting Rituals</span>
+<h1 class="font-headline-xl text-primary mb-6">Brewing Lab</h1>
+<p class="text-body-lg text-on-surface-variant italic">Select your method, ground your beans, and follow the rhythm of the water. Patience is the secret ingredient.</p>
+</header>
+<!-- Main Interaction Area -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left: Method Selector -->
+<div class="lg:col-span-3 space-y-4">
+<h3 class="font-label-sm text-primary uppercase mb-6 tracking-widest">Select Method</h3>
+<button class="w-full flex items-center justify-between px-6 py-8 bg-surface-container-low border border-outline-variant/30 hover:border-secondary transition-colors group">
+<div class="text-left">
+<span class="font-headline-md block text-primary mb-1">Pour-over</span>
+<span class="text-label-sm text-on-surface-variant uppercase">3:00 min • 300ml</span>
+</div>
+<span class="material-symbols-outlined text-stone-400 group-hover:text-secondary transition-colors" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+</button>
+<button class="w-full flex items-center justify-between px-6 py-8 wood-accent text-white shadow-xl">
+<div class="text-left">
+<span class="font-headline-md block mb-1">AeroPress</span>
+<span class="text-label-sm text-stone-300 uppercase">2:30 min • 250ml</span>
+</div>
+<span class="material-symbols-outlined text-white/50" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</button>
+<button class="w-full flex items-center justify-between px-6 py-8 bg-surface-container-low border border-outline-variant/30 hover:border-secondary transition-colors group">
+<div class="text-left">
+<span class="font-headline-md block text-primary mb-1">French Press</span>
+<span class="text-label-sm text-on-surface-variant uppercase">4:00 min • 500ml</span>
+</div>
+<span class="material-symbols-outlined text-stone-400 group-hover:text-secondary transition-colors" data-icon="keyboard_arrow_right">keyboard_arrow_right</span>
+</button>
+</div>
+<!-- Center: The Timer -->
+<div class="lg:col-span-6">
+<div class="relative aspect-square flex items-center justify-center bg-surface-container-highest/30 rounded-full border border-stone-200/50 shadow-inner overflow-hidden"><!-- Progress Ring SVG -->
+<svg class="absolute inset-0 w-full h-full -rotate-90" viewbox="0 0 100 100">
+<!-- Background Circle -->
+<circle class="text-stone-200/50" cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-width="0.5"></circle>
+<!-- Progress Circle (Active) -->
+<circle class="text-secondary transition-all duration-1000" cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-dasharray="301.59" stroke-dashoffset="180" stroke-width="1.5"></circle>
+</svg>
+<div class="absolute inset-8 rounded-full border border-stone-200/30"></div>
+<div class="text-center z-10">
+<span class="font-headline-xl text-[140px] leading-none timer-glow tracking-tighter text-primary block mb-4 font-medium">02:14</span>
+<span class="font-label-sm text-secondary uppercase tracking-[0.4em] mt-4 block">Bloom Stage</span>
+</div></div>
+<div class="flex justify-center gap-12 mt-12"><button class="flex flex-col items-center gap-3 group opacity-60 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 flex items-center justify-center rounded-full border border-stone-300 text-stone-500 group-hover:border-primary group-hover:text-primary transition-all">
+<span class="material-symbols-outlined text-2xl" data-icon="replay">replay</span>
+</div>
+<span class="text-label-sm uppercase tracking-widest text-[10px]">Reset</span>
+</button>
+<button class="flex flex-col items-center gap-3 group">
+<div class="w-28 h-28 flex items-center justify-center rounded-full wood-accent text-white shadow-[0_20px_50px_rgba(89,67,28,0.3)] scale-100 hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-5xl" data-icon="pause">pause</span>
+</div>
+<span class="text-label-sm font-bold uppercase tracking-widest mt-2">Pause</span>
+</button>
+<button class="flex flex-col items-center gap-3 group opacity-60 hover:opacity-100 transition-opacity">
+<div class="w-14 h-14 flex items-center justify-center rounded-full border border-stone-300 text-stone-500 group-hover:border-primary group-hover:text-primary transition-all">
+<span class="material-symbols-outlined text-2xl" data-icon="skip_next">skip_next</span>
+</div>
+<span class="text-label-sm uppercase tracking-widest text-[10px]">Skip</span>
+</button></div>
+</div>
+<!-- Right: Instructions Bento -->
+<div class="lg:col-span-3 space-y-gutter">
+<div class="bg-surface-container p-8 border-l-4 border-secondary">
+<h4 class="font-label-sm text-primary uppercase mb-4 tracking-widest">Active Step</h4>
+<p class="font-headline-md text-primary leading-snug mb-4">The Bloom</p>
+<p class="text-body-md text-on-surface-variant">Pour 50g of water. Gently swirl to saturate all grounds. Wait for the CO2 to release.</p>
+</div>
+<div class="grid grid-cols-1 gap-4">
+<div class="p-6 bg-surface-container-low border border-stone-200/50">
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="water_drop">water_drop</span>
+<div class="font-label-sm text-on-surface-variant uppercase mb-1">Water Temp</div>
+<div class="font-headline-md">94°C</div>
+</div>
+<div class="p-6 bg-surface-container-low border border-stone-200/50">
+<span class="material-symbols-outlined text-secondary mb-2" data-icon="scale">scale</span>
+<div class="font-label-sm text-on-surface-variant uppercase mb-1">Coffee Dose</div>
+<div class="font-headline-md">18.5g</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Context Section -->
+<section class="mt-section-gap grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+<div class="order-2 md:order-1">
+<img alt="Brewing Method Closeup" class="w-full h-[600px] object-cover grayscale brightness-90 hover:grayscale-0 transition-all duration-700 shadow-2xl" data-alt="A serene close-up photograph of a professional barista performing a manual pour-over in a sunlit boutique roastery. The focus is on the steady stream of water hitting the dark coffee grounds, creating a rich bloom. The lighting is soft and natural, emphasizing the organic textures of the ceramic dripper and the wooden coffee bar. The overall mood is quiet, intentional, and deeply rooted in the slow coffee aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUDfEVg-VbFC6T9XmbZNpd0a1gjk6av6x2eK7cWwudq3iO-ATwFhc8FIFSE7iqjtVziDdGSeZd0yLuIM8vvhoX5A3ysfpCaYrpeqrQKL6s_u9mBi1lzUPDtWSKdJ4KISEfPiZexVhJ1uyts2pKZX27vEn47tZKMuWirKahRdIWkuMLkpxhzKk8Wj6LWYk1oCVWYcsKUpWdZAZ0wk5z2ScJQ1euVuIVB7Bhz_6suVEiqplJzZ6oXRAobHx4iTdpxTOQ2qa5yue-rQ"/>
+</div>
+<div class="order-1 md:order-2 space-y-8">
+<h2 class="font-headline-xl text-primary">The Art of the AeroPress</h2>
+<div class="w-24 h-1 wood-accent"></div>
+<p class="text-body-lg text-on-surface-variant leading-relaxed">
+                    Designed by an engineer, perfected by enthusiasts. The AeroPress offers unparalleled clarity of flavor. By utilizing pressure and immersion, it extracts the most delicate floral notes and bright acidities from high-altitude beans.
+                </p>
+<div class="flex flex-wrap gap-4">
+<span class="px-4 py-2 bg-stone-200/50 text-label-sm uppercase tracking-widest text-primary">High Body</span>
+<span class="px-4 py-2 bg-stone-200/50 text-label-sm uppercase tracking-widest text-primary">Low Acidity</span>
+<span class="px-4 py-2 bg-stone-200/50 text-label-sm uppercase tracking-widest text-primary">Clean Finish</span>
+</div>
+</div>
+</section>
+<!-- Subscription Teaser -->
+<section class="mt-section-gap bg-stone-900 text-stone-100 p-16 md:p-24 text-center">
+<h3 class="font-headline-xl mb-8">Never Brew Alone</h3>
+<p class="text-body-lg text-stone-400 max-w-xl mx-auto mb-12 italic">Join our monthly curation. Fresh harvests from Ethiopia, Colombia, and Vietnam delivered to your door with custom brewing guides for every roast.</p>
+<button class="px-12 py-5 bg-white text-stone-950 font-label-sm uppercase tracking-[0.3em] hover:bg-stone-200 transition-colors">Explore Subscriptions</button>
+</section>
+</main>
+<!-- Footer -->
+<footer class="w-full mt-32 py-20 px-8 md:px-16 bg-stone-100 border-t border-stone-200">
+<div class="grid grid-cols-1 md:grid-cols-2 items-end justify-between max-w-screen-2xl mx-auto">
+<div class="space-y-8">
+<div class="font-serif italic text-3xl text-stone-800">Slow Coffee Roasters.</div>
+<p class="font-serif text-xs tracking-widest uppercase text-stone-500">© 2024 SLOW COFFEE ROASTERS. CRAFTED WITH INTENTIONALITY.</p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-4 md:justify-end mt-12 md:mt-0">
+<a class="font-serif text-xs tracking-widest uppercase text-stone-500 hover:text-stone-900 underline underline-offset-4 transition-opacity" href="#">Sustainability</a>
+<a class="font-serif text-xs tracking-widest uppercase text-stone-500 hover:text-stone-900 underline underline-offset-4 transition-opacity" href="#">Wholesale</a>
+<a class="font-serif text-xs tracking-widest uppercase text-stone-500 hover:text-stone-900 underline underline-offset-4 transition-opacity" href="#">Shipping Policy</a>
+<a class="font-serif text-xs tracking-widest uppercase text-stone-500 hover:text-stone-900 underline underline-offset-4 transition-opacity" href="#">Contact</a>
+</div>
+</div>
+</footer>
+</body></html>

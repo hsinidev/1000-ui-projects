@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>RESILIO-HUB | Resource Allocation &amp; Dispatch</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Public+Sans:wght@700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "secondary-container": "#e61730",
+                    "primary-container": "#003049",
+                    "surface-tint": "#3d627d",
+                    "secondary-fixed": "#ffdad7",
+                    "on-primary-fixed-variant": "#244a64",
+                    "on-secondary-fixed-variant": "#930018",
+                    "surface-dim": "#e3dbb0",
+                    "surface-container-highest": "#ebe3b8",
+                    "on-tertiary-container": "#e67600",
+                    "tertiary-fixed-dim": "#ffb784",
+                    "outline-variant": "#c2c7cd",
+                    "on-background": "#1f1c02",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-fixed": "#001e2f",
+                    "inverse-surface": "#353113",
+                    "primary-fixed-dim": "#a5cbea",
+                    "primary-fixed": "#cae6ff",
+                    "on-tertiary-fixed-variant": "#713700",
+                    "background": "#fff9e8",
+                    "error-container": "#ffdad6",
+                    "surface-container-low": "#fdf4c8",
+                    "outline": "#72787e",
+                    "inverse-primary": "#a5cbea",
+                    "on-primary": "#ffffff",
+                    "tertiary": "#2b1100",
+                    "error": "#ba1a1a",
+                    "on-tertiary-fixed": "#301400",
+                    "secondary": "#bb0021",
+                    "on-secondary": "#ffffff",
+                    "primary": "#001a2b",
+                    "on-surface-variant": "#42474d",
+                    "secondary-fixed-dim": "#ffb3af",
+                    "surface-bright": "#fff9e8",
+                    "tertiary-container": "#4a2200",
+                    "inverse-on-surface": "#faf2c6",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#ebe3b8",
+                    "on-error-container": "#93000a",
+                    "on-surface": "#1f1c02",
+                    "surface": "#fff9e8",
+                    "surface-container": "#f7efc3",
+                    "on-secondary-container": "#fffbff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#ffdcc6",
+                    "on-primary-container": "#7398b6",
+                    "on-secondary-fixed": "#410005",
+                    "surface-container-high": "#f1e9be"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "stack-sm": "8px",
+                    "stack-md": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "stack-lg": "32px",
+                    "margin-mobile": "16px"
+            },
+            "fontFamily": {
+                    "label-bold": ["Inter"],
+                    "headline-lg": ["Public Sans"],
+                    "headline-xl": ["Public Sans"],
+                    "headline-md": ["Public Sans"],
+                    "body-lg": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "label-mono": ["Inter"],
+                    "body-md": ["Inter"]
+            },
+            "fontSize": {
+                    "label-bold": ["12px", {"lineHeight": "16px", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "38px", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                    "headline-md": ["24px", {"lineHeight": "30px", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "500"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "label-mono": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .dispatch-pattern {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(230, 23, 48, 0.05) 10px, rgba(230, 23, 48, 0.05) 20px);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container border-b-4 border-secondary">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-headline-xl">security</span>
+<h1 class="font-headline-xl text-headline-xl font-extrabold tracking-tighter text-on-primary dark:text-on-primary-container">RESILIO-HUB</h1>
+</div>
+<button class="bg-secondary px-stack-md py-stack-sm font-label-bold text-label-bold text-white hover:bg-secondary-container active:scale-95 transition-transform duration-75">
+            DISPATCH
+        </button>
+</header>
+<main class="pt-24 px-margin-mobile md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Offline Sync Indicator -->
+<div class="mb-stack-lg bg-primary text-on-primary p-unit border-2 border-primary flex justify-between items-center px-stack-md">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-body-sm" style="font-variation-settings: 'FILL' 1;">cloud_off</span>
+<span class="font-label-mono text-label-mono uppercase tracking-widest">Local Mode Active</span>
+</div>
+<span class="font-label-mono text-label-mono">Last Sync: 04:12 GMT</span>
+</div>
+<!-- Section 1: First Responder Dispatch Panel -->
+<section class="mb-stack-lg">
+<div class="mb-stack-md flex items-baseline gap-stack-sm">
+<h2 class="font-headline-lg text-headline-lg uppercase border-l-8 border-secondary pl-stack-sm">Emergency Dispatch</h2>
+<span class="font-label-mono text-label-mono text-secondary font-bold">CRITICAL PRIORITY</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Fire Dispatch -->
+<button class="group relative flex flex-col items-center justify-center p-stack-lg border-4 border-primary bg-surface hover:bg-primary hover:text-on-primary transition-colors duration-150 active:translate-y-1">
+<span class="material-symbols-outlined text-[64px] mb-stack-md" style="font-variation-settings: 'FILL' 1;">fire_truck</span>
+<span class="font-headline-md text-headline-md uppercase">Fire</span>
+<div class="absolute top-2 right-2 flex gap-1">
+<div class="w-3 h-3 bg-secondary rounded-full"></div>
+<span class="font-label-mono text-label-mono text-secondary group-hover:text-white">LIVE</span>
+</div>
+</button>
+<!-- Medical Dispatch -->
+<button class="group relative flex flex-col items-center justify-center p-stack-lg border-4 border-primary bg-surface hover:bg-primary hover:text-on-primary transition-colors duration-150 active:translate-y-1">
+<span class="material-symbols-outlined text-[64px] mb-stack-md" style="font-variation-settings: 'FILL' 1;">medical_services</span>
+<span class="font-headline-md text-headline-md uppercase">Medical</span>
+<div class="absolute top-2 right-2">
+<span class="font-label-mono text-label-mono text-primary group-hover:text-white">12 UNITS</span>
+</div>
+</button>
+<!-- Police Dispatch -->
+<button class="group relative flex flex-col items-center justify-center p-stack-lg border-4 border-primary bg-surface hover:bg-primary hover:text-on-primary transition-colors duration-150 active:translate-y-1">
+<span class="material-symbols-outlined text-[64px] mb-stack-md" style="font-variation-settings: 'FILL' 1;">local_police</span>
+<span class="font-headline-md text-headline-md uppercase">Police</span>
+<div class="absolute top-2 right-2">
+<span class="font-label-mono text-label-mono text-primary group-hover:text-white">EN ROUTE</span>
+</div>
+</button>
+</div>
+</section>
+<!-- Bento Layout: Maps & Operations -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-stack-lg">
+<!-- Active Incident Map -->
+<div class="lg:col-span-8 border-4 border-primary bg-surface overflow-hidden">
+<div class="bg-primary text-on-primary px-stack-md py-stack-sm flex justify-between items-center">
+<span class="font-label-bold text-label-bold uppercase">Sector Delta Operations</span>
+<span class="material-symbols-outlined text-body-md">fullscreen</span>
+</div>
+<div class="relative h-[300px] w-full bg-surface-container">
+<img class="w-full h-full object-cover grayscale contrast-125 opacity-80" data-alt="A top-down high-contrast digital map of a dense urban environment used for emergency response. The visual style is minimalist and institutional, utilizing a dark navy and muted tan color scheme with bright signal red markers indicating incident zones. Tactical icons for fire, police, and medical units are strategically placed across the grid-based street layout. The lighting is digital and clear, emphasizing utility and rapid data extraction for crisis management." data-location="Chicago" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBt7KEQMg6ykpcxFxLK5hvnOyly7SSvnaSBcXWWi6ZoNAM3s8zIxvcentEMmXRLEBDv7GeKdyJENXbBgbVB8HfByqzIl7Zn3CGgBFfHxfTnYV2hsZKIYlCzHnDT3VIQ4o-bInc_nUnGlUuDqLpXJrvAyZ0FuhdFaxMqRhIe-EZtR4vKbEG2BLpK9FCJkIZt9ceOG_ZQuVL9BXwrCZJ6s7XQxW0WL_5AWa_GlqF4qWrsCXsfiqj2750q_7WQylPuKfcj_IpG846c-i8"/>
+<div class="absolute inset-0 border-[16px] border-transparent pointer-events-none dispatch-pattern"></div>
+<!-- Map Overlays -->
+<div class="absolute top-4 left-4 bg-white/90 p-stack-sm border-2 border-primary backdrop-blur-md">
+<p class="font-label-mono text-[10px] leading-tight">LAT: 41.8781<br/>LON: -87.6298</p>
+</div>
+</div>
+</div>
+<!-- Unit Status Feed -->
+<div class="lg:col-span-4 border-4 border-primary bg-surface flex flex-col">
+<div class="bg-secondary text-white px-stack-md py-stack-sm">
+<span class="font-label-bold text-label-bold uppercase">Unit Activity</span>
+</div>
+<div class="flex-grow p-stack-md space-y-stack-md overflow-y-auto">
+<div class="border-b-2 border-outline-variant pb-stack-sm flex gap-stack-sm">
+<span class="material-symbols-outlined text-secondary">error</span>
+<div>
+<p class="font-label-bold text-label-bold uppercase">Squad 42 Dispatch</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">ETA: 4 mins - Sector 4</p>
+</div>
+</div>
+<div class="border-b-2 border-outline-variant pb-stack-sm flex gap-stack-sm">
+<span class="material-symbols-outlined text-primary">check_circle</span>
+<div>
+<p class="font-label-bold text-label-bold uppercase">Med-Unit 09 Arrived</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Patient stabilized. Site secure.</p>
+</div>
+</div>
+<div class="border-b-2 border-outline-variant pb-stack-sm flex gap-stack-sm">
+<span class="material-symbols-outlined text-outline">pending</span>
+<div>
+<p class="font-label-bold text-label-bold uppercase">Fire-Engine 12 Standby</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">Awaiting command authorization.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Offline Emergency Protocols Section -->
+<section class="mb-stack-lg border-t-4 border-primary pt-stack-lg">
+<div class="mb-stack-md flex items-center justify-between">
+<div>
+<h2 class="font-headline-lg text-headline-lg uppercase">Offline SOP Registry</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant uppercase tracking-tighter">Verified procedures for zero-connectivity environments</p>
+</div>
+<button class="border-2 border-primary p-unit hover:bg-primary-container hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined">sync</span>
+</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+<!-- SOP Card 1 -->
+<div class="border-2 border-primary bg-surface flex items-stretch">
+<div class="bg-primary-container p-stack-md flex items-center">
+<span class="material-symbols-outlined text-on-primary-container text-headline-md">description</span>
+</div>
+<div class="p-stack-md flex-grow flex items-center justify-between">
+<div>
+<p class="font-label-bold text-label-bold">SOP-22: GRID COLLAPSE</p>
+<p class="font-label-mono text-[10px] text-outline">V3.4 | 1.2 MB</p>
+</div>
+<button class="bg-secondary text-white px-stack-md py-stack-sm font-label-bold text-label-bold uppercase hover:bg-secondary-container active:scale-95">
+                            Download
+                        </button>
+</div>
+</div>
+<!-- SOP Card 2 -->
+<div class="border-2 border-primary bg-surface flex items-stretch">
+<div class="bg-primary-container p-stack-md flex items-center">
+<span class="material-symbols-outlined text-on-primary-container text-headline-md">medical_information</span>
+</div>
+<div class="p-stack-md flex-grow flex items-center justify-between">
+<div>
+<p class="font-label-bold text-label-bold">SOP-09: MASS CASUALTY</p>
+<p class="font-label-mono text-[10px] text-outline">V8.1 | 4.8 MB</p>
+</div>
+<button class="bg-secondary text-white px-stack-md py-stack-sm font-label-bold text-label-bold uppercase hover:bg-secondary-container active:scale-95">
+                            Download
+                        </button>
+</div>
+</div>
+<!-- SOP Card 3 -->
+<div class="border-2 border-primary bg-surface flex items-stretch">
+<div class="bg-primary-container p-stack-md flex items-center">
+<span class="material-symbols-outlined text-on-primary-container text-headline-md">water_drop</span>
+</div>
+<div class="p-stack-md flex-grow flex items-center justify-between">
+<div>
+<p class="font-label-bold text-label-bold">SOP-15: HAZMAT WATER</p>
+<p class="font-label-mono text-[10px] text-outline">V2.0 | 2.1 MB</p>
+</div>
+<button class="bg-secondary text-white px-stack-md py-stack-sm font-label-bold text-label-bold uppercase hover:bg-secondary-container active:scale-95">
+                            Download
+                        </button>
+</div>
+</div>
+<!-- SOP Card 4 -->
+<div class="border-2 border-primary bg-surface flex items-stretch">
+<div class="bg-primary-container p-stack-md flex items-center">
+<span class="material-symbols-outlined text-on-primary-container text-headline-md">radar</span>
+</div>
+<div class="p-stack-md flex-grow flex items-center justify-between">
+<div>
+<p class="font-label-bold text-label-bold">SOP-44: COMMS RESTORE</p>
+<p class="font-label-mono text-[10px] text-outline">V5.6 | 0.9 MB</p>
+</div>
+<button class="bg-secondary text-white px-stack-md py-stack-sm font-label-bold text-label-bold uppercase hover:bg-secondary-container active:scale-95">
+                            Download
+                        </button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-stretch h-16 bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container border-t-4 border-secondary">
+<div class="flex flex-col items-center justify-center text-outline-variant p-unit hover:bg-secondary-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-bold text-label-bold">Monitor</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant p-unit hover:bg-secondary-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined">emergency_home</span>
+<span class="font-label-bold text-label-bold">Shelters</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary text-white p-unit border-2 border-white cursor-pointer">
+<span class="material-symbols-outlined">campaign</span>
+<span class="font-label-bold text-label-bold">Broadcast</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline-variant p-unit hover:bg-secondary-container transition-colors cursor-pointer">
+<span class="material-symbols-outlined">wifi_off</span>
+<span class="font-label-bold text-label-bold">Offline</span>
+</div>
+</nav>
+<!-- Sidebar (Desktop Context) -->
+<aside class="fixed inset-y-0 left-0 z-[60] flex flex-col h-full w-80 border-r-4 border-primary bg-surface dark:bg-surface-dim hidden lg:flex">
+<div class="p-stack-md border-b-4 border-primary">
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase">Command Center</h2>
+</div>
+<div class="flex-grow py-stack-md">
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-body-lg text-body-lg">Incident Maps</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm bg-secondary text-white font-bold transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-body-lg text-body-lg">Resource Logs</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-body-lg text-body-lg">Personnel</span>
+</a>
+<a class="flex items-center gap-stack-md px-stack-md py-stack-sm text-primary hover:bg-surface-container-highest transition-transform active:translate-x-1" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-lg text-body-lg">Settings</span>
+</a>
+</div>
+<div class="p-stack-md border-t-4 border-primary">
+<button class="flex items-center gap-stack-md text-secondary font-bold w-full">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-body-lg text-body-lg">Logout</span>
+</button>
+</div>
+</aside>
+</body></html>

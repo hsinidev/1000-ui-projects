@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bio-Force | Recovery Progress Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&amp;family=Manrope:wght@400;500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001a40",
+                        "secondary": "#006b5f",
+                        "on-primary-container": "#bbd0ff",
+                        "surface-container": "#eceef0",
+                        "outline": "#727784",
+                        "on-secondary-fixed-variant": "#005047",
+                        "surface-variant": "#e0e3e5",
+                        "surface-container-high": "#e6e8ea",
+                        "on-secondary-fixed": "#00201c",
+                        "tertiary-container": "#575959",
+                        "surface": "#f7f9fb",
+                        "primary-container": "#0056b3",
+                        "inverse-on-surface": "#eff1f3",
+                        "primary-fixed-dim": "#acc7ff",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#424752",
+                        "outline-variant": "#c2c6d4",
+                        "on-secondary": "#ffffff",
+                        "primary": "#003f87",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#191c1e",
+                        "surface-tint": "#115cb9",
+                        "primary-fixed": "#d7e2ff",
+                        "on-secondary-container": "#007165",
+                        "on-primary-fixed-variant": "#004491",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#8ef5e3",
+                        "surface-dim": "#d8dadc",
+                        "on-tertiary-container": "#cfd0d0",
+                        "secondary-container": "#8ef5e3",
+                        "tertiary": "#404242",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-error": "#ffffff",
+                        "surface-container-low": "#f2f4f6",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#acc7ff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-bright": "#f7f9fb",
+                        "inverse-surface": "#2d3133",
+                        "surface-container-highest": "#e0e3e5",
+                        "error-container": "#ffdad6",
+                        "background": "#f7f9fb",
+                        "secondary-fixed-dim": "#71d8c7",
+                        "on-background": "#191c1e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "unit": "8px",
+                        "container-max": "1280px",
+                        "section-gap": "80px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Lexend"],
+                        "body-lg": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "headline-md": ["Lexend"],
+                        "body-md": ["Manrope"],
+                        "label-bold": ["Manrope"],
+                        "headline-xl": ["Lexend"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neumorphic-raised {
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        }
+        .neumorphic-sunken {
+            box-shadow: inset 4px 4px 8px #b8b9be, inset -4px -4px 8px #ffffff;
+        }
+        .neumorphic-active {
+            box-shadow: inset 6px 6px 12px #b8b9be, inset -6px -6px 12px #ffffff;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md selection:bg-secondary-fixed">
+<!-- TopNavBar (Shared Component) -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-desktop h-20 bg-surface shadow-[6px_6px_12px_#d1d9e6,-6px_-6px_12px_#ffffff]">
+<div class="flex items-center gap-12">
+<h1 class="text-headline-md font-headline-xl font-bold text-primary tracking-tight">Bio-Force</h1>
+<nav class="hidden md:flex gap-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Injury Map</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Therapy Protocols</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Imaging Library</a>
+<a class="text-primary border-b-2 border-on-secondary-container font-bold pb-1" href="#">Progress Dashboard</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="neumorphic-sunken px-4 py-2 rounded-full flex items-center gap-2">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-bold" placeholder="Search data..." type="text"/>
+</div>
+<button class="neumorphic-raised p-2 rounded-full text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="neumorphic-raised p-2 rounded-full text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="neumorphic-raised p-1 rounded-full border-2 border-surface-container ml-2">
+<img alt="CMO Profile" class="w-10 h-10 rounded-full object-cover" data-alt="A professional medical headshot of a Chief Medical Officer in a high-tech clinical environment. The lighting is crisp and bright, characteristic of a sterile medical facility. The background features blurred high-resolution monitors with anatomical skeletal renderings. The doctor wears a minimalist, modern lab coat over a professional blue garment, projecting expertise and authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwH8p6UyDKwm2fy60IkS6Sruyj11HHVD4XALIALldW10Ey_6Mz1FwRWQHzERh-SyRn7aiLjaZKEY5iVYmWZgaIImiaIXgwfj8iWCSZBTVMqcM_t4YtIK5E50YS8D2dAro4Hvhp9LXjrdFocQlfu4cafrmA_nKfhEnnox_4ycZ-i1VCKzzvbvlXf-5RqPZWavHdf1-jtZff8v5KunZhk4X97pfrYIdjrVQ4hWCqPczYtOQv19yF_gz6qP9ZjSwVfV4WGCXqs1TtrAQA"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full w-72 flex flex-col py-8 bg-surface border-r border-outline-variant/20 z-40 mt-20">
+<div class="px-8 mb-10">
+<h2 class="text-headline-md font-headline-md font-bold text-primary">Bio-Force</h2>
+<p class="text-label-bold text-on-surface-variant/70 uppercase tracking-widest text-[10px]">Clinical Portal</p>
+</div>
+<nav class="flex flex-col gap-2 flex-grow">
+<a class="flex items-center gap-4 text-on-surface-variant px-4 py-3 mx-2 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">accessibility_new</span>
+<span class="font-label-bold text-label-bold">Injury Map</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-4 py-3 mx-2 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">rebase_edit</span>
+<span class="font-label-bold text-label-bold">Therapy Protocols</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-4 py-3 mx-2 hover:translate-x-1 transition-transform" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-bold text-label-bold">Imaging Library</span>
+</a>
+<a class="flex items-center gap-4 bg-surface shadow-[inset_4px_4px_8px_#b8b9be,inset_-4px_-4px_8px_#ffffff] text-on-secondary-container rounded-xl px-4 py-3 mx-2 scale-95" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-bold text-label-bold">Progress Dashboard</span>
+</a>
+</nav>
+<div class="px-4 py-6">
+<button class="w-full py-4 bg-primary text-on-primary rounded-xl font-bold flex items-center justify-center gap-2 neumorphic-raised hover:scale-[0.98] transition-all">
+<span class="material-symbols-outlined">add_circle</span>
+                New Patient Scan
+            </button>
+</div>
+<div class="mt-auto flex flex-col gap-2 border-t border-outline-variant/10 pt-4">
+<a class="flex items-center gap-4 text-on-surface-variant px-4 py-3 mx-2" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-label-bold text-label-bold">Support</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-4 py-3 mx-2" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-bold text-label-bold">Archive</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 mt-20 p-12 min-h-screen">
+<header class="mb-12">
+<div class="flex justify-between items-end">
+<div>
+<span class="text-label-bold text-secondary uppercase tracking-tighter">Clinical Report #BF-4902</span>
+<h2 class="text-headline-lg font-headline-lg text-primary mt-1">Recovery Progress: <span class="font-normal">Julian Edelman</span></h2>
+</div>
+<div class="flex gap-4">
+<button class="neumorphic-raised px-6 py-3 rounded-xl flex items-center gap-2 font-label-bold text-on-surface-variant">
+<span class="material-symbols-outlined text-base">calendar_today</span>
+                        Last 30 Days
+                    </button>
+<button class="neumorphic-raised px-6 py-3 rounded-xl flex items-center gap-2 font-label-bold text-primary">
+<span class="material-symbols-outlined text-base">download</span>
+                        Export PDF
+                    </button>
+</div>
+</div>
+</header>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Hero Card: Readiness Gauge -->
+<section class="col-span-12 lg:col-span-5 neumorphic-raised rounded-3xl p-8 flex flex-col items-center justify-center relative overflow-hidden bg-surface h-full min-h-[480px]">
+<div class="absolute top-8 left-8">
+<h3 class="text-headline-md font-headline-md text-on-surface">System Readiness</h3>
+<p class="text-label-bold text-on-surface-variant/60">Bio-Kinetic Aggregate</p>
+</div>
+<div class="relative flex items-center justify-center w-64 h-64 mt-8">
+<!-- Gauge Background -->
+<svg class="w-full h-full -rotate-90 transform" viewbox="0 0 100 100">
+<circle class="text-surface-container-high" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-secondary drop-shadow-[0_0_8px_rgba(0,107,95,0.4)] transition-all duration-1000" cx="50" cy="50" fill="transparent" r="42" stroke="currentColor" stroke-dasharray="264" stroke-dashoffset="47" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-headline-xl font-bold text-primary">82%</span>
+<span class="text-label-bold text-secondary font-bold">+4.2% VS WK 3</span>
+</div>
+</div>
+<div class="mt-12 w-full grid grid-cols-3 gap-4">
+<div class="neumorphic-sunken p-4 rounded-2xl text-center">
+<p class="text-label-sm text-on-surface-variant">Fatigue</p>
+<p class="text-body-lg font-bold text-primary">LOW</p>
+</div>
+<div class="neumorphic-sunken p-4 rounded-2xl text-center">
+<p class="text-label-sm text-on-surface-variant">CNS Drive</p>
+<p class="text-body-lg font-bold text-primary">9.4</p>
+</div>
+<div class="neumorphic-sunken p-4 rounded-2xl text-center">
+<p class="text-label-sm text-on-surface-variant">Sleep</p>
+<p class="text-body-lg font-bold text-primary">8.2h</p>
+</div>
+</div>
+</section>
+<!-- Strength Symmetry -->
+<section class="col-span-12 lg:col-span-7 neumorphic-raised rounded-3xl p-8 bg-surface h-full">
+<div class="flex justify-between items-start mb-10">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Strength Symmetry</h3>
+<p class="text-label-bold text-on-surface-variant/60">Quadricep Peak Force (N/kg)</p>
+</div>
+<span class="material-symbols-outlined text-secondary text-3xl">fitness_center</span>
+</div>
+<div class="space-y-10">
+<div>
+<div class="flex justify-between items-end mb-3">
+<span class="text-label-bold font-bold">LEFT QUADRICEP</span>
+<span class="text-headline-md text-primary">34.2 N/kg</span>
+</div>
+<div class="h-8 w-full neumorphic-sunken rounded-full overflow-hidden p-1">
+<div class="h-full bg-primary rounded-full transition-all duration-1000 shadow-[0_0_12px_rgba(0,63,135,0.3)]" style="width: 85%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-3">
+<span class="text-label-bold font-bold">RIGHT QUADRICEP (REHAB SIDE)</span>
+<span class="text-headline-md text-primary">28.9 N/kg</span>
+</div>
+<div class="h-8 w-full neumorphic-sunken rounded-full overflow-hidden p-1">
+<div class="h-full bg-secondary-fixed-dim rounded-full transition-all duration-1000 shadow-[0_0_12px_rgba(113,216,199,0.3)]" style="width: 72%;"></div>
+</div>
+</div>
+<div class="neumorphic-sunken p-6 rounded-2xl bg-surface/50 flex items-center gap-6">
+<div class="w-16 h-16 rounded-full bg-error/10 flex items-center justify-center">
+<span class="text-error font-bold text-headline-md">15%</span>
+</div>
+<div>
+<h4 class="font-bold text-on-surface">Symmetry Deficit Detected</h4>
+<p class="text-body-md text-on-surface-variant">Recommended: Unilateral focus on right-side concentric loading. Target: 10% deficit by Week 6.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Stability Stats -->
+<section class="col-span-12 lg:col-span-4 neumorphic-raised rounded-3xl p-8 bg-surface h-full">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-6">Stability Profile</h3>
+<p class="text-label-bold text-on-surface-variant/60 mb-8 uppercase">Single Leg Stance (Center of Pressure)</p>
+<div class="space-y-6">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<span class="text-label-bold">Lateral Sway</span>
+</div>
+<span class="font-bold">0.42mm</span>
+</div>
+<div class="h-2 w-full neumorphic-sunken rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-1/3"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<span class="text-label-bold">A-P Stability</span>
+</div>
+<span class="font-bold">0.89mm</span>
+</div>
+<div class="h-2 w-full neumorphic-sunken rounded-full overflow-hidden">
+<div class="h-full bg-primary w-3/4"></div>
+</div>
+<div class="mt-8">
+<div class="rounded-2xl overflow-hidden neumorphic-sunken p-2 aspect-square relative">
+<img alt="Balance Tracking" class="w-full h-full object-cover rounded-xl opacity-80" data-alt="A clean, scientific top-down visualization of balance stability tracking data. The image shows a heat map of pressure points on a minimalist white surface, with glowing mint-green and deep blue digital trails representing the micro-movements of a foot during a balance test. The lighting is bright and technical, emphasizing precision and medical data analysis." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8hUbj3wzX1JYP1QdrZetFJ2tyKifWDiA1-vc6xUsfWP9FCBEJN0PhegQoUttvZIs3-vm7_l-C8kjpdck-_hdmsVoKQNwgj4beSrunJYly8_QyO0w_kZLZGDQMt1Z_a7IwXJsFj8w6OVG0VCASIdt1x09tJUqiVEIQWbonVZxLf_RMwG0FBZ3e-qn7MncHP_fzAMHeXQ0Q6Em8Foj7Ge_D9dG7wp5wwPnL6jYBw3JMCyUjIIQ9bByDFiIpTKTuWj3LfKRjrtOUp0iU"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="bg-surface/80 backdrop-blur-md px-4 py-2 rounded-full text-label-bold border border-white/50">Stability Pattern: STABLE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mobility Bar Chart -->
+<section class="col-span-12 lg:col-span-4 neumorphic-raised rounded-3xl p-8 bg-surface h-full">
+<h3 class="text-headline-md font-headline-md text-on-surface mb-2">Joint Mobility</h3>
+<p class="text-label-bold text-on-surface-variant/60 mb-10 uppercase">Ankle Dorsiflexion (Degrees)</p>
+<div class="flex items-end justify-between h-48 gap-4 px-4">
+<div class="flex flex-col items-center gap-4 h-full justify-end">
+<div class="w-10 neumorphic-sunken rounded-t-lg bg-surface relative" style="height: 60%;">
+<div class="absolute bottom-0 w-full bg-outline-variant/30 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-label-sm font-bold">WK 1</span>
+</div>
+<div class="flex flex-col items-center gap-4 h-full justify-end">
+<div class="w-10 neumorphic-sunken rounded-t-lg bg-surface relative" style="height: 75%;">
+<div class="absolute bottom-0 w-full bg-outline-variant/50 rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-label-sm font-bold">WK 2</span>
+</div>
+<div class="flex flex-col items-center gap-4 h-full justify-end">
+<div class="w-10 neumorphic-sunken rounded-t-lg bg-surface relative" style="height: 85%;">
+<div class="absolute bottom-0 w-full bg-secondary-fixed rounded-t-lg" style="height: 100%;"></div>
+</div>
+<span class="text-label-sm font-bold">WK 3</span>
+</div>
+<div class="flex flex-col items-center gap-4 h-full justify-end">
+<div class="w-10 neumorphic-sunken rounded-t-lg bg-surface relative" style="height: 95%;">
+<div class="absolute bottom-0 w-full bg-secondary rounded-t-lg shadow-[0_-4px_12px_rgba(0,107,95,0.4)]" style="height: 100%;"></div>
+</div>
+<span class="text-label-sm font-bold text-secondary">WK 4</span>
+</div>
+</div>
+<div class="mt-12 p-4 neumorphic-sunken rounded-xl">
+<div class="flex justify-between items-center">
+<span class="text-label-bold text-on-surface-variant">Current Range</span>
+<span class="text-headline-md text-primary">42.5°</span>
+</div>
+<p class="text-label-sm text-secondary font-bold mt-2 flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                        RECOVERY ON TRACK (TARGET 45°)
+                    </p>
+</div>
+</section>
+<!-- AI Medical Insights -->
+<section class="col-span-12 lg:col-span-4 neumorphic-raised rounded-3xl p-8 bg-surface-container h-full border border-white/40">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" style="font-variation-settings: 'FILL' 1;">auto_awesome</span>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Medical Insights</h3>
+<p class="text-label-sm text-primary font-bold">Powered by Bio-Force AI</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="neumorphic-raised bg-surface/80 p-5 rounded-2xl border border-white/50">
+<p class="text-label-bold text-primary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">neurology</span>
+                            Neuro-Muscular Adaptation
+                        </p>
+<p class="text-body-md text-on-surface-variant italic">"Current data suggests accelerated proprioceptive recruitment in the right vastus lateralis. Patient is ready for high-velocity plyometric progressions starting Day 32."</p>
+</div>
+<div class="neumorphic-raised bg-surface/80 p-5 rounded-2xl border border-white/50">
+<p class="text-label-bold text-secondary mb-2 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">warning</span>
+                            Fatigue Warning
+                        </p>
+<p class="text-body-md text-on-surface-variant">Elevated HRV detected. Reduce eccentric volume by 15% for the next 48 hours to prevent compensatory strain patterns.</p>
+</div>
+<button class="w-full mt-4 py-4 rounded-xl border-2 border-primary/20 text-primary font-bold hover:bg-primary/5 transition-all">
+                        VIEW FULL AI CLINICAL SUMMARY
+                    </button>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB (Suppressed based on rules, but adding a "Back to Top" or "Clinical Notes" toggle if needed) -->
+<div class="fixed bottom-12 right-12 z-50">
+<button class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center neumorphic-raised shadow-xl active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl">edit_note</span>
+</button>
+</div>
+</body></html>

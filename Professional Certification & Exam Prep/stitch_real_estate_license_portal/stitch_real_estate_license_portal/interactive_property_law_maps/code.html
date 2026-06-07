@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Interactive Property Law Maps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;500;600;700;800&amp;family=Public+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#00513b",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eaf1ff",
+                        "surface-container": "#e6eeff",
+                        "on-tertiary-container": "#ffb4ad",
+                        "outline": "#6f7973",
+                        "primary": "#004532",
+                        "on-tertiary-fixed": "#3b0908",
+                        "on-secondary-fixed-variant": "#5d4200",
+                        "on-secondary-container": "#715000",
+                        "background": "#f8f9ff",
+                        "on-tertiary-fixed-variant": "#73332f",
+                        "primary-fixed-dim": "#8bd6b6",
+                        "inverse-surface": "#27313f",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-variant": "#d9e3f6",
+                        "on-primary": "#ffffff",
+                        "secondary-fixed": "#ffdea6",
+                        "surface-dim": "#d0dbed",
+                        "tertiary-fixed-dim": "#ffb3ac",
+                        "surface-container-low": "#eff4ff",
+                        "primary-container": "#065f46",
+                        "tertiary-container": "#823f3a",
+                        "primary-fixed": "#a6f2d1",
+                        "secondary": "#7b5800",
+                        "secondary-fixed-dim": "#f7bd48",
+                        "surface-container-high": "#dee9fc",
+                        "surface-tint": "#1b6b51",
+                        "surface": "#f8f9ff",
+                        "surface-container-highest": "#d9e3f6",
+                        "secondary-container": "#fdc34d",
+                        "on-error": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "on-surface": "#121c2a",
+                        "on-primary-container": "#8bd6b7",
+                        "outline-variant": "#bec9c2",
+                        "on-surface-variant": "#3f4944",
+                        "on-primary-fixed": "#002116",
+                        "on-secondary-fixed": "#271900",
+                        "tertiary": "#652925",
+                        "on-error-container": "#93000a",
+                        "on-background": "#121c2a",
+                        "inverse-primary": "#8bd6b6",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "xs": "4px",
+                        "xl": "80px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "margin": "32px",
+                        "max_width": "1280px",
+                        "md": "24px",
+                        "lg": "48px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Newsreader"],
+                        "body-md": ["Public Sans"],
+                        "body-lg": ["Public Sans"],
+                        "label-caps": ["Public Sans"],
+                        "h3": ["Newsreader"],
+                        "h1": ["Newsreader"],
+                        "data-mono": ["Public Sans"]
+                    },
+                    "fontSize": {
+                        "h2": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "h3": ["28px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .map-container {
+            height: calc(100vh - 128px);
+        }
+        .gold-glow:hover {
+            box-shadow: 0 0 15px rgba(184, 134, 11, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-bright text-on-surface font-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-bright border-b border-outline-variant fixed top-0 left-0 w-full z-50">
+<div class="flex justify-between items-center w-full px-margin py-base max-w-max_width mx-auto">
+<div class="flex items-center gap-sm">
+<button class="hover:bg-surface-container transition-colors p-xs rounded-lg active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface">menu</span>
+</button>
+<h1 class="font-h2 text-h2 font-semibold text-primary">RealEstateCert</h1>
+</div>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full border border-outline-variant overflow-hidden">
+<img alt="User Profile Avatar" class="w-full h-full object-cover" data-alt="A professional portrait of a real estate candidate looking confident and focused. The image is captured in a high-end corporate setting with soft architectural lighting, reflecting an atmosphere of academic excellence and career growth. The aesthetic is clean and modern, following a light-mode palette with subtle professional tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRooWgzWliL4ZyZnGFBD0Sx0ZACd8uA0vOeHP4QRxM3ALDYFLPZ9MnG1QvIRtwqH8E91czXCPfA5-C54aP2Eqeu-BU1ZE9UUt2mLmXM-70PNlrhYMMi5VaVtP3R653TI4miPLu9KKzYdS1fbLawVUIAE0vC_d_EvSVCjV4GTJDlwzCnZ8Q3Dgi5YoGzceYC2n_2fCuodVKSOlagGtSQiEsacyKbJVqTfciwRAErygwil6LfYzSsx3pNZtN7FTyFaIVmrogAOStlLk9"/>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-[72px] pb-[72px]">
+<!-- Map Canvas -->
+<section class="relative map-container w-full bg-surface-container-low overflow-hidden">
+<!-- Mock Map Background -->
+<div class="absolute inset-0 z-0">
+<img alt="Real Estate Jurisdiction Map" class="w-full h-full object-cover opacity-60" data-alt="An intricate topographical and jurisdictional map of an urban landscape, featuring cleanly defined zoning boundaries and legal districts. The visual style is high-contrast and professional, utilizing a palette of emerald green, deep charcoal, and pristine white. The lighting is digital and crisp, emphasizing architectural lines and city planning rigor within a sophisticated modern interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCSWkWsbyNGVAlJZrkg51wLMq11VK0U4rbyJ8IEIlterlCPlpp-v2NVSmN1H4pdyIL8lfAhsZGE1Shbhz8011f6x_Lt760Nvjfs_n8T1CFjBNzeal14V13QUZc2sIgdN6wAM688-NAHYfrM_VncWZKdb2AcwwdMwQK9CKHSjNn_5IGbFDE23boqq6DTfzWj4RKPQUday1T3PAn-I78ysouCFH7yQLg0-gOU1pATIIMMob3uRywU69mKWqHrQun0KZ6eUClxUC-pDT5-"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-bright/40 to-transparent"></div>
+</div>
+<!-- Floating Search and Filter -->
+<div class="absolute top-sm left-sm right-sm z-10 flex flex-col gap-xs">
+<div class="flex bg-white rounded-xl shadow-sm border border-outline-variant overflow-hidden items-center px-sm py-xs">
+<span class="material-symbols-outlined text-outline">search</span>
+<input class="flex-1 border-none focus:ring-0 font-body-md text-on-surface py-xs px-xs" placeholder="Search jurisdictions or districts..." type="text"/>
+<span class="material-symbols-outlined text-primary">my_location</span>
+</div>
+<div class="flex gap-xs overflow-x-auto no-scrollbar pb-xs">
+<button class="whitespace-nowrap px-sm py-xs bg-primary text-on-primary rounded-full font-label-caps flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">layers</span> Zoning
+                    </button>
+<button class="whitespace-nowrap px-sm py-xs bg-white text-on-surface border border-outline-variant rounded-full font-label-caps flex items-center gap-xs hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[16px]">gavel</span> Case Law
+                    </button>
+<button class="whitespace-nowrap px-sm py-xs bg-white text-on-surface border border-outline-variant rounded-full font-label-caps flex items-center gap-xs hover:bg-surface-container-low">
+<span class="material-symbols-outlined text-[16px]">foundation</span> Liens
+                    </button>
+</div>
+</div>
+<!-- Map Pins -->
+<div class="absolute top-1/3 left-1/4 z-20">
+<button class="flex flex-col items-center group">
+<div class="bg-secondary text-on-secondary p-xs rounded-full shadow-lg group-active:scale-90 transition-transform border-2 border-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">location_on</span>
+</div>
+<div class="mt-xs bg-white px-xs py-[2px] rounded border border-outline-variant shadow-sm">
+<p class="text-[10px] font-bold text-primary uppercase">R-3 District</p>
+</div>
+</button>
+</div>
+<div class="absolute bottom-1/2 right-1/3 z-20">
+<button class="flex flex-col items-center group">
+<div class="bg-primary text-on-primary p-xs rounded-full shadow-lg group-active:scale-90 transition-transform border-2 border-white">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">gavel</span>
+</div>
+<div class="mt-xs bg-white px-xs py-[2px] rounded border border-outline-variant shadow-sm">
+<p class="text-[10px] font-bold text-primary uppercase">Coastal Act</p>
+</div>
+</button>
+</div>
+<!-- Bottom Content Card (Jurisdiction Summary) -->
+<div class="absolute bottom-sm left-sm right-sm z-30">
+<div class="bg-white border border-outline-variant rounded-xl shadow-lg p-md gold-glow">
+<div class="flex justify-between items-start mb-sm">
+<div>
+<span class="font-label-caps text-secondary uppercase tracking-widest block mb-xs">Active Jurisdiction</span>
+<h2 class="font-h3 text-h3 text-on-surface">Harbor District A-1</h2>
+</div>
+<div class="bg-primary-fixed text-on-primary-fixed px-sm py-xs rounded-lg flex items-center">
+<span class="material-symbols-outlined mr-xs text-[18px]">verified</span>
+<span class="font-label-caps">Licensed Area</span>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="flex items-start gap-sm">
+<span class="material-symbols-outlined text-primary mt-xs">info</span>
+<p class="font-body-md text-on-surface-variant">Residential zoning with specific mandates for setback distances and environmental impact assessments.</p>
+</div>
+<div class="grid grid-cols-2 gap-sm pt-sm border-t border-outline-variant">
+<div>
+<p class="font-label-caps text-outline uppercase mb-xs">Legal Precedent</p>
+<p class="font-data-mono text-primary">Case #442-B</p>
+</div>
+<div>
+<p class="font-label-caps text-outline uppercase mb-xs">Tax Rate</p>
+<p class="font-data-mono text-primary">1.24% Millage</p>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-body-md font-bold py-sm rounded-lg flex justify-center items-center gap-sm active:scale-95 transition-transform">
+                            Open Full Legal Summary
+                            <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest border-t border-outline-variant flex justify-around items-center px-sm py-xs">
+<a class="flex flex-col items-center justify-center text-primary bg-primary-fixed rounded-full px-4 py-1 transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">school</span>
+<span class="font-label-caps text-label-caps">Courses</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">edit_note</span>
+<span class="font-label-caps text-label-caps">Exam Prep</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Metrics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-all duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</a>
+</nav>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-24 right-sm z-40 bg-secondary text-white w-14 h-14 rounded-full shadow-xl flex items-center justify-center active:scale-90 transition-transform border-4 border-surface-bright">
+<span class="material-symbols-outlined text-[28px]" style="font-variation-settings: 'FILL' 1;">map</span>
+</button>
+</body></html>

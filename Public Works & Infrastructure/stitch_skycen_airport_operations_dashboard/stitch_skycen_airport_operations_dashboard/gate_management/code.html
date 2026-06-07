@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdad5",
+                        "primary-container": "#00a3ff",
+                        "inverse-surface": "#e2e2e5",
+                        "surface-container-lowest": "#0c0e10",
+                        "on-tertiary-fixed-variant": "#930005",
+                        "surface-container-low": "#1a1c1e",
+                        "tertiary-fixed-dim": "#ffb4aa",
+                        "surface-container-high": "#282a2c",
+                        "outline-variant": "#3f4852",
+                        "primary": "#98cbff",
+                        "on-tertiary-fixed": "#410001",
+                        "background": "#121416",
+                        "error": "#ffb4ab",
+                        "on-background": "#e2e2e5",
+                        "on-tertiary-container": "#700003",
+                        "on-primary-container": "#00375a",
+                        "on-primary-fixed-variant": "#004a77",
+                        "surface-container": "#1e2022",
+                        "surface": "#121416",
+                        "surface-dim": "#121416",
+                        "secondary-fixed": "#e1e2e6",
+                        "on-secondary": "#2e3133",
+                        "secondary-container": "#44474a",
+                        "inverse-on-surface": "#2f3033",
+                        "on-primary-fixed": "#001d33",
+                        "tertiary-container": "#ff6f5f",
+                        "on-error-container": "#ffdad6",
+                        "surface-tint": "#98cbff",
+                        "on-surface": "#e2e2e5",
+                        "primary-fixed": "#cfe5ff",
+                        "surface-bright": "#38393c",
+                        "on-secondary-fixed-variant": "#44474a",
+                        "surface-container-highest": "#333537",
+                        "secondary-fixed-dim": "#c5c7ca",
+                        "on-secondary-fixed": "#191c1e",
+                        "secondary": "#c5c7ca",
+                        "outline": "#88919d",
+                        "tertiary": "#ffb4aa",
+                        "surface-variant": "#333537",
+                        "on-primary": "#003354",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#98cbff",
+                        "on-error": "#690005",
+                        "on-tertiary": "#690003",
+                        "on-secondary-container": "#b3b5b8",
+                        "on-surface-variant": "#bec7d4",
+                        "inverse-primary": "#00629d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "xl": "40px",
+                        "margin": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "gutter": "12px",
+                        "sm": "8px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "telemetry-data": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "telemetry-data": ["18px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(18, 20, 22, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(152, 203, 255, 0.2);
+        }
+        .status-ring {
+            border: 2px solid transparent;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .radar-grid {
+            background-image: 
+                radial-gradient(circle, rgba(152, 203, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to right, rgba(152, 203, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(152, 203, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px, 20px 20px, 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-sm overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/10 backdrop-blur-xl border-b border-white/20 flex justify-between items-center px-lg py-sm">
+<div class="flex items-center gap-xl">
+<span class="font-headline-lg text-headline-lg text-primary tracking-tighter">SkyCen</span>
+<nav class="hidden md:flex gap-lg">
+<a class="text-on-surface-variant font-medium hover:text-primary-container transition-colors active:scale-95 duration-100 font-label-caps text-label-caps" href="#">Traffic</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-label-caps text-label-caps" href="#">Gates</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-container transition-colors active:scale-95 duration-100 font-label-caps text-label-caps" href="#">Noise</a>
+<a class="text-on-surface-variant font-medium hover:text-primary-container transition-colors active:scale-95 duration-100 font-label-caps text-label-caps" href="#">Maintenance</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container-low border border-outline-variant px-md py-xs text-label-caps font-label-caps rounded w-64 focus:outline-none focus:border-primary" placeholder="SEARCH ASSET..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1.5 text-primary scale-75" data-icon="search">search</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</button>
+<div class="w-8 h-8 rounded-full border border-primary/40 overflow-hidden">
+<img alt="Dispatcher Profile" data-alt="A professional close-up portrait of a high-tech aviation dispatcher in a dark, atmospheric control room environment. The individual is backlit by soft blue and white ambient glow from multiple digital displays. The visual style is crisp and cinematic, emphasizing a modern glass-cockpit aesthetic with deep blacks and cool silver tones that align with the SkyCen brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5WL_455y3hGgIWWXiLoWWSCbN0GnaKgQZFgPtFpUZm0yDBl0rE1yCjqD8haOufPNWoUTMMXBADpNU1iouB47rCWDgs-EF5kF0Iz0F78-y9bI2HRvBiqxRrn9FkEOvtN2D7HRMrPrB9gme2ciSdZlR8DIwE6j77HBPykKMie0udpeiYRbd9bRr3ywiiofXVn7osg96g9HKn99SdY64XkPgWThNY9jQ4w0ImM1Gb-dxb6JUaeRTVg4b_DKp4RZTZHU0735WO22xjXo"/>
+</div>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-white/10 bg-surface/5 backdrop-blur-2xl flex flex-col py-md z-40 hidden md:flex">
+<div class="px-md mt-xl mb-lg">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="radar">radar</span>
+<span class="font-headline-md text-headline-md text-primary">SkyCen Ops</span>
+</div>
+<span class="text-on-surface-variant opacity-70 font-label-caps text-label-caps">Terminal A-1</span>
+</div>
+<nav class="flex-1">
+<div class="flex items-center px-md py-sm gap-md text-on-surface-variant opacity-70 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="radar">radar</span>
+<span class="font-label-caps text-label-caps">Radar</span>
+</div>
+<div class="flex items-center px-md py-sm gap-md bg-primary/15 text-primary border-r-4 border-primary transition-all duration-300 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+<span class="font-label-caps text-label-caps">Operations</span>
+</div>
+<div class="flex items-center px-md py-sm gap-md text-on-surface-variant opacity-70 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</div>
+<div class="flex items-center px-md py-sm gap-md text-on-surface-variant opacity-70 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="font-label-caps text-label-caps">Safety</span>
+</div>
+<div class="flex items-center px-md py-sm gap-md text-on-surface-variant opacity-70 hover:bg-primary/10 hover:text-primary transition-all duration-300 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-caps text-label-caps">Reports</span>
+</div>
+</nav>
+<div class="px-md py-md border-t border-white/5">
+<button class="w-full bg-error-container text-on-error-container font-label-caps text-label-caps py-sm flex items-center justify-center gap-xs rounded active:scale-95 transition-transform">
+<span class="material-symbols-outlined scale-75" data-icon="emergency_home">emergency_home</span>
+                Emergency Alert
+            </button>
+<div class="mt-md flex items-center gap-md text-on-surface-variant opacity-70 hover:text-primary cursor-pointer">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 pt-20 h-screen overflow-hidden flex flex-col radar-grid bg-background relative">
+<!-- Terminal Map Layout -->
+<section class="flex-1 p-lg flex flex-col lg:flex-row gap-lg">
+<!-- Terminal Visualization (Main Center) -->
+<div class="flex-[3] relative">
+<div class="glass-panel rounded-xl h-full p-md flex flex-col">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-md text-headline-md text-primary">Terminal Grid Alpha/Bravo</h2>
+<div class="flex gap-md">
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-primary-container"></div>
+<span class="font-label-caps text-label-caps opacity-80">Available</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-primary"></div>
+<span class="font-label-caps text-label-caps opacity-80">Occupied</span>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-tertiary"></div>
+<span class="font-label-caps text-label-caps opacity-80">Maintenance</span>
+</div>
+</div>
+</div>
+<!-- Gate Schematic -->
+<div class="flex-1 grid grid-cols-4 lg:grid-cols-6 gap-gutter content-center">
+<!-- Row 1 Terminal A -->
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary-container/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-01</span>
+<div class="status-ring w-12 h-12 border-primary-container">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle">check_circle</span>
+</div>
+<span class="text-primary-container font-label-caps text-[9px] mt-2">READY</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-02</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">SQ-402</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-tertiary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-03</span>
+<div class="status-ring w-12 h-12 border-tertiary">
+<span class="material-symbols-outlined text-tertiary" data-icon="build">build</span>
+</div>
+<span class="text-tertiary font-label-caps text-[9px] mt-2">OFFLINE</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-04</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">LH-119</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary-container/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-05</span>
+<div class="status-ring w-12 h-12 border-primary-container">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle">check_circle</span>
+</div>
+<span class="text-primary-container font-label-caps text-[9px] mt-2">READY</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">A-06</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">AA-882</span>
+</div>
+<!-- Spacing Middle -->
+<div class="col-span-full h-8 flex items-center justify-center">
+<div class="w-full h-[1px] bg-white/10"></div>
+</div>
+<!-- Row 2 Terminal B -->
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-01</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">DL-334</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-02</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">AF-091</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary-container/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-03</span>
+<div class="status-ring w-12 h-12 border-primary-container">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle">check_circle</span>
+</div>
+<span class="text-primary-container font-label-caps text-[9px] mt-2">READY</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-tertiary-container/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-04</span>
+<div class="status-ring w-12 h-12 border-tertiary-container">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="pending">pending</span>
+</div>
+<span class="text-tertiary-container font-label-caps text-[9px] mt-2">RESERVED</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-05</span>
+<div class="status-ring w-12 h-12 border-primary">
+<span class="material-symbols-outlined text-primary" data-icon="flight">flight</span>
+</div>
+<span class="text-primary font-label-caps text-[9px] mt-2">BA-112</span>
+</div>
+<div class="group relative glass-panel aspect-square flex flex-col items-center justify-center border-primary-container/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant absolute top-2">B-06</span>
+<div class="status-ring w-12 h-12 border-primary-container">
+<span class="material-symbols-outlined text-primary-container" data-icon="check_circle">check_circle</span>
+</div>
+<span class="text-primary-container font-label-caps text-[9px] mt-2">READY</span>
+</div>
+</div>
+<!-- Footnote / Summary Bar -->
+<div class="mt-md border-t border-white/10 pt-md grid grid-cols-4 gap-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TOTAL GATES</span>
+<span class="font-telemetry-data text-telemetry-data text-primary">24</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">OPERATIONAL</span>
+<span class="font-telemetry-data text-telemetry-data text-primary-container">18</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MAINTENANCE</span>
+<span class="font-telemetry-data text-telemetry-data text-tertiary">04</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">RESERVED</span>
+<span class="font-telemetry-data text-telemetry-data text-tertiary-container">02</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Docked Aircraft Sidebar (Right) -->
+<div class="flex-[1.2] flex flex-col gap-lg">
+<div class="glass-panel rounded-xl flex-1 p-md flex flex-col overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-primary border-b border-primary/20 pb-sm mb-md">DOCKED AIRCRAFT FEED</h3>
+<div class="flex-1 overflow-y-auto space-y-md pr-xs">
+<!-- Aircraft Card 1 -->
+<div class="p-sm bg-primary/5 border border-primary/20 rounded-lg">
+<div class="flex justify-between items-start mb-xs">
+<div>
+<span class="font-telemetry-data text-telemetry-data text-primary block">SQ-402</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Singapore Airlines / B787-10</span>
+</div>
+<span class="bg-primary/20 text-primary px-xs py-[2px] font-label-caps text-[9px] border border-primary/30">GATE A-02</span>
+</div>
+<div class="grid grid-cols-2 gap-xs mt-sm text-[10px]">
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">ETA:</span>
+<span class="text-on-surface">ARRIVED</span>
+</div>
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">DEPART:</span>
+<span class="text-primary">14:20 GMT</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">CREW:</span>
+<span class="text-primary-container">UNIT-G7</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">FUEL:</span>
+<span class="text-on-surface">82%</span>
+</div>
+</div>
+</div>
+<!-- Aircraft Card 2 -->
+<div class="p-sm bg-white/5 border border-white/10 rounded-lg">
+<div class="flex justify-between items-start mb-xs">
+<div>
+<span class="font-telemetry-data text-telemetry-data text-on-surface block">LH-119</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">Lufthansa / A350-900</span>
+</div>
+<span class="bg-white/10 text-on-surface-variant px-xs py-[2px] font-label-caps text-[9px] border border-white/10">GATE A-04</span>
+</div>
+<div class="grid grid-cols-2 gap-xs mt-sm text-[10px]">
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">ETA:</span>
+<span class="text-on-surface">ARRIVED</span>
+</div>
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">DEPART:</span>
+<span class="text-on-surface">15:05 GMT</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">CREW:</span>
+<span class="text-primary-container">UNIT-R2</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">FUEL:</span>
+<span class="text-on-surface">45%</span>
+</div>
+</div>
+</div>
+<!-- Aircraft Card 3 -->
+<div class="p-sm bg-white/5 border border-white/10 rounded-lg">
+<div class="flex justify-between items-start mb-xs">
+<div>
+<span class="font-telemetry-data text-telemetry-data text-on-surface block">AA-882</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">American Air / B777-300</span>
+</div>
+<span class="bg-white/10 text-on-surface-variant px-xs py-[2px] font-label-caps text-[9px] border border-white/10">GATE A-06</span>
+</div>
+<div class="grid grid-cols-2 gap-xs mt-sm text-[10px]">
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">ETA:</span>
+<span class="text-on-surface">BOARDING</span>
+</div>
+<div class="flex justify-between border-b border-white/5 py-[2px]">
+<span class="text-on-surface-variant">DEPART:</span>
+<span class="text-on-surface">15:45 GMT</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">CREW:</span>
+<span class="text-primary-container">UNIT-G2</span>
+</div>
+<div class="flex justify-between py-[2px]">
+<span class="text-on-surface-variant">FUEL:</span>
+<span class="text-on-surface">98%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Snapshot -->
+<div class="glass-panel rounded-xl h-48 p-md">
+<h3 class="font-label-caps text-label-caps text-primary border-b border-primary/20 pb-sm mb-md">ENV CONDITIONS</h3>
+<div class="grid grid-cols-2 gap-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">WIND SPD</span>
+<span class="font-telemetry-data text-telemetry-data text-primary">14.2 KTS</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VISIBILITY</span>
+<span class="font-telemetry-data text-telemetry-data text-primary">UNLIMITED</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TEMP</span>
+<span class="font-telemetry-data text-telemetry-data text-primary">18°C / 64°F</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRESSURE</span>
+<span class="font-telemetry-data text-telemetry-data text-primary">29.92 INHG</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Navigation Mobile -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container/80 backdrop-blur-lg border-t border-white/20 shadow-2xl rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Feed</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary font-bold active:bg-surface-container-high active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="door_front">door_front</span>
+<span class="font-label-caps text-label-caps">Gates</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="graphic_eq">graphic_eq</span>
+<span class="font-label-caps text-label-caps">Noise</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:bg-surface-container-high active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="font-label-caps text-label-caps">Emergency</span>
+</div>
+</footer>
+</main>
+</body></html>

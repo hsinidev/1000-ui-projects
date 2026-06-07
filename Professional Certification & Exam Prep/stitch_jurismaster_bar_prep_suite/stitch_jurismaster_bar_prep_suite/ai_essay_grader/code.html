@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>JurisMaster | AI Essay Grader</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Inter:wght@100..900&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#0b0c02",
+                        "secondary": "#735c00",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#241a00",
+                        "inverse-surface": "#313030",
+                        "surface-container-low": "#f6f3f2",
+                        "tertiary-fixed-dim": "#c8c8b0",
+                        "surface-dim": "#dcd9d9",
+                        "primary-fixed": "#d6e3ff",
+                        "secondary-fixed": "#ffe088",
+                        "surface-tint": "#465f88",
+                        "surface-variant": "#e5e2e1",
+                        "on-tertiary-container": "#898b75",
+                        "on-surface-variant": "#44474e",
+                        "primary-container": "#002147",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#eae7e7",
+                        "on-tertiary-fixed-variant": "#474836",
+                        "on-tertiary-fixed": "#1b1d0e",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-primary-fixed-variant": "#2d476f",
+                        "tertiary-fixed": "#e4e4cc",
+                        "surface": "#fcf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "on-background": "#1c1b1b",
+                        "secondary-fixed-dim": "#e9c349",
+                        "surface-bright": "#fcf9f8",
+                        "surface-container": "#f0eded",
+                        "background": "#fcf9f8",
+                        "secondary-container": "#fed65b",
+                        "primary": "#000a1e",
+                        "error": "#ba1a1a",
+                        "inverse-primary": "#aec7f6",
+                        "tertiary-container": "#212313",
+                        "on-primary-container": "#708ab5",
+                        "inverse-on-surface": "#f3f0ef",
+                        "error-container": "#ffdad6",
+                        "on-error-container": "#93000a",
+                        "outline": "#74777f",
+                        "on-secondary-container": "#745c00",
+                        "on-surface": "#1c1b1b",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001b3d",
+                        "outline-variant": "#c4c6cf",
+                        "primary-fixed-dim": "#aec7f6",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "gutter": "24px",
+                        "container-max": "1200px",
+                        "section-gap": "80px",
+                        "margin-edge": "48px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Newsreader"],
+                        "h1": ["Newsreader"],
+                        "label-caps": ["Inter"],
+                        "study-body": ["Newsreader"],
+                        "button": ["Inter"],
+                        "ui-body": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "study-body": ["20px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "button": ["14px", {"lineHeight": "1", "fontWeight": "500"}],
+                        "ui-body": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .highlight-issue {
+            background-color: rgba(184, 134, 11, 0.1);
+            border-bottom: 2px solid #B8860B;
+            padding-bottom: 2px;
+        }
+        .parchment-texture {
+            background-color: #FDFCFB;
+            background-image: linear-gradient(rgba(0, 33, 71, 0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(0, 33, 71, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-ui-body">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-[#001529] border-b border-[#002147]/10 dark:border-white/10 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-6 py-4 max-w-7xl mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#002147] dark:text-white" data-icon="gavel">gavel</span>
+<h1 class="font-serif text-2xl font-bold tracking-tighter text-[#002147] dark:text-white">JurisMaster</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="text-[#002147]/60 dark:text-slate-400 font-serif text-lg tracking-tight uppercase hover:bg-[#002147]/5 dark:hover:bg-white/5 transition-colors px-3 py-1" href="#">Practice</a>
+<a class="text-[#002147] dark:text-white font-bold font-serif text-lg tracking-tight uppercase px-3 py-1" href="#">Essays</a>
+<a class="text-[#002147]/60 dark:text-slate-400 font-serif text-lg tracking-tight uppercase hover:bg-[#002147]/5 dark:hover:bg-white/5 transition-colors px-3 py-1" href="#">Progress</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-primary-container overflow-hidden">
+<img alt="Legal Professional Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a legal scholar in a dark navy suit against a soft, cream-colored library background. The lighting is directional and sophisticated, highlighting their focused expression. The overall aesthetic is one of academic rigor and corporate professionalism, aligning with a high-trust legal environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlJRPl4YeyELXIKM-bxkwUWUBedkzqAq4JfVpJIV2kinzDPlm1yioJ3z7lypQ4A_BgANMGgRWIfIgttsjl9AmJcWBbmHZuXTwTWENnSBjP2qpL0gJMKR99yCY3ECv_381g4Zq_coSVUskCCyc_sIsSpKuQW85opytXiZQmSw4ddGrTudRjDXC2KWiYnwJdspYxzg4Mcc2cH-NyEVONv9xps4C2GgmCstM-ISZzF8u9l3XHB1rYcCbOLkrIOHbUu4LnXVSpi2_XOpSz"/>
+</div>
+</div>
+</div>
+</header>
+<main class="max-w-7xl mx-auto px-6 py-12 flex flex-col lg:flex-row gap-12 mb-32">
+<!-- Left Column: Essay Content -->
+<div class="lg:w-2/3">
+<div class="mb-8">
+<span class="font-label-caps text-secondary uppercase tracking-widest text-[10px]">Case Analysis Submission</span>
+<h2 class="font-h1 text-h1 text-primary-container mt-2">The Doctrine of Promissory Estoppel</h2>
+<p class="font-ui-body text-[#002147]/60 mt-2 italic">Student ID: JD-2024-8842 • Submitted: Oct 14, 2023</p>
+</div>
+<div class="parchment-texture border border-[#002147]/10 p-12 rounded-lg shadow-sm relative overflow-hidden">
+<!-- Watermark effect -->
+<div class="absolute top-0 right-0 p-8 opacity-5 select-none pointer-events-none">
+<span class="material-symbols-outlined text-[120px]" data-icon="balance">balance</span>
+</div>
+<article class="font-study-body text-study-body text-on-surface max-w-[720px] mx-auto space-y-8 relative z-10">
+<p>
+                        In the matter of <span class="italic font-medium">Central London Property Trust Ltd v High Trees House Ltd [1947] KB 130</span>, the court established a foundational principle that would alter the landscape of contract law. <span class="highlight-issue">Promissory estoppel serves as a shield, not a sword, providing a defense against the strict enforcement of legal rights</span> when a party has made a clear representation intended to be relied upon.
+                    </p>
+<p>
+                        The plaintiff, High Trees, sought to recover full rent for the period of the second world war despite an agreement to accept half-rent due to low occupancy. Denning J (as he then was) articulated that where a promise is made which is intended to create legal relations and which, to the knowledge of the person making the promise, was going to be acted on by the person to whom it was made and which was in fact so acted on, then the promise is binding.
+                    </p>
+<p>
+<span class="highlight-issue">The application of this doctrine requires three core elements: a clear and unequivocal promise, reliance on that promise by the promisee, and it being inequitable for the promisor to go back on their word.</span> However, it is critical to note that promissory estoppel does not create new causes of action where none existed before. It only prevents a party from insisting on their strict legal rights when it would be unconscionable to do so.
+                    </p>
+<p>
+                        In contemporary legal practice, the rigors of this doctrine ensure that contractual fairness is maintained without subverting the necessity of consideration. The evolution of the rule suggests a shift toward equitable outcomes in commercial disputes.
+                    </p>
+</article>
+<!-- Feedback Overlays -->
+<div class="absolute top-[280px] -right-4 w-64 bg-white border-l-4 border-secondary p-4 shadow-xl hidden xl:block">
+<div class="flex items-start gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-[10px] text-secondary">AI ANALYST</span>
+</div>
+<p class="text-[13px] leading-relaxed text-primary-container">
+                        Excellent identification of the "shield vs sword" metaphor. Consider citing <span class="italic">Combe v Combe [1951]</span> for additional authority on this limitation.
+                    </p>
+</div>
+<div class="absolute top-[580px] -right-4 w-64 bg-white border-l-4 border-secondary p-4 shadow-xl hidden xl:block">
+<div class="flex items-start gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-[10px] text-secondary">AI ANALYST</span>
+</div>
+<p class="text-[13px] leading-relaxed text-primary-container">
+                        Your breakdown of the three core elements is precise. Ensure you emphasize the <span class="font-bold underline">detrimental</span> nature of reliance for a high-distinction grade.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Right Column: Grade Summary Card -->
+<aside class="lg:w-1/3">
+<div class="sticky top-28 space-y-8">
+<!-- Grade Summary Card -->
+<div class="bg-primary-container text-white p-8 rounded-lg shadow-lg border border-[#B8860B]/30">
+<div class="flex justify-between items-center mb-8">
+<div>
+<span class="font-label-caps text-[10px] text-on-primary-container tracking-widest">EVALUATION SUMMARY</span>
+<h3 class="font-h2 text-h2 text-white">Final Grade</h3>
+</div>
+<div class="text-right">
+<span class="text-4xl font-serif font-bold text-secondary-container">A-</span>
+</div>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[11px] text-white/80">Issue Analysis</span>
+<span class="font-label-caps text-[11px] text-secondary-container">92%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[92%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[11px] text-white/80">Rule of Law</span>
+<span class="font-label-caps text-[11px] text-secondary-container">88%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[88%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[11px] text-white/80">Application &amp; Conclusion</span>
+<span class="font-label-caps text-[11px] text-secondary-container">85%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[85%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[11px] text-white/80">Citation Precision</span>
+<span class="font-label-caps text-[11px] text-secondary-container">95%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[95%]"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-10 bg-secondary-container text-primary-container py-3 font-button text-button rounded-sm font-bold hover:bg-[#ffe088] transition-colors uppercase tracking-widest">
+                        Download Report
+                    </button>
+</div>
+<!-- AI Recommendations -->
+<div class="bg-surface-container border border-[#002147]/10 p-6 rounded-lg">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="psychology">psychology</span>
+<h4 class="font-h2 text-xl text-primary-container">Next Steps</h4>
+</div>
+<ul class="space-y-4">
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<p class="text-sm text-primary-container/80">Review the distinction between "suspend" and "extinguish" in future drafts.</p>
+</li>
+<li class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-sm mt-1" data-icon="check_circle">check_circle</span>
+<p class="text-sm text-primary-container/80">Study <span class="italic">D &amp; C Builders Ltd v Rees</span> for more on inequity.</p>
+</li>
+</ul>
+</div>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-white dark:bg-[#001529] border-t border-[#002147]/20 pb-safe md:hidden">
+<a class="flex flex-col items-center justify-center text-[#002147]/50 dark:text-slate-500 py-2 px-4 hover:text-[#002147] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-serif text-[11px] font-medium tracking-wide uppercase">Practice</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#002147] dark:text-white border-t-2 border-[#B8860B] py-2 px-4 scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu" style="font-variation-settings: 'FILL' 1;">history_edu</span>
+<span class="font-serif text-[11px] font-medium tracking-wide uppercase">Essays</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#002147]/50 dark:text-slate-500 py-2 px-4 hover:text-[#002147] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-serif text-[11px] font-medium tracking-wide uppercase">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#002147]/50 dark:text-slate-500 py-2 px-4 hover:text-[#002147] transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-serif text-[11px] font-medium tracking-wide uppercase">Library</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Details page as per UX Goal, but for demo of the component style if needed) -->
+<!-- <button class="fixed right-8 bottom-24 bg-primary-container text-white p-4 rounded-full shadow-2xl z-40">
+        <span class="material-symbols-outlined" data-icon="add">add</span>
+    </button> -->
+</body></html>

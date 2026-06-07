@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LumenCity | Streetlight Status Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#c8c5cf",
+                        "inverse-on-surface": "#2c2d4e",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary": "#432c00",
+                        "on-surface": "#e1e0ff",
+                        "inverse-surface": "#e1e0ff",
+                        "primary": "#c2c2f2",
+                        "on-secondary-container": "#664500",
+                        "surface-dim": "#0f1030",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-background": "#e1e0ff",
+                        "primary-fixed-dim": "#c2c2f2",
+                        "secondary-fixed": "#ffdead",
+                        "error-container": "#93000a",
+                        "surface-container": "#1b1c3c",
+                        "on-error": "#690005",
+                        "on-primary-container": "#8283af",
+                        "tertiary": "#c6c6c7",
+                        "surface-container-high": "#262748",
+                        "primary-fixed": "#e1e0ff",
+                        "outline-variant": "#47464e",
+                        "surface-variant": "#303253",
+                        "outline": "#918f99",
+                        "inverse-primary": "#5a5b84",
+                        "error": "#ffb4ab",
+                        "surface": "#0f1030",
+                        "on-primary-fixed-variant": "#42436b",
+                        "surface-container-low": "#171838",
+                        "on-primary-fixed": "#16173d",
+                        "secondary-fixed-dim": "#ffba3b",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "surface-bright": "#353658",
+                        "on-tertiary-container": "#868788",
+                        "secondary-container": "#f8ad00",
+                        "on-secondary-fixed": "#281900",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-fixed-variant": "#604100",
+                        "primary-container": "#1a1b41",
+                        "surface-container-highest": "#303253",
+                        "on-primary": "#2b2d53",
+                        "background": "#0f1030",
+                        "surface-tint": "#c2c2f2",
+                        "tertiary-container": "#1e2020",
+                        "surface-container-lowest": "#090a2a",
+                        "secondary": "#ffd086",
+                        "on-tertiary": "#2f3131"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "lg": "24px",
+                        "unit": "8px",
+                        "xs": "4px",
+                        "xxl": "64px",
+                        "gutter": "24px",
+                        "margin": "32px",
+                        "xl": "40px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "display": ["Space Grotesk"],
+                        "body-sm": ["Inter"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "data-mono": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(27, 28, 60, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .amber-glow {
+            box-shadow: 0 0 12px rgba(255, 186, 59, 0.4), 0 0 24px rgba(255, 186, 59, 0.2);
+        }
+        .amber-glow-strong {
+            box-shadow: 0 0 15px rgba(248, 173, 0, 0.6), 0 0 30px rgba(248, 173, 0, 0.3);
+        }
+        .pulse-amber {
+            animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.2; }
+            100% { transform: scale(0.8); opacity: 0.5; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-white/10 h-16 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="speed">speed</span>
+<h1 class="font-display text-headline-md font-bold text-secondary-fixed-dim drop-shadow-[0_0_8px_rgba(255,186,59,0.5)]">LumenCity</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 rounded-full flex items-center justify-center hover:bg-white/5 transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings_brightness">settings_brightness</span>
+</button>
+</div>
+</header>
+<!-- Map Canvas Area -->
+<main class="relative h-screen w-full pt-16 pb-20">
+<!-- Background Map Image -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale brightness-[0.3] contrast-125" data-alt="A highly detailed night-time map of a modern metropolitan smart city with glowing circuit-like pathways. The aesthetic is deep indigo and electric amber, featuring semi-transparent UI overlays and soft glowing points representing infrastructure. The lighting is cinematic with a heavy focus on nocturnal atmosphere and high-tech urban planning." data-location="Metropolis" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpBO5gOUckyeC09cT4vh6gCr2maXtb_vXSmtWyJPpP1h2wF0u_fHasXpvM__Xo1cETNHNcFw5S-rEmX_qfmZ8zFnMD7qDZ_ap-OjU3yrzD7i8jzA1fo_v9jFyOOhlBLef1FuUt8_Whr5rOlkOgiTCRdeS7Fh2BXW9E64BJPWnCZmka4e_dKE2JlofXG3uJJKi_wmYS8O0-iztt8ikp240zutHrccI3b23J5Tm8KLCXIBC8H-vqTGZjkXyxsBW4lhhT1-IqkZqJhJ0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/50"></div>
+</div>
+<!-- Interactive Map Pins -->
+<!-- Light ON -->
+<div class="absolute top-[30%] left-[40%] z-10">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-12 h-12 bg-secondary-fixed-dim/20 rounded-full pulse-amber"></div>
+<div class="w-6 h-6 bg-secondary-fixed-dim rounded-full amber-glow border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-on-secondary" style="font-variation-settings: 'FILL' 1;">lightbulb</span>
+</div>
+</div>
+</div>
+<!-- Light OFF (Issue) -->
+<div class="absolute top-[55%] left-[65%] z-10">
+<div class="relative flex items-center justify-center">
+<div class="w-6 h-6 bg-error rounded-full border-2 border-surface flex items-center justify-center shadow-[0_0_12px_rgba(255,180,171,0.4)]">
+<span class="material-symbols-outlined text-[14px] text-on-error" style="font-variation-settings: 'FILL' 1;">light_off</span>
+</div>
+</div>
+</div>
+<!-- Maintenance -->
+<div class="absolute top-[45%] left-[25%] z-10">
+<div class="relative flex items-center justify-center">
+<div class="w-6 h-6 bg-outline rounded-full border-2 border-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px] text-surface-dim" style="font-variation-settings: 'FILL' 1;">build</span>
+</div>
+</div>
+</div>
+<!-- Legend Overlay -->
+<div class="absolute top-20 left-4 z-20 flex flex-col gap-xs">
+<div class="glass-panel rounded-xl p-md flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim amber-glow"></div>
+<span class="font-label-caps text-on-surface-variant">Active (1,242)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_4px_rgba(255,180,171,0.8)]"></div>
+<span class="font-label-caps text-on-surface-variant">Outage (14)</span>
+</div>
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+<span class="font-label-caps text-on-surface-variant">Service (5)</span>
+</div>
+</div>
+</div>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-4 z-50 flex items-center gap-sm bg-secondary-container text-on-secondary-container px-lg py-md rounded-full amber-glow-strong font-display font-bold active:scale-95 duration-150">
+<span class="material-symbols-outlined" data-icon="report_problem">report_problem</span>
+<span class="font-label-caps tracking-wider">Quick Report</span>
+</button>
+<!-- Connectivity Stats Card (Bento Style) -->
+<div class="absolute bottom-28 left-4 right-4 z-20 md:hidden">
+<div class="glass-panel rounded-xl p-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="font-label-caps text-on-surface-variant opacity-70">Network Health</span>
+<span class="font-display text-headline-md text-secondary-fixed-dim">98.4%</span>
+</div>
+<div class="h-12 w-1 bg-white/10 rounded-full"></div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-on-surface-variant opacity-70">Active Wi-Fi Nodes</span>
+<span class="font-display text-headline-md text-primary">852</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-low/80 dark:bg-surface-container-low/80 backdrop-blur-xl border-t border-white/10 flex justify-around items-center h-20 px-4 pb-safe">
+<!-- Map (Active) -->
+<a class="flex flex-col items-center justify-center text-secondary-fixed-dim drop-shadow-[0_0_12px_rgba(255,186,59,0.6)] font-bold active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-body-sm text-label-caps mt-1">Map</span>
+</a>
+<!-- Wi-Fi -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:text-secondary-fixed transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="wifi">wifi</span>
+<span class="font-body-sm text-label-caps mt-1">Wi-Fi</span>
+</a>
+<!-- Tickets -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:text-secondary-fixed transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span class="font-body-sm text-label-caps mt-1">Tickets</span>
+</a>
+<!-- Savings -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 hover:text-secondary-fixed transition-colors active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-body-sm text-label-caps mt-1">Savings</span>
+</a>
+</nav>
+<!-- Subtle Scanlines Overlay for Atmospheric Effect -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] z-[100]" style="background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06)); background-size: 100% 4px, 3px 100%;"></div>
+</body></html>
