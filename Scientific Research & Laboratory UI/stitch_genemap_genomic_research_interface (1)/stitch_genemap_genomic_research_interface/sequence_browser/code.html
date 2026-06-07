@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GeneMap Sequence Browser</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#e3e6ff",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed": "#dde1ff",
+                        "inverse-surface": "#2d3133",
+                        "primary-container": "#0055ff",
+                        "surface-container-lowest": "#ffffff",
+                        "outline": "#737688",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed": "#111c2d",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#b6c4ff",
+                        "surface-dim": "#d8dadc",
+                        "on-secondary": "#ffffff",
+                        "inverse-primary": "#b6c4ff",
+                        "primary": "#0041c8",
+                        "error": "#ba1a1a",
+                        "inverse-on-surface": "#eff1f3",
+                        "on-background": "#191c1e",
+                        "primary-fixed": "#dce1ff",
+                        "surface-container-high": "#e6e8ea",
+                        "on-surface": "#191c1e",
+                        "on-primary-container": "#e3e6ff",
+                        "secondary-fixed": "#d8e3fb",
+                        "surface-container-low": "#f2f4f6",
+                        "background": "#f7f9fb",
+                        "on-primary-fixed": "#001551",
+                        "on-secondary-fixed-variant": "#3c475a",
+                        "on-secondary-container": "#586377",
+                        "secondary-fixed-dim": "#bcc7de",
+                        "on-tertiary-fixed-variant": "#0f3ab0",
+                        "outline-variant": "#c3c5d9",
+                        "on-primary-fixed-variant": "#0039b3",
+                        "surface": "#f7f9fb",
+                        "tertiary": "#1f44b9",
+                        "surface-container": "#eceef0",
+                        "on-tertiary-fixed": "#001453",
+                        "tertiary-container": "#3e5ed2",
+                        "error-container": "#ffdad6",
+                        "secondary": "#545f73",
+                        "surface-container-highest": "#e0e3e5",
+                        "secondary-variant": "#e0e3e5",
+                        "tertiary-fixed-dim": "#b7c4ff",
+                        "surface-tint": "#004dea",
+                        "on-surface-variant": "#434656",
+                        "surface-bright": "#f7f9fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "density": "compact",
+                        "margin": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h1": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "data-mono": ["13px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["14px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .nucleotide-badge {
+            width: 24px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 12px;
+            border-radius: 2px;
+        }
+        .a-marker { background-color: #0041c8; color: white; }
+        .c-marker { background-color: #545f73; color: white; }
+        .g-marker { background-color: #1f44b9; color: white; }
+        .t-marker { background-color: #ba1a1a; color: white; }
+        
+        .custom-scrollbar::-webkit-scrollbar { height: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f1f1; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #0041c8; border-radius: 2px; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- TopAppBar (Mobile View) -->
+<header class="bg-surface dark:bg-surface-dim text-primary dark:text-primary-fixed-dim border-b border-outline-variant dark:border-outline docked full-width top-0 z-40 fixed">
+<div class="flex justify-between items-center w-full px-margin h-16">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<h1 class="font-h1 text-h1 font-semibold text-primary dark:text-primary-fixed-dim">GeneMap</h1>
+</div>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Researcher Profile" data-alt="A professional headshot of a clinical researcher wearing a white lab coat in a sterile, modern laboratory setting. The background is softly blurred with blue-tinted laboratory equipment and cool, clinical lighting. The overall mood is serious, expert-led, and reflects a high-tech genomic environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCAnR72fzVVvm52a5_d2LN4P3yviWsjNM0cFk-WLTf97zb49bqStrBIF5rgaQAp13vIVwOiWNWWcRiUJvHUwoPwQi-njiLEEbEz_h3KfDHG0vxUs--yTHo54DqdTQnivIZEiY-6DLHBOCH0YWZxXlDCEm_tDwNsO6SdVA1ibhn2EzUujQs6UcXA8-qpTBAUqawbvmEhdfip27TziR_ozD-lF9Hwo0fKsR3O_pNZubO153CoN9Ou8adgA9jyt2rBUU3z0rQdxv7fxO35"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin max-w-screen-sm mx-auto">
+<!-- Research Abstract Section -->
+<section class="mb-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant p-gutter rounded-lg shadow-sm">
+<h2 class="font-label-caps text-label-caps uppercase tracking-widest text-primary mb-2">Research Abstract</h2>
+<h3 class="font-h2 text-h2 mb-2">BRCA1 Sequence Analysis</h3>
+<p class="text-on-surface-variant text-body-md">
+                    Targeted sequencing of the BRCA1 locus (Chr17:43,044,295-43,125,483) for identifying deleterious pathogenic variants in high-risk hereditary cohorts. This view visualizes somatic and germline mutations across exon boundaries with precision alignment to the GRCh38 reference assembly.
+                </p>
+</div>
+</section>
+<!-- Chromosome Map Pull-out Visualization -->
+<section class="mb-gutter">
+<div class="bg-surface-container-low border border-outline-variant p-unit rounded-xl overflow-hidden">
+<div class="flex justify-between items-center px-4 py-2 bg-surface-container-high">
+<span class="font-label-caps text-label-caps">CHROMOSOME 17 MAP</span>
+<span class="material-symbols-outlined text-sm" data-icon="unfold_more">unfold_more</span>
+</div>
+<div class="p-gutter relative">
+<div class="h-4 w-full bg-surface-container-highest rounded-full border border-outline flex items-center relative overflow-hidden">
+<!-- Centromere marker -->
+<div class="absolute left-1/3 w-1 h-full bg-outline opacity-50"></div>
+<!-- Active Region Highlight -->
+<div class="absolute left-1/2 w-4 h-full bg-primary border-x border-on-primary-fixed-variant opacity-80"></div>
+</div>
+<div class="flex justify-between mt-unit text-[10px] text-outline font-data-mono">
+<span>P-ARM</span>
+<span>Q-ARM</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Interactive DNA Visualization (Scrollable) -->
+<section class="mb-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden">
+<div class="p-3 border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="dna">genetics</span>
+<span class="font-label-caps text-label-caps">REFERENCE SEQUENCE (REF)</span>
+</div>
+<span class="font-data-mono text-[11px] text-on-surface-variant">LOC: 43,044,295</span>
+</div>
+<div class="p-gutter overflow-x-auto custom-scrollbar">
+<div class="flex gap-1 mb-2">
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge c-marker">C</div>
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge c-marker">C</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge c-marker">C</div>
+<div class="nucleotide-badge c-marker">C</div>
+</div>
+<!-- Sample alignment row -->
+<div class="flex gap-1 items-center opacity-80">
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge c-marker">C</div>
+<!-- Mutation Highlight -->
+<div class="nucleotide-badge t-marker border-2 border-error ring-1 ring-error-container">T</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge c-marker">C</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge a-marker">A</div>
+<div class="nucleotide-badge t-marker">T</div>
+<div class="nucleotide-badge g-marker">G</div>
+<div class="nucleotide-badge c-marker">C</div>
+<div class="nucleotide-badge c-marker">C</div>
+</div>
+</div>
+<div class="px-gutter pb-gutter">
+<div class="flex items-center gap-unit text-error font-label-caps text-[10px] mt-2">
+<span class="material-symbols-outlined text-[12px]" data-icon="report">report</span>
+<span>SINGLE NUCLEOTIDE POLYMORPHISM DETECTED AT POSITION 43,044,300</span>
+</div>
+</div>
+</div>
+</section>
+<!-- High-Density Data Table -->
+<section class="mb-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-lg overflow-hidden shadow-sm">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high">
+<tr>
+<th class="px-2 py-3 font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant">Locus ID</th>
+<th class="px-2 py-3 font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant">Mutation</th>
+<th class="px-2 py-3 font-label-caps text-label-caps text-on-surface-variant border-b border-outline-variant">Score</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-on-surface">
+<tr class="even:bg-surface-container-low border-b border-outline-variant/30">
+<td class="p-2 text-[12px]">RS123456</td>
+<td class="p-2"><span class="px-2 py-0.5 bg-error-container text-on-error-container rounded text-[11px]">C &gt; T</span></td>
+<td class="p-2">0.98</td>
+</tr>
+<tr class="even:bg-surface-container-low border-b border-outline-variant/30">
+<td class="p-2 text-[12px]">RS789012</td>
+<td class="p-2"><span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded text-[11px]">A &gt; G</span></td>
+<td class="p-2">0.45</td>
+</tr>
+<tr class="even:bg-surface-container-low border-b border-outline-variant/30">
+<td class="p-2 text-[12px]">RS345678</td>
+<td class="p-2"><span class="px-2 py-0.5 bg-primary-container text-on-primary-container rounded text-[11px]">DEL</span></td>
+<td class="p-2">0.72</td>
+</tr>
+<tr class="even:bg-surface-container-low">
+<td class="p-2 text-[12px]">RS901234</td>
+<td class="p-2"><span class="px-2 py-0.5 bg-secondary-container text-on-secondary-container rounded text-[11px]">T &gt; A</span></td>
+<td class="p-2">0.12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Interactive Sidebar/Detail Panel Placeholder (Visualized as a card in mobile flow) -->
+<section class="mb-20">
+<div class="bg-primary dark:bg-primary-container text-on-primary p-margin rounded-xl">
+<div class="flex items-center gap-gutter mb-gutter">
+<span class="material-symbols-outlined text-h2" data-icon="biotech">biotech</span>
+<h3 class="font-h2 text-h2">Diagnostic Insights</h3>
+</div>
+<div class="space-y-4">
+<div class="border-l-2 border-on-primary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] opacity-80 uppercase tracking-wider">Pathogenicity</p>
+<p class="font-h2 text-[18px]">Likely Pathogenic</p>
+</div>
+<div class="border-l-2 border-on-primary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] opacity-80 uppercase tracking-wider">Clinical Evidence</p>
+<p class="text-body-md">Consistent with loss of function (LoF) across protein-coding domains.</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (The Platform Pivot) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center bg-surface dark:bg-surface-dim py-2 border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center bg-primary-container dark:bg-primary-fixed text-on-primary-container dark:text-on-primary-fixed rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" data-icon="dna" style="font-variation-settings: 'FILL' 1;">genetics</span>
+<span class="font-label-caps text-label-caps">Sequence</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps">Mutations</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span class="font-label-caps text-label-caps">Genomics</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant p-2 hover:text-primary dark:hover:text-primary-fixed-dim transition-transform active:scale-90">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Samples</span>
+</div>
+</nav>
+</body></html>

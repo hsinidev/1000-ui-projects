@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131314;
+            color: #e4e2e3;
+        }
+        .gauge-container {
+            position: relative;
+            width: 240px;
+            height: 120px;
+            overflow: hidden;
+        }
+        .gauge-arc {
+            width: 240px;
+            height: 240px;
+            border: 12px solid #2D2D2E;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        .gauge-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 240px;
+            border: 12px solid #39ff14;
+            border-bottom-color: transparent;
+            border-left-color: transparent;
+            border-radius: 50%;
+            transform: rotate(205deg); /* Matches 88 score roughly */
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#303031",
+                        "primary-fixed-dim": "#2ae500",
+                        "on-primary-fixed": "#022100",
+                        "outline-variant": "#3c4b35",
+                        "on-tertiary": "#2f3131",
+                        "on-surface": "#e4e2e3",
+                        "on-secondary-container": "#bab8b9",
+                        "outline": "#85967c",
+                        "inverse-on-surface": "#303031",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#107100",
+                        "tertiary-container": "#dddddd",
+                        "inverse-primary": "#106e00",
+                        "primary": "#efffe3",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#49494a",
+                        "surface-bright": "#39393a",
+                        "background": "#131314",
+                        "surface-container": "#1f1f20",
+                        "secondary-fixed-dim": "#c8c6c7",
+                        "on-background": "#e4e2e3",
+                        "surface-container-lowest": "#0e0e0f",
+                        "surface": "#131314",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container-highest": "#353536",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-fixed-variant": "#095300",
+                        "on-secondary-fixed-variant": "#474647",
+                        "surface-container-high": "#2a2a2b",
+                        "on-primary": "#053900",
+                        "primary-container": "#39ff14",
+                        "on-surface-variant": "#baccb0",
+                        "on-tertiary-container": "#606162",
+                        "surface-tint": "#2ae500",
+                        "surface-variant": "#353536",
+                        "surface-dim": "#131314",
+                        "primary-fixed": "#79ff5b",
+                        "secondary-fixed": "#e5e2e3",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-low": "#1b1b1c",
+                        "inverse-surface": "#e4e2e3",
+                        "on-secondary-fixed": "#1b1b1c",
+                        "on-error": "#690005",
+                        "tertiary": "#f9fafa",
+                        "secondary": "#c8c6c7"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "table-data": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-metrics": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "table-data": ["13px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "display-metrics": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden pb-20">
+<!-- TopAppBar -->
+<header class="bg-zinc-950 dark:bg-[#1A1A1B] border-b border-zinc-800 flex justify-between items-center w-full px-4 h-14 fixed top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-lime-400" data-icon="analytics">analytics</span>
+<span class="text-lime-400 font-black tracking-widest text-lg">SEO-PULSE</span>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<span class="font-inter text-xs font-bold tracking-tighter uppercase text-zinc-500 hover:border-lime-400 transition-colors cursor-crosshair">Dashboard</span>
+<span class="font-inter text-xs font-bold tracking-tighter uppercase text-lime-400 hover:border-lime-400 transition-colors cursor-crosshair">Audit</span>
+<span class="font-inter text-xs font-bold tracking-tighter uppercase text-zinc-500 hover:border-lime-400 transition-colors cursor-crosshair">Rankings</span>
+<span class="material-symbols-outlined text-zinc-500" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden md:flex flex-col fixed left-0 top-0 h-full z-40 bg-zinc-950 dark:bg-[#1A1A1B] w-64 border-r border-zinc-800 pt-20">
+<div class="px-4 mb-8">
+<span class="font-inter text-sm font-semibold text-lime-400 font-black uppercase">ANALYTICS ENGINE</span>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-inter text-sm font-semibold">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-inter text-sm font-semibold">Competitors</span>
+</a>
+<a class="flex items-center gap-3 bg-zinc-900 text-lime-400 border-l-4 border-lime-400 px-4 py-3 transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-inter text-sm font-semibold">Site Health</span>
+</a>
+<a class="flex items-center gap-3 text-zinc-400 px-4 py-3 hover:bg-zinc-800 hover:text-white transition-colors duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="lan">lan</span>
+<span class="font-inter text-sm font-semibold">Backlink Explorer</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-20 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Header Section with Health Score Gauge -->
+<section class="mb-12 flex flex-col items-center justify-center text-center">
+<h1 class="font-headline-lg text-headline-lg mb-8 uppercase tracking-widest text-primary-fixed-dim">Site Health Audit</h1>
+<div class="gauge-container mb-4">
+<div class="gauge-arc"></div>
+<div class="gauge-fill"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-end pb-2">
+<span class="font-display-metrics text-[48px] leading-none text-primary-container">88</span>
+<span class="font-label-caps text-label-caps text-zinc-400 uppercase">OPTIMIZED</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-8 mt-8 w-full max-w-2xl">
+<div class="flex flex-col items-center">
+<span class="font-display-metrics text-headline-lg text-error">03</span>
+<span class="font-label-caps text-[10px] text-zinc-500 uppercase">Critical</span>
+</div>
+<div class="flex flex-col items-center border-x border-zinc-800">
+<span class="font-display-metrics text-headline-lg text-yellow-500">12</span>
+<span class="font-label-caps text-[10px] text-zinc-500 uppercase">Warnings</span>
+</div>
+<div class="flex flex-col items-center">
+<span class="font-display-metrics text-headline-lg text-primary-fixed-dim">142</span>
+<span class="font-label-caps text-[10px] text-zinc-500 uppercase">Passed</span>
+</div>
+</div>
+</section>
+<!-- Summary Cards Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+<div class="bg-surface-container border border-zinc-800 p-4">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-zinc-400">CRAWLABILITY</span>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="cloud_done">cloud_done</span>
+</div>
+<div class="font-display-metrics text-headline-lg mb-1">98%</div>
+<p class="text-[11px] text-zinc-500">2,402 pages indexed. 4 pages blocked by robots.txt.</p>
+</div>
+<div class="bg-surface-container border border-zinc-800 p-4">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-zinc-400">HTTPS / SECURITY</span>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="lock">lock</span>
+</div>
+<div class="font-display-metrics text-headline-lg mb-1">SECURE</div>
+<p class="text-[11px] text-zinc-500">SSL certificate is valid for 184 more days.</p>
+</div>
+<div class="bg-surface-container border border-zinc-800 p-4">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-zinc-400">CORE WEB VITALS</span>
+<span class="material-symbols-outlined text-yellow-500" data-icon="bolt">bolt</span>
+</div>
+<div class="font-display-metrics text-headline-lg mb-1">STABLE</div>
+<p class="text-[11px] text-zinc-500">LCP: 2.1s | FID: 14ms | CLS: 0.08</p>
+</div>
+</div>
+<!-- Categorized Checklist -->
+<div class="space-y-6">
+<!-- Critical Errors -->
+<div>
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-error text-on-error px-2 py-0.5 font-label-caps text-[9px]">CRITICAL</span>
+<div class="h-[1px] flex-1 bg-zinc-800"></div>
+</div>
+<div class="space-y-2">
+<div class="bg-surface-container-low border border-zinc-800 group hover:border-error transition-colors">
+<div class="p-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error" data-icon="error">error</span>
+<div>
+<div class="font-headline-md text-sm">404 Broken Internal Links</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: Severe | 14 Instances</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-zinc-600 group-hover:text-error" data-icon="expand_more">expand_more</span>
+</div>
+<div class="hidden px-4 pb-4 border-t border-zinc-800/50 pt-3">
+<p class="text-body-md text-zinc-400 mb-2">Search engines cannot crawl your site efficiently when internal links are broken. This leads to a poor user experience and potential loss of rank.</p>
+<div class="bg-zinc-950 p-2 font-table-data text-[12px] text-error opacity-80">
+                                GET /pricing -&gt; 404 Not Found<br/>
+                                GET /blog/seo-tips-2023 -&gt; 404 Not Found
+                            </div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-zinc-800 group hover:border-error transition-colors">
+<div class="p-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<div class="font-headline-md text-sm">Missing Meta Titles</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: High | 8 Pages</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-zinc-600 group-hover:text-error" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Warnings -->
+<div>
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-yellow-500 text-black px-2 py-0.5 font-label-caps text-[9px]">WARNINGS</span>
+<div class="h-[1px] flex-1 bg-zinc-800"></div>
+</div>
+<div class="space-y-2">
+<div class="bg-surface-container-low border border-zinc-800 group hover:border-yellow-500 transition-colors">
+<div class="p-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-yellow-500" data-icon="priority_high">priority_high</span>
+<div>
+<div class="font-headline-md text-sm">Duplicate H1 Tags</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: Moderate | 42 Instances</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-zinc-600" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-zinc-800 group hover:border-yellow-500 transition-colors">
+<div class="p-4 flex items-center justify-between cursor-pointer">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-yellow-500" data-icon="speed">speed</span>
+<div>
+<div class="font-headline-md text-sm">Slow Page Load Time (&gt;3s)</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: Moderate | 12 Pages</div>
+</div>
+</div>
+<span class="material-symbols-outlined text-zinc-600" data-icon="expand_more">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Passed Checks -->
+<div>
+<div class="flex items-center gap-3 mb-3">
+<span class="bg-lime-400 text-black px-2 py-0.5 font-label-caps text-[9px]">PASSED</span>
+<div class="h-[1px] flex-1 bg-zinc-800"></div>
+</div>
+<div class="space-y-2 opacity-60">
+<div class="bg-surface-container-low border border-zinc-800 p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-lime-400" data-icon="check_circle">check_circle</span>
+<div>
+<div class="font-headline-md text-sm">Schema Markup Validated</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: Positive | 812 Pages</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-zinc-800 p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-lime-400" data-icon="check_circle">check_circle</span>
+<div>
+<div class="font-headline-md text-sm">Robots.txt Format Correct</div>
+<div class="text-[11px] text-zinc-500 uppercase tracking-tighter">Impact: Foundational</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Contextual Section: Latest Site Snapshot -->
+<section class="mt-12 mb-20">
+<h2 class="font-label-caps text-zinc-500 mb-4 uppercase">Visual Audit Snapshot</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="aspect-video bg-zinc-900 border border-zinc-800 overflow-hidden relative group">
+<img alt="SEO dashboard mockup" class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" data-alt="A high-contrast, technical screen display showing complex SEO data analytics and site audit results. The screen features glowing neon green charts and text overlays against a dark, graphite-colored interface. The mood is professional, analytical, and futuristic, emphasizing data density and precision in a high-performance workspace." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC1xzoLWm-sXNObiPUM0i_qPU3A6yEmVNcwo_c0qY2IMrZsepB75PiV6UDooqiHE_8DIWw5hfLU5J4Kfd_HBz9EMwFdoERw0Q-XwPJLSAA20TU3owDDTwgyarMys4_NRiBPJCh2ud2P9I2-Nzhdjc415QSmC2ijSM4xmVn534M8DwbQ2KiJTuXONnyRNH61x5QX96px4MFOdWuFDkX8KtjZH-vIH-G_Hzx9GeZ7H07WtpTtvyuNuETz-mo4fLU--7tEPbmkVYb7ZPTl"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+<span class="text-[9px] font-label-caps text-lime-400 uppercase">Home Page Mobile</span>
+</div>
+</div>
+<div class="aspect-video bg-zinc-900 border border-zinc-800 overflow-hidden relative group">
+<img alt="Data visualization chart" class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" data-alt="Detailed data visualization line graph in vibrant lime green against a dark black background. The graph shows fluctuating trends over a grid pattern, conveying a sense of high-frequency monitoring and technical analysis. The aesthetic is minimal and brutalist, focused on clarity and impact." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHn16vOgZe8Oc0HpLq4CvV2OksKGIeJU2nn11lVkB54g9yHUOFe3akDM1EzHVrdrJtSMBHqDHZoHdX1avWEIaK9vSEHEhVcVaPS835Sf5mIE7JWUnyyiA5kr08l1M8wG1WzzOt9mMbH6otFiWKK1Y_HIMaN_gzruyDxjUGBQJhJIHTY7FRVa4io8dhxx7cbqkRfYXP6MgxSLqwFpuHQi1IgxcqhbT8I6uO5cnxEB16p7rV1o3XFa-JwJauM3-x5NXnFTcZ1poidyQP"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+<span class="text-[9px] font-label-caps text-lime-400 uppercase">Product Listing</span>
+</div>
+</div>
+<div class="aspect-video bg-zinc-900 border border-zinc-800 overflow-hidden relative group">
+<img alt="Digital code display" class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" data-alt="Macro photography of a computer screen showing structured code and data fragments. The color scheme is predominantly dark grey and neon green, highlighting technical precision. The lighting is low-key, emphasizing the focus on development and site structure for SEO optimization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNpoUsmHK4JblxZdrD6cCHiJpIr1qeldDJPJOcLizzhGEPzu6-dfJPOYwHXEHRosSViERO0fx-Zwet93tnCvRX0mnCC72GvXE21VFoooFJZmt4vHJiluZ6VmHch7ll_ybiiSL-ymZnA3FyC3Rkx_HY-lFXEqaiGQ_e3_ORw4Rli92LFDIEdNmBRErYQQdLtjIGKYE7lqavyvab00GPR3K5BzyKOB5LQzcXpfjwqKiJlWH2SPL0wL6HU_nem8CAaTQ8RTgsTFJtAr-E"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+<span class="text-[9px] font-label-caps text-lime-400 uppercase">Checkout Flow</span>
+</div>
+</div>
+<div class="aspect-video bg-zinc-900 border border-zinc-800 overflow-hidden relative group">
+<img alt="Team workspace" class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-100 transition-all" data-alt="A clean, minimalist office setting with multiple high-resolution monitors displaying complex SEO audit metrics. The room is dark, illuminated primarily by the soft neon green glow of the screens. The atmosphere is quiet, focused, and professional, characteristic of a high-end digital agency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBTJu2LditF7eef2_hdO6DH9wFBiSd711l0Z3u0i8RnJ4_9EcvtTqKlhohP93DQTMrUI9raHjlvwByd1lHXRNqdUwYaLzoJNcg9OW1lMlgnMetRfMhv9eLiT58uxN6oZQYmBCT-o1-ZsZxsHGh_CKkvWN6zhJqICCEl82ux1aW9x1gxa0G1m9aiqWk_wTHtQjZaqMIpvHaabB-FV0L64diwWSTNdrpUBKGl_BMEfpBAsAYiEcBRMBaaCso223D8zqL3JkC08Tae0nPe"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-2">
+<span class="text-[9px] font-label-caps text-lime-400 uppercase">Blog Index</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-zinc-900 dark:bg-[#2D2D2E] border-t border-zinc-800">
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-1 hover:bg-zinc-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Rankings</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-1 hover:bg-zinc-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="compare_arrows">compare_arrows</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Compare</span>
+</a>
+<a class="flex flex-col items-center justify-center text-lime-400 border-t-2 border-lime-400 pt-1 hover:bg-zinc-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="fact_check">fact_check</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Audit</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 pt-1 hover:bg-zinc-800 transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="link">link</span>
+<span class="font-inter text-[10px] font-medium uppercase tracking-widest">Links</span>
+</a>
+</nav>
+</body></html>

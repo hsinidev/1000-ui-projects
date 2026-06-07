@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSync - Brain Activity Heatmaps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#dee1f8",
+                    "tertiary-fixed": "#e2e2e2",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#204f3b",
+                    "surface-tint": "#6050af",
+                    "on-secondary-fixed": "#002114",
+                    "inverse-on-surface": "#eff0ff",
+                    "secondary-fixed-dim": "#9fd1b7",
+                    "on-primary-fixed-variant": "#483795",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-secondary-container": "#3d6c56",
+                    "surface-bright": "#faf8ff",
+                    "outline": "#797583",
+                    "on-background": "#171b2b",
+                    "secondary-fixed": "#bbeed3",
+                    "on-tertiary": "#ffffff",
+                    "surface-variant": "#dee1f8",
+                    "on-tertiary-container": "#313333",
+                    "surface-container-high": "#e4e7fe",
+                    "on-surface": "#171b2b",
+                    "surface-container": "#ebedff",
+                    "surface": "#faf8ff",
+                    "secondary": "#386752",
+                    "tertiary": "#5d5f5f",
+                    "on-secondary": "#ffffff",
+                    "primary-fixed": "#e6deff",
+                    "inverse-primary": "#c9beff",
+                    "outline-variant": "#c9c4d3",
+                    "tertiary-container": "#9a9b9b",
+                    "on-error": "#ffffff",
+                    "primary-container": "#9d8df1",
+                    "inverse-surface": "#2c3041",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "primary": "#6050af",
+                    "background": "#faf8ff",
+                    "on-primary-container": "#331f80",
+                    "surface-container-low": "#f3f2ff",
+                    "on-surface-variant": "#484552",
+                    "primary-fixed-dim": "#c9beff",
+                    "on-primary": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "surface-dim": "#d6d9ef",
+                    "on-primary-fixed": "#1b0062",
+                    "surface-container-lowest": "#ffffff",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#b8ebd0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "12px",
+                    "xs": "4px",
+                    "gutter": "24px",
+                    "lg": "40px",
+                    "margin": "32px",
+                    "md": "24px",
+                    "base": "8px",
+                    "xl": "64px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "data-mono": ["Inter"],
+                    "display-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-md": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .neumorphic-flat {
+            background: #faf8ff;
+            box-shadow: 4px 4px 10px #dee1f8, -4px -4px 10px #ffffff;
+        }
+        .neumorphic-inset {
+            background: #faf8ff;
+            box-shadow: inset 4px 4px 8px #dee1f8, inset -4px -4px 8px #ffffff;
+        }
+        .glass-overlay {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .fill-icon {
+            font-variation-settings: 'FILL' 1;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- TopAppBar Component -->
+<header class="bg-surface shadow-[4px_4px_10px_#dee1f8,-4px_-4px_10px_#ffffff] flex justify-between items-center px-margin py-base w-full sticky top-0 z-50">
+<div class="flex items-center gap-base">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest overflow-hidden border-2 border-primary-container">
+<img alt="Senior Researcher Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a senior female neuroscientist with grey hair and glasses, wearing a clinical white lab coat in a brightly lit modern research laboratory. The atmosphere is clinical and high-tech, with soft clinical blue and white lighting. The image style is sharp, clean, and professional, reflecting high-end medical research standards." src="https://lh3.googleusercontent.com/aida-public/AB6AXuABUoFpKEon622elxT-CCbXEJ1dQ47uL9RRQJ5sZeEuSlWJwZMJmDQfmwZVbf0aHhACbvlzNgQmgrDQIlNJeE6qOU2RNmpeKFf8lpAu8E-sRfRFA_Tu2eCYjn-0hZ_t-kIqUX3rrR2NghvZafGSmUMvF_XRVHqbGpJPgYz9aZ3ze2dXWPWLc1ufVu3KzxLLHq5iYJ8kVCIKjSiuSVpcL0Fz0dgalXiZuMepQ9QnKOAJ1jK0aW4W5D31ZOqLJ-_a5sJJSywmPbRL8Sw"/>
+</div>
+<span class="font-display-md text-display-md font-bold text-primary">NeuroSync</span>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-80 transition-opacity active:scale-95 transition-transform" data-icon="settings">
+            settings
+        </button>
+</header>
+<main class="px-margin pt-lg max-w-7xl mx-auto">
+<!-- 3D Visualization Canvas Area -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left Side: Interactive Brain Model -->
+<section class="lg:col-span-8 relative">
+<div class="neumorphic-flat rounded-xl p-md aspect-square lg:aspect-video flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img alt="3D Brain Model Visualization" class="w-full h-full object-cover opacity-90 group-hover:scale-105 transition-transform duration-700" data-alt="A high-detail 3D anatomical visualization of a human brain suspended in a dark, ethereal digital void. The brain model glows with vibrant neon mint green highlights indicating high neural activity and soft purple ambient glows for resting states. Sophisticated data overlays and thin luminescent connections suggest a high-precision neuro-analysis interface. The lighting is moody and technological, emphasizing depth and clinical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgLie_PiShAErPBvI7-oWpImqooVAvixgzlUT9SM5HRawvHa0WXdG00AW1xssixQZNgpJ1R5C3OSyQ41LyCc7xuKJyUXmveqfYw1K08RzFYHA34AWH3CaYDe-jaMWinhPoRESW4f8yk1ZxUjoXxZbyVEukog7EUrORBhCXx2GpmKc9wsDGOBJ2iaT3KqHMlCsmJmnvBL-Rz-VEskgfyrnkkV-onasJd3VT_H14TZzINvK9GVFYpIKQ_fszrFRTrPLii6RFEe4MgbM"/>
+</div>
+<!-- Glassmorphic Tooltip / Active Point -->
+<div class="glass-overlay absolute top-1/4 left-1/3 p-sm rounded-lg shadow-xl z-10 max-w-[200px]">
+<div class="flex items-center gap-xs mb-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface">Active Stimulus</span>
+</div>
+<p class="font-headline-md text-headline-md text-primary">84Hz</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Gamma Frequency Peak</p>
+</div>
+<!-- Control Overlays -->
+<div class="absolute bottom-md right-md flex flex-col gap-sm z-20">
+<button class="neumorphic-flat p-sm rounded-full text-primary hover:opacity-80 transition-all active:scale-90">
+<span class="material-symbols-outlined">rotate_90_degrees_ccw</span>
+</button>
+<button class="neumorphic-flat p-sm rounded-full text-primary hover:opacity-80 transition-all active:scale-90">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="neumorphic-flat p-sm rounded-full text-primary hover:opacity-80 transition-all active:scale-90">
+<span class="material-symbols-outlined">layers</span>
+</button>
+</div>
+</div>
+<!-- Time Scrubbing Playback -->
+<div class="mt-gutter neumorphic-flat rounded-xl p-md">
+<div class="flex items-center justify-between mb-sm">
+<div class="flex items-center gap-sm">
+<button class="w-10 h-10 neumorphic-flat rounded-full flex items-center justify-center text-primary active:scale-90 transition-transform">
+<span class="material-symbols-outlined fill-icon">play_arrow</span>
+</button>
+<div>
+<h3 class="font-headline-md text-headline-md">Session Playback</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">02:14 / 05:00 • Real-time Sync</p>
+</div>
+</div>
+<span class="font-data-mono text-data-mono text-secondary bg-secondary-container px-3 py-1 rounded-full">RECORDING</span>
+</div>
+<div class="relative h-12 flex items-center">
+<div class="absolute inset-0 neumorphic-inset rounded-full h-2 my-auto"></div>
+<div class="absolute inset-y-0 left-0 bg-primary-container rounded-full h-2 my-auto w-2/5"></div>
+<div class="absolute left-2/5 -ml-3 w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg cursor-pointer hover:scale-110 transition-transform"></div>
+<!-- Mini Waveforms on timeline -->
+<div class="absolute inset-x-0 bottom-0 h-6 flex items-end justify-between px-md opacity-30 pointer-events-none">
+<div class="w-1 bg-primary h-2"></div><div class="w-1 bg-primary h-4"></div><div class="w-1 bg-primary h-3"></div>
+<div class="w-1 bg-secondary h-5"></div><div class="w-1 bg-secondary h-2"></div><div class="w-1 bg-primary h-4"></div>
+<div class="w-1 bg-primary h-6"></div><div class="w-1 bg-primary h-3"></div><div class="w-1 bg-secondary h-2"></div>
+<div class="w-1 bg-primary h-4"></div><div class="w-1 bg-primary h-5"></div><div class="w-1 bg-primary h-3"></div>
+<div class="w-1 bg-primary h-2"></div><div class="w-1 bg-primary h-4"></div><div class="w-1 bg-primary h-3"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Side: Analysis Cards -->
+<aside class="lg:col-span-4 flex flex-col gap-gutter">
+<div class="neumorphic-flat rounded-xl p-md">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-headline-lg text-headline-lg text-primary">Region Analysis</h2>
+<span class="material-symbols-outlined text-outline">analytics</span>
+</div>
+<!-- Frontal Lobe Card -->
+<div class="neumorphic-inset rounded-lg p-sm mb-sm border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-md text-headline-md">Frontal Lobe</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Cognitive Load</span>
+</div>
+<span class="text-secondary font-bold text-headline-md">High</span>
+</div>
+<div class="flex gap-xs items-center">
+<div class="h-1.5 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[88%]"></div>
+</div>
+<span class="font-data-mono text-data-mono">88%</span>
+</div>
+</div>
+<!-- Temporal Lobe Card -->
+<div class="neumorphic-inset rounded-lg p-sm mb-sm border-l-4 border-primary">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-md text-headline-md">Temporal Lobe</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Auditory Processing</span>
+</div>
+<span class="text-primary font-bold text-headline-md">Rest</span>
+</div>
+<div class="flex gap-xs items-center">
+<div class="h-1.5 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[24%]"></div>
+</div>
+<span class="font-data-mono text-data-mono">24%</span>
+</div>
+</div>
+<!-- Occipital Lobe Card -->
+<div class="neumorphic-inset rounded-lg p-sm border-l-4 border-tertiary">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h4 class="font-headline-md text-headline-md">Occipital Lobe</h4>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Visual Intake</span>
+</div>
+<span class="text-tertiary font-bold text-headline-md">Med</span>
+</div>
+<div class="flex gap-xs items-center">
+<div class="h-1.5 flex-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[52%]"></div>
+</div>
+<span class="font-data-mono text-data-mono">52%</span>
+</div>
+</div>
+</div>
+<!-- Legend Card -->
+<div class="neumorphic-flat rounded-xl p-md">
+<h3 class="font-headline-md text-headline-md mb-sm">Heatmap Key</h3>
+<div class="space-y-sm">
+<div class="flex items-center gap-md">
+<div class="w-12 h-4 rounded bg-gradient-to-r from-primary to-secondary"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Activity Gradient</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-4 h-4 rounded-full bg-secondary"></div>
+<span class="font-label-sm text-label-sm">Mint: High Activity (80%+ Beta/Gamma)</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="w-4 h-4 rounded-full bg-primary"></div>
+<span class="font-label-sm text-label-sm">Purple: Resting/Delta State (0-30%)</span>
+</div>
+</div>
+</div>
+<!-- Session Stats -->
+<div class="neumorphic-flat rounded-xl p-md">
+<h3 class="font-headline-md text-headline-md mb-sm">Metrics Overview</h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm neumorphic-inset rounded-lg text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Global Synch</p>
+<p class="font-headline-lg text-headline-lg text-primary">0.92</p>
+</div>
+<div class="p-sm neumorphic-inset rounded-lg text-center">
+<p class="font-label-sm text-label-sm text-on-surface-variant">Entropy</p>
+<p class="font-headline-lg text-headline-lg text-secondary">4.21</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar Component -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-6 pt-2 bg-surface shadow-[0_-4px_12px_#dee1f8]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90">
+<span class="material-symbols-outlined mb-1">graphic_eq</span>
+<span class="font-label-sm text-label-sm">Stream</span>
+</button>
+<!-- ACTIVE TAB: Brain -->
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-1 shadow-[inset_2px_2px_4px_#797583] active:scale-90 transition-all duration-200">
+<span class="material-symbols-outlined mb-1 fill-icon">psychology</span>
+<span class="font-label-sm text-label-sm">Brain</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90">
+<span class="material-symbols-outlined mb-1">analytics</span>
+<span class="font-label-sm text-label-sm">Task</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90">
+<span class="material-symbols-outlined mb-1">groups</span>
+<span class="font-label-sm text-label-sm">Directory</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-1 hover:bg-surface-container-high transition-colors active:scale-90">
+<span class="material-symbols-outlined mb-1">account_circle</span>
+<span class="font-label-sm text-label-sm">Portal</span>
+</button>
+</nav>
+</body></html>

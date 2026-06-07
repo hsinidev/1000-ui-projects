@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoLogic | GIS Mapping Hub</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,200..800&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e3e2e0",
+                        "secondary-fixed-dim": "#e7bdb1",
+                        "surface-bright": "#faf9f7",
+                        "on-secondary-fixed-variant": "#5d4037",
+                        "on-error-container": "#93000a",
+                        "tertiary-container": "#475441",
+                        "primary-fixed": "#bcf0ae",
+                        "on-surface": "#1a1c1b",
+                        "surface-tint": "#3b6934",
+                        "inverse-on-surface": "#f1f1ef",
+                        "on-primary-fixed": "#002201",
+                        "inverse-primary": "#a1d494",
+                        "on-secondary-container": "#795950",
+                        "on-tertiary": "#ffffff",
+                        "on-surface-variant": "#42493e",
+                        "on-primary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#a1d494",
+                        "error-container": "#ffdad6",
+                        "secondary": "#77574d",
+                        "on-secondary-fixed": "#2c160e",
+                        "surface-variant": "#e3e2e0",
+                        "tertiary": "#313d2b",
+                        "outline": "#72796e",
+                        "outline-variant": "#c2c9bb",
+                        "tertiary-fixed-dim": "#bdcbb3",
+                        "surface-container-high": "#e9e8e6",
+                        "surface-container-low": "#f4f3f1",
+                        "primary-container": "#2d5a27",
+                        "inverse-surface": "#2f3130",
+                        "tertiary-fixed": "#d9e7ce",
+                        "on-tertiary-fixed-variant": "#3e4a38",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dadad8",
+                        "surface": "#faf9f7",
+                        "secondary-fixed": "#ffdbd0",
+                        "secondary-container": "#fed3c7",
+                        "on-secondary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "background": "#faf9f7",
+                        "surface-container": "#efeeec",
+                        "on-primary-fixed-variant": "#23501e",
+                        "on-tertiary-container": "#b9c7b0",
+                        "on-primary-container": "#9dd090",
+                        "on-background": "#1a1c1b",
+                        "on-tertiary-fixed": "#131e0f",
+                        "primary": "#154212"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "32px",
+                        "section-gap": "64px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Work Sans"],
+                        "h3": ["Newsreader"],
+                        "body-md": ["Work Sans"],
+                        "h1": ["Newsreader"],
+                        "h2": ["Newsreader"],
+                        "data-mono": ["Work Sans"],
+                        "body-lg": ["Work Sans"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "fontWeight": "600"}],
+                        "h2": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>body {
+    background-color: #faf9f7;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCZbZlWNMQ1TFvNQh8bb8fxjx2SuFOgmjeW-sRNfx73hQyFL6SBkm5UCydtj_6wXUQkBwC86o5Jm4IcxYtK3svpNYu0lFE2Ez548K22za7u_bA18Ly-76u3uou9eWPJUtk5u26b_b8m3yz5vlWfylws-11SVy-9sm_tb70O64RNOTcOnod_TTWh89QgKdJWbgvDuE0Zlf7N6O8ZayV154Y5xAsw99EwbUq_QN8va5XNtRhqhEev4zLWs0zUcdU8BbeLT4q9_8_MmaH1);
+    background-attachment: fixed
+    }
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    opacity: 0.03;
+    z-index: 9999;
+    background: url(https://grainy-gradients.vercel.app/noise.svg)
+    }
+.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.glass-panel {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(114, 121, 110, 0.2)
+    }
+.custom-shadow {
+    box-shadow: 0 4px 12px rgba(93, 64, 55, 0.08)
+    }</style>
+</head>
+<body class="font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<div class="noise-overlay"></div>
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 z-50 bg-surface-container-low border-r border-outline-variant shadow-sm w-64">
+<div class="px-6 mb-8">
+<h2 class="font-h3 text-h3 font-semibold text-primary">EcoLogic Hub</h2>
+<p class="text-secondary font-label-caps uppercase tracking-wider mt-1">Precision Research</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 text-secondary px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-body-md">Field Sensors</span>
+</a>
+<a class="flex items-center gap-3 bg-primary-container text-on-primary-container rounded-lg px-4 py-3 mx-2 active:scale-[0.98] transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-body-md font-bold">GIS Mapping</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-body-md">Research Logs</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-body-md">Admin Panel</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-4 py-3 mx-2 hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="chat">chat</span>
+<span class="font-body-md">Peer Review</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-2">
+<button class="w-full bg-primary text-on-primary py-3 rounded-lg flex items-center justify-center gap-2 font-medium active:scale-[0.98] transition-transform shadow-md">
+<span class="material-symbols-outlined text-[20px]" data-icon="sync">sync</span>
+                Sync Field Data
+            </button>
+<div class="pt-4 border-t border-outline-variant mt-4">
+<a class="flex items-center gap-3 text-secondary px-4 py-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md">Help &amp; FAQ</span>
+</a>
+<a class="flex items-center gap-3 text-secondary px-4 py-2 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="ml-64 flex flex-col min-h-screen">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full z-40 sticky top-0 bg-surface border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-6">
+<h1 class="font-h2 text-h2 font-semibold text-primary">EcoLogic</h1>
+<div class="relative group">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-outline-variant rounded-full text-body-md focus:ring-2 focus:ring-primary focus:border-transparent outline-none w-80 transition-all" placeholder="Search coordinates or sensors..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors relative">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full"></span>
+</button>
+<button class="p-2 hover:bg-surface-container-high rounded-full transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+</button>
+<div class="flex items-center gap-3 ml-2 pl-4 border-l border-outline-variant">
+<div class="text-right">
+<p class="font-body-md font-bold leading-tight">Dr. Aris Thorne</p>
+<p class="font-label-caps text-on-surface-variant">Lead Ecologist</p>
+</div>
+<img alt="Researcher Avatar" class="w-10 h-10 rounded-full border-2 border-primary-fixed shadow-sm" data-alt="A professional headshot of a seasoned environmental researcher with short greying hair and warm eyes. He wears a neutral-toned linen shirt against a backdrop of a blurred botanical laboratory. The lighting is soft and natural, emphasizing a professional yet approachable scientific persona in a high-end, modern organic setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlvq_W3jUGKxpg-fSZoLLQtg-vUYfFGKJndl2P0DC0Yial8Lf0KaPoqyjjQzDeZGYY6HoqT3-c3IzRqlX2nmTM8ky5yMfWaAGV1coibsokh5rdQnUOvWSaAEjCeovf_Ip6taqHMCam6xjI_RYG65xq8UbHvl3fLgPn93sCTJZR7N-e5nm8TSPZKnYzx2ZLmh87X7zVHg9nYO5yHpR5YSynVYlxl93U2vVYlZuPoIUgv4YlHQ2znUaNDKHYBH8O2GPEgcxFHDr9P4Oh"/>
+</div>
+</div>
+</header>
+<!-- GIS Interface Content -->
+<div class="flex-1 flex overflow-hidden relative">
+<!-- Map Area (Main Canvas) -->
+<div class="flex-1 relative bg-surface-container-highest overflow-hidden">
+<img alt="GIS Topographic Map" class="w-full h-full object-cover" data-alt="A high-resolution satellite topographic map of a lush, dense forest region with undulating mountain ridges and river veins. The map uses a sophisticated color palette of deep forest greens, earthy ochres, and muted slate blues. It features subtle data overlays like glowing green pinpoints for sensors and faint translucent grid lines, creating a professional scientific GIS interface aesthetic." data-location="Pacific Northwest Forest Reserve" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCv4cL6RH8Xed4f96Uohi1DA_jtiNfarVP-JADV70IQs1QyuPqifz78qonWWLiDrgQf8LthWUBguoNiV-fvpOG6Q-lnRbgwhUWYpd6yOAUlk4X_0HsNEQHps0n7dygyRB_or3XMU_YeExGRPaxlaVr_I7vvA8_XUxbhCfVPHqw6ZFDlei8y5yg8Meef__lofCgQnDDHlDrfOXX9wCsh1wsRS8X0K35Y64ntIqXd4zVM555E5Irp5s6VDJTnoNtJ88GUJQHKo79OzPpJ"/>
+<!-- Floating Map Controls -->
+<div class="absolute bottom-10 left-10 flex flex-col gap-3">
+<div class="glass-panel p-2 rounded-xl flex flex-col gap-1 custom-shadow">
+<button class="p-3 hover:bg-primary-container hover:text-on-primary-container rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<hr class="border-outline-variant"/>
+<button class="p-3 hover:bg-primary-container hover:text-on-primary-container rounded-lg transition-all">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+</div>
+<button class="glass-panel p-4 rounded-xl flex items-center justify-center custom-shadow hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+<!-- Active Map Indicators (Simulated) -->
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 group">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-8 h-8 bg-primary/30 rounded-full animate-ping"></div>
+<div class="w-4 h-4 bg-primary border-2 border-white rounded-full shadow-lg cursor-pointer"></div>
+<div class="absolute top-full mt-2 glass-panel px-3 py-1 rounded-full text-[10px] font-bold font-label-caps whitespace-nowrap shadow-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                            STATION NW-04 (ACTIVE)
+                        </div>
+</div>
+</div>
+</div>
+<!-- Left Sidebar Overlay: Sensor Filters -->
+<div class="w-80 h-full absolute left-0 top-0 z-10 p-6 pointer-events-none">
+<div class="glass-panel h-full rounded-2xl p-6 custom-shadow pointer-events-auto flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-h3 text-h3">Sensor Filters</h3>
+<button class="p-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+<div class="space-y-6">
+<!-- Temp Filter -->
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="font-label-caps text-secondary uppercase">Temperature Range</label>
+<span class="font-data-mono text-primary text-[12px]">12°C - 28°C</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+<!-- Filter Options -->
+<div class="space-y-3">
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-5 h-5 border-2 border-outline group-hover:border-primary rounded flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-primary rounded-sm"></div>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-medium">Humidity Levels</p>
+<p class="text-[12px] text-on-surface-variant">32 active sensors</p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="water_drop">water_drop</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl bg-surface-bright border border-primary/20 shadow-sm cursor-pointer group">
+<div class="w-5 h-5 border-2 border-primary rounded flex items-center justify-center">
+<div class="w-2.5 h-2.5 bg-primary rounded-sm"></div>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-medium">CO2 Concentration</p>
+<p class="text-[12px] text-primary font-bold">14 critical alerts</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="co2">co2</span>
+</label>
+<label class="flex items-center gap-3 p-3 rounded-xl hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="w-5 h-5 border-2 border-outline rounded flex items-center justify-center"></div>
+<div class="flex-1">
+<p class="font-body-md font-medium">Soil Moisture</p>
+<p class="text-[12px] text-on-surface-variant">8 offline stations</p>
+</div>
+<span class="material-symbols-outlined text-outline" data-icon="grass">grass</span>
+</label>
+</div>
+</div>
+<div class="mt-auto pt-6 border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-3 h-3 bg-primary rounded-full animate-pulse"></div>
+<span class="font-label-caps text-secondary">Real-time Data Stream On</span>
+</div>
+<button class="w-full py-2 bg-secondary text-on-secondary rounded-lg font-label-caps hover:bg-on-secondary-fixed-variant transition-colors">
+                            Apply All Filters
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Panel: Data Analysis -->
+<div class="w-96 glass-panel border-l border-outline-variant p-8 flex flex-col h-full overflow-y-auto custom-shadow">
+<div class="mb-8">
+<div class="flex items-center gap-2 text-primary font-label-caps mb-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+                        STATION NW-04
+                    </div>
+<h2 class="font-h2 text-h2 mb-2">Redwood Ridge</h2>
+<p class="text-on-surface-variant">Lat: 45.321, Long: -122.678 • Elevation: 1,420m</p>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<p class="font-label-caps text-secondary mb-1">CURRENT TEMP</p>
+<p class="text-h3 font-bold text-primary">18.4°C</p>
+<p class="text-[12px] text-secondary">↑ 0.5 from avg</p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl border border-outline-variant/30">
+<p class="font-label-caps text-secondary mb-1">HUMIDITY</p>
+<p class="text-h3 font-bold text-primary">64%</p>
+<p class="text-[12px] text-secondary">Optimal range</p>
+</div>
+</div>
+<div class="mb-8">
+<h4 class="font-label-caps text-secondary uppercase mb-4 border-b border-outline-variant pb-2">Sync Status Indicators</h4>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">Primary Sensor</span>
+</div>
+<span class="font-data-mono text-[12px] px-2 py-0.5 bg-primary-fixed text-on-primary-fixed rounded">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sync_problem">sync_problem</span>
+<span class="font-body-md">Soil Probe A</span>
+</div>
+<span class="font-data-mono text-[12px] px-2 py-0.5 bg-error-container text-on-error-container rounded">RETRYING</span>
+</div>
+<div class="flex items-center justify-between opacity-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="cloud_off">cloud_off</span>
+<span class="font-body-md">Atmospheric Monitor</span>
+</div>
+<span class="font-data-mono text-[12px] px-2 py-0.5 bg-surface-container-highest rounded">OFFLINE</span>
+</div>
+</div>
+</div>
+<div class="mb-8">
+<h4 class="font-label-caps text-secondary uppercase mb-4 border-b border-outline-variant pb-2">Weekly Trend</h4>
+<div class="h-32 w-full flex items-end gap-1 px-2">
+<div class="flex-1 bg-primary/20 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[55%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[45%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/80 h-[90%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary h-[85%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[50%] rounded-t-sm"></div>
+</div>
+<div class="flex justify-between mt-2 font-data-mono text-[10px] text-on-surface-variant px-1">
+<span>MON</span><span>TUE</span><span>WED</span><span>THU</span><span>FRI</span><span>SAT</span><span>SUN</span>
+</div>
+</div>
+<div class="mt-auto">
+<button class="w-full py-4 border-2 border-primary text-primary font-bold rounded-xl hover:bg-primary hover:text-white transition-all active:scale-[0.98]">
+                        Download Full Field Report
+                    </button>
+</div>
+</div>
+</div>
+<!-- Sticky Footer -->
+<footer class="w-full flex justify-between items-center px-container-padding py-6 bg-surface-container border-t border-outline-variant z-40">
+<div class="flex flex-col">
+<p class="font-label-caps text-on-surface-variant uppercase">© 2024 EcoLogic Environmental Systems. Grounded in Data.</p>
+</div>
+<div class="flex gap-8">
+<a class="font-label-caps text-on-surface-variant uppercase hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="font-label-caps text-on-surface-variant uppercase hover:text-primary transition-colors" href="#">Terms of Research</a>
+<a class="font-label-caps text-on-surface-variant uppercase hover:text-primary transition-colors" href="#">Field Guide</a>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant">
+<span class="flex items-center gap-1 font-label-caps">
+<span class="w-2 h-2 bg-primary rounded-full"></span> SYSTEM NOMINAL
+                </span>
+<span class="font-data-mono text-[12px]">UTC 14:32:01</span>
+</div>
+</footer>
+</main>
+</body></html>

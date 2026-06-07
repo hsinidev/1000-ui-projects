@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gantt-grid-lines {
+            background-image: linear-gradient(to right, #e2e8f0 1px, transparent 1px);
+            background-size: 100px 100%;
+        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container": "#e5eeff",
+                        "secondary": "#006c49",
+                        "surface-container-high": "#dce9ff",
+                        "on-tertiary-container": "#767aff",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed-variant": "#2f2ebe",
+                        "on-primary-fixed-variant": "#444173",
+                        "inverse-on-surface": "#eaf1ff",
+                        "outline": "#787680",
+                        "primary-container": "#1e1b4b",
+                        "surface": "#f8f9ff",
+                        "on-primary": "#ffffff",
+                        "on-primary-container": "#8683ba",
+                        "error": "#ba1a1a",
+                        "inverse-surface": "#213145",
+                        "on-background": "#0b1c30",
+                        "primary": "#070235",
+                        "secondary-container": "#6cf8bb",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#02003c",
+                        "surface-container-lowest": "#ffffff",
+                        "inverse-primary": "#c4c1fb",
+                        "secondary-fixed-dim": "#4edea3",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "on-secondary-fixed": "#002113",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#09007e",
+                        "on-secondary-container": "#00714d",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#f8f9ff",
+                        "on-tertiary-fixed": "#07006c",
+                        "surface-dim": "#cbdbf5",
+                        "secondary-fixed": "#6ffbbe",
+                        "surface-container-low": "#eff4ff",
+                        "on-error": "#ffffff",
+                        "primary-fixed-dim": "#c4c1fb",
+                        "primary-fixed": "#e3dfff",
+                        "tertiary-fixed": "#e1e0ff",
+                        "outline-variant": "#c8c5d0",
+                        "on-primary-fixed": "#181445",
+                        "tertiary-fixed-dim": "#c0c1ff",
+                        "surface-tint": "#5b598c",
+                        "on-surface": "#0b1c30",
+                        "on-surface-variant": "#47464f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "4px",
+                        "gutter": "16px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "margin": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "mono-num": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"],
+                        "h2": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "mono-num": ["14px", {"lineHeight": "20px", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h3": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface antialiased overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-40 bg-white border-b border-slate-200 shadow-sm flex justify-between items-center h-16 px-6 w-full font-inter antialiased text-sm">
+<div class="flex items-center gap-8">
+<span class="text-lg font-bold tracking-tight text-indigo-950">TaskMatrix</span>
+<div class="hidden lg:flex items-center gap-6">
+<nav class="flex items-center gap-4">
+<a class="text-indigo-700 font-semibold transition-colors" href="#">Projects</a>
+<a class="text-slate-600 hover:bg-slate-50 transition-colors px-2 py-1" href="#">Shared</a>
+<a class="text-slate-600 hover:bg-slate-50 transition-colors px-2 py-1" href="#">Templates</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-slate-100 rounded-xl px-3 py-1.5 border border-transparent focus-within:border-indigo-500 focus-within:bg-white transition-all">
+<span class="material-symbols-outlined text-slate-500 text-lg mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-sm w-48 lg:w-64" placeholder="Global Search..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-slate-600 hover:bg-slate-50 transition-colors p-2 rounded-full">notifications</button>
+<button class="material-symbols-outlined text-slate-600 hover:bg-slate-50 transition-colors p-2 rounded-full">settings</button>
+<div class="h-8 w-8 rounded-full bg-primary-container overflow-hidden ring-2 ring-white">
+<img alt="User Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgnYF7-DW0QmLRrXaZ1l7xneBCwXbv5BIJ7ExKE8nj9JXGqC1lKWsg2ypwo3G6KChyqDPyNtwkFg9bFwpdhu2DdMqG4s6ZKZ1LG0XgRAeBPRvee-QH4z8vcy9sJir9Sx5NlOmh5el54hHutHWO8IZ6pX-_9pST-90Fvdpv2VTzT-pdQXYOtNed6qmvbboCSHcI81mk7L7RXE7MGVWOufaprRpmAX_3R0YCMG0zMznJpUiv6e2HklpVxV0UwssndOCuYfOkel40d4w"/>
+</div>
+</div>
+</header>
+<div class="flex pt-16 h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-slate-200 bg-slate-50 hidden md:flex flex-col py-6 font-inter text-sm font-medium z-30">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm">view_kanban</span>
+</div>
+<div>
+<p class="text-indigo-900 font-black text-lg leading-tight">TaskMatrix</p>
+<p class="text-[10px] uppercase tracking-widest text-slate-400">Enterprise PM</p>
+</div>
+</div>
+<button class="w-full mt-4 bg-primary text-white py-2 px-4 rounded-xl flex items-center justify-center gap-2 active:scale-95 transition-all duration-200">
+<span class="material-symbols-outlined text-lg">add</span>
+                    New Project
+                </button>
+</div>
+<nav class="flex-1 space-y-1 overflow-y-auto">
+<div class="px-6 py-2">
+<p class="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-2">Core Views</p>
+<a class="flex items-center gap-3 text-indigo-700 border-r-2 border-indigo-700 bg-indigo-50 px-3 py-2 -mr-[1px] transition-all" href="#">
+<span class="material-symbols-outlined">view_kanban</span>
+                        Gantt Chart
+                    </a>
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">group</span>
+                        Workload
+                    </a>
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">equalizer</span>
+                        Resources
+                    </a>
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">assignment_turned_in</span>
+                        My Tasks
+                    </a>
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">insert_chart</span>
+                        Analytics
+                    </a>
+</div>
+<div class="px-6 py-2 mt-4 border-t border-slate-100">
+<p class="text-[11px] font-semibold text-slate-400 uppercase tracking-widest mb-2">Projects</p>
+<div class="space-y-1">
+<div class="flex items-center gap-2 px-3 py-1.5 text-body-sm text-slate-600 cursor-pointer hover:bg-white rounded-lg">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+                            Project Aurora
+                        </div>
+<div class="flex items-center gap-2 px-3 py-1.5 text-body-sm text-slate-600 cursor-pointer hover:bg-white rounded-lg">
+<span class="w-2 h-2 rounded-full bg-on-tertiary-container"></span>
+                            Apollo Engine
+                        </div>
+<div class="flex items-center gap-2 px-3 py-1.5 text-body-sm text-slate-600 cursor-pointer hover:bg-white rounded-lg">
+<span class="w-2 h-2 rounded-full bg-error"></span>
+                            Legacy Migration
+                        </div>
+</div>
+</div>
+</nav>
+<div class="px-6 mt-auto border-t border-slate-200 pt-4 space-y-1">
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+                    Settings
+                </a>
+<a class="flex items-center gap-3 text-slate-500 hover:text-indigo-600 hover:bg-indigo-50 px-3 py-2 transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+                    Support
+                </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 bg-background flex flex-col overflow-hidden">
+<!-- Timeline Header -->
+<div class="bg-white border-b border-slate-200 px-6 py-4 flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<div>
+<h1 class="font-h2 text-primary">Multi-Project Master Gantt</h1>
+<p class="text-body-sm text-slate-500">Managing 12 active projects across 4 departments</p>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex border border-slate-200 rounded-lg overflow-hidden">
+<button class="px-3 py-1 text-xs font-semibold bg-indigo-50 text-indigo-700">Days</button>
+<button class="px-3 py-1 text-xs font-semibold bg-white text-slate-600 border-l border-slate-200 hover:bg-slate-50">Weeks</button>
+<button class="px-3 py-1 text-xs font-semibold bg-white text-slate-600 border-l border-slate-200 hover:bg-slate-50">Months</button>
+</div>
+<button class="flex items-center gap-2 border border-secondary text-secondary px-3 py-1.5 rounded-lg text-xs font-bold hover:bg-secondary/10 transition-colors">
+<span class="material-symbols-outlined text-sm">share</span>
+                            Export Report
+                        </button>
+</div>
+</div>
+<!-- Timeline Ruler -->
+<div class="flex items-center border-t border-slate-100 pt-2 ml-[300px]">
+<div class="flex-1 flex justify-between text-[10px] font-bold text-slate-400 uppercase tracking-tighter">
+<div class="w-[100px] text-center border-l border-slate-100">Oct 24</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 25</div>
+<div class="w-[100px] text-center border-l border-slate-100 bg-indigo-50 text-indigo-700">Oct 26 (Today)</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 27</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 28</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 29</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 30</div>
+<div class="w-[100px] text-center border-l border-slate-100">Oct 31</div>
+<div class="w-[100px] text-center border-l border-slate-100">Nov 01</div>
+</div>
+</div>
+</div>
+<!-- Gantt Chart Area -->
+<div class="flex-1 overflow-auto bg-slate-50 relative">
+<!-- Data Rows Container -->
+<div class="min-w-max flex flex-col">
+<!-- Task Group: Project Aurora -->
+<div class="flex flex-col">
+<div class="flex items-center h-10 px-6 bg-slate-100/50 sticky top-0 z-20 border-b border-slate-200 group">
+<div class="w-[300px] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">expand_more</span>
+<span class="text-xs font-bold text-slate-900 tracking-tight">Project Aurora - Cloud Infrastructure</span>
+<span class="text-[10px] bg-secondary/10 text-secondary px-1.5 py-0.5 rounded ml-2">78% Done</span>
+</div>
+</div>
+<!-- Task Item 1 -->
+<div class="flex items-center h-12 border-b border-slate-100 group hover:bg-white transition-colors relative">
+<div class="w-[300px] h-full flex items-center px-8 border-r border-slate-200 bg-white z-10 sticky left-0">
+<div class="flex flex-col">
+<span class="text-body-sm font-medium text-slate-900">Database Provisioning</span>
+<span class="text-[10px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Oct 24 - Oct 28
+                                    </span>
+</div>
+</div>
+<div class="flex-1 h-full gantt-grid-lines relative py-2.5">
+<div class="absolute left-[100px] w-[300px] h-full flex items-center">
+<div class="h-6 w-full bg-primary-container rounded-full relative overflow-hidden group/bar">
+<div class="h-full bg-primary w-[70%]"></div>
+<div class="absolute inset-0 flex items-center px-3 justify-between">
+<span class="text-[10px] text-indigo-200 font-bold">In Progress</span>
+<span class="text-[10px] text-indigo-200 font-bold">70%</span>
+</div>
+</div>
+<!-- Dependency Connector (Critical Path) -->
+<svg class="absolute top-1/2 left-full w-[100px] h-12 -mt-3 z-0" pointer-events="none">
+<path d="M0,12 L50,12 L50,60 L100,60" fill="none" stroke="#6cf8bb" stroke-dasharray="4" stroke-width="2"></path>
+<polygon fill="#6cf8bb" points="98,60 93,57 93,63"></polygon>
+</svg>
+</div>
+</div>
+</div>
+<!-- Task Item 2 -->
+<div class="flex items-center h-12 border-b border-slate-100 group hover:bg-white transition-colors relative">
+<div class="w-[300px] h-full flex items-center px-8 border-r border-slate-200 bg-white z-10 sticky left-0">
+<div class="flex flex-col">
+<span class="text-body-sm font-medium text-slate-900">API Documentation</span>
+<span class="text-[10px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Oct 28 - Oct 31
+                                    </span>
+</div>
+</div>
+<div class="flex-1 h-full gantt-grid-lines relative py-2.5">
+<div class="absolute left-[400px] w-[250px] h-full flex items-center">
+<div class="h-6 w-full bg-surface-container-high rounded-full border border-indigo-200 relative">
+<div class="absolute inset-0 flex items-center px-3">
+<span class="text-[10px] text-indigo-700 font-bold">Planned</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Group: Apollo Engine -->
+<div class="flex flex-col">
+<div class="flex items-center h-10 px-6 bg-slate-100/50 sticky top-0 z-20 border-b border-slate-200 mt-2">
+<div class="w-[300px] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm text-slate-400">expand_more</span>
+<span class="text-xs font-bold text-slate-900 tracking-tight">Apollo Engine - Core Dev</span>
+<span class="text-[10px] bg-on-tertiary-container/10 text-on-tertiary-container px-1.5 py-0.5 rounded ml-2">24% Done</span>
+</div>
+</div>
+<!-- Task Item 3 -->
+<div class="flex items-center h-12 border-b border-slate-100 group hover:bg-white transition-colors relative">
+<div class="w-[300px] h-full flex items-center px-8 border-r border-slate-200 bg-white z-10 sticky left-0">
+<div class="flex flex-col">
+<span class="text-body-sm font-medium text-slate-900">Resource Optimization</span>
+<span class="text-[10px] text-slate-400 flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">schedule</span> Oct 25 - Oct 27
+                                    </span>
+</div>
+</div>
+<div class="flex-1 h-full gantt-grid-lines relative py-2.5">
+<div class="absolute left-[150px] w-[200px] h-full flex items-center">
+<div class="h-6 w-full bg-secondary-container/20 border border-secondary rounded-full relative overflow-hidden group/bar">
+<div class="h-full bg-secondary w-[100%]"></div>
+<div class="absolute inset-0 flex items-center px-3 justify-between">
+<span class="text-[10px] text-white font-bold">Critical Path</span>
+<span class="material-symbols-outlined text-[14px] text-white" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<!-- Dependency Connector -->
+<svg class="absolute top-1/2 left-full w-[50px] h-48 -mt-3 z-0" pointer-events="none">
+<path d="M0,12 L25,12 L25,48 L50,48" fill="none" stroke="#6cf8bb" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+</div>
+<!-- Task Item 4 (Nested Subtask) -->
+<div class="flex items-center h-10 border-b border-slate-50 group hover:bg-white transition-colors relative">
+<div class="w-[300px] h-full flex items-center px-12 border-r border-slate-200 bg-white z-10 sticky left-0">
+<div class="flex flex-col">
+<span class="text-[13px] text-slate-600">Subtask: Shader Testing</span>
+</div>
+</div>
+<div class="flex-1 h-full gantt-grid-lines relative py-2">
+<div class="absolute left-[400px] w-[150px] h-full flex items-center">
+<div class="h-4 w-full bg-slate-200 rounded-full relative">
+<div class="h-full bg-slate-400 w-[10%] rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Task Group: Empty Space to show background -->
+<div class="flex-1 h-32 gantt-grid-lines flex">
+<div class="w-[300px] border-r border-slate-200 bg-slate-50/50 sticky left-0 z-10 h-full"></div>
+</div>
+</div>
+<!-- Today Marker -->
+<div class="absolute left-[550px] top-0 bottom-0 w-[2px] bg-indigo-500 z-10 pointer-events-none shadow-[0_0_8px_rgba(99,102,241,0.5)]">
+<div class="absolute top-0 -left-2 w-5 h-5 bg-indigo-500 text-white rounded-full flex items-center justify-center text-[8px] font-bold">NOW</div>
+</div>
+</div>
+<!-- Dashboard Bento Sidebar -->
+<div class="hidden xl:flex fixed right-0 top-16 bottom-0 w-80 bg-white border-l border-slate-200 flex-col p-6 overflow-y-auto">
+<h3 class="font-h3 text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined">insights</span>
+                    Health Insights
+                </h3>
+<div class="space-y-4">
+<!-- Stat Card 1 -->
+<div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[11px] font-bold text-slate-500 uppercase">Resource Load</p>
+<span class="text-secondary font-bold text-xs">+12%</span>
+</div>
+<div class="h-2 w-full bg-slate-200 rounded-full mb-3 overflow-hidden">
+<div class="h-full bg-secondary w-[85%]"></div>
+</div>
+<p class="text-[12px] text-slate-600">Team is approaching peak capacity for Q4 sprint.</p>
+</div>
+<!-- Stat Card 2 -->
+<div class="p-4 rounded-xl bg-indigo-900 text-white">
+<div class="flex justify-between items-start mb-2">
+<p class="text-[11px] font-bold text-indigo-300 uppercase">Critical Path Risks</p>
+<span class="material-symbols-outlined text-sm text-secondary-fixed">warning</span>
+</div>
+<p class="text-xl font-bold mb-1">03</p>
+<p class="text-[12px] text-indigo-200">Tasks are currently blocking 14 downstream dependencies.</p>
+</div>
+<!-- Mini Map or Preview -->
+<div class="rounded-xl overflow-hidden border border-slate-200">
+<div class="bg-slate-100 p-2 text-[10px] font-bold text-slate-500 flex justify-between">
+<span>PROJECT ARCHIVE</span>
+<span class="material-symbols-outlined text-[12px]">open_in_new</span>
+</div>
+<img class="w-full h-32 object-cover" data-alt="A sophisticated data visualization dashboard showing interconnected project management metrics, gantt bars, and resource allocation graphs. The aesthetic is clean and professional with deep indigo and mint accents, set against a pristine light mode background. The composition is structured and mathematically precise, reflecting enterprise-level planning software." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDHaQrNvAUFeocgs3ijO1Z5v43ltbjCfKKolQ3XLqTPBVnB1TYHpqfF9lbC016Waky3oSBi5R0GILMMiVp5skoiu5nFBd0pwwZqNXdiI8KD7fQ4m3EN_fhxZ6WGWuV5nwXu-hAFLccl3nA18mq_QK7ZjpRt_vn9j5owKktVv0tllFYvfCuvn9vBXGMHqSXe5H91M14ebZ4THAj5rQzsROPRKF2tSdeRJxSvjTgSi7yhvM9FmvjnXvu74tXeYwqY0PsIeJ4apI3L4RI"/>
+</div>
+<!-- Team Quick View -->
+<div>
+<p class="text-[11px] font-bold text-slate-400 uppercase mb-3">Online Leads</p>
+<div class="flex flex-wrap gap-2">
+<div class="h-8 w-8 rounded-full border-2 border-white bg-slate-200 ring-1 ring-slate-200">
+<img alt="Avatar" class="w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBS__XneUmObMckTQ_Sen0H8Ta-duHM9PPFMFk50cAyi3pvnzEbsqdXcYL24_ILA4VQHBc4610DnzLjDmvcLIT8NeLFQvypzMzvs9OvsXua3ZviJsdqvQN6FknebDxxkpRK4hgK3CCKrE1cFbrgPi90l_P0BKZki8BftdVg5jMDRVPwPPeQ46jWRQXp1f0sXLWJuhbihJrcVxkozjVZ5EDnkyuMnPRkMSDgNlBno1iVIGYTx68rdmsHfR6H3ALVLf2g1W6_v_f0q7s"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-white bg-slate-200 ring-1 ring-slate-200">
+<img alt="Avatar" class="w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbpD_HEpcnx0e8YfhQPdw033zarTg9sRq8w0Uu_lxJdiWMF3Tp9s672Sdh3Zl48G0OP4MA9gXSSgus8Oh3QE0Kca3HDaUGhVgqQ3m7jrU6o6DXTNAMt-a71P3SGFpkxJZ-Kis0Y3QMAQccjllgmO4CByOj1TD_UHycIUExlWk-OvaOSqSCRpra9Ynj4wsm6LiDHEgOul6YLqL0lIgVH_SAgPc-T0SMe5w0hcaHbHkif0_heMmn31HkT_L-6tCioyZKhHBSlLqUvF4"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-white bg-slate-200 ring-1 ring-slate-200">
+<img alt="Avatar" class="w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB25czUt7kV_K0RDQmOz7FbXmV-h4fkBqy8obp-k4YU2r0I5GBy_kMzox2YRbcr42THFIBIkSVZXdj1kZEB3M2CnBu_dYx6LLsyHeh51ykjz9JoU7z1ygSGogcue30DrpfZLWufqejziVaFPscBlh-BzhOuWTMHkFnxht9XR-05tt1JCMoZnidazKCCB79Kg4MR8dGygcWOiJ_ORRjnFrbgzNvVaJM72P9oPniBn8QHjXQMzO3bHhWyQNPTkbzs0qqfWFdrqP58tp4"/>
+</div>
+<div class="h-8 w-8 rounded-full border-2 border-white bg-slate-200 ring-1 ring-slate-200">
+<img alt="Avatar" class="w-full h-full rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDrX-1KFOLFD2W8i6XeIC9iKFKlPW6nKM1aGj-40FZhtk0TzT2saAU1RyngeJv7YxQ_auNSYOfY3WreRDEREtEcixbB49qyFZv9ezMwub3b7ZzUAahjNVvAlwX1f1rGltNIUmgUqD3QureGGaxmbPuxi-edsuucaXS5yY18O-DWMrtdYbqvZer_k1Cse1smmHD4r_FpVPJ0Zl-3nU8UNycNGrzEtuM5rIA56EaRP5VMghV4NT0u1zEeOHaBHX8zYwQOMOaRZMTFMII"/>
+</div>
+<div class="h-8 w-8 rounded-full bg-slate-100 flex items-center justify-center text-[10px] font-bold text-slate-500 border border-slate-200">
+                                +8
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16 bg-white border-t border-slate-200 shadow-[0_-2px_10px_rgba(0,0,0,0.05)] md:hidden">
+<div class="flex flex-col items-center justify-center text-indigo-700 bg-indigo-50/50 rounded-xl px-3 py-1">
+<span class="material-symbols-outlined">task_alt</span>
+<span class="text-[10px] font-medium font-inter">Tasks</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">timeline</span>
+<span class="text-[10px] font-medium font-inter">Gantt</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">groups</span>
+<span class="text-[10px] font-medium font-inter">Team</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">notifications</span>
+<span class="text-[10px] font-medium font-inter">Alerts</span>
+</div>
+</nav>
+<!-- Floating Action Button - Supressed as per detail/task focus logic but kept for context of "New Task" -->
+<button class="fixed right-6 bottom-24 md:bottom-8 xl:right-[340px] bg-primary text-white p-4 rounded-full shadow-lg active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

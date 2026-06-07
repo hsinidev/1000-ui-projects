@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SPECTROCORE | Live Telemetry Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary": "#e3fdff",
+                        "secondary-fixed-dim": "#c6c6cf",
+                        "on-surface-variant": "#b9cacb",
+                        "tertiary-container": "#dedbdb",
+                        "surface-bright": "#393939",
+                        "surface-variant": "#353534",
+                        "on-error": "#690005",
+                        "inverse-on-surface": "#313030",
+                        "on-error-container": "#ffdad6",
+                        "on-surface": "#e5e2e1",
+                        "surface": "#131313",
+                        "surface-container": "#201f1f",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-secondary-container": "#b4b4bd",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-primary-container": "#006b71",
+                        "on-secondary-fixed": "#1a1b22",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary-fixed": "#e2e1eb",
+                        "surface-tint": "#00dce6",
+                        "primary-container": "#00f3ff",
+                        "secondary-container": "#45464e",
+                        "on-primary-fixed-variant": "#004f53",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed-variant": "#45464e",
+                        "surface-container-highest": "#353534",
+                        "outline-variant": "#3a494b",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-container": "#616060",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-tertiary": "#303030",
+                        "primary-fixed": "#6ff6ff",
+                        "primary-fixed-dim": "#00dce6",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed": "#002022",
+                        "background": "#131313",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "outline": "#849495",
+                        "surface-container-low": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#00696f",
+                        "on-primary": "#00373a",
+                        "error": "#ffb4ab",
+                        "tertiary": "#fbf8f7",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "on-secondary": "#2f3037",
+                        "secondary": "#c6c6cf"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "32px",
+                        "telemetry-panel": "320px",
+                        "gutter": "12px",
+                        "sidebar-width": "280px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "md": "16px",
+                        "unit": "4px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Space Grotesk"],
+                        "body-sm": ["Space Grotesk"],
+                        "body-md": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "mono-data": ["Space Grotesk"],
+                        "display-xl": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "mono-data": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-glow {
+            box-shadow: 0 0 4px 0px #00f3ff;
+        }
+        .waveform-path {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+        }
+        .drag-handle {
+            background-image: radial-gradient(circle, #849495 1px, transparent 1px);
+            background-size: 4px 8px;
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #2D2D2D; }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface-container border-b border-outline-variant docked full-width top-0 z-50 flex justify-between items-center w-full px-lg h-16 shrink-0">
+<div class="flex items-center gap-md">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">SPECTROCORE</span>
+<div class="hidden md:flex items-center gap-xs ml-lg">
+<span class="bg-primary-container/10 text-primary-container px-sm py-xs border border-primary-container/30 text-label-caps font-label-caps rounded">V2.4 ALPHA</span>
+<span class="text-on-surface-variant font-body-sm opacity-50 px-sm">CORE.LOGS.ENV_01</span>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex items-center gap-xs px-md py-xs bg-surface-container-high border border-outline-variant rounded">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-mono-data text-body-sm text-on-surface p-0 w-48 placeholder:text-on-surface-variant/40" placeholder="QUERY SIGNAL..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors duration-200 rounded">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors duration-200 rounded">
+<span class="material-symbols-outlined">settings_input_component</span>
+</button>
+<button class="p-sm text-on-surface-variant hover:bg-surface-variant hover:text-primary transition-colors duration-200 rounded">
+<span class="material-symbols-outlined">account_tree</span>
+</button>
+</div>
+<div class="flex items-center gap-sm ml-md pl-md border-l border-outline-variant">
+<div class="flex flex-col items-end mr-sm">
+<span class="text-label-caps font-label-caps text-primary leading-none">SYSTEM_ONLINE</span>
+<span class="text-[10px] text-on-surface-variant uppercase tracking-widest mt-1">Uptime: 142h 12m</span>
+</div>
+<img alt="Chief Researcher Avatar" class="w-10 h-10 rounded bg-surface-container-highest border border-outline-variant object-cover" data-alt="A high-tech digital portrait of a cybersecurity expert, wearing a sleek black headset with glowing cyan neon status indicators. The lighting is dramatic and moody, reflecting a dark lab environment with subtle circuit patterns in the background. The style is hyper-realistic and futuristic, utilizing a matte black and metallic silver color scheme consistent with advanced industrial technology interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPN-ElWRxgHnw-hbO01VcTITOlwyiYtV5DBKwedLmZ7EbOmX-C6hw2P7u-3h5cGfvqcm60zWphJ22jL8nCffMn_H9piuHYjnqcAeG5-uSQ1nqphHCepOfnox0hgfgDCO4qpm5vjDcku7um_FrvdnniJVu5rNUHGyop6lkDb09ecD79ZWDiWIRxx439fmOUFrspUCInReVAJKoVcwpXkj7kcUZN9nHCKNlUj7JwI7O20VzflxoCAxvafIIT4pXi-aBl3cOm5VxwQTxI"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low border-r border-outline-variant fixed left-0 top-0 h-full w-sidebar-width flex flex-col pt-16 z-40">
+<div class="flex flex-col gap-unit py-lg">
+<!-- Spectrum (Active) -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-primary border-r-2 border-primary bg-surface-variant/30 cursor-pointer transition-transform duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">SPECTRUM</span>
+</a>
+</div>
+<!-- Peaks -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary-fixed-dim transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-caps text-label-caps">PEAKS</span>
+</a>
+</div>
+<!-- Library -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary-fixed-dim transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">LIBRARY</span>
+</a>
+</div>
+<!-- Logs -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary-fixed-dim transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps">LOGS</span>
+</a>
+</div>
+<!-- Admin -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary-fixed-dim transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">ADMIN</span>
+</a>
+</div>
+<!-- Community -->
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary-fixed-dim transition-all cursor-pointer" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">COMMUNITY</span>
+</a>
+</div>
+</div>
+<div class="mt-auto border-t border-outline-variant/30 py-lg flex flex-col gap-unit">
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">SETTINGS</span>
+</a>
+</div>
+<div class="px-md">
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">SUPPORT</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-sidebar-width flex flex-1 flex-col overflow-hidden bg-surface">
+<div class="flex h-full">
+<!-- Center: Large Viewport -->
+<section class="flex-1 flex flex-col min-w-0 border-r border-outline-variant">
+<!-- Analytics Viewport Header -->
+<div class="h-12 border-b border-outline-variant px-md flex items-center justify-between bg-surface-container-lowest">
+<div class="flex items-center gap-md">
+<span class="text-mono-data text-body-sm text-primary-container flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                                LIVE_TELEMETRY_STREAM [CH_01]
+                            </span>
+</div>
+<div class="flex items-center gap-md">
+<div class="flex border border-outline-variant rounded overflow-hidden">
+<button class="px-sm py-1 bg-surface-variant text-primary text-label-caps font-label-caps">WAVE</button>
+<button class="px-sm py-1 hover:bg-surface-container-high text-on-surface-variant text-label-caps font-label-caps">GRID</button>
+<button class="px-sm py-1 hover:bg-surface-container-high text-on-surface-variant text-label-caps font-label-caps">HIST</button>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface">fullscreen</span>
+</div>
+</div>
+<!-- Visualizer Canvas -->
+<div class="flex-1 relative bg-[#0e0e0e] flex items-center justify-center p-xl overflow-hidden">
+<!-- Grid Overlay -->
+<div class="absolute inset-0 opacity-10" style="background-image: linear-gradient(#3a494b 1px, transparent 1px), linear-gradient(90deg, #3a494b 1px, transparent 1px); background-size: 40px 40px;"></div>
+<!-- Main Waveform -->
+<div class="w-full h-full relative z-10 flex items-center">
+<svg class="w-full h-64 overflow-visible" viewbox="0 0 1000 200">
+<path class="waveform-path" d="M0,100 Q50,20 100,100 T200,100 T300,100 T400,20 T500,100 T600,180 T700,100 T800,100 T900,20 T1000,100" fill="none" stroke="#00f3ff" stroke-width="2"></path>
+<path class="opacity-30" d="M0,100 Q50,50 100,100 T200,100 T300,100 T400,60 T500,100 T600,140 T700,100 T800,100 T900,60 T1000,100" fill="none" stroke="#00f3ff" stroke-width="1"></path>
+<!-- Neon Beacon Pulse -->
+<circle class="animate-ping" cx="400" cy="20" fill="#00f3ff" r="4"></circle>
+<circle cx="400" cy="20" fill="#00f3ff" r="3"></circle>
+</svg>
+</div>
+<!-- Frequency Controls Overlay -->
+<div class="absolute bottom-md left-md right-md flex justify-between items-end pointer-events-none">
+<div class="pointer-events-auto bg-surface-container-high/80 backdrop-blur-md p-md border border-outline-variant/50 flex gap-xl items-center">
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] text-on-surface-variant font-label-caps">GAIN ALPHA</span>
+<input class="w-32 accent-primary-container bg-surface-variant h-1 rounded-none appearance-none" type="range"/>
+</div>
+<div class="flex flex-col gap-xs">
+<span class="text-[10px] text-on-surface-variant font-label-caps">FREQUENCY SHIFT</span>
+<input class="w-32 accent-primary-container bg-surface-variant h-1 rounded-none appearance-none" type="range"/>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<div class="flex gap-md">
+<button class="w-8 h-8 flex items-center justify-center border border-primary-container text-primary-container bg-primary-container/10 hover:bg-primary-container hover:text-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">play_arrow</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline text-on-surface hover:bg-on-surface hover:text-surface transition-colors">
+<span class="material-symbols-outlined text-[18px]">stop</span>
+</button>
+</div>
+</div>
+<div class="pointer-events-auto bg-surface-container-high/80 backdrop-blur-md p-md border border-outline-variant/50 text-right">
+<div class="text-mono-data text-display-xl text-primary leading-none tabular-nums tracking-tighter">142.84<span class="text-headline-md font-normal opacity-50 ml-1">MHz</span></div>
+<div class="text-label-caps text-on-surface-variant mt-1">CURRENT HARMONIC FREQUENCY</div>
+</div>
+</div>
+</div>
+<!-- Bottom Logs Section -->
+<div class="h-48 border-t border-outline-variant bg-surface-container-low flex flex-col">
+<div class="h-8 bg-surface-container border-b border-outline-variant px-md flex items-center justify-between">
+<span class="text-[10px] font-label-caps text-on-surface-variant">EXPERIMENT_LOG_OUTPUT [STDOUT]</span>
+<div class="flex items-center gap-md">
+<span class="text-[10px] font-label-caps text-on-surface-variant">LINES: 1024</span>
+<span class="material-symbols-outlined text-on-surface-variant text-[16px] cursor-pointer">close</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-md font-mono-data text-body-sm text-on-surface-variant/70 leading-tight space-y-1">
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:22:01</span> <span class="text-primary-container">INFO</span> Initializing SpectroCore sensor array...</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:22:03</span> <span class="text-primary-container">INFO</span> Calibrating harmonic resonance at 142.84MHz...</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:22:05</span> <span class="text-primary-container">SUCCESS</span> Signal lock established. Delta stability 0.04%.</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:22:12</span> <span class="text-on-primary-container">DATA</span> Received packet P_8841-B [Encrypted].</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:22:45</span> <span class="text-error">WARN</span> Subtle interference detected on auxiliary band 04.</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:23:01</span> <span class="text-primary-container">INFO</span> Automatic noise suppression active.</div>
+<div class="flex gap-md"><span class="text-on-surface-variant/30">14:23:15</span> <span class="text-on-primary-container">DATA</span> Peak detected at 152.01MHz (Mag: -42dBm).</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Telemetry & Metrics -->
+<aside class="w-telemetry-panel bg-surface-container-low flex flex-col shrink-0">
+<div class="p-md border-b border-outline-variant bg-surface-container-high">
+<h3 class="text-label-caps font-label-caps text-primary tracking-widest mb-md flex items-center justify-between">
+                            SIGNAL METRICS
+                            <span class="material-symbols-outlined text-[18px]">more_vert</span>
+</h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface p-sm border border-outline-variant">
+<div class="text-[10px] text-on-surface-variant font-label-caps mb-1">SNR</div>
+<div class="text-mono-data text-headline-md text-primary leading-none">42.4<span class="text-body-sm">dB</span></div>
+</div>
+<div class="bg-surface p-sm border border-outline-variant">
+<div class="text-[10px] text-on-surface-variant font-label-caps mb-1">STABILITY</div>
+<div class="text-mono-data text-headline-md text-primary leading-none">99.8<span class="text-body-sm">%</span></div>
+</div>
+</div>
+<!-- Signal Quality Meter -->
+<div class="mt-md">
+<div class="flex justify-between items-end mb-1">
+<span class="text-[10px] text-on-surface-variant font-label-caps uppercase">Signal Quality</span>
+<span class="text-mono-data text-[12px] text-primary-container">OPTIMAL</span>
+</div>
+<div class="h-2 bg-surface-container border border-outline-variant overflow-hidden flex">
+<div class="h-full bg-primary-container custom-glow w-4/5"></div>
+</div>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<div class="p-md">
+<h3 class="text-label-caps font-label-caps text-on-surface-variant tracking-widest mb-md">DETECTED PEAKS</h3>
+<div class="space-y-sm">
+<!-- Peak Item -->
+<div class="p-sm bg-surface-container-high/50 border border-outline-variant flex items-center justify-between hover:bg-surface-variant transition-colors cursor-pointer group">
+<div class="flex flex-col">
+<span class="text-mono-data text-primary">152.01 MHz</span>
+<span class="text-[10px] text-on-surface-variant font-label-caps">MAGNITUDE: -42dBm</span>
+</div>
+<div class="w-8 h-8 border border-outline-variant flex items-center justify-center group-hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary-container">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Peak Item -->
+<div class="p-sm bg-surface-container-high/50 border border-outline-variant flex items-center justify-between hover:bg-surface-variant transition-colors cursor-pointer group">
+<div class="flex flex-col">
+<span class="text-mono-data text-on-surface">124.98 MHz</span>
+<span class="text-[10px] text-on-surface-variant font-label-caps">MAGNITUDE: -51dBm</span>
+</div>
+<div class="w-8 h-8 border border-outline-variant flex items-center justify-center group-hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary-container">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Peak Item -->
+<div class="p-sm bg-surface-container-high/50 border border-outline-variant flex items-center justify-between hover:bg-surface-variant transition-colors cursor-pointer group">
+<div class="flex flex-col">
+<span class="text-mono-data text-on-surface">168.32 MHz</span>
+<span class="text-[10px] text-on-surface-variant font-label-caps">MAGNITUDE: -64dBm</span>
+</div>
+<div class="w-8 h-8 border border-outline-variant flex items-center justify-center group-hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-[16px] text-on-surface-variant group-hover:text-primary-container">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</div>
+<div class="p-md border-t border-outline-variant/30">
+<h3 class="text-label-caps font-label-caps text-on-surface-variant tracking-widest mb-md">SATELLITE TELEMETRY</h3>
+<div class="aspect-square bg-surface border border-outline-variant overflow-hidden relative">
+<img alt="Telemetry Map" class="w-full h-full object-cover grayscale opacity-40 mix-blend-screen" data-alt="A futuristic satellite map showing global network coverage and data signal clusters over a dark Earth. The map is overlaid with geometric neon cyan lines, hex grids, and high-contrast telemetry markers indicating signal sources. The visual style is that of a military-grade tactical command display, featuring a monochromatic dark palette with intense neon cyan highlights in a matte, tech-heavy aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDefCxqPnzh3Git_f5djBFNBrNtqWnl_WBnidIeSvuSdf5kOFA94j-G0yyyQBU-lV81F-nzx4KEnvPDI2nOnE4LAm6e4t0JIBfj6QNpFLZUYaojcLSeBEmsrEyjJ9rkwUJBHP13bvYxSDrAQ3poBx9c6bSXLjw1Sa5O1RBYz3dkmO6hWAY5lyJ8pB0ORtou3lyP9CCd3W2YEXXIHw10v9-Wx6ENTDMhDfsFxbGWMu-dqlVyJDnrGfI0zmXJ4iEfEhzVXDwCT_n1IhTu"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-48 h-48 border border-primary-container/20 rounded-full animate-[pulse_4s_infinite]"></div>
+<div class="w-32 h-32 border border-primary-container/40 rounded-full animate-[pulse_3s_infinite]"></div>
+<div class="w-1 h-1 bg-primary-container rounded-full custom-glow"></div>
+</div>
+<div class="absolute top-2 left-2 text-[8px] font-mono-data text-primary-container/70">RADAR_SWEEP.V3</div>
+</div>
+</div>
+</div>
+<div class="p-md border-t border-outline-variant bg-surface-container-high flex flex-col gap-sm">
+<button class="w-full py-md bg-primary-container text-on-primary font-label-caps text-label-caps tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                            EXPORT SCAN DATA
+                        </button>
+<button class="w-full py-md border border-outline text-on-surface font-label-caps text-label-caps tracking-widest hover:bg-on-surface hover:text-surface transition-all">
+                            CALIBRATE ARRAY
+                        </button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- Telemetry Chips Floating -->
+<div class="fixed bottom-lg right-lg z-50 flex gap-sm pointer-events-none">
+<div class="pointer-events-auto bg-surface-container-highest border border-outline-variant px-md py-xs rounded flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="text-label-caps font-label-caps text-on-surface text-[10px]">SYNC: ACTIVE</span>
+</div>
+<div class="pointer-events-auto bg-surface-container-highest border border-outline-variant px-md py-xs rounded flex items-center gap-sm">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">terminal</span>
+<span class="text-label-caps font-label-caps text-on-surface text-[10px]">T_NODE: 0x44A1</span>
+</div>
+</div>
+</body></html>

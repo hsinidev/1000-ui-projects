@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NeuroSync | EEG Data Stream</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed-variant": "#483795",
+                        "surface-container-low": "#f3f2ff",
+                        "on-surface": "#171b2b",
+                        "secondary-fixed": "#bbeed3",
+                        "primary-fixed": "#e6deff",
+                        "primary-container": "#9d8df1",
+                        "inverse-primary": "#c9beff",
+                        "inverse-surface": "#2c3041",
+                        "outline": "#797583",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "outline-variant": "#c9c4d3",
+                        "primary": "#6050af",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-fixed-variant": "#204f3b",
+                        "inverse-on-surface": "#eff0ff",
+                        "surface-variant": "#dee1f8",
+                        "error": "#ba1a1a",
+                        "tertiary-container": "#9a9b9b",
+                        "background": "#faf8ff",
+                        "surface": "#faf8ff",
+                        "on-primary-container": "#331f80",
+                        "secondary-container": "#b8ebd0",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container": "#ebedff",
+                        "surface-dim": "#d6d9ef",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "error-container": "#ffdad6",
+                        "surface-tint": "#6050af",
+                        "primary-fixed-dim": "#c9beff",
+                        "on-secondary-fixed": "#002114",
+                        "on-error": "#ffffff",
+                        "surface-bright": "#faf8ff",
+                        "secondary": "#386752",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed-dim": "#9fd1b7",
+                        "on-surface-variant": "#484552",
+                        "surface-container-highest": "#dee1f8",
+                        "tertiary": "#5d5f5f",
+                        "surface-container-high": "#e4e7fe",
+                        "on-tertiary-container": "#313333",
+                        "on-primary-fixed": "#1b0062",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-secondary-container": "#3d6c56",
+                        "on-background": "#171b2b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "40px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xl": "64px",
+                        "margin": "32px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "display-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-md": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .neumorphic-lift {
+            box-shadow: 8px 8px 16px #d1d9e6, -8px -8px 16px #ffffff;
+        }
+        .neumorphic-inset {
+            box-shadow: inset 6px 6px 12px #d1d9e6, inset -6px -6px 12px #ffffff;
+        }
+        .glass-overlay {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .waveform-grid {
+            background-image: linear-gradient(rgba(121, 117, 131, 0.1) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(121, 117, 131, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface flex flex-col p-md z-50 shadow-[4px_0_12px_rgba(209,217,230,0.4)]">
+<div class="mb-xl">
+<h1 class="font-display-md text-display-md font-bold text-primary">NeuroSync</h1>
+<p class="font-body-md text-body-sm text-on-surface-variant">Precision EEG Analysis</p>
+</div>
+<nav class="flex-1 space-y-sm">
+<!-- Active Navigation Logic: Dashboard is current -->
+<a class="flex items-center gap-sm p-sm rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-body-md">Analytics</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-body-md">Community</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-body-md">Support</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-highest transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-body-md">Admin</span>
+</a>
+</nav>
+<div class="mt-auto space-y-sm pt-md border-t border-outline-variant/30">
+<button class="w-full py-sm bg-primary text-on-primary rounded-xl font-bold neumorphic-lift hover:opacity-90 active:scale-95 transition-all mb-md">
+                New Recording
+            </button>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-sm p-sm rounded-lg text-on-surface-variant hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-body-md">Sign Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Wrapper -->
+<main class="ml-64 flex flex-col h-screen">
+<!-- TopNavBar Shell -->
+<header class="h-16 flex justify-between items-center px-margin bg-surface/80 backdrop-blur-md border-b border-outline-variant/20 sticky top-0 z-40">
+<div class="flex items-center gap-xl">
+<h2 class="font-headline-lg text-headline-lg font-bold text-primary">NeuroSync Research Portal</h2>
+<nav class="hidden lg:flex gap-md">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Lab Overview</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-medium" href="#">Data Streams</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors" href="#">Protocol Library</a>
+</nav>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative neumorphic-inset px-sm py-xs rounded-full flex items-center bg-surface-container-lowest">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Search sessions..." type="text"/>
+</div>
+<div class="flex items-center gap-sm">
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="p-sm text-on-surface-variant hover:text-primary transition-all"><span class="material-symbols-outlined" data-icon="help_outline">help_outline</span></button>
+<div class="w-10 h-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Researcher Profile" data-alt="A professional headshot of a female neuroscientist in a clean clinical environment. She is wearing a modern white lab coat and has a neutral, focused expression. The background is a soft, high-key laboratory setting with blurred medical equipment, maintaining the soft-UI and professional aesthetic of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCVUJ9ZRCTCt7g-MUx_hO7H603MWyIpHkttIik9wQy8bkWhIfWvwg9dQyjigMqhXD1Z8sTO9ldk943LtBjBws50OXImHEFgOMxPzxijFedUkCY-pS1AN7_qIZ7CcmebgVFbjePttF9X3Kt7mF2_rje8n3DMHCrdq9Pk5wiIRzFSB2m-p4jtBpQJSEjGgkWFgOsz8SqlVAvQ_EgBkKNbDRnSp7yuab0iKBR2X6syRJLsTDh-ERbkGhehLMBfg6b91APLuRV0Vt2v-Ww"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="flex-1 p-margin overflow-y-auto grid grid-cols-12 gap-gutter">
+<!-- Live EEG Streams (6 Columns) -->
+<section class="col-span-12 xl:col-span-7 space-y-md">
+<div class="flex items-center justify-between mb-sm">
+<h3 class="font-headline-md text-headline-md text-on-surface">Live Waveform Monitor</h3>
+<div class="flex gap-sm">
+<span class="flex items-center gap-xs px-sm py-xs rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+                            ACTIVE STREAM
+                        </span>
+<span class="px-sm py-xs rounded-full bg-surface-container-high text-on-surface-variant text-xs font-bold">128Hz SAMPLING</span>
+</div>
+</div>
+<!-- Bento Grid of Waveforms -->
+<div class="grid grid-cols-1 gap-md">
+<!-- Alpha Wave -->
+<div class="neumorphic-lift bg-surface p-md rounded-xl">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-data-mono text-primary">ALPHA (8-13 Hz)</span>
+<span class="text-xs text-outline">Relaxed Focus</span>
+</div>
+<div class="h-24 waveform-grid relative overflow-hidden rounded-lg bg-surface-container-lowest neumorphic-inset">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 400 100">
+<path d="M0 50 Q 25 20, 50 50 T 100 50 T 150 50 T 200 50 T 250 50 T 300 50 T 350 50 T 400 50" fill="none" stroke="#6050af" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Beta Wave -->
+<div class="neumorphic-lift bg-surface p-md rounded-xl">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-data-mono text-secondary">BETA (13-30 Hz)</span>
+<span class="text-xs text-outline">Active Thinking</span>
+</div>
+<div class="h-24 waveform-grid relative overflow-hidden rounded-lg bg-surface-container-lowest neumorphic-inset">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 400 100">
+<path d="M0 50 L 5 40 L 10 60 L 15 45 L 20 55 L 25 30 L 30 70 L 35 40 L 40 50 L 45 45 L 50 55 L 55 40 L 60 60" fill="none" stroke="#386752" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<!-- Gamma Wave -->
+<div class="neumorphic-lift bg-surface p-md rounded-xl">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-data-mono text-primary">GAMMA (30-100 Hz)</span>
+<span class="text-xs text-outline">Peak Cognition</span>
+</div>
+<div class="h-24 waveform-grid relative overflow-hidden rounded-lg bg-surface-container-lowest neumorphic-inset">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 400 100">
+<path d="M0 50 L 2 48 L 4 52 L 6 45 L 8 55 L 10 40 L 12 60 L 14 42 L 16 58" fill="none" stroke="#6050af" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+</section>
+<!-- Brain 3D Visualization (5 Columns) -->
+<section class="col-span-12 xl:col-span-5 flex flex-col gap-md">
+<div class="neumorphic-lift bg-surface rounded-xl flex-1 relative overflow-hidden p-md min-h-[400px]">
+<div class="absolute top-md left-md z-10">
+<h3 class="font-headline-md text-headline-md text-on-surface">Cortex Heatmap</h3>
+<p class="text-sm text-on-surface-variant">Real-time Topographic Mapping</p>
+</div>
+<!-- Brain Model Placeholder -->
+<div class="absolute inset-0 flex items-center justify-center p-xl">
+<img alt="3D Brain Heatmap" class="w-full h-full object-contain mix-blend-multiply opacity-80" data-alt="A highly detailed 3D rendering of a human brain illuminated with glowing neural pathways in shades of soft purple and mint green. The style is clean, medical, and futuristic, with a glassmorphic aesthetic where the brain appears to be suspended in a semi-transparent medium. The background is a minimalist, light-mode laboratory environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeZI0FAZX9MEXlfhWf03ZRj_5qNl4-3oKjKvqitUpt1okOMfOtp-ojSeIXYS5aDGhvy42NmKQAsqXMP64NUfQCCCbCAdgErtj7_93Xz7713oh0PTL6IPShXQZnmToguPhaTyCQx01eaeJnG9Nw8ZIfVQBSXub3Scq5oPxNmYZ09FzhfMw5sfsL8h4iPxyDshUdP_YcDpoBeAYK-cSScYyj7_odceIsQbRGNwebZLkR_y1yFwxZqTx8mxhFvCbDwjfyXn-s71rOpVE"/>
+<!-- Floating Glassmorphic Tooltips -->
+<div class="absolute top-1/4 right-1/4 glass-overlay p-sm rounded-lg shadow-xl border border-white/40">
+<p class="text-xs font-bold text-primary">Frontal Lobe</p>
+<p class="text-[10px] text-on-surface-variant">High Alpha activity detected</p>
+</div>
+</div>
+<div class="absolute bottom-md left-md right-md flex justify-between items-end">
+<div class="flex gap-xs">
+<button class="w-8 h-8 rounded-lg glass-overlay flex items-center justify-center hover:bg-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="3d_rotation">3d_rotation</span></button>
+<button class="w-8 h-8 rounded-lg glass-overlay flex items-center justify-center hover:bg-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="zoom_in">zoom_in</span></button>
+<button class="w-8 h-8 rounded-lg glass-overlay flex items-center justify-center hover:bg-white transition-all"><span class="material-symbols-outlined text-sm" data-icon="layers">layers</span></button>
+</div>
+<div class="neumorphic-inset bg-surface-container-lowest p-xs rounded-lg flex gap-sm items-center px-sm">
+<span class="text-[10px] font-bold text-outline uppercase tracking-wider">Heat Intensity</span>
+<div class="h-2 w-24 rounded-full bg-gradient-to-r from-secondary via-primary-container to-primary"></div>
+</div>
+</div>
+</div>
+<!-- Participant Vitals Section -->
+<div class="grid grid-cols-2 gap-md">
+<div class="neumorphic-lift bg-surface p-md rounded-xl flex items-center gap-md">
+<div class="w-12 h-12 rounded-full neumorphic-inset flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</div>
+<div>
+<p class="text-xs text-outline font-bold uppercase">Heart Rate</p>
+<p class="font-display-md text-headline-lg text-on-surface">72 <span class="text-sm font-normal text-on-surface-variant">BPM</span></p>
+</div>
+</div>
+<div class="neumorphic-lift bg-surface p-md rounded-xl flex items-center gap-md">
+<div class="w-12 h-12 rounded-full neumorphic-inset flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+</div>
+<div>
+<p class="text-xs text-outline font-bold uppercase">O2 Sat</p>
+<p class="font-display-md text-headline-lg text-on-surface">98 <span class="text-sm font-normal text-on-surface-variant">%</span></p>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Anomaly Marking & Notes (Integrated into grid) -->
+<section class="col-span-12 space-y-md">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Session Notes -->
+<div class="col-span-12 lg:col-span-8 neumorphic-lift bg-surface rounded-xl p-md">
+<div class="flex items-center justify-between mb-md">
+<h4 class="font-headline-md text-headline-md">Session Notes</h4>
+<span class="text-xs text-outline">Last autosave: 2m ago</span>
+</div>
+<div class="neumorphic-inset bg-surface-container-lowest rounded-xl p-md min-h-[120px]">
+<textarea class="w-full bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline/50 resize-none" placeholder="Enter clinical observations here..."></textarea>
+</div>
+</div>
+<!-- Anomaly Marking -->
+<div class="col-span-12 lg:col-span-4 neumorphic-lift bg-surface rounded-xl p-md">
+<h4 class="font-headline-md text-headline-md mb-md">Anomaly Marking</h4>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm neumorphic-inset bg-surface-container-lowest rounded-lg border-l-4 border-error">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-error">SIGNAL SPIKE</span>
+<span class="text-[10px] font-data-mono text-outline">00:42:15 - T3 Electrode</span>
+</div>
+<button class="p-xs hover:bg-error-container/20 rounded-md transition-all">
+<span class="material-symbols-outlined text-sm text-error" data-icon="delete">delete</span>
+</button>
+</div>
+<div class="flex items-center justify-between p-sm neumorphic-inset bg-surface-container-lowest rounded-lg border-l-4 border-primary">
+<div class="flex flex-col">
+<span class="text-xs font-bold text-primary">REM ONSET</span>
+<span class="text-[10px] font-data-mono text-outline">01:05:02 - Global Gamma</span>
+</div>
+<button class="p-xs hover:bg-primary-container/20 rounded-md transition-all">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="delete">delete</span>
+</button>
+</div>
+<button class="w-full flex items-center justify-center gap-xs p-sm rounded-lg border-2 border-dashed border-outline-variant hover:border-primary text-outline hover:text-primary transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add_circle">add_circle</span>
+<span class="text-xs font-bold uppercase">Mark New Anomaly</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Control Bar -->
+<footer class="h-16 glass-overlay border-t border-white/40 flex items-center justify-between px-margin mt-auto">
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 rounded-full neumorphic-lift bg-surface flex items-center justify-center text-error hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="stop">stop</span>
+</button>
+<div class="flex flex-col">
+<span class="text-[10px] font-bold text-outline uppercase tracking-widest">Elapsed Time</span>
+<span class="font-data-mono text-lg tabular-nums">01:14:22.08</span>
+</div>
+</div>
+<div class="flex items-center gap-xl">
+<div class="flex gap-sm">
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold text-outline uppercase">Temp</span>
+<span class="font-data-mono text-sm">36.5°C</span>
+</div>
+<div class="w-[1px] h-8 bg-outline-variant/30"></div>
+<div class="flex flex-col items-center">
+<span class="text-[10px] font-bold text-outline uppercase">Imp</span>
+<span class="font-data-mono text-sm">4.2kΩ</span>
+</div>
+</div>
+<button class="px-md py-sm bg-primary text-on-primary rounded-xl font-bold flex items-center gap-sm neumorphic-lift hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="ios_share">ios_share</span>
+                    Export Stream
+                </button>
+</div>
+</footer>
+</main>
+<!-- Contextual FAB Suppression: Hiding as it's a detail/dashboard screen -->
+</body></html>
