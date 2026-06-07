@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;family=Space+Grotesk:wght@500;600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanning-line {
+            background: linear-gradient(to bottom, transparent, #00F3FF 50%, transparent);
+            height: 2px;
+            width: 100%;
+            opacity: 0.1;
+            position: absolute;
+            top: 0;
+            pointer-events: none;
+        }
+        .grid-pattern {
+            background-size: 20px 20px;
+            background-image: linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background-color: rgba(26, 26, 26, 0.85);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0A0A0A; }
+        ::-webkit-scrollbar-thumb { background: #3a494b; }
+        ::-webkit-scrollbar-thumb:hover { background: #00F3FF; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#006b71",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed": "#6ff6ff",
+                        "on-secondary-fixed-variant": "#474747",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed-dim": "#c8c6c6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "on-secondary-container": "#b6b5b4",
+                        "outline-variant": "#3a494b",
+                        "on-primary-fixed-variant": "#004f53",
+                        "secondary-fixed": "#e4e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "background": "#131313",
+                        "secondary": "#c8c6c6",
+                        "surface-container-highest": "#353534",
+                        "tertiary": "#fbf8f7",
+                        "surface": "#131313",
+                        "surface-container": "#201f1f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-container": "#dedbdb",
+                        "error-container": "#93000a",
+                        "surface-tint": "#00dce6",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-bright": "#3a3939",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#474747",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-container": "#00f3ff",
+                        "on-tertiary": "#313030",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "outline": "#849495",
+                        "on-tertiary-container": "#616060",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-primary": "#00373a",
+                        "on-error": "#690005",
+                        "surface-dim": "#131313",
+                        "primary-fixed-dim": "#00dce6",
+                        "primary": "#e3fdff",
+                        "inverse-on-surface": "#313030",
+                        "error": "#ffb4ab",
+                        "on-secondary": "#303030",
+                        "inverse-primary": "#00696f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "technical-data": ["monospace"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "technical-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-fixed overflow-hidden h-screen w-screen grid-pattern">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex justify-between items-center px-margin h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary-container drop-shadow-[0_0_8px_rgba(0,243,255,0.5)] tracking-tighter">META-CITY // LIVE_DATA</h1>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex flex-col items-end">
+<span class="font-technical-data text-[10px] text-on-surface-variant uppercase">Network Latency</span>
+<span class="font-technical-data text-primary-container">12ms</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="font-technical-data text-[10px] text-on-surface-variant uppercase">Encryption</span>
+<span class="font-technical-data text-primary-container">AES-256-V2</span>
+</div>
+<button class="cursor-crosshair active:scale-95 hover:bg-primary-container/10 transition-colors p-2 rounded-full">
+<span class="material-symbols-outlined text-primary-container" data-icon="wifi_tethering">wifi_tethering</span>
+</button>
+</div>
+</div>
+</header>
+<!-- NavigationDrawer (Layer Control) -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col pt-20 bg-surface-container-high/95 backdrop-blur-2xl h-full w-80 border-r border-outline-variant/40 shadow-[10px_0_30px_rgba(0,0,0,0.8)] divide-y divide-outline-variant/20">
+<div class="p-6">
+<h2 class="font-technical-data text-technical-data text-primary-fixed-dim uppercase tracking-widest mb-6">LAYER_CONTROL_v1.0</h2>
+<nav class="space-y-2">
+<!-- Active Tab: TRAFFIC_FLOW -->
+<div class="group flex items-center justify-between p-3 bg-primary-container/20 text-primary-container font-bold border-l-4 border-primary-container cursor-pointer select-none transition-all duration-200">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="traffic">traffic</span>
+<span class="font-technical-data">TRAFFIC_FLOW</span>
+</div>
+<div class="w-8 h-4 bg-primary-container/40 rounded-full relative">
+<div class="absolute right-1 top-1 w-2 h-2 bg-primary-container rounded-full shadow-[0_0_8px_#00F3FF]"></div>
+</div>
+</div>
+<!-- Inactive Tab: ENERGY_GRID -->
+<div class="group flex items-center justify-between p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-6 cursor-pointer select-none transition-all duration-200">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-technical-data">ENERGY_GRID</span>
+</div>
+<div class="w-8 h-4 bg-outline-variant/40 rounded-full relative">
+<div class="absolute left-1 top-1 w-2 h-2 bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+<!-- Inactive Tab: SEWAGE_MOD -->
+<div class="group flex items-center justify-between p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-6 cursor-pointer select-none transition-all duration-200">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+<span class="font-technical-data">SEWAGE_MOD</span>
+</div>
+<div class="w-8 h-4 bg-outline-variant/40 rounded-full relative">
+<div class="absolute left-1 top-1 w-2 h-2 bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+<!-- Inactive Tab: STRUCTURAL -->
+<div class="group flex items-center justify-between p-3 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-6 cursor-pointer select-none transition-all duration-200">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="font-technical-data">STRUCTURAL</span>
+</div>
+<div class="w-8 h-4 bg-outline-variant/40 rounded-full relative">
+<div class="absolute left-1 top-1 w-2 h-2 bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+</nav>
+</div>
+<!-- Render Region Details -->
+<div class="p-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant/60 mb-4">ACTIVE_SECTOR_DATA</h3>
+<div class="space-y-4">
+<div class="p-3 border border-outline-variant/30 rounded bg-black/20">
+<p class="font-technical-data text-[10px] text-on-surface-variant">SECTOR_ID: 04-B</p>
+<p class="font-technical-data text-primary-container text-lg">94.2% OPTIMIZED</p>
+</div>
+<div class="p-3 border border-outline-variant/30 rounded bg-black/20">
+<p class="font-technical-data text-[10px] text-on-surface-variant">LOAD_BALANCE</p>
+<div class="w-full bg-outline-variant/20 h-1 mt-2">
+<div class="bg-primary-container h-full w-3/4 shadow-[0_0_8px_#00F3FF]"></div>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content: City Grid Viewport -->
+<main class="ml-80 mr-80 pt-16 h-full relative overflow-hidden flex flex-col">
+<!-- 3D Map Interface -->
+<div class="flex-grow relative bg-surface-dim">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60" data-alt="A cinematic, top-down isometric view of a futuristic digital twin city grid at night. The urban landscape is rendered with translucent glass buildings and glowing neon cyan infrastructure lines. Particles of data flow through the streets like digital traffic. The lighting is high-contrast with a deep obsidian background and vibrant cyan highlights, creating a sophisticated command center atmosphere." data-location="Metropolis Prime" src="https://lh3.googleusercontent.com/aida-public/AB6AXuADUzgnoSYN_DbsnKMKpBEa1wdQ--tiwN7eH0kwkJZt11xQI3G703dNbx9jydA5T6M1mJG6U-UvmO9NTBXZVgxWnw_0NOJRIF9PsC_hLO6P2syIabu3B533jURyecQBsAQ3B7hyyffo-jUQ3k4NzrFa0o0uOfzO_n1UCCh7GXIc2weSXVRQBFZ_tRyjC8IGgyb_klg4-YXXUj7NYMMtRt2DqJ9gFpuUODXdnLIrCHQVlQin37t_IFuLdt7YRldc6F8I2vb9FlVjsLQx"/>
+</div>
+<!-- Scanning Line Effect -->
+<div class="scanning-line z-10" style="animation: scan 8s linear infinite;"></div>
+<style>
+                @keyframes scan {
+                    0% { top: 0; }
+                    100% { top: 100%; }
+                }
+            </style>
+<!-- HUD Overlays -->
+<div class="absolute top-8 left-8 z-20 space-y-2">
+<div class="px-3 py-1 bg-black/60 border-l-2 border-primary-container backdrop-blur-md">
+<p class="font-technical-data text-[12px] text-primary-container">COORDS: 40.7128° N, 74.0060° W</p>
+</div>
+<div class="px-3 py-1 bg-black/60 border-l-2 border-primary-container backdrop-blur-md">
+<p class="font-technical-data text-[12px] text-primary-container">SCALE: 1:5000 (SIM)</p>
+</div>
+</div>
+<div class="absolute bottom-32 right-8 z-20">
+<div class="p-4 bg-surface-container-high/80 border border-outline-variant/30 backdrop-blur-md rounded-lg w-64">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-on-surface">RADAR_SWEEP</span>
+<span class="material-symbols-outlined text-[16px] animate-spin" data-icon="sync">sync</span>
+</div>
+<div class="aspect-square rounded-full border border-primary-container/20 relative flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border border-primary-container/10 animate-pulse"></div>
+<div class="w-1 h-1 bg-primary-container rounded-full shadow-[0_0_10px_#00F3FF]"></div>
+<div class="absolute w-[80%] h-[1px] bg-primary-container/40 origin-left rotate-45"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Logs Terminal -->
+<footer class="h-48 bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/50 p-4 font-technical-data text-[12px] overflow-y-auto">
+<div class="flex gap-4 items-center mb-2 border-b border-outline-variant/20 pb-2">
+<span class="text-primary-container font-bold">[SYSTEM_LOGS]</span>
+<span class="text-on-surface-variant/40">v4.0.2-LTS</span>
+<span class="ml-auto flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-container rounded-full animate-pulse"></span>
+<span class="text-primary-container">UPTIME: 1042:12:09</span>
+</span>
+</div>
+<div class="space-y-1 text-on-surface-variant/80">
+<p><span class="text-primary-container/60">[14:02:11]</span> INITIALIZING SECTOR_GRID_SYNC... <span class="text-primary-container">SUCCESS</span></p>
+<p><span class="text-primary-container/60">[14:02:15]</span> CACHING SPATIAL DATA FOR REGION_04_NORTH... 4.2GB LOADED</p>
+<p><span class="text-primary-container/60">[14:03:01]</span> TRAFFIC PATTERN ANOMALY DETECTED IN CROSS_6TH_AVE. REROUTING AI INSTANCES.</p>
+<p><span class="text-error">[14:03:22]</span> WARNING: ENERGY SPIKE IN POWER_HUB_7. COOLING PROTOCOLS ENGAGED.</p>
+<p><span class="text-primary-container/60">[14:03:45]</span> SEWAGE FLOW OPTIMIZED. PRESSURE BALANCED AT 45.2 PSI.</p>
+<p><span class="text-primary-container/60">[14:04:10]</span> COMMAND EXECUTED: VIEWPORT_RENDER_HIGH_DENSITY</p>
+<p><span class="text-on-surface">_</span></p>
+</div>
+</footer>
+</main>
+<!-- Right Panel (Live Data Metrics) -->
+<aside class="fixed right-0 top-0 h-full z-40 w-80 bg-surface-container-high/95 backdrop-blur-2xl border-l border-outline-variant/40 pt-20 p-6 space-y-6">
+<div>
+<h2 class="font-technical-data text-technical-data text-primary-fixed-dim uppercase tracking-widest mb-4">LIVE_METRICS_DASH</h2>
+<!-- Metric Card 1 -->
+<div class="border border-outline-variant/30 rounded p-4 mb-4 bg-black/10">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">POPULATION_DENSITY</span>
+<span class="text-primary-container font-technical-data">+0.4%</span>
+</div>
+<div class="text-2xl font-headline-md text-on-surface">4,281,092</div>
+<div class="flex gap-1 mt-3 h-12 items-end">
+<div class="flex-1 bg-primary-container/20 h-1/2"></div>
+<div class="flex-1 bg-primary-container/40 h-2/3"></div>
+<div class="flex-1 bg-primary-container/30 h-1/3"></div>
+<div class="flex-1 bg-primary-container/60 h-3/4"></div>
+<div class="flex-1 bg-primary-container h-full"></div>
+</div>
+</div>
+<!-- Metric Card 2 -->
+<div class="border border-outline-variant/30 rounded p-4 mb-4 bg-black/10">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">AIR_QUALITY_INDEX</span>
+<span class="text-primary-container font-technical-data">OPTIMAL</span>
+</div>
+<div class="text-2xl font-headline-md text-on-surface">AQI 14</div>
+<div class="mt-4 flex items-center gap-2">
+<div class="flex-grow h-2 bg-outline-variant/20 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[14%]"></div>
+</div>
+<span class="font-technical-data text-[10px]">14/500</span>
+</div>
+</div>
+<!-- Metric Card 3 -->
+<div class="border border-outline-variant/30 rounded p-4 bg-black/10">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-[10px] text-on-surface-variant">THERMAL_OUTPUT</span>
+<span class="text-error font-technical-data">CRITICAL</span>
+</div>
+<div class="text-2xl font-headline-md text-on-surface">32.8°C</div>
+<div class="mt-2 space-y-1">
+<div class="flex justify-between font-technical-data text-[10px]">
+<span>HUB_01</span>
+<span>24.2°C</span>
+</div>
+<div class="flex justify-between font-technical-data text-[10px] text-error">
+<span>HUB_07</span>
+<span>44.9°C</span>
+</div>
+</div>
+</div>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant/60 mb-3">ENVIRONMENTAL_CONTROL</h3>
+<div class="grid grid-cols-2 gap-2">
+<button class="p-2 border border-outline-variant/30 text-[10px] font-technical-data text-on-surface-variant hover:border-primary-container hover:text-primary-container transition-all">DAY_SIM</button>
+<button class="p-2 border border-primary-container text-[10px] font-technical-data text-primary-container bg-primary-container/10">NIGHT_SIM</button>
+<button class="p-2 border border-outline-variant/30 text-[10px] font-technical-data text-on-surface-variant hover:border-primary-container hover:text-primary-container transition-all">PRECP_OFF</button>
+<button class="p-2 border border-outline-variant/30 text-[10px] font-technical-data text-on-surface-variant hover:border-primary-container hover:text-primary-container transition-all">SATELLITE_HYBRID</button>
+</div>
+</div>
+</aside>
+<!-- BottomNavBar (Persistent View Controls) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-gutter bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/50 shadow-[0_-4px_24px_rgba(0,243,255,0.1)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-primary-container bg-primary-container/10 border-t-2 border-primary-container animate-pulse shadow-[inset_0_0_12px_rgba(0,243,255,0.2)] h-full w-40 cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">VIEWPORT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 h-full w-40 cursor-pointer active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-label-caps mt-1">METRICS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 h-full w-40 cursor-pointer active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-label-caps text-label-caps mt-1">LAYERS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 h-full w-40 cursor-pointer active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps mt-1">COMMAND</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 h-full w-40 cursor-pointer active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps mt-1">SYSTEM</span>
+</div>
+</nav>
+</body></html>

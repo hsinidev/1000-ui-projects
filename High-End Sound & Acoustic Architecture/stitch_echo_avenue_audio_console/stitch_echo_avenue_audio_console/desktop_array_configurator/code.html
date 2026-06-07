@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<title>SONIC PRECISION | Array Configurator</title>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary": "#c6c6c7",
+                  "secondary-fixed-dim": "#c8c6c5",
+                  "on-error": "#690005",
+                  "inverse-surface": "#e5e2e1",
+                  "secondary": "#c8c6c5",
+                  "secondary-container": "#474746",
+                  "on-tertiary-container": "#ebebeb",
+                  "primary": "#dfb7ff",
+                  "surface": "#131313",
+                  "tertiary-container": "#696a6a",
+                  "surface-container": "#201f1f",
+                  "on-surface-variant": "#d1c1d9",
+                  "tertiary-fixed": "#e2e2e2",
+                  "on-primary-container": "#f7e5ff",
+                  "tertiary-fixed-dim": "#c6c6c7",
+                  "secondary-fixed": "#e4e2e1",
+                  "on-secondary-fixed-variant": "#474746",
+                  "surface-bright": "#393939",
+                  "surface-variant": "#353534",
+                  "outline-variant": "#4e4356",
+                  "background": "#131313",
+                  "on-primary": "#4b007e",
+                  "primary-fixed-dim": "#dfb7ff",
+                  "on-secondary": "#303030",
+                  "on-tertiary-fixed-variant": "#454747",
+                  "on-secondary-fixed": "#1b1c1c",
+                  "surface-container-high": "#2a2a2a",
+                  "on-primary-fixed-variant": "#6b00b0",
+                  "on-background": "#e5e2e1",
+                  "on-secondary-container": "#b6b5b4",
+                  "error-container": "#93000a",
+                  "on-tertiary-fixed": "#1a1c1c",
+                  "on-primary-fixed": "#2d004f",
+                  "surface-tint": "#dfb7ff",
+                  "primary-container": "#9d00ff",
+                  "outline": "#9a8ca2",
+                  "on-error-container": "#ffdad6",
+                  "surface-dim": "#131313",
+                  "on-surface": "#e5e2e1",
+                  "surface-container-low": "#1c1b1b",
+                  "inverse-primary": "#8c00e5",
+                  "surface-container-lowest": "#0e0e0e",
+                  "primary-fixed": "#f1daff",
+                  "on-tertiary": "#2f3131",
+                  "inverse-on-surface": "#313030",
+                  "error": "#ffb4ab",
+                  "surface-container-highest": "#353534"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "margin-mobile": "1rem",
+                  "gutter": "1.5rem",
+                  "unit": "8px",
+                  "margin-desktop": "2.5rem",
+                  "container-max": "1440px"
+          },
+          "fontFamily": {
+                  "metric-lg": ["JetBrains Mono"],
+                  "headline-lg": ["Space Grotesk"],
+                  "display-lg": ["Space Grotesk"],
+                  "body-lg": ["Geist"],
+                  "headline-md": ["Space Grotesk"],
+                  "body-md": ["Geist"],
+                  "label-caps": ["JetBrains Mono"],
+                  "metric-sm": ["JetBrains Mono"]
+          },
+          "fontSize": {
+                  "metric-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                  "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                  "display-lg": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                  "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                  "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                  "metric-sm": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-panel {
+      background: rgba(42, 42, 42, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid #3A3A3A;
+    }
+    .neon-glow {
+      box-shadow: 0 0 15px rgba(223, 183, 255, 0.3);
+    }
+    .led-segment {
+      height: 4px;
+      margin-bottom: 2px;
+    }
+    .grid-bg {
+      background-image: linear-gradient(#1e1e1e 1px, transparent 1px), linear-gradient(90deg, #1e1e1e 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">SONIC PRECISION</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Live Feed</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">System Status</a>
+<a class="text-primary border-b-2 border-primary pb-1 font-medium" href="#">Network</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container border border-outline-variant text-label-caps py-1 px-4 w-64 focus:border-primary outline-none transition-all uppercase" placeholder="SEARCH SYSTEM..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">graphic_eq</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all active:scale-95">settings</button>
+<div class="w-8 h-8 bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Operator Profile" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAP-tneQ4S91qQsm545CRRM0_2I0g6X2kFXu14yNaBXRfM_XRPjw8sCjbzbgD1W8zrh6qJxLdoPCofAdilKYyHVP4tSlSw2wfVVaur6CHF1jQnnJVF2WMP-V3ouwa646Gc5gF4qmvHiR4Tp3nsIms2IYkbOSqgxIjlTXE3lQSb5B06JIZgXZSCU5sFyl1wzP4NH4GDv9pLyvm_wbkEKpcQyhEvbOqE8SfRh_OVbPjuOOQRFjGwvTnyuxyY4DNGXrOqXDCBs2H4cIgNF"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-8 z-40 bg-surface-container border-r border-outline-variant w-64">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-3 h-3 bg-primary rounded-full animate-pulse shadow-[0_0_8px_rgba(223,183,255,0.8)]"></div>
+<span class="font-label-caps text-label-caps uppercase text-primary">NODE_01_STADIUM</span>
+</div>
+<p class="font-label-caps text-[10px] text-on-surface-variant opacity-60">ONLINE // 0.2ms LATENCY</p>
+</div>
+<nav class="flex-1 flex flex-col">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps uppercase">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps uppercase">Users</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps uppercase">Community</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="font-label-caps text-label-caps uppercase">Technical FAQ</span>
+</a>
+<a class="flex items-center gap-4 bg-primary-container/20 text-primary border-l-4 border-primary px-6 py-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-label-caps text-label-caps uppercase">Array Config</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">lock</span>
+<span class="font-label-caps text-label-caps uppercase">Auth</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps uppercase">Diagnostics</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface px-6 py-3 transition-all duration-150 hover:bg-surface-bright" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps uppercase">Logs</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 flex-1 flex flex-col p-4 gap-4 overflow-hidden bg-surface-container-lowest">
+<!-- Top Configuration Bar (Sub-Header) -->
+<div class="flex items-center justify-between glass-panel p-3 px-6 h-14">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRESET:</span>
+<span class="font-metric-sm text-metric-sm text-primary">STADIUM_MAIN_V4</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ELEMENTS:</span>
+<span class="font-metric-sm text-metric-sm text-primary">16x K-SERIES</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary text-on-primary font-label-caps text-[10px] px-4 py-1 flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[14px]">save</span> COMMIT CHANGES
+        </button>
+<button class="border border-primary text-primary font-label-caps text-[10px] px-4 py-1 hover:bg-primary/10 transition-all">
+          EXPORT XML
+        </button>
+</div>
+</div>
+<!-- Central Viewport -->
+<div class="flex-1 flex gap-4 min-h-0">
+<!-- Left: 3D Visualization -->
+<div class="flex-[2] glass-panel relative grid-bg overflow-hidden flex flex-col">
+<div class="absolute top-4 left-4 z-10 flex gap-2">
+<button class="bg-surface-container-high/80 p-2 border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">videocam</span>
+</button>
+<button class="bg-surface-container-high/80 p-2 border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">grid_4x4</span>
+</button>
+<button class="bg-surface-container-high/80 p-2 border border-outline-variant hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[18px]">3d_rotation</span>
+</button>
+</div>
+<div class="flex-1 flex items-center justify-center relative">
+<!-- Simulation of Wireframe Speaker Array -->
+<div class="relative w-64 h-[80%] flex flex-col gap-[2px]">
+<!-- Stacked Speakers -->
+<div class="w-full h-8 border border-primary/40 bg-primary/5 flex items-center justify-center skew-x-[1deg] neon-glow">
+<div class="w-[90%] h-[1px] bg-primary/20"></div>
+</div>
+<div class="w-full h-8 border border-primary/40 bg-primary/10 flex items-center justify-center skew-x-[2deg]"></div>
+<div class="w-full h-8 border border-primary/50 bg-primary/15 flex items-center justify-center skew-x-[4deg]"></div>
+<div class="w-full h-8 border border-primary/60 bg-primary/20 flex items-center justify-center skew-x-[7deg] neon-glow"></div>
+<div class="w-full h-8 border border-primary/70 bg-primary/25 flex items-center justify-center skew-x-[11deg]"></div>
+<div class="w-full h-8 border border-primary/80 bg-primary/30 flex items-center justify-center skew-x-[16deg]"></div>
+<div class="w-full h-8 border border-primary/90 bg-primary/40 flex items-center justify-center skew-x-[22deg] neon-glow"></div>
+<div class="w-full h-8 border border-primary bg-primary/50 flex items-center justify-center skew-x-[29deg]"></div>
+<!-- Floor Reflection Line -->
+<div class="absolute -bottom-16 w-96 h-[1px] bg-gradient-to-r from-transparent via-primary/40 to-transparent left-1/2 -translate-x-1/2"></div>
+<!-- Distance Markers -->
+<div class="absolute -right-24 top-0 h-full border-r border-outline-variant/50 border-dashed">
+<span class="absolute top-0 right-2 text-[10px] font-metric-sm text-on-surface-variant opacity-40">18.0m</span>
+<span class="absolute bottom-0 right-2 text-[10px] font-metric-sm text-on-surface-variant opacity-40">0.0m</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 bg-surface-container-lowest/80 p-3 border border-outline-variant">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">CURRENT SELECTION</p>
+<p class="font-metric-lg text-metric-lg text-primary">UNIT_08</p>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-2">X: 12.4m | Y: 18.2m | Z: 9.1m</p>
+</div>
+</div>
+<div class="h-12 border-t border-outline-variant flex items-center px-4 justify-between bg-surface-container-high/40">
+<div class="flex gap-4">
+<span class="font-label-caps text-[10px] text-on-surface-variant">ZOOM: 100%</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">LOD: ULTRA</span>
+</div>
+<div class="flex gap-4">
+<span class="font-label-caps text-[10px] text-primary">AXIS: Y-VERTICAL</span>
+</div>
+</div>
+</div>
+<!-- Right: Metric Panels -->
+<div class="w-96 flex flex-col gap-4 overflow-y-auto pr-1">
+<!-- Tilt Control -->
+<div class="glass-panel p-4 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">ARRAY TILT</h3>
+<span class="material-symbols-outlined text-primary text-[18px]">adjust</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex-1">
+<input class="w-full accent-primary bg-surface-variant h-1 rounded-none appearance-none" type="range"/>
+<div class="flex justify-between mt-2 font-metric-sm text-[10px] text-on-surface-variant opacity-60">
+<span>-20.0°</span>
+<span>0.0°</span>
+<span>+20.0°</span>
+</div>
+</div>
+<div class="bg-surface-container-highest border border-outline-variant w-20 h-12 flex items-center justify-center">
+<span class="font-metric-lg text-metric-lg text-primary">-4.2°</span>
+</div>
+</div>
+</div>
+<!-- Splay Angles List -->
+<div class="glass-panel flex-1 flex flex-col min-h-0">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-high/20">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">SPLAY ANGLES</h3>
+<span class="material-symbols-outlined text-[18px]">keyboard_capslock</span>
+</div>
+<div class="flex-1 overflow-y-auto font-metric-sm text-metric-sm">
+<table class="w-full text-left">
+<thead class="sticky top-0 bg-surface-container border-b border-outline-variant">
+<tr>
+<th class="p-3 font-label-caps text-[10px] text-on-surface-variant opacity-50">UNIT</th>
+<th class="p-3 font-label-caps text-[10px] text-on-surface-variant opacity-50">ANGLE</th>
+<th class="p-3 font-label-caps text-[10px] text-on-surface-variant opacity-50">LOAD</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-primary/5 transition-colors group">
+<td class="p-3 text-on-surface-variant">01</td>
+<td class="p-3 text-primary">0.0°</td>
+<td class="p-3 text-on-surface-variant/60">240kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">02</td>
+<td class="p-3 text-primary">0.5°</td>
+<td class="p-3 text-on-surface-variant/60">240kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors bg-primary/10">
+<td class="p-3 text-on-surface-variant">03</td>
+<td class="p-3 text-primary">1.2°</td>
+<td class="p-3 text-on-surface-variant/60">238kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">04</td>
+<td class="p-3 text-primary">1.8°</td>
+<td class="p-3 text-on-surface-variant/60">235kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">05</td>
+<td class="p-3 text-primary">3.5°</td>
+<td class="p-3 text-on-surface-variant/60">230kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">06</td>
+<td class="p-3 text-primary">5.0°</td>
+<td class="p-3 text-on-surface-variant/60">225kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">07</td>
+<td class="p-3 text-primary">8.0°</td>
+<td class="p-3 text-on-surface-variant/60">218kg</td>
+</tr>
+<tr class="hover:bg-primary/5 transition-colors">
+<td class="p-3 text-on-surface-variant">08</td>
+<td class="p-3 text-primary">10.0°</td>
+<td class="p-3 text-on-surface-variant/60">210kg</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Environmental Metrics -->
+<div class="glass-panel p-4 flex flex-col gap-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">ENVIRONMENT</h3>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container-high p-3 border border-outline-variant">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">TEMP</span>
+<span class="font-metric-sm text-metric-sm text-primary">22.4°C</span>
+</div>
+<div class="bg-surface-container-high p-3 border border-outline-variant">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">HUMIDITY</span>
+<span class="font-metric-sm text-metric-sm text-primary">48.0%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom: Analytics & Metering -->
+<div class="h-64 flex gap-4">
+<!-- Frequency Response Curves -->
+<div class="flex-1 glass-panel relative p-4 flex flex-col">
+<div class="flex justify-between items-center mb-2">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">MAGNITUDE RESPONSE</h3>
+<div class="flex gap-4">
+<span class="flex items-center gap-1 font-label-caps text-[10px] text-primary"><span class="w-2 h-[2px] bg-primary"></span> ON-AXIS</span>
+<span class="flex items-center gap-1 font-label-caps text-[10px] text-tertiary-container"><span class="w-2 h-[2px] bg-tertiary-container"></span> -6dB EDGE</span>
+</div>
+</div>
+<div class="flex-1 relative border-l border-b border-outline-variant/30 overflow-hidden">
+<!-- Frequency Curve Vector Visualization -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 200">
+<path d="M0,150 Q100,140 200,100 T400,110 T600,60 T800,80 T1000,100" fill="none" stroke="#dfb7ff" stroke-width="2"></path>
+<path d="M0,160 Q100,155 200,130 T400,140 T600,90 T800,115 T1000,135" fill="none" stroke="#696a6a" stroke-dasharray="4,2" stroke-width="1"></path>
+<!-- Frequency Markers -->
+<line stroke="#3A3A3A" stroke-width="1" x1="200" x2="200" y1="0" y2="200"></line>
+<line stroke="#3A3A3A" stroke-width="1" x1="400" x2="400" y1="0" y2="200"></line>
+<line stroke="#3A3A3A" stroke-width="1" x1="600" x2="600" y1="0" y2="200"></line>
+<line stroke="#3A3A3A" stroke-width="1" x1="800" x2="800" y1="0" y2="200"></line>
+</svg>
+<!-- Labels -->
+<div class="absolute bottom-1 left-0 right-0 flex justify-between px-2 font-metric-sm text-[9px] text-on-surface-variant opacity-40">
+<span>20Hz</span>
+<span>100Hz</span>
+<span>1kHz</span>
+<span>10kHz</span>
+<span>20kHz</span>
+</div>
+</div>
+</div>
+<!-- Real-time dB Meters -->
+<div class="w-80 glass-panel p-4 flex flex-col">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">SYSTEM OUTPUT SPL</h3>
+<div class="flex-1 flex gap-4">
+<!-- Meter Group -->
+<div class="flex-1 flex flex-col">
+<div class="flex-1 flex flex-col-reverse gap-[1px]">
+<!-- LED Segments -->
+<div class="led-segment w-full bg-error"></div>
+<div class="led-segment w-full bg-error/40"></div>
+<div class="led-segment w-full bg-primary"></div>
+<div class="led-segment w-full bg-primary"></div>
+<div class="led-segment w-full bg-primary/80"></div>
+<div class="led-segment w-full bg-primary/80"></div>
+<div class="led-segment w-full bg-primary/60"></div>
+<div class="led-segment w-full bg-primary/60"></div>
+<div class="led-segment w-full bg-primary/40"></div>
+<div class="led-segment w-full bg-primary/40"></div>
+<div class="led-segment w-full bg-primary/20"></div>
+<div class="led-segment w-full bg-primary/20"></div>
+<div class="led-segment w-full bg-surface-variant"></div>
+<div class="led-segment w-full bg-surface-variant"></div>
+</div>
+<span class="mt-2 text-center font-metric-sm text-[10px] text-on-surface-variant">LEFT</span>
+</div>
+<div class="flex-1 flex flex-col">
+<div class="flex-1 flex flex-col-reverse gap-[1px]">
+<div class="led-segment w-full bg-error/20"></div>
+<div class="led-segment w-full bg-error/10"></div>
+<div class="led-segment w-full bg-primary"></div>
+<div class="led-segment w-full bg-primary/90"></div>
+<div class="led-segment w-full bg-primary/80"></div>
+<div class="led-segment w-full bg-primary/70"></div>
+<div class="led-segment w-full bg-primary/60"></div>
+<div class="led-segment w-full bg-primary/50"></div>
+<div class="led-segment w-full bg-primary/40"></div>
+<div class="led-segment w-full bg-primary/30"></div>
+<div class="led-segment w-full bg-primary/20"></div>
+<div class="led-segment w-full bg-primary/10"></div>
+<div class="led-segment w-full bg-surface-variant"></div>
+<div class="led-segment w-full bg-surface-variant"></div>
+</div>
+<span class="mt-2 text-center font-metric-sm text-[10px] text-on-surface-variant">RIGHT</span>
+</div>
+<div class="w-16 flex flex-col justify-between font-metric-sm text-[10px] text-on-surface-variant py-1">
+<span>+12 dB</span>
+<span class="text-error">0 dB</span>
+<span>-12 dB</span>
+<span>-24 dB</span>
+<span>-48 dB</span>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex justify-between items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PEAK SPL</span>
+<span class="font-metric-lg text-metric-lg text-primary">108.4</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">dB(A)</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Background Decorative Wave -->
+<div class="fixed inset-0 pointer-events-none z-0 opacity-10">
+<svg class="w-full h-full" viewbox="0 0 1000 1000">
+<path d="M0,500 Q250,450 500,500 T1000,500" fill="none" stroke="#dfb7ff" stroke-width="0.5"></path>
+<path d="M0,520 Q250,470 500,520 T1000,520" fill="none" stroke="#dfb7ff" stroke-width="0.5"></path>
+<path d="M0,540 Q250,490 500,540 T1000,540" fill="none" stroke="#dfb7ff" stroke-width="0.5"></path>
+</svg>
+</div>
+</body></html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Skyline Elite | Interactive Floor Plans</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;family=Manrope:wght@400;600;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#444748",
+                        "on-error-container": "#93000a",
+                        "inverse-on-surface": "#f2f0f0",
+                        "tertiary-fixed": "#e6e2df",
+                        "on-secondary": "#ffffff",
+                        "surface-dim": "#dbdad9",
+                        "on-secondary-container": "#5f6161",
+                        "tertiary-fixed-dim": "#cac6c4",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-background": "#1b1c1c",
+                        "on-surface": "#1b1c1c",
+                        "inverse-surface": "#303031",
+                        "primary": "#000000",
+                        "surface-container-high": "#e9e8e7",
+                        "primary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-container": "#efeded",
+                        "error-container": "#ffdad6",
+                        "on-primary-container": "#858383",
+                        "on-error": "#ffffff",
+                        "tertiary": "#000000",
+                        "outline": "#747878",
+                        "inverse-primary": "#c8c6c5",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#c4c7c7",
+                        "surface-variant": "#e3e2e2",
+                        "surface-container-low": "#f5f3f3",
+                        "surface": "#fbf9f9",
+                        "on-primary-fixed-variant": "#474746",
+                        "surface-bright": "#fbf9f9",
+                        "on-tertiary-container": "#868382",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "on-tertiary-fixed": "#1c1b1a",
+                        "on-primary-fixed": "#1c1b1b",
+                        "primary-container": "#1c1b1b",
+                        "surface-container-highest": "#e3e2e2",
+                        "on-primary": "#ffffff",
+                        "background": "#fbf9f9",
+                        "secondary-container": "#dcdddd",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary": "#5d5f5f",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-container": "#1c1b1a",
+                        "surface-tint": "#5f5e5e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "8px",
+                        "section-gap": "128px",
+                        "margin-edge": "64px",
+                        "gutter": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Noto Serif"],
+                        "body-lg": ["Manrope"],
+                        "label-caps": ["Manrope"],
+                        "headline-md": ["Noto Serif"],
+                        "display-xl": ["Noto Serif"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.01em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "32px", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                        "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "28px", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .marble-bg {
+            background-color: #fbf9f9;
+            background-image: radial-gradient(circle at 2px 2px, rgba(196, 199, 199, 0.15) 1px, transparent 0);
+            background-size: 40px 40px;
+        }
+        .gold-border-bottom {
+            position: relative;
+        }
+        .gold-border-bottom::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background-color: #cac6c4; /* tertiary-fixed-dim used as gold substitute */
+            transition: width 0.3s ease;
+        }
+        .gold-border-bottom:hover::after {
+            width: 100%;
+        }
+        .scroll-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scroll-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter py-6 max-w-container-max mx-auto bg-surface/80 dark:bg-surface-container/80 backdrop-blur-xl border-b border-outline-variant/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<span class="font-headline-lg text-headline-lg tracking-tighter text-primary">SKYLINE ELITE</span>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-caps text-label-caps text-secondary hover:text-tertiary-fixed-dim transition-colors duration-300" href="#">The Collection</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-tertiary-fixed-dim transition-colors duration-300" href="#">Floor Plans</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-tertiary-fixed-dim transition-colors duration-300" href="#">Neighborhood</a>
+</div>
+<button class="font-label-caps text-label-caps bg-primary text-on-primary px-6 py-3 tracking-widest hover:opacity-80 transition-opacity">BOOK VIEWING</button>
+</nav>
+<main class="pt-32 min-h-screen marble-bg">
+<div class="max-w-container-max mx-auto px-margin-edge">
+<!-- Header Section -->
+<header class="mb-section-gap">
+<p class="font-label-caps text-label-caps text-tertiary-fixed-dim mb-4">ARCHITECTURAL SCHEMATICS</p>
+<h1 class="font-display-xl text-display-xl max-w-3xl mb-8">Refined layouts for the modern visionary.</h1>
+<div class="h-px w-32 bg-primary"></div>
+</header>
+<!-- Interactive Comparison Layout -->
+<div class="flex flex-col lg:flex-row gap-gutter items-start">
+<!-- Vertical Floor Selector -->
+<aside class="flex flex-row lg:flex-col gap-4 w-full lg:w-48 overflow-x-auto lg:overflow-visible scroll-hide sticky lg:top-40 z-10 py-4">
+<button class="group flex flex-col items-start gap-2 p-4 transition-all duration-300 border-l-2 border-primary">
+<span class="font-label-caps text-label-caps text-primary">LEVEL 84</span>
+<span class="font-headline-md text-headline-md text-primary">The Zenith</span>
+</button>
+<button class="group flex flex-col items-start gap-2 p-4 transition-all duration-300 border-l-2 border-transparent hover:border-outline-variant">
+<span class="font-label-caps text-label-caps text-secondary">LEVEL 82</span>
+<span class="font-headline-md text-headline-md text-secondary">Grand Duplex</span>
+</button>
+<button class="group flex flex-col items-start gap-2 p-4 transition-all duration-300 border-l-2 border-transparent hover:border-outline-variant">
+<span class="font-label-caps text-label-caps text-secondary">LEVEL 78</span>
+<span class="font-headline-md text-headline-md text-secondary">Sky Loft</span>
+</button>
+<button class="group flex flex-col items-start gap-2 p-4 transition-all duration-300 border-l-2 border-transparent hover:border-outline-variant">
+<span class="font-label-caps text-label-caps text-secondary">LEVEL 75</span>
+<span class="font-headline-md text-headline-md text-secondary">Art Deco Unit</span>
+</button>
+</aside>
+<!-- Comparison Canvas -->
+<div class="flex-1 grid grid-cols-1 xl:grid-cols-2 gap-12">
+<!-- Floor Plan Primary -->
+<section class="space-y-8">
+<div class="aspect-[4/5] bg-surface-container relative overflow-hidden group border border-outline-variant/10 shadow-sm">
+<img class="w-full h-full object-cover grayscale opacity-90 group-hover:scale-105 transition-transform duration-700" data-alt="A highly detailed architectural floor plan drawing of a luxury penthouse, rendered in a crisp black and white minimalist style. The blueprint shows clean lines, precise measurements, and expensive spatial distribution including a circular master suite and expansive terrace. The lighting is soft and ambient, emphasizing the paper's fine texture and the geometric perfection of the design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3u5dW22KmmCwdv6ReucIq_DCCx6BGz5wsWY18jg5CklpCxnFiye9UmBtjhoEf2wRA39-TPAZYL1-ceJDtKtbbfpvRooSmcaqEfqn9o224lzqMQC3w_vBCCuSTA-4m6hsw4b3H3WSnJqM9Di3Wup3nHWn6ggPcAB4TgdBvRwCMD5yfiUWaLRU6QrZlTydzv_TO8NLssCyLQKkuCaRa9t50u_k8j3Lk6Z6Afdwv9bWQSE8Ld5mHDqd0ehqpCu5h5IBTxN0Yd6OeQgc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background/20 to-transparent"></div>
+<div class="absolute bottom-8 left-8">
+<span class="bg-primary text-on-primary px-4 py-1 font-label-caps text-[10px] tracking-widest">ACTIVE VIEW</span>
+</div>
+</div>
+<!-- Specification Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="p-8 border border-outline-variant/20 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-tertiary-fixed-dim mb-4" style="font-variation-settings: 'FILL' 1;">square_foot</span>
+<h3 class="font-label-caps text-label-caps text-secondary mb-2">TOTAL AREA</h3>
+<p class="font-headline-md text-headline-md">12,450 <span class="text-body-md font-body-md text-secondary">SQ FT</span></p>
+</div>
+<div class="p-8 border border-outline-variant/20 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-tertiary-fixed-dim mb-4" style="font-variation-settings: 'FILL' 1;">height</span>
+<h3 class="font-label-caps text-label-caps text-secondary mb-2">CEILING HEIGHT</h3>
+<p class="font-headline-md text-headline-md">14.5 <span class="text-body-md font-body-md text-secondary">FT</span></p>
+</div>
+<div class="p-8 border border-outline-variant/20 bg-surface-container-lowest">
+<span class="material-symbols-outlined text-tertiary-fixed-dim mb-4" style="font-variation-settings: 'FILL' 1;">wine_bar</span>
+<h3 class="font-label-caps text-label-caps text-secondary mb-2">WINE CELLAR</h3>
+<p class="font-headline-md text-headline-md">850 <span class="text-body-md font-body-md text-secondary">BOTTLES</span></p>
+</div>
+</div>
+</section>
+<!-- Comparison Detail/Interactive Drawer -->
+<section class="bg-surface-container-low p-12 border border-outline-variant/10 space-y-12">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">The Zenith Suite</h2>
+<p class="font-body-lg text-body-lg text-secondary max-w-sm">Level 84 represents the pinnacle of urban living with 360-degree views and bespoke hand-finished materials.</p>
+</div>
+<button class="material-symbols-outlined text-primary text-3xl">open_in_full</button>
+</div>
+<div class="space-y-6">
+<h4 class="font-label-caps text-label-caps text-primary pb-4 border-b border-outline-variant/20">KEY FEATURES</h4>
+<div class="flex justify-between py-2 border-b border-outline-variant/10">
+<span class="text-secondary">Master Bedrooms</span>
+<span class="font-bold">04</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/10">
+<span class="text-secondary">En-Suite Bathrooms</span>
+<span class="font-bold">06</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/10">
+<span class="text-secondary">Private Elevator Access</span>
+<span class="font-bold">DUAL LOBBY</span>
+</div>
+<div class="flex justify-between py-2 border-b border-outline-variant/10">
+<span class="text-secondary">Terrace Space</span>
+<span class="font-bold">2,100 SQ FT</span>
+</div>
+</div>
+<div class="pt-8">
+<h4 class="font-label-caps text-label-caps text-primary mb-6">EXPLORE MATERIALS</h4>
+<div class="grid grid-cols-2 gap-4">
+<div class="relative group cursor-pointer overflow-hidden aspect-video">
+<img class="w-full h-full object-cover filter brightness-75 group-hover:scale-110 transition-transform duration-500" data-alt="A close-up shot of premium white Carrara marble flooring in a sunlit luxury penthouse. The natural grey veining is elegant and subtle, reflecting a soft golden light from a floor-to-ceiling window. The aesthetic is clean, minimalist, and exudes high-end architectural quality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAkjzy5tHxpJcoPQ-hFsJRhHh0rmVcUUMjaYexDiITU1aAwGOLBWiCJ-MuCeBMzurVjnXBpnBiW1IyPDY5LwEhyS5kLvKVtBXXo9k5RQK3jiLjZMcMJW0TZyUkh_Jj_uxWIHXT6KBJtOeUuxDNGgMIgmKnQh5-aKK2Pykgz3GFtuk7U4Mo8slHWvD1qMTwt3IoZMcjhRh8BTz_bUO4LaQvLKRyMJpp2XW7ugcFK_Zh3YcarIWLmZUQbESExiPnSasYB8x-8p5xdOk8"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+<span class="text-white font-label-caps text-[10px]">CARRARA MARBLE</span>
+</div>
+</div>
+<div class="relative group cursor-pointer overflow-hidden aspect-video">
+<img class="w-full h-full object-cover filter brightness-75 group-hover:scale-110 transition-transform duration-500" data-alt="Detail shot of dark smoked oak wall paneling with brushed brass metal accents. The wood grain is rich and textural, set against a backdrop of soft shadows. The lighting is moody and sophisticated, highlighting the artisanal craftsmanship of a luxury interior space." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDZtw1V2YWpB3CReVbo9SX3WxO7Rc5J9lF2JKMkf3nrkSBPLWCWIgeurVDYZK8ZZDrhcw-UXXmXIdj7g5tfsjCzH0bf7I8Bt8PTP4yKWk3SilZWaUeMT3ovmrPWIoKjIwd0q7_cC60Bc7e-r9RjOZ4tx4WUogGBm--D2kSuw6ulygxhPXsy2vJcloT_TYyeMo7Y9U7n6XM2I2LxfBe_E36JjHt7-s_w6HXzfMDtVqz8bs2ElR_LMX8cf8O0tgwTFyzr6nIZ_Fgu8c"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/20">
+<span class="text-white font-label-caps text-[10px]">SMOKED OAK</span>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-5 bg-primary text-on-primary font-label-caps text-label-caps tracking-[0.2em] hover:opacity-90 transition-all">
+                            DOWNLOAD BROCHURE (PDF)
+                        </button>
+</section>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-section-gap w-full pt-section-gap pb-gutter bg-surface dark:bg-surface-container-lowest border-t border-outline-variant/10">
+<div class="flex flex-col items-center gap-8 w-full px-margin-edge max-w-container-max mx-auto">
+<span class="font-headline-md text-headline-md text-primary tracking-tighter">SKYLINE ELITE</span>
+<div class="flex flex-wrap justify-center gap-8">
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">Legal Disclaimer</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">Press Inquiries</a>
+</div>
+<p class="font-body-md text-body-md text-secondary opacity-60">© 2024 SKYLINE ELITE PROPERTIES. ALL RIGHTS RESERVED.</p>
+</div>
+</footer>
+</main>
+<!-- Navigation Drawer (Hidden by default) -->
+<div class="hidden h-full w-80 fixed right-0 top-0 z-[60] flex flex-col p-gutter bg-surface border-l border-outline-variant/10 shadow-sm" id="drawer">
+<div class="flex justify-between items-center mb-12">
+<span class="font-headline-md text-headline-md text-primary">SKYLINE ELITE</span>
+<span class="material-symbols-outlined cursor-pointer" onclick="document.getElementById('drawer').classList.add('hidden')">close</span>
+</div>
+<div class="flex flex-col gap-8">
+<div class="flex items-center gap-4 group cursor-pointer hover:translate-x-2 transition-transform duration-300">
+<span class="material-symbols-outlined text-secondary">layers</span>
+<span class="font-label-caps text-label-caps text-secondary">The Collection</span>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer hover:translate-x-2 transition-transform duration-300">
+<span class="material-symbols-outlined text-primary font-bold">architecture</span>
+<span class="font-label-caps text-label-caps text-primary font-bold">Floor Plans</span>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer hover:translate-x-2 transition-transform duration-300">
+<span class="material-symbols-outlined text-secondary">location_on</span>
+<span class="font-label-caps text-label-caps text-secondary">Neighborhood Amenities</span>
+</div>
+<div class="flex items-center gap-4 group cursor-pointer hover:translate-x-2 transition-transform duration-300">
+<span class="material-symbols-outlined text-secondary">calendar_month</span>
+<span class="font-label-caps text-label-caps text-secondary">Private Viewing</span>
+</div>
+</div>
+</div>
+</body></html>

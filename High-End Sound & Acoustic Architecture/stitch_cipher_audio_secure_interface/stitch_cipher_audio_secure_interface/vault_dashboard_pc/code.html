@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAULT_SECURE | Cipher-Audio Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @font-face {
+            font-family: 'jetbrainsMono';
+            src: url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap');
+        }
+        @font-face {
+            font-family: 'hankenGrotesk';
+            src: url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&display=swap');
+        }
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/css/metropolis');
+        }
+
+        body {
+            background-color: #0A0A0A;
+            color: #e5e2e1;
+            font-family: 'hankenGrotesk', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .glass-container {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid #c7c6c4; /* Platinum Silver */
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scanline {
+            width: 100%;
+            height: 1px;
+            background: #4F46E5;
+            opacity: 0.15;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            box-shadow: 0 0 8px #4F46E5;
+        }
+
+        .inner-glow {
+            box-shadow: inset 0 0 15px rgba(79, 70, 229, 0.2);
+        }
+
+        .fft-bar {
+            width: 4px;
+            background: #4F46E5;
+            border-radius: 2px;
+            margin: 0 1px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#5d5c74",
+                      "tertiary-fixed": "#e2dfff",
+                      "surface-container": "#201f1f",
+                      "on-primary-fixed": "#1a1a2e",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-tint": "#c6c4df",
+                      "primary": "#c6c4df",
+                      "surface-dim": "#131313",
+                      "tertiary-fixed-dim": "#c3c0ff",
+                      "on-secondary-fixed-variant": "#464746",
+                      "outline": "#929097",
+                      "on-tertiary": "#1d00a5",
+                      "on-secondary-container": "#b5b5b3",
+                      "on-tertiary-container": "#7772ff",
+                      "primary-container": "#1a1a2e",
+                      "outline-variant": "#47464c",
+                      "on-background": "#e5e2e1",
+                      "on-primary": "#2f2e43",
+                      "on-tertiary-fixed": "#0f0069",
+                      "tertiary-container": "#0f006b",
+                      "secondary-fixed": "#e3e2e0",
+                      "on-error": "#690005",
+                      "secondary-fixed-dim": "#c7c6c4",
+                      "primary-fixed": "#e2e0fc",
+                      "on-surface-variant": "#c8c5cd",
+                      "secondary": "#c7c6c4",
+                      "tertiary": "#c3c0ff",
+                      "on-primary-fixed-variant": "#45455b",
+                      "inverse-on-surface": "#313030",
+                      "on-secondary-fixed": "#1b1c1b",
+                      "surface-bright": "#3a3939",
+                      "background": "#131313",
+                      "error": "#ffb4ab",
+                      "surface-container-high": "#2a2a2a",
+                      "secondary-container": "#464746",
+                      "surface-container-low": "#1c1b1b",
+                      "surface": "#131313",
+                      "primary-fixed-dim": "#c6c4df",
+                      "on-tertiary-fixed-variant": "#3323cc",
+                      "error-container": "#93000a",
+                      "surface-variant": "#353534",
+                      "on-surface": "#e5e2e1",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#353534",
+                      "on-primary-container": "#83829b",
+                      "on-secondary": "#303130",
+                      "inverse-surface": "#e5e2e1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "max-width": "1440px",
+                      "margin-mobile": "16px",
+                      "unit": "8px",
+                      "gutter": "24px",
+                      "margin-desktop": "64px"
+              },
+              "fontFamily": {
+                      "label-sm": ["jetbrainsMono"],
+                      "body-lg": ["hankenGrotesk"],
+                      "data-mono": ["jetbrainsMono"],
+                      "body-md": ["hankenGrotesk"],
+                      "headline-md": ["metropolis"],
+                      "headline-lg": ["metropolis"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-md min-h-screen">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-screen fixed left-0 top-0 z-40 bg-surface-container-lowest/80 backdrop-blur-2xl border-r-2 border-outline-variant w-64 shadow-[inset_-2px_0_10px_rgba(15,0,105,0.4)]">
+<div class="p-8">
+<h1 class="text-headline-md font-headline-md text-primary font-bold tracking-tighter">VAULT_SECURE</h1>
+<div class="mt-8 flex items-center gap-3">
+<div class="w-10 h-10 glass-container flex items-center justify-center rounded-none border-primary">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">security</span>
+</div>
+<div>
+<p class="text-label-sm font-data-mono text-primary">ADM_SYS_01</p>
+<p class="text-[10px] font-data-mono text-on-surface-variant">CLEARANCE: OMEGA</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<a class="flex items-center gap-3 bg-primary-container text-primary border-l-4 border-primary px-4 py-3 translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-label-sm font-data-mono">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="text-label-sm font-data-mono">Command Center</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span class="text-label-sm font-data-mono">Technical FAQ</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="text-label-sm font-data-mono">Secure Feedback</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-variant/50 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-label-sm font-data-mono">Encrypted logs</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant space-y-4">
+<button class="w-full bg-secondary text-on-primary font-data-mono py-4 text-label-sm tracking-widest relative overflow-hidden group">
+<span class="relative z-10">INITIATE SCAN</span>
+<div class="scanline"></div>
+</button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 text-xs font-data-mono hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+                    Security Settings
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 text-xs font-data-mono hover:text-error transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">logout</span>
+                    System Logout
+                </a>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 lg:left-64 z-30 bg-surface-container/60 backdrop-blur-xl border-b-2 border-outline-variant flex justify-between items-center px-8 py-4 shadow-[inset_0_1px_0_0_rgba(79,70,229,0.2)]">
+<div class="flex items-center gap-8">
+<span class="text-label-sm font-data-mono text-primary">NODE: CIPHER_AUDIO_OS</span>
+<div class="hidden md:flex gap-6">
+<a class="text-primary border-b-2 border-primary pb-1 text-label-sm font-data-mono" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:bg-primary-container/30 transition-colors duration-300 text-label-sm font-data-mono px-2" href="#">Command</a>
+<a class="text-on-surface-variant font-medium hover:bg-primary-container/30 transition-colors duration-300 text-label-sm font-data-mono px-2" href="#">FAQ</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="px-3 py-1 bg-primary-container border border-primary text-primary text-[10px] font-data-mono tracking-[0.2em]">ENCRYPTED</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">security</span>
+<div class="w-8 h-8 rounded-full border border-outline-variant overflow-hidden">
+<img alt="Executive Profile" class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 transition-all" data-alt="A professional headshot of a senior technology executive with a stoic expression, wearing a tailored charcoal suit. The lighting is dramatic and low-key, with a cool blue rim light emphasizing the contours of his face against a dark, minimalist background. The aesthetic is high-precision and authoritative, fitting a premium security environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOWTn_TddQ1aJyUTUscuaX9SQgGp-CAxef_CLiA_uAjCIll_i8wrULi02l8KcYvSgdEmVeD4FOZUZKPopLjRU7G3Sj-P2VZl8q8uQdpIQ80XHu-mqQEWXcSB8O4yXViR1LIz0AkEZPcnjqlrxGSNNVVITI88ogGYTLWZxd7YOsfDxsQbgaNTuj_Eb2QbN_KgeUIcGNmyMP70o0MHRxoobJ-6M-VFLIUSUpthVQbjKZsd_DNGsdNeRN1PdXn4Zc5iIMFCDNYZ7g16TK"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-24 pb-32 px-8 max-w-max-width mx-auto">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Core Encryption & Audio FFT -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<div class="glass-container p-8 inner-glow">
+<div class="flex justify-between items-start mb-6">
+<h3 class="text-label-sm font-data-mono text-primary">ENCRYPTION_ENGINE</h3>
+<span class="text-[10px] font-data-mono px-2 py-0.5 border border-primary text-primary">ACTIVE</span>
+</div>
+<div class="flex items-end gap-1 h-24 mb-6">
+<!-- Mock FFT Bars -->
+<div class="fft-bar h-[60%]"></div>
+<div class="fft-bar h-[85%]"></div>
+<div class="fft-bar h-[40%]"></div>
+<div class="fft-bar h-[95%]"></div>
+<div class="fft-bar h-[70%]"></div>
+<div class="fft-bar h-[55%]"></div>
+<div class="fft-bar h-[90%]"></div>
+<div class="fft-bar h-[30%]"></div>
+<div class="fft-bar h-[80%]"></div>
+<div class="fft-bar h-[65%]"></div>
+<div class="fft-bar h-[85%]"></div>
+<div class="fft-bar h-[45%]"></div>
+<div class="fft-bar h-[95%]"></div>
+<div class="fft-bar h-[60%]"></div>
+<div class="fft-bar h-[75%]"></div>
+</div>
+<div class="space-y-4 pt-6 border-t border-outline-variant">
+<div class="flex justify-between">
+<span class="text-label-sm font-data-mono text-on-surface-variant">BITRATE</span>
+<span class="text-label-sm font-data-mono text-primary">2048 KBPS</span>
+</div>
+<div class="flex justify-between">
+<span class="text-label-sm font-data-mono text-on-surface-variant">CIPHER</span>
+<span class="text-label-sm font-data-mono text-primary">AES-XTS-512</span>
+</div>
+</div>
+<div class="scanline"></div>
+</div>
+<div class="glass-container p-8">
+<h3 class="text-label-sm font-data-mono text-primary mb-6">HARDWARE_TOKEN_LINK</h3>
+<div class="flex items-center gap-6 p-4 bg-surface-container-low border border-outline-variant">
+<div class="w-12 h-12 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">key</span>
+</div>
+<div>
+<p class="text-label-sm font-data-mono text-on-surface">YUBI_SECURE_X9</p>
+<p class="text-[10px] font-data-mono text-primary">STATUS: SYNCED</p>
+</div>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-4">
+<div class="text-[10px] font-data-mono text-on-surface-variant p-2 border border-outline-variant">UID: 9X-4421-B</div>
+<div class="text-[10px] font-data-mono text-on-surface-variant p-2 border border-outline-variant">REV: 2.04.1</div>
+</div>
+</div>
+</div>
+<!-- Central: Biometric Scan Area -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="glass-container p-12 flex flex-col items-center justify-center min-h-[400px] border-2">
+<div class="relative w-64 h-64 border-[4px] border-primary/20 rounded-full flex items-center justify-center">
+<div class="absolute inset-4 border border-primary/40 rounded-full"></div>
+<div class="absolute inset-0 scanline h-full w-full opacity-30"></div>
+<span class="material-symbols-outlined text-8xl text-primary" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+<!-- Rotating Rings (CSS simulated) -->
+<div class="absolute inset-0 border-t-4 border-primary rounded-full animate-spin"></div>
+</div>
+<div class="mt-8 text-center space-y-4">
+<h2 class="text-headline-lg font-headline-lg text-primary tracking-widest">BIOMETRIC_AUTH_REQUIRED</h2>
+<p class="text-label-sm font-data-mono text-on-surface-variant max-w-md mx-auto">
+                            PLACE CRYPTO-TOKEN ON SCANNER SURFACE TO INITIATE OMEGA-LEVEL DECRYPTION SEQUENCE.
+                        </p>
+</div>
+<div class="absolute bottom-6 right-6 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#c6c4df]"></div>
+<span class="text-[10px] font-data-mono text-primary">SYSTEM_READY</span>
+</div>
+</div>
+<!-- Bottom Row: Widgets Bento -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-container p-6">
+<p class="text-[10px] font-data-mono text-on-surface-variant mb-2">LAST_AUDIT</p>
+<p class="text-body-lg font-data-mono text-on-surface">02:14:55:00</p>
+<p class="text-[10px] font-data-mono text-primary mt-2">CLEARED BY: AUTO_SEC</p>
+</div>
+<div class="glass-container p-6">
+<p class="text-[10px] font-data-mono text-on-surface-variant mb-2">TUNNEL_STRENGTH</p>
+<div class="w-full bg-surface-container h-2 rounded-none mt-4 border border-outline-variant overflow-hidden">
+<div class="w-[92%] h-full bg-primary"></div>
+</div>
+<p class="text-[10px] font-data-mono text-primary mt-3">92.4% INTEGRITY</p>
+</div>
+<div class="glass-container p-6">
+<p class="text-[10px] font-data-mono text-on-surface-variant mb-2">ACTIVE_THREATS</p>
+<p class="text-body-lg font-data-mono text-on-surface">000</p>
+<p class="text-[10px] font-data-mono text-primary mt-2">PERIMETER: SECURE</p>
+</div>
+</div>
+</div>
+<!-- Full Width: World Map Section -->
+<div class="col-span-12 glass-container p-8 h-[400px] relative">
+<div class="flex justify-between items-center mb-6">
+<h3 class="text-label-sm font-data-mono text-primary uppercase">Active Relay Nodes_Global</h3>
+<div class="flex gap-4">
+<span class="text-[10px] font-data-mono text-on-surface-variant"><span class="text-primary">●</span> TOKYO</span>
+<span class="text-[10px] font-data-mono text-on-surface-variant"><span class="text-primary">●</span> ZURICH</span>
+<span class="text-[10px] font-data-mono text-on-surface-variant"><span class="text-primary">●</span> REYKJAVIK</span>
+</div>
+</div>
+<div class="absolute inset-0 top-20 grayscale brightness-50 opacity-30 pointer-events-none">
+<img class="w-full h-full object-cover" data-alt="A sophisticated digital world map displayed on a dark glass interface. The continents are rendered in high-contrast platinum silver lines against a deep black-indigo background. Glowing indigo nodes pulse at major global financial hubs, connected by thin, precise light streaks. The mood is high-tech, global, and secure, with a subtle grainy texture and lens flare effects suggesting a premium command center screen." data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAO8bCvqu3CevxJDQrwAVhOozlEIYkx-8GXlIwa9Me17r8rr0pybW0v7Gvz5qDO8mD6tyPwoNXMVkzcCUXWgOnsDjn008o_TCpwM8r86zhxE5_EEX4yAmaJbOTp_BrH00i-dFAizUS-l7F5z0V2SU0BUSG5ko3porUrZUVEQLmNLmv9qlfM4r_Gohc5IbqTEQ6huWHinMQz8P9vys6GIhvaj8TWW7eN2C5wOf5ltwR9IlrmzZxpaybC_oYAUhtfKjZ3fXfL0F02yh_N"/>
+</div>
+<div class="relative z-10 grid grid-cols-4 gap-4 h-full content-end pb-8">
+<div class="p-4 bg-surface-container-lowest/60 border border-outline-variant">
+<p class="text-[10px] font-data-mono text-on-surface-variant">NODE_ALPHA</p>
+<p class="text-label-sm font-data-mono text-primary">PING: 14MS</p>
+</div>
+<div class="p-4 bg-surface-container-lowest/60 border border-outline-variant">
+<p class="text-[10px] font-data-mono text-on-surface-variant">NODE_BETA</p>
+<p class="text-label-sm font-data-mono text-primary">PING: 42MS</p>
+</div>
+<div class="p-4 bg-surface-container-lowest/60 border border-outline-variant">
+<p class="text-[10px] font-data-mono text-on-surface-variant">NODE_GAMMA</p>
+<p class="text-label-sm font-data-mono text-primary">PING: 08MS</p>
+</div>
+<div class="p-4 bg-surface-container-lowest/60 border border-outline-variant">
+<p class="text-[10px] font-data-mono text-on-surface-variant">NODE_DELTA</p>
+<p class="text-label-sm font-data-mono text-primary">PING: 31MS</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container-high/90 backdrop-blur-lg border-t-2 border-outline-variant shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-lg px-6 py-1 scale-95 transition-transform">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-label-sm font-data-mono">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100">
+<span class="material-symbols-outlined">lock</span>
+<span class="text-label-sm font-data-mono">Admin</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="text-label-sm font-data-mono">Support</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-label-sm font-data-mono">Vault</span>
+</div>
+</nav>
+<!-- FAB Content Overlay (Optional Scan Prompt) -->
+<div class="fixed bottom-10 right-10 z-50 hidden lg:block">
+<button class="w-16 h-16 rounded-none bg-primary text-on-primary flex items-center justify-center shadow-2xl hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-4xl" style="font-variation-settings: 'FILL' 1;">security</span>
+</button>
+</div>
+</body></html>

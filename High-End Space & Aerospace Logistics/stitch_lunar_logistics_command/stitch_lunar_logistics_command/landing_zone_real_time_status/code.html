@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUNAR-LOGISTICS // Landing Zone Status</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Archivo+Narrow:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hazard-pattern {
+            background: repeating-linear-gradient(
+                45deg,
+                #ff6600,
+                #ff6600 10px,
+                #1d100a 10px,
+                #1d100a 20px
+            );
+        }
+        .scanline-overlay {
+            background: linear-gradient(
+                to bottom,
+                transparent 50%,
+                rgba(0, 0, 0, 0.1) 50%
+            );
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-fixed-variant": "#474746",
+                "inverse-primary": "#a33e00",
+                "surface-variant": "#42312a",
+                "on-primary-fixed": "#360f00",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-secondary-fixed-variant": "#464747",
+                "outline": "#aa8a7d",
+                "tertiary-container": "#989696",
+                "inverse-on-surface": "#3d2d26",
+                "on-primary": "#581e00",
+                "on-error-container": "#ffdad6",
+                "on-surface-variant": "#e3bfb1",
+                "primary": "#ffb596",
+                "on-secondary": "#2f3131",
+                "secondary-fixed": "#e3e2e2",
+                "outline-variant": "#5a4136",
+                "surface-container-lowest": "#180b06",
+                "surface-tint": "#ffb596",
+                "on-primary-fixed-variant": "#7c2e00",
+                "on-secondary-fixed": "#1a1c1c",
+                "secondary": "#c7c6c6",
+                "secondary-fixed-dim": "#c7c6c6",
+                "surface-container-low": "#261812",
+                "on-primary-container": "#561d00",
+                "on-tertiary-container": "#2f2f2f",
+                "surface-container": "#2b1c16",
+                "surface-bright": "#47352e",
+                "inverse-surface": "#f8ddd2",
+                "tertiary": "#c8c6c5",
+                "surface": "#1d100a",
+                "error": "#ffb4ab",
+                "primary-fixed": "#ffdbcd",
+                "on-surface": "#f8ddd2",
+                "primary-fixed-dim": "#ffb596",
+                "secondary-container": "#484949",
+                "surface-container-high": "#362620",
+                "on-background": "#f8ddd2",
+                "tertiary-fixed": "#e5e2e1",
+                "on-tertiary": "#313030",
+                "on-error": "#690005",
+                "surface-container-highest": "#42312a",
+                "surface-dim": "#1d100a",
+                "error-container": "#93000a",
+                "on-tertiary-fixed": "#1c1b1b",
+                "primary-container": "#ff6600",
+                "background": "#1d100a",
+                "on-secondary-container": "#b8b8b8"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "border-width": "2px",
+                "border-width-heavy": "3px",
+                "gutter": "16px",
+                "unit": "4px",
+                "margin": "24px"
+            },
+            "fontFamily": {
+                "body-lg": ["JetBrains Mono"],
+                "headline-lg": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "headline-sm": ["Space Grotesk"],
+                "body-md": ["JetBrains Mono"],
+                "label-caps": ["Archivo Narrow"],
+                "data-display": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "headline-sm": ["20px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "data-display": ["18px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- NAVIGATION DRAWER (The Shell) -->
+<aside class="fixed inset-y-0 left-0 z-[60] bg-surface border-r-3 border-outline flex flex-col w-80 hidden md:flex">
+<div class="p-margin flex flex-col gap-unit border-b-3 border-outline">
+<span class="font-label-caps text-label-caps text-on-surface-variant">OPERATOR LOGGED IN:</span>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 border-2 border-primary-container bg-surface-container-high overflow-hidden">
+<img alt="Commander ID-7742" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMqO6tShSfJ3RFWmKq7kOua51r4v09lGhJW-L8SwP05IZqyHQkuWAUi9X__6aEchHmEe5lDOTpK7A3b633LxoyGSQuUYwfK8yqKKxkkXGNf-I8CrPCGyGBC-w6zpaaaSO3rtb4Le5D2zujt7xtrp4HFT1JB0ZvTSNdDhgG4kEOjq4OZhUyfyhKrf4B9umvA7pAoRpOySxBxeLJG8zvueBKx0l_p4nMmpeHk0q1SqBloNyLjlE71oIcCgxyaBXRABfCU9BnvrHBCm4"/>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-tight">CDR. ELARA VANCE</h2>
+<p class="font-label-caps text-label-caps text-primary-container">CLEARANCE: OMEGA</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="bg-primary-container text-on-primary-container mx-2 my-1 px-4 py-3 flex items-center gap-4 active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">COMMAND_CENTER</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-label-caps">PAYLOAD_VIS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">TELEMETRY_LOGS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">SOP_MANUALS</span>
+</a>
+</nav>
+<div class="p-4 border-t-3 border-outline">
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-error-container hover:text-on-error-container transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">LOG_OUT</span>
+</a>
+</div>
+</aside>
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 md:left-80 right-0 z-50 flex items-center px-margin h-16 bg-surface border-b-3 border-outline">
+<div class="flex items-center gap-4 w-full">
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary-container tracking-tighter uppercase">LUNAR-LOGISTICS // MET 04:22:15</h1>
+<div class="ml-auto flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface">SYS_NOMINAL</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="warning">warning</span>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="pt-24 pb-32 md:pb-8 md:pl-80 min-h-screen px-margin">
+<!-- DASHBOARD GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- GLOBAL OVERVIEW (Bento Item) -->
+<section class="lg:col-span-8 border-3 border-outline bg-surface-container-lowest p-6 relative overflow-hidden">
+<div class="scanline-overlay absolute inset-0 opacity-20 pointer-events-none"></div>
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-label-caps text-label-caps text-primary-container mb-1">// ACTIVE_LANDING_ZONES</h3>
+<p class="font-headline-md text-headline-md leading-none">SECTOR_7_STATUS</p>
+</div>
+<div class="flex gap-2">
+<div class="px-3 py-1 bg-surface-container-highest border-2 border-outline font-label-caps text-label-caps">AUTO_SCAN: ON</div>
+<div class="px-3 py-1 bg-primary-container text-on-primary-container font-label-caps text-label-caps">LIVE_FEED</div>
+</div>
+</div>
+<!-- ZONE CARDS GRID -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- SHACKLETON CRATER -->
+<div class="border-2 border-outline bg-surface p-4 flex flex-col gap-4 relative">
+<div class="absolute top-0 right-0 hazard-pattern h-1 w-full opacity-50"></div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LZ-01: SHACKLETON_CRATER</span>
+<span class="px-2 py-0.5 bg-green-900 text-green-400 font-label-caps text-label-caps border border-green-400">AVAILABLE</span>
+</div>
+<div class="h-32 bg-surface-container-high border-2 border-outline overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A cinematic wide-angle shot of a lunar landing pad situated on the rim of the Shackleton Crater. The landscape is desolate and grey with sharp shadows created by high-contrast lighting from a distant sun. Robotic cranes and structural frameworks made of dark metallic materials are visible in the background against a pitch-black lunar sky. The image has a grainy, technical mission-control aesthetic with industrial supply containers stacked nearby." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCd5htqpkdAXdkAesocm514NqcNUOGLxJ9dpwWC8wyp-JmAdh0RwnyKM8rQUiWpw2UPVYhZNwuqnzlNt15_6Nvij-pcTs8q5_6YC3v42CPgw_uyfmaLqycI2MzBZ6xLVgFfUPdLI4QrXiJ8JBrydGDqr5vkFgmbN3IJvPZfc4Rn6y7g5B94m-3-YM0rfTd04pYz3m8bT0a_YVXw_CT8EyI_AioyTituQxi9k_rEXCd8xhB9M9S2aeUsNCjJ4H27VCMrG01SPzprack"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container border border-outline p-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">TEMP_EXT</p>
+<p class="font-data-display text-data-display">-173.2°C</p>
+</div>
+<div class="bg-surface-container border border-outline p-2">
+<p class="font-label-caps text-label-caps text-on-surface-variant">RAD_LVL</p>
+<p class="font-data-display text-data-display">0.45 mSv/h</p>
+</div>
+</div>
+</div>
+<!-- MARE TRANQUILLITATIS -->
+<div class="border-2 border-primary-container bg-surface p-4 flex flex-col gap-4 relative shadow-[4px_4px_0px_0px_rgba(255,102,0,0.2)]">
+<div class="absolute top-0 right-0 hazard-pattern h-1 w-full"></div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-primary-container">LZ-02: MARE_TRANQUILLITATIS</span>
+<span class="px-2 py-0.5 bg-primary-container text-on-primary-container font-label-caps text-label-caps">OCCUPIED</span>
+</div>
+<div class="h-32 bg-surface-container-high border-2 border-primary-container overflow-hidden">
+<img class="w-full h-full object-cover grayscale brightness-75" data-alt="A high-resolution satellite-style orbital view of a lunar landing site at Mare Tranquillitatis. A heavy lunar descent vehicle is currently docked at the primary pad, surrounded by glowing orange safety lights and fuel lines. The lunar dust is kicked up in a circular pattern around the pad. The lighting is harsh and directional, emphasizing the craters and rocky textures of the moon's surface, in a technical industrial UI style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnvLOyuN348gIOk0mfruj50OWqYxYMTUrNbg0dr1Dw1ACmIb2yXbaCuLXRVpglsTHww83HDIPrtD2j-8iuDYRs1q9tY5l51KhS9bBW9bu8_Wb-KhQtXtqOynull8VomNEttZNp6mSDXp16ZlF-V8JPVGox7gczXNyfJtfA5zJG9numCso_plBPBl62_5zEiuM9aXwCKLswC1D-h_Od3vrN3nuBWqWgV5qygsNhuCyJTuQ4e4kcULHGhLSliROI9nLrd-2vO-sPfRY"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container border border-primary-container p-2">
+<p class="font-label-caps text-label-caps text-primary-container">CURRENT_OP</p>
+<p class="font-data-display text-data-display">UNLOADING</p>
+</div>
+<div class="bg-surface-container border border-primary-container p-2">
+<p class="font-label-caps text-label-caps text-primary-container">ETA_DEPART</p>
+<p class="font-data-display text-data-display">00:45:12</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- TELEMETRY FEED (Sidebar Bento) -->
+<section class="lg:col-span-4 flex flex-col gap-6">
+<!-- CRITICAL ALERTS -->
+<div class="border-3 border-primary-container bg-surface-container p-4 flex flex-col gap-4">
+<div class="flex items-center gap-2 text-primary-container">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<h4 class="font-label-caps text-label-caps">CRITICAL_LOGISTICS_ALERTS</h4>
+</div>
+<div class="space-y-3">
+<div class="border-l-4 border-primary-container bg-surface-container-highest p-3">
+<p class="font-label-caps text-label-caps text-primary-container">T-MINUS 12M</p>
+<p class="font-body-md text-on-surface">DEEP-SPACE-09 ENTERING LZ-02 APPROACH PATH</p>
+</div>
+<div class="border-l-4 border-on-surface-variant bg-surface-container-highest p-3 opacity-60">
+<p class="font-label-caps text-label-caps text-on-surface-variant">T-MINUS 45M</p>
+<p class="font-body-md text-on-surface">FUEL-CELL RESUPPLY COMPLETED @ LZ-04</p>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container py-3 font-label-caps text-label-caps flex items-center justify-center gap-2 active:scale-95 transition-transform duration-100">
+                        ACKNOWLEDGE ALL
+                        <span class="material-symbols-outlined text-sm" data-icon="done_all">done_all</span>
+</button>
+</div>
+<!-- CARGO MANIFEST SHORTCUT -->
+<div class="border-3 border-outline bg-surface p-4 flex flex-col gap-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant">// RECENT_MANIFESTS</h4>
+<table class="w-full border-collapse">
+<thead>
+<tr class="bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps">
+<th class="text-left p-2 border border-outline">ID</th>
+<th class="text-left p-2 border border-outline">TYPE</th>
+<th class="text-right p-2 border border-outline">MASS</th>
+</tr>
+</thead>
+<tbody class="font-data-display text-sm">
+<tr>
+<td class="p-2 border border-outline">PX-442</td>
+<td class="p-2 border border-outline">H2O_ICE</td>
+<td class="p-2 border border-outline text-right">14.2t</td>
+</tr>
+<tr>
+<td class="p-2 border border-outline">PX-443</td>
+<td class="p-2 border border-outline">HE3_ISO</td>
+<td class="p-2 border border-outline text-right">0.8t</td>
+</tr>
+<tr class="bg-primary-container/10">
+<td class="p-2 border border-outline text-primary-container font-bold">PX-444</td>
+<td class="p-2 border border-outline text-primary-container font-bold">MED_SUPLY</td>
+<td class="p-2 border border-outline text-right text-primary-container font-bold">2.4t</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- FULL WIDTH DATA GRID (Bottom Bento) -->
+<section class="lg:col-span-12 border-3 border-outline bg-surface p-6">
+<div class="flex flex-col md:flex-row justify-between items-center mb-6 gap-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">// ATMOSPHERIC_TELEMETRY_STREAM</h3>
+<div class="flex items-center gap-4 bg-surface-container p-2 border border-outline w-full md:w-auto">
+<span class="material-symbols-outlined text-primary-container" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-body-md text-on-surface placeholder:text-on-surface-variant/40 w-full md:w-64" placeholder="FILTER_SITE_ID..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<div class="inline-block min-w-full align-middle">
+<table class="min-w-full border-collapse border-2 border-outline">
+<thead>
+<tr class="bg-surface-container-highest">
+<th class="border-2 border-outline p-4 font-label-caps text-label-caps text-left">TIMESTAMP</th>
+<th class="border-2 border-outline p-4 font-label-caps text-label-caps text-left">SITE_COORDINATES</th>
+<th class="border-2 border-outline p-4 font-label-caps text-label-caps text-left">SEISMIC_ACT</th>
+<th class="border-2 border-outline p-4 font-label-caps text-label-caps text-left">SOLAR_FLUX</th>
+<th class="border-2 border-outline p-4 font-label-caps text-label-caps text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-data-display text-body-md">
+<tr class="hover:bg-surface-variant transition-colors border-b border-outline">
+<td class="p-4 border-r border-outline">04:22:15:01</td>
+<td class="p-4 border-r border-outline">89.9°S, 0.0°E</td>
+<td class="p-4 border-r border-outline">0.02 RICHTER</td>
+<td class="p-4 border-r border-outline">1361 W/M²</td>
+<td class="p-4 text-right text-green-400">NOMINAL</td>
+</tr>
+<tr class="hover:bg-surface-variant transition-colors border-b border-outline bg-surface-container-low">
+<td class="p-4 border-r border-outline">04:22:14:58</td>
+<td class="p-4 border-r border-outline">0.6°N, 23.4°E</td>
+<td class="p-4 border-r border-outline">0.14 RICHTER</td>
+<td class="p-4 border-r border-outline">1365 W/M²</td>
+<td class="p-4 text-right text-primary-container font-bold">ACTIVITY_HIGH</td>
+</tr>
+<tr class="hover:bg-surface-variant transition-colors border-b border-outline">
+<td class="p-4 border-r border-outline">04:22:14:52</td>
+<td class="p-4 border-r border-outline">14.6°N, 56.2°W</td>
+<td class="p-4 border-r border-outline">0.01 RICHTER</td>
+<td class="p-4 border-r border-outline">1359 W/M²</td>
+<td class="p-4 text-right text-on-surface-variant">IDLE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BOTTOM NAV BAR (Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 h-20 flex justify-around items-stretch bg-surface border-t-3 border-outline md:hidden">
+<a class="bg-primary-container text-on-primary-container flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px] tracking-tight">MANIFEST</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="event_upcoming">event_upcoming</span>
+<span class="font-label-caps text-[10px] tracking-tight">CALENDAR</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-[10px] tracking-tight">ZONES</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-[10px] tracking-tight">ALERTS</span>
+</a>
+</nav>
+<!-- FLOATING ACTION BUTTON -->
+<button class="fixed bottom-24 right-6 md:bottom-8 md:right-8 w-16 h-16 bg-primary-container text-on-primary-container flex items-center justify-center z-40 border-2 border-on-primary shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] active:translate-x-1 active:translate-y-1 active:shadow-none transition-all">
+<span class="material-symbols-outlined text-4xl" data-icon="add_task">add_task</span>
+</button>
+</body></html>

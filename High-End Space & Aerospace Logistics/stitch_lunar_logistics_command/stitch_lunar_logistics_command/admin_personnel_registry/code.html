@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Personnel Registry // Lunar Logistics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@400;700&amp;family=Archivo+Narrow:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #1d100a;
+            color: #f8ddd2;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .hazard-pattern {
+            background: repeating-linear-gradient(
+                45deg,
+                #ff6600,
+                #ff6600 10px,
+                #1d100a 10px,
+                #1d100a 20px
+            );
+        }
+        .clipped-corner {
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(255, 102, 0, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#1d100a",
+                    "surface-container": "#2b1c16",
+                    "outline": "#aa8a7d",
+                    "primary-fixed": "#ffdbcd",
+                    "primary-fixed-dim": "#ffb596",
+                    "on-secondary-container": "#b8b8b8",
+                    "on-error": "#690005",
+                    "secondary": "#c7c6c6",
+                    "on-background": "#f8ddd2",
+                    "inverse-surface": "#f8ddd2",
+                    "surface-dim": "#1d100a",
+                    "surface-container-low": "#261812",
+                    "surface-container-high": "#362620",
+                    "secondary-fixed-dim": "#c7c6c6",
+                    "on-primary-fixed": "#360f00",
+                    "on-primary": "#581e00",
+                    "surface-tint": "#ffb596",
+                    "primary": "#ffb596",
+                    "on-secondary": "#2f3131",
+                    "inverse-on-surface": "#3d2d26",
+                    "outline-variant": "#5a4136",
+                    "on-primary-container": "#561d00",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "surface": "#1d100a",
+                    "on-surface": "#f8ddd2",
+                    "surface-container-highest": "#42312a",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "error": "#ffb4ab",
+                    "error-container": "#93000a",
+                    "inverse-primary": "#a33e00",
+                    "tertiary": "#c8c6c5",
+                    "on-tertiary": "#313030",
+                    "on-surface-variant": "#e3bfb1",
+                    "surface-variant": "#42312a",
+                    "primary-container": "#ff6600",
+                    "on-tertiary-container": "#2f2f2f",
+                    "on-secondary-fixed-variant": "#464747",
+                    "surface-container-lowest": "#180b06",
+                    "surface-bright": "#47352e",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "tertiary-container": "#989696",
+                    "secondary-container": "#484949",
+                    "on-primary-fixed-variant": "#7c2e00",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary-fixed": "#e5e2e1",
+                    "secondary-fixed": "#e3e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "border-width-heavy": "3px",
+                    "gutter": "16px",
+                    "margin": "24px",
+                    "border-width": "2px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Archivo Narrow"],
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["JetBrains Mono"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-lg": ["JetBrains Mono"],
+                    "data-display": ["JetBrains Mono"],
+                    "headline-sm": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "data-display": ["18px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "headline-sm": ["20px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="flex min-h-screen">
+<!-- NAVIGATION DRAWER -->
+<aside class="fixed inset-y-0 left-0 z-[60] bg-surface border-r-3 border-outline flex flex-col w-80 hidden md:flex">
+<div class="p-margin flex flex-col gap-unit border-b-2 border-outline-variant bg-surface-container-low">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 border-2 border-primary-container p-unit bg-background">
+<img alt="CDR. ELARA VANCE" class="w-full h-full grayscale contrast-125" data-alt="A gritty, high-contrast black and white portrait of a female lunar commander in her late 40s. She wears a tactical mission jumpsuit with technical patches. The lighting is harsh and dramatic, casting deep shadows against a textured industrial metallic background, reflecting a mission-critical, high-stakes aerospace environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcvMXIO9g6Mf63A9_o9g0wGw2WolaxO7Ym_YancyajVBQhhR8w5E1MPkTmCmX_vbBsTTWTo9Isbpzukj2NNrql_FDx1RumP5Ug5RUVyhpFrE1CuFG5sSlNKGJkU6cXQF-rFH3fEj8s-LJMvMLCDNUDRru7G6dSQin1d4-nPOLjUxfMcaPB7BLZPens4f0qU9rABW378mO467inA_ccRbmIMS4XLOtxTcM_Vh7ICgqDYw6NsJVgeOvcjqn8vCYV6g0Lq89w-ALGz4g"/>
+</div>
+<div>
+<h2 class="font-headline-sm text-headline-sm text-primary-container">CDR. ELARA VANCE</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant">SECTOR 7 COMMAND</p>
+</div>
+</div>
+<div class="mt-2 inline-block bg-primary-container px-2 py-0.5 self-start">
+<span class="font-label-caps text-label-caps text-on-primary-container">CLEARANCE: OMEGA</span>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<a class="bg-primary-container text-on-primary-container mx-2 my-1 px-4 py-3 flex items-center gap-4 active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">COMMAND_CENTER</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-label-caps">PAYLOAD_VIS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">TELEMETRY_LOGS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors active:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">SOP_MANUALS</span>
+</a>
+</nav>
+<div class="mt-auto border-t-2 border-outline-variant p-4">
+<button class="w-full text-on-surface px-4 py-3 flex items-center gap-4 hover:bg-error-container hover:text-on-error-container transition-colors active:translate-x-1 transition-all">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">LOG_OUT</span>
+</button>
+</div>
+</aside>
+<main class="flex-1 md:ml-80 pb-20 md:pb-0">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 md:left-80 right-0 z-50 flex items-center px-margin h-16 bg-surface border-b-3 border-outline">
+<span class="material-symbols-outlined text-primary-container mr-4" data-icon="sensors">sensors</span>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary-container tracking-tighter uppercase">
+                LUNAR-LOGISTICS // MET 04:22:15
+            </h1>
+<div class="ml-auto flex items-center gap-6">
+<div class="hidden sm:flex gap-4">
+<span class="font-label-caps text-label-caps text-primary-container font-bold">REGISTRY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LOGS</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant animate-pulse" data-icon="warning">warning</span>
+</div>
+</header>
+<!-- CONTENT CANVAS -->
+<div class="mt-16 p-margin pt-8 max-w-7xl mx-auto">
+<!-- HEADER SECTION -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-gutter mb-8 border-l-4 border-primary-container pl-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface uppercase tracking-tight">Personnel Registry</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-xl">
+                        Active mandate of all operatives assigned to Sector 7. Monitor biometric stability and clearance verification in real-time.
+                    </p>
+</div>
+<div class="flex gap-2">
+<button class="bg-primary-container text-on-primary-container px-6 py-3 font-label-caps text-label-caps clipped-corner hover:brightness-110 active:scale-95 transition-all">
+                        DEPLOY NEW OPERATIVE
+                    </button>
+</div>
+</div>
+<!-- FILTERS & STATS -->
+<div class="grid grid-cols-1 lg:grid-cols-4 gap-gutter mb-6">
+<div class="lg:col-span-3 flex flex-wrap gap-unit bg-surface-container-low border-2 border-outline p-2">
+<button class="px-4 py-2 bg-primary-container text-on-primary-container font-label-caps text-label-caps">ALL_UNITS</button>
+<button class="px-4 py-2 hover:bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps transition-colors">ACTIVE_DUTY</button>
+<button class="px-4 py-2 hover:bg-surface-container-highest text-on-surface-variant font-label-caps text-label-caps transition-colors">ON_LEAVE</button>
+<div class="w-px bg-outline-variant h-8 mx-2 self-center"></div>
+<div class="flex-1 min-w-[200px] relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="w-full bg-background border-2 border-outline focus:border-primary-container text-on-surface pl-10 pr-4 py-2 font-body-md placeholder:text-outline-variant outline-none" placeholder="SEARCH BY OPERATIVE ID..." type="text"/>
+</div>
+</div>
+<div class="bg-surface-container border-2 border-outline p-4 flex flex-col justify-center">
+<p class="font-label-caps text-label-caps text-outline-variant">TOTAL_PERSONNEL</p>
+<p class="font-headline-md text-headline-md text-primary-container">1,204 <span class="text-body-md text-on-surface-variant font-normal">UNIT_07</span></p>
+</div>
+</div>
+<!-- MAIN DATA GRID -->
+<div class="border-3 border-outline bg-background overflow-hidden relative">
+<div class="absolute inset-0 scanline pointer-events-none opacity-20"></div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest border-b-2 border-outline">
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface">ID // OPERATIVE</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface">SECTOR</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface">CLEARANCE</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface text-center">BIOMETRICS</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface">STATUS</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-on-surface text-right">PROTOCOL_ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y border-outline-variant divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 border-2 border-outline-variant overflow-hidden">
+<img alt="Operative" class="w-full h-full grayscale" data-alt="A macro photography style portrait of a male lunar worker with high-contrast shadows. His face is illuminated by a cool blue cybernetic light reflecting on his skin. He wears an industrial helmet harness. The image is gritty, monochromatic with orange highlights, capturing a mission-critical supply chain atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-LUfZ9wnopWb0P9ORe_LqPMuQM6LUZsNrkZ1HcrxPMtEX9EWZBGJny6lVwkK8AJYGS_QXyPNJ7mzv0V6UXzB0FCZdTfHttUG28QvbItdz2iW1RIw0XQOfEl5-vbYx-FU2_g2hnslew9elgeVXEmAHe-6ARByz94Fo0UhSW-z4susHYXQMEdxO6V8SYApB2T8IyoKPcUUGMvXhFKHQ3A3w9Y3IU5re1PR93dP6PcnuVzJJCD1SK2ekmDtj7lEHx_prCWSMOT8_c0E"/>
+</div>
+<div>
+<p class="font-data-display text-data-display text-primary-container">KANE, MARCUS</p>
+<p class="font-label-caps text-[10px] text-outline-variant">ID: 8841-XJ</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">SEC-04 [CRATER]</td>
+<td class="px-6 py-4">
+<span class="inline-block px-2 py-1 bg-on-surface text-background font-label-caps text-label-caps">OMEGA</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-center items-center gap-1">
+<div class="w-1.5 h-6 bg-primary-container"></div>
+<div class="w-1.5 h-4 bg-primary-container"></div>
+<div class="w-1.5 h-8 bg-primary-container"></div>
+<div class="w-1.5 h-5 bg-primary-container"></div>
+<div class="w-1.5 h-7 bg-primary-container"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary-container rounded-full"></div>
+<span class="font-label-caps text-label-caps text-on-surface">ACTIVE_DUTY</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-background border-2 border-outline px-3 py-1 font-label-caps text-label-caps text-on-surface hover:border-primary-container">UPDATE</button>
+<button class="bg-background border-2 border-error px-3 py-1 font-label-caps text-label-caps text-error hover:bg-error hover:text-on-error">REVOKE</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 border-2 border-outline-variant overflow-hidden">
+<img alt="Operative" class="w-full h-full grayscale" data-alt="A gritty close-up portrait of a female lunar engineer in low-light industrial setting. Her face is smudged with technical grease, and she is wearing heavy-duty communication headsets. The visual style is harsh, with high contrast and a deep amber and matte black color palette consistent with lunar survival technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLhWl1HKqgxmCQCaurV8Kj5RmdS_erndo7EPwQCGjFyAAhXjbQW0xoicqr_kkVzU8JtZCtN3Pf6IbAKGt50QuNUB1hyRBSuFnecH6wLSOiCJil0gu4oe5xSDuwefdPn_uYE78AABjr5RnKAO_ML4k8lQJV_1ZiPgrxe_TJnY6nMPO4Dqd-D23Zx5PaaOMRwQ2GVnM4u3ilE38vRKsA2Z8fTS5cYEvM5Z7oYe8i3-tmtdLcBZGElcQMJ2lBwfm5lVbLPvO5x2Ecx6Q"/>
+</div>
+<div>
+<p class="font-data-display text-data-display text-on-surface">CHEN, LI WEI</p>
+<p class="font-label-caps text-[10px] text-outline-variant">ID: 4492-QL</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">SEC-07 [COMMAND]</td>
+<td class="px-6 py-4">
+<span class="inline-block px-2 py-1 border-2 border-outline text-on-surface font-label-caps text-label-caps">ALPHA</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-center items-center gap-1">
+<div class="w-1.5 h-3 bg-outline-variant"></div>
+<div class="w-1.5 h-2 bg-outline-variant"></div>
+<div class="w-1.5 h-4 bg-outline-variant"></div>
+<div class="w-1.5 h-2 bg-outline-variant"></div>
+<div class="w-1.5 h-3 bg-outline-variant"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 border border-outline rounded-full"></div>
+<span class="font-label-caps text-label-caps text-outline-variant uppercase">On-Leave</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-background border-2 border-outline px-3 py-1 font-label-caps text-label-caps text-on-surface hover:border-primary-container">UPDATE</button>
+<button class="bg-background border-2 border-error px-3 py-1 font-label-caps text-label-caps text-error hover:bg-error hover:text-on-error">REVOKE</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 border-2 border-outline-variant overflow-hidden">
+<img alt="Operative" class="w-full h-full grayscale" data-alt="A stark, industrial portrait of a male technical specialist. The setting is a dark, equipment-dense room on a lunar colony. The lighting is sharp, creating deep blacks and bright whites. He is wearing a high-collared protective flight suit with orange warning stripes, conveying a hardened, survivalist mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuADAyrCG0F6RV9hvQnYPT3Yxs0C7Ap4VYeHh1Fg4zwZKvn8cL3liH_IIWaFwoPXLAW-h_c--LTUC3q_kB-SME0dvndh2TqeUxqVpKOk0Oy--7cdUiw3XW9UXBUvsJs1z4PfI2a-xGuWWFP3UHDbiBs3_vhice7eo0yKyQVoRGBGPD8rt7Znw277NrxT3SexlsesxZQq8MhuwuUR_MsnAyRX9nqUKbzq4DARZQaFHBJI-1IppWJ14Ube6A9zyPAut32bh5h6BIlevIM"/>
+</div>
+<div>
+<p class="font-data-display text-data-display text-primary-container">PETROV, IVAN</p>
+<p class="font-label-caps text-[10px] text-outline-variant">ID: 9912-KB</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-body-md text-on-surface">SEC-09 [REFINERY]</td>
+<td class="px-6 py-4">
+<span class="inline-block px-2 py-1 border-2 border-primary-container text-primary-container font-label-caps text-label-caps">BETA</span>
+</td>
+<td class="px-6 py-4">
+<div class="flex justify-center items-center gap-1">
+<div class="w-1.5 h-8 bg-primary-container animate-pulse"></div>
+<div class="w-1.5 h-6 bg-primary-container"></div>
+<div class="w-1.5 h-9 bg-primary-container animate-pulse"></div>
+<div class="w-1.5 h-7 bg-primary-container"></div>
+<div class="w-1.5 h-8 bg-primary-container animate-pulse"></div>
+</div>
+</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary-container rounded-full"></div>
+<span class="font-label-caps text-label-caps text-on-surface">ACTIVE_DUTY</span>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-background border-2 border-outline px-3 py-1 font-label-caps text-label-caps text-on-surface hover:border-primary-container">UPDATE</button>
+<button class="bg-background border-2 border-error px-3 py-1 font-label-caps text-label-caps text-error hover:bg-error hover:text-on-error">REVOKE</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- FOOTER OF TABLE -->
+<div class="bg-surface-container border-t-2 border-outline p-4 flex justify-between items-center">
+<p class="font-label-caps text-[10px] text-outline-variant">ENCRYPTION_LAYER: 256-BIT // AES-LUNAR</p>
+<div class="flex gap-4">
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container">PREVIOUS_PAGE</button>
+<span class="font-label-caps text-label-caps text-primary-container">01 / 48</span>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container">NEXT_PAGE</button>
+</div>
+</div>
+</div>
+<!-- LOWER TELEMETRY SECTION -->
+<div class="mt-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<div class="bg-surface border-2 border-outline p-4 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 right-0 hazard-pattern w-16 h-1 opacity-50"></div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-on-surface">SECURITY_LEVEL_STATUS</h3>
+<span class="material-symbols-outlined text-primary-container" data-icon="shield">shield</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span>OMEGA_THREAT_INDEX</span>
+<span class="text-on-surface">LOW</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1.5">
+<div class="bg-primary-container h-full w-[12%]"></div>
+</div>
+<div class="flex justify-between font-body-md text-on-surface-variant">
+<span>UNAUTHORIZED_ATTEMPTS</span>
+<span class="text-on-surface">003</span>
+</div>
+</div>
+</div>
+<div class="bg-surface border-2 border-outline p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-on-surface">ZONE_STABILITY</h3>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="monitoring">monitoring</span>
+</div>
+<div class="flex-1 flex items-end gap-1 px-2 h-16">
+<div class="w-full bg-primary-container h-[40%]"></div>
+<div class="w-full bg-primary-container h-[60%]"></div>
+<div class="w-full bg-primary-container h-[55%]"></div>
+<div class="w-full bg-primary-container h-[85%]"></div>
+<div class="w-full bg-primary-container h-[70%]"></div>
+<div class="w-full bg-primary-container h-[90%]"></div>
+<div class="w-full bg-primary-container h-[75%]"></div>
+</div>
+<p class="font-label-caps text-[10px] text-outline-variant">REAL-TIME SECTOR FEED ACTIVE</p>
+</div>
+<div class="bg-primary-container border-2 border-outline p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-on-primary-container">SYSTEM_WIDE_ALERT</h3>
+<span class="material-symbols-outlined text-on-primary-container" data-icon="notification_important" style="font-variation-settings: 'FILL' 1;">notification_important</span>
+</div>
+<div>
+<p class="font-data-display text-on-primary-container uppercase">Emergency Lockdown Active in Sector 4</p>
+<p class="font-label-caps text-[10px] text-on-primary-container opacity-80 mt-1">CODE: LUNAR-CRIMSON</p>
+</div>
+<button class="mt-4 border-2 border-on-primary-container bg-transparent py-2 font-label-caps text-label-caps text-on-primary-container hover:bg-on-primary-container hover:text-primary-container transition-colors">
+                        ACKNOWLEDGE
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BOTTOM NAV BAR (MOBILE) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 h-20 flex justify-around items-stretch bg-surface border-t-3 border-outline">
+<a class="bg-primary-container text-on-primary-container flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">MANIFEST</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="event_upcoming">event_upcoming</span>
+<span class="font-label-caps text-label-caps">CALENDAR</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-label-caps">ZONES</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-label-caps">ALERTS</span>
+</a>
+</nav>
+</body></html>

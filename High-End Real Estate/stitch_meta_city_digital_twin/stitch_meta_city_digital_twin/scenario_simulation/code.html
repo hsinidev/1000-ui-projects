@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>META-CITY // SCENARIO_SIMULATION</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @id tailwind-config;
+        /* Scanning Bar Animation - Simplified to CSS as requested */
+        .scanning-bar {
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f3ff, transparent);
+            top: 0;
+            left: 0;
+            opacity: 0.4;
+            box-shadow: 0 0 15px #00f3ff;
+            pointer-events: none;
+            z-index: 20;
+        }
+        .grid-overlay {
+            background-image: 
+                linear-gradient(to right, rgba(132, 148, 149, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(132, 148, 149, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        body {
+            background-color: #0a0a0a;
+            color: #e5e2e1;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "error": "#ffb4ab",
+                "tertiary": "#fbf8f7",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-secondary": "#303030",
+                "secondary": "#c8c6c6",
+                "background": "#131313",
+                "on-tertiary-fixed-variant": "#474746",
+                "outline": "#849495",
+                "surface-container-low": "#1c1b1b",
+                "error-container": "#93000a",
+                "inverse-primary": "#00696f",
+                "on-primary": "#00373a",
+                "surface-container-highest": "#353534",
+                "on-background": "#e5e2e1",
+                "outline-variant": "#3a494b",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "on-tertiary-container": "#616060",
+                "on-tertiary": "#313030",
+                "primary-fixed-dim": "#00dce6",
+                "primary-fixed": "#6ff6ff",
+                "on-primary-fixed": "#002022",
+                "inverse-surface": "#e5e2e1",
+                "primary-container": "#00f3ff",
+                "secondary-fixed": "#e4e2e1",
+                "surface-tint": "#00dce6",
+                "secondary-container": "#474747",
+                "on-primary-fixed-variant": "#004f53",
+                "surface-dim": "#131313",
+                "on-secondary-fixed-variant": "#474747",
+                "on-primary-container": "#006b71",
+                "on-secondary-fixed": "#1b1c1c",
+                "surface-container-high": "#2a2a2a",
+                "surface-container": "#201f1f",
+                "surface-container-lowest": "#0e0e0e",
+                "on-secondary-container": "#b6b5b4",
+                "tertiary-fixed": "#e5e2e1",
+                "on-surface": "#e5e2e1",
+                "surface": "#131313",
+                "primary": "#e3fdff",
+                "on-surface-variant": "#b9cacb",
+                "secondary-fixed-dim": "#c8c6c6",
+                "surface-bright": "#3a3939",
+                "tertiary-container": "#dedbdb",
+                "inverse-on-surface": "#313030",
+                "on-error": "#690005",
+                "surface-variant": "#353534",
+                "on-error-container": "#ffdad6"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin": "32px",
+                "gutter": "16px",
+                "unit": "4px",
+                "container-max": "1440px"
+              },
+              "fontFamily": {
+                "headline-lg": ["Space Grotesk"],
+                "technical-data": ["monospace"],
+                "headline-md": ["Space Grotesk"],
+                "label-caps": ["Space Grotesk"],
+                "headline-xl": ["Space Grotesk"],
+                "body-lg": ["Inter"],
+                "body-md": ["Inter"]
+              },
+              "fontSize": {
+                "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "technical-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TOP APP BAR (Shared Component) -->
+<header class="bg-surface/80 backdrop-blur-xl text-primary-container font-technical-data text-technical-data uppercase tracking-widest docked full-width top-0 border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)] fixed top-0 left-0 w-full z-50">
+<div class="flex justify-between items-center px-margin h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary-container drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]">META-CITY // LIVE_DATA</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-3 py-1 bg-primary-container/10 border border-primary-container/30 rounded">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="text-[10px]">SYNC_ACTIVE</span>
+</div>
+<span class="material-symbols-outlined cursor-crosshair active:scale-95 text-on-surface-variant hover:bg-primary-container/10 transition-colors p-2" data-icon="wifi_tethering">wifi_tethering</span>
+</div>
+</div>
+</header>
+<!-- NAVIGATION DRAWER (Shared Component) -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col pt-20 bg-surface-container-high/95 backdrop-blur-2xl h-full w-80 border-r border-outline-variant/40 shadow-[10px_0_30px_rgba(0,0,0,0.8)] hidden md:flex">
+<div class="px-8 py-6">
+<h2 class="font-headline-md text-primary font-bold tracking-tight">LAYER_CONTROL_v1.0</h2>
+<p class="font-technical-data text-[10px] text-on-surface-variant/60 mt-1 uppercase">Active Scenario: Flood_Resilience_Beta</p>
+</div>
+<nav class="flex-grow divide-y divide-outline-variant/20">
+<div class="py-4">
+<a class="flex items-center gap-4 px-8 py-4 bg-primary-container/20 text-primary-container font-bold border-l-4 border-primary-container cursor-pointer select-none transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="traffic">traffic</span>
+<span class="font-technical-data">TRAFFIC_FLOW</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-10 cursor-pointer select-none transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-technical-data">ENERGY_GRID</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-10 cursor-pointer select-none transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="water_drop">water_drop</span>
+<span class="font-technical-data">SEWAGE_MOD</span>
+</a>
+<a class="flex items-center gap-4 px-8 py-4 text-on-surface-variant hover:bg-surface-variant/30 hover:pl-10 cursor-pointer select-none transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span class="font-technical-data">STRUCTURAL</span>
+</a>
+</div>
+</nav>
+<div class="p-8 border-t border-outline-variant/20 bg-surface-container-lowest/50">
+<div class="space-y-4">
+<div class="flex justify-between items-center text-[10px] font-technical-data">
+<span>CPU_LOAD</span>
+<span class="text-primary-container">42.8%</span>
+</div>
+<div class="w-full bg-outline-variant/30 h-1">
+<div class="bg-primary-container h-full w-[42.8%] shadow-[0_0_8px_#00f3ff]"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- MAIN CANVAS -->
+<main class="md:ml-80 pt-16 pb-20 md:pb-0 min-h-screen flex flex-col">
+<!-- TOP HALF: LOCALIZED MAP VIEWPORT -->
+<section class="relative h-[397px] w-full border-b border-outline-variant/50 overflow-hidden group">
+<!-- Background Map Image -->
+<div class="absolute inset-0 bg-slate-900">
+<img class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A highly detailed 3D topographic map of a dense futuristic city district with glowing neon cyan arteries representing traffic flow and blue areas indicating flood zones. The visual style is high-contrast HUD with a matte black and slate grey environment, illuminated by sharp digital glows. Fine architectural lines and data points are superimposed over the urban landscape in a clinical, authoritative data architect aesthetic." data-location="Tokyo District" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5_olY-ar64z_VEIiSn_McHrC5FKMdNZuXou3rC3Rv4E4j38zDQyHZJk7nMT8-pXtlqAnkM8GtzZjQ80U4Yry8XysPnSgrwtMMROnYO658URgBa4taTgMH2idSkfn6S94G9-_8mXvAJElUd-j0GkJqOEUxOTc9IaVpyx_1Va2O8cWDrxpbNyL9evd16FR28yF6zFTs_tAFhCH-3aL9C27poUWgaylS5RftuI7D3xltqvMp9x3ZeGrKJJCBl9KUzh8M80juvW3vKaPC"/>
+</div>
+<!-- Scanning Animation Overlay -->
+<div class="scanning-bar" style="top: 20%;"></div>
+<div class="absolute inset-0 grid-overlay opacity-20"></div>
+<!-- HUD Overlays -->
+<div class="absolute top-8 left-8 z-10 flex flex-col gap-2">
+<div class="px-4 py-2 bg-surface-container-lowest/90 backdrop-blur-md border-l-2 border-primary-container flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container text-sm" data-icon="my_location">my_location</span>
+<span class="font-technical-data text-xs tracking-widest">SECTOR_4_DELTA // 35.6895° N, 139.6917° E</span>
+</div>
+<div class="px-4 py-2 bg-surface-container-lowest/90 backdrop-blur-md border-l-2 border-error flex items-center gap-3">
+<span class="material-symbols-outlined text-error text-sm" data-icon="warning">warning</span>
+<span class="font-technical-data text-xs tracking-widest text-error">FLOOD_RISK: CRITICAL (84%)</span>
+</div>
+</div>
+<div class="absolute bottom-8 right-8 z-10 flex flex-col gap-4">
+<div class="p-4 bg-surface-container-lowest/90 backdrop-blur-md border border-outline-variant/30 rounded-lg">
+<div class="flex justify-between items-center mb-3">
+<span class="font-label-caps text-on-surface-variant">ZOOM_OPTICS</span>
+<span class="font-technical-data text-[10px]">x14.5</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="w-32 h-1 bg-outline-variant/30 relative">
+<div class="absolute top-0 left-0 w-3/4 h-full bg-primary-container"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Coordinate Crosshair -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="relative w-40 h-40 border border-primary-container/20 rounded-full flex items-center justify-center">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1px] h-4 bg-primary-container"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[1px] h-4 bg-primary-container"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 h-[1px] w-4 bg-primary-container"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 h-[1px] w-4 bg-primary-container"></div>
+<span class="font-technical-data text-[8px] text-primary-container">TARGET_LOCK</span>
+</div>
+</div>
+</section>
+<!-- BOTTOM HALF: SIMULATION PARAMETERS -->
+<section class="flex-grow bg-background p-margin grid grid-cols-12 gap-gutter overflow-y-auto">
+<!-- Left Controls: Environmental Sliders -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<header class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="tune">tune</span>
+<h3 class="font-headline-md text-headline-md uppercase text-on-surface">Environmental_Params</h3>
+</header>
+<!-- Vertical Slider Cluster -->
+<div class="grid grid-cols-3 gap-4 h-64">
+<div class="flex flex-col items-center gap-4 bg-surface-container/50 border border-outline-variant/20 p-4 rounded-lg group">
+<div class="flex-grow w-2 bg-outline-variant/20 rounded-full relative overflow-hidden flex flex-col-reverse">
+<div class="h-[60%] bg-primary-container shadow-[0_0_10px_#00f3ff] w-full"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant rotate-[-90deg] whitespace-nowrap mt-4">PRECIPITATION</span>
+</div>
+<div class="flex flex-col items-center gap-4 bg-surface-container/50 border border-outline-variant/20 p-4 rounded-lg group">
+<div class="flex-grow w-2 bg-outline-variant/20 rounded-full relative overflow-hidden flex flex-col-reverse">
+<div class="h-[30%] bg-primary-container shadow-[0_0_10px_#00f3ff] w-full"></div>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant rotate-[-90deg] whitespace-nowrap mt-4">WIND_VELOCITY</span>
+</div>
+<div class="flex flex-col items-center gap-4 bg-surface-container/50 border border-outline-variant/20 p-4 rounded-lg group">
+<div class="flex-grow w-2 bg-outline-variant/20 rounded-full relative overflow-hidden flex flex-col-reverse">
+<div class="h-[85%] bg-error shadow-[0_0_10px_#ffb4ab] w-full"></div>
+</div>
+<span class="font-label-caps text-[10px] text-error rotate-[-90deg] whitespace-nowrap mt-4">SATURATION</span>
+</div>
+</div>
+</div>
+<!-- Center Controls: Traffic & Logic Switches -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<header class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="terminal">terminal</span>
+<h3 class="font-headline-md text-headline-md uppercase text-on-surface">Traffic_Logic</h3>
+</header>
+<div class="space-y-4">
+<!-- Toggle Switch 1 -->
+<div class="flex items-center justify-between p-4 bg-surface-container/30 border border-outline-variant/20 rounded-lg hover:border-primary-container/40 transition-colors">
+<div class="flex flex-col">
+<span class="font-technical-data text-xs text-on-surface">AUTO_REDIRECT_SYSTEM</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant/50 italic">Redirect traffic away from rising water</span>
+</div>
+<div class="w-12 h-6 bg-primary-container/20 border border-primary-container/50 rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-primary-container rounded-full ml-auto shadow-[0_0_8px_#00f3ff]"></div>
+</div>
+</div>
+<!-- Toggle Switch 2 -->
+<div class="flex items-center justify-between p-4 bg-surface-container/30 border border-outline-variant/20 rounded-lg hover:border-primary-container/40 transition-colors">
+<div class="flex flex-col">
+<span class="font-technical-data text-xs text-on-surface">EMERGENCY_CORRIDORS</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant/50 italic">Prioritize EVAC-A paths</span>
+</div>
+<div class="w-12 h-6 bg-outline-variant/30 border border-outline-variant/50 rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-on-surface-variant rounded-full mr-auto"></div>
+</div>
+</div>
+<!-- Toggle Switch 3 -->
+<div class="flex items-center justify-between p-4 bg-surface-container/30 border border-outline-variant/20 rounded-lg hover:border-primary-container/40 transition-colors">
+<div class="flex flex-col">
+<span class="font-technical-data text-xs text-on-surface">PUBLIC_TRANSIT_SYNC</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant/50 italic">Pause underground rail lines</span>
+</div>
+<div class="w-12 h-6 bg-primary-container/20 border border-primary-container/50 rounded-full relative p-1 cursor-pointer">
+<div class="w-4 h-4 bg-primary-container rounded-full ml-auto shadow-[0_0_8px_#00f3ff]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Controls: Execution & Status -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<header class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="analytics">analytics</span>
+<h3 class="font-headline-md text-headline-md uppercase text-on-surface">Sim_Status</h3>
+</header>
+<div class="bg-surface-container-highest/30 border border-outline-variant/30 p-6 rounded-xl flex flex-col h-full">
+<div class="flex-grow space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 flex items-center justify-center bg-primary-container/10 border border-primary-container/30 rounded-full">
+<span class="material-symbols-outlined text-primary-container animate-spin" data-icon="cycle" style="animation-duration: 4s">cycle</span>
+</div>
+<div>
+<span class="block font-technical-data text-[10px] text-on-surface-variant">READY_STATE</span>
+<span class="block font-headline-md text-on-surface">AWAITING_TRIGGER</span>
+</div>
+</div>
+<div class="p-4 bg-black/40 border-l-2 border-primary-container">
+<p class="font-technical-data text-[11px] leading-relaxed text-on-surface-variant">
+                                [LOG] Environment variables locked.<br/>
+                                [LOG] Map sector 4D loaded at 12.4GB/s.<br/>
+                                [LOG] AI-Predictor operational.<br/>
+                                [LOG] Ready for flood/traffic collision simulation.
+                            </p>
+</div>
+</div>
+<button class="mt-8 w-full py-6 bg-surface-container-lowest border border-primary-container text-primary-container font-headline-md uppercase tracking-[0.2em] transition-all duration-300 hover:bg-primary-container hover:text-black active:scale-95 shadow-[0_0_30px_rgba(0,243,255,0.3)] group relative overflow-hidden">
+<span class="relative z-10">RUN_SIMULATION</span>
+<div class="absolute inset-0 bg-primary-container/10 group-hover:bg-transparent transition-colors"></div>
+<div class="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary-container"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-primary-container"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-primary-container"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary-container"></div>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAV BAR (Shared Component - Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-gutter bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/50 shadow-[0_-4px_24px_rgba(0,243,255,0.1)]">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 font-label-caps text-label-caps hover:text-primary-fixed-dim transition-all duration-300 active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span>VIEWPORT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-container bg-primary-container/10 border-t-2 border-primary-container animate-pulse shadow-[inset_0_0_12px_rgba(0,243,255,0.2)] font-label-caps text-label-caps h-full px-4">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span>METRICS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 font-label-caps text-label-caps hover:text-primary-fixed-dim transition-all duration-300 active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span>LAYERS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 font-label-caps text-label-caps hover:text-primary-fixed-dim transition-all duration-300 active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>COMMAND</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 font-label-caps text-label-caps hover:text-primary-fixed-dim transition-all duration-300 active:bg-surface-bright/20">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span>SYSTEM</span>
+</div>
+</nav>
+</body></html>

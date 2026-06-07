@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@700&amp;family=Space+Grotesk:wght@600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .clipped-corner {
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#1d100a",
+                        "surface-container": "#2b1c16",
+                        "outline": "#aa8a7d",
+                        "primary-fixed": "#ffdbcd",
+                        "primary-fixed-dim": "#ffb596",
+                        "on-secondary-container": "#b8b8b8",
+                        "on-error": "#690005",
+                        "secondary": "#c7c6c6",
+                        "on-background": "#f8ddd2",
+                        "inverse-surface": "#f8ddd2",
+                        "surface-dim": "#1d100a",
+                        "surface-container-low": "#261812",
+                        "surface-container-high": "#362620",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "on-primary-fixed": "#360f00",
+                        "on-primary": "#581e00",
+                        "surface-tint": "#ffb596",
+                        "primary": "#ffb596",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#3d2d26",
+                        "outline-variant": "#5a4136",
+                        "on-primary-container": "#561d00",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface": "#1d100a",
+                        "on-surface": "#f8ddd2",
+                        "surface-container-highest": "#42312a",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#a33e00",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary": "#313030",
+                        "on-surface-variant": "#e3bfb1",
+                        "surface-variant": "#42312a",
+                        "primary-container": "#ff6600",
+                        "on-tertiary-container": "#2f2f2f",
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface-container-lowest": "#180b06",
+                        "surface-bright": "#47352e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#989696",
+                        "secondary-container": "#484949",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#e3e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "border-width-heavy": "3px",
+                        "gutter": "16px",
+                        "margin": "24px",
+                        "border-width": "2px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Archivo Narrow"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["JetBrains Mono"],
+                        "data-display": ["JetBrains Mono"],
+                        "headline-sm": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-display": ["18px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex">
+<!-- Navigation Drawer (Shell Sidebar) -->
+<aside class="fixed inset-y-0 left-0 z-[60] bg-surface border-r-3 border-outline flex flex-col w-80">
+<div class="p-margin border-b-2 border-outline-variant">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 border-2 border-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary-container opacity-70">COMMANDER ID-7742</p>
+<h2 class="font-headline-sm text-headline-sm text-on-surface leading-none">CDR. ELARA VANCE</h2>
+</div>
+</div>
+<div class="bg-surface-container-high border border-outline-variant p-2">
+<p class="font-label-caps text-[10px] text-on-surface-variant">CLEARANCE: OMEGA</p>
+<p class="font-label-caps text-[10px] text-primary-container">SECTOR 7 COMMAND</p>
+</div>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<a class="bg-primary-container text-on-primary-container mx-2 my-1 px-4 py-3 flex items-center gap-4 transition-all" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-label-caps">MANIFEST</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">view_in_ar</span>
+<span class="font-label-caps text-label-caps">PAYLOAD_VIS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">TELEMETRY_LOGS</span>
+</a>
+<a class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">SOP_MANUALS</span>
+</a>
+</nav>
+<div class="p-4 border-t-2 border-outline-variant">
+<button class="w-full text-on-surface-variant px-4 py-3 flex items-center gap-4 hover:bg-error-container hover:text-on-error-container transition-colors active:translate-x-1">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">LOG_OUT</span>
+</button>
+</div>
+</aside>
+<!-- Main Workspace -->
+<main class="ml-80 flex-1 flex flex-col h-full relative">
+<!-- TopAppBar -->
+<header class="h-16 bg-surface border-b-3 border-outline flex items-center px-margin justify-between shrink-0">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container">sensors</span>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary-container tracking-tighter uppercase">LUNAR-LOGISTICS // MET 04:22:15</h1>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LAUNCH STATUS</span>
+<div class="flex gap-1">
+<span class="bg-primary-container text-on-primary-container font-data-display text-data-display px-2 py-1">T-</span>
+<span class="bg-primary-container text-on-primary-container font-data-display text-data-display px-2 py-1">08:14:42</span>
+</div>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 border-2 border-primary-container bg-primary-container/10">
+<span class="material-symbols-outlined text-primary-container text-sm animate-pulse">warning</span>
+<span class="font-label-caps text-label-caps text-primary-container">SYSTEMS CRITICAL</span>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 p-gutter overflow-hidden grid grid-cols-12 gap-gutter bg-background">
+<!-- Left Panel: 3D Payload Visualizer -->
+<section class="col-span-4 flex flex-col gap-gutter">
+<div class="flex-1 border-3 border-outline bg-surface-container relative overflow-hidden flex flex-col">
+<div class="absolute inset-0 scanline-overlay z-10"></div>
+<div class="p-3 border-b-2 border-outline-variant flex justify-between items-center bg-surface-container-high">
+<span class="font-label-caps text-label-caps">PAYLOAD_VIS_04 [3D_RENDER]</span>
+<div class="flex gap-2">
+<button class="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container"><span class="material-symbols-outlined text-xs">zoom_in</span></button>
+<button class="w-6 h-6 border border-outline-variant flex items-center justify-center hover:bg-primary-container hover:text-on-primary-container"><span class="material-symbols-outlined text-xs">refresh</span></button>
+</div>
+</div>
+<div class="flex-1 relative flex items-center justify-center">
+<!-- Simulated 3D View -->
+<img alt="3D Payload Layout" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A sophisticated three-dimensional blueprint of a lunar cargo lander's internal payload bay, rendered in a mission-critical technical style. The scene shows multiple geometric containers locked into a rigid structural frame with glowing orange laser guides highlighting the center of mass. The aesthetic is industrial and high-tech, utilizing deep matte blacks, charcoal greys, and intense safety orange accents, mirroring a hardened military aerospace interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDDK1eW2NjsawNYKUVP9GJlSEojbulCyXZ7561om-zSWWhr3IQ9Oo9PpxugIEzXrbZPYGmrWm0sFVXNvjr44cU9RA_vi5iHfv-OPAn9f_YjcBW0p7WXKpcuO0uMgZKyfmbOjph6HbCmBERqaAsKX00jHeb7gicA2FEas6m9gPLtxA34aXw2XCFcjv9jw0mS0mzvT5av97WyMC_bJw2LQeiqPnRb6OVt03uPhWZsqiC2EfFqS0JRIhlUVe0vF9ThukMSe4qcPBzKB4k"/>
+<div class="z-20 w-full px-6 pointer-events-none">
+<div class="border-l-2 border-primary-container h-32 flex flex-col justify-between pl-4">
+<div>
+<p class="font-label-caps text-[10px] text-primary-container">AXIS_X_ALIGN</p>
+<p class="font-data-display text-data-display">99.8% OK</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-primary-container">STRUCTURAL_INTEGRITY</p>
+<p class="font-data-display text-data-display">NOMINAL</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface border-t-2 border-outline flex gap-4">
+<div class="flex-1">
+<p class="font-label-caps text-[10px] text-on-surface-variant">TOTAL_VOLUME</p>
+<div class="w-full bg-surface-container-highest h-2 mt-1">
+<div class="bg-primary-container h-full w-[78%]"></div>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant">UTILIZATION</p>
+<p class="font-data-display text-sm">78.4%</p>
+</div>
+</div>
+</div>
+<!-- Expanded Telemetry Panel -->
+<div class="h-48 border-3 border-outline bg-surface-container grid grid-cols-3 divide-x-2 divide-outline-variant">
+<div class="p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-primary-container">THRUST_VEC</p>
+<div class="h-16 flex items-end gap-1">
+<div class="flex-1 bg-primary-container opacity-30 h-[40%]"></div>
+<div class="flex-1 bg-primary-container h-[85%]"></div>
+<div class="flex-1 bg-primary-container opacity-60 h-[60%]"></div>
+</div>
+<p class="font-data-display text-sm">4,288 KN</p>
+</div>
+<div class="p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-primary-container">LIFT_COEFF</p>
+<div class="relative h-16 w-16 mx-auto border-2 border-outline-variant rounded-full flex items-center justify-center">
+<div class="absolute w-0.5 h-8 bg-primary-container -rotate-45 origin-bottom bottom-1/2"></div>
+<span class="font-data-display text-[10px]">1.22</span>
+</div>
+<p class="font-data-display text-sm text-center">STABLE</p>
+</div>
+<div class="p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-primary-container">MASS_BAL</p>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-body-md"><span class="text-on-surface-variant">DRY:</span><span>12,044 KG</span></div>
+<div class="flex justify-between text-[10px] font-body-md"><span class="text-on-surface-variant">FUEL:</span><span class="text-primary-container">45,100 KG</span></div>
+<div class="flex justify-between text-[10px] font-body-md"><span class="text-on-surface-variant">PLD:</span><span>8,500 KG</span></div>
+</div>
+<p class="font-data-display text-sm border-t border-outline-variant pt-1">Σ 65.6T</p>
+</div>
+</div>
+</section>
+<!-- Right Panel: Data Grid -->
+<section class="col-span-8 flex flex-col border-3 border-outline bg-surface">
+<div class="p-4 border-b-3 border-outline bg-surface-container-high flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface">inventory_2</span>
+<h2 class="font-headline-sm text-headline-sm uppercase">Master Cargo Manifest</h2>
+</div>
+<div class="flex gap-2">
+<button class="bg-surface border-2 border-outline text-on-surface px-4 py-1 font-label-caps text-label-caps clipped-corner hover:bg-surface-variant active:translate-y-0.5 transition-all">FILTER</button>
+<button class="bg-primary-container border-2 border-primary-container text-on-primary-container px-4 py-1 font-label-caps text-label-caps clipped-corner active:translate-y-0.5 transition-all">EXPORT_CSV</button>
+</div>
+</div>
+<div class="flex-1 overflow-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 z-20 bg-secondary text-background font-label-caps text-label-caps">
+<tr>
+<th class="p-3 border-r border-background/20">CARGO_ID</th>
+<th class="p-3 border-r border-background/20">DESCRIPTION</th>
+<th class="p-3 border-r border-background/20">MASS (KG)</th>
+<th class="p-3 border-r border-background/20">HAZARD</th>
+<th class="p-3 border-r border-background/20">ZONE</th>
+<th class="p-3">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-md text-sm">
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold text-primary-container">LC-4402</td>
+<td class="p-3 text-on-surface-variant">HE-3 EXTRACTION UNIT</td>
+<td class="p-3">2,450.00</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-error-container text-on-error-container font-label-caps text-[10px]">CLASS_7</span>
+</td>
+<td class="p-3">BAY_01A</td>
+<td class="p-3 text-primary-container flex items-center gap-2"><span class="w-2 h-2 bg-primary-container"></span>SECURED</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors bg-surface-container-low/30">
+<td class="p-3 font-bold text-primary-container">LC-4403</td>
+<td class="p-3 text-on-surface-variant">LITHIUM-ION ARRAYS</td>
+<td class="p-3">1,120.50</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-label-caps text-[10px]">NONE</span>
+</td>
+<td class="p-3">BAY_01B</td>
+<td class="p-3 text-primary-container flex items-center gap-2"><span class="w-2 h-2 bg-primary-container"></span>SECURED</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold text-primary-container">LC-4409</td>
+<td class="p-3 text-on-surface-variant">BIO-REGENERATIVE SOIL</td>
+<td class="p-3">850.00</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-label-caps text-[10px]">BIO</span>
+</td>
+<td class="p-3">BAY_02A</td>
+<td class="p-3 text-on-surface-variant flex items-center gap-2"><span class="w-2 h-2 bg-outline-variant"></span>STAGING</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors bg-surface-container-low/30 border-l-4 border-primary-container">
+<td class="p-3 font-bold text-primary-container">LC-4412</td>
+<td class="p-3 text-on-surface-variant">CRYOGENIC REAGENTS</td>
+<td class="p-3">420.25</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-error text-on-error font-label-caps text-[10px]">CRITICAL</span>
+</td>
+<td class="p-3">BAY_02C</td>
+<td class="p-3 text-primary-container flex items-center gap-2 animate-pulse"><span class="w-2 h-2 bg-primary-container"></span>LOADING</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors">
+<td class="p-3 font-bold text-primary-container">LC-4415</td>
+<td class="p-3 text-on-surface-variant">AVIONICS SPARE KIT</td>
+<td class="p-3">115.00</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-label-caps text-[10px]">NONE</span>
+</td>
+<td class="p-3">CABIN_STORAGE</td>
+<td class="p-3 text-on-surface-variant flex items-center gap-2"><span class="w-2 h-2 bg-outline-variant"></span>STAGING</td>
+</tr>
+<tr class="hover:bg-surface-container transition-colors bg-surface-container-low/30">
+<td class="p-3 font-bold text-primary-container">LC-4418</td>
+<td class="p-3 text-on-surface-variant">WATER RECOVERY SYSTEM</td>
+<td class="p-3">3,200.00</td>
+<td class="p-3">
+<span class="inline-block px-2 py-0.5 bg-surface-container-highest text-on-surface-variant font-label-caps text-[10px]">NONE</span>
+</td>
+<td class="p-3">BAY_03A</td>
+<td class="p-3 text-on-surface-variant flex items-center gap-2"><span class="w-2 h-2 bg-outline-variant"></span>QUEUED</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-gutter bg-surface-container border-t-3 border-outline flex justify-between items-center h-24">
+<div class="flex gap-8">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Gross_Weight</p>
+<p class="font-data-display text-data-display">65,644.75 KG</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Container_Count</p>
+<p class="font-data-display text-data-display">142 / 160</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Center_Of_Gravity</p>
+<p class="font-data-display text-data-display text-primary-container">OPTIMAL</p>
+</div>
+<div class="w-16 h-16 border-3 border-primary-container flex items-center justify-center bg-primary-container/20">
+<span class="material-symbols-outlined text-3xl text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer BottomNavBar -->
+<footer class="fixed bottom-0 left-80 right-0 h-20 bg-surface border-t-3 border-outline flex justify-around items-stretch z-50">
+<a class="bg-primary-container text-on-primary-container flex flex-col items-center justify-center w-full h-full p-unit transition-transform active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">MANIFEST</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">event_upcoming</span>
+<span class="font-label-caps text-label-caps">CALENDAR</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-label-caps text-label-caps">ZONES</span>
+</a>
+<a class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit hover:bg-surface-container-highest transition-colors active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-caps text-label-caps">ALERTS</span>
+</a>
+</footer>
+</main>
+<!-- Contextual FAB (Only for Main Dashboards) -->
+<button class="fixed bottom-24 right-8 w-16 h-16 bg-primary-container text-on-primary-container flex items-center justify-center shadow-2xl border-2 border-on-primary-container z-[70] clipped-corner active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>

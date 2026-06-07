@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STRUCTURAL-SENSE | Stress &amp; Strain Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#3a3939",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "on-tertiary-container": "#303131",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container-highest": "#353534",
+                        "primary-fixed": "#ffdbcc",
+                        "on-primary-container": "#572000",
+                        "secondary-container": "#474746",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#e3e2e2",
+                        "on-primary": "#561f00",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface-variant": "#e2bfb0",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "background": "#131313",
+                        "surface-tint": "#ffb693",
+                        "on-primary-fixed": "#351000",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-container": "#b7b5b4",
+                        "tertiary-fixed-dim": "#c7c6c6",
+                        "secondary": "#c8c6c5",
+                        "on-tertiary": "#303031",
+                        "tertiary-container": "#999999",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#474746",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "primary-container": "#ff6b00",
+                        "surface-container": "#201f1f",
+                        "tertiary": "#c7c6c6",
+                        "outline": "#a98a7d",
+                        "surface-container-high": "#2a2a2a",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#131313",
+                        "inverse-primary": "#a04100",
+                        "on-secondary": "#313030",
+                        "primary-fixed-dim": "#ffb693",
+                        "surface-variant": "#353534",
+                        "primary": "#ffb693",
+                        "outline-variant": "#5a4136"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "12px",
+                        "margin": "16px",
+                        "md": "16px",
+                        "xs": "4px",
+                        "base": "4px",
+                        "sm": "8px",
+                        "xl": "32px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-sm": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "h1": ["IBM Plex Sans"],
+                        "h2": ["IBM Plex Sans"],
+                        "code-xs": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "data-lg": ["18px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "h1": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "h2": ["20px", {"lineHeight": "28px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "code-xs": ["10px", {"lineHeight": "14px", "letterSpacing": "0.05em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .spider-grid {
+            background-image: radial-gradient(circle, #262626 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .heatmap-gradient {
+            background: linear-gradient(135deg, rgba(255, 107, 0, 0.1) 0%, rgba(19, 19, 19, 1) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-md h-14 bg-background border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-h1">sensors</span>
+<h1 class="font-h2 text-h2 font-bold text-primary tracking-tighter">STRUCTURAL-SENSE</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-base">
+<span class="px-sm py-xs bg-error-container/20 text-error font-label-sm border border-error/30 flex items-center gap-xs">
+<span class="w-2 h-2 bg-error rounded-sm animate-pulse"></span>
+                    SYSTEM_CRITICAL: 02
+                </span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-container-high transition-colors p-xs rounded-sm">account_hard_hat</button>
+</div>
+</header>
+<div class="flex h-screen pt-14">
+<!-- NavigationDrawer -->
+<aside class="hidden md:flex flex-col h-full w-72 bg-surface-container border-r border-outline-variant p-md gap-base">
+<div class="py-sm mb-md">
+<span class="font-h2 text-h2 text-primary font-bold">SYSTEM_MENU_V4.1</span>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md px-md py-sm bg-primary text-on-primary font-bold rounded-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm">DASHBOARD</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface hover:bg-surface-container-highest rounded-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm">SENSOR_MAP</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface hover:bg-surface-container-highest rounded-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">description</span>
+<span class="font-label-sm">REPORTS</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface hover:bg-surface-container-highest rounded-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">engineering</span>
+<span class="font-label-sm">ENGINEER_CONTACT</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface hover:bg-surface-container-highest rounded-sm transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-sm">SYSTEM_LOGS</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-md">
+<div class="flex flex-col gap-xs bg-surface-container-low p-sm border border-outline-variant">
+<span class="font-code-xs text-on-surface-variant">NODE_STATUS: ACTIVE</span>
+<span class="font-code-xs text-on-surface-variant">UPTIME: 1,422H 12M</span>
+<span class="font-code-xs text-on-surface-variant">LATENCY: 14MS</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-background p-md">
+<div class="grid grid-cols-12 gap-md h-full">
+<!-- Center Assembly: 3D Heatmap -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-md">
+<section class="flex-1 bg-surface-container-low border border-outline-variant relative overflow-hidden flex flex-col">
+<div class="p-sm bg-surface-container border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-sm text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[16px]">view_in_ar</span>
+                                REAL-TIME_STRESS_HEATMAP [SNSR_ASSEMBLY_B1]
+                            </span>
+<div class="flex gap-xs">
+<button class="px-sm py-1 border border-outline text-on-surface-variant font-label-sm hover:bg-surface-container-highest">ROTATION: LOCK</button>
+<button class="px-sm py-1 border border-primary-container text-primary font-label-sm hover:bg-primary-container/10">RESET_VIEW</button>
+</div>
+</div>
+<div class="flex-1 relative flex items-center justify-center p-xl heatmap-gradient">
+<!-- Simulated 3D Heatmap Wireframe -->
+<div class="w-full h-full relative border border-outline-variant/30 flex items-center justify-center group">
+<img alt="Structural Stress Map" class="object-cover opacity-50 absolute inset-0 w-full h-full grayscale mix-blend-screen" data-alt="A highly detailed 3D digital wireframe of a massive concrete bridge pylon in a technical industrial dashboard. The pylon is covered in a glowing heatmap of Safety Orange and Deep Red gradients indicating areas of high structural stress. The aesthetic is Brutalist and technical, with dark backgrounds and high-contrast telemetry overlays. Soft glowing light highlights the structural edges against a deep matte black environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhyLAKp3PtrNIb9SPhxvNzBh5QEDySduGl4-9NX_GcIF47uTJj5t7eH0kv4t5B2Qt46HcmE_KLbVXd8tY0XMNbw4lSRY--UzmW5kkop-p7jFDqkvkHrSXoCcTjlmBF6pRL90Cc-OB2j3Fj7Yo0B2CilOB6rd-rbXbtkyeJ4mVrJ-purj6ADBhD2K2oRgDrzYUsWLDYcf7Iy_c8o3CIWorEyOY9mfEGUX7X548AMTYlpqS89i5oPtovNveGa0h5GP3DGOZPkjdyEWI"/>
+<div class="relative z-10 w-64 h-64 border-2 border-primary animate-pulse flex items-center justify-center">
+<div class="absolute -top-4 -left-4 p-1 bg-background border border-primary font-code-xs text-primary">VECT_01: STABLE</div>
+<div class="absolute -bottom-4 -right-4 p-1 bg-error-container border border-error font-code-xs text-on-error-container">VECT_09: CRITICAL</div>
+<span class="material-symbols-outlined text-[64px] text-primary/40">architecture</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Radar Charts Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-md">
+<!-- North Pillar -->
+<div class="bg-surface-container-low border border-outline-variant p-sm flex flex-col gap-base">
+<span class="font-code-xs text-on-surface-variant">[PILLAR_N]</span>
+<div class="h-32 w-full spider-grid relative flex items-center justify-center">
+<div class="w-24 h-24 border border-outline-variant rounded-full flex items-center justify-center">
+<div class="w-16 h-16 border border-primary rotate-45"></div>
+</div>
+<span class="absolute top-2 font-code-xs text-[10px] text-on-surface-variant">N</span>
+</div>
+<div class="flex justify-between font-label-sm">
+<span class="text-on-surface-variant">STRAIN:</span>
+<span class="text-primary font-bold">14.2μ</span>
+</div>
+</div>
+<!-- East Pillar -->
+<div class="bg-surface-container-low border border-outline-variant p-sm flex flex-col gap-base">
+<span class="font-code-xs text-on-surface-variant">[PILLAR_E]</span>
+<div class="h-32 w-full spider-grid relative flex items-center justify-center">
+<div class="w-24 h-24 border border-outline-variant rounded-full flex items-center justify-center">
+<div class="w-20 h-10 border border-primary-container rounded-lg"></div>
+</div>
+<span class="absolute right-2 font-code-xs text-[10px] text-on-surface-variant">E</span>
+</div>
+<div class="flex justify-between font-label-sm">
+<span class="text-on-surface-variant">STRAIN:</span>
+<span class="text-primary font-bold">08.1μ</span>
+</div>
+</div>
+<!-- South Pillar -->
+<div class="bg-surface-container-low border border-outline-variant p-sm flex flex-col gap-base border-primary-container/50">
+<span class="font-code-xs text-primary">[PILLAR_S] WARNING</span>
+<div class="h-32 w-full spider-grid relative flex items-center justify-center">
+<div class="w-24 h-24 border border-error rounded-full flex items-center justify-center">
+<div class="w-20 h-20 border-2 border-error rotate-12"></div>
+</div>
+<span class="absolute bottom-2 font-code-xs text-[10px] text-on-surface-variant">S</span>
+</div>
+<div class="flex justify-between font-label-sm">
+<span class="text-on-surface-variant">STRAIN:</span>
+<span class="text-error font-bold">88.9μ</span>
+</div>
+</div>
+<!-- West Pillar -->
+<div class="bg-surface-container-low border border-outline-variant p-sm flex flex-col gap-base">
+<span class="font-code-xs text-on-surface-variant">[PILLAR_W]</span>
+<div class="h-32 w-full spider-grid relative flex items-center justify-center">
+<div class="w-24 h-24 border border-outline-variant rounded-full flex items-center justify-center">
+<div class="w-12 h-12 border border-primary rounded-full"></div>
+</div>
+<span class="absolute left-2 font-code-xs text-[10px] text-on-surface-variant">W</span>
+</div>
+<div class="flex justify-between font-label-sm">
+<span class="text-on-surface-variant">STRAIN:</span>
+<span class="text-primary font-bold">12.5μ</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Panel: Logs & Comments -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-md">
+<!-- Live Logs -->
+<section class="flex-1 bg-surface-container border border-outline-variant flex flex-col overflow-hidden">
+<div class="p-sm bg-surface-container-high border-b border-outline-variant font-label-sm flex justify-between">
+<span>LIVE_SENSOR_LOGS</span>
+<span class="text-primary">RUNNING...</span>
+</div>
+<div class="flex-1 overflow-y-auto p-sm font-code-xs space-y-1">
+<div class="text-on-surface-variant flex gap-md">
+<span class="opacity-50">14:22:01</span>
+<span class="text-primary">SNSR-041</span>
+<span>PACKET_RECV_OK</span>
+</div>
+<div class="text-on-surface-variant flex gap-md">
+<span class="opacity-50">14:22:04</span>
+<span class="text-primary">SNSR-042</span>
+<span>PACKET_RECV_OK</span>
+</div>
+<div class="text-error flex gap-md bg-error-container/10">
+<span class="opacity-50">14:22:08</span>
+<span class="font-bold">SNSR-089</span>
+<span>THRESHOLD_EXCEEDED_S_PILLAR</span>
+</div>
+<div class="text-on-surface-variant flex gap-md">
+<span class="opacity-50">14:22:12</span>
+<span class="text-primary">SNSR-041</span>
+<span>PACKET_RECV_OK</span>
+</div>
+<div class="text-on-surface-variant flex gap-md">
+<span class="opacity-50">14:22:15</span>
+<span class="text-primary">SNSR-043</span>
+<span>PACKET_RECV_OK</span>
+</div>
+<div class="text-on-surface-variant flex gap-md">
+<span class="opacity-50">14:22:18</span>
+<span class="text-primary">SNSR-044</span>
+<span>PACKET_RECV_OK</span>
+</div>
+</div>
+</section>
+<!-- Engineer Comments Section -->
+<section class="h-1/2 bg-surface-container border border-outline-variant flex flex-col">
+<div class="p-sm bg-surface-container-high border-b border-outline-variant font-label-sm flex items-center gap-sm">
+<span class="material-symbols-outlined text-[16px]">forum</span>
+                            COLLABORATIVE_TROUBLESHOOTING
+                        </div>
+<div class="flex-1 overflow-y-auto p-sm space-y-md">
+<!-- Comment -->
+<div class="border-l-2 border-primary pl-sm">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-sm text-primary">ENG_CHEN_01</span>
+<span class="font-code-xs opacity-50">12:05</span>
+</div>
+<p class="text-body-md text-on-surface">Checked SNSR-089 calibration. It seems to be a hardware drift rather than actual structural failure. Requesting onsite inspection of the South Pillar mounting bracket.</p>
+</div>
+<!-- Comment -->
+<div class="border-l-2 border-outline-variant pl-sm">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-sm text-on-secondary-container">ENG_HARRIS_V</span>
+<span class="font-code-xs opacity-50">13:40</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Confirmed drift on SNSR-089. Remote reset initiated. If strain remains &gt;80μ, we trigger Stage 2 evacuation for Sector B1.</p>
+</div>
+</div>
+<!-- Input -->
+<div class="p-sm border-t border-outline-variant">
+<div class="flex items-center gap-xs">
+<input class="flex-1 bg-surface-container-low border border-outline-variant px-sm py-2 font-label-sm focus:border-primary-container outline-none transition-all" placeholder="ADD_COMMENT_ON_SENSOR_NODE..." type="text"/>
+<button class="bg-primary text-on-primary p-2 flex items-center justify-center">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center px-xs py-sm bg-surface-container-lowest border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-sm">STRESS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined">vibration</span>
+<span class="font-label-sm">SEISMIC</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-fixed-variant py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-label-sm">FOUNDATION</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary bg-primary-container/10 rounded-sm py-1 active:scale-95 transition-transform duration-100" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-label-sm">ALERTS</span>
+</a>
+</nav>
+<!-- Contextual FAB (Triggered on active troubleshooting) -->
+<button class="fixed bottom-20 right-6 md:bottom-10 md:right-10 bg-primary-container text-on-primary-container p-md shadow-lg flex items-center gap-sm active:opacity-80 transition-opacity">
+<span class="material-symbols-outlined">add_alert</span>
+<span class="font-label-sm font-bold">MANUAL_ALERT</span>
+</button>
+</body></html>

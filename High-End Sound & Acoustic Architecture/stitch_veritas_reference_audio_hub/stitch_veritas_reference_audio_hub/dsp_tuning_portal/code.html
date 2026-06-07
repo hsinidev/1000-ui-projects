@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VERITAS MONITOR | DSP Tuning Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .segmented-led {
+            background: linear-gradient(90deg, 
+                #00ff41 0%, #00ff41 15%, 
+                transparent 15%, transparent 20%,
+                #00ff41 20%, #00ff41 35%,
+                transparent 35%, transparent 40%,
+                #00ff41 40%, #00ff41 55%,
+                transparent 55%, transparent 60%,
+                #00ff41 60%, #00ff41 75%,
+                transparent 75%, transparent 80%,
+                #00ff41 80%, #00ff41 95%,
+                transparent 95%, transparent 100%
+            );
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 8px;
+            background: #00ff41;
+            cursor: pointer;
+            border-radius: 0;
+            border: 1px solid #000;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "inverse-primary": "#006e16",
+                      "tertiary": "#f9f9f9",
+                      "on-surface-variant": "#b9ccb2",
+                      "on-tertiary": "#2f3131",
+                      "surface-variant": "#353535",
+                      "primary-container": "#00ff41",
+                      "on-tertiary-container": "#5f6161",
+                      "on-secondary-fixed-variant": "#464747",
+                      "surface-bright": "#393939",
+                      "surface-container-lowest": "#0e0e0e",
+                      "secondary-container": "#484949",
+                      "tertiary-container": "#dcdddd",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-primary-fixed-variant": "#00530e",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed": "#e2e2e2",
+                      "secondary-fixed": "#e3e2e2",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "background": "#131313",
+                      "primary-fixed": "#72ff70",
+                      "surface-container": "#20201f",
+                      "outline": "#84967e",
+                      "on-secondary-container": "#b8b8b8",
+                      "primary-fixed-dim": "#00e639",
+                      "secondary": "#c6c6c6",
+                      "inverse-surface": "#e5e2e1",
+                      "on-background": "#e5e2e1",
+                      "on-error": "#690005",
+                      "surface-dim": "#131313",
+                      "on-primary": "#003907",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-container-low": "#1c1b1b",
+                      "on-primary-fixed": "#002203",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "primary": "#ebffe2",
+                      "surface-tint": "#00e639",
+                      "inverse-on-surface": "#313030",
+                      "on-secondary": "#2f3131",
+                      "on-primary-container": "#007117",
+                      "outline-variant": "#3b4b37",
+                      "surface": "#131313",
+                      "on-surface": "#e5e2e1",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "surface-container-highest": "#353535",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "grid-columns": "12"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["IBM Plex Sans"],
+                      "headline-lg": ["IBM Plex Sans"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-mono": ["JetBrains Mono"],
+                      "body-md": ["IBM Plex Sans"],
+                      "display-lg": ["IBM Plex Sans"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "1rem", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 border-b border-outline-variant bg-surface flex justify-between items-center px-margin-mobile md:px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 0;">settings_input_component</span>
+<h1 class="font-label-caps text-label-caps text-primary-fixed tracking-widest">VERITAS MONITOR</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary hover:bg-surface-variant transition-colors duration-150 p-2 cursor-pointer active:scale-95 duration-75">shopping_cart</span>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile">
+<!-- Title & Status Section -->
+<div class="mb-8 border-l-2 border-primary-container pl-4">
+<h2 class="font-headline-lg-mobile text-headline-lg-mobile uppercase tracking-tight">DSP TUNER PORTAL</h2>
+<div class="flex items-center gap-2 mt-2">
+<div class="w-1.5 h-1.5 bg-primary-container"></div>
+<span class="font-data-mono text-label-caps text-primary-container">ENCRYPTED LINK ACTIVE</span>
+<span class="font-data-mono text-label-caps text-secondary ml-auto">REF_ID: 00-41-A</span>
+</div>
+</div>
+<!-- Wizard Progress Tracker -->
+<div class="grid grid-cols-3 gap-1 mb-8">
+<div class="h-1 bg-primary-container"></div>
+<div class="h-1 bg-primary-container opacity-40"></div>
+<div class="h-1 bg-surface-variant"></div>
+<div class="flex flex-col gap-1 mt-2">
+<span class="font-label-caps text-[9px] text-primary-container">01 MEASURE</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">COMPLETE</span>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<span class="font-label-caps text-[9px] text-primary-container">02 ANALYZE</span>
+<span class="font-data-mono text-[10px] text-primary-container">IN PROGRESS</span>
+</div>
+<div class="flex flex-col gap-1 mt-2">
+<span class="font-label-caps text-[9px] text-on-surface-variant">03 CALIBRATE</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">LOCKED</span>
+</div>
+</div>
+<!-- Room-Correction Diagnostic Visualizer -->
+<div class="border border-outline-variant bg-surface-container-low p-4 mb-6">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-secondary">REAL-TIME TELEMETRY</span>
+<span class="font-data-mono text-[10px] text-primary-container">44.1KHZ / 24BIT</span>
+</div>
+<div class="aspect-video relative overflow-hidden bg-surface-container-lowest border border-outline-variant flex items-end px-2 pb-2 gap-1">
+<!-- Oscilloscope-style grid -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: linear-gradient(#C0C0C0 1px, transparent 1px), linear-gradient(90deg, #C0C0C0 1px, transparent 1px); background-size: 20px 20px;"></div>
+<!-- Simulated Frequency Bars -->
+<div class="flex-1 bg-primary-container opacity-20 h-[30%]"></div>
+<div class="flex-1 bg-primary-container opacity-40 h-[45%]"></div>
+<div class="flex-1 bg-primary-container opacity-60 h-[70%]"></div>
+<div class="flex-1 bg-primary-container h-[90%]"></div>
+<div class="flex-1 bg-primary-container opacity-80 h-[65%]"></div>
+<div class="flex-1 bg-primary-container opacity-50 h-[40%]"></div>
+<div class="flex-1 bg-primary-container opacity-30 h-[25%]"></div>
+<div class="flex-1 bg-primary-container opacity-20 h-[35%]"></div>
+<!-- Interactive Overlay HUD -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="glass-panel p-4 flex flex-col items-center">
+<span class="font-data-mono text-primary-container text-headline-lg-mobile">-12.4dB</span>
+<span class="font-label-caps text-[10px] text-secondary">PEAK RESONANCE</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-2 mt-4">
+<div class="flex flex-col">
+<span class="font-label-caps text-[8px] text-on-surface-variant">THD+N</span>
+<span class="font-data-mono text-xs">0.0004%</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[8px] text-on-surface-variant">S/N</span>
+<span class="font-data-mono text-xs">124dB</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[8px] text-on-surface-variant">PHASE</span>
+<span class="font-data-mono text-xs text-primary-container">ALIGNED</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[8px] text-on-surface-variant">LATENCY</span>
+<span class="font-data-mono text-xs">1.2ms</span>
+</div>
+</div>
+</div>
+<!-- Frequency Adjustment Sliders -->
+<div class="space-y-6 mb-8">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps uppercase text-secondary">Low-Shelf Gain</label>
+<span class="font-data-mono text-xs text-primary-container">+3.5 dB</span>
+</div>
+<input class="w-full h-1 bg-surface-variant appearance-none cursor-pointer" max="12" min="-12" type="range" value="3.5"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps uppercase text-secondary">Mid-Band Q-Factor</label>
+<span class="font-data-mono text-xs text-primary-container">1.414</span>
+</div>
+<input class="w-full h-1 bg-surface-variant appearance-none cursor-pointer" max="10" min="0.1" type="range" value="1.414"/>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-end">
+<label class="font-label-caps text-label-caps uppercase text-secondary">High-Shelf Freq</label>
+<span class="font-data-mono text-xs text-primary-container">12.5 kHz</span>
+</div>
+<input class="w-full h-1 bg-surface-variant appearance-none cursor-pointer" max="20000" min="1000" type="range" value="12500"/>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-primary-container text-on-primary font-label-caps text-body-md tracking-widest hover:shadow-[0_0_15px_rgba(0,255,65,0.3)] transition-all active:scale-[0.98]">
+            ANALYZE RESPONSE
+        </button>
+<!-- Technical Metadata -->
+<div class="mt-8 border-t border-outline-variant pt-4 flex flex-col gap-1">
+<p class="font-data-mono text-[9px] text-on-surface-variant">DEVICE_NODE: VERT-MON-772-B</p>
+<p class="font-data-mono text-[9px] text-on-surface-variant">FIRMWARE: V2.4.1-STABLE</p>
+<p class="font-data-mono text-[9px] text-on-surface-variant uppercase">All calibration data is processed on-chip via dedicated FPGA.</p>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-stretch h-14 border-t border-outline-variant bg-surface-container-high z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant py-1 flex-1 hover:text-primary-fixed active:opacity-80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">analytics</span>
+<span class="font-label-caps text-label-caps">Charts</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant py-1 flex-1 hover:text-primary-fixed active:opacity-80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">precision_manufacturing</span>
+<span class="font-label-caps text-label-caps">Drivers</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container py-1 flex-1 active:opacity-80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">tune</span>
+<span class="font-label-caps text-label-caps">DSP</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant py-1 flex-1 hover:text-primary-fixed active:opacity-80 transition-all cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">grade</span>
+<span class="font-label-caps text-label-caps">Reviews</span>
+</div>
+</nav>
+</body></html>

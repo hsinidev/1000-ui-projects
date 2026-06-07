@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STAR-PATH | Trajectory Projection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container": "#201f20",
+                    "on-background": "#e5e2e3",
+                    "outline-variant": "#46464c",
+                    "on-secondary-container": "#3d2400",
+                    "primary-fixed-dim": "#c3c6d7",
+                    "on-primary-fixed-variant": "#434654",
+                    "on-error": "#690005",
+                    "surface-container-highest": "#353436",
+                    "error": "#ffb4ab",
+                    "secondary-fixed-dim": "#ffb95a",
+                    "surface": "#131314",
+                    "on-surface": "#e5e2e3",
+                    "surface-container-lowest": "#0e0e0f",
+                    "surface-variant": "#353436",
+                    "primary-fixed": "#dfe2f3",
+                    "surface-container-low": "#1c1b1c",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-secondary-fixed": "#2a1800",
+                    "on-primary-fixed": "#171b28",
+                    "on-tertiary-container": "#7a7c7c",
+                    "inverse-on-surface": "#313031",
+                    "background": "#131314",
+                    "surface-tint": "#c3c6d7",
+                    "secondary": "#ffb95a",
+                    "on-tertiary": "#2f3131",
+                    "outline": "#909096",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-primary": "#2c303d",
+                    "inverse-surface": "#e5e2e3",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-fixed": "#e2e2e2",
+                    "error-container": "#93000a",
+                    "on-surface-variant": "#c7c6cc",
+                    "tertiary-container": "#0d0f0f",
+                    "tertiary": "#c6c6c7",
+                    "on-primary-container": "#777b8a",
+                    "primary-container": "#0a0e1a",
+                    "surface-container-high": "#2a2a2b",
+                    "on-secondary": "#462a00",
+                    "secondary-fixed": "#ffddb6",
+                    "on-secondary-fixed-variant": "#643f00",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "surface-dim": "#131314",
+                    "secondary-container": "#c68315",
+                    "inverse-primary": "#5a5e6d",
+                    "primary": "#c3c6d7",
+                    "surface-bright": "#3a393a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-edge": "40px",
+                    "panel-gap": "16px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "display-lg-mobile": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"],
+                    "telemetry-data": ["JetBrains Mono"],
+                    "body-standard": ["JetBrains Mono"],
+                    "display-lg": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "display-lg-mobile": ["32px", {"lineHeight": "38px", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "telemetry-data": ["18px", {"lineHeight": "24px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-standard": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.2);
+        }
+        .amber-glow {
+            text-shadow: 0 0 10px rgba(255, 185, 90, 0.6);
+        }
+        .warp-container {
+            background: radial-gradient(circle at center, #1a1b2e 0%, #0a0e1a 100%);
+            overflow: hidden;
+        }
+        .star-streak {
+            position: absolute;
+            background: linear-gradient(to right, transparent, #ffffff, transparent);
+            height: 1px;
+            opacity: 0.3;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-standard overflow-hidden h-screen w-screen">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-edge h-16 w-full z-50 bg-surface/10 dark:bg-surface/10 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_0_15px_rgba(255,185,90,0.1)]">
+<div class="flex items-center gap-4">
+<button class="text-secondary hover:bg-secondary/10 transition-colors active:scale-95 duration-200 p-2">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-secondary uppercase italic">STAR-PATH</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-telemetry-data text-secondary amber-glow hidden md:block">SECTOR 7-G</span>
+<button class="text-secondary hover:bg-secondary/10 transition-colors active:scale-95 duration-200 p-2">
+<span class="material-symbols-outlined">settings_remote</span>
+</button>
+</div>
+</header>
+<!-- MAIN COCKPIT VIEW -->
+<main class="relative h-full w-full warp-container flex flex-col items-center justify-center pt-16 pb-20">
+<!-- Background Warp Effect Simulation -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+<div class="star-streak w-48 top-1/4 left-1/4 rotate-45"></div>
+<div class="star-streak w-64 top-1/2 left-1/3 -rotate-12"></div>
+<div class="star-streak w-32 top-3/4 left-1/2 rotate-90"></div>
+<div class="star-streak w-80 top-1/3 right-1/4 -rotate-45"></div>
+<div class="star-streak w-40 top-2/3 right-1/3 rotate-12"></div>
+<img class="w-full h-full object-cover mix-blend-screen opacity-20" data-alt="A cinematic long exposure of stars streaking across a deep cosmic void, representing high-speed interstellar travel. The image features brilliant white light trails against a backdrop of deep navy and charcoal blacks, punctuated by faint nebula gas clouds in shades of indigo. The atmosphere is cold, fast, and technically precise, perfectly reflecting a high-end sci-fi aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3q70VUHYY0LuPk3SCjJC2PSfBTEtFfU8Wp7nAumbkQqeeg4q9GInd2u25Mlq3ePa3gT-UyAf598LRH48LDk3sJ2-BK5xThzkzsYil8Qv82dSEkla9sb_4S_PEVLRP__0HGPBlmExDAVWSz0dD4BSKiqzAH1vAR_I23CW6wJLscfaEkj_BZ3PD0flxbZd1KszuqtL6uc9TzN5FP8Rq-ohhPiDaK2TJHg8NUQVxhFo2kl8h-8lWXoH12gl8rGwInhjc9WcmKKGk6751"/>
+</div>
+<!-- Trajectory HUD -->
+<div class="relative z-10 w-full max-w-5xl px-gutter flex flex-col items-center">
+<!-- Central Projection Indicator -->
+<div class="relative w-full aspect-video md:aspect-[21/9] glass-panel rounded-xl flex items-center justify-center overflow-hidden border-secondary/30 shadow-[0_0_30px_rgba(255,185,90,0.15)]">
+<!-- Grid Lines -->
+<div class="absolute inset-0 grid grid-cols-6 grid-rows-4 opacity-10">
+<div class="border-r border-b border-white"></div>
+<div class="border-r border-b border-white"></div>
+<div class="border-r border-b border-white"></div>
+<div class="border-r border-b border-white"></div>
+<div class="border-r border-b border-white"></div>
+<div class="border-b border-white"></div>
+</div>
+<!-- Trajectory Path -->
+<svg class="w-full h-full absolute inset-0 pointer-events-none" viewbox="0 0 800 300">
+<path class="opacity-80" d="M 0 150 Q 200 50 400 150 T 800 150" fill="none" stroke="#ffb95a" stroke-dasharray="10,5" stroke-width="2"></path>
+<circle class="animate-pulse shadow-[0_0_15px_#ffb95a]" cx="400" cy="150" fill="#ffb95a" r="8"></circle>
+<text class="font-telemetry-data text-[12px] uppercase" fill="#ffb95a" x="420" y="145">Est. Arrival: 04:22:01</text>
+</svg>
+<!-- Cockpit Framing Overlays -->
+<div class="absolute top-4 left-4 flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-caps text-secondary">SYSTEMS: NOMINAL</span>
+</div>
+<span class="font-telemetry-data text-on-surface-variant text-[10px]">THETA AXIS: +14.22</span>
+</div>
+<div class="absolute bottom-4 right-4 text-right">
+<span class="font-label-caps text-on-surface-variant">TARGET SYSTEM</span>
+<h3 class="font-headline-md text-secondary amber-glow">KEPLER-186F</h3>
+</div>
+</div>
+<!-- Console Bento Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-panel-gap w-full mt-panel-gap">
+<!-- Velocity Gauge -->
+<div class="glass-panel p-4 rounded-lg border-l-2 border-secondary">
+<span class="font-label-caps text-on-surface-variant">VELOCITY</span>
+<div class="flex items-baseline gap-2 mt-1">
+<span class="font-telemetry-data text-display-lg-mobile text-secondary amber-glow">0.82</span>
+<span class="font-label-caps text-on-surface-variant">C</span>
+</div>
+<div class="w-full bg-surface-variant h-1 mt-2 overflow-hidden">
+<div class="bg-secondary h-full w-[82%] shadow-[0_0_8px_rgba(255,185,90,0.6)]"></div>
+</div>
+</div>
+<!-- Oxygen Scrubber Status -->
+<div class="glass-panel p-4 rounded-lg flex flex-col justify-between">
+<div>
+<span class="font-label-caps text-on-surface-variant">O2 LEVELS</span>
+<div class="flex items-center gap-2 mt-1">
+<span class="material-symbols-outlined text-secondary text-sm">air</span>
+<span class="font-telemetry-data text-secondary">94.0%</span>
+</div>
+</div>
+<span class="font-body-standard text-[10px] text-on-surface-variant uppercase">Recycle Rate: 1.2L/m</span>
+</div>
+<!-- Delta-V Calc -->
+<div class="glass-panel p-4 rounded-lg">
+<span class="font-label-caps text-on-surface-variant">DELTA-V RESERVE</span>
+<div class="mt-1">
+<span class="font-telemetry-data text-secondary">4,281 m/s</span>
+</div>
+<div class="flex gap-1 mt-2">
+<div class="h-2 w-full bg-secondary"></div>
+<div class="h-2 w-full bg-secondary"></div>
+<div class="h-2 w-full bg-secondary/30"></div>
+<div class="h-2 w-full bg-secondary/10"></div>
+</div>
+</div>
+<!-- Radiation Shielding -->
+<div class="glass-panel p-4 rounded-lg bg-secondary/5">
+<span class="font-label-caps text-secondary">SHIELD INTENSITY</span>
+<div class="flex items-center gap-3 mt-1">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">shield</span>
+<span class="font-telemetry-data text-secondary">MAX</span>
+</div>
+<span class="font-body-standard text-[10px] text-on-surface-variant uppercase mt-2 block">Interstellar Buffer Active</span>
+</div>
+</div>
+</div>
+</main>
+<!-- NAVIGATION DRAWER (Hidden by default, structure shown) -->
+<aside class="hidden md:flex fixed inset-y-0 left-0 z-[60] flex flex-col py-margin-edge h-full w-80 rounded-r-xl bg-surface-container dark:bg-surface-container backdrop-blur-3xl border-r border-outline-variant/20 shadow-2xl transition-all duration-300 ease-in-out -translate-x-full">
+<div class="px-gutter mb-8 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-secondary/30">
+<img alt="Commander Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_WmvQoWKmJp8QQbIOjh9UR0msReh0F-FsGhbugAbUtcop0jMmfW7T6-fQ_50K9bn2BqT2711tLvnANx-GnD2d0Os9QB42Agek50JFryEJrZK73-NNJl_dZZ4al-6ZNOyh2E9LicgMkavBWHrO8zdrK0KiKKO9lHXwJNkkI_GO-WHpqr95tCCrStqFHZ-8lU6ZtB8_KGRVTGFyHwj9QlrDaxAcV6-GokK2dBQsROSEH4cr73g_PRBWFxTJa01tTQPG6aFKFwCIz29V"/>
+</div>
+<div>
+<h4 class="font-label-caps text-secondary">CMD. ELARA VANCE</h4>
+<p class="text-[10px] text-on-surface-variant uppercase tracking-widest">Sector 7-G Navigator</p>
+<p class="text-[10px] text-secondary/60">Oxygen: 94%</p>
+</div>
+</div>
+<nav class="flex flex-col">
+<a class="text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-standard uppercase">Fleet Status</span>
+</div>
+</a>
+<a class="text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">cyclone</span>
+<span class="font-body-standard uppercase">Wormhole Registry</span>
+</div>
+</a>
+<a class="text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">air</span>
+<span class="font-body-standard uppercase">Oxygen Scrubber</span>
+</div>
+</a>
+<a class="text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">settings_input_antenna</span>
+<span class="font-body-standard uppercase">Crew Comms</span>
+</div>
+</a>
+<a class="text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all" href="#">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined">emergency_home</span>
+<span class="font-body-standard uppercase">Emergency Egress</span>
+</div>
+</a>
+</nav>
+</aside>
+<!-- BOTTOM NAV BAR -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-gutter pb-4 bg-surface-container-lowest/30 dark:bg-surface-container-lowest/30 backdrop-blur-2xl border-t border-outline-variant/10 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] rounded-t-full">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-label-caps text-label-caps">Delta-V</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_8px_rgba(255,185,90,0.6)] active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">auto_towing</span>
+<span class="font-label-caps text-label-caps">Projection</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</button>
+</nav>
+<!-- FLOATING ACTION BUTTON (Suppressed on this screen per guidelines) -->
+</body></html>

@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROCKET-OPS | Crew Feedback &amp; Debrief</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131314; }
+        ::-webkit-scrollbar-thumb { background: #e5e2e3; border-radius: 0; }
+        
+        .visible-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, #2A2A2B 1px, transparent 1px), linear-gradient(to bottom, #2A2A2B 1px, transparent 1px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface-variant": "#e4bdbb",
+                        "primary": "#ffb3b1",
+                        "on-secondary": "#2f3131",
+                        "secondary-fixed": "#e2e2e2",
+                        "outline-variant": "#5c403f",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "surface-variant": "#353436",
+                        "inverse-primary": "#bd0b29",
+                        "on-primary-fixed": "#410007",
+                        "on-secondary-fixed-variant": "#454747",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "tertiary-container": "#707070",
+                        "inverse-on-surface": "#303031",
+                        "outline": "#ab8887",
+                        "on-error-container": "#ffdad6",
+                        "on-primary": "#680010",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-low": "#1b1b1c",
+                        "on-primary-container": "#fff2f1",
+                        "surface-container-lowest": "#0e0e0f",
+                        "surface-tint": "#ffb3b1",
+                        "on-primary-fixed-variant": "#92001b",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "secondary": "#c6c6c7",
+                        "primary-fixed": "#ffdad8",
+                        "on-surface": "#e5e2e3",
+                        "primary-fixed-dim": "#ffb3b1",
+                        "secondary-container": "#454747",
+                        "surface-container-high": "#2a2a2b",
+                        "on-background": "#e5e2e3",
+                        "on-tertiary-container": "#f7f5f4",
+                        "surface-container": "#1f1f20",
+                        "surface-bright": "#39393a",
+                        "inverse-surface": "#e5e2e3",
+                        "tertiary": "#c8c6c6",
+                        "surface": "#131314",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "primary-container": "#d72638",
+                        "background": "#131314",
+                        "on-secondary-container": "#b4b5b5",
+                        "tertiary-fixed": "#e4e2e2",
+                        "on-tertiary": "#303030",
+                        "on-error": "#690005",
+                        "surface-container-highest": "#353436",
+                        "surface-dim": "#131314",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter-desktop": "16px",
+                        "container-max": "1920px",
+                        "margin-mobile": "12px",
+                        "margin-desktop": "24px",
+                        "gutter-mobile": "8px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Barlow Condensed"],
+                        "headline-md": ["Barlow Condensed"],
+                        "body-standard": ["Barlow Condensed"],
+                        "label-caps": ["Barlow Condensed"],
+                        "telemetry-lg": ["JetBrains Mono"],
+                        "display-lg-mobile": ["Barlow Condensed"],
+                        "telemetry-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-standard": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "telemetry-lg": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                        "telemetry-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-standard min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface text-primary border-b border-outline-variant flex justify-between items-center w-full px-margin-desktop h-16 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary tracking-widest uppercase">ROCKET-OPS</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="hover:bg-surface-variant transition-colors duration-150 p-2"><span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span></button>
+<button class="hover:bg-surface-variant transition-colors duration-150 p-2"><span class="material-symbols-outlined" data-icon="settings">settings</span></button>
+<button class="hover:bg-surface-variant transition-colors duration-150 p-2"><span class="material-symbols-outlined" data-icon="account_circle">account_circle</span></button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="hidden lg:flex flex-col h-full w-64 border-r border-outline-variant bg-surface-container py-6">
+<div class="px-6 mb-8">
+<div class="font-display-lg text-display-lg font-bold text-primary">LCC-STATION-01</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-on-surface rounded-full"></span> OPERATIONAL
+                </div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span> Mission Clock
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span> Telemetry
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span> Weather
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span> Dispatch
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-primary bg-surface-variant text-primary font-bold font-label-caps text-label-caps scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span> Command
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 border-l-4 border-transparent text-on-surface-variant font-label-caps text-label-caps hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span> Docs
+                </a>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container font-label-caps text-label-caps py-4 font-bold tracking-widest hover:opacity-90 transition-opacity">
+                    INITIATE GO/NO-GO
+                </button>
+<div class="mt-6 border-t border-outline-variant pt-4 space-y-2">
+<a class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface" href="#"><span class="material-symbols-outlined text-sm" data-icon="forum">forum</span> Feedback</a>
+<a class="flex items-center gap-2 text-on-surface-variant font-label-caps text-label-caps hover:text-on-surface" href="#"><span class="material-symbols-outlined text-sm" data-icon="help_center">help_center</span> Support</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface-dim relative p-margin-desktop lg:p-margin-desktop">
+<!-- Header Section -->
+<div class="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-8 gap-4">
+<div>
+<h1 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wider">Crew Feedback &amp; Debrief</h1>
+<p class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">LOG-ID: ALPHA-9-XRAY | POST-MISSION ANALYSIS</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-on-surface text-on-surface font-label-caps text-label-caps hover:bg-on-surface hover:text-background transition-all">EXPORT LOGS</button>
+<button class="px-6 py-2 bg-primary-container text-on-primary-container font-label-caps text-label-caps font-bold hover:brightness-110 transition-all">NEW REPORT</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter-desktop">
+<!-- Active Mission Stats (Bento Side) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter-desktop">
+<!-- Status Summary Card -->
+<div class="bg-surface-container p-6 border border-outline-variant">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex justify-between">
+                            SYSTEM STATUS <span>SECURE</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-label-caps text-label-caps">INCIDENTS</span>
+<span class="font-telemetry-lg text-telemetry-lg text-primary-container font-bold">04</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant">
+<span class="font-label-caps text-label-caps">CRITICAL FEEDBACK</span>
+<span class="font-telemetry-lg text-telemetry-lg text-error font-bold">01</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-label-caps text-label-caps">CREW UPTIME</span>
+<span class="font-telemetry-lg text-telemetry-lg text-on-surface">142:20:11</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Snapshot Card -->
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="p-4 border-b border-outline-variant font-label-caps text-label-caps bg-surface-variant">
+                            TELEMETRY_STREAM_V4
+                        </div>
+<div class="h-48 w-full bg-black relative">
+<img class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A high-contrast digital cockpit interface displaying complex orbital telemetry data with glowing red and white neon line graphs. The environment is dark and technical, resembling a mission control workstation for a deep-space operation. Bright red data points stand out against a deep graphite background, creating a high-stakes industrial minimalist atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAinKOrqbVDbywM-7z6Q6mLy5bKX3yQP-UcA8nMHDs40NLb9xhm9mtoxQS_DD4Q-ZxAGDHqUuHsOwP73v-0eiEkocHUdW6o9Nlma-FmNNZdHblaO2mcxN6tDBMEoduDZSjSA_XJW5QF0kjyLuH4cyI4f3MGYaqD4Yb2d5QGuVhD0XUPmakaNx4xvGcbfhm_sN6560xQdsMKayw_oMTQKEPLDE9xJf-fnpCDO37gxr74tFAgDWx6cgQOjdNTGMF37Yp7HKhPPyylPKk"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-background/80 border border-primary p-2 font-telemetry-sm text-telemetry-sm text-primary uppercase">Live Feed Restricted</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Feed & Comment Section (Main Content) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter-desktop">
+<!-- New Post Editor -->
+<div class="bg-surface-container border border-outline-variant">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-variant">
+<div class="font-label-caps text-label-caps">NEW TRANSMISSION</div>
+<div class="flex gap-2">
+<span class="w-3 h-3 bg-error animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-error">RECORDING</span>
+</div>
+</div>
+<div class="p-4">
+<textarea class="w-full bg-surface text-on-surface border-outline-variant font-telemetry-sm text-telemetry-sm focus:border-primary focus:ring-0 min-h-[120px] p-4 resize-none" placeholder="ENTER MISSION DEBRIEF DATA..."></textarea>
+<div class="mt-4 flex flex-wrap gap-4 items-center justify-between">
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant hover:bg-surface-variant transition-all"><span class="material-symbols-outlined" data-icon="attachment">attachment</span></button>
+<button class="p-2 border border-outline-variant hover:bg-surface-variant transition-all"><span class="material-symbols-outlined" data-icon="analytics">analytics</span></button>
+<button class="p-2 border border-outline-variant hover:bg-surface-variant transition-all"><span class="material-symbols-outlined" data-icon="location_on">location_on</span></button>
+</div>
+<div class="flex gap-4 items-center">
+<select class="bg-surface border-outline-variant font-label-caps text-label-caps text-on-surface p-2">
+<option>ROUTINE</option>
+<option>OBSERVATION</option>
+<option class="text-error">CRITICAL</option>
+</select>
+<button class="px-8 py-2 bg-primary text-on-primary font-bold font-label-caps text-label-caps hover:bg-on-surface transition-all">TRANSMIT</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Comment Thread -->
+<div class="space-y-4">
+<!-- Comment 1: Critical -->
+<div class="bg-surface-container border-l-4 border-error border-t border-r border-b border-outline-variant p-6">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-error flex items-center justify-center font-bold text-on-error">CDR</div>
+<div>
+<div class="font-label-caps text-label-caps font-bold">COMMANDER SHEPARD</div>
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">T+ 04:22:15</div>
+</div>
+</div>
+<span class="bg-error text-on-error px-3 py-1 font-label-caps text-[10px] h-fit">CRITICAL</span>
+</div>
+<p class="font-body-standard text-on-surface mb-6">
+                                Thruster misalignment detected during re-entry phase. Telemetry indicates a 0.4% deviation in vector Alpha. Recommend immediate inspection of the secondary gimbal actuators before next launch cycle.
+                            </p>
+<div class="bg-surface-container-low p-3 font-telemetry-sm text-telemetry-sm border border-outline-variant text-primary mb-6">
+<code>ATTACHMENT: ERR_GIMBAL_77.LOG [44KB]</code>
+</div>
+<div class="flex gap-6">
+<button class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="reply">reply</span> REPLY</button>
+<button class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="thumb_up">thumb_up</span> ACKNOWLEDGE</button>
+</div>
+<!-- Nested Comment -->
+<div class="mt-6 ml-8 pl-8 border-l border-outline-variant space-y-6">
+<div class="flex justify-between">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 bg-surface-variant flex items-center justify-center font-bold text-on-surface text-xs">ENG</div>
+<div>
+<div class="font-label-caps text-label-caps font-bold">CHIEF ENG. ADAMS</div>
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">T+ 04:28:40</div>
+</div>
+</div>
+<span class="bg-surface-variant text-on-surface px-3 py-1 font-label-caps text-[10px] h-fit">ROUTINE</span>
+</div>
+<p class="font-body-standard text-on-surface">
+                                    Log acknowledged. Scans currently running on the gimbal array. Initial results show thermal stress on the hydraulic line. Update pending.
+                                </p>
+</div>
+</div>
+<!-- Comment 2: Observation -->
+<div class="bg-surface-container border-l-4 border-on-surface border-t border-r border-b border-outline-variant p-6">
+<div class="flex justify-between mb-4">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-on-surface-variant flex items-center justify-center font-bold text-on-surface">PLT</div>
+<div>
+<div class="font-label-caps text-label-caps font-bold">LT. JENKINS</div>
+<div class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">T+ 03:15:00</div>
+</div>
+</div>
+<span class="bg-on-surface text-background px-3 py-1 font-label-caps text-[10px] h-fit">OBSERVATION</span>
+</div>
+<p class="font-body-standard text-on-surface mb-6">
+                                Visual clarity of the primary HUD seems slightly dim during direct solar exposure. Potential glare issues reported on the Port-side console as well.
+                            </p>
+<div class="flex gap-6">
+<button class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="reply">reply</span> REPLY</button>
+<button class="flex items-center gap-2 font-label-caps text-label-caps text-on-surface-variant hover:text-primary"><span class="material-symbols-outlined text-sm" data-icon="thumb_up">thumb_up</span> ACKNOWLEDGE</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-surface-container-lowest border-t border-outline-variant px-margin-mobile">
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+<span class="font-label-caps text-label-caps">T-Minus</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-label-caps text-label-caps">Systems</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps">Comms</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-1 scale-90 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span class="font-label-caps text-label-caps">Admin</span>
+</a>
+</nav>
+</body></html>

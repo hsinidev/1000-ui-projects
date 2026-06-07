@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUNAR-LOGISTICS // COMMAND CENTER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Narrow:wght@400;700&amp;family=Space+Grotesk:wght@300;400;600;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .clipped-corner {
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #ff6600,
+                #ff6600 10px,
+                #1d100a 10px,
+                #1d100a 20px
+            );
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#1d100a",
+                        "surface-container": "#2b1c16",
+                        "outline": "#aa8a7d",
+                        "primary-fixed": "#ffdbcd",
+                        "primary-fixed-dim": "#ffb596",
+                        "on-secondary-container": "#b8b8b8",
+                        "on-error": "#690005",
+                        "secondary": "#c7c6c6",
+                        "on-background": "#f8ddd2",
+                        "inverse-surface": "#f8ddd2",
+                        "surface-dim": "#1d100a",
+                        "surface-container-low": "#261812",
+                        "surface-container-high": "#362620",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "on-primary-fixed": "#360f00",
+                        "on-primary": "#581e00",
+                        "surface-tint": "#ffb596",
+                        "primary": "#ffb596",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#3d2d26",
+                        "outline-variant": "#5a4136",
+                        "on-primary-container": "#561d00",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface": "#1d100a",
+                        "on-surface": "#f8ddd2",
+                        "surface-container-highest": "#42312a",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#a33e00",
+                        "tertiary": "#c8c6c5",
+                        "on-tertiary": "#313030",
+                        "on-surface-variant": "#e3bfb1",
+                        "surface-variant": "#42312a",
+                        "primary-container": "#ff6600",
+                        "on-tertiary-container": "#2f2f2f",
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface-container-lowest": "#180b06",
+                        "surface-bright": "#47352e",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "tertiary-container": "#989696",
+                        "secondary-container": "#484949",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed": "#e5e2e1",
+                        "secondary-fixed": "#e3e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "border-width-heavy": "3px",
+                        "gutter": "16px",
+                        "margin": "24px",
+                        "border-width": "2px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Archivo Narrow"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-lg": ["JetBrains Mono"],
+                        "data-display": ["JetBrains Mono"],
+                        "headline-sm": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-display": ["18px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center px-margin h-16 bg-surface border-b-3 border-outline">
+<div class="flex items-center gap-4 w-full">
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<h1 class="font-headline-sm text-headline-sm font-bold text-primary-container tracking-tighter">LUNAR-LOGISTICS // MET 04:22:15</h1>
+<div class="flex-grow"></div>
+<div class="hidden md:flex gap-6 items-center">
+<span class="font-label-caps text-label-caps text-primary-container font-bold">COMMAND_CENTER</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-colors p-2">PAYLOAD</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:bg-primary-container hover:text-on-primary-container transition-colors p-2">TELEMETRY</span>
+</div>
+<span class="material-symbols-outlined text-primary-container ml-4" data-icon="warning">warning</span>
+</div>
+</header>
+<!-- NavigationDrawer Shell (Left Rail) -->
+<aside class="fixed inset-y-0 left-0 z-[60] bg-surface border-r-3 border-outline flex flex-col w-80 hidden lg:flex mt-16">
+<div class="p-6 border-b-2 border-outline-variant flex items-center gap-4">
+<div class="w-12 h-12 border-2 border-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<div>
+<h3 class="font-label-caps text-label-caps text-primary-container">CDR. ELARA VANCE</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant">SECTOR 7 COMMAND</p>
+<p class="font-label-caps text-[10px] text-primary-container">CLEARANCE: OMEGA</p>
+</div>
+</div>
+<nav class="flex-grow py-4">
+<div class="bg-primary-container text-on-primary-container mx-2 my-1 px-4 py-3 flex items-center gap-4 active:translate-x-1 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">COMMAND_CENTER</span>
+</div>
+<div class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors cursor-pointer active:translate-x-1">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-label-caps">PAYLOAD_VIS</span>
+</div>
+<div class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors cursor-pointer active:translate-x-1">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">TELEMETRY_LOGS</span>
+</div>
+<div class="text-on-surface mx-2 my-1 px-4 py-3 flex items-center gap-4 hover:bg-surface-variant transition-colors cursor-pointer active:translate-x-1">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">SOP_MANUALS</span>
+</div>
+</nav>
+<div class="p-4 border-t-2 border-outline-variant">
+<div class="text-on-surface-variant px-4 py-3 flex items-center gap-4 hover:bg-error-container hover:text-white transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">LOG_OUT</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-grow mt-16 lg:ml-80 pb-20 p-margin relative grid grid-cols-12 gap-gutter overflow-y-auto">
+<div class="scanline-overlay fixed inset-0 z-10 opacity-10 pointer-events-none"></div>
+<!-- Row 1: Ticker & Global Status -->
+<div class="col-span-12 lg:col-span-9 bg-surface-container border-2 border-outline p-4 flex items-center gap-6 overflow-hidden">
+<div class="flex-shrink-0 bg-primary-container text-on-primary-container px-3 py-1 font-label-caps text-[10px] hazard-stripe">
+<span class="bg-primary-container px-2">LIVE_TICKER</span>
+</div>
+<div class="whitespace-nowrap flex gap-12 font-data-display text-primary uppercase overflow-hidden">
+<span>SHUTTLE ARCADIA-04 DOCKING IN 00:14:55</span>
+<span class="text-on-surface-variant opacity-50">//</span>
+<span>OXYGEN DEPLETION AT SECTOR 4 OUTPOST: 0.04% INCREASE</span>
+<span class="text-on-surface-variant opacity-50">//</span>
+<span>FUEL RE-SUPPLY COMPLETE: MARE TRANQUILLITATIS</span>
+<span class="text-on-surface-variant opacity-50">//</span>
+<span>SOLAR FLARE ADVISORY: LEVEL 2</span>
+</div>
+</div>
+<div class="col-span-12 lg:col-span-3 bg-surface-container border-2 border-outline p-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-2">NETWORK_INTEGRITY</h4>
+<div class="flex items-center gap-2">
+<div class="w-full bg-surface-container-highest h-2 border border-outline-variant">
+<div class="bg-primary-container h-full w-[94%]"></div>
+</div>
+<span class="font-data-display text-primary text-[12px]">94%</span>
+</div>
+</div>
+<!-- Row 2: Map & Resource Monitoring -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<!-- Lunar Surface Tracking -->
+<div class="flex-grow bg-surface-container-lowest border-3 border-outline relative min-h-[500px]">
+<div class="absolute top-4 left-4 z-20 bg-background/80 border border-primary-container p-2 font-label-caps text-[10px] text-primary">
+                    GEO_COORDS: 45.123N / 12.004E
+                </div>
+<img alt="Lunar Surface Tracking" class="w-full h-full object-cover grayscale opacity-60" data-alt="A high-contrast, topographic satellite view of the lunar surface craters and mare in a monochromatic noir style. Digital orange vector lines and glowing markers represent shuttle trajectories and landing zones. The visual aesthetic is a blend of harsh technical precision and mission-critical logistics, dominated by matte blacks and vibrant orange accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCc40hK-3bbdDJT62n82wPXVI1Eyja-HANNMAGPC1Jl2ZkpvrhMELkUx0jTTsfr4Puimr4yiJlCyNtBMvy57GFqXbnml5xluzinFIzqVaQN5b-Zh6xMk1-GV5lsom8Fx7fh4NRMA5l5I40tJ0xm8KS1DlCi-c4aazLidA4uogO-mlDXRGwEUGN7X0wMW2v9sZnTmawGNy29scDGhURKh4w0XlnQg906IIJUWDBBv1ftsZnSAi5_rZFvHDRjOqyEl2QbYPctBMeZgA"/>
+<div class="absolute inset-0 pointer-events-none border-[12px] border-surface-container-lowest border-opacity-40"></div>
+<!-- Interactive Markers Overlay -->
+<div class="absolute top-1/4 left-1/3 w-4 h-4 bg-primary-container animate-pulse flex items-center justify-center">
+<div class="w-10 h-10 border border-primary-container absolute"></div>
+</div>
+</div>
+</div>
+<!-- Resource Status Stack -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Resource Bars -->
+<div class="bg-surface-container border-2 border-outline p-6 flex flex-col gap-6">
+<h3 class="font-label-caps text-label-caps border-b border-outline-variant pb-2 text-primary-container">GLOBAL_RESOURCE_LEVELS</h3>
+<div class="space-y-4">
+<!-- Oxygen -->
+<div>
+<div class="flex justify-between mb-1">
+<label class="font-label-caps text-label-caps">OXYGEN_RESERVE</label>
+<span class="font-data-display text-primary">82%</span>
+</div>
+<div class="h-6 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary-container w-[82%]"></div>
+</div>
+</div>
+<!-- Fuel -->
+<div>
+<div class="flex justify-between mb-1">
+<label class="font-label-caps text-label-caps text-error">FUEL_LEVEL_CRITICAL</label>
+<span class="font-data-display text-error">19%</span>
+</div>
+<div class="h-6 bg-surface-container-lowest border border-error p-0.5">
+<div class="h-full bg-error w-[19%]"></div>
+</div>
+</div>
+<!-- Power -->
+<div>
+<div class="flex justify-between mb-1">
+<label class="font-label-caps text-label-caps">GRID_STABILITY</label>
+<span class="font-data-display text-primary">64%</span>
+</div>
+<div class="h-6 bg-surface-container-lowest border border-outline-variant p-0.5">
+<div class="h-full bg-primary-container w-[64%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Missions -->
+<div class="bg-surface-container border-2 border-outline flex-grow overflow-hidden flex flex-col">
+<div class="p-4 border-b-2 border-outline-variant flex justify-between items-center bg-surface-container-high">
+<h3 class="font-label-caps text-label-caps">ACTIVE_MISSIONS</h3>
+<span class="bg-primary-container text-on-primary-container px-2 font-data-display text-[12px]">04</span>
+</div>
+<div class="overflow-y-auto p-4 space-y-4">
+<div class="border-l-4 border-primary-container bg-surface-container-high p-3 active:scale-[0.98] transition-transform cursor-pointer">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>ID: AUR-99</span>
+<span>IN-PROGRESS</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-primary">HE-3 EXTRACTION</h4>
+<p class="font-body-md text-[12px] mt-1 text-on-surface opacity-70">Excavation at Tycho Crater initiated. Monitoring thermal load.</p>
+</div>
+<div class="border-l-4 border-outline-variant bg-surface-container p-3 opacity-60">
+<div class="flex justify-between text-[10px] font-label-caps">
+<span>ID: TRN-22</span>
+<span>STAGED</span>
+</div>
+<h4 class="font-label-caps text-label-caps">CARGO RE-ROUTE</h4>
+<p class="font-body-md text-[12px] mt-1">Awaiting atmospheric clearance for sub-orbital shuttle.</p>
+</div>
+<div class="border-l-4 border-error bg-surface-container-high p-3">
+<div class="flex justify-between text-[10px] font-label-caps text-error">
+<span>ID: HAZ-01</span>
+<span>ALERT</span>
+</div>
+<h4 class="font-label-caps text-label-caps text-error">HULL INTEGRITY LOSS</h4>
+<p class="font-body-md text-[12px] mt-1 text-on-surface">Outpost 7B reporting pressure drop in Segment C.</p>
+</div>
+</div>
+<button class="m-4 clipped-corner bg-primary-container text-on-primary-container font-label-caps py-2 hover:bg-white hover:text-black transition-colors">
+                    NEW_MISSION_REQUEST
+                </button>
+</div>
+</div>
+<!-- Row 3: Telemetry Grid -->
+<div class="col-span-12">
+<div class="bg-surface-container border-2 border-outline overflow-hidden">
+<div class="grid grid-cols-4 bg-surface-container-highest border-b border-outline-variant p-2">
+<div class="font-label-caps text-label-caps px-4">UNIT_ID</div>
+<div class="font-label-caps text-label-caps px-4">DESTINATION</div>
+<div class="font-label-caps text-label-caps px-4">TRAJECTORY</div>
+<div class="font-label-caps text-label-caps px-4 text-right">STATUS</div>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="grid grid-cols-4 p-4 hover:bg-surface-variant transition-colors cursor-crosshair">
+<div class="font-data-display text-[14px] px-4">SHUTTLE_VOYAGER_09</div>
+<div class="font-body-md px-4 text-on-surface-variant">MARE SERENITATIS</div>
+<div class="font-body-md px-4 text-on-surface-variant">TRANS-LUNAR_INJ [STABLE]</div>
+<div class="px-4 text-right">
+<span class="inline-block w-2 h-2 bg-primary-container mr-2"></span>
+<span class="font-label-caps text-label-caps">ACTIVE</span>
+</div>
+</div>
+<div class="grid grid-cols-4 p-4 hover:bg-surface-variant transition-colors cursor-crosshair">
+<div class="font-data-display text-[14px] px-4">CARRIER_ODYSSEY_II</div>
+<div class="font-body-md px-4 text-on-surface-variant">COPERNICUS_HUB</div>
+<div class="font-body-md px-4 text-on-surface-variant">ORBITAL_DESCENT [0.02G]</div>
+<div class="px-4 text-right">
+<span class="inline-block w-2 h-2 bg-primary-container mr-2"></span>
+<span class="font-label-caps text-label-caps">ACTIVE</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 h-20 flex justify-around items-stretch bg-surface border-t-3 border-outline">
+<div class="bg-primary-container text-on-primary-container flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px]">MANIFEST</span>
+</div>
+<div class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="event_upcoming">event_upcoming</span>
+<span class="font-label-caps text-[10px]">CALENDAR</span>
+</div>
+<div class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-[10px]">ZONES</span>
+</div>
+<div class="text-on-surface-variant flex flex-col items-center justify-center w-full h-full p-unit active:scale-95 transition-transform duration-100">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-[10px]">ALERTS</span>
+</div>
+</nav>
+<!-- Floating Action Button - Only for Command Center -->
+<button class="fixed bottom-margin right-margin z-[70] w-14 h-14 bg-primary-container text-on-primary-container clipped-corner flex items-center justify-center shadow-none border-2 border-white hover:bg-white hover:text-black transition-all active:scale-95 hidden lg:flex">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+</body></html>

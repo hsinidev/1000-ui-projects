@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZENITH-1 MISSION CONTROL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@700;800&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            overflow: hidden;
+            height: 100vh;
+        }
+        .scan-line-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.03) 0px,
+                rgba(0, 0, 0, 0.03) 1px,
+                transparent 1px,
+                transparent 4px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+        .structural-inset {
+            border-top: 1px solid #000000;
+            border-left: 1px solid #000000;
+            border-bottom: 1px solid #333533;
+            border-right: 1px solid #333533;
+        }
+        .metallic-border {
+            border: 1px solid #121212;
+            outline: 1px solid #333533;
+        }
+        .neon-glow {
+            box-shadow: 0 0 12px 0px rgba(0, 241, 253, 0.4);
+        }
+        .red-glow {
+            box-shadow: 0 0 12px 0px rgba(230, 30, 42, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .cursor-crosshair {
+            cursor: crosshair;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#2a2a2a",
+                      "on-tertiary": "#2d312e",
+                      "primary-fixed": "#ffdad6",
+                      "surface-container-low": "#1c1b1b",
+                      "secondary-fixed": "#6ff6ff",
+                      "on-tertiary-container": "#fefffb",
+                      "on-primary": "#680009",
+                      "inverse-surface": "#e5e2e1",
+                      "tertiary-container": "#737773",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "surface-variant": "#353534",
+                      "surface-container-highest": "#353534",
+                      "on-error-container": "#ffdad6",
+                      "primary-container": "#e61e2a",
+                      "surface-dim": "#131313",
+                      "on-tertiary-fixed": "#181d1a",
+                      "tertiary-fixed": "#e0e3df",
+                      "on-primary-fixed-variant": "#930011",
+                      "surface-container": "#201f1f",
+                      "primary-fixed-dim": "#ffb3ad",
+                      "tertiary-fixed-dim": "#c4c7c3",
+                      "on-surface-variant": "#e7bdb9",
+                      "secondary-container": "#00f1fd",
+                      "surface-bright": "#393939",
+                      "secondary-fixed-dim": "#00dce6",
+                      "secondary": "#dcfdff",
+                      "primary": "#ffb3ad",
+                      "tertiary": "#c4c7c3",
+                      "on-background": "#e5e2e1",
+                      "outline": "#ae8884",
+                      "on-secondary-container": "#006a6f",
+                      "on-primary-container": "#fffeff",
+                      "surface-tint": "#ffb3ad",
+                      "surface-container-lowest": "#0e0e0e",
+                      "inverse-primary": "#c0001a",
+                      "on-tertiary-fixed-variant": "#444844",
+                      "on-secondary": "#00373a",
+                      "inverse-on-surface": "#313030",
+                      "surface": "#131313",
+                      "on-primary-fixed": "#410003",
+                      "on-secondary-fixed": "#002022",
+                      "outline-variant": "#5d3f3c",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary-fixed-variant": "#004f53",
+                      "error-container": "#93000a",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "stack-compact": "8px",
+                      "gutter": "16px",
+                      "container-max": "100%",
+                      "stack-loose": "32px",
+                      "margin": "24px",
+                      "unit": "4px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Hanken Grotesk"],
+                      "body-sm": ["Inter"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-point": ["JetBrains Mono"],
+                      "display-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                      "data-point": ["32px", {"lineHeight": "1", "letterSpacing": "-0.05em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="text-on-surface">
+<div class="scan-line-overlay"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 w-full bg-background border-b border-outline-variant">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-display-lg text-display-lg text-primary-container uppercase tracking-tighter">ZENITH-1 MISSION</h1>
+</div>
+<div class="flex gap-gutter items-center">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ORBITAL VELOCITY</span>
+<span class="font-data-point text-secondary-container text-xl">27,580 KM/H</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-8 py-3 font-headline-md text-xl uppercase active:scale-95 duration-75 hover:bg-surface-container-high transition-colors metallic-border red-glow">
+                GO/NO-GO
+            </button>
+</div>
+</header>
+<div class="flex h-screen pt-20 pb-16">
+<!-- NavigationDrawer -->
+<aside class="flex flex-col h-full w-64 border-r border-outline-variant py-margin gap-stack-compact bg-surface-container-low shrink-0">
+<div class="px-gutter mb-6">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-2">SYSTEMS_DIAGNOSTIC</h2>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full w-[84%] bg-secondary-container neon-glow"></div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="flex items-center gap-4 px-gutter py-3 bg-primary-container text-on-primary-container border-l-4 border-secondary-container transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</a>
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+<span class="font-label-caps text-label-caps">Payload</span>
+</a>
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="mode_fan">mode_fan</span>
+<span class="font-label-caps text-label-caps">Propulsion</span>
+</a>
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+<span class="font-label-caps text-label-caps">Comms</span>
+</a>
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-label-caps">Logs</span>
+</a>
+</nav>
+<div class="mt-auto px-gutter">
+<div class="structural-inset bg-surface-container p-3 border-l-4 border-primary-container">
+<p class="font-label-caps text-[10px] text-primary-container mb-1 uppercase">Alert Monitor</p>
+<p class="font-body-sm text-[12px] leading-tight text-on-surface">CRYOGENIC PRESSURE STABLE. NO LEAKS DETECTED.</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-hidden p-gutter grid grid-cols-12 grid-rows-6 gap-gutter bg-background relative cursor-crosshair">
+<!-- Large central live feed -->
+<section class="col-span-8 row-span-4 relative metallic-border overflow-hidden bg-surface-container-lowest">
+<img alt="Launch Pad" class="w-full h-full object-cover opacity-60 grayscale brightness-75" data-alt="A cinematic high-angle view of a massive aerospace rocket positioned on a launch pad at night. The scene is illuminated by powerful floodlights, creating stark contrasts and a gritty, technical atmosphere. Digital scanning UI overlays with coordinate grids, crosshairs, and data telemetry are superimposed over the rocket. The overall mood is tense and professional, using a palette of deep blacks and metallic greys with subtle red light reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA0KB-N_6VuOv3uJYpfsZHc7UJFw7jXIjXL3O6KmGDRbU4umpfDnpd9piUAArZcCZqbnEsRng42r4fRUr4tLv0UgWOlWCnCibC3W0kUOMJzgOnacg46aBefrZSg4pRBGeC1y0sKnXkKxVFh_NsH9Pk0l2dML9E0RqhA5aihNd-qRyHmConiFosS9j0Kr1_lYhrB9yW21lCX6SVGU1NAlPefZDZK8xAB54VZpE_LDZp8vXvkD_aAgBZA1yVwuoosas-Gwou60HVASJg"/>
+<!-- HUD Overlays -->
+<div class="absolute inset-0 pointer-events-none">
+<div class="absolute top-4 left-4 font-label-caps text-secondary-container bg-background/60 p-2 border border-secondary-container neon-glow">
+                        LIVE // CAM_04_NORTH_TOWER
+                    </div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 border border-primary-container/30">
+<div class="absolute top-0 left-1/2 -translate-x-1/2 h-4 w-px bg-primary-container"></div>
+<div class="absolute bottom-0 left-1/2 -translate-x-1/2 h-4 w-px bg-primary-container"></div>
+<div class="absolute left-0 top-1/2 -translate-y-1/2 w-4 px bg-primary-container"></div>
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-4 px bg-primary-container"></div>
+</div>
+<div class="absolute bottom-4 right-4 text-right">
+<p class="font-label-caps text-on-surface-variant">AUTO-TRACKING: <span class="text-secondary-container">ENABLED</span></p>
+<p class="font-label-caps text-on-surface-variant">OBJ_LOCKED: <span class="text-primary-container">ZENITH_HEAVY</span></p>
+</div>
+</div>
+</section>
+<!-- T-Minus Countdown -->
+<section class="col-span-4 row-span-2 structural-inset bg-surface-container-low p-margin flex flex-col justify-center items-center metallic-border">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2">T-MINUS COUNTDOWN</span>
+<div class="font-data-point text-display-lg text-primary-container tracking-widest red-glow">
+                    00:14:52
+                </div>
+<div class="w-full mt-4 flex justify-between px-4">
+<span class="w-2 h-2 rounded-full bg-secondary-container neon-glow"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-container neon-glow"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-container/20"></span>
+<span class="w-2 h-2 rounded-full bg-secondary-container/20"></span>
+</div>
+</section>
+<!-- Weather Details -->
+<section class="col-span-4 row-span-2 structural-inset bg-surface-container-low p-gutter metallic-border">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">WEATHER STATUS</h3>
+<span class="material-symbols-outlined text-secondary-container" data-icon="cloudy_snowing">cloudy_snowing</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="border-l-2 border-secondary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] text-on-surface-variant">WIND SPEED</p>
+<p class="font-data-point text-xl">12 KT</p>
+</div>
+<div class="border-l-2 border-secondary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] text-on-surface-variant">VISIBILITY</p>
+<p class="font-data-point text-xl">10 NM</p>
+</div>
+<div class="border-l-2 border-secondary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] text-on-surface-variant">HUMIDITY</p>
+<p class="font-data-point text-xl">42 %</p>
+</div>
+<div class="border-l-2 border-secondary-container pl-3 py-1">
+<p class="font-label-caps text-[10px] text-on-surface-variant">LAUNCH WINDOW</p>
+<p class="font-data-point text-xl text-secondary-container">OPEN</p>
+</div>
+</div>
+</section>
+<!-- Telemetry Summaries -->
+<section class="col-span-4 row-span-2 structural-inset bg-surface-container p-gutter metallic-border">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">PROPELLANT LEVELS</h3>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span>LIQUID OXYGEN (LOX)</span>
+<span class="text-secondary-container">98.2%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest">
+<div class="h-full bg-secondary-container neon-glow" style="width: 98.2%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span>RP-1 KEROSENE</span>
+<span class="text-secondary-container">96.5%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest">
+<div class="h-full bg-secondary-container neon-glow" style="width: 96.5%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span>HELIUM PRESSURIZATION</span>
+<span class="text-primary-container">88.0%</span>
+</div>
+<div class="h-2 w-full bg-surface-container-highest">
+<div class="h-full bg-primary-container red-glow" style="width: 88%"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Launch Map/Trajectory -->
+<section class="col-span-4 row-span-2 structural-inset bg-surface-container-lowest metallic-border relative">
+<img alt="Launch Site Map" class="w-full h-full object-cover opacity-30 grayscale contrast-125" data-alt="A high-contrast topographic satellite map of a coastal launch facility, presented in a dark, tactical interface style. The map features cyan-colored orbital trajectory lines and pulsing red markers indicating key tracking stations. The aesthetic is purely industrial and data-heavy, with fine grid lines and monospaced coordinate text labels throughout the scene." data-location="Cape Canaveral" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv-eSY36GWu57kK4IAg_PDGUCcsNF9Kozl_bVh0ddCDZAPT7pfca9ggzLbfo1eJx-kb-8MaI0IX9-s4__EQOSpyc9ec6lbGjr1egPKvQood7_7u62GMqM3XN2hWPXlcNQJ7h5FTwCidc5dgBNb5KTdxgKV8CA2vWsKiIunXUB8I69Lxcie0zmEEx7WMok_KYrA6da11MoBs452tKJ3Vh343qbQLlS9q5I8sqmDKhK-b7xh4ftDkUwDWhybpC2SvcqfqF1JDWqiLxc"/>
+<div class="absolute inset-0 flex flex-col p-gutter">
+<span class="font-label-caps text-label-caps text-secondary-container">TRAJECTORY_B_74</span>
+<div class="mt-auto flex justify-between items-end">
+<div class="font-label-caps text-[10px] text-on-surface-variant">
+                            LAT: 28.3922 N<br/>
+                            LON: 80.6077 W
+                        </div>
+<span class="material-symbols-outlined text-secondary-container text-4xl" data-icon="map">map</span>
+</div>
+</div>
+</section>
+<!-- Real-time Event Log -->
+<section class="col-span-4 row-span-2 structural-inset bg-surface-container-lowest p-gutter metallic-border overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-2 border-b border-outline-variant pb-2">MISSION_LOG.EXE</h3>
+<div class="font-label-caps text-[10px] space-y-2 opacity-80">
+<p class="flex gap-2"><span class="text-secondary-container">[14:45:02]</span> <span>GROUND POWER DISCONNECT INITIATED</span></p>
+<p class="flex gap-2"><span class="text-secondary-container">[14:46:15]</span> <span>LOX TOP-OFF COMPLETED</span></p>
+<p class="flex gap-2"><span class="text-secondary-container">[14:48:33]</span> <span>FLIGHT SOFTWARE INTERNALIZED</span></p>
+<p class="flex gap-2 text-primary-container"><span class="">[14:51:10]</span> <span>ARMING IGNITION SEQUENCER</span></p>
+<p class="flex gap-2"><span class="text-secondary-container">[14:52:00]</span> <span>SYSTEMS NOMINAL - STANDING BY</span></p>
+</div>
+</section>
+</main>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter bg-background border-t border-outline-variant">
+<button class="flex flex-col items-center justify-center text-secondary-container border-t-2 border-secondary-container pt-1 h-full w-1/4 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps">COUNTDOWN</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 h-full w-1/4 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 h-full w-1/4 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="cloudy_snowing">cloudy_snowing</span>
+<span class="font-label-caps text-label-caps">WEATHER</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 h-full w-1/4 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</button>
+</footer>
+</body></html>

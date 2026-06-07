@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ORBIT-SYNC | Mission Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(225, 253, 255, 0.05);
+        }
+        .hex-grid {
+            background-image: radial-gradient(rgba(0, 219, 231, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .status-pulse {
+            box-shadow: 0 0 8px currentColor;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container": "#201f1f",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed": "#74f5ff",
+                      "surface-container-highest": "#353534",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#353534",
+                      "surface": "#131313",
+                      "on-tertiary": "#412d00",
+                      "on-secondary": "#680008",
+                      "tertiary-fixed-dim": "#ffba20",
+                      "surface-bright": "#3a3939",
+                      "primary": "#e1fdff",
+                      "outline-variant": "#3a494b",
+                      "surface-container-high": "#2a2a2a",
+                      "on-surface-variant": "#b9cacb",
+                      "on-secondary-fixed-variant": "#930010",
+                      "tertiary-container": "#ffd58c",
+                      "surface-tint": "#00dbe7",
+                      "on-primary-container": "#006a71",
+                      "on-primary-fixed-variant": "#004f54",
+                      "surface-container-low": "#1c1b1b",
+                      "on-primary-fixed": "#002022",
+                      "secondary": "#ffb3ac",
+                      "error-container": "#93000a",
+                      "tertiary-fixed": "#ffdea8",
+                      "tertiary": "#fff6ed",
+                      "inverse-surface": "#e5e2e1",
+                      "on-background": "#e5e2e1",
+                      "secondary-fixed-dim": "#ffb3ac",
+                      "secondary-container": "#c40019",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-tertiary-fixed-variant": "#5e4200",
+                      "on-primary": "#00363a",
+                      "on-tertiary-fixed": "#271900",
+                      "primary-fixed-dim": "#00dbe7",
+                      "on-tertiary-container": "#7e5900",
+                      "inverse-primary": "#00696f",
+                      "surface-dim": "#131313",
+                      "inverse-on-surface": "#313030",
+                      "secondary-fixed": "#ffdad6",
+                      "outline": "#849495",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary-fixed": "#410003",
+                      "background": "#131313",
+                      "primary-container": "#00f2ff",
+                      "on-error": "#690005",
+                      "on-secondary-container": "#ffd2cd"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "xs": "4px",
+                      "unit": "4px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "gutter": "16px",
+                      "margin": "24px",
+                      "sm": "8px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "label-sm": ["JetBrains Mono"],
+                      "body-base": ["Inter"],
+                      "data-lg": ["JetBrains Mono"],
+                      "micro-code": ["JetBrains Mono"],
+                      "header-md": ["Inter"],
+                      "display-xl": ["Inter"]
+              },
+              "fontSize": {
+                      "label-sm": ["12px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "data-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "micro-code": ["10px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                      "header-md": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r border-outline-variant/20 bg-surface-container-lowest/50 backdrop-blur-xl flex flex-col h-full py-lg z-50">
+<div class="px-lg mb-xl">
+<h1 class="font-header-md text-header-md font-bold text-primary tracking-tighter">ORBIT-SYNC</h1>
+<p class="font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant">MISSION CONTROL</p>
+</div>
+<nav class="flex-1">
+<!-- Active Tab: Dashboard -->
+<a class="flex items-center gap-md px-lg py-sm bg-primary/10 text-primary border-r-2 border-primary shadow-[0_0_15px_rgba(0,219,231,0.2)] transition-all duration-150 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:text-primary-fixed-dim hover:bg-surface-container-high/30 transition-all duration-150 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Fleet</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:text-primary-fixed-dim hover:bg-surface-container-high/30 transition-all duration-150 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Comms</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:text-primary-fixed-dim hover:bg-surface-container-high/30 transition-all duration-150 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Admin</span>
+</a>
+<a class="flex items-center gap-md px-lg py-sm text-on-surface-variant hover:text-primary-fixed-dim hover:bg-surface-container-high/30 transition-all duration-150 ease-in-out active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">FAQ</span>
+</a>
+</nav>
+<div class="mt-auto px-lg pt-lg border-t border-outline-variant/10">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-surface-container-highest rounded flex items-center justify-center border border-outline-variant/30 overflow-hidden">
+<img alt="Commander Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAo3C9YAZxUhX90LCC18ZkQS3wYUC1tUxa8U5jC6LdOLA0kabfwET_SkJCwR2ecgg9h9zNA4UA7Yjv3DctsncKkNcYGDaX13k4Qlc2jnezgwiyAw_gcQWAdraoQjLgXz7F-gbhJCy-PXrTwbSPBIYqUpoSQJMjQqnhUnNeopsJ-0pfz6MSTWT3Lzkj-cl35B7CSkaLq7B8P0_kXggZ4KXYyHwVa72rgB4RuyS2fClRbDzTAprfou0FeUdzlaa4XkG2-653LvPNmxA"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface font-bold uppercase">CMD. ORBITER</p>
+<p class="font-micro-code text-micro-code text-primary-fixed-dim">SECTOR-7 ADMIN</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="fixed top-0 right-0 left-64 bottom-0 bg-background hex-grid overflow-hidden">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-64 h-16 bg-surface-container/40 backdrop-blur-md border-b border-outline-variant/20 flex justify-between items-center px-lg w-full z-40">
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-sm bg-surface-container-lowest px-md py-xs border border-outline-variant/30">
+<span class="material-symbols-outlined text-primary scale-75" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-micro-code text-micro-code text-on-surface-variant w-48 p-0" placeholder="QUERY SATELLITE ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-crosshair" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-crosshair" data-icon="settings_input_component">settings_input_component</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-crosshair" data-icon="terminal">terminal</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant/30"></div>
+<button class="bg-primary-container/10 border border-primary text-primary px-md py-xs font-micro-code text-micro-code uppercase tracking-widest hover:bg-primary/20 transition-all active:opacity-80 cursor-crosshair">
+                    SYSTEM OPERATIONAL
+                </button>
+</div>
+</header>
+<!-- Dashboard Grid Content -->
+<div class="pt-24 p-gutter grid grid-cols-12 gap-gutter h-full overflow-hidden">
+<!-- Left Side: Real-time Telemetry -->
+<div class="col-span-3 flex flex-col gap-gutter">
+<!-- Telemetry Module 1 -->
+<div class="glass-panel p-md relative overflow-hidden">
+<div class="absolute top-0 left-0 p-xs font-micro-code text-[8px] text-primary/40 border-r border-b border-outline-variant/20 uppercase">Module: SNR_LINK_V4</div>
+<div class="flex justify-between items-end mb-md pt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">SNR Intensity</span>
+<span class="font-data-lg text-data-lg text-primary">82.4<span class="text-xs ml-xs">dB</span></span>
+</div>
+<div class="h-16 flex items-end gap-[2px]">
+<!-- Simple procedural bar chart representation -->
+<div class="flex-1 bg-primary/20 h-[60%]"></div>
+<div class="flex-1 bg-primary/40 h-[75%]"></div>
+<div class="flex-1 bg-primary/60 h-[85%]"></div>
+<div class="flex-1 bg-primary h-[90%] shadow-[0_0_8px_rgba(0,219,231,0.4)]"></div>
+<div class="flex-1 bg-primary/40 h-[65%]"></div>
+<div class="flex-1 bg-primary/20 h-[40%]"></div>
+<div class="flex-1 bg-primary/40 h-[55%]"></div>
+<div class="flex-1 bg-primary/80 h-[80%]"></div>
+</div>
+</div>
+<!-- Telemetry Module 2 -->
+<div class="glass-panel p-md relative overflow-hidden">
+<div class="absolute top-0 left-0 p-xs font-micro-code text-[8px] text-primary/40 border-r border-b border-outline-variant/20 uppercase">Module: PWR_CELL_GRID</div>
+<div class="flex justify-between items-end mb-md pt-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Power Reserve</span>
+<span class="font-data-lg text-data-lg text-primary">94.1<span class="text-xs ml-xs">%</span></span>
+</div>
+<div class="w-full bg-surface-container-high h-2 border border-outline-variant/20">
+<div class="bg-primary h-full w-[94.1%] shadow-[0_0_8px_rgba(0,219,231,0.4)]"></div>
+</div>
+<div class="flex justify-between mt-sm">
+<span class="font-micro-code text-micro-code text-on-surface-variant">AUTO-GEN ACTIVE</span>
+<span class="font-micro-code text-micro-code text-primary">STABLE</span>
+</div>
+</div>
+<!-- Telemetry Module 3 -->
+<div class="glass-panel p-md relative overflow-hidden flex-1">
+<div class="absolute top-0 left-0 p-xs font-micro-code text-[8px] text-primary/40 border-r border-b border-outline-variant/20 uppercase">Module: TMP_SENSOR_ARRAY</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase pt-xs mb-md">Thermal Matrix</p>
+<div class="grid grid-cols-4 grid-rows-6 gap-xs h-full pb-8">
+<!-- Heatmap dots simulation -->
+<div class="bg-primary/20 border border-primary/40"></div>
+<div class="bg-primary/10 border border-primary/20"></div>
+<div class="bg-primary/30 border border-primary/50"></div>
+<div class="bg-primary/20 border border-primary/40"></div>
+<div class="bg-tertiary-container/20 border border-tertiary-container/40"></div>
+<div class="bg-tertiary-container/40 border border-tertiary-container/60"></div>
+<div class="bg-primary/20 border border-primary/40"></div>
+<div class="bg-primary/10 border border-primary/20"></div>
+<div class="bg-primary/30 border border-primary/50"></div>
+<div class="bg-secondary-container/20 border border-secondary-container/40"></div>
+<div class="bg-secondary-container/60 border border-secondary-container/80 shadow-[0_0_10px_rgba(196,0,25,0.4)]"></div>
+<div class="bg-tertiary-container/20 border border-tertiary-container/40"></div>
+<!-- ... more thermal cells -->
+<div class="bg-primary/20 border border-primary/40"></div>
+<div class="bg-primary/10 border border-primary/20"></div>
+<div class="bg-primary/30 border border-primary/50"></div>
+<div class="bg-primary/20 border border-primary/40"></div>
+</div>
+</div>
+</div>
+<!-- Center: Orbital Map Visualization -->
+<div class="col-span-6 flex flex-col gap-gutter">
+<div class="glass-panel flex-1 relative overflow-hidden flex flex-col">
+<div class="absolute top-md left-md z-10">
+<div class="flex items-center gap-sm bg-surface-container-highest/60 backdrop-blur-md border border-primary/20 px-md py-xs">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-micro-code text-micro-code text-on-surface uppercase tracking-widest">Global Telemetry Live</span>
+</div>
+</div>
+<div class="absolute top-md right-md z-10 flex flex-col gap-sm">
+<button class="w-10 h-10 glass-panel flex items-center justify-center hover:bg-primary/10 text-primary">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center hover:bg-primary/10 text-primary">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="w-10 h-10 glass-panel flex items-center justify-center hover:bg-primary/10 text-primary">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+</div>
+<!-- Main Visualization Canvas Placeholder -->
+<div class="flex-1 w-full bg-[#050505] relative overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="A highly detailed and technical orbital visualization of Earth viewed from deep space at night. The planet is glowing with networks of city lights in a vibrant cyan hue, while floating above the atmosphere are hundreds of pulsing digital markers representing satellite positions. The image features high-contrast technical glassmorphism overlays with semi-transparent telemetry data and vector orbit lines. The lighting is deep space black with neon cyan and faint amber status indicators, creating an authoritative mission control aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy6KAllT19jhJ8ToQ6bJ7jQezA4RWHwJ3kRw35KH09f_xx8hQIqT5jMepiyNcTPWVCSZkzzRGcr9o9vQy_ObH0O521XcZNsaZ-jaq37Qw5YkqQ9fDw0ER1OEv-QTk9omIbJ4lAlhhFd6iZbk0z4hQvgUXnqL9sp-9WHjd0Y5kCU58B-Lwxb0udR4x098lseEPaY05g0lEGgxKfvMKb2hdUWmUtmwiMeSAbD5W6EfI-4ZlHDPmbwWso9wv5zbgH9Ok48XeweHTy6F0"/>
+<!-- Overlay Vector Elements (SVG Orbits) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40" preserveaspectratio="none" viewbox="0 0 100 100">
+<ellipse cx="50" cy="50" fill="none" rx="40" ry="35" stroke="#00dbe7" stroke-width="0.1"></ellipse>
+<ellipse cx="50" cy="50" fill="none" rx="30" ry="45" stroke="#00dbe7" stroke-dasharray="1 1" stroke-width="0.1"></ellipse>
+<circle cx="50" cy="50" fill="#00dbe7" r="2"></circle>
+</svg>
+<!-- Floating Data Tags -->
+<div class="absolute top-[30%] left-[40%] flex flex-col items-center">
+<div class="w-[1px] h-12 bg-primary/40"></div>
+<div class="bg-surface-container/80 backdrop-blur-sm border border-primary/30 p-xs font-micro-code text-[10px]">
+<p class="text-primary font-bold">SAT-4029-A</p>
+<p class="text-on-surface-variant">ALT: 42,164KM</p>
+</div>
+</div>
+</div>
+<!-- Map Footer Data -->
+<div class="bg-surface-container-low border-t border-outline-variant/20 p-md flex justify-between items-center">
+<div class="flex gap-xl">
+<div>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">Coordinates</p>
+<p class="font-label-sm text-label-sm text-primary">0.000°N / 102.34°E</p>
+</div>
+<div>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">Orbital Velocity</p>
+<p class="font-label-sm text-label-sm text-primary">7,800 M/S</p>
+</div>
+</div>
+<div class="flex gap-sm">
+<span class="w-12 h-1 bg-primary/20"></span>
+<span class="w-12 h-1 bg-primary"></span>
+<span class="w-12 h-1 bg-primary/20"></span>
+</div>
+</div>
+</div>
+<!-- Bottom Fleet Summary -->
+<div class="h-48 grid grid-cols-4 gap-gutter">
+<div class="glass-panel p-md flex flex-col justify-between border-b-2 border-primary">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-micro-code text-micro-code text-primary bg-primary/10 px-xs">ACTIVE</span>
+</div>
+<div>
+<p class="font-data-lg text-data-lg leading-none">124</p>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">Active Satellites</p>
+</div>
+</div>
+<div class="glass-panel p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary-fixed-dim" data-icon="warning">warning</span>
+<span class="font-micro-code text-micro-code text-tertiary-fixed-dim bg-tertiary-fixed-dim/10 px-xs">WARNING</span>
+</div>
+<div>
+<p class="font-data-lg text-data-lg leading-none">08</p>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">Degraded Nodes</p>
+</div>
+</div>
+<div class="glass-panel p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="radar">radar</span>
+<span class="font-micro-code text-micro-code text-on-surface-variant bg-surface-container-high px-xs">SCANNING</span>
+</div>
+<div>
+<p class="font-data-lg text-data-lg leading-none">16</p>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">Unidentified Obj</p>
+</div>
+</div>
+<div class="glass-panel p-md flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-secondary" data-icon="error">error</span>
+<span class="font-micro-code text-micro-code text-secondary bg-secondary-container/20 px-xs">CRITICAL</span>
+</div>
+<div>
+<p class="font-data-lg text-data-lg leading-none">02</p>
+<p class="font-micro-code text-micro-code text-on-surface-variant uppercase">System Alarms</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Critical Alerts & Logs -->
+<div class="col-span-3 flex flex-col gap-gutter">
+<div class="glass-panel flex-1 flex flex-col overflow-hidden relative">
+<div class="absolute top-0 left-0 p-xs font-micro-code text-[8px] text-primary/40 border-r border-b border-outline-variant/20 uppercase">Module: ALRT_LOG_SEC_4</div>
+<div class="p-md pt-lg border-b border-outline-variant/20">
+<h2 class="font-label-sm text-label-sm font-bold uppercase tracking-widest text-primary flex items-center gap-sm">
+<span class="material-symbols-outlined text-sm" data-icon="priority_high">priority_high</span>
+                            Critical Alerts
+                        </h2>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-md flex flex-col gap-md">
+<!-- Alert Item 1 -->
+<div class="bg-secondary-container/10 border-l-2 border-secondary p-sm flex gap-md">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-md" data-icon="emergency">emergency</span>
+</div>
+<div class="flex-1">
+<p class="font-micro-code text-micro-code text-secondary mb-xs">08:42:12 UTC</p>
+<p class="font-label-sm text-[11px] leading-tight text-on-surface">NODE_402B THERMAL OVERLOAD BREACHED THRESHOLD [72°C]</p>
+<button class="mt-sm font-micro-code text-[9px] uppercase text-secondary border border-secondary/30 px-xs py-[2px] hover:bg-secondary/10">ENGAGE COOLANT</button>
+</div>
+</div>
+<!-- Alert Item 2 -->
+<div class="bg-tertiary-container/10 border-l-2 border-tertiary-fixed-dim p-sm flex gap-md">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-tertiary-fixed-dim text-md" data-icon="signal_disconnected">signal_disconnected</span>
+</div>
+<div class="flex-1">
+<p class="font-micro-code text-micro-code text-tertiary-fixed-dim mb-xs">08:39:55 UTC</p>
+<p class="font-label-sm text-[11px] leading-tight text-on-surface">INTERMITTENT SIGNAL LOSS DETECTED ON PACIFIC SECTOR SECTOR-A</p>
+<button class="mt-sm font-micro-code text-[9px] uppercase text-tertiary-fixed-dim border border-tertiary-fixed-dim/30 px-xs py-[2px] hover:bg-tertiary-fixed-dim/10">RE-ROUTE DATA</button>
+</div>
+</div>
+<!-- Alert Item 3 -->
+<div class="border-l-2 border-outline-variant p-sm flex gap-md opacity-60">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant text-md" data-icon="schedule">schedule</span>
+</div>
+<div class="flex-1">
+<p class="font-micro-code text-micro-code text-on-surface-variant mb-xs">08:35:00 UTC</p>
+<p class="font-label-sm text-[11px] leading-tight text-on-surface">ROUTINE MAINTENANCE ON UPSILON-9 COMPLETED SUCCESSFULLY</p>
+</div>
+</div>
+<!-- Alert Item 4 -->
+<div class="bg-secondary-container/10 border-l-2 border-secondary p-sm flex gap-md">
+<div class="flex-shrink-0">
+<span class="material-symbols-outlined text-secondary text-md" data-icon="warning">warning</span>
+</div>
+<div class="flex-1">
+<p class="font-micro-code text-micro-code text-secondary mb-xs">08:21:44 UTC</p>
+<p class="font-label-sm text-[11px] leading-tight text-on-surface">ORBITAL DRIFT DETECTED IN GEO-SYNC CLUSTER [0.003°]</p>
+<button class="mt-sm font-micro-code text-[9px] uppercase text-secondary border border-secondary/30 px-xs py-[2px] hover:bg-secondary/10">THRUSTER ADJ</button>
+</div>
+</div>
+</div>
+<!-- Quick Command Input -->
+<div class="p-md bg-surface-container-low border-t border-outline-variant/20">
+<div class="flex items-center gap-xs border border-outline-variant/30 px-sm py-[4px] bg-surface-container-lowest">
+<span class="text-primary font-micro-code text-micro-code font-bold">&gt;</span>
+<input class="bg-transparent border-none focus:ring-0 font-micro-code text-micro-code text-primary w-full p-0" placeholder="CMD ENTRY..." type="text"/>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB for Emergency Actions -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-background rounded-full shadow-[0_0_20px_rgba(0,219,231,0.6)] flex items-center justify-center z-50 hover:scale-110 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-3xl font-bold" data-icon="bolt">bolt</span>
+</button>
+</body></html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bio-Habitat Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .breathe-indicator {
+            opacity: 1;
+            transition: opacity 2s ease-in-out;
+        }
+        .moss-glow:focus-within {
+            box-shadow: 0 0 0 4px rgba(74, 93, 35, 0.15);
+        }
+        body {
+            background-color: #fbf9f4;
+            color: #1b1c19;
+            font-family: 'Inter', sans-serif;
+        }
+        .font-h1 { font-family: 'Playfair Display'; }
+        .font-h2 { font-family: 'Playfair Display'; }
+        .font-h3 { font-family: 'Playfair Display'; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#775e3c",
+                        "error-container": "#ffdad6",
+                        "surface-container-low": "#f5f3ee",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#3b4d14",
+                        "primary": "#33450d",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#e1c298",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#e4e2dd",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#eae8e3",
+                        "background": "#fbf9f4",
+                        "tertiary-fixed-dim": "#c8c6c6",
+                        "primary-fixed-dim": "#b8cf88",
+                        "primary-container": "#4a5d23",
+                        "on-tertiary-container": "#cecbcb",
+                        "surface-tint": "#52652a",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#e4e2e1",
+                        "primary-fixed": "#d4eca2",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b8cf88",
+                        "secondary-container": "#fcdaaf",
+                        "secondary": "#725a38",
+                        "on-primary-fixed": "#141f00",
+                        "secondary-fixed": "#ffddb2",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "tertiary": "#3f3f3f",
+                        "surface-container": "#f0eee9",
+                        "on-secondary-fixed-variant": "#594323",
+                        "outline-variant": "#c6c8b8",
+                        "surface-bright": "#fbf9f4",
+                        "inverse-on-surface": "#f2f1ec",
+                        "on-primary-container": "#bed58e",
+                        "tertiary-container": "#575656",
+                        "outline": "#76786b",
+                        "surface-variant": "#e4e2dd",
+                        "on-surface-variant": "#45483c",
+                        "on-secondary-fixed": "#291800",
+                        "inverse-surface": "#30312e",
+                        "surface": "#fbf9f4",
+                        "on-background": "#1b1c19",
+                        "on-surface": "#1b1c19",
+                        "surface-dim": "#dbdad5",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "sm": "12px",
+                        "gutter": "16px",
+                        "md": "24px",
+                        "margin-mobile": "20px",
+                        "lg": "48px",
+                        "base": "8px",
+                        "xl": "80px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "h3": ["Playfair Display"],
+                        "data-tabular": ["Inter"],
+                        "h1": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "h2": ["Playfair Display"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                        "data-tabular": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col h-screen w-64 rounded-r-xl bg-surface-container-low dark:bg-surface-container-lowest shadow-[4px_0_12px_rgba(74,93,35,0.08)]">
+<div class="p-md mb-lg">
+<h1 class="font-h2 text-h2 text-primary">Bio-Habitat</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Regenerative Architecture</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">nature_people</span>
+<span class="font-label-sm text-label-sm">Botany</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">bolt</span>
+<span class="font-label-sm text-label-sm">Energy</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">thermostat</span>
+<span class="font-label-sm text-label-sm">Thermal</span>
+</a>
+<a class="text-on-surface-variant mx-2 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm">Source</span>
+</a>
+<a class="bg-secondary-container text-on-secondary-container rounded-full mx-2 px-4 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings</span>
+<span class="font-label-sm text-label-sm font-bold">Admin</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/30 p-4 space-y-1">
+<a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+<a class="text-on-surface-variant px-4 py-2 flex items-center gap-3 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm">Settings</span>
+</a>
+<button class="w-full mt-4 bg-primary text-on-primary font-label-sm text-label-sm py-3 rounded-xl hover:scale-[1.02] transition-transform">
+                New Project
+            </button>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 z-30 flex justify-between items-center px-gutter bg-background/80 backdrop-blur-md">
+<div class="flex items-center gap-md w-1/2">
+<div class="relative w-full max-w-md moss-glow bg-surface-container rounded-full px-4 py-1.5 flex items-center">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-full" placeholder="Search systems or habitats..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary">eco</span>
+<div class="h-8 w-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User profile" data-alt="A professional headshot of a habitat manager in a clean, high-key office environment. The person has a friendly, authoritative expression, and the background subtly hints at lush indoor vegetation. The lighting is soft and natural, emphasizing a sustainable and professional architectural career." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeKEkXrvrCilwIdexHSmmrb0qZ88aJvBhe_r6iQxyaDMi9K45ADFD38MzOBwMXf2TJ1oX2nJKhMkfm2tR6ALfeE_Aa_aOBf2wLncolJYa9qWqPO2vKJFvMFQ3KQmQU-HrMoR76uwQmuXyn6tF3CoR7X0pVCcU6wdF3qX7SgD7202LC8gZwQFDJSq-6JnYKSNEivfMuLJy2oiRqylM1SOtpWksQX63rP3mIR6zhtuq7GlO1BwBy171uDqLL3o2tqLkCaI-vF97ARSE"/>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-20 p-md min-h-screen">
+<!-- Dashboard Header -->
+<section class="mb-lg">
+<div class="flex justify-between items-end mb-md">
+<div>
+<h2 class="font-h1 text-h1 text-primary">Admin Control Center</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Global Management &amp; Regenerative Systems Health</p>
+</div>
+<div class="flex gap-sm">
+<button class="px-md py-base bg-surface-container-high text-primary font-label-sm rounded-lg flex items-center gap-2 hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-[18px]">file_download</span> Export PDF
+                    </button>
+<button class="px-md py-base bg-primary text-on-primary font-label-sm rounded-lg flex items-center gap-2 hover:scale-105 transition-all">
+<span class="material-symbols-outlined text-[18px]">add_task</span> Generate Report
+                    </button>
+</div>
+</div>
+<!-- Bento Grid: Health & Stats -->
+<div class="grid grid-cols-12 gap-md h-[340px]">
+<div class="col-span-4 bg-primary text-on-primary p-md rounded-3xl flex flex-col justify-between relative overflow-hidden">
+<div class="z-10">
+<p class="font-label-sm uppercase tracking-widest opacity-80 mb-xs">System Health</p>
+<h3 class="font-h2 text-h2 mb-md">98.4% Optimal</h3>
+</div>
+<div class="flex items-center gap-4 z-10">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border-2 border-primary overflow-hidden">
+<img alt="Avatar" data-alt="A small circular avatar profile picture of a diverse engineering professional. The background is a soft, blurred moss green, fitting the sustainable brand aesthetic. High-quality portrait photography." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqSkPJIK5_ni7QsqNCxjgQketYVQwFkGj4P0LnZLdOYwV-xxyWz3D0lD1YSI79rjvRfC4BwBbvzKJkJQkRswhkAeRW6F2MJ5-KZx0JXypbsSmTWxlVEzqY-dfRDYenHxGW-a23GBHZkcvW-lrAoxXd35HDLBDVSqvi21RQI4dKQySbC_aTsZ7N2CcHast0srlaEFPjwJmHWFWPPiKzwxE8U7dXpySZ8qkMLoZCWFyi1S_adJhe-OIiKTo8aJ1ZNVKzT0pd3pKXke8"/>
+</div>
+<div class="w-8 h-8 rounded-full border-2 border-primary overflow-hidden">
+<img alt="Avatar" data-alt="A small circular avatar profile picture of a smiling professional woman. The image has a clean, airy feel with soft lighting that reflects the calm and structural integrity of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOVd16h-BQlLZTetxWNblTiVqRoMU5Ja1T7_RzTVwvoscxdtMDeejEQm2o4gU_lQ08vX9gxE7vKQN87t4PlEDCU7o0LhULacK3_eoXEFTDAx4lBVEAa5024zP8w3pYoV6ie8zWkZSOBoN_pW0c5crmx6ol75-kVBnULxxtxIdi4WnzGSukQNKgIr4BGuJ_aSv9xPexXOasT6JHNQtPiQUbmdrZsXOdRpR8eajL3CMv506A9p3LN9pd47AJXjhWrAyzk3ELVG2jvHo"/>
+</div>
+</div>
+<span class="text-label-sm font-medium">12 active managers</span>
+</div>
+<!-- Decorative Organic Shape -->
+<div class="absolute -bottom-20 -right-20 w-64 h-64 bg-primary-container rounded-full opacity-30"></div>
+</div>
+<div class="col-span-8 grid grid-cols-2 gap-md h-full">
+<div class="bg-surface-container-low p-md rounded-3xl flex flex-col justify-between shadow-[0_4px_12px_rgba(74,93,35,0.04)] border border-outline-variant/10">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-on-surface-variant mb-xs">Energy Balance</p>
+<h4 class="font-h3 text-h3 text-primary">+14.2 kWh</h4>
+</div>
+<span class="material-symbols-outlined text-primary bg-primary-fixed p-2 rounded-full">bolt</span>
+</div>
+<div class="w-full h-1 bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-3/4 rounded-full"></div>
+</div>
+<p class="font-label-sm text-on-surface-variant">Surplus stored in Habitat 04</p>
+</div>
+<div class="bg-surface-container-low p-md rounded-3xl flex flex-col justify-between shadow-[0_4px_12px_rgba(74,93,35,0.04)] border border-outline-variant/10">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-sm text-on-surface-variant mb-xs">Botanical Nutrients</p>
+<h4 class="font-h3 text-h3 text-secondary">Cycle Level 08</h4>
+</div>
+<span class="material-symbols-outlined text-secondary bg-secondary-fixed p-2 rounded-full">water_drop</span>
+</div>
+<div class="w-full h-1 bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="bg-secondary h-full w-1/2 rounded-full"></div>
+</div>
+<p class="font-label-sm text-on-surface-variant">Next automated flush: 4h 12m</p>
+</div>
+<div class="col-span-2 bg-surface-container-high p-md rounded-3xl flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="p-3 bg-white rounded-2xl shadow-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div>
+<p class="font-h3 text-h3 text-primary">Carbon Offset Milestone</p>
+<p class="text-body-md text-on-surface-variant">Current phase sequestration: 12.4 Tons CO2e</p>
+</div>
+</div>
+<button class="font-label-sm text-primary underline underline-offset-4 hover:scale-105 transition-transform">View Analytics</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Leaf Divider -->
+<div class="w-full h-8 flex justify-center items-center opacity-20 mb-lg">
+<svg fill="none" height="20" viewbox="0 0 200 20" width="200" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 10C50 10 50 0 100 0C150 0 150 10 200 10" stroke="#33450d" stroke-width="2"></path>
+<circle cx="100" cy="0" fill="#33450d" r="4"></circle>
+<circle cx="50" cy="10" fill="#33450d" r="4"></circle>
+<circle cx="150" cy="10" fill="#33450d" r="4"></circle>
+</svg>
+</div>
+<!-- Management Section -->
+<div class="grid grid-cols-12 gap-lg">
+<!-- User Management Table -->
+<div class="col-span-8 bg-white rounded-3xl shadow-[0_4px_24px_rgba(74,93,35,0.06)] overflow-hidden border border-outline-variant/20">
+<div class="p-md border-b border-outline-variant/10 flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-on-background">Habitat Managers</h3>
+<div class="flex gap-sm">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">filter_list</span>
+<select class="pl-10 pr-8 py-1.5 bg-surface-container rounded-lg border-none text-label-sm font-medium focus:ring-primary text-on-surface-variant appearance-none">
+<option>Filter by Role</option>
+<option>Botany Specialist</option>
+<option>Energy Engineer</option>
+</select>
+</div>
+</div>
+</div>
+<table class="w-full">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-md py-4 text-left font-label-sm text-on-surface-variant uppercase tracking-widest">Name</th>
+<th class="px-md py-4 text-left font-label-sm text-on-surface-variant uppercase tracking-widest">Department</th>
+<th class="px-md py-4 text-left font-label-sm text-on-surface-variant uppercase tracking-widest">Status</th>
+<th class="px-md py-4 text-left font-label-sm text-on-surface-variant uppercase tracking-widest">Uptime</th>
+<th class="px-md py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-md py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">AS</div>
+<div>
+<p class="font-body-md text-on-background font-semibold">Alara Sterling</p>
+<p class="text-[12px] text-on-surface-variant">alara.s@biohabitat.eco</p>
+</div>
+</td>
+<td class="px-md py-4 text-body-md text-on-surface-variant">Regenerative Botany</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-primary text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active
+                                </span>
+</td>
+<td class="px-md py-4 font-data-tabular text-data-tabular">99.8%</td>
+<td class="px-md py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-md py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-bold">JD</div>
+<div>
+<p class="font-body-md text-on-background font-semibold">Julian Drax</p>
+<p class="text-[12px] text-on-surface-variant">julian.d@biohabitat.eco</p>
+</div>
+</td>
+<td class="px-md py-4 text-body-md text-on-surface-variant">Thermal Engineering</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant/50"></span> Idle
+                                </span>
+</td>
+<td class="px-md py-4 font-data-tabular text-data-tabular">94.2%</td>
+<td class="px-md py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="px-md py-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary font-bold">MK</div>
+<div>
+<p class="font-body-md text-on-background font-semibold">Mikaela Koda</p>
+<p class="text-[12px] text-on-surface-variant">mika.k@biohabitat.eco</p>
+</div>
+</td>
+<td class="px-md py-4 text-body-md text-on-surface-variant">Energy Systems</td>
+<td class="px-md py-4">
+<span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary-fixed text-primary text-[12px] font-bold">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> Active
+                                </span>
+</td>
+<td class="px-md py-4 font-data-tabular text-data-tabular">100%</td>
+<td class="px-md py-4 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- System Settings Side Panel -->
+<div class="col-span-4 space-y-md">
+<!-- Energy Settings -->
+<div class="bg-surface-container-low p-md rounded-3xl border border-outline-variant/10">
+<h4 class="font-h3 text-h3 text-primary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined">settings_suggest</span> Thresholds
+                    </h4>
+<div class="space-y-md">
+<div>
+<div class="flex justify-between font-label-sm text-on-surface-variant mb-2">
+<span>Solar Battery Capacity</span>
+<span class="font-bold">85%</span>
+</div>
+<input class="w-full h-1.5 bg-outline-variant/30 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+<div>
+<div class="flex justify-between font-label-sm text-on-surface-variant mb-2">
+<span>Thermal Exhaust Trigger</span>
+<span class="font-bold">24°C</span>
+</div>
+<input class="w-full h-1.5 bg-outline-variant/30 rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+</div>
+</div>
+</div>
+<!-- Botanical Nutrient Cycles -->
+<div class="bg-secondary-container/20 p-md rounded-3xl border border-secondary-container/30">
+<h4 class="font-h3 text-h3 text-secondary mb-md flex items-center gap-2">
+<span class="material-symbols-outlined">potted_plant</span> Nutrient Cycles
+                    </h4>
+<div class="grid grid-cols-1 gap-sm">
+<div class="bg-white p-3 rounded-xl flex items-center justify-between border border-secondary/10">
+<span class="text-label-sm font-medium">Nitrogen Feed</span>
+<div class="px-3 py-1 rounded-full bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider">Automated</div>
+</div>
+<div class="bg-white p-3 rounded-xl flex items-center justify-between border border-secondary/10">
+<span class="text-label-sm font-medium">Phosphorus Mist</span>
+<div class="px-3 py-1 rounded-full bg-secondary text-on-secondary text-[10px] font-bold uppercase tracking-wider">Automated</div>
+</div>
+<div class="bg-white/50 p-3 rounded-xl flex items-center justify-between border border-secondary/10 opacity-60">
+<span class="text-label-sm font-medium">Potassium Flush</span>
+<div class="px-3 py-1 rounded-full border border-secondary text-secondary text-[10px] font-bold uppercase tracking-wider">Manual Only</div>
+</div>
+</div>
+</div>
+<!-- Sustainability Report Quick Gen -->
+<div class="bg-primary-container p-md rounded-3xl text-on-primary shadow-lg relative overflow-hidden">
+<h4 class="font-h3 text-h3 mb-sm">Annual ESG Ready</h4>
+<p class="text-body-md opacity-90 mb-md">Aggregate multi-site regenerative data into a certified investor report.</p>
+<button class="w-full py-3 bg-white text-primary font-bold rounded-xl hover:bg-primary-fixed transition-colors">
+                        Preview 2024 Report
+                    </button>
+<!-- Abstract Leaf Pattern Overlay -->
+<div class="absolute -top-10 -right-10 opacity-10">
+<span class="material-symbols-outlined text-[120px]">eco</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-[calc(100%-16rem)] ml-64 p-lg flex flex-col md:flex-row justify-between items-center gap-md bg-surface-container-highest rounded-t-xl border-t border-outline-variant/30">
+<div class="flex flex-col gap-xs">
+<h3 class="font-h3 text-h3 text-primary">Bio-Habitat</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">© 2024 Bio-Habitat Regenerative Systems. All rights reserved.</p>
+</div>
+<nav class="flex gap-lg">
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Newsletter</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact</a>
+<a class="font-label-sm text-label-sm text-on-surface-variant hover:text-secondary transition-colors" href="#">Social</a>
+</nav>
+</footer>
+</body></html>

@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZENITH-1 MISSION | Launch Director Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@700;800&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(255,255,255,0) 50%, rgba(0,0,0,0.03) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .structural-inset {
+            border-top: 1px solid #121212;
+            border-left: 1px solid #121212;
+            border-bottom: 1px solid #333533;
+            border-right: 1px solid #333533;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 12px 0px rgba(0, 241, 253, 0.4);
+        }
+        .glow-red {
+            box-shadow: 0 0 12px 0px rgba(230, 30, 42, 0.5);
+        }
+        .brushed-steel {
+            background: linear-gradient(135deg, #1c1b1b 0%, #2a2a2a 100%);
+            border: 1px solid #353534;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-high": "#2a2a2a",
+                    "on-tertiary": "#2d312e",
+                    "primary-fixed": "#ffdad6",
+                    "surface-container-low": "#1c1b1b",
+                    "secondary-fixed": "#6ff6ff",
+                    "on-tertiary-container": "#fefffb",
+                    "on-primary": "#680009",
+                    "inverse-surface": "#e5e2e1",
+                    "tertiary-container": "#737773",
+                    "background": "#131313",
+                    "on-error": "#690005",
+                    "surface-variant": "#353534",
+                    "surface-container-highest": "#353534",
+                    "on-error-container": "#ffdad6",
+                    "primary-container": "#e61e2a",
+                    "surface-dim": "#131313",
+                    "on-tertiary-fixed": "#181d1a",
+                    "tertiary-fixed": "#e0e3df",
+                    "on-primary-fixed-variant": "#930011",
+                    "surface-container": "#201f1f",
+                    "primary-fixed-dim": "#ffb3ad",
+                    "tertiary-fixed-dim": "#c4c7c3",
+                    "on-surface-variant": "#e7bdb9",
+                    "secondary-container": "#00f1fd",
+                    "surface-bright": "#393939",
+                    "secondary-fixed-dim": "#00dce6",
+                    "secondary": "#dcfdff",
+                    "primary": "#ffb3ad",
+                    "tertiary": "#c4c7c3",
+                    "on-background": "#e5e2e1",
+                    "outline": "#ae8884",
+                    "on-secondary-container": "#006a6f",
+                    "on-primary-container": "#fffeff",
+                    "surface-tint": "#ffb3ad",
+                    "surface-container-lowest": "#0e0e0e",
+                    "inverse-primary": "#c0001a",
+                    "on-tertiary-fixed-variant": "#444844",
+                    "on-secondary": "#00373a",
+                    "inverse-on-surface": "#313030",
+                    "surface": "#131313",
+                    "on-primary-fixed": "#410003",
+                    "on-secondary-fixed": "#002022",
+                    "outline-variant": "#5d3f3c",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed-variant": "#004f53",
+                    "error-container": "#93000a",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-compact": "8px",
+                    "gutter": "16px",
+                    "container-max": "100%",
+                    "stack-loose": "32px",
+                    "margin": "24px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "body-sm": ["Inter"],
+                    "label-caps": ["JetBrains Mono"],
+                    "data-point": ["JetBrains Mono"],
+                    "display-lg": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                    "data-point": ["32px", {"lineHeight": "1", "letterSpacing": "-0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="flex flex-col min-h-screen">
+<div class="scanline-overlay"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 w-full border-b border-outline-variant bg-surface-container-lowest">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-display-lg text-display-lg text-primary-container uppercase tracking-tighter">ZENITH-1 MISSION</h1>
+</div>
+<div class="flex items-center gap-margin">
+<div class="flex flex-col items-end">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CURRENT PHASE</span>
+<span class="font-headline-md text-headline-md text-secondary-container">T-MINUS 00:42:12</span>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-gutter py-stack-compact glow-red active:scale-95 transition-all duration-75">
+                GO/NO-GO
+            </button>
+</div>
+</header>
+<div class="flex flex-1 pt-20 pb-16">
+<!-- NavigationDrawer -->
+<aside class="h-[calc(100vh-144px)] w-64 border-r border-outline-variant flex flex-col py-margin gap-stack-compact bg-surface-container-low sticky top-20">
+<div class="px-gutter mb-stack-loose">
+<h2 class="font-headline-md text-headline-md text-on-surface uppercase tracking-tight">SYSTEMS</h2>
+</div>
+<nav class="flex flex-col">
+<a class="bg-primary-container text-on-primary-container rounded-none border-l-4 border-secondary-container flex items-center gap-gutter px-gutter py-stack-compact transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center gap-gutter px-gutter py-stack-compact transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+<span class="font-label-caps text-label-caps">Payload</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center gap-gutter px-gutter py-stack-compact transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="mode_fan">mode_fan</span>
+<span class="font-label-caps text-label-caps">Propulsion</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center gap-gutter px-gutter py-stack-compact transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+<span class="font-label-caps text-label-caps">Comms</span>
+</a>
+<a class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high flex items-center gap-gutter px-gutter py-stack-compact transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-label-caps">Logs</span>
+</a>
+</nav>
+<div class="mt-auto px-gutter border-t border-outline-variant pt-margin">
+<div class="flex items-center gap-stack-compact">
+<div class="w-2 h-2 rounded-full bg-secondary-container glow-cyan"></div>
+<span class="font-label-caps text-label-caps text-secondary-container">LINK: ACTIVE</span>
+</div>
+<div class="font-body-sm text-body-sm text-on-surface-variant mt-stack-compact">
+                    LD_REF: 88-XRAY-4
+                </div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-margin bg-background grid grid-cols-12 gap-gutter overflow-y-auto">
+<!-- Hero Status: Launch Director Console -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<div class="brushed-steel structural-inset p-margin relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary-container"></div>
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">FLIGHT DIRECTOR OVERVIEW</span>
+<h2 class="font-display-lg text-display-lg text-on-surface mt-2">NOMINAL STATUS</h2>
+</div>
+<div class="flex gap-stack-compact">
+<div class="bg-surface-container-highest px-gutter py-stack-compact structural-inset">
+<span class="font-label-caps text-label-caps text-on-surface-variant block">O2 SAT</span>
+<span class="font-data-point text-data-point text-secondary-container">98.4%</span>
+</div>
+<div class="bg-surface-container-highest px-gutter py-stack-compact structural-inset">
+<span class="font-label-caps text-label-caps text-on-surface-variant block">CABIN PSI</span>
+<span class="font-data-point text-data-point text-secondary-container">14.7</span>
+</div>
+</div>
+</div>
+<!-- Telemetry Chart Simulation -->
+<div class="mt-margin h-48 w-full border-b border-outline-variant relative flex items-end gap-1">
+<div class="flex-1 bg-secondary-container/20 h-3/4"></div>
+<div class="flex-1 bg-secondary-container/30 h-2/3"></div>
+<div class="flex-1 bg-secondary-container/20 h-4/5"></div>
+<div class="flex-1 bg-secondary-container/40 h-1/2"></div>
+<div class="flex-1 bg-secondary-container/20 h-3/4"></div>
+<div class="flex-1 bg-secondary-container/10 h-2/3"></div>
+<div class="flex-1 bg-secondary-container/30 h-5/6"></div>
+<div class="flex-1 bg-secondary-container/20 h-3/4"></div>
+<div class="flex-1 bg-secondary-container/40 h-4/5"></div>
+<div class="flex-1 bg-secondary-container/20 h-1/2"></div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-full border-t border-primary-container/30 dashed"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid: Detail Cards -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="brushed-steel structural-inset p-gutter">
+<div class="flex justify-between items-center border-b border-outline-variant pb-stack-compact mb-stack-compact">
+<span class="font-label-caps text-label-caps text-on-surface">PROPULSION MODULE</span>
+<span class="material-symbols-outlined text-secondary-container" data-icon="mode_fan">mode_fan</span>
+</div>
+<div class="flex flex-col gap-unit">
+<div class="flex justify-between py-1 border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">FUEL TANK 1</span>
+<span class="font-label-caps text-label-caps text-secondary-container">92%</span>
+</div>
+<div class="flex justify-between py-1 border-b border-surface-variant">
+<span class="font-body-sm text-body-sm text-on-surface-variant">LOX PRESSURE</span>
+<span class="font-label-caps text-label-caps text-secondary-container">3.2 MPA</span>
+</div>
+<div class="flex justify-between py-1">
+<span class="font-body-sm text-body-sm text-on-surface-variant">VALVE STATE</span>
+<span class="font-label-caps text-label-caps text-primary-container">CLOSED</span>
+</div>
+</div>
+</div>
+<div class="brushed-steel structural-inset p-gutter">
+<div class="flex justify-between items-center border-b border-outline-variant pb-stack-compact mb-stack-compact">
+<span class="font-label-caps text-label-caps text-on-surface">CREW VITALS</span>
+<span class="material-symbols-outlined text-secondary-container" data-icon="vital_signs">vital_signs</span>
+</div>
+<div class="flex items-center gap-gutter py-stack-compact">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-secondary-container">
+<img class="w-full h-full object-cover" data-alt="A portrait of a focused astronaut in a high-tech white space suit inside a dimly lit cockpit. The lighting is dominated by glowing cyan telemetry screens that reflect on the helmet's visor. The overall atmosphere is serious and professional, emphasizing a modern aerospace aesthetic with high contrast and precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYNYYiWYNjwy6UCIrnc6WecCCIY2KRrs-7ZRRnrWEzu5Drryd1pdsRf9SwiZrx6rDaaF4ECX7wNv8TAszUOnUmrGzQEYti9Kpqt3NR80LcnhgCHvRKZYW69zJ5BbeYiFkUs07rmk6Qc0BGxy1gpneLydkHtc_-L_9CZcFa5dunbxeAab3mpItDaUZfBoI35OwBBAcfJeOnEXfKVfDn-6xUJMgWVU1gepzYruPwQ6RNCmGWLq-NL_DyfUXQixc3XZhu6OGLf3rqQJc"/>
+</div>
+<div>
+<span class="font-label-caps text-label-caps block">CDR. VAUGHN</span>
+<span class="font-body-sm text-body-sm text-secondary-container">BPM: 72 | HRT: NOMINAL</span>
+</div>
+</div>
+<div class="flex items-center gap-gutter py-stack-compact">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-surface-variant">
+<img class="w-full h-full object-cover" data-alt="A high-altitude shot of Earth from a low-orbit spacecraft window, showing the curved horizon and deep indigo atmosphere. The scene is illuminated by the harsh, brilliant light of the sun against the black void of space. The visual style is crisp and technical, matching a mission control interface with high-resolution clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYrbn5D2BsZf1Jnv4fpb0ZbpmERzp-d10bskUc_XajYXMbseET_yc2EughZLVDsRj00smUCXatvnK9xUa8eKNzAdyLa4E6NJgqoYS_Er0JQM8QmOYiscXCezdKSa809m2PHsLPjC71Z4bsl5uJkVfF1EtedgHeHosWPoVcYL6JIXRYqeI7aHUYXfN2iD7OPX9KsNT8aX628zOhuRE53Cj5uQWDvK39MWj3TTjQRTkp8BvRVg2xcVj0jG_QgrI1QchOrCuv6YAFpiM"/>
+</div>
+<div>
+<span class="font-label-caps text-label-caps block">PLT. CHEN</span>
+<span class="font-body-sm text-body-sm text-secondary-container">BPM: 68 | HRT: NOMINAL</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Sidebar: Controls & Logistics -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Master Override Control -->
+<div class="bg-surface-container-highest border-2 border-primary-container p-gutter">
+<h3 class="font-label-caps text-label-caps text-primary-container mb-stack-compact flex items-center gap-unit">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+                        MISSION CRITICAL OVERRIDE
+                    </h3>
+<div class="flex flex-col gap-stack-compact">
+<button class="w-full h-20 bg-primary-container text-on-primary-container font-headline-md text-headline-md flex flex-col items-center justify-center glow-red active:bg-on-primary-fixed-variant transition-colors">
+                            ABORT MISSION
+                            <span class="text-[10px] tracking-widest font-label-caps">REQUIRES 2-FACTOR AUTH</span>
+</button>
+<div class="grid grid-cols-2 gap-stack-compact">
+<button class="bg-surface-container-low border border-outline-variant py-stack-compact font-label-caps text-label-caps text-on-surface hover:bg-surface-container-high">HOLD COUNT</button>
+<button class="bg-surface-container-low border border-outline-variant py-stack-compact font-label-caps text-label-caps text-on-surface hover:bg-surface-container-high">RECYCLE T-0</button>
+</div>
+</div>
+</div>
+<!-- Launch Sequence Log -->
+<div class="brushed-steel structural-inset flex-1 flex flex-col min-h-[400px]">
+<div class="p-gutter border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface">SEQUENCE_LOG_V8.2</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm" data-icon="refresh">refresh</span>
+</div>
+<div class="p-gutter font-label-caps text-[10px] flex-1 overflow-y-auto space-y-2">
+<div class="flex gap-gutter">
+<span class="text-secondary-container">[14:22:01]</span>
+<span class="text-on-surface">CRYOGENIC LOADING COMPLETE.</span>
+</div>
+<div class="flex gap-gutter">
+<span class="text-secondary-container">[14:22:05]</span>
+<span class="text-on-surface">APU PRE-START CHECKS INITIATED.</span>
+</div>
+<div class="flex gap-gutter">
+<span class="text-secondary-container">[14:22:12]</span>
+<span class="text-on-surface-variant">AUTO-SEQUENCE START CONFIRMED.</span>
+</div>
+<div class="flex gap-gutter">
+<span class="text-primary-container">[14:22:18]</span>
+<span class="text-primary-container">WARNING: WIND SHEAR GUST AT 12KM. MON.</span>
+</div>
+<div class="flex gap-gutter">
+<span class="text-secondary-container">[14:22:25]</span>
+<span class="text-on-surface">TELEMETRY LINK STRENGTH 99.8%.</span>
+</div>
+<div class="flex gap-gutter opacity-50">
+<span class="text-secondary-container">[14:22:30]</span>
+<span class="text-on-surface">WAITING FOR LD COMMAND...</span>
+</div>
+</div>
+</div>
+<!-- Weather Status -->
+<div class="brushed-steel structural-inset p-gutter">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-stack-compact block">LAUNCH SITE WEATHER</span>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-4xl text-secondary-container" data-icon="cloudy_snowing">cloudy_snowing</span>
+<div>
+<span class="font-headline-md text-headline-md block">12°C</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">KSC FLORIDA</span>
+</div>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps block">WIND: 8 KT</span>
+<span class="font-label-caps text-label-caps text-secondary-container">GO FOR LAUNCH</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter bg-background border-t border-outline-variant">
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all group">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps">COUNTDOWN</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-container border-t-2 border-secondary-container pt-1 transition-all">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all group">
+<span class="material-symbols-outlined" data-icon="cloudy_snowing">cloudy_snowing</span>
+<span class="font-label-caps text-label-caps">WEATHER</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all group">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</button>
+</footer>
+</body></html>

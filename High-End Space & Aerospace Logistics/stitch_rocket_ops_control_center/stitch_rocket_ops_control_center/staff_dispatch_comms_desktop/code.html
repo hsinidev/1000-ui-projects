@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROCKET-OPS | Dispatch &amp; Comms</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131314;
+            color: #e5e2e3;
+            font-family: 'Barlow Condensed', sans-serif;
+            overflow: hidden;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131314; }
+        ::-webkit-scrollbar-thumb { background: #e5e2e3; }
+        
+        .grid-line-x { background-image: linear-gradient(to right, #2A2A2B 1px, transparent 1px); background-size: 40px 100%; }
+        .grid-line-y { background-image: linear-gradient(to bottom, #2A2A2B 1px, transparent 1px); background-size: 100% 40px; }
+        
+        .ptt-active:active {
+            background-color: #ffb3b1;
+            color: #680010;
+        }
+    </style>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface-variant": "#e4bdbb",
+                    "primary": "#ffb3b1",
+                    "on-secondary": "#2f3131",
+                    "secondary-fixed": "#e2e2e2",
+                    "outline-variant": "#5c403f",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "surface-variant": "#353436",
+                    "inverse-primary": "#bd0b29",
+                    "on-primary-fixed": "#410007",
+                    "on-secondary-fixed-variant": "#454747",
+                    "tertiary-fixed-dim": "#c8c6c6",
+                    "tertiary-container": "#707070",
+                    "inverse-on-surface": "#303031",
+                    "outline": "#ab8887",
+                    "on-error-container": "#ffdad6",
+                    "on-primary": "#680010",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "surface-container-low": "#1b1b1c",
+                    "on-primary-container": "#fff2f1",
+                    "surface-container-lowest": "#0e0e0f",
+                    "surface-tint": "#ffb3b1",
+                    "on-primary-fixed-variant": "#92001b",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "secondary": "#c6c6c7",
+                    "primary-fixed": "#ffdad8",
+                    "on-surface": "#e5e2e3",
+                    "primary-fixed-dim": "#ffb3b1",
+                    "secondary-container": "#454747",
+                    "surface-container-high": "#2a2a2b",
+                    "on-background": "#e5e2e3",
+                    "on-tertiary-container": "#f7f5f4",
+                    "surface-container": "#1f1f20",
+                    "surface-bright": "#39393a",
+                    "inverse-surface": "#e5e2e3",
+                    "tertiary": "#c8c6c6",
+                    "surface": "#131314",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "primary-container": "#d72638",
+                    "background": "#131314",
+                    "on-secondary-container": "#b4b5b5",
+                    "tertiary-fixed": "#e4e2e2",
+                    "on-tertiary": "#303030",
+                    "on-error": "#690005",
+                    "surface-container-highest": "#353436",
+                    "surface-dim": "#131314",
+                    "error-container": "#93000a"
+            },
+            "fontFamily": {
+                    "display-lg": ["Barlow Condensed"],
+                    "headline-md": ["Barlow Condensed"],
+                    "body-standard": ["Barlow Condensed"],
+                    "label-caps": ["Barlow Condensed"],
+                    "telemetry-lg": ["JetBrains Mono"],
+                    "display-lg-mobile": ["Barlow Condensed"],
+                    "telemetry-sm": ["JetBrains Mono"]
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter-desktop": "16px",
+                    "container-max": "1920px",
+                    "margin-mobile": "12px",
+                    "margin-desktop": "24px",
+                    "gutter-mobile": "8px"
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-background text-on-surface flex h-screen overflow-hidden">
+<!-- SIDE NAV BAR (LCC-STATION-01) -->
+<aside class="hidden lg:flex flex-col h-full py-6 bg-surface-container border-r border-outline-variant w-64">
+<div class="px-6 mb-8">
+<h1 class="font-display-lg text-display-lg font-bold text-primary leading-none">LCC-STATION-01</h1>
+<div class="flex items-center gap-2 mt-2">
+<span class="w-2 h-2 bg-primary"></span>
+<span class="font-label-caps text-label-caps tracking-widest text-primary">OPERATIONAL</span>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center px-6 py-3 gap-4 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-label-caps text-label-caps">Mission Clock</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">cloud_queue</span>
+<span class="font-label-caps text-label-caps">Weather</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 border-l-4 border-primary bg-surface-variant text-primary font-bold transition-all active:scale-95 duration-75" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-label-caps text-label-caps">Dispatch</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">Command</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-4 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">Docs</span>
+</a>
+</nav>
+<div class="px-6 mb-6">
+<button class="w-full bg-primary-container text-on-primary-container font-label-caps text-label-caps py-4 tracking-tighter hover:brightness-110 active:scale-95 transition-all">
+                INITIATE GO/NO-GO
+            </button>
+</div>
+<div class="mt-auto px-6 space-y-4">
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-label-caps text-label-caps">Feedback</span>
+</div>
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-label-caps text-label-caps">Support</span>
+</div>
+</div>
+</aside>
+<div class="flex flex-col flex-1 min-w-0">
+<!-- TOP APP BAR -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 border-b border-outline-variant bg-surface">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">terminal</span>
+<span class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary tracking-widest uppercase">ROCKET-OPS</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<span class="font-telemetry-sm text-telemetry-sm text-on-surface-variant">V-12.0.4-STABLE</span>
+<span class="font-telemetry-sm text-telemetry-sm text-primary">LAT: 28.5729° N | LONG: 80.6490° W</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-variant transition-colors text-primary"><span class="material-symbols-outlined">notifications_active</span></button>
+<button class="p-2 hover:bg-surface-variant transition-colors text-on-surface-variant"><span class="material-symbols-outlined">settings</span></button>
+<button class="p-2 hover:bg-surface-variant transition-colors text-on-surface-variant"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="flex-1 overflow-hidden grid grid-cols-12 gap-0 relative">
+<!-- LEFT PANEL: PERSONNEL TRACKER -->
+<section class="col-span-12 lg:col-span-8 h-full border-r border-outline-variant flex flex-col bg-surface overflow-hidden">
+<div class="p-4 border-b border-outline-variant bg-surface-container flex justify-between items-center">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">GROUND CREW LOGISTICS</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-[0.2em]">UNIT DEPLOYMENT STATUS</p>
+</div>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-variant border border-outline font-telemetry-sm text-[11px]">COUNT: 42</span>
+<span class="px-2 py-1 bg-surface-variant border border-outline font-telemetry-sm text-[11px] text-primary">SCANNING...</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto">
+<table class="w-full text-left border-collapse">
+<thead class="sticky top-0 bg-surface-container-high z-10">
+<tr>
+<th class="p-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">PERSONNEL ID</th>
+<th class="p-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">ASSIGNMENT</th>
+<th class="p-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">STATUS</th>
+<th class="p-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">LOCATION</th>
+<th class="p-4 border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">LIFESIGNS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">SGT. J. VANCE [084]</td>
+<td class="p-4 font-label-caps text-label-caps">FUELING SUPERVISOR</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px]">
+<span class="w-2 h-2 bg-primary"></span> ON-STATION
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">PAD-39A / SERVICE TOWER</td>
+<td class="p-4 text-primary font-telemetry-sm text-telemetry-sm">BPM: 72 | O2: 98%</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">CPL. M. CHEN [112]</td>
+<td class="p-4 font-label-caps text-label-caps">PAYLOAD INTEGRATION</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px] text-on-surface-variant">
+<span class="w-2 h-2 bg-on-surface-variant/40"></span> STANDBY
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LCC-HAB-04</td>
+<td class="p-4 text-on-surface-variant font-telemetry-sm text-telemetry-sm">BPM: 64 | O2: 99%</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LT. K. ROSS [003]</td>
+<td class="p-4 font-label-caps text-label-caps">FLIGHT DYNAMICS</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px]">
+<span class="w-2 h-2 bg-on-surface animate-pulse"></span> TRANSIT
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">TRANSPORT-A / ROUTE 7</td>
+<td class="p-4 text-on-surface font-telemetry-sm text-telemetry-sm">BPM: 88 | O2: 97%</td>
+</tr>
+<!-- Repeat Row for Density -->
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">SPEC. D. GRANT [255]</td>
+<td class="p-4 font-label-caps text-label-caps">CRYOGENIC TECH</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px]">
+<span class="w-2 h-2 bg-primary"></span> ON-STATION
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LOX STORAGE FACILITY</td>
+<td class="p-4 text-primary font-telemetry-sm text-telemetry-sm">BPM: 75 | O2: 98%</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">SPEC. A. ORTIZ [092]</td>
+<td class="p-4 font-label-caps text-label-caps">TELEMETRY ANALYST</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px] text-on-surface-variant">
+<span class="w-2 h-2 bg-on-surface-variant/40"></span> STANDBY
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LCC-CENTRAL-01</td>
+<td class="p-4 text-on-surface-variant font-telemetry-sm text-telemetry-sm">BPM: 68 | O2: 99%</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LT. F. MILLER [019]</td>
+<td class="p-4 font-label-caps text-label-caps">SAFETY OFFICER</td>
+<td class="p-4">
+<span class="flex items-center gap-2 font-label-caps text-[11px]">
+<span class="w-2 h-2 bg-primary"></span> ON-STATION
+                                    </span>
+</td>
+<td class="p-4 font-telemetry-sm text-telemetry-sm">LZ-1 PERIMETER</td>
+<td class="p-4 text-primary font-telemetry-sm text-telemetry-sm">BPM: 82 | O2: 96%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- MINI MAP SECTION -->
+<div class="h-48 border-t border-outline-variant relative overflow-hidden bg-surface-container-low">
+<img alt="Satellite View" class="w-full h-full object-cover opacity-20 grayscale" data-alt="A top-down satellite view of a high-tech rocket launch complex with circular pads and complex industrial infrastructure. The image is rendered in deep blacks and graphite greys with subtle red geometric overlays and scanning lines, evoking a tactical command interface. Soft glowing highlights trace the main structures, creating a professional, aerospace-focused aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnmVnhrhJrtY6yJBoBQI5JvRJwxKDPJj1VwksRF6rSD2_XDO6b1_q7oYxAU7wo9mL4k1hjaCAP6r7bHJqODz8-ryjyIeGAMFkPFco-dieWEUSIzIXcZOWb_HYmp2QLlJpcIkD6HAMevffXn7gRdaICTOC3vv79Fj4zPFkla9rCefNMc8qR6vQ6UufXzSksba2Q88so8YGJJ7mVA1AOMsOGnwnW9jjeKm-Q_KwRwFWyeBucpbcrJnQ41MU1iVkyIo5eqqlnkJyqUIo"/>
+<div class="absolute inset-0 grid-line-x opacity-20"></div>
+<div class="absolute inset-0 grid-line-y opacity-20"></div>
+<div class="absolute inset-0 p-4 pointer-events-none">
+<div class="font-label-caps text-[10px] text-on-surface-variant bg-surface/80 inline-block px-2 py-1 border border-outline-variant">LZ-1 / AREA MONITOR</div>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: POCKET-LCC AUDIO -->
+<section class="col-span-12 lg:col-span-4 h-full bg-surface-container flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant bg-surface-container-highest">
+<h2 class="font-headline-md text-headline-md text-primary">POCKET-LCC COMM</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-[0.2em]">AUDIO HUB / MULTI-CHANNEL</p>
+</div>
+<div class="p-6 flex flex-col gap-6">
+<!-- Channel Selection -->
+<div class="space-y-3">
+<label class="font-label-caps text-label-caps text-on-surface-variant">ACTIVE CHANNELS</label>
+<div class="grid grid-cols-1 gap-2">
+<div class="flex items-center justify-between p-3 border-2 border-primary bg-surface-variant">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">radio</span>
+<span class="font-label-caps text-label-caps">CH 01: FLIGHT COMM</span>
+</div>
+<span class="w-3 h-3 bg-primary animate-pulse shadow-[0_0_8px_rgba(255,179,177,0.8)]"></span>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline-variant bg-surface hover:bg-surface-variant transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">podcasts</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">CH 02: BOOSTER / PROP</span>
+</div>
+<span class="w-3 h-3 bg-on-surface-variant/20"></span>
+</div>
+<div class="flex items-center justify-between p-3 border border-outline-variant bg-surface hover:bg-surface-variant transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">CH 03: PAYLOAD / DATA</span>
+</div>
+<span class="w-3 h-3 bg-on-surface-variant/20"></span>
+</div>
+</div>
+</div>
+<!-- Signal Visualizer -->
+<div class="h-32 bg-surface border border-outline-variant relative flex items-center justify-center p-4">
+<div class="absolute inset-0 grid-line-y opacity-10"></div>
+<div class="w-full flex items-end gap-1 h-12">
+<div class="flex-1 bg-primary/20 h-[20%]"></div>
+<div class="flex-1 bg-primary/40 h-[60%]"></div>
+<div class="flex-1 bg-primary h-[90%]"></div>
+<div class="flex-1 bg-primary h-[40%]"></div>
+<div class="flex-1 bg-primary/60 h-[70%]"></div>
+<div class="flex-1 bg-primary h-[100%]"></div>
+<div class="flex-1 bg-primary/20 h-[10%]"></div>
+<div class="flex-1 bg-primary/40 h-[30%]"></div>
+<div class="flex-1 bg-primary h-[65%]"></div>
+<div class="flex-1 bg-primary h-[50%]"></div>
+<div class="flex-1 bg-primary/60 h-[80%]"></div>
+<div class="flex-1 bg-primary h-[20%]"></div>
+</div>
+<div class="absolute bottom-2 left-2 font-telemetry-sm text-[10px] text-on-surface-variant">TX SIGNAL STRENGTH: -64dBm</div>
+</div>
+<!-- PTT Button -->
+<div class="flex flex-col gap-4 mt-4">
+<button class="ptt-active w-full h-32 border-2 border-primary bg-surface-container-highest flex flex-col items-center justify-center gap-2 group transition-all">
+<span class="material-symbols-outlined text-4xl group-active:scale-90 transition-transform">mic</span>
+<span class="font-display-lg text-2xl font-bold tracking-widest uppercase">PUSH TO TALK</span>
+<span class="font-label-caps text-[10px] text-primary">HOLD TO TRANSMIT</span>
+</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="border border-outline-variant py-3 font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">volume_off</span> MUTE
+                            </button>
+<button class="border border-outline-variant py-3 font-label-caps text-label-caps hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">emergency</span> ALL CALL
+                            </button>
+</div>
+</div>
+</div>
+<!-- Active Tasks -->
+<div class="mt-auto p-4 bg-surface-container-lowest border-t border-outline-variant">
+<label class="font-label-caps text-[10px] text-on-surface-variant tracking-[0.2em] mb-3 block">URGENT TASKS</label>
+<div class="space-y-2">
+<div class="p-2 border-l-2 border-primary bg-surface flex justify-between items-center">
+<div>
+<p class="font-label-caps text-[11px]">VENT VALVE CHECK (LOX)</p>
+<p class="font-telemetry-sm text-[10px] text-on-surface-variant">ASSIGNED: SGT. VANCE</p>
+</div>
+<span class="font-telemetry-sm text-[10px] text-primary">02:45 REMAINING</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BOTTOM NAV BAR (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface-container-lowest border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">hourglass_empty</span>
+<span class="font-label-caps text-[10px]">T-MINUS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">bar_chart</span>
+<span class="font-label-caps text-[10px]">SYSTEMS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">public</span>
+<span class="font-label-caps text-[10px]">MAP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-1 scale-90 duration-100" href="#">
+<span class="material-symbols-outlined">settings_input_antenna</span>
+<span class="font-label-caps text-[10px]">COMMS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined">shield</span>
+<span class="font-label-caps text-[10px]">ADMIN</span>
+</a>
+</nav>
+</div>
+</body></html>

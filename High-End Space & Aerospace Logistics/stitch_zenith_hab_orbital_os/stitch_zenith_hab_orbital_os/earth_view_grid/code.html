@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith-Hab // Earth-View Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#00dbe9",
+                        "tertiary": "#5d5f5f",
+                        "on-surface-variant": "#3b494b",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#dce4e5",
+                        "primary-container": "#00f0ff",
+                        "on-secondary-fixed-variant": "#474649",
+                        "on-tertiary-container": "#5d5f5f",
+                        "secondary-container": "#e2dfe1",
+                        "tertiary-container": "#d9d9d9",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-bright": "#f3fbfb",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-error-container": "#93000a",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed": "#e4e2e4",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "primary-fixed": "#7df4ff",
+                        "surface-container": "#e7eff0",
+                        "outline": "#6a7a7b",
+                        "background": "#f3fbfb",
+                        "secondary": "#5f5e60",
+                        "on-background": "#151d1e",
+                        "inverse-surface": "#2a3233",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#636264",
+                        "primary-fixed-dim": "#00dbe9",
+                        "surface-dim": "#d3dcdc",
+                        "primary": "#006970",
+                        "surface-tint": "#006970",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e1eaea",
+                        "surface-container-low": "#edf5f6",
+                        "on-primary-fixed": "#002022",
+                        "secondary-fixed-dim": "#c8c6c8",
+                        "inverse-on-surface": "#eaf2f3",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f3fbfb",
+                        "on-surface": "#151d1e",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary-container": "#006970",
+                        "outline-variant": "#b9cacb",
+                        "error": "#ba1a1a",
+                        "surface-container-highest": "#dce4e5",
+                        "on-secondary-fixed": "#1b1b1d",
+                        "error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "grid-columns": "12",
+                        "gutter": "16px",
+                        "margin-desktop": "64px",
+                        "margin-mobile": "24px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-lg": ["Sora"],
+                        "label-caps": ["JetBrains Mono"],
+                        "data-mono": ["JetBrains Mono"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 0.5px solid rgba(106, 122, 123, 0.1);
+        }
+        .feed-overlay {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, transparent 20%, transparent 80%, rgba(0,0,0,0.4) 100%);
+        }
+        .scanning-line {
+            height: 1px;
+            background: rgba(0, 219, 233, 0.2);
+            box-shadow: 0 0 10px rgba(0, 219, 233, 0.5);
+            width: 100%;
+            position: absolute;
+            top: 50%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen pb-24">
+<!-- TopAppBar Component -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 md:px-16 h-16 bg-surface/80 backdrop-blur-xl border-b-[0.5px] border-on-surface-variant/10 shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps tracking-[0.2em] text-primary">ZENITH-HAB // SEAL-INTEGRITY: NOMINAL</span>
+</div>
+<button class="font-label-caps text-label-caps bg-primary/5 px-4 py-2 border border-primary/20 hover:bg-primary/10 transition-colors uppercase">
+            GROUND CONTROL
+        </button>
+</header>
+<main class="pt-24 px-6 md:px-16 max-w-[1440px] mx-auto">
+<!-- Telemetry HUD -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
+<div class="glass-panel p-4 flex flex-col gap-1 border-l-2 border-l-primary">
+<span class="font-label-caps text-[10px] text-primary opacity-70">ORBITAL VELOCITY</span>
+<span class="font-data-mono text-xl text-on-background">27,600 KM/H</span>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-primary opacity-70">ALTITUDE MSL</span>
+<span class="font-data-mono text-xl text-on-background">408.2 KM</span>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-primary opacity-70">LAT/LONG</span>
+<span class="font-data-mono text-xl text-on-background">42.36° N / 71.05° W</span>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-1 border-l-2 border-l-inverse-primary">
+<span class="font-label-caps text-[10px] text-inverse-primary opacity-70">SYNC STATUS</span>
+<span class="font-data-mono text-xl text-on-background">LOCKED: SECTOR 7G</span>
+</div>
+</div>
+<!-- 2x2 Camera Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-4 h-[calc(100vh-320px)] min-h-[600px]">
+<!-- Feed 1: Nadir Earth View -->
+<div class="relative overflow-hidden group border-[0.5px] border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A breathtaking high-definition view of Earth from low orbit, showing the curved horizon and deep blue oceans beneath a thin layer of atmosphere. The lighting is crisp and cinematic, reflecting the clinical white aesthetic of the Zenith-Hab station. Glowing oxygen blue telemetry data and thin vector lines are overlaid on the screen. The scene is majestic, peaceful, and technologically advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDg4ly3JkbiHc4gRsYcvs6r3nCsAggYoOBAFvQ-QZvoIM_DovQW_f9HE2_q5Bg2wMvduIbhzDJrfZv7CdOlq_2k_uUzHzrsvDsrtfx8Q39spj-635a_pSTqIiBu67uvzuzqYLYTzO1za60K2kuGqihKrKnHaO4SJ1UAQJQ_faukzPnfuK004vaqd2-mlTSgCNu0WdXDsKUNk6yujIX27vuMkLFDBb0EKowjAUOTUQZ803OMLVmrs58ECse_XGVv0fe8-Z8OGLZBd0U"/>
+<div class="absolute inset-0 feed-overlay"></div>
+<div class="absolute top-4 left-4 font-label-caps text-[10px] bg-primary text-on-primary px-2 py-1 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                    LIVE // CAM-01: EARTH-NADIR
+                </div>
+<div class="absolute bottom-4 right-4 text-right">
+<div class="font-label-caps text-[10px] text-white/70">STATION PITCH</div>
+<div class="font-data-mono text-white text-lg">+0.042°</div>
+</div>
+<div class="absolute inset-x-8 top-1/2 -translate-y-1/2 flex justify-between pointer-events-none opacity-20">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'wght' 100">add</span>
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'wght' 100">add</span>
+</div>
+</div>
+<!-- Feed 2: Port Exterior -->
+<div class="relative overflow-hidden group border-[0.5px] border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="A view of the Zenith-Hab exterior hull made of polished clinical white modular plates. A robotic arm is visible in the foreground against the vast darkness of space dotted with distant stars. The scene is lit by harsh sunlight typical of space, casting deep shadows. High-tech minimalist overlays show structural integrity data in oxygen blue. The overall mood is one of absolute precision and aerospace engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYqBe97qcqUARyoGiOr5UasOEbRHXxxhzqkFQb56MFzcEoQ7DBzS8JZFxxTZ5GJZmE16noZgkmyL2ti2aP0prGKfoKnZIbzbQ2TcHTFQm6Qn8gQRAPtQZAwwruYfA-kiUm_2Tu-e8mJZCc-kHinJUK4mA7ooWwDb1WPPUZirR_Yjdsr9wBJLtdyOv-kYYGjjwvLu3mvtb5qhuQXoLquOKt-AcjJQ7B6pDam-FhdFxAajteV3MTXhDq_P9BO_9Sx87BgWZ3gz5H8cg"/>
+<div class="absolute inset-0 feed-overlay"></div>
+<div class="absolute top-4 left-4 font-label-caps text-[10px] bg-on-background text-white px-2 py-1">
+                    CAM-02: PORT-EXTERIOR-A1
+                </div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 border border-white/20 w-32 h-32 rounded-full flex items-center justify-center">
+<div class="w-1 h-8 bg-inverse-primary/50 absolute rotate-45"></div>
+<span class="font-label-caps text-[8px] text-white/50 absolute -top-4">ORIENTATION</span>
+</div>
+</div>
+<!-- Feed 3: Solar Array -->
+<div class="relative overflow-hidden group border-[0.5px] border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="Massive solar arrays of the orbital habitat extending into space, reflecting a vibrant blue and gold hue from the sun. The background shows the dark void of space with the thin blue line of Earth's atmosphere just visible at the edge. The visual style is sterile and high-fidelity, with monospaced data readouts indicating power output in a soft oxygen blue glow. The atmosphere is quiet and awe-inspiring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFccnzXbwSkSBLRf3bwvQ6VEpVKHITK6ABjAboWtgiZ8ROaVPrsAdQoGPbrpzCuvlDpbMGoKu_1T1LgAbMic0UIngd9fMQKw-5Ka6m9HQDa7xC7HqBIb9mmsEW7NNTWFh6O7aIo4ao-H06LYfvgVQSL1mQ_4EAFb8nG6rgaA55fiEyNvRL7h4Sz-mq0ZapnSDLeIpAc7tKjf17uurTi8WAV967YjNm0V-mhNtEcf_GI_UtXCpG-jegFjmTG0i1fbglAQC81awIBd8"/>
+<div class="absolute inset-0 feed-overlay"></div>
+<div class="absolute top-4 left-4 font-label-caps text-[10px] bg-on-background text-white px-2 py-1">
+                    CAM-03: ARRAY-B-DEPLOYED
+                </div>
+<div class="absolute bottom-4 left-4 glass-panel p-2 flex flex-col">
+<span class="font-label-caps text-[8px] text-inverse-primary">PWR EFFICIENCY</span>
+<span class="font-data-mono text-white">98.4%</span>
+</div>
+</div>
+<!-- Feed 4: Earth Limb -->
+<div class="relative overflow-hidden group border-[0.5px] border-outline-variant/30">
+<img class="w-full h-full object-cover" data-alt="The Earth's limb at sunset from space, showing layers of the atmosphere glowing in vibrant oranges, purples, and deep oxygen blues. Silhouetted against this light is a part of the Zenith-Hab station's sleek, white frame. Minimalist UI elements like crosshairs and vector telemetry indicators are layered on top, following a clean, clinical aesthetic. The scene captures the tranquility of the orbital environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBNoqpffACrxQriYQqhQjywQU97-Pzk6C2lhTn1I9GKuq0CRh0bAnLL6ta-FoJyARmzVtrdKXg9PQfs_I8S_LFCb2t3hatJUJuaLaGT002vTEh0ov3PkSP7AgqfhCuW7RS29WNDKPNtQFxmxj8YWNOy-f4Eu85BGNgPj2soajinvq24Mw977IMSdKl5sJNF5NPq1x-Ir5MrORAW9GAmcmJ97F4MBbmczOqlZ93zafUC4brpzIoMU7BUMmmFiYP4dgRL0-3n42c_ZNU"/>
+<div class="absolute inset-0 feed-overlay"></div>
+<div class="absolute top-4 left-4 font-label-caps text-[10px] bg-on-background text-white px-2 py-1">
+                    CAM-04: HORIZON-LIMB
+                </div>
+<div class="absolute bottom-4 right-4 flex items-center gap-4">
+<div class="text-right">
+<span class="font-label-caps text-[8px] block text-white/50">TIME TO ECLIPSE</span>
+<span class="font-data-mono text-white">00:24:12</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Command Interface (Ground Control Bridge) -->
+<section class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="md:col-span-2 glass-panel p-6 flex flex-col gap-4">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-3">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<h2 class="font-headline-md text-base uppercase tracking-widest text-on-background">GROUND CONTROL BRIDGE</h2>
+</div>
+<span class="font-label-caps text-[10px] text-primary flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-primary rounded-full"></span>
+                        SIGNAL STRENGTH: MAX
+                    </span>
+</div>
+<div class="flex flex-col gap-3 h-32 overflow-y-auto pr-2 custom-scrollbar">
+<div class="flex gap-4">
+<span class="font-data-mono text-primary text-[12px] shrink-0">14:22:01</span>
+<p class="font-body-md text-sm text-on-surface-variant"><span class="font-bold text-on-background">HOUSTON:</span> Zenith, verify array B-2 lock status. Performance is spiking.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-data-mono text-primary text-[12px] shrink-0">14:22:15</span>
+<p class="font-body-md text-sm text-on-surface-variant"><span class="font-bold text-primary">ZENITH:</span> Houston, B-2 status is NOMINAL. Calibrating sensors now.</p>
+</div>
+<div class="flex gap-4">
+<span class="font-data-mono text-primary text-[12px] shrink-0">14:23:04</span>
+<p class="font-body-md text-sm text-on-surface-variant"><span class="font-bold text-on-background">HOUSTON:</span> Copy that, Zenith. Proceed with Earth-View sequence Delta.</p>
+</div>
+</div>
+<div class="flex items-center gap-4 pt-2 border-t border-outline-variant/10">
+<input class="bg-transparent border-b border-outline text-on-background font-data-mono text-sm w-full py-2 focus:outline-none focus:border-primary transition-all uppercase placeholder:opacity-30" placeholder="TRANSMIT TO GROUND CONTROL..." type="text"/>
+<button class="bg-primary text-on-primary font-label-caps text-[10px] px-6 py-2 hover:bg-primary-fixed transition-colors">SEND</button>
+</div>
+</div>
+<div class="glass-panel p-6 flex flex-col gap-6">
+<h3 class="font-label-caps text-[12px] text-on-background border-b border-outline-variant/20 pb-3">SYSTEM ACTIONS</h3>
+<div class="flex flex-col gap-2">
+<button class="w-full text-left p-3 glass-panel hover:bg-primary/5 flex items-center justify-between group">
+<span class="font-label-caps text-[10px] text-on-surface-variant group-hover:text-primary transition-colors">SCREEN CAPTURE (RAW)</span>
+<span class="material-symbols-outlined text-[18px] opacity-40" data-icon="screenshot_region">screenshot_region</span>
+</button>
+<button class="w-full text-left p-3 glass-panel hover:bg-primary/5 flex items-center justify-between group">
+<span class="font-label-caps text-[10px] text-on-surface-variant group-hover:text-primary transition-colors">REC ARCHIVE LOG</span>
+<span class="material-symbols-outlined text-[18px] opacity-40" data-icon="videocam">videocam</span>
+</button>
+<button class="w-full text-left p-3 glass-panel hover:bg-primary/5 flex items-center justify-between group">
+<span class="font-label-caps text-[10px] text-on-surface-variant group-hover:text-primary transition-colors">SWITCH TO IR FEED</span>
+<span class="material-symbols-outlined text-[18px] opacity-40" data-icon="waves">waves</span>
+</button>
+<button class="w-full text-left p-3 border-[0.5px] border-primary/40 bg-primary/5 flex items-center justify-between group">
+<span class="font-label-caps text-[10px] text-primary">STATION AUTO-PILOT</span>
+<span class="material-symbols-outlined text-[18px] text-primary" data-icon="auto_mode">auto_mode</span>
+</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Component -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface-container-low/90 backdrop-blur-2xl border-t-[0.5px] border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="airlight">Flashlight</span>
+<span class="font-label-caps text-[10px] mt-1">LIFE-SUPPORT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="water_ec">water_ec</span>
+<span class="font-label-caps text-[10px] mt-1">RESOURCES</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary opacity-60 hover:opacity-100 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-[10px] mt-1">BIO-METRICS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary shadow-[0_0_20px_rgba(0,219,233,0.3)] bg-primary-container/10 rounded-full px-6 py-2 scale-110" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-[10px] mt-1">EARTH-VIEW</span>
+</a>
+</nav>
+</body></html>

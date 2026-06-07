@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VERITAS-MONITOR | Secure Authentication</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#0e0e0e",
+                    "secondary-fixed": "#e3e2e2",
+                    "tertiary-container": "#dcdddd",
+                    "primary-fixed": "#72ff70",
+                    "on-surface-variant": "#b9ccb2",
+                    "surface-tint": "#00e639",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-primary-fixed-variant": "#00530e",
+                    "on-secondary": "#2f3131",
+                    "outline": "#84967e",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-highest": "#353535",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "on-primary-fixed": "#002203",
+                    "on-background": "#e5e2e1",
+                    "primary-container": "#00ff41",
+                    "on-surface": "#e5e2e1",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-primary-container": "#007117",
+                    "secondary": "#c6c6c6",
+                    "inverse-on-surface": "#313030",
+                    "surface-variant": "#353535",
+                    "surface": "#131313",
+                    "outline-variant": "#3b4b37",
+                    "on-primary": "#003907",
+                    "primary-fixed-dim": "#00e639",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "surface-container": "#20201f",
+                    "background": "#131313",
+                    "on-secondary-container": "#b8b8b8",
+                    "on-tertiary-container": "#5f6161",
+                    "inverse-primary": "#006e16",
+                    "tertiary": "#f9f9f9",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#484949",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#131313",
+                    "error-container": "#93000a",
+                    "primary": "#ebffe2",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-tertiary": "#2f3131",
+                    "surface-bright": "#393939"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-mobile": "16px",
+                    "margin-desktop": "32px",
+                    "gutter": "16px",
+                    "unit": "4px",
+                    "grid-columns": "12"
+            },
+            "fontFamily": {
+                    "headline-lg": ["IBM Plex Sans"],
+                    "data-mono": ["JetBrains Mono"],
+                    "display-lg": ["IBM Plex Sans"],
+                    "headline-lg-mobile": ["IBM Plex Sans"],
+                    "label-caps": ["JetBrains Mono"],
+                    "body-md": ["IBM Plex Sans"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "label-caps": ["11px", {"lineHeight": "1rem", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .segment-bar {
+            display: flex;
+            gap: 2px;
+        }
+        .segment {
+            height: 4px;
+            width: 12px;
+            background: #3b4b37;
+        }
+        .segment.active {
+            background: #00e639;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen flex flex-col items-center justify-center overflow-x-hidden">
+<div class="fixed top-0 left-0 w-full h-1 bg-outline-variant z-[100]">
+<div class="h-full bg-primary-fixed-dim w-1/3"></div>
+</div>
+<header class="fixed top-0 w-full flex justify-between items-center h-16 px-margin-desktop bg-surface/80 backdrop-blur-md border-b border-outline-variant z-50">
+<div class="font-headline-lg text-headline-lg font-bold tracking-tighter text-on-surface">
+            VERITAS-MONITOR
+        </div>
+<div class="flex items-center gap-4 text-on-surface-variant font-data-mono text-[10px] tracking-widest">
+<span class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full animate-pulse"></span>
+                ENCRYPTION: AES-256-GCM
+            </span>
+<span class="px-2 py-1 border border-outline-variant bg-surface-container-low">NODE: AUTH_GATE_01</span>
+</div>
+</header>
+<main class="w-full max-w-[1200px] grid grid-cols-1 md:grid-cols-12 gap-gutter px-margin-desktop mt-20 mb-10">
+<div class="md:col-span-7 flex flex-col justify-center space-y-8 py-10">
+<div>
+<h1 class="font-display-lg text-display-lg text-primary-fixed-dim mb-4">ENGINEERING-GRADE AUTHENTICATION</h1>
+<p class="font-body-md text-on-surface-variant max-w-lg">
+                    Access the Veritas environment with multi-layered hardware verification. Secure your diagnostic telemetry and DSP configurations with our encrypted monitoring protocol.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-6 border-l-4 border-l-primary-fixed-dim">
+<div class="font-label-caps text-label-caps text-primary-fixed-dim mb-2 uppercase">Protocol Integrity</div>
+<div class="font-data-mono text-[24px] text-on-surface">99.9%</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant mt-2">REAL-TIME SYNC</div>
+</div>
+<div class="glass-panel p-6 border-l-4 border-l-secondary">
+<div class="font-label-caps text-label-caps text-secondary-fixed-dim mb-2 uppercase">Latency Offset</div>
+<div class="font-data-mono text-[24px] text-on-surface">&lt;0.4ms</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant mt-2">GLOBAL RELAY</div>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center gap-4 group">
+<div class="w-10 h-10 flex items-center justify-center border border-outline-variant bg-surface-container-high group-hover:border-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed-dim" data-icon="lock_open">lock_open</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface">Zero-Knowledge Storage</div>
+<div class="text-[12px] text-on-surface-variant">Your hardware specs never leave your local machine unencrypted.</div>
+</div>
+</div>
+<div class="flex items-center gap-4 group">
+<div class="w-10 h-10 flex items-center justify-center border border-outline-variant bg-surface-container-high group-hover:border-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary-fixed-dim" data-icon="terminal">terminal</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-on-surface">Hardware Binding</div>
+<div class="text-[12px] text-on-surface-variant">Authenticate via unique physical component ID for absolute security.</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md:col-span-5 flex items-center">
+<div class="w-full glass-panel p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 p-2 font-data-mono text-[9px] text-outline opacity-50 uppercase">
+                    SYS_V3_REGISTER
+                </div>
+<div class="mb-8">
+<h2 class="font-headline-lg text-[24px] text-on-surface mb-1">Create Operator Account</h2>
+<p class="font-data-mono text-[12px] text-on-surface-variant uppercase tracking-tighter">Enter credentials to initialize secure session</p>
+</div>
+<form class="space-y-6">
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">Full Legal Name</label>
+<input class="w-full bg-surface-container-low border border-outline-variant px-4 py-3 font-data-mono text-on-surface focus:outline-none focus:border-primary-fixed-dim placeholder:opacity-30" placeholder="OPERATOR_NAME" type="text"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">Network Email Address</label>
+<input class="w-full bg-surface-container-low border border-outline-variant px-4 py-3 font-data-mono text-on-surface focus:outline-none focus:border-primary-fixed-dim placeholder:opacity-30" placeholder="ADDR@SECURE_NODE.COM" type="email"/>
+</div>
+<div class="space-y-1">
+<label class="font-label-caps text-label-caps text-on-surface-variant block">Hardware Registration Code</label>
+<div class="relative">
+<input class="w-full bg-surface-container-low border border-outline-variant px-4 py-3 font-data-mono text-on-surface focus:outline-none focus:border-primary-fixed-dim placeholder:opacity-30" placeholder="XXXX-XXXX-XXXX-XXXX" type="text"/>
+<span class="absolute right-3 top-3 material-symbols-outlined text-outline text-[20px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+</div>
+<p class="text-[10px] text-outline mt-1 italic">Located on the underside of your V-REF-3000 unit.</p>
+</div>
+<div class="flex items-start gap-3 py-2">
+<input class="mt-1 bg-surface border-outline-variant text-primary-fixed-dim focus:ring-0 rounded-none h-4 w-4" type="checkbox"/>
+<label class="text-[12px] text-on-surface-variant font-body-md leading-tight">
+                            I accept the technical monitoring terms and data sovereignty protocols for Veritas system integrity.
+                        </label>
+</div>
+<button class="w-full bg-primary-fixed-dim text-on-primary-fixed font-label-caps py-4 font-bold tracking-widest hover:brightness-110 active:scale-[0.98] transition-all flex items-center justify-center gap-2" type="submit">
+                        INITIALIZE SYSTEM ACCESS
+                        <span class="material-symbols-outlined text-[18px]" data-icon="chevron_right">chevron_right</span>
+</button>
+<div class="pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="text-[12px] text-on-surface-variant">Existing operator?</span>
+<a class="text-[12px] text-primary-fixed-dim font-data-mono hover:underline uppercase" href="#">Sign In to console</a>
+</div>
+</form>
+<div class="mt-8 pt-6 border-t border-outline-variant/30">
+<div class="font-label-caps text-[10px] text-outline mb-3 uppercase tracking-widest">Hardware Security Module Status</div>
+<div class="segment-bar">
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment active"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+<div class="segment"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<section class="w-full max-w-[1200px] px-margin-desktop mb-20">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="relative h-48 overflow-hidden border border-outline-variant group">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A macro photography shot of complex green circuit board components and microchips with glowing neon green highlights. The image captures an intricate technical landscape with sharp focus and cinematic depth of field, reflecting a professional cybersecurity aesthetic. The lighting is moody and dark, emphasizing the high-tech, laboratory-grade hardware feel of the Veritas-Monitor environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDE4px-08nigVTvGZU6q-XBXvdQNWuvICBFDOp4CVEv80AO5U6SfPtDLS0F-EfcwzcfuaGqZVnBZ-OqmecX_Jb_-HGI05AtGeFMv5TAm2jnlV9PU-5FUWJHzDsRB4Y6ys9dCrKRfVoy-0WTRawauyJJfsouOBzWuykCQ3jab-EvKS2-5sP_oveXBAVIJR2Jzds7SCzHInJPDFilchm_aGh6nXC9ied9L8vlBTUvA5jc-bWZpfGSDfHub1BaBUGsL6V2wgtenzjnpvE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4">
+<div class="font-label-caps text-primary-fixed-dim text-[10px]">HW INTEGRITY</div>
+<div class="font-data-mono text-on-surface">V-REF CHIPSET</div>
+</div>
+</div>
+<div class="relative h-48 overflow-hidden border border-outline-variant group">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A row of high-end data server racks in a darkened corridor, illuminated by rhythmic pulsing green and blue status LEDs. The composition uses a low-angle perspective to convey scale and technical authority. The environment is clinical and minimalist, with clean metallic surfaces reflecting the small points of light, representing the global data network underlying the Veritas-Monitor security system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4MTI06P6Az-Wt-DIed3jrvl6Kg7E-xqxaPyV6KEGIgtzM8TsF07x-ZtIyxUQiOTh1m9559kgON_cQeF5l-_azArLqPuENp7G-pIDsZSRHjPGD7WU3icq2dJJsxDfWthdxiaFma2vVhPXUPooJ8gtpKblVT0sn4gur8PPI7UkBDnpIowgU4026x8AtojrBSLDJa-Xb1bDKev7kjvTAe6tn9xbbqiyYAPwScE4uBOyjKXJPkRck92yxRfkNRxjRtOfUEgOaMqrEJiA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4">
+<div class="font-label-caps text-primary-fixed-dim text-[10px]">NETWORK NODES</div>
+<div class="font-data-mono text-on-surface">ENCRYPTED RELAY</div>
+</div>
+</div>
+<div class="relative h-48 overflow-hidden border border-outline-variant group">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A clean, minimalist glass-morphic interface displaying scrolling code and cryptographic data visualizations on a high-resolution professional monitor. The lighting is soft and ambient, casting a cool blue and silver glow across a dark workstation setup. This visual emphasizes the transparent yet complex security layers used in the engineering-grade authentication flow for Veritas users." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvrXq6cmC-EuB8hcUVXWcDq6aK1OngWuPxIawpklWI7Lag3_s_C-e3g4IvuyH-S7d7sD2boLtZey9mpl-LFYATwa7FL8Qm6SlhDkg5i7_IT-JrfAksfqiG3TpoGd2qxb_lKekM7g2lzxFh_ZGCGqYJA0I2DLUtKLxNP6H-Rwp_OgeuYdzVWjBnMRx5SRBLCLx5q4xzMgaMEfJtl14oHrokSdiZ-kS2b9AMnRyGspLJDECDgAp4uDYJBfXG-Vjy1INCy-JN7Yb61mI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4">
+<div class="font-label-caps text-primary-fixed-dim text-[10px]">SYSTEM STATUS</div>
+<div class="font-data-mono text-on-surface">AUTH_CORE_STABLE</div>
+</div>
+</div>
+</div>
+</section>
+<footer class="w-full py-8 px-margin-desktop border-t border-outline-variant bg-surface-container-low flex flex-col md:flex-row justify-between items-center gap-6 mt-auto">
+<div class="flex items-center gap-6">
+<span class="font-data-mono text-[10px] text-on-surface-variant">© 2024 VERITAS SYSTEM TECHNOLOGIES</span>
+<div class="flex gap-4">
+<a class="font-label-caps text-[10px] text-outline hover:text-primary-fixed-dim transition-colors" href="#">SECURITY DOCS</a>
+<a class="font-label-caps text-[10px] text-outline hover:text-primary-fixed-dim transition-colors" href="#">COMPLIANCE</a>
+<a class="font-label-caps text-[10px] text-outline hover:text-primary-fixed-dim transition-colors" href="#">SUPPORT</a>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full"></span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">ALL SYSTEMS OPERATIONAL // CALIBRATION ACTIVE</span>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Horizon-Property | Secure Document Vault</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Work+Sans:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed": "#1b1c1b",
+                    "surface-bright": "#f9f9f9",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#303030",
+                    "on-secondary-fixed": "#001946",
+                    "on-surface": "#1b1b1b",
+                    "surface-tint": "#435b9f",
+                    "on-primary-fixed": "#00174a",
+                    "outline-variant": "#c5c6d2",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-surface-variant": "#444650",
+                    "tertiary-container": "#282928",
+                    "background": "#f9f9f9",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-container": "#6c98ff",
+                    "on-tertiary-container": "#90908e",
+                    "on-secondary-fixed-variant": "#00419e",
+                    "on-primary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "primary": "#00113a",
+                    "error": "#ba1a1a",
+                    "error-container": "#ffdad6",
+                    "on-primary-container": "#758dd5",
+                    "on-error-container": "#93000a",
+                    "surface": "#f9f9f9",
+                    "secondary-fixed": "#dae2ff",
+                    "surface-container-low": "#f3f3f3",
+                    "surface-variant": "#e2e2e2",
+                    "on-primary-fixed-variant": "#2a4386",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "on-background": "#1b1b1b",
+                    "secondary-fixed-dim": "#b1c5ff",
+                    "inverse-primary": "#b3c5ff",
+                    "primary-container": "#002366",
+                    "on-error": "#ffffff",
+                    "primary-fixed": "#dbe1ff",
+                    "tertiary-fixed-dim": "#c7c6c4",
+                    "inverse-on-surface": "#f1f1f1",
+                    "tertiary-fixed": "#e3e2e0",
+                    "primary-fixed-dim": "#b3c5ff",
+                    "tertiary": "#131514",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-container": "#002f76",
+                    "surface-dim": "#dadada",
+                    "secondary": "#2559bd",
+                    "outline": "#757682"
+            },
+            "borderWidth": {
+                "DEFAULT": "1px",
+                "0": "0",
+                "2": "2px",
+                "3": "3px",
+                "4": "4px",
+                "8": "8px"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-max": "1440px",
+                    "stroke-standard": "2px",
+                    "gutter": "24px",
+                    "margin": "40px",
+                    "unit": "4px",
+                    "stroke-heavy": "4px"
+            },
+            "fontFamily": {
+                    "h2": ["Work Sans"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "h3": ["Work Sans"],
+                    "h1": ["Work Sans"],
+                    "data-mono": ["Inter"],
+                    "label-caps": ["Inter"]
+            },
+            "fontSize": {
+                    "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "600"}],
+                    "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .security-mask {
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(0, 0, 0, 0.15) 10px, rgba(0, 0, 0, 0.15) 20px);
+        }
+        .redacted-tape {
+            background-color: #303030;
+            box-shadow: inset 0 0 4px rgba(0,0,0,0.5);
+            position: relative;
+        }
+        .redacted-tape::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 8px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #eeeeee;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #1b1b1b;
+            border: 2px solid #eeeeee;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-surface dark:bg-on-tertiary-fixed border-b-4 border-black">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="shield_lock">shield_lock</span>
+<h1 class="font-h3 text-h3 uppercase tracking-tighter text-primary dark:text-primary-fixed">SECURE COMMAND</h1>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<nav class="flex gap-gutter">
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline hover:bg-primary hover:text-on-primary transition-colors duration-100 px-2 py-1" href="#">OVERVIEW</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline hover:bg-primary hover:text-on-primary transition-colors duration-100 px-2 py-1" href="#">ANALYTICS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-outline hover:bg-primary hover:text-on-primary transition-colors duration-100 px-2 py-1" href="#">PIPELINE</a>
+<a class="font-label-caps text-label-caps text-primary dark:text-inverse-primary border-b-4 border-black px-2 py-1" href="#">VAULT</a>
+</nav>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="vpn_key">vpn_key</span>
+</div>
+</header>
+<div class="flex pt-16 min-h-screen">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden lg:flex flex-col gap-unit h-full w-80 bg-surface-container dark:bg-on-tertiary-fixed border-r-4 border-black fixed left-0 top-16 shadow-[8px_0_0_0_rgba(0,0,0,1)]">
+<div class="p-margin flex flex-col gap-unit border-b-4 border-black">
+<img alt="Horizon-Property Logo" class="w-16 h-16 mb-4" data-alt="The minimalist professional logo of Horizon-Property is displayed against a stark white background. The logo features a bold, geometric institutional style with sharp lines and a clear deep blue and platinum silver color palette. The aesthetic communicates high security and digital authority suitable for a global real estate investment firm. The composition is centered and balanced within a square frame." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA505VaZ_YlAuP02FDu9H04ufmdU94fY74dhWsS8096dsQ6W8X1m1N8OyU1mV6onzYjaKyUmHqPw4w1p_ez6pjobPZJwYiqMHM0Szdv_lEEYq256mfakwcSbn6J1eArc40u6391_WdiSdPWNzCb_AjoF2qn11F8MKrU3QZ9SMKmBxLriX-kyq1GpoPxWqg7ZdAZ4etwnu-oEBhviZVpNIYXeXspaY_eKuFUzlEU23YKvZSi-oF7X76USUtbUMIBJorFrtpKL4Iwy10"/>
+<h2 class="font-body-md text-body-md font-bold uppercase text-primary">INSTITUTIONAL ACCESS</h2>
+<p class="font-label-caps text-label-caps text-on-surface-variant">SECURE LEVEL 4</p>
+<p class="font-data-mono text-data-mono text-outline mt-1">ID: 882-VX-9</p>
+</div>
+<nav class="flex-grow py-gutter">
+<a class="flex items-center gap-4 px-margin py-3 text-on-surface-variant hover:bg-surface-variant font-body-md text-body-md font-bold uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+                    INVESTOR PROFILE
+                </a>
+<a class="flex items-center gap-4 px-margin py-3 text-on-surface-variant hover:bg-surface-variant font-body-md text-body-md font-bold uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                    SECURITY SETTINGS
+                </a>
+<a class="flex items-center gap-4 px-margin py-3 text-on-surface-variant hover:bg-surface-variant font-body-md text-body-md font-bold uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+                    GLOBAL COMPLIANCE
+                </a>
+<a class="flex items-center gap-4 px-margin py-3 bg-primary text-on-primary font-bold border-l-4 border-black font-body-md text-body-md font-bold uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                    REPORTING
+                </a>
+<div class="mt-auto border-t-4 border-black">
+<a class="flex items-center gap-4 px-margin py-4 text-error font-body-md text-body-md font-bold uppercase" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                        LOGOUT
+                    </a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-grow lg:ml-80 pb-24 lg:pb-margin px-margin pt-gutter">
+<!-- Header Section -->
+<div class="mb-gutter flex flex-col md:flex-row justify-between items-end gap-gutter">
+<div>
+<h1 class="font-h1 text-h1 uppercase tracking-tighter">SECURE VAULT</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl mt-unit">Hardened digital directory for high-stakes real estate assets. All filenames and sensitive previews are masked under Level 4 protocol.</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-surface-container border-4 border-black px-gutter py-3 font-label-caps text-label-caps hover:bg-on-surface hover:text-surface transition-all flex items-center gap-2 uppercase font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+                        REFRESH
+                    </button>
+<button class="bg-primary text-on-primary border-4 border-black px-gutter py-3 font-label-caps text-label-caps active:scale-95 duration-75 ease-in flex items-center gap-2 uppercase font-bold">
+<span class="material-symbols-outlined text-[18px]" data-icon="upload_file">upload_file</span>
+                        UPLOAD NEW
+                    </button>
+</div>
+</div>
+<!-- Bento Grid File Directory -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Active Directory Browser -->
+<div class="md:col-span-8 bg-surface-container-low border-4 border-black p-gutter shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+<div class="flex items-center justify-between mb-gutter border-b-4 border-black pb-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="folder_managed" style="font-variation-settings: 'FILL' 1;">folder_managed</span>
+<h3 class="font-h3 text-h3">ROOT/INVESTMENTS_2024</h3>
+</div>
+<span class="font-data-mono text-data-mono bg-on-surface text-surface px-3 py-1 font-bold">ENCRYPTED_AES_256</span>
+</div>
+<div class="flex flex-col border-4 border-black divide-y-4 divide-black">
+<!-- File Row 1 (Masked) -->
+<div class="group flex items-center justify-between p-4 bg-surface hover:bg-secondary-container transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter flex-grow">
+<span class="material-symbols-outlined text-outline" data-icon="lock">lock</span>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex items-center gap-4">
+<div class="h-6 w-48 redacted-tape"></div>
+<span class="font-data-mono text-data-mono text-outline font-bold">.PDF</span>
+</div>
+<div class="h-3 w-32 redacted-tape opacity-40"></div>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<span class="font-data-mono text-data-mono text-outline hidden sm:block">12.4 MB</span>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<!-- File Row 2 (Partially Masked) -->
+<div class="group flex items-center justify-between p-4 bg-surface-container-high hover:bg-secondary-container transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter flex-grow">
+<span class="material-symbols-outlined text-primary" data-icon="verified">verified</span>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex items-center gap-4">
+<div class="h-6 w-64 redacted-tape"></div>
+<span class="font-data-mono text-data-mono text-outline font-bold">.XLSX</span>
+</div>
+<div class="h-3 w-40 redacted-tape opacity-40"></div>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<span class="font-data-mono text-data-mono text-outline hidden sm:block">2.8 MB</span>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<!-- File Row 3 (Masked) -->
+<div class="group flex items-center justify-between p-4 bg-surface hover:bg-secondary-container transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter flex-grow">
+<span class="material-symbols-outlined text-outline" data-icon="lock">lock</span>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex items-center gap-4">
+<div class="h-6 w-56 redacted-tape"></div>
+<span class="font-data-mono text-data-mono text-outline font-bold">.PDF</span>
+</div>
+<div class="h-3 w-24 redacted-tape opacity-40"></div>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<span class="font-data-mono text-data-mono text-outline hidden sm:block">45.1 MB</span>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</div>
+<!-- File Row 4 (Masked) -->
+<div class="group flex items-center justify-between p-4 bg-surface-container-high hover:bg-secondary-container transition-colors cursor-pointer">
+<div class="flex items-center gap-gutter flex-grow">
+<span class="material-symbols-outlined text-outline" data-icon="lock">lock</span>
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex items-center gap-4">
+<div class="h-6 w-40 redacted-tape"></div>
+<span class="font-data-mono text-data-mono text-outline font-bold">.DOCX</span>
+</div>
+<div class="h-3 w-20 redacted-tape opacity-40"></div>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<span class="font-data-mono text-data-mono text-outline hidden sm:block">1.1 MB</span>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="visibility">visibility</span>
+</button>
+<button class="p-2 border-4 border-black hover:bg-primary hover:text-on-primary active:translate-y-0.5 transition-transform">
+<span class="material-symbols-outlined text-[20px]" data-icon="download">download</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Security Sidebar Stats -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Secure Preview Card -->
+<div class="bg-primary text-on-primary border-4 border-black p-gutter shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+<div class="flex justify-between items-start mb-gutter">
+<h4 class="font-label-caps text-label-caps opacity-80 uppercase font-bold">Document Preview</h4>
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+</div>
+<div class="aspect-video bg-on-primary-container relative mb-gutter overflow-hidden flex items-center justify-center border-4 border-black">
+<div class="absolute inset-0 security-mask opacity-50"></div>
+<div class="z-10 flex flex-col items-center">
+<span class="material-symbols-outlined text-[48px] mb-2" data-icon="visibility_off">visibility_off</span>
+<p class="font-label-caps text-label-caps tracking-widest uppercase font-bold">Content Redacted</p>
+</div>
+</div>
+<button class="w-full bg-on-primary text-primary font-label-caps text-label-caps py-4 border-4 border-black hover:bg-secondary-container hover:text-on-surface transition-all uppercase font-bold tracking-widest active:translate-x-1 active:translate-y-1 active:shadow-none shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+                            REVEAL WITH BIOMETRICS
+                        </button>
+</div>
+<!-- Storage Utilization -->
+<div class="bg-surface-container border-4 border-black p-gutter shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+<h4 class="font-label-caps text-label-caps text-outline uppercase mb-gutter font-bold">Vault Integrity</h4>
+<div class="space-y-4">
+<div class="flex justify-between font-data-mono text-data-mono font-bold">
+<span>CAPACITY</span>
+<span>78%</span>
+</div>
+<div class="h-6 w-full bg-surface-variant border-4 border-black relative">
+<div class="h-full bg-primary w-[78%]"></div>
+</div>
+<div class="grid grid-cols-2 gap-unit">
+<div class="p-4 border-4 border-black bg-surface text-center">
+<p class="font-label-caps text-label-caps text-outline font-bold">ENCRYPTED</p>
+<p class="font-h3 text-h3 text-primary font-bold">1,402</p>
+</div>
+<div class="p-4 border-4 border-black bg-surface text-center">
+<p class="font-label-caps text-label-caps text-outline font-bold">THREATS</p>
+<p class="font-h3 text-h3 text-on-surface font-bold">0</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Access Log (Hardened Table) -->
+<div class="mt-gutter bg-surface-container border-4 border-black overflow-hidden shadow-[8px_8px_0_0_rgba(0,0,0,1)]">
+<div class="p-gutter border-b-4 border-black flex justify-between items-center bg-on-surface text-surface">
+<h4 class="font-label-caps text-label-caps uppercase tracking-widest font-bold">REAL-TIME ACCESS LOG</h4>
+<span class="material-symbols-outlined" data-icon="policy">policy</span>
+</div>
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest border-b-4 border-black font-label-caps text-label-caps">
+<th class="p-4 font-bold">TIMESTAMP</th>
+<th class="p-4 font-bold">ENTITY ID</th>
+<th class="p-4 font-bold">ACTION</th>
+<th class="p-4 font-bold">STATUS</th>
+<th class="p-4 text-right font-bold">LOCATION</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono divide-y-4 divide-black">
+<tr class="bg-surface hover:bg-secondary-container/10">
+<td class="p-4">2024-05-22 09:14:02</td>
+<td class="p-4">USR-992-ALPHA</td>
+<td class="p-4 uppercase">View_Document</td>
+<td class="p-4 text-primary font-bold">AUTHORIZED</td>
+<td class="p-4 text-right">LONDON_UK</td>
+</tr>
+<tr class="bg-surface-container hover:bg-secondary-container/10">
+<td class="p-4">2024-05-22 08:45:11</td>
+<td class="p-4">SYS_CRON_SCAN</td>
+<td class="p-4 uppercase">Integrity_Check</td>
+<td class="p-4 text-primary font-bold">COMPLETED</td>
+<td class="p-4 text-right">AMSTERDAM_NL</td>
+</tr>
+<tr class="bg-surface hover:bg-secondary-container/10">
+<td class="p-4">2024-05-22 07:11:59</td>
+<td class="p-4">USR-882-VX-9</td>
+<td class="p-4 uppercase">Vault_Entry</td>
+<td class="p-4 text-primary font-bold">AUTHORIZED</td>
+<td class="p-4 text-right">NEW_YORK_US</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 grid grid-cols-4 items-stretch md:hidden bg-surface dark:bg-on-tertiary-fixed border-t-4 border-black">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-secondary-container dark:hover:bg-on-secondary-fixed-variant transition-all">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps mt-1 font-bold">OVERVIEW</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-secondary-container dark:hover:bg-on-secondary-fixed-variant transition-all">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps mt-1 font-bold">ANALYTICS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant p-2 hover:bg-secondary-container dark:hover:bg-on-secondary-fixed-variant transition-all">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-caps text-label-caps mt-1 font-bold">PIPELINE</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary dark:bg-primary-container text-on-primary dark:text-on-primary-container p-2 border-x-4 border-black active:opacity-80 duration-100">
+<span class="material-symbols-outlined" data-icon="folder_managed" style="font-variation-settings: 'FILL' 1;">folder_managed</span>
+<span class="font-label-caps text-label-caps mt-1 font-bold">VAULT</span>
+</button>
+</nav>
+</body></html>

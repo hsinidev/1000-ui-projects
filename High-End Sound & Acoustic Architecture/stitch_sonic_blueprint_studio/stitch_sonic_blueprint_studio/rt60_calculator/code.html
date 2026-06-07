@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SONIC-BLUEPRINT | RT60 Reverb-Time Calculator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            -webkit-font-smoothing: antialiased;
+        }
+        /* Custom scrollbar for technical look */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #1a1c1c; }
+        ::-webkit-scrollbar-thumb { background: #4f453c; }
+        
+        .blueprint-grid {
+            background-size: 40px 40px;
+            background-image: linear-gradient(to right, rgba(112, 128, 144, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(112, 128, 144, 0.05) 1px, transparent 1px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#121414",
+                      "surface-container-lowest": "#0d0f0f",
+                      "on-tertiary-container": "#2d2d2d",
+                      "on-tertiary": "#313030",
+                      "on-surface-variant": "#d3c4b8",
+                      "error-container": "#93000a",
+                      "on-secondary": "#223240",
+                      "surface-tint": "#ebbe95",
+                      "outline": "#9c8e84",
+                      "error": "#ffb4ab",
+                      "on-secondary-container": "#a7b7c8",
+                      "inverse-on-surface": "#2f3131",
+                      "on-surface": "#e2e2e2",
+                      "surface-variant": "#333535",
+                      "surface-container-low": "#1a1c1c",
+                      "primary-fixed": "#ffdcbe",
+                      "surface": "#121414",
+                      "primary": "#ebbe95",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "tertiary-container": "#969494",
+                      "primary-container": "#b58d67",
+                      "on-secondary-fixed": "#0d1d2a",
+                      "on-background": "#e2e2e2",
+                      "on-primary-container": "#42270a",
+                      "on-secondary-fixed-variant": "#394857",
+                      "secondary-fixed-dim": "#b8c8da",
+                      "inverse-surface": "#e2e2e2",
+                      "on-error": "#690005",
+                      "outline-variant": "#4f453c",
+                      "inverse-primary": "#795736",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "surface-bright": "#38393a",
+                      "primary-fixed-dim": "#ebbe95",
+                      "surface-container": "#1e2020",
+                      "secondary-fixed": "#d4e4f6",
+                      "tertiary-fixed": "#e5e2e1",
+                      "on-primary-fixed": "#2c1600",
+                      "on-primary-fixed-variant": "#5f4021",
+                      "secondary": "#b8c8da",
+                      "surface-container-high": "#282a2b",
+                      "surface-container-highest": "#333535",
+                      "secondary-container": "#394857",
+                      "surface-dim": "#121414",
+                      "on-primary": "#452a0c",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "tertiary": "#c8c6c5"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0rem",
+                      "lg": "0rem",
+                      "xl": "0rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "margin-desktop": "48px",
+                      "margin-mobile": "16px",
+                      "grid-columns": "12"
+              },
+              "fontFamily": {
+                      "headline-lg-mobile": ["metropolis"],
+                      "data-lg": ["jetbrainsMono"],
+                      "body-lg": ["inter"],
+                      "body-md": ["inter"],
+                      "headline-lg": ["metropolis"],
+                      "headline-md": ["metropolis"],
+                      "data-sm": ["jetbrainsMono"],
+                      "label-caps": ["jetbrainsMono"]
+              },
+              "fontSize": {
+                      "headline-lg-mobile": ["32px", {"lineHeight": "38px", "fontWeight": "700"}],
+                      "data-lg": ["16px", {"lineHeight": "20px", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "data-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "12px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-background">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary dark:text-primary cursor-pointer">menu</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-tighter">SONIC-BLUEPRINT</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<span class="font-label-caps text-label-caps text-primary dark:text-primary cursor-pointer">CALCULATOR</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant cursor-pointer hover:bg-on-tertiary transition-colors px-2 py-1">SOLUTIONS</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant cursor-pointer hover:bg-on-tertiary transition-colors px-2 py-1">STANDARDS</span>
+</nav>
+<span class="material-symbols-outlined text-primary dark:text-primary cursor-pointer">account_circle</span>
+</div>
+</header>
+<main class="min-h-screen blueprint-grid pb-24">
+<!-- Dashboard Header -->
+<section class="px-margin-mobile md:px-margin-desktop py-12">
+<div class="border-l-2 border-primary pl-6 max-w-4xl">
+<p class="font-label-caps text-label-caps text-primary mb-2">ACOUSTIC ANALYSIS ENGINE // v2.4</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">RT60 Reverb-Time Calculator</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">Precision calculation of decay times based on Sabine’s Formula. Map surface absorption coefficients across octave bands to determine room character and material requirements.</p>
+</div>
+</section>
+<div class="px-margin-mobile md:px-margin-desktop grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Panel: Room Dimensions & Physics -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container border border-outline-variant p-6 relative">
+<div class="absolute top-0 right-0 w-8 h-8 border-t border-r border-primary/30"></div>
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-sm">square_foot</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">ROOM GEOMETRY (M)</h3>
+</div>
+<div class="space-y-6">
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-2">LENGTH (L)</label>
+<input class="w-full bg-surface-container-low border-b border-outline focus:border-primary outline-none py-2 font-data-lg text-data-lg text-primary px-2 transition-colors" type="text" value="6.40"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-2">WIDTH (W)</label>
+<input class="w-full bg-surface-container-low border-b border-outline focus:border-primary outline-none py-2 font-data-lg text-data-lg text-primary px-2 transition-colors" type="text" value="4.80"/>
+</div>
+<div>
+<label class="font-label-caps text-label-caps text-on-surface-variant block mb-2">HEIGHT (H)</label>
+<input class="w-full bg-surface-container-low border-b border-outline focus:border-primary outline-none py-2 font-data-lg text-data-lg text-primary px-2 transition-colors" type="text" value="3.20"/>
+</div>
+<div class="pt-4 grid grid-cols-2 gap-4">
+<div class="bg-surface-container-low border border-outline-variant/30 p-3">
+<p class="font-label-caps text-[9px] text-on-surface-variant opacity-60">TOTAL VOLUME</p>
+<p class="font-data-lg text-data-lg text-on-surface">98.3 <span class="text-xs opacity-50">M³</span></p>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 p-3">
+<p class="font-label-caps text-[9px] text-on-surface-variant opacity-60">SURFACE AREA</p>
+<p class="font-data-lg text-data-lg text-on-surface">133.1 <span class="text-xs opacity-50">M²</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Material Selector Card -->
+<div class="bg-surface-container border border-outline-variant p-6">
+<div class="flex items-center gap-2 mb-6">
+<span class="material-symbols-outlined text-primary text-sm">layers</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">SURFACE COMPOSITION</h3>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 border border-outline-variant hover:border-primary cursor-pointer transition-colors">
+<div>
+<p class="font-label-caps text-label-caps text-primary">FLOOR</p>
+<p class="font-body-md text-sm text-on-surface-variant">Polished Concrete</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+<div class="flex justify-between items-center p-3 border border-primary bg-on-tertiary-container cursor-pointer">
+<div>
+<p class="font-label-caps text-label-caps text-primary">WALLS (PRIMARY)</p>
+<p class="font-body-md text-sm text-on-surface">Acoustic Foam / Oak Slats</p>
+</div>
+<span class="material-symbols-outlined text-primary">check</span>
+</div>
+<div class="flex justify-between items-center p-3 border border-outline-variant hover:border-primary cursor-pointer transition-colors">
+<div>
+<p class="font-label-caps text-label-caps text-primary">CEILING</p>
+<p class="font-body-md text-sm text-on-surface-variant">Suspended Mineral Fiber</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Panel: The Frequency Graph -->
+<div class="lg:col-span-8 space-y-gutter">
+<div class="bg-surface-container border border-outline-variant p-6 h-full flex flex-col relative overflow-hidden">
+<div class="flex justify-between items-center mb-8">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">show_chart</span>
+<h3 class="font-label-caps text-label-caps text-on-surface">DECAY TIME ANALYSIS (RT60)</h3>
+</div>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary"></span>
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">Simulated</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary"></span>
+<span class="font-label-caps text-[9px] text-on-surface-variant uppercase">Target (EBU R121)</span>
+</div>
+</div>
+</div>
+<!-- Frequency Graph Container -->
+<div class="flex-grow flex items-end justify-between relative h-[300px] border-l border-b border-outline-variant/50 pt-10 px-4">
+<!-- Horizontal Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-20">
+<div class="border-t border-outline w-full text-[10px] font-data-sm text-on-surface-variant pt-1">1.2s</div>
+<div class="border-t border-outline w-full text-[10px] font-data-sm text-on-surface-variant pt-1">0.9s</div>
+<div class="border-t border-outline w-full text-[10px] font-data-sm text-on-surface-variant pt-1">0.6s</div>
+<div class="border-t border-outline w-full text-[10px] font-data-sm text-on-surface-variant pt-1">0.3s</div>
+<div class="w-full text-[10px] font-data-sm text-on-surface-variant">0.0s</div>
+</div>
+<!-- Graph Bars (Technical representation) -->
+<div class="flex-1 flex items-end justify-around gap-2 z-10 h-full">
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[85%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">125Hz</span>
+</div>
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[65%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">250Hz</span>
+</div>
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[50%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">500Hz</span>
+</div>
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[45%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">1kHz</span>
+</div>
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[40%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">2kHz</span>
+</div>
+<div class="group relative flex flex-col items-center justify-end h-full w-full">
+<div class="w-full bg-primary/20 border-x border-t border-primary h-[35%] transition-all hover:bg-primary/40"></div>
+<span class="font-label-caps text-[10px] mt-2">4kHz</span>
+</div>
+</div>
+</div>
+<!-- Summary Stats Footer -->
+<div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4 border-t border-outline-variant pt-6">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">RT60 AVERAGE</p>
+<p class="font-data-lg text-2xl text-primary">0.58s</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">IDEAL (STUDIO)</p>
+<p class="font-data-lg text-2xl text-on-surface">0.45s</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">VARIANCE</p>
+<p class="font-data-lg text-2xl text-error">+22%</p>
+</div>
+<div class="flex items-center justify-end">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps py-3 px-6 hover:opacity-90 transition-opacity active:scale-95 duration-100 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">calendar_month</span>
+                                SCHEDULE CONSULTATION
+                            </button>
+</div>
+</div>
+</div>
+<!-- Bento Style Detail Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="bg-surface-container border border-outline-variant p-6 flex gap-4 items-center">
+<img alt="Wood panel texture" class="w-24 h-24 object-cover filter grayscale contrast-125 border border-outline-variant" data-alt="A close-up, high-detail macro photograph of premium architectural oak slats used for acoustic treatment. The lighting is low-key and dramatic, highlighting the fine wood grain and linear shadows between the slats. The color palette is composed of warm oak browns and deep charcoal blacks, creating an industrial yet sophisticated technical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDmkohNfu9Ca4hoKc8wlbn6VBsAB3isrYYOiX7-2tYwShR-mLXK414lhrHMmN_bcrBucYQZy9df-jfFeOwznn0Hi_cyK9PH4GzUc_aj-IKAbuvkNWtgOnM--KyJ4dnNl7cAA6ikYsTShDpHdcTGMfaeb2zmHrzgm-RFk1JdYhXNRFUsak8OHCY_QnNo1dSlQZ7OYHruuAeCdKNQyGoDlTy0IR8uW1VJ5yhJBIXxXi8LXfa5MiKR3kDVdmY9aV8Y_CY2CsTqPRjUJ4L"/>
+<div>
+<h4 class="font-label-caps text-label-caps text-primary">RECOMMENDED TREATMENT</h4>
+<p class="font-body-md text-sm text-on-surface mt-1">High-density diffusers required at 1kHz reflection points.</p>
+<a class="text-[10px] font-label-caps text-primary mt-2 inline-block border-b border-primary/30" href="#">VIEW MATERIAL DATA SHEET</a>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-6 flex gap-4 items-center">
+<div class="w-24 h-24 flex items-center justify-center bg-surface-container-low border border-outline-variant relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-tr from-primary/10 to-transparent"></div>
+<span class="material-symbols-outlined text-4xl text-primary/30">analytics</span>
+</div>
+<div>
+<h4 class="font-label-caps text-label-caps text-primary">SCHROEDER FREQUENCY</h4>
+<p class="font-body-md text-sm text-on-surface mt-1">Calculated Transition: 142.8 Hz. Transition zone monitored.</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant mt-2">CALCULATION STATUS: VALIDATED</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Contextual Side Nav) -->
+<aside class="hidden xl:flex fixed left-0 top-16 bottom-0 w-80 bg-surface-container border-r border-outline-variant flex-col py-gutter z-40 transform -translate-x-full lg:translate-x-0 transition-transform">
+<div class="px-gutter mb-8">
+<h3 class="font-headline-md text-headline-md text-primary font-bold">ARCHITECTURAL RIGOR</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">SYSTEM PARAMETERS</p>
+</div>
+<nav class="flex flex-col gap-2">
+<div class="flex items-center gap-4 text-primary font-bold border-l-4 border-primary pl-4 py-3 bg-on-tertiary-container cursor-pointer transition-all">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-body-md text-body-md">Room-in-Room Tech</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant pl-4 py-3 hover:bg-on-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">precision_manufacturing</span>
+<span class="font-body-md text-body-md">Material Standards</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant pl-4 py-3 hover:bg-on-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-body-md text-body-md">Acoustic Physics</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant pl-4 py-3 hover:bg-on-tertiary transition-colors cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md text-body-md">Preferences</span>
+</div>
+</nav>
+<div class="mt-auto px-gutter border-t border-outline-variant pt-6">
+<div class="p-4 bg-surface-container-low border border-outline-variant border-dashed">
+<p class="font-label-caps text-[9px] text-on-surface-variant mb-2">QUICK CALC: SABINE EQUATION</p>
+<code class="font-data-sm text-[10px] text-primary block">T = 0.161 * (V / ΣSα)</code>
+</div>
+</div>
+</aside>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center bg-background py-2 border-t border-outline-variant z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2 scale-95 transition-transform">
+<span class="material-symbols-outlined">mic_external_on</span>
+<span class="font-label-caps text-label-caps">SCAN</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-none p-2 scale-95">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-label-caps text-label-caps">RT60</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2 scale-95 transition-transform">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps">LIBRARY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2 scale-95 transition-transform">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-label-caps text-label-caps">PORTFOLIO</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2 scale-95 transition-transform">
+<span class="material-symbols-outlined">event</span>
+<span class="font-label-caps text-label-caps">BOOK</span>
+</div>
+</nav>
+</body></html>

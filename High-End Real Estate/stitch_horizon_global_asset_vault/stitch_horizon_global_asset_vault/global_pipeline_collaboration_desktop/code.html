@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Acquisition Pipeline | FORTRESS TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@600;700;800&amp;family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .security-mask {
+            background: repeating-linear-gradient(45deg, transparent, transparent 2px, rgba(0,0,0,0.05) 2px, rgba(0,0,0,0.05) 4px);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #f3f3f3; }
+        ::-webkit-scrollbar-thumb { background: #00113a; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary": "#ffffff",
+                        "background": "#f9f9f9",
+                        "surface-dim": "#dadada",
+                        "on-primary-fixed": "#00174a",
+                        "on-surface-variant": "#444650",
+                        "secondary-container": "#6c98ff",
+                        "on-tertiary-container": "#90908e",
+                        "surface": "#f9f9f9",
+                        "tertiary-fixed": "#e3e2e0",
+                        "surface-container-high": "#e8e8e8",
+                        "secondary-fixed": "#dae2ff",
+                        "tertiary-container": "#282928",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "outline": "#757682",
+                        "on-tertiary-fixed": "#1b1c1b",
+                        "on-secondary-container": "#002f76",
+                        "surface-bright": "#f9f9f9",
+                        "surface-tint": "#435b9f",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#001946",
+                        "on-surface": "#1b1b1b",
+                        "primary-fixed": "#dbe1ff",
+                        "tertiary": "#131514",
+                        "surface-container": "#eeeeee",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-error-container": "#93000a",
+                        "inverse-primary": "#b3c5ff",
+                        "secondary": "#2559bd",
+                        "inverse-surface": "#303030",
+                        "on-background": "#1b1b1b",
+                        "secondary-fixed-dim": "#b1c5ff",
+                        "on-primary-container": "#758dd5",
+                        "primary-container": "#002366",
+                        "primary": "#00113a",
+                        "tertiary-fixed-dim": "#c7c6c4",
+                        "error-container": "#ffdad6",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c5c6d2",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container-low": "#f3f3f3",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "on-error": "#ffffff",
+                        "surface-variant": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "on-secondary-fixed-variant": "#00419e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "40px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "stroke-standard": "2px",
+                        "stroke-heavy": "3px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Work Sans"],
+                        "h3": ["Work Sans"],
+                        "h1": ["Work Sans"],
+                        "label-caps": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- SIDE NAVIGATION SHELL -->
+<aside class="hidden md:flex flex-col h-full py-margin w-64 bg-surface-container-low border-r-[3px] border-primary z-50">
+<div class="px-6 mb-10">
+<div class="flex items-center gap-3 mb-2">
+<img class="w-10 h-10 object-cover border-2 border-primary" data-alt="A professional, high-contrast logo for a financial institution, featuring a sharp, geometric 'F' mark in deep navy blue against a brushed platinum silver background. The lighting is crisp and sterile, conveying a sense of institutional security and technological precision. The aesthetic is industrial brutalist and modern." src="https://lh3.googleusercontent.com/aida/ADBb0ujnHbRiTtGE81NyAHw7ZhRvbvLJ3poxT2hQ7xOhpVadT2GDM2xL2krOVv8SDxd9eyV-DbgI3Og2NzcZ93injL0Ymabbzii0TsYfu8zfXzNnFr74Vbh58KWp8W_a7YI1xnS6EExTcDcHCF8mz1smU8U9IwfbPzb2JpUCcfsl3tfO8jGM6oqEQJAL80kCSEuY9nDxxz29jc0qG5wK7Vl6I9EsHKsDI1htpLkmEhsOH3IazPzYZ4Dojkcr-qE"/>
+<div>
+<h1 class="font-h3 text-h3 text-primary">PORTFOLIO</h1>
+<p class="font-label-caps text-label-caps text-on-tertiary-fixed-variant">V-LEVEL CLEARANCE</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col px-4 space-y-2">
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-caps text-label-caps">Overview</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</a>
+<!-- Active Item -->
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out bg-primary text-on-primary font-bold border-l-4 border-secondary" href="#">
+<span class="material-symbols-outlined">account_tree</span>
+<span class="font-label-caps text-label-caps">Pipeline</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">manage_accounts</span>
+<span class="font-label-caps text-label-caps">User Management</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">receipt_long</span>
+<span class="font-label-caps text-label-caps">Audit Logs</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 transition-all duration-100 ease-in-out text-on-surface hover:bg-surface-container-highest font-medium" href="#">
+<span class="material-symbols-outlined">monitor_heart</span>
+<span class="font-label-caps text-label-caps">System Health</span>
+</a>
+</nav>
+<div class="mt-auto px-4 space-y-4">
+<button class="w-full bg-secondary text-on-secondary py-4 font-bold border-2 border-primary hover:bg-primary transition-colors uppercase tracking-widest text-[14px]">
+                    DEPLOY CAPITAL
+                </button>
+<div class="pt-4 border-t-2 border-outline-variant">
+<a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:text-primary" href="#">
+<span class="material-symbols-outlined">verified_user</span>
+<span class="font-label-caps text-label-caps">Security Settings</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-2 text-on-surface-variant hover:text-error" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">System Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TOP APP BAR -->
+<header class="flex justify-between items-center w-full px-margin h-20 bg-surface border-b-[3px] border-primary z-40">
+<div class="flex items-center gap-8">
+<span class="font-h3 text-h3 uppercase tracking-tighter text-primary">FORTRESS TERMINAL</span>
+<nav class="hidden lg:flex items-center gap-6">
+<a class="font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">Support</a>
+<a class="font-medium text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-surface-container-high px-4 py-2 border-2 border-primary">
+<span class="material-symbols-outlined text-[18px] mr-2 text-secondary">lock</span>
+<span class="font-label-caps text-label-caps text-primary">SECURE SESSION: ACTIVE</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">notifications</button>
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center border-2 border-primary">
+<span class="material-symbols-outlined text-on-primary-container">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="flex-1 flex overflow-hidden">
+<!-- LEFT: PIPELINE PROGRESS & ASSETS -->
+<section class="flex-1 overflow-y-auto p-margin bg-background">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-h1 text-h1 text-primary uppercase">Acquisition Pipeline</h2>
+<p class="text-on-surface-variant font-body-lg">Stage 4/6: Forensic Due Diligence</p>
+</div>
+<div class="flex gap-2">
+<button class="p-3 border-2 border-primary hover:bg-surface-variant"><span class="material-symbols-outlined">filter_list</span></button>
+<button class="p-3 border-2 border-primary hover:bg-surface-variant"><span class="material-symbols-outlined">grid_view</span></button>
+</div>
+</div>
+<!-- ASSET PIPELINE GRID -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- ASSET CARD 1 (Active/Highlighted) -->
+<div class="bg-surface border-[4px] border-primary p-6 relative">
+<div class="absolute top-4 right-4 bg-secondary text-on-secondary px-3 py-1 font-label-caps text-[10px] tracking-widest border border-primary">ACTIVE DEAL</div>
+<div class="mb-4">
+<p class="font-label-caps text-label-caps text-on-tertiary-fixed-variant mb-1">PROJECT ID: #X-8829-ALPHA</p>
+<h3 class="font-h2 text-h2 text-primary">MANHATTAN PRIME DATA HUB</h3>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-surface-container-low border-2 border-primary">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">ASSET VALUATION</p>
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-[20px] text-primary">$412.50M</span>
+<span class="material-symbols-outlined text-outline">visibility</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border-2 border-primary">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">RISK SCORE</p>
+<span class="font-data-mono text-[20px] text-primary">0.12 (LOW)</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-sm font-label-caps">
+<span>PIPELINE VELOCITY</span>
+<span>82%</span>
+</div>
+<div class="h-4 bg-surface-container-high border-2 border-primary overflow-hidden">
+<div class="h-full bg-secondary w-[82%]"></div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-on-primary py-3 font-bold border-2 border-primary hover:bg-secondary transition-all">DEAL ROOM</button>
+<button class="flex-1 bg-surface border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-on-primary transition-all">AUDIT TRAIL</button>
+</div>
+</div>
+<!-- ASSET CARD 2 -->
+<div class="bg-surface border-[4px] border-primary p-6 opacity-80 hover:opacity-100 transition-opacity">
+<div class="mb-4">
+<p class="font-label-caps text-label-caps text-on-tertiary-fixed-variant mb-1">PROJECT ID: #G-1104-SIGMA</p>
+<h3 class="font-h2 text-h2 text-primary">GENEVA LOGISTICS CENTER</h3>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-surface-container-low border-2 border-primary relative overflow-hidden">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">ASSET VALUATION</p>
+<div class="security-mask absolute inset-x-0 bottom-0 h-8 z-10"></div>
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-[20px] text-primary tracking-tighter">••••••••••••</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer">lock_open</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border-2 border-primary">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">RISK SCORE</p>
+<span class="font-data-mono text-[20px] text-primary">0.45 (MED)</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-sm font-label-caps">
+<span>PIPELINE VELOCITY</span>
+<span>45%</span>
+</div>
+<div class="h-4 bg-surface-container-high border-2 border-primary overflow-hidden">
+<div class="h-full bg-secondary-container w-[45%]"></div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-on-primary py-3 font-bold border-2 border-primary hover:bg-secondary transition-all">DEAL ROOM</button>
+<button class="flex-1 bg-surface border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-on-primary transition-all">AUDIT TRAIL</button>
+</div>
+</div>
+<!-- ASSET CARD 3 -->
+<div class="bg-surface border-[4px] border-primary p-6 opacity-80 hover:opacity-100 transition-opacity">
+<div class="mb-4">
+<p class="font-label-caps text-label-caps text-on-tertiary-fixed-variant mb-1">PROJECT ID: #S-4432-ZETA</p>
+<h3 class="font-h2 text-h2 text-primary">SHANGHAI RENEWABLE ARCH</h3>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="p-4 bg-surface-container-low border-2 border-primary">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">ASSET VALUATION</p>
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-[20px] text-primary">$1.28B</span>
+<span class="material-symbols-outlined text-outline">visibility</span>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border-2 border-primary">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-1">RISK SCORE</p>
+<span class="font-data-mono text-[20px] text-primary">0.08 (MIN)</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex justify-between text-sm font-label-caps">
+<span>PIPELINE VELOCITY</span>
+<span>15%</span>
+</div>
+<div class="h-4 bg-surface-container-high border-2 border-primary overflow-hidden">
+<div class="h-full bg-outline w-[15%]"></div>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-primary text-on-primary py-3 font-bold border-2 border-primary hover:bg-secondary transition-all">DEAL ROOM</button>
+<button class="flex-1 bg-surface border-2 border-primary text-primary py-3 font-bold hover:bg-primary hover:text-on-primary transition-all">AUDIT TRAIL</button>
+</div>
+</div>
+</div>
+</section>
+<!-- RIGHT: SECURE COLLABORATION SIDEBAR -->
+<aside class="w-[450px] bg-surface-container border-l-[3px] border-primary flex flex-col">
+<div class="p-6 bg-primary text-on-primary border-b-[3px] border-primary">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<h4 class="font-h3 text-h3 uppercase">SECURE COLLABORATION</h4>
+</div>
+<p class="font-label-caps text-[10px] tracking-widest opacity-80">CHANNEL: X-8829-ALPHA [ENCRYPTED]</p>
+</div>
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Message 1 -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-primary font-bold">INVESTOR_RELATIONS_LD</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">14:02 UTC | 22.OCT.24</span>
+</div>
+<div class="bg-surface border-2 border-primary p-4 text-sm font-body-md shadow-[4px_4px_0px_0px_rgba(0,17,58,1)]">
+                                Verification of the Q3 liability ledger complete. Preliminary findings match the disclosure. Recommend moving to Phase 5.
+                            </div>
+</div>
+<!-- Message 2 -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-secondary font-bold">SYSTEM_AUTO_AUDIT</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">14:45 UTC | 22.OCT.24</span>
+</div>
+<div class="bg-surface-container-low border-2 border-outline p-4 text-sm font-data-mono italic">
+                                [ENCRYPTION KEY ROTATED SUCCESSFULLY]
+                                No unauthorized access detected during the session interval.
+                            </div>
+</div>
+<!-- Message 3 -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-primary font-bold">PRINCIPAL_MGMT</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">15:10 UTC | 22.OCT.24</span>
+</div>
+<div class="bg-surface border-2 border-primary p-4 text-sm font-body-md shadow-[4px_4px_0px_0px_rgba(0,17,58,1)]">
+                                Understood. Are we seeing any friction with the regulatory filing in the HK region for the secondary shell?
+                            </div>
+</div>
+<!-- Message 4 (External Response) -->
+<div class="space-y-2">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-[11px] text-primary font-bold">COMPLIANCE_DIRECTOR</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant">15:15 UTC | 22.OCT.24</span>
+</div>
+<div class="bg-surface border-2 border-primary p-4 text-sm font-body-md shadow-[4px_4px_0px_0px_rgba(0,17,58,1)]">
+                                HK filing is green-lit. The structural geometry of the deal is now compliant with the new capital threshold rules.
+                            </div>
+</div>
+</div>
+<!-- INPUT SECTION -->
+<div class="p-6 bg-surface border-t-[3px] border-primary">
+<div class="relative">
+<textarea class="w-full bg-surface-container-low border-2 border-primary p-4 font-data-mono text-sm focus:border-secondary outline-none h-24 resize-none placeholder:text-outline-variant" placeholder="ENTER SECURE MESSAGE..."></textarea>
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button class="p-2 border-2 border-primary bg-surface hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">attach_file</span>
+</button>
+<button class="bg-primary text-on-primary px-6 font-bold border-2 border-primary hover:bg-secondary transition-all font-label-caps text-[12px] flex items-center gap-2">
+                                    TRANSMIT <span class="material-symbols-outlined text-[16px]">send</span>
+</button>
+</div>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">END-TO-END ENCRYPTION ENABLED</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">CHARS: 0/2000</span>
+</div>
+</div>
+</aside>
+</main>
+</div>
+</div>
+</body></html>

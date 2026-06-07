@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    body {
+      background-color: #0A0A0A;
+      background-image: 
+        linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: #e5e2e1;
+    }
+    .glass-card {
+      backdrop-filter: blur(12px);
+      background-color: rgba(45, 45, 45, 0.85);
+      border: 1px solid rgba(132, 148, 149, 0.3);
+    }
+    .status-glow-cyan { box-shadow: 0 0 10px rgba(0, 243, 255, 0.4); }
+    .status-glow-error { box-shadow: 0 0 10px rgba(255, 180, 171, 0.4); }
+    .scanning-line {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+      z-index: 100;
+      pointer-events: none;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "error": "#ffb4ab",
+                  "tertiary": "#fbf8f7",
+                  "on-tertiary-fixed": "#1c1b1b",
+                  "on-secondary": "#303030",
+                  "secondary": "#c8c6c6",
+                  "background": "#131313",
+                  "on-tertiary-fixed-variant": "#474746",
+                  "outline": "#849495",
+                  "surface-container-low": "#1c1b1b",
+                  "error-container": "#93000a",
+                  "inverse-primary": "#00696f",
+                  "on-primary": "#00373a",
+                  "surface-container-highest": "#353534",
+                  "on-background": "#e5e2e1",
+                  "outline-variant": "#3a494b",
+                  "tertiary-fixed-dim": "#c8c6c5",
+                  "on-tertiary-container": "#616060",
+                  "on-tertiary": "#313030",
+                  "primary-fixed-dim": "#00dce6",
+                  "primary-fixed": "#6ff6ff",
+                  "on-primary-fixed": "#002022",
+                  "inverse-surface": "#e5e2e1",
+                  "primary-container": "#00f3ff",
+                  "secondary-fixed": "#e4e2e1",
+                  "surface-tint": "#00dce6",
+                  "secondary-container": "#474747",
+                  "on-primary-fixed-variant": "#004f53",
+                  "surface-dim": "#131313",
+                  "on-secondary-fixed-variant": "#474747",
+                  "on-primary-container": "#006b71",
+                  "on-secondary-fixed": "#1b1c1c",
+                  "surface-container-high": "#2a2a2a",
+                  "surface-container": "#201f1f",
+                  "surface-container-lowest": "#0e0e0e",
+                  "on-secondary-container": "#b6b5b4",
+                  "tertiary-fixed": "#e5e2e1",
+                  "on-surface": "#e5e2e1",
+                  "surface": "#131313",
+                  "primary": "#e3fdff",
+                  "on-surface-variant": "#b9cacb",
+                  "secondary-fixed-dim": "#c8c6c6",
+                  "surface-bright": "#3a3939",
+                  "tertiary-container": "#dedbdb",
+                  "inverse-on-surface": "#313030",
+                  "on-error": "#690005",
+                  "surface-variant": "#353534",
+                  "on-error-container": "#ffdad6"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "margin": "32px",
+                  "gutter": "16px",
+                  "unit": "4px",
+                  "container-max": "1440px"
+          },
+          "fontFamily": {
+                  "headline-lg": ["Space Grotesk"],
+                  "technical-data": ["monospace"],
+                  "headline-md": ["Space Grotesk"],
+                  "label-caps": ["Space Grotesk"],
+                  "headline-xl": ["Space Grotesk"],
+                  "body-lg": ["Inter"],
+                  "body-md": ["Inter"]
+          },
+          "fontSize": {
+                  "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                  "technical-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                  "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                  "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface min-h-screen font-body-md overflow-x-hidden">
+<div class="scanning-line"></div>
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-xl text-primary-container font-technical-data text-technical-data uppercase tracking-widest docked full-width top-0 border-b border-outline-variant/30 shadow-[0_4px_20px_rgba(0,0,0,0.5)] sticky z-50">
+<div class="flex justify-between items-center px-margin h-16 w-full max-w-container-max mx-auto">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="sensors">sensors</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary-container drop-shadow-[0_0_8px_rgba(0,243,255,0.5)]">META-CITY // LIVE_DATA</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end">
+<span class="text-[10px] text-on-surface-variant">LATENCY: 12ms</span>
+<span class="text-[10px] text-primary-container">ENCRYPTED_LINK_ESTABLISHED</span>
+</div>
+<span class="material-symbols-outlined text-primary-container cursor-crosshair active:scale-95" data-icon="wifi_tethering">wifi_tethering</span>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin pt-8 pb-32">
+<!-- Hero / Status Section -->
+<div class="grid grid-cols-12 gap-gutter mb-8">
+<div class="col-span-12 md:col-span-8">
+<div class="flex flex-col gap-2">
+<h2 class="font-headline-xl text-headline-xl text-primary-container uppercase">RESOURCE_ALLOCATION</h2>
+<p class="font-technical-data text-on-surface-variant max-w-2xl">
+            Real-time synchronization of urban infrastructure nodes. Managed assets: 4,209. System integrity: 98.4%. Active overrides: 0.
+          </p>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 flex justify-end items-center">
+<button class="bg-background border border-primary-container text-primary-container px-6 py-3 font-technical-data uppercase tracking-widest hover:bg-primary-container hover:text-background transition-all duration-300 cursor-crosshair">
+          INITIATE_REBALANCE
+        </button>
+</div>
+</div>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Energy Consumption Chart -->
+<div class="col-span-12 lg:col-span-7 glass-card p-6 flex flex-col gap-6">
+<div class="flex justify-between items-center border-b border-outline-variant/40 pb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container" data-icon="bolt">bolt</span>
+<span class="font-technical-data text-label-caps uppercase text-on-surface">ENERGY_CONSUMPTION_V6</span>
+</div>
+<span class="font-technical-data text-[10px] text-on-surface-variant">UPDATED: T-0.2s</span>
+</div>
+<div class="h-64 flex items-end justify-between gap-1 px-2">
+<!-- Procedural Bar Chart -->
+<div class="w-full bg-primary-container/20 h-[40%] hover:bg-primary-container transition-all" title="00:00"></div>
+<div class="w-full bg-primary-container/20 h-[55%] hover:bg-primary-container transition-all" title="01:00"></div>
+<div class="w-full bg-primary-container/20 h-[62%] hover:bg-primary-container transition-all" title="02:00"></div>
+<div class="w-full bg-primary-container/40 h-[85%] hover:bg-primary-container transition-all" title="03:00"></div>
+<div class="w-full bg-primary-container/20 h-[45%] hover:bg-primary-container transition-all" title="04:00"></div>
+<div class="w-full bg-primary-container/20 h-[30%] hover:bg-primary-container transition-all" title="05:00"></div>
+<div class="w-full bg-primary-container/20 h-[42%] hover:bg-primary-container transition-all" title="06:00"></div>
+<div class="w-full bg-primary-container/60 h-[92%] hover:bg-primary-container transition-all border-t-2 border-primary-container shadow-[0_0_15px_rgba(0,243,255,0.3)]" title="07:00"></div>
+<div class="w-full bg-primary-container/20 h-[68%] hover:bg-primary-container transition-all" title="08:00"></div>
+<div class="w-full bg-primary-container/20 h-[58%] hover:bg-primary-container transition-all" title="09:00"></div>
+<div class="w-full bg-primary-container/20 h-[40%] hover:bg-primary-container transition-all" title="10:00"></div>
+<div class="w-full bg-primary-container/20 h-[35%] hover:bg-primary-container transition-all" title="11:00"></div>
+<div class="w-full bg-primary-container/20 h-[22%] hover:bg-primary-container transition-all" title="12:00"></div>
+<div class="w-full bg-primary-container/20 h-[50%] hover:bg-primary-container transition-all" title="13:00"></div>
+<div class="w-full bg-primary-container/20 h-[60%] hover:bg-primary-container transition-all" title="14:00"></div>
+</div>
+<div class="grid grid-cols-3 gap-4 pt-4 border-t border-outline-variant/20">
+<div>
+<p class="font-technical-data text-[10px] text-on-surface-variant uppercase">Peak_Load</p>
+<p class="font-headline-md text-primary-container">1.21 GW</p>
+</div>
+<div>
+<p class="font-technical-data text-[10px] text-on-surface-variant uppercase">Grid_Stability</p>
+<p class="font-headline-md text-primary-container">99.9%</p>
+</div>
+<div>
+<p class="font-technical-data text-[10px] text-on-surface-variant uppercase">Active_Sources</p>
+<p class="font-headline-md text-primary-container">04</p>
+</div>
+</div>
+</div>
+<!-- Infrastructure Map Mockup -->
+<div class="col-span-12 lg:col-span-5 glass-card relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A top-down satellite view of a futuristic smart city at night, with glowing cyan and neon circuits integrated into the urban street grid. The architecture is ultra-modern with dense metallic structures and glowing data-highways. The lighting is low-key with intense bioluminescent accents of electric blue and white. The aesthetic is clinical, high-contrast, and technologically advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAe0-6rNXH7ue4Z6zIava5qNCNiyytWtJAOEv0SSyKdclYJ1QvBRAmiPUKR-qq11TBC2JVylqHroc7-rx-3KWRWqAQa1OwKxIZVwRvRXQ7NbyBUXkC7kFcsM_eiknX7hr1wKetgvWXHDvuIQDN984IYfIiububc2XchfoPVHShxr6jajPfR-7MWo0DHoWa6DVrGPMBaS0s1jfpBDsuJdv50QzRsCSznEw9DQ_HHaYxP1GAzproR2D39hq1y1o9S8MBeuL91xJ96dPz"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 p-6 h-full flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="bg-surface-container-lowest/80 p-2 border border-primary-container/30">
+<p class="font-technical-data text-label-caps text-primary-container">MAP_REFERENCE: MC-CENTRAL</p>
+<p class="font-technical-data text-[10px] text-on-surface-variant">LOC: 40.7128° N, 74.0060° W</p>
+</div>
+<span class="material-symbols-outlined text-primary-container animate-pulse" data-icon="my_location">my_location</span>
+</div>
+<div class="space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container status-glow-cyan"></div>
+<span class="font-technical-data text-label-caps">DISTRICT_ACTIVE</span>
+</div>
+<button class="w-full bg-primary-container/10 border border-primary-container/30 text-primary-container py-2 font-technical-data text-label-caps hover:bg-primary-container hover:text-black transition-colors uppercase">
+              EXPAND_VIEWPORT
+            </button>
+</div>
+</div>
+</div>
+<!-- Node Cards Row -->
+<div class="col-span-12 md:col-span-4 glass-card p-4 flex flex-col gap-4 border-l-4 border-primary-container">
+<div class="flex justify-between items-start">
+<span class="font-technical-data text-label-caps text-on-surface">NODE_ALPHA_01</span>
+<span class="bg-primary-container/10 text-primary-container px-2 py-0.5 text-[10px] font-technical-data border border-primary-container/20">OK</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Function</span>
+<span class="font-headline-md text-on-surface">Water_Filtration</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full mt-2">
+<div class="h-full bg-primary-container w-[88%]"></div>
+</div>
+<div class="flex justify-between font-technical-data text-[10px]">
+<span>CAPACITY_USE</span>
+<span class="text-primary-container">88%</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 glass-card p-4 flex flex-col gap-4 border-l-4 border-error">
+<div class="flex justify-between items-start">
+<span class="font-technical-data text-label-caps text-on-surface">NODE_BETA_04</span>
+<span class="bg-error/10 text-error px-2 py-0.5 text-[10px] font-technical-data border border-error/20">CRITICAL</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Function</span>
+<span class="font-headline-md text-on-surface">Waste_Processing</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full mt-2">
+<div class="h-full bg-error w-[94%] shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
+</div>
+<div class="flex justify-between font-technical-data text-[10px]">
+<span>PRESSURE_VALVE</span>
+<span class="text-error">94%</span>
+</div>
+</div>
+<div class="col-span-12 md:col-span-4 glass-card p-4 flex flex-col gap-4 border-l-4 border-secondary">
+<div class="flex justify-between items-start">
+<span class="font-technical-data text-label-caps text-on-surface">NODE_GAMMA_09</span>
+<span class="bg-secondary/10 text-secondary px-2 py-0.5 text-[10px] font-technical-data border border-secondary/20">WARNING</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Function</span>
+<span class="font-headline-md text-on-surface">Transit_Relay</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full mt-2">
+<div class="h-full bg-secondary w-[42%]"></div>
+</div>
+<div class="flex justify-between font-technical-data text-[10px]">
+<span>TRAFFIC_LOAD</span>
+<span class="text-secondary">42%</span>
+</div>
+</div>
+<!-- Sewage Capacity Detail -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 flex flex-col gap-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="water_drop">water_drop</span>
+<span class="font-technical-data text-label-caps uppercase text-on-surface">SEWAGE_CAPACITY_REALTIME</span>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-container" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="62.8" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-headline-md text-primary-container">75%</span>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface-variant uppercase">Status</span>
+<span class="font-technical-data text-headline-md">NOMINAL</span>
+<span class="text-[10px] text-on-surface-variant">FLUID_DYNAMICS: STABLE</span>
+</div>
+</div>
+</div>
+<!-- System Terminal View -->
+<div class="col-span-12 lg:col-span-8 glass-card bg-black/60 border-primary-container/20 p-4 font-technical-data text-[12px] leading-relaxed overflow-hidden">
+<div class="flex items-center gap-2 mb-3 border-b border-outline-variant/20 pb-2">
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-error"></div>
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+</div>
+<span class="text-[10px] opacity-60">SYSTEM_LOG_ACCESS_V1.0</span>
+</div>
+<div class="space-y-1 opacity-80">
+<p><span class="text-primary-container">[14:22:01]</span> INITIALIZING_HANDSHAKE: NODE_ALPHA_01 ... SUCCESS</p>
+<p><span class="text-primary-container">[14:22:05]</span> RE-ROUTING_PACKETS: SUBNET_DISTRICT_4 ... DONE</p>
+<p><span class="text-error">[14:22:12]</span> ALERT: THERMAL_THROTTLE_DETECTED_AT_BETA_04</p>
+<p><span class="text-primary-container">[14:22:15]</span> ADJUSTING_FLOW_RATES: PIPELINE_7A-9Z</p>
+<p><span class="text-primary-container">[14:22:20]</span> SYSTEM_SCAN: NO_THREATS_FOUND</p>
+<p class="animate-pulse">_</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-gutter bg-surface-container-lowest/90 backdrop-blur-md border-t border-outline-variant/50 shadow-[0_-4px_24px_rgba(0,243,255,0.1)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 cursor-pointer active:bg-surface-bright/20 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">VIEWPORT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 cursor-pointer active:bg-surface-bright/20 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-label-caps">METRICS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 cursor-pointer active:bg-surface-bright/20 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-label-caps text-label-caps">LAYERS</span>
+</div>
+<!-- Active State: COMMAND -->
+<div class="flex flex-col items-center justify-center text-primary-container bg-primary-container/10 border-t-2 border-primary-container animate-pulse shadow-[inset_0_0_12px_rgba(0,243,255,0.2)] h-full px-6 py-2">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">COMMAND</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-fixed-dim transition-all duration-300 cursor-pointer active:bg-surface-bright/20 px-6 py-2">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps">SYSTEM</span>
+</div>
+</nav>
+</body></html>

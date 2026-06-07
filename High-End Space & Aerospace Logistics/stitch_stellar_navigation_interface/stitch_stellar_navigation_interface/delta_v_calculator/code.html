@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STAR-PATH | Delta-V Budget Calculator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #0A0E1A;
+            color: #e5e2e3;
+            font-family: 'JetBrains Mono', monospace;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 0.5px solid rgba(255, 255, 255, 0.1);
+        }
+        .amber-glow {
+            box-shadow: 0 0 15px rgba(255, 185, 90, 0.2);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            background: rgba(144, 144, 150, 0.2);
+            height: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 12px;
+            width: 12px;
+            background: #ffb95a;
+            margin-top: -5px;
+            border-radius: 0;
+            box-shadow: 0 0 8px #ffb95a;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container": "#201f20",
+                "on-background": "#e5e2e3",
+                "outline-variant": "#46464c",
+                "on-secondary-container": "#3d2400",
+                "primary-fixed-dim": "#c3c6d7",
+                "on-primary-fixed-variant": "#434654",
+                "on-error": "#690005",
+                "surface-container-highest": "#353436",
+                "error": "#ffb4ab",
+                "secondary-fixed-dim": "#ffb95a",
+                "surface": "#131314",
+                "on-surface": "#e5e2e3",
+                "surface-container-lowest": "#0e0e0f",
+                "surface-variant": "#353436",
+                "primary-fixed": "#dfe2f3",
+                "surface-container-low": "#1c1b1c",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "on-secondary-fixed": "#2a1800",
+                "on-primary-fixed": "#171b28",
+                "on-tertiary-container": "#7a7c7c",
+                "inverse-on-surface": "#313031",
+                "background": "#131314",
+                "surface-tint": "#c3c6d7",
+                "secondary": "#ffb95a",
+                "on-tertiary": "#2f3131",
+                "outline": "#909096",
+                "on-tertiary-fixed": "#1a1c1c",
+                "on-primary": "#2c303d",
+                "inverse-surface": "#e5e2e3",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed": "#e2e2e2",
+                "error-container": "#93000a",
+                "on-surface-variant": "#c7c6cc",
+                "tertiary-container": "#0d0f0f",
+                "tertiary": "#c6c6c7",
+                "on-primary-container": "#777b8a",
+                "primary-container": "#0a0e1a",
+                "surface-container-high": "#2a2a2b",
+                "on-secondary": "#462a00",
+                "secondary-fixed": "#ffddb6",
+                "on-secondary-fixed-variant": "#643f00",
+                "on-tertiary-fixed-variant": "#454747",
+                "surface-dim": "#131314",
+                "secondary-container": "#c68315",
+                "inverse-primary": "#5a5e6d",
+                "primary": "#c3c6d7",
+                "surface-bright": "#3a393a"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "margin-edge": "40px",
+                "panel-gap": "16px",
+                "unit": "4px"
+            },
+            "fontFamily": {
+                "display-lg-mobile": ["Space Grotesk"],
+                "label-caps": ["Space Grotesk"],
+                "telemetry-data": ["JetBrains Mono"],
+                "body-standard": ["JetBrains Mono"],
+                "display-lg": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                "display-lg-mobile": ["32px", {"lineHeight": "38px", "fontWeight": "700"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "telemetry-data": ["18px", {"lineHeight": "24px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "body-standard": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["32px", {"lineHeight": "40px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-primary-container text-on-background min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/10 dark:bg-surface/10 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_0_15px_rgba(255,185,90,0.1)]">
+<div class="flex items-center justify-between px-margin-edge h-16 w-full">
+<div class="flex items-center gap-4">
+<button class="text-secondary hover:bg-secondary/10 transition-colors active:scale-95 duration-200 p-2 rounded">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-display-lg-mobile text-display-lg-mobile tracking-tighter text-secondary uppercase italic">STAR-PATH</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-label-caps text-secondary/60">SECTOR: 7-G</span>
+<button class="text-secondary hover:bg-secondary/10 transition-colors active:scale-95 duration-200 p-2 rounded">
+<span class="material-symbols-outlined">settings_remote</span>
+</button>
+</div>
+</div>
+</header>
+<main class="pt-24 px-margin-edge max-w-[1440px] mx-auto">
+<!-- Dashboard Header -->
+<section class="mb-8">
+<h2 class="font-display-lg text-display-lg text-on-surface uppercase tracking-tight">Delta-V Budgeting</h2>
+<p class="font-body-standard text-on-surface-variant max-w-2xl mt-2 opacity-70">Execute precise orbital mechanics calculations for interstellar transit. Adjusted for relativistic mass variance and specific impulse optimization.</p>
+</section>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-panel-gap">
+<!-- Input Cluster -->
+<div class="md:col-span-4 flex flex-col gap-panel-gap">
+<!-- Mass Configuration -->
+<div class="glass-panel p-6 rounded-lg relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-secondary"></div>
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-label-caps text-secondary">01 / MASS CONFIG</span>
+<span class="material-symbols-outlined text-secondary/40 text-sm">weight</span>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-caps text-[10px] text-on-surface-variant">DRY MASS (TONNES)</label>
+<span class="font-telemetry-data text-secondary">42.5</span>
+</div>
+<input class="w-full" max="200" min="10" type="range" value="42"/>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-caps text-[10px] text-on-surface-variant">PROPELLANT LOAD</label>
+<span class="font-telemetry-data text-secondary">118.0</span>
+</div>
+<input class="w-full" max="500" min="0" type="range" value="118"/>
+</div>
+</div>
+</div>
+<!-- Thrust & Engine -->
+<div class="glass-panel p-6 rounded-lg relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-tertiary"></div>
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-label-caps text-tertiary">02 / ENGINE METRICS</span>
+<span class="material-symbols-outlined text-tertiary/40 text-sm">cyclone</span>
+</div>
+<div class="space-y-4">
+<div class="grid grid-cols-2 gap-4">
+<div class="border border-outline-variant/30 p-3 bg-white/5">
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">ISP (VACUUM)</label>
+<input class="bg-transparent border-none p-0 font-telemetry-data text-on-surface focus:ring-0 w-full" type="text" value="980 s"/>
+</div>
+<div class="border border-outline-variant/30 p-3 bg-white/5">
+<label class="block font-label-caps text-[10px] text-on-surface-variant mb-1">THRUST (kN)</label>
+<input class="bg-transparent border-none p-0 font-telemetry-data text-on-surface focus:ring-0 w-full" type="text" value="2400"/>
+</div>
+</div>
+<div class="flex items-center gap-2 px-2 py-1 bg-tertiary/10 border border-tertiary/20">
+<span class="material-symbols-outlined text-sm text-tertiary">bolt</span>
+<span class="font-label-caps text-[10px] text-tertiary uppercase">Ion Drive Optimized</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Visualization Center -->
+<div class="md:col-span-5 glass-panel p-8 rounded-lg flex flex-col justify-between relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-br from-secondary/5 to-transparent pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-center mb-8">
+<h3 class="font-headline-md text-headline-md text-on-surface">Telemetry Output</h3>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-caps text-[10px] text-secondary">LIVE SYNC</span>
+</div>
+</div>
+<!-- Main Gauge (Simulated) -->
+<div class="flex justify-center my-12 relative">
+<div class="w-64 h-64 rounded-full border-4 border-outline-variant/10 flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border-t-4 border-secondary drop-shadow-[0_0_12px_rgba(255,185,90,0.4)] rotate-45"></div>
+<div class="text-center">
+<span class="block font-display-lg text-display-lg text-secondary">12,480</span>
+<span class="font-label-caps text-on-surface-variant tracking-[0.2em]">m/s DELTA-V</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-8 relative z-10">
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant mb-1">FUEL REMAINING</span>
+<div class="h-1 bg-outline-variant/20 w-full mb-2">
+<div class="h-full bg-secondary w-3/4 amber-glow"></div>
+</div>
+<span class="font-telemetry-data text-secondary">84.2%</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant mb-1">REQ. MARGIN</span>
+<div class="h-1 bg-outline-variant/20 w-full mb-2">
+<div class="h-full bg-on-surface-variant w-1/4"></div>
+</div>
+<span class="font-telemetry-data text-on-surface">1.4x</span>
+</div>
+</div>
+</div>
+<!-- Secondary Info Column -->
+<div class="md:col-span-3 flex flex-col gap-panel-gap">
+<!-- Mission Profile -->
+<div class="glass-panel p-6 rounded-lg">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">MISSION PROFILE</span>
+<span class="material-symbols-outlined text-on-surface-variant/40 text-sm">rocket_launch</span>
+</div>
+<div class="space-y-4">
+<div class="bg-white/5 p-3 flex justify-between items-center group cursor-pointer hover:bg-secondary/10 transition-colors">
+<span class="font-body-standard text-on-surface opacity-80">LEO to Lunar</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-secondary">arrow_forward</span>
+</div>
+<div class="bg-white/5 p-3 flex justify-between items-center group cursor-pointer hover:bg-secondary/10 transition-colors">
+<span class="font-body-standard text-on-surface opacity-80">Mars Insertion</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-secondary">arrow_forward</span>
+</div>
+<div class="bg-white/5 p-3 flex justify-between items-center group cursor-pointer hover:bg-secondary/10 transition-colors">
+<span class="font-body-standard text-on-surface opacity-80">Belt Prospecting</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm group-hover:text-secondary">arrow_forward</span>
+</div>
+</div>
+</div>
+<!-- Environmental Modifiers -->
+<div class="flex-grow glass-panel rounded-lg overflow-hidden relative">
+<img class="w-full h-32 object-cover opacity-40 grayscale hover:grayscale-0 transition-all duration-700" data-alt="A detailed, cinematic digital visualization of a planetary nebula with swirling gas clouds in deep blues and vibrant cyans, illuminated by a nearby star. The aesthetic is futuristic and high-contrast, mimicking a high-resolution cockpit navigation display. The lighting is low-key with intense neon accents that emphasize the complex gravitational environment of deep space exploration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBetjWwpoBFLeQrj0ExkJX8MZ1mG2b8SG8IJPKNmGYFal8JccYCrO4tqNR-gelxrzZIdxZDqPDDfe8gzL-zGIrtBm2Kd0kAnFjp3ixhJ31bG4j1LN6sc_DFo6C2lnzNG3BHei96j0xW9hZB3AFCi53B574o-tpAZcCBxvpCDPYIdfe6YUc08NSTRDwVCOV-7miOXgL5mvWncVGLNkQFZosiEee6Ast_bs3n5uOU1wOhAD0igdsE6zJjYBDlnQgoQktTRdo_otc6VEk"/>
+<div class="p-6">
+<span class="font-label-caps text-[10px] text-secondary mb-2 block">GRAVITY GRADIENT</span>
+<p class="font-body-standard text-on-surface-variant text-xs leading-relaxed">System adjusted for Jupiter-proximal tidal forces. Error margin calculated at <span class="text-secondary">±0.04m/s</span> per AU transit.</p>
+</div>
+</div>
+<!-- Action Button -->
+<button class="bg-secondary text-on-secondary-container font-label-caps py-4 rounded-lg tracking-widest hover:brightness-110 active:scale-95 transition-all shadow-lg shadow-secondary/20 uppercase">
+                    Commit Flight Path
+                </button>
+</div>
+</div>
+<!-- System Alerts Row -->
+<div class="mt-panel-gap grid grid-cols-1 md:grid-cols-4 gap-panel-gap">
+<div class="glass-panel p-4 flex items-center gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-secondary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">air</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant">O2 SCRUBBER</span>
+<span class="font-telemetry-data text-on-surface text-sm">94% NOMINAL</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-on-surface-variant/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">emergency_home</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant">ESCAPE VECTORS</span>
+<span class="font-telemetry-data text-on-surface text-sm">3 READY</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-4">
+<div class="w-10 h-10 flex-shrink-0 bg-on-surface-variant/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">settings_input_antenna</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-on-surface-variant">D-SPACE COMM</span>
+<span class="font-telemetry-data text-on-surface text-sm">LAT: 140ms</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex items-center gap-4 border-l-2 border-secondary">
+<div class="w-10 h-10 flex-shrink-0 bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">monitoring</span>
+</div>
+<div>
+<span class="block font-label-caps text-[10px] text-secondary">HULL INTEGRITY</span>
+<span class="font-telemetry-data text-on-surface text-sm">STABLE</span>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Mobile Hidden Overlay / Desktop Component Visual) -->
+<aside class="fixed inset-y-0 left-0 z-[60] flex flex-col py-margin-edge bg-surface-container dark:bg-surface-container backdrop-blur-3xl h-full w-80 rounded-r-xl border-r border-outline-variant/20 shadow-2xl -translate-x-full lg:translate-x-0 hidden lg:flex">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-secondary/40">
+<img alt="Commander Avatar" class="w-full h-full object-cover" data-alt="A professional portrait of a futuristic spacecraft commander, 'CMD. ELARA VANCE'. She is wearing a sleek, dark naval-style uniform with subtle golden amber insignias. The lighting is cool-toned with sharp shadows, highlighting her focused expression. The background is a blurred high-tech bridge with holographic screens showing stellar charts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBQt9xYtF9LKaQNpEKBItGA3FiFUSUPgbm7lPnfQGKYdJydogtwwLnAAKdS3LX2Tv3cfKyGAw6wISU9FhYAMEYF0vtIv9ru4aaT1-2eoWlNOS5o3b3Is2sD3ovGbXwGBTRKystyCGDQ1CFeJn4-YZX8aoiqg8fc9iwDaZLQpIEBP4XorgaWA1TxkqarvaEtweR7OidfsfccuSup5_V53JIgr1SZbvuGS0qUYFTudLwW5xiWUyKmCDby5ojGdmlT1hA3yDaZF6f-lrWM"/>
+</div>
+<div>
+<h4 class="font-label-caps text-secondary text-[12px]">CMD. ELARA VANCE</h4>
+<p class="font-body-standard text-[10px] text-on-surface-variant">Sector 7-G Navigator</p>
+<p class="font-body-standard text-[10px] text-secondary">Oxygen: 94%</p>
+</div>
+</div>
+<nav class="flex-grow">
+<div class="space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">rocket_launch</span>
+<span class="font-body-standard">Fleet Status</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">cyclone</span>
+<span class="font-body-standard">Wormhole Registry</span>
+</a>
+<a class="flex items-center gap-3 bg-secondary/10 text-secondary border-l-2 border-secondary px-4 py-3" href="#">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-body-standard">Delta-V Calculator</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings_input_antenna</span>
+<span class="font-body-standard">Crew Comms</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-white/5 transition-all duration-300" href="#">
+<span class="material-symbols-outlined">emergency_home</span>
+<span class="font-body-standard">Emergency Egress</span>
+</a>
+</div>
+</nav>
+<div class="mt-auto px-6">
+<div class="text-[10px] font-label-caps text-on-surface-variant/40 uppercase tracking-widest">Star-Path Nav v4.2.0</div>
+</div>
+</aside>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-gutter pb-4 bg-surface-container-lowest/30 dark:bg-surface-container-lowest/30 backdrop-blur-2xl border-t border-outline-variant/10 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-[10px] uppercase">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_8px_rgba(255,185,90,0.6)] active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">calculate</span>
+<span class="font-label-caps text-[10px] uppercase">Delta-V</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">auto_towing</span>
+<span class="font-label-caps text-[10px] uppercase">Projection</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-secondary/80 active:translate-y-1 transition-transform">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-label-caps text-[10px] uppercase">Analytics</span>
+</button>
+</nav>
+</body></html>

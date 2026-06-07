@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<title>Mission Control | Star-Voyage</title>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-surface-variant": "#c7c6cc",
+                  "error-container": "#93000a",
+                  "surface-tint": "#c3c6d7",
+                  "background": "#131314",
+                  "on-background": "#e5e2e3",
+                  "error": "#ffb4ab",
+                  "surface-container-highest": "#353436",
+                  "on-error-container": "#ffdad6",
+                  "surface": "#131314",
+                  "on-tertiary-fixed-variant": "#454748",
+                  "inverse-surface": "#e5e2e3",
+                  "primary-fixed": "#dfe2f3",
+                  "surface-dim": "#131314",
+                  "outline": "#909096",
+                  "secondary-container": "#af8d11",
+                  "surface-bright": "#3a393a",
+                  "primary-container": "#0a0e1a",
+                  "on-tertiary": "#2e3132",
+                  "on-secondary": "#3c2f00",
+                  "on-primary-container": "#777b8a",
+                  "on-tertiary-container": "#797c7d",
+                  "surface-container-high": "#2a2a2b",
+                  "secondary": "#e9c349",
+                  "primary-fixed-dim": "#c3c6d7",
+                  "surface-container-low": "#1c1b1c",
+                  "on-surface": "#e5e2e3",
+                  "secondary-fixed-dim": "#e9c349",
+                  "on-primary-fixed-variant": "#434654",
+                  "tertiary-fixed-dim": "#c5c7c8",
+                  "on-secondary-fixed-variant": "#574500",
+                  "tertiary-container": "#0c0f10",
+                  "tertiary": "#c5c7c8",
+                  "on-secondary-fixed": "#241a00",
+                  "outline-variant": "#46464c",
+                  "inverse-primary": "#5a5e6d",
+                  "surface-container": "#201f20",
+                  "tertiary-fixed": "#e1e3e4",
+                  "on-primary": "#2c303d",
+                  "secondary-fixed": "#ffe088",
+                  "on-primary-fixed": "#171b28",
+                  "on-error": "#690005",
+                  "on-secondary-container": "#342800",
+                  "inverse-on-surface": "#313031",
+                  "surface-variant": "#353436",
+                  "on-tertiary-fixed": "#191c1d",
+                  "primary": "#c3c6d7",
+                  "surface-container-lowest": "#0e0e0f"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "unit": "8px",
+                  "margin-desktop": "80px",
+                  "gutter": "24px",
+                  "section-gap": "120px",
+                  "margin-mobile": "20px"
+          },
+          "fontFamily": {
+                  "label-caps": ["Inter"],
+                  "body-md": ["Inter"],
+                  "body-lg": ["Inter"],
+                  "headline-lg": ["Playfair Display"],
+                  "headline-md": ["Playfair Display"],
+                  "display-xl": ["Playfair Display"]
+          },
+          "fontSize": {
+                  "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                  "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                  "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                  "display-xl": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-card {
+      background: rgba(10, 14, 26, 0.4);
+      backdrop-filter: blur(20px);
+      border-top: 1px solid rgba(229, 226, 227, 0.1);
+      border-left: 1px solid rgba(229, 226, 227, 0.05);
+    }
+    .active-glow {
+      box-shadow: 0 0 15px rgba(233, 195, 73, 0.2);
+    }
+    .chart-container {
+      background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+      background-size: 24px 24px;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary selection:text-on-secondary">
+<!-- Background Layer -->
+<div class="fixed inset-0 z-[-1] overflow-hidden">
+<div class="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&amp;w=2072&amp;auto=format&amp;fit=crop')] bg-cover bg-center opacity-20" data-alt="A cinematic, high-resolution view of Earth's atmosphere from low orbit, featuring glowing city lights and the deep indigo curve of the planet against the infinite black of space. The lighting is moody and ethereal, with subtle lens flares and a fine texture of distant stars. This background establishes a luxury space travel aesthetic with deep blues and crisp, luminous details."></div>
+<div class="absolute inset-0 bg-gradient-to-b from-background via-transparent to-background"></div>
+</div>
+<!-- TopNavBar (Shared Component) -->
+<nav class="fixed top-0 w-full flex justify-between items-center px-margin-desktop py-unit z-50 bg-transparent backdrop-blur-xl border-b border-on-surface-variant/10">
+<div class="font-display-xl text-headline-md text-secondary tracking-tight">Star-Voyage</div>
+<div class="hidden md:flex items-center gap-gutter">
+<a class="font-body-lg text-body-lg text-on-surface hover:text-secondary/80 transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Voyages</a>
+<a class="font-body-lg text-body-lg text-on-surface hover:text-secondary/80 transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Fleet</a>
+<a class="font-body-lg text-body-lg text-on-surface hover:text-secondary/80 transition-colors cursor-pointer active:scale-95 transition-transform" href="#">Excursions</a>
+<a class="font-body-lg text-body-lg text-secondary border-b-2 border-secondary pb-1 cursor-pointer active:scale-95 transition-transform" href="#">Mission Control</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-secondary text-on-secondary px-6 py-2 rounded-full font-label-caps cursor-pointer active:scale-95 transition-all duration-300 hover:shadow-[0_0_15px_rgba(233,195,73,0.4)]">Book Now</button>
+<span class="material-symbols-outlined text-secondary text-2xl cursor-pointer">account_circle</span>
+</div>
+</nav>
+<main class="pt-[100px] px-margin-desktop max-w-[1600px] mx-auto pb-section-gap">
+<!-- Dashboard Header -->
+<header class="mb-gutter flex justify-between items-end">
+<div>
+<span class="font-label-caps text-secondary">ORBITAL OPERATIONS CENTER</span>
+<h1 class="font-headline-lg text-headline-lg mt-2">Mission Control Dashboard</h1>
+</div>
+<div class="flex gap-4 mb-2">
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary animate-pulse"></div>
+<span class="font-label-caps text-on-surface-variant">SYSTEMS NOMINAL</span>
+</div>
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-3">
+<span class="font-label-caps text-on-surface-variant">LUNAR TIME: 14:42 UTC</span>
+</div>
+</div>
+</header>
+<!-- Top Grid: Telemetry & Key Metrics -->
+<div class="grid grid-cols-12 gap-gutter mb-gutter">
+<!-- Telemetry Chart 1 -->
+<div class="col-span-12 lg:col-span-8 glass-card rounded-xl p-6 chart-container overflow-hidden min-h-[300px]">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-label-caps text-secondary">REAL-TIME TELEMETRY</h3>
+<p class="font-headline-md text-headline-md">Orbital Velocity &amp; Stability</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-secondary/10 border border-secondary/20 text-secondary font-label-caps text-[10px]">LIVE DATA</span>
+</div>
+</div>
+<div class="relative h-40 flex items-end">
+<!-- Simplified SVG Chart for Visualization -->
+<svg class="w-full h-full stroke-secondary fill-none" viewbox="0 0 800 160">
+<path d="M0,120 Q50,110 100,130 T200,100 T300,110 T400,60 T500,80 T600,40 T700,50 T800,20" stroke-width="2"></path>
+<path d="M0,120 Q50,110 100,130 T200,100 T300,110 T400,60 T500,80 T600,40 T700,50 T800,20 V160 H0 Z" fill="url(#goldGradient)" fill-opacity="0.1"></path>
+<defs>
+<lineargradient id="goldGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#e9c349"></stop>
+<stop offset="100%" stop-color="transparent"></stop>
+</lineargradient>
+</defs>
+</svg>
+<!-- Chart Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="border-t border-on-surface-variant/10 w-full h-0"></div>
+<div class="border-t border-on-surface-variant/10 w-full h-0"></div>
+<div class="border-t border-on-surface-variant/10 w-full h-0"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-on-surface-variant font-label-caps text-[10px]">
+<span>T-MINUS 12:00</span>
+<span>T-MINUS 08:00</span>
+<span>T-MINUS 04:00</span>
+<span>CURRENT POSITION</span>
+</div>
+</div>
+<!-- Quick Stats -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card rounded-xl p-6 flex-1 border-l-4 border-l-secondary">
+<span class="font-label-caps text-secondary">ACTIVE VOYAGERS</span>
+<div class="flex items-baseline gap-2 mt-2">
+<h2 class="font-display-xl text-display-xl leading-none">124</h2>
+<span class="text-secondary font-label-caps text-sm">+3% M/M</span>
+</div>
+<p class="text-on-surface-variant mt-4 text-sm">Luxury Class: 42 | Premium: 82</p>
+</div>
+<div class="glass-card rounded-xl p-6 flex-1">
+<span class="font-label-caps text-on-surface-variant">RESERVE POWER</span>
+<div class="flex items-baseline gap-2 mt-2">
+<h2 class="font-display-xl text-display-xl leading-none">98.4%</h2>
+</div>
+<div class="w-full bg-surface-container-highest h-1 rounded-full mt-6">
+<div class="bg-secondary h-full w-[98.4%] shadow-[0_0_8px_rgba(233,195,73,0.6)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Passenger Manifest -->
+<div class="col-span-12 xl:col-span-8 glass-card rounded-xl overflow-hidden">
+<div class="p-6 border-b border-on-surface-variant/10 flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md">Passenger Manifest</h3>
+<div class="flex gap-2">
+<button class="text-sm font-label-caps text-on-surface-variant px-4 py-2 border border-outline-variant rounded-lg hover:bg-white/5 transition-colors">Export CSV</button>
+<button class="text-sm font-label-caps bg-secondary text-on-secondary px-4 py-2 rounded-lg active:scale-95 transition-transform">Add Passenger</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-lowest/50 text-secondary font-label-caps text-[11px] uppercase tracking-widest">
+<th class="px-6 py-4">Name</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Medical Clearance</th>
+<th class="px-6 py-4">Cabin Assignment</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-on-surface-variant/5">
+<tr class="hover:bg-white/5 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-on-surface-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional, high-contrast studio portrait of a middle-aged man with refined features, wearing a sleek, dark-toned futuristic uniform. The lighting is dramatic, emphasizing sharp contours and a serious, focused expression, consistent with a high-end luxury space travel aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAq__hq_NDJNgCanZy2zqwQYsHsW3Un4uNq9Lzx3Jf5K4M3WPuzFrD0uNjcWI1uElpoSG0eKHT-0casvX2PhCNfiZvgYTg0-EQHVnnH23A1XpPHccMDcvK2DnNVVNOS3y1a1_0hpjAfhWyNuUPHXb_cTu0C5ugSED5WZji2dSSwwQPUmRvc4yUikrJz9I8tcrhptb1FGDKArtLWfh2EnFfdZzOiHqp-ffw4w1Cf0NMQYE7loDuIQJW8quhhrGQqhsndIG1SzuN5Eg4"/>
+</div>
+<div>
+<div class="font-medium">Julian Voss</div>
+<div class="text-[10px] text-on-surface-variant font-label-caps">ID: SV-0492</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-secondary/10 text-secondary text-[10px] font-label-caps border border-secondary/20">BOARDED</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-500 text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-sm">Class-1 Certified</span>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">ZEPHYR-A1</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-on-surface-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A high-end studio portrait of a young woman with an elegant, modern look, styled for a luxury interstellar journey. She is wearing a minimalist, charcoal-colored tech-silk blouse. The background is a soft, deep midnight blue, with cinematic lighting that highlights her sophisticated features and calm demeanor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCpaTk_Gw-kPW0nFBL1p26_qgA7U-jqyGCTEm7qjGM1ePXHXi9tJycx1PUFSLHVgFgx66ntza5Ot2D24u-8OMX--dnOR9DyPdn-aEIdtg425TecvVHJ_gqnoyU1Ym_2gg1b6BOjgfbCpiavC3IhD_eF-7yLB2HKeizQ6jCqaQFyk8ZlNrJTR4vrwmsoWO1x7cclmkSfMWaLo7sMJMGHBSMQDWpCMt7Lo7nXC5ekYCAZIlHYQmC-46Hb67OjfcC24nyXzLUPPHo-UMw"/>
+</div>
+<div>
+<div class="font-medium">Elena Vance</div>
+<div class="text-[10px] text-on-surface-variant font-label-caps">ID: SV-1022</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-surface-container-highest text-on-surface-variant text-[10px] font-label-caps">CHECK-IN</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-500 text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="text-sm">Class-1 Certified</span>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">SOLARIS-C4</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-white/5 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center border border-on-surface-variant/20 overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A cinematic portrait of a distinguished older man with graying hair and a confident gaze, representing a high-net-worth orbital traveler. He is wearing a tailored, dark navy blazer with metallic accents. The lighting is soft and directional, creating a premium, sophisticated atmosphere consistent with a luxury space agency brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMhIpkHCaRSxsDJCdnuDKQGBLzGBxgS85BejsI5BP8IqcKB-OC9dp7NEzSge69u9iIPZQWAyaYLwwi9YjptZvLnZHfMDt7YYsT3o4vAWKPnQI4VTDEquRnlJW8FycNQum5wU68f81LIGDVp8LXb0wsCXLqn94zhXaFi7GlXWQU9_c4l1YzuVkLobdQ40ckpCriRf9N_rEd7pZORa1j4iBlbbp_X2GonUNuqSYFp1jofzDexqcofQlpFa6QaSeN0vGVTGaidnUPoQ0"/>
+</div>
+<div>
+<div class="font-medium">Arthur Thorne</div>
+<div class="text-[10px] text-on-surface-variant font-label-caps">ID: SV-0831</div>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full bg-error-container/20 text-error text-[10px] font-label-caps border border-error/20">PENDING</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="text-sm">In Review</span>
+</div>
+</td>
+<td class="px-6 py-5 font-mono text-sm text-on-surface-variant">PENDING</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Mission Schedule -->
+<div class="col-span-12 xl:col-span-4 flex flex-col gap-gutter">
+<div class="glass-card rounded-xl p-6 flex-1">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md">Schedule</h3>
+<span class="material-symbols-outlined text-secondary cursor-pointer">calendar_month</span>
+</div>
+<div class="space-y-4">
+<!-- Event Item -->
+<div class="flex gap-4 p-4 rounded-lg bg-surface-container-highest/30 border-l-2 border-l-secondary">
+<div class="text-center">
+<div class="font-label-caps text-secondary text-[10px]">DEC</div>
+<div class="text-lg font-bold">14</div>
+</div>
+<div>
+<div class="font-medium text-sm">Orbital insertion: Voyager VII</div>
+<div class="text-xs text-on-surface-variant mt-1">04:30 UTC • Trans-Lunar Orbit</div>
+</div>
+</div>
+<!-- Event Item -->
+<div class="flex gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors border-l-2 border-l-transparent">
+<div class="text-center">
+<div class="font-label-caps text-on-surface-variant text-[10px]">DEC</div>
+<div class="text-lg font-bold">15</div>
+</div>
+<div>
+<div class="font-medium text-sm">Guest Orientation: Series A</div>
+<div class="text-xs text-on-surface-variant mt-1">10:00 UTC • Training Deck 4</div>
+</div>
+</div>
+<!-- Event Item -->
+<div class="flex gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors border-l-2 border-l-transparent">
+<div class="text-center">
+<div class="font-label-caps text-on-surface-variant text-[10px]">DEC</div>
+<div class="text-lg font-bold">18</div>
+</div>
+<div>
+<div class="font-medium text-sm">Celestial Gala Night</div>
+<div class="text-xs text-on-surface-variant mt-1">19:00 UTC • Observation Lounge</div>
+</div>
+</div>
+<!-- Event Item -->
+<div class="flex gap-4 p-4 rounded-lg hover:bg-white/5 transition-colors border-l-2 border-l-transparent">
+<div class="text-center">
+<div class="font-label-caps text-on-surface-variant text-[10px]">DEC</div>
+<div class="text-lg font-bold">20</div>
+</div>
+<div>
+<div class="font-medium text-sm">Supply Drone Docking</div>
+<div class="text-xs text-on-surface-variant mt-1">02:15 UTC • Airlock Beta-9</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-6 py-3 border border-outline-variant rounded-lg font-label-caps text-on-surface-variant hover:border-secondary hover:text-secondary transition-all">View Full Calendar</button>
+</div>
+<!-- System Status Summary -->
+<div class="glass-card rounded-xl p-6 bg-gradient-to-br from-primary-container/60 to-surface-container-highest/40">
+<h3 class="font-label-caps text-on-surface-variant mb-4">LOGISTICS OVERVIEW</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-white/5 rounded-lg">
+<div class="text-[10px] font-label-caps text-secondary uppercase mb-1">Fleet Load</div>
+<div class="text-xl font-bold">82%</div>
+</div>
+<div class="p-3 bg-white/5 rounded-lg">
+<div class="text-[10px] font-label-caps text-secondary uppercase mb-1">Fuel Reserve</div>
+<div class="text-xl font-bold">14.2kt</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Shared Component) -->
+<footer class="w-full mt-section-gap flex flex-col md:flex-row justify-between items-center px-margin-desktop py-margin-mobile w-full border-t border-on-surface-variant/10 bg-surface-container-lowest">
+<div class="font-display-xl text-headline-md text-secondary">Star-Voyage</div>
+<div class="flex gap-gutter my-6 md:my-0">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Press Kit</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Contact Support</a>
+</div>
+<div class="font-body-md text-body-md text-on-surface-variant">© 2024 Star-Voyage Orbital. All rights reserved.</div>
+</footer>
+</body></html>

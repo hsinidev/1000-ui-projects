@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROCKET-OPS | Weather Constraint Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #1A1A1B; }
+        ::-webkit-scrollbar-thumb { background: #e5e2e3; }
+        .grid-bg {
+            background-image: linear-gradient(#2A2A2B 1px, transparent 1px), linear-gradient(90deg, #2A2A2B 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+<!-- Insert Tailwind Config -->
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface-variant": "#e4bdbb",
+                      "primary": "#ffb3b1",
+                      "on-secondary": "#2f3131",
+                      "secondary-fixed": "#e2e2e2",
+                      "outline-variant": "#5c403f",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "surface-variant": "#353436",
+                      "inverse-primary": "#bd0b29",
+                      "on-primary-fixed": "#410007",
+                      "on-secondary-fixed-variant": "#454747",
+                      "tertiary-fixed-dim": "#c8c6c6",
+                      "tertiary-container": "#707070",
+                      "inverse-on-surface": "#303031",
+                      "outline": "#ab8887",
+                      "on-error-container": "#ffdad6",
+                      "on-primary": "#680010",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "surface-container-low": "#1b1b1c",
+                      "on-primary-container": "#fff2f1",
+                      "surface-container-lowest": "#0e0e0f",
+                      "surface-tint": "#ffb3b1",
+                      "on-primary-fixed-variant": "#92001b",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "secondary": "#c6c6c7",
+                      "primary-fixed": "#ffdad8",
+                      "on-surface": "#e5e2e3",
+                      "primary-fixed-dim": "#ffb3b1",
+                      "secondary-container": "#454747",
+                      "surface-container-high": "#2a2a2b",
+                      "on-background": "#e5e2e3",
+                      "on-tertiary-container": "#f7f5f4",
+                      "surface-container": "#1f1f20",
+                      "surface-bright": "#39393a",
+                      "inverse-surface": "#e5e2e3",
+                      "tertiary": "#c8c6c6",
+                      "surface": "#131314",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed": "#1b1c1c",
+                      "primary-container": "#d72638",
+                      "background": "#131314",
+                      "on-secondary-container": "#b4b5b5",
+                      "tertiary-fixed": "#e4e2e2",
+                      "on-tertiary": "#303030",
+                      "on-error": "#690005",
+                      "surface-container-highest": "#353436",
+                      "surface-dim": "#131314",
+                      "error-container": "#93000a"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "gutter-desktop": "16px",
+                      "container-max": "1920px",
+                      "margin-mobile": "12px",
+                      "margin-desktop": "24px",
+                      "gutter-mobile": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Barlow Condensed"],
+                      "headline-md": ["Barlow Condensed"],
+                      "body-standard": ["Barlow Condensed"],
+                      "label-caps": ["Barlow Condensed"],
+                      "telemetry-lg": ["JetBrains Mono"],
+                      "display-lg-mobile": ["Barlow Condensed"],
+                      "telemetry-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-standard": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "telemetry-lg": ["20px", {"lineHeight": "1.4", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                      "display-lg-mobile": ["32px", {"lineHeight": "1.1", "fontWeight": "700"}],
+                      "telemetry-sm": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-surface text-on-surface font-body-standard overflow-hidden">
+<div class="flex h-screen w-full">
+<!-- Side Navigation Bar -->
+<aside class="hidden lg:flex flex-col h-full py-6 bg-surface-container border-r border-outline-variant w-64">
+<div class="px-6 mb-8">
+<h2 class="font-display-lg text-display-lg font-bold text-primary">LCC-STATION-01</h2>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-2 h-2 bg-primary animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary">OPERATIONAL</span>
+</div>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="flex items-center px-6 py-3 gap-3 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps">Mission Clock</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-3 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">Telemetry</span>
+</a>
+<!-- Active Tab: Weather -->
+<a class="flex items-center px-6 py-3 gap-3 border-l-4 border-primary bg-surface-variant text-primary font-bold scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="cloud_queue">cloud_queue</span>
+<span class="font-label-caps text-label-caps">Weather</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-3 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">Dispatch</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-3 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">Command</span>
+</a>
+<a class="flex items-center px-6 py-3 gap-3 text-on-surface-variant border-l-4 border-transparent hover:bg-surface-container-high hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Docs</span>
+</a>
+</nav>
+<div class="mt-auto px-6 space-y-4">
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-3 font-label-caps text-label-caps tracking-widest uppercase hover:opacity-90 transition-opacity">
+                    INITIATE GO/NO-GO
+                </button>
+<div class="pt-6 border-t border-outline-variant space-y-1">
+<a class="flex items-center gap-3 text-on-surface-variant font-label-caps text-label-caps py-2 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="forum">forum</span>
+                        Feedback
+                    </a>
+<a class="flex items-center gap-3 text-on-surface-variant font-label-caps text-label-caps py-2 hover:text-on-surface" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_center">help_center</span>
+                        Support
+                    </a>
+</div>
+</div>
+</aside>
+<div class="flex-grow flex flex-col min-w-0 bg-background overflow-hidden relative">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 bg-surface border-b border-outline-variant z-40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="terminal">terminal</span>
+<h1 class="font-display-lg-mobile text-display-lg-mobile font-bold text-primary tracking-widest uppercase">ROCKET-OPS</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant">L-MINUS: <span class="font-telemetry-sm text-primary">03:59:42</span></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">WIND: <span class="font-telemetry-sm text-primary">12KTS SE</span></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">ALT: <span class="font-telemetry-sm text-primary">4.2KM</span></span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 rounded transition-colors cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 rounded transition-colors cursor-pointer" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 rounded transition-colors cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow relative overflow-hidden flex flex-col">
+<!-- Map Layer (Background) -->
+<div class="absolute inset-0 z-0 bg-[#0a0a0b] grid-bg">
+<img alt="Mission Map Base" class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A dark, sophisticated satellite imagery map of a coastal launch site area at night. The map features illuminated geographic outlines, city light clusters in muted tones, and translucent data layers including neon green radar precipitation cells, pulsing blue lightning strike symbols, and thin white vector lines representing wind currents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqiFtDz_wkMXJCcgoMq9zSsPt02X_DPSdkHOlpyL5p1s5jKEGcLqCInXz9kFxVhOu48DebYPjTcWChLFuASuSo47EsZdmSdr0cePAqfxgDhkB_Si4RTpS1nGQsw66eZorKBGa7Mw3jE5X40aTB4dV3bjGMdyImw0bFgtukBlddJBF2qpeToeTytowHiNs-0rCq3M75QpexzBESqLT9q23fY3GuMfWwfg4ILLyKs5ifOo6whwqVJ59OobbHrsFYrFg5YSmvWqGECGE"/>
+<!-- SVG Overlay for Radar/Constraints -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="xMidYMid slice" viewbox="0 0 1000 1000">
+<!-- Precipitation Radar -->
+<circle cx="500" cy="500" fill="url(#radar-grad)" opacity="0.3" r="150"></circle>
+<defs>
+<radialgradient id="radar-grad">
+<stop offset="0%" stop-color="#ffb3b1"></stop>
+<stop offset="100%" stop-color="#ffb3b1" stop-opacity="0"></stop>
+</radialgradient>
+</defs>
+<!-- 50-mile Lightning Radius -->
+<circle cx="500" cy="500" fill="none" r="280" stroke="#ffb3b1" stroke-dasharray="8 8" stroke-width="1"></circle>
+<text class="font-telemetry-sm text-[12px]" fill="#ffb3b1" x="505" y="215">50NM HAZARD RADIUS</text>
+<!-- Lightning Strikes -->
+<g class="lightning-markers">
+<circle cx="480" cy="420" fill="#ffb3b1" r="4"></circle>
+<circle cx="490" cy="435" fill="#ffb3b1" r="4"></circle>
+<circle cx="520" cy="380" fill="#ffb3b1" opacity="0.5" r="4"></circle>
+</g>
+</svg>
+</div>
+<!-- Bento Grid Layout Overlays -->
+<div class="relative z-10 p-margin-desktop grid grid-cols-12 grid-rows-6 gap-gutter-desktop h-full pointer-events-none">
+<!-- Alert Status Banner (Top Center) -->
+<div class="col-start-4 col-span-6 row-start-1 h-fit pointer-events-auto">
+<div class="bg-primary-container border-2 border-white/20 p-4 flex items-center justify-between shadow-2xl">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-primary-container text-3xl animate-pulse" data-icon="warning">warning</span>
+<div>
+<h3 class="font-headline-md text-headline-md text-on-primary-container leading-none">LAUNCH CONSTRAINT ALERT</h3>
+<p class="font-telemetry-sm text-telemetry-sm text-on-primary-container opacity-90 mt-1">LIGHTNING DETECTED WITHIN 25NM RADIUS</p>
+</div>
+</div>
+<div class="text-right">
+<div class="font-label-caps text-label-caps text-on-primary-container">STATUS</div>
+<div class="font-display-lg text-4xl text-on-primary-container font-black tracking-tighter">NO-GO</div>
+</div>
+</div>
+</div>
+<!-- Wind Shear Profile (Left) -->
+<div class="col-span-3 row-start-2 row-span-4 pointer-events-auto">
+<div class="bg-surface-container/90 border border-outline-variant h-full flex flex-col">
+<div class="bg-surface-container-high px-4 py-2 border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-label-caps">WIND SHEAR PROFILES</span>
+<span class="material-symbols-outlined text-sm" data-icon="air">air</span>
+</div>
+<div class="flex-grow p-4 space-y-6 overflow-y-auto">
+<!-- Altitude Rows -->
+<div class="space-y-2">
+<div class="flex justify-between font-telemetry-sm text-xs text-on-surface-variant">
+<span>30,000 FT</span>
+<span class="text-primary">42 KTS</span>
+</div>
+<div class="h-1 bg-surface-variant relative">
+<div class="absolute inset-y-0 left-0 bg-primary w-[75%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-telemetry-sm text-xs text-on-surface-variant">
+<span>20,000 FT</span>
+<span class="text-primary">28 KTS</span>
+</div>
+<div class="h-1 bg-surface-variant relative">
+<div class="absolute inset-y-0 left-0 bg-primary w-[45%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-telemetry-sm text-xs text-on-surface-variant">
+<span>10,000 FT</span>
+<span class="text-primary">15 KTS</span>
+</div>
+<div class="h-1 bg-surface-variant relative">
+<div class="absolute inset-y-0 left-0 bg-primary w-[25%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-telemetry-sm text-xs text-on-surface-variant">
+<span>SURFACE</span>
+<span class="text-on-surface">12 KTS</span>
+</div>
+<div class="h-1 bg-surface-variant relative">
+<div class="absolute inset-y-0 left-0 bg-on-surface w-[15%]"></div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4">TURBULENCE INDEX</h4>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-variant p-2">
+<div class="font-label-caps text-[10px] text-on-surface-variant">MECHANICAL</div>
+<div class="font-telemetry-lg text-primary">LOW</div>
+</div>
+<div class="bg-surface-variant p-2">
+<div class="font-label-caps text-[10px] text-on-surface-variant">THERMAL</div>
+<div class="font-telemetry-lg text-primary">MOD</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- T-Minus 4h Window (Bottom) -->
+<div class="col-start-4 col-span-9 row-start-6 pointer-events-auto">
+<div class="bg-surface-container/90 border border-outline-variant h-full flex items-stretch">
+<div class="bg-surface-container-highest px-4 flex items-center justify-center border-r border-outline-variant">
+<span class="font-label-caps text-label-caps -rotate-90 whitespace-nowrap">T-4H FORECAST</span>
+</div>
+<div class="flex-grow grid grid-cols-4 divide-x divide-outline-variant">
+<div class="p-4 flex flex-col justify-between">
+<span class="font-telemetry-sm text-xs text-on-surface-variant">T-4:00</span>
+<div class="flex flex-col">
+<span class="material-symbols-outlined text-primary" data-icon="cloud_lightning">CloudLightning</span>
+<span class="font-label-caps text-label-caps mt-1">STORMS</span>
+</div>
+<span class="font-telemetry-sm text-primary">NO-GO</span>
+</div>
+<div class="p-4 flex flex-col justify-between bg-surface-variant/30">
+<span class="font-telemetry-sm text-xs text-on-surface-variant">T-3:00</span>
+<div class="flex flex-col">
+<span class="material-symbols-outlined text-on-surface" data-icon="partly_cloudy_day">partly_cloudy_day</span>
+<span class="font-label-caps text-label-caps mt-1">SCATTERED</span>
+</div>
+<span class="font-telemetry-sm text-on-surface">GO</span>
+</div>
+<div class="p-4 flex flex-col justify-between">
+<span class="font-telemetry-sm text-xs text-on-surface-variant">T-2:00</span>
+<div class="flex flex-col">
+<span class="material-symbols-outlined text-on-surface" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-label-caps text-label-caps mt-1">CLEAR</span>
+</div>
+<span class="font-telemetry-sm text-on-surface">GO</span>
+</div>
+<div class="p-4 flex flex-col justify-between">
+<span class="font-telemetry-sm text-xs text-on-surface-variant">T-1:00</span>
+<div class="flex flex-col">
+<span class="material-symbols-outlined text-on-surface" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-label-caps text-label-caps mt-1">OPTIMAL</span>
+</div>
+<span class="font-telemetry-sm text-on-surface">GO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Telemetry Cards (Right) -->
+<div class="col-span-2 col-start-11 row-start-2 row-span-4 space-y-4 pointer-events-auto">
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="bg-surface-container-high px-3 py-1 border-b border-outline-variant font-label-caps text-[10px] text-on-surface-variant">TEMP / HUMIDITY</div>
+<div class="p-4">
+<div class="font-telemetry-lg text-primary text-center">24.5°C</div>
+<div class="font-telemetry-sm text-on-surface-variant text-center mt-1">82% RH</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="bg-surface-container-high px-3 py-1 border-b border-outline-variant font-label-caps text-[10px] text-on-surface-variant">BARO PRESSURE</div>
+<div class="p-4">
+<div class="font-telemetry-lg text-on-surface text-center">1013.2</div>
+<div class="font-telemetry-sm text-on-surface-variant text-center mt-1">HPA</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="bg-surface-container-high px-3 py-1 border-b border-outline-variant font-label-caps text-[10px] text-on-surface-variant">VISIBILITY</div>
+<div class="p-4">
+<div class="font-telemetry-lg text-on-surface text-center">12.0</div>
+<div class="font-telemetry-sm text-on-surface-variant text-center mt-1">NAUTICAL MILES</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="bg-surface-container-high px-3 py-1 border-b border-outline-variant font-label-caps text-[10px] text-on-surface-variant">PRECIP CHANCE</div>
+<div class="p-4">
+<div class="font-telemetry-lg text-primary text-center">65%</div>
+<div class="font-telemetry-sm text-on-surface-variant text-center mt-1">CONVECTIVE</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Legend/Controls -->
+<div class="absolute bottom-24 right-margin-desktop z-20 flex flex-col gap-2 pointer-events-auto">
+<button class="w-10 h-10 bg-surface-container border border-outline-variant flex items-center justify-center hover:bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="w-10 h-10 bg-surface-container border border-outline-variant flex items-center justify-center hover:bg-surface-variant text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+<button class="w-10 h-10 bg-surface-container border border-outline-variant flex items-center justify-center hover:bg-surface-variant text-primary">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+</main>
+<!-- Bottom Nav Bar (Mobile) -->
+<nav class="lg:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-margin-mobile bg-surface-container-lowest border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1">
+<span class="material-symbols-outlined" data-icon="hourglass_empty">hourglass_empty</span>
+<span class="font-label-caps text-label-caps">T-Minus</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-label-caps text-label-caps">Systems</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-1 scale-90 duration-100">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps">Comms</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span class="font-label-caps text-label-caps">Admin</span>
+</div>
+</nav>
+</div>
+</div>
+</body></html>

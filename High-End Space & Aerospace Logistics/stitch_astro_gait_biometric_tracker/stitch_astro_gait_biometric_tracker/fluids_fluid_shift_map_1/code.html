@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ASTRO-GAIT SYSTEM | FLUID-SHIFT MONITORING</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(11, 19, 38, 0.6);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .emissive-glow {
+            box-shadow: 0px 0px 12px rgba(208, 188, 255, 0.4);
+        }
+        .spider-web {
+            background-image: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .biological-curve {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 0;
+        }
+        .body-map-gradient {
+            background: radial-gradient(circle at top, rgba(208, 188, 255, 0.2) 0%, transparent 70%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#222a3d",
+                        "on-primary-fixed": "#23005c",
+                        "surface": "#0b1326",
+                        "primary-fixed": "#e9ddff",
+                        "inverse-on-surface": "#283044",
+                        "on-tertiary-fixed-variant": "#005236",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#958ea0",
+                        "on-background": "#dae2fd",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#6d3bd7",
+                        "surface-variant": "#2d3449",
+                        "tertiary": "#4edea3",
+                        "surface-container-highest": "#2d3449",
+                        "on-primary-container": "#340080",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-container": "#171f33",
+                        "surface-dim": "#0b1326",
+                        "outline-variant": "#494454",
+                        "on-secondary": "#2f3131",
+                        "primary-fixed-dim": "#d0bcff",
+                        "on-tertiary-fixed": "#002113",
+                        "surface-bright": "#31394d",
+                        "tertiary-fixed": "#6ffbbe",
+                        "on-primary": "#3c0091",
+                        "on-surface-variant": "#cbc3d7",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-tertiary-container": "#00311f",
+                        "primary-container": "#a078ff",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#00a572",
+                        "on-secondary-fixed-variant": "#454747",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "background": "#0b1326",
+                        "surface-tint": "#d0bcff",
+                        "surface-container-low": "#131b2e",
+                        "inverse-surface": "#dae2fd",
+                        "secondary-container": "#454747",
+                        "surface-container-lowest": "#060e20",
+                        "secondary": "#c6c6c7",
+                        "on-secondary-container": "#b4b5b5",
+                        "primary": "#d0bcff",
+                        "on-tertiary": "#003824",
+                        "on-primary-fixed-variant": "#5516be",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed-dim": "#4edea3"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "40px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Space Grotesk"],
+                        "data-mono": ["JetBrains Mono"],
+                        "headline-sm": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.0", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface/20 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<h1 class="font-display-lg text-headline-sm font-bold text-primary drop-shadow-[0_0_12px_rgba(208,188,255,0.8)]">ASTRO-GAIT SYSTEM</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="text-right hidden md:block">
+<p class="font-label-caps text-label-caps text-primary">MISSION DAY 142</p>
+<p class="font-data-mono text-data-mono text-on-surface-variant">O2: 98% | H2O: 74%</p>
+</div>
+<div class="w-10 h-10 rounded-full border border-primary/30 overflow-hidden">
+<img alt="Astronaut Profile" class="w-full h-full object-cover" data-alt="A cinematic portrait of a professional astronaut with detailed facial features, reflecting the cool blue and purple ambient lighting of a spacecraft cockpit. The background shows blurred mission control displays and a window looking out into the deep void of space. The lighting is clinical yet dramatic, emphasizing high-tech glassmorphism aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDf-T0aMz9XbL0M6ntNtYfG4oPI_rwIbGl5XV4G3CIpI0afY65NuRtJOYg-0SI0EYcloNaqi_4GRds1vu8nV4S-8Qwk0_8lYgkmq2VyS0ZzjXjvr8-Gd7p4_c3TQ3gBt3enR_lv2NaH94KDtv2CiEmGYPLuuZulnaCzohnMvFCseD3wKJT1S-WYgelKXapVxhWuzheg4131C61pnBqdTg4weTecsi54o5z82hDsPxjUG70tLwIXiyowYt9MRZMwkWSyX1slupQzT8-y"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-4 md:px-margin-desktop max-w-7xl mx-auto">
+<!-- Header Section -->
+<section class="mb-stack-lg">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="font-label-caps text-label-caps text-tertiary mb-2 block tracking-widest">BIOMETRIC TELEMETRY</span>
+<h2 class="font-display-lg text-headline-md text-on-surface">FLUID-SHIFT MONITORING</h2>
+</div>
+<div class="glass-panel px-4 py-2 rounded-lg border-l-4 border-primary">
+<p class="font-label-caps text-[10px] text-outline">CURRENT PROTOCOL</p>
+<p class="font-headline-sm text-headline-sm text-primary">EVA RECOVERY MODE</p>
+</div>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Body Map Visualization (Large Center Piece) -->
+<div class="md:col-span-7 glass-panel rounded-xl overflow-hidden relative min-h-[500px] flex items-center justify-center body-map-gradient">
+<div class="absolute top-4 left-4 z-10">
+<p class="font-label-caps text-label-caps text-primary">SPATIAL DISTRIBUTION MAP</p>
+<p class="font-body-md text-body-md text-on-surface-variant">Microgravity Head-ward Shift</p>
+</div>
+<div class="relative w-full h-full max-w-md mx-auto py-12">
+<!-- Head Region (High Pressure) -->
+<div class="absolute top-[10%] left-1/2 -translate-x-1/2 w-24 h-24 rounded-full bg-primary/20 border border-primary/60 emissive-glow flex items-center justify-center animate-pulse">
+<span class="font-data-mono text-xs text-primary">+14.2%</span>
+</div>
+<!-- Human Silhouette Placeholder/Illustration -->
+<div class="w-full h-full flex items-center justify-center opacity-40">
+<img alt="Biomedical Body Map" class="h-full object-contain" data-alt="A highly detailed 3D wireframe medical illustration of a human body silhouette in a neutral pose. The silhouette is rendered in glowing cyan and violet lines against a deep space-black background. Floating data markers and biological telemetry nodes are connected to various physiological zones like the cranial, thoracic, and femoral regions, demonstrating a tech-medical aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsqKUzgAuEcCv_O3TO7vJ9yI8fFGvNt9ZsidjnaO7rAoCX1_NcTyX4JWrSwzJywZMfVQ3s-kj24ek-BUcaztn2P7-JJvpjVgyCh83vhkBi6yNXtF0fWcG69UNfc4sKm5SgA5zC4uo375SBDLAoTpgTrHQzp882c5ee3kqCtj2VdLDrfZqTJb_EUNoomU9ObYow6a6i_lvUCNp0T3mhq_gG-IhK6wabNj5VKBWlvoAXXQexkJAsg57gzBMPx7EfpWfAVcTjWBeYqwT3"/>
+</div>
+<!-- Thoracic Region -->
+<div class="absolute top-[35%] left-1/2 -translate-x-1/2 w-32 h-32 rounded-full border border-primary/30 flex items-center justify-center">
+<div class="w-20 h-20 rounded-full bg-primary/10 border border-primary/40 animate-pulse"></div>
+</div>
+<!-- Distal Region (Low Pressure) -->
+<div class="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-error/10 border border-error/30 flex items-center justify-center">
+<span class="font-data-mono text-xs text-error">-8.4%</span>
+</div>
+<!-- Callout Details -->
+<div class="absolute top-[15%] right-[5%] glass-panel p-3 rounded-lg border-l-2 border-primary">
+<p class="text-[10px] font-label-caps text-outline">INTRA-CRANIAL</p>
+<p class="text-lg font-data-mono text-primary">16.2 mmHg</p>
+</div>
+<div class="absolute bottom-[20%] left-[5%] glass-panel p-3 rounded-lg border-l-2 border-error">
+<p class="text-[10px] font-label-caps text-outline">TIBIAL VOLUME</p>
+<p class="text-lg font-data-mono text-error">-125 mL</p>
+</div>
+</div>
+<!-- Map Overlay Tools -->
+<div class="absolute bottom-4 right-4 flex gap-2">
+<button class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-full flex items-center justify-center text-primary hover:bg-primary/20 transition-all">
+<span class="material-symbols-outlined" data-icon="3d_rotation">3d_rotation</span>
+</button>
+</div>
+</div>
+<!-- Side Panels -->
+<div class="md:col-span-5 flex flex-col gap-gutter">
+<!-- Spider Chart -->
+<div class="glass-panel p-6 rounded-xl flex-1 spider-web relative overflow-hidden">
+<h3 class="font-label-caps text-label-caps text-on-surface mb-6">GLOBAL DISTRIBUTION METRICS</h3>
+<div class="aspect-square w-full max-w-[280px] mx-auto relative flex items-center justify-center">
+<!-- SVG Spider Chart -->
+<svg class="w-full h-full transform -rotate-90" viewbox="0 0 100 100">
+<!-- Background Web -->
+<circle cx="50" cy="50" fill="none" r="40" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="30" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="20" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"></circle>
+<circle cx="50" cy="50" fill="none" r="10" stroke="rgba(255,255,255,0.05)" stroke-width="0.5"></circle>
+<!-- Axes -->
+<line stroke="rgba(255,255,255,0.1)" stroke-width="0.5" x1="50" x2="50" y1="10" y2="90"></line>
+<line stroke="rgba(255,255,255,0.1)" stroke-width="0.5" x1="10" x2="90" y1="50" y2="50"></line>
+<!-- Data Shape -->
+<polygon class="emissive-glow" fill="rgba(208, 188, 255, 0.3)" points="50,20 80,40 70,70 30,70 20,40" stroke="#d0bcff" stroke-width="1"></polygon>
+</svg>
+<!-- Labels -->
+<span class="absolute top-0 font-label-caps text-[9px] text-outline">CEPHALIC</span>
+<span class="absolute right-0 font-label-caps text-[9px] text-outline">UPPER TORSO</span>
+<span class="absolute bottom-0 font-label-caps text-[9px] text-outline">CAUDAL</span>
+<span class="absolute left-0 font-label-caps text-[9px] text-outline">LOWER LIMBS</span>
+</div>
+<div class="mt-6 space-y-3">
+<div class="flex justify-between items-center border-b border-white/5 pb-2">
+<span class="font-body-md text-on-surface-variant">Symmetry Index</span>
+<span class="font-data-mono text-tertiary">0.92</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-body-md text-on-surface-variant">Shift Velocity</span>
+<span class="font-data-mono text-primary">2.4 mL/min</span>
+</div>
+</div>
+</div>
+<!-- Fluid Volume Telemetry -->
+<div class="glass-panel p-6 rounded-xl">
+<h3 class="font-label-caps text-label-caps text-on-surface mb-6">FLUID VOLUME TELEMETRY</h3>
+<div class="space-y-6">
+<!-- Bar 1 -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface">Interstitial Fluid</span>
+<span class="font-data-mono text-primary">11.4 L</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[74%] emissive-glow"></div>
+</div>
+</div>
+<!-- Bar 2 -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface">Plasma Volume</span>
+<span class="font-data-mono text-tertiary">3.2 L</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary w-[88%] emissive-glow"></div>
+</div>
+</div>
+<!-- Bar 3 -->
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface">Cellular Hydration</span>
+<span class="font-data-mono text-on-surface">24.8 L</span>
+</div>
+<div class="h-2 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-on-surface-variant w-[62%]"></div>
+</div>
+</div>
+</div>
+<button class="mt-8 w-full py-3 bg-primary text-on-primary-container font-label-caps rounded-lg hover:opacity-90 transition-all Active:scale-95 duration-100 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="refresh">refresh</span>
+                        CALIBRATE SENSORS
+                    </button>
+</div>
+</div>
+</div>
+<!-- Biological Sparklines Section -->
+<section class="mt-gutter grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="glass-panel p-4 rounded-xl border-l-2 border-primary">
+<p class="font-label-caps text-[10px] text-outline mb-1">CVP PRESSURE</p>
+<div class="flex items-end justify-between">
+<span class="font-headline-sm text-primary">8.2 <span class="text-xs text-outline">mmHg</span></span>
+<div class="w-16 h-8 opacity-50">
+<!-- Tiny Sparkline SVG -->
+<svg class="w-full h-full" viewbox="0 0 40 10">
+<path d="M0 5 Q 5 2, 10 5 T 20 5 T 30 5 T 40 5" fill="none" stroke="#d0bcff" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-2 border-tertiary">
+<p class="font-label-caps text-[10px] text-outline mb-1">LYMPHATIC FLOW</p>
+<div class="flex items-end justify-between">
+<span class="font-headline-sm text-tertiary">114% <span class="text-xs text-outline">NOM</span></span>
+<div class="w-16 h-8 opacity-50">
+<svg class="w-full h-full" viewbox="0 0 40 10">
+<path d="M0 8 L 10 2 L 20 6 L 30 1 L 40 4" fill="none" stroke="#4edea3" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-2 border-primary">
+<p class="font-label-caps text-[10px] text-outline mb-1">CRANIAL PERFUSION</p>
+<div class="flex items-end justify-between">
+<span class="font-headline-sm text-primary">96 <span class="text-xs text-outline">SpO2</span></span>
+<div class="w-16 h-8 opacity-50">
+<svg class="w-full h-full" viewbox="0 0 40 10">
+<path d="M0 5 L 40 5" fill="none" stroke="#d0bcff" stroke-dasharray="2 2" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-2 border-error">
+<p class="font-label-caps text-[10px] text-outline mb-1">HYDROSTATIC GRADIENT</p>
+<div class="flex items-end justify-between">
+<span class="font-headline-sm text-error">LOW <span class="text-xs text-outline">CRIT</span></span>
+<div class="w-16 h-8 opacity-50">
+<svg class="w-full h-full" viewbox="0 0 40 10">
+<path d="M0 2 L 10 8 L 20 9 L 40 10" fill="none" stroke="#ffb4ab" stroke-width="1"></path>
+</svg>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-4 pt-2 bg-surface-container/10 backdrop-blur-2xl border-t border-white/10 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-label-caps mt-1">BIO-DATA</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="radioactive">Radioactive</span>
+<span class="font-label-caps text-label-caps mt-1">RAD-LOG</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary drop-shadow-[0_0_8px_rgba(208,188,255,0.6)] bg-primary/10 rounded-xl p-2" href="#">
+<span class="material-symbols-outlined" data-icon="body_fat">body_fat</span>
+<span class="font-label-caps text-label-caps mt-1">FLUIDS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline p-2 hover:bg-white/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-caps text-label-caps mt-1">COG-TEST</span>
+</a>
+</nav>
+</body></html>

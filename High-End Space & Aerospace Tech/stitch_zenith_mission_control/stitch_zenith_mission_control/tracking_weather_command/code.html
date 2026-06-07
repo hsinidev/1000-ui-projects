@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith-1 Mission Control | Tracking &amp; Weather</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@700;800&amp;family=Inter:wght@400&amp;family=JetBrains+Mono:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface-container-high": "#2a2a2a",
+                  "on-tertiary": "#2d312e",
+                  "primary-fixed": "#ffdad6",
+                  "surface-container-low": "#1c1b1b",
+                  "secondary-fixed": "#6ff6ff",
+                  "on-tertiary-container": "#fefffb",
+                  "on-primary": "#680009",
+                  "inverse-surface": "#e5e2e1",
+                  "tertiary-container": "#737773",
+                  "background": "#131313",
+                  "on-error": "#690005",
+                  "surface-variant": "#353534",
+                  "surface-container-highest": "#353534",
+                  "on-error-container": "#ffdad6",
+                  "primary-container": "#e61e2a",
+                  "surface-dim": "#131313",
+                  "on-tertiary-fixed": "#181d1a",
+                  "tertiary-fixed": "#e0e3df",
+                  "on-primary-fixed-variant": "#930011",
+                  "surface-container": "#201f1f",
+                  "primary-fixed-dim": "#ffb3ad",
+                  "tertiary-fixed-dim": "#c4c7c3",
+                  "on-surface-variant": "#e7bdb9",
+                  "secondary-container": "#00f1fd",
+                  "surface-bright": "#393939",
+                  "secondary-fixed-dim": "#00dce6",
+                  "secondary": "#dcfdff",
+                  "primary": "#ffb3ad",
+                  "tertiary": "#c4c7c3",
+                  "on-background": "#e5e2e1",
+                  "outline": "#ae8884",
+                  "on-secondary-container": "#006a6f",
+                  "on-primary-container": "#fffeff",
+                  "surface-tint": "#ffb3ad",
+                  "surface-container-lowest": "#0e0e0e",
+                  "inverse-primary": "#c0001a",
+                  "on-tertiary-fixed-variant": "#444844",
+                  "on-secondary": "#00373a",
+                  "inverse-on-surface": "#313030",
+                  "surface": "#131313",
+                  "on-primary-fixed": "#410003",
+                  "on-secondary-fixed": "#002022",
+                  "outline-variant": "#5d3f3c",
+                  "on-surface": "#e5e2e1",
+                  "on-secondary-fixed-variant": "#004f53",
+                  "error-container": "#93000a",
+                  "error": "#ffb4ab"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "stack-compact": "8px",
+                  "gutter": "16px",
+                  "container-max": "100%",
+                  "stack-loose": "32px",
+                  "margin": "24px",
+                  "unit": "4px"
+          },
+          "fontFamily": {
+                  "headline-md": ["Hanken Grotesk"],
+                  "body-sm": ["Inter"],
+                  "label-caps": ["JetBrains Mono"],
+                  "data-point": ["JetBrains Mono"],
+                  "display-lg": ["Hanken Grotesk"]
+          },
+          "fontSize": {
+                  "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                  "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                  "data-point": ["32px", {"lineHeight": "1", "letterSpacing": "-0.05em", "fontWeight": "600"}],
+                  "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-image: linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      background-size: 100% 4px;
+      cursor: crosshair;
+    }
+    .structural-inset {
+      border-top: 1px solid #000000;
+      border-left: 1px solid #000000;
+      border-bottom: 1px solid #333533;
+      border-right: 1px solid #333533;
+    }
+    .neon-glow {
+      box-shadow: 0 0 12px #00f1fd;
+    }
+    .critical-glow {
+      box-shadow: 0 0 12px #e61e2a;
+    }
+    .brushed-steel {
+      background: linear-gradient(135deg, #1c1b1b 0%, #2a2a2a 100%);
+      border: 1px solid #121212;
+      position: relative;
+    }
+    .brushed-steel::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border: 1px solid #333533;
+      pointer-events: none;
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-sm min-h-screen flex flex-col">
+<!-- TopAppBar Navigation Shell -->
+<header class="fixed top-0 w-full border-b border-outline-variant bg-surface-container-lowest flex justify-between items-center px-margin h-20 w-full z-50">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-display-lg text-display-lg text-primary-container uppercase tracking-tighter">ZENITH-1 MISSION</h1>
+</div>
+<div class="hidden md:flex gap-gutter items-center">
+<nav class="flex gap-stack-loose">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-2 py-1" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-secondary-container border-b-2 border-secondary-container px-2 py-1" href="#">WEATHER</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-2 py-1" href="#">MAP</a>
+</nav>
+<button class="bg-primary-container text-on-primary-container font-label-caps text-label-caps px-gutter py-stack-compact active:scale-95 duration-75 uppercase tracking-widest">GO/NO-GO</button>
+</div>
+</header>
+<main class="flex-1 mt-20 mb-16 p-gutter grid grid-cols-12 gap-gutter overflow-hidden h-[calc(100vh-144px)]">
+<!-- LEFT PANEL: Global Tracking Map -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<div class="brushed-steel structural-inset flex-1 relative overflow-hidden">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+<div class="bg-background/80 backdrop-blur-md p-2 border-l-4 border-secondary-container flex flex-col">
+<span class="font-label-caps text-[10px] text-secondary-container">ORBITAL_PHASE</span>
+<span class="font-data-point text-headline-md">ORBIT_INJECTION_V2</span>
+</div>
+<div class="bg-background/80 backdrop-blur-md p-2 border-l-4 border-primary-container flex flex-col">
+<span class="font-label-caps text-[10px] text-primary-container">APOGEE_REACH</span>
+<span class="font-data-point text-headline-md">35,786 KM</span>
+</div>
+</div>
+<img class="w-full h-full object-cover grayscale opacity-60 mix-blend-luminosity" data-alt="A high-resolution satellite view of Earth at night from orbit, showing glowing city lights across continents in a dark, atmospheric setting. The visual style is technical and cinematic, with a deep black void of space contrasting against the vibrant cyan and amber lights of civilization. The lighting is high-contrast with a slight digital grain to simulate a live telemetry feed. The overall mood is focused and technologically advanced." data-location="Cape Canaveral" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqR7ihQliBJk4OEZ6fTXuvxv9_F0nEecAlUu6h9GquCZEbAY0MDFBadmrjM_huRPwxg8kIWBmIbzBnbqQJ4NZGbZEpaE2i1NCeBzxjqWpRfZNuzfiDyD-gwiKpx0N5LrSyln1Qrcdct8gJakCAMrmUg4Go1PNw4l5jm8LciqOll52kQYlwmZxxgtzmjaJBJQpLD8lSeEdyoEJq9eE-is5x22tRaboRXmePbhtNbe0UD52PXcqO6WUne92nBObFNYyDA8uPnlDMlC0"/>
+<!-- SVG Overlays for Tracking Lines -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none">
+<path class="opacity-80" d="M 0 400 Q 400 100 800 400 T 1600 400" fill="none" stroke="#00f1fd" stroke-dasharray="10,5" stroke-width="2"></path>
+<circle class="critical-glow" cx="45%" cy="30%" fill="#e61e2a" r="6"></circle>
+<text class="font-label-caps text-[10px]" fill="#e61e2a" x="46%" y="28%">ZENITH-1 POSITION</text>
+</svg>
+<div class="absolute bottom-4 right-4 z-10 grid grid-cols-2 gap-2">
+<div class="brushed-steel p-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container neon-glow"></div>
+<span class="font-label-caps text-[9px]">STATION_ALPHA: ONLINE</span>
+</div>
+<div class="brushed-steel p-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-container neon-glow"></div>
+<span class="font-label-caps text-[9px]">STATION_BETA: ONLINE</span>
+</div>
+</div>
+</div>
+<div class="h-32 grid grid-cols-4 gap-gutter">
+<div class="brushed-steel structural-inset p-stack-compact flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VELOCITY</span>
+<span class="font-data-point text-headline-md text-secondary-container">7.67 KM/S</span>
+<div class="w-full bg-surface-container-high h-1">
+<div class="bg-secondary-container h-full w-3/4"></div>
+</div>
+</div>
+<div class="brushed-steel structural-inset p-stack-compact flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ALTITUDE</span>
+<span class="font-data-point text-headline-md text-secondary-container">408.2 KM</span>
+<div class="w-full bg-surface-container-high h-1">
+<div class="bg-secondary-container h-full w-1/2"></div>
+</div>
+</div>
+<div class="brushed-steel structural-inset p-stack-compact flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LATITUDE</span>
+<span class="font-data-point text-headline-md text-on-surface">28.396° N</span>
+</div>
+<div class="brushed-steel structural-inset p-stack-compact flex flex-col justify-between">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LONGITUDE</span>
+<span class="font-data-point text-headline-md text-on-surface">80.607° W</span>
+</div>
+</div>
+</section>
+<!-- RIGHT PANEL: Meteorology Dashboard -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-gutter overflow-y-auto pr-2">
+<div class="brushed-steel structural-inset p-margin flex flex-col gap-stack-loose">
+<header class="flex justify-between items-center border-l-4 border-primary-container pl-2">
+<h2 class="font-label-caps text-headline-md text-on-surface">LAUNCH_WEATHER</h2>
+<span class="material-symbols-outlined text-primary-container" data-icon="cloudy_snowing">cloudy_snowing</span>
+</header>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">WIND_VELOCITY</span>
+<span class="font-data-point text-data-point text-secondary-container">12.4 <span class="text-label-caps">M/S</span></span>
+<div class="flex gap-1 mt-1">
+<div class="h-2 w-4 bg-secondary-container"></div>
+<div class="h-2 w-4 bg-secondary-container"></div>
+<div class="h-2 w-4 bg-secondary-container"></div>
+<div class="h-2 w-4 bg-surface-container-highest"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">AIR_PRESSURE</span>
+<span class="font-data-point text-data-point text-secondary-container">1013.2 <span class="text-label-caps">HPA</span></span>
+<span class="font-label-caps text-[10px] text-on-tertiary-fixed-variant">STABLE_GRADIENT</span>
+</div>
+</div>
+<div class="relative h-48 brushed-steel structural-inset overflow-hidden">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-40 h-40 rounded-full border border-outline-variant flex items-center justify-center relative">
+<div class="absolute w-full h-[1px] bg-outline-variant"></div>
+<div class="absolute h-full w-[1px] bg-outline-variant"></div>
+<div class="w-32 h-32 rounded-full border border-outline-variant/30"></div>
+<div class="w-16 h-16 rounded-full border border-outline-variant/10"></div>
+<!-- Radar Sweep Simulated -->
+<div class="absolute inset-0 bg-gradient-to-tr from-transparent to-secondary-container/20 rounded-full origin-center rotate-45"></div>
+</div>
+</div>
+<span class="absolute top-2 left-2 font-label-caps text-[10px] text-secondary-container">DOPPLER_SCAN_01</span>
+</div>
+<div class="flex flex-col gap-stack-compact">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ATMOSPHERIC_PROFILE</span>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-[10px] font-label-caps">
+<span>HUMIDITY</span>
+<span class="text-secondary-container">64%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high">
+<div class="w-[64%] h-full bg-secondary-container"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-[10px] font-label-caps">
+<span>VISIBILITY</span>
+<span class="text-secondary-container">10+ KM</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high">
+<div class="w-[90%] h-full bg-secondary-container"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-[10px] font-label-caps">
+<span>PRECIP_PROB</span>
+<span class="text-primary-container">0.02%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-high">
+<div class="w-[2%] h-full bg-primary-container"></div>
+</div>
+</div>
+</div>
+<button class="w-full py-4 bg-background border-2 border-secondary-container text-secondary-container font-label-caps hover:bg-secondary-container hover:text-background transition-all active:scale-[0.98]">
+          ARM WEATHER OVERRIDE
+        </button>
+</div>
+<div class="brushed-steel structural-inset p-gutter">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-gutter">LIVE_SENSORS</h3>
+<table class="w-full text-left">
+<thead class="border-b border-outline-variant">
+<tr class="font-label-caps text-[9px] text-on-surface-variant uppercase">
+<th class="pb-2">SENSOR_ID</th>
+<th class="pb-2">VALUE</th>
+<th class="pb-2">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-label-caps text-[10px]">
+<tr class="border-b border-outline-variant/30">
+<td class="py-2">THR-01-PT</td>
+<td class="py-2">294.1 K</td>
+<td class="py-2"><span class="text-secondary-container">NOMINAL</span></td>
+</tr>
+<tr class="border-b border-outline-variant/30">
+<td class="py-2">WND-09-AZ</td>
+<td class="py-2">124.0°</td>
+<td class="py-2"><span class="text-secondary-container">NOMINAL</span></td>
+</tr>
+<tr>
+<td class="py-2">RAD-SCAN-X</td>
+<td class="py-2">Active</td>
+<td class="py-2"><span class="text-primary-container">CALIBRATING</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer Style Context (Sidebar Hidden but Logic available) -->
+<!-- BottomNavBar Navigation Shell -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter bg-background border-t border-outline-variant">
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps">COUNTDOWN</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-container border-t-2 border-secondary-container pt-1 transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="cloudy_snowing">cloudy_snowing</span>
+<span class="font-label-caps text-label-caps">WEATHER</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all active:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</button>
+</footer>
+</body></html>

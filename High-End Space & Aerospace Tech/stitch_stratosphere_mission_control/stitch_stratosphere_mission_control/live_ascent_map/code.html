@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STRATOS MISSION CONTROL - LIVE ASCENT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Hanken+Grotesk:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-lowest": "#0c0e12",
+                      "inverse-surface": "#e2e2e8",
+                      "inverse-primary": "#00629d",
+                      "on-primary": "#003354",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "surface-container": "#1e2024",
+                      "surface-container-highest": "#333539",
+                      "on-primary-container": "#00375a",
+                      "on-tertiary-container": "#333535",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-error": "#690005",
+                      "surface-bright": "#37393e",
+                      "on-background": "#e2e2e8",
+                      "background": "#111318",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface": "#111318",
+                      "surface-dim": "#111318",
+                      "on-primary-fixed": "#001d33",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#333539",
+                      "outline": "#88919d",
+                      "primary-fixed-dim": "#98cbff",
+                      "surface-container-high": "#282a2e",
+                      "surface-tint": "#98cbff",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-secondary-container": "#b5b5b5",
+                      "secondary-container": "#454747",
+                      "primary-container": "#00a3ff",
+                      "inverse-on-surface": "#2f3035",
+                      "on-secondary-fixed-variant": "#454747",
+                      "tertiary": "#c6c6c7",
+                      "on-tertiary": "#2f3131",
+                      "on-primary-fixed-variant": "#004a77",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "primary-fixed": "#cfe5ff",
+                      "secondary": "#c6c6c6",
+                      "outline-variant": "#3f4852",
+                      "error-container": "#93000a",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-secondary": "#2f3131",
+                      "primary": "#98cbff",
+                      "tertiary-container": "#9c9d9d",
+                      "on-surface-variant": "#bec7d4",
+                      "on-surface": "#e2e2e8",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "surface-container-low": "#1a1c20"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "20px",
+                      "unit": "4px",
+                      "margin": "32px",
+                      "instrument-gap": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "display-telemetry": ["JetBrains Mono"],
+                      "data-readout": ["JetBrains Mono"],
+                      "headline-instrument": ["Space Grotesk"],
+                      "body-standard": ["Hanken Grotesk"],
+                      "label-monospace": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-telemetry": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "data-readout": ["18px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-instrument": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "body-standard": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-monospace": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(136, 145, 157, 0.2);
+        }
+        .phosphor-glow-primary {
+            filter: drop-shadow(0 0 8px rgba(152, 203, 255, 0.4));
+        }
+        .chamfered-header {
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 95% 100%, 0 100%);
+        }
+        .map-overlay {
+            background: radial-gradient(circle at center, transparent 40%, rgba(17, 19, 24, 0.8) 100%);
+        }
+      </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-standard overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 flex justify-between items-center w-full px-container-padding h-16 bg-surface-container/10 backdrop-blur-xl border-b border-outline/20 shadow-[0_0_8px_rgba(152,203,255,0.2)] z-50">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-headline-instrument text-headline-instrument font-bold tracking-widest text-primary">STRATOS MISSION CONTROL</h1>
+</div>
+<div class="flex items-center gap-margin">
+<div class="hidden md:flex gap-gutter">
+<button class="text-primary drop-shadow-[0_0_4px_rgba(152,203,255,0.6)] font-label-monospace text-label-monospace uppercase transition-transform active:scale-95">ASCENT MAP</button>
+<button class="text-on-surface-variant opacity-60 font-label-monospace text-label-monospace uppercase hover:bg-primary/10 transition-colors duration-300">TELEMETRY</button>
+<button class="text-on-surface-variant opacity-60 font-label-monospace text-label-monospace uppercase hover:bg-primary/10 transition-colors duration-300">DIAGNOSTICS</button>
+</div>
+<div class="px-4 py-1 border border-primary/40 bg-primary/10">
+<span class="font-display-telemetry text-data-readout text-primary">GPS: LOCKED</span>
+</div>
+</div>
+</header>
+<!-- Main HUD Content -->
+<main class="relative w-full h-screen pt-16 pb-32 flex">
+<!-- Background Map View -->
+<div class="absolute inset-0 z-0 overflow-hidden">
+<img alt="Stratospheric Earth view" class="w-full h-full object-cover opacity-60 grayscale-[0.5] contrast-125" data-alt="A cinematic, high-altitude view of the Earth's curvature seen from the stratosphere. The horizon glows with a brilliant Sky Blue thin line of atmosphere against the pitch black of space. Soft white cloud formations swirl thousands of feet below. The overall aesthetic is scientific and serene, featuring high contrast and a cool, clinical color palette." data-location="Stratosphere" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZmGERz_nLmAUPV5os1qjreMi7n3tkgT61l-6ZqMJujnGpNryVWvnw2hf8Q7chvX_6E9rtjb3uYiPK-r9zTpF9vG4X30E-vOWp71xDM0kGYQrDRRZrdmDwgiFRLd9iZBbfIMFb5uwUi_asyGn3tRCm-b9j6GGR9wO4PaiU7mtmTRMw7wDoAaNsrHkz9NdJPWdNbsKswk510dkWHmvyVokzJDfo5NNx4dkb5sh1854z2krruDbufK__hftYnmPnOqk-05sOJooFoNTN"/>
+<div class="absolute inset-0 map-overlay"></div>
+<!-- Wind Current Vector Overlays (Conceptual SVG) -->
+<div class="absolute inset-0 opacity-40 pointer-events-none">
+<svg class="text-primary/30" height="100%" width="100%">
+<defs>
+<marker id="arrowhead" markerheight="7" markerwidth="10" orient="auto" refx="0" refy="3.5">
+<polygon fill="currentColor" points="0 0, 10 3.5, 0 7"></polygon>
+</marker>
+</defs>
+<path d="M100,200 Q300,150 500,250 T900,200" fill="none" marker-end="url(#arrowhead)" stroke="currentColor" stroke-width="1.5"></path>
+<path d="M150,400 Q400,350 600,450 T1000,350" fill="none" marker-end="url(#arrowhead)" stroke="currentColor" stroke-width="1.5"></path>
+<path d="M50,600 Q350,550 550,650 T950,550" fill="none" marker-end="url(#arrowhead)" stroke="currentColor" stroke-width="1.5"></path>
+</svg>
+</div>
+</div>
+<!-- Left HUD: Telemetry Chips -->
+<div class="relative z-10 flex flex-col gap-gutter p-gutter w-80">
+<div class="glass-panel p-4 rounded shadow-lg border-l-4 border-primary">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-monospace text-label-monospace text-on-surface-variant uppercase">Ground Speed</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="speed">speed</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-telemetry text-display-telemetry text-primary">42.8</span>
+<span class="font-label-monospace text-label-monospace text-on-surface-variant">KNOTS</span>
+</div>
+</div>
+<div class="glass-panel p-4 rounded shadow-lg border-l-4 border-primary">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-monospace text-label-monospace text-on-surface-variant uppercase">Heading</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="explore">explore</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-telemetry text-display-telemetry text-primary">284°</span>
+<span class="font-label-monospace text-label-monospace text-on-surface-variant">WNW</span>
+</div>
+</div>
+<!-- Instrument Card: Ascent Trend -->
+<div class="glass-panel flex-1 flex flex-col overflow-hidden">
+<div class="chamfered-header bg-primary/10 px-4 py-2 border-b border-outline/20">
+<h3 class="font-label-monospace text-label-monospace text-primary font-bold">ASCENT_VECTOR.LOG</h3>
+</div>
+<div class="p-4 flex-1 flex flex-col justify-end gap-2">
+<div class="h-1 bg-outline/20 w-full relative">
+<div class="absolute left-0 top-0 h-full bg-primary phosphor-glow-primary" style="width: 75%"></div>
+</div>
+<div class="flex justify-between font-label-monospace text-[10px] text-outline">
+<span>LIFT_STABILITY: OPTIMAL</span>
+<span>75.2%</span>
+</div>
+<div class="mt-4 border border-outline/20 p-2 bg-black/20">
+<span class="font-label-monospace text-[10px] text-primary/60 block">TIMESTAMP 14:22:01.04</span>
+<p class="font-label-monospace text-label-monospace text-on-surface-variant leading-tight">V_SPD: +3.2 M/S<br/>ROT_X: 0.02<br/>ROT_Y: -0.01</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Center: Flight Indicator (Tape Altimeter Style) -->
+<div class="relative z-10 flex-1 flex items-center justify-center pointer-events-none">
+<div class="w-64 h-96 border-x border-outline/30 flex flex-col items-center justify-center relative">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-primary/5 to-transparent"></div>
+<div class="relative z-10 text-center">
+<span class="font-label-monospace text-label-monospace text-primary tracking-[0.2em] uppercase">Altitude</span>
+<div class="font-display-telemetry text-display-telemetry text-primary phosphor-glow-primary">28,442</div>
+<span class="font-label-monospace text-label-monospace text-on-surface-variant uppercase">Meters MSL</span>
+</div>
+<!-- Vertical Tape Ticks -->
+<div class="absolute right-0 h-full flex flex-col justify-between py-4 text-outline/40 font-label-monospace text-[10px]">
+<span>- 30K</span><span>- 29K</span><span class="text-primary">- 28K</span><span>- 27K</span><span>- 26K</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Subsystem NavigationDrawer -->
+<aside class="fixed right-0 top-16 w-80 h-[calc(100vh-128px)] border-l border-outline/20 bg-surface-container-low/10 backdrop-blur-xl flex flex-col p-gutter gap-instrument-gap z-40">
+<div class="font-headline-instrument text-primary border-b border-outline/20 pb-2 mb-2">SUBSYSTEM MONITOR</div>
+<!-- Atmospheric Layer Sidebar Chart -->
+<div class="flex-1 border border-outline/20 bg-black/20 relative p-4 flex flex-col">
+<div class="absolute top-0 right-0 p-2 font-label-monospace text-[10px] text-outline text-right">
+                    STRATOSPHERE<br/>
+<span class="text-primary">TROPOSPHERE</span>
+</div>
+<!-- Vertical Progress Bar -->
+<div class="flex-1 w-8 bg-surface-container-highest/50 relative overflow-hidden self-center border border-outline/10">
+<div class="absolute bottom-0 w-full bg-gradient-to-t from-primary/80 to-primary/20 phosphor-glow-primary" style="height: 65%">
+<div class="absolute top-0 w-full h-px bg-white shadow-[0_0_10px_white]"></div>
+</div>
+</div>
+<div class="mt-4 space-y-2">
+<div class="flex justify-between items-center text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="font-label-monospace text-label-monospace">Battery: 88%</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary phosphor-glow-primary"></div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="gas_meter">gas_meter</span>
+<span class="font-label-monospace text-label-monospace">Gas: 420 PSI</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="thermostat">thermostat</span>
+<span class="font-label-monospace text-label-monospace">Thermal: -45C</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex justify-between items-center text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="deployed_code">deployed_code</span>
+<span class="font-label-monospace text-label-monospace">Parachute: READY</span>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary phosphor-glow-primary"></div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Footer Status Bar -->
+<footer class="fixed bottom-16 w-full h-10 border-t border-outline/10 bg-black/40 flex justify-between items-center px-gutter z-50">
+<div class="flex items-center gap-gutter">
+<span class="font-label-monospace text-label-monospace text-primary">UPLINK: STABLE | 102.4kbps</span>
+<div class="flex gap-2">
+<div class="w-1 h-1 bg-primary"></div>
+<div class="w-1 h-1 bg-primary/40"></div>
+<div class="w-1 h-1 bg-primary/40"></div>
+</div>
+</div>
+<div class="flex gap-margin">
+<button class="font-label-monospace text-label-monospace text-on-surface-variant hover:text-white cursor-pointer transition-colors">LOGS</button>
+<button class="font-label-monospace text-label-monospace text-error hover:text-white cursor-pointer transition-colors">EJECT</button>
+<button class="font-label-monospace text-label-monospace text-error hover:text-white cursor-pointer transition-colors">ABORT</button>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Shell Viewport) -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-16 px-4 bg-surface-container/20 backdrop-blur-2xl border-t border-outline/20 shadow-[0_-4px_12px_rgba(0,0,0,0.5)] z-50">
+<button class="flex flex-col items-center justify-center bg-primary/10 text-primary border-t-2 border-primary pt-2 pb-1 ring-1 ring-primary/30 w-full h-full">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-monospace text-[10px] uppercase">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1 hover:text-primary-fixed-dim transition-all w-full h-full">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-monospace text-[10px] uppercase">Sensors</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1 hover:text-primary-fixed-dim transition-all w-full h-full">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+<span class="font-label-monospace text-[10px] uppercase">Payload</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1 hover:text-primary-fixed-dim transition-all w-full h-full">
+<span class="material-symbols-outlined" data-icon="settings_backup_restore">settings_backup_restore</span>
+<span class="font-label-monospace text-[10px] uppercase">Recovery</span>
+</button>
+</nav>
+</body></html>

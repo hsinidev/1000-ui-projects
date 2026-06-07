@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith-1 Mission Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&amp;family=Hanken+Grotesk:wght@400;700;800&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#ae8884",
+                        "on-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "on-secondary-fixed": "#002022",
+                        "on-error": "#690005",
+                        "primary-container": "#e61e2a",
+                        "secondary-fixed": "#6ff6ff",
+                        "on-secondary-container": "#006a6f",
+                        "on-tertiary-container": "#fefffb",
+                        "primary-fixed-dim": "#ffb3ad",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#444844",
+                        "on-primary": "#680009",
+                        "on-tertiary-fixed": "#181d1a",
+                        "inverse-on-surface": "#313030",
+                        "inverse-primary": "#c0001a",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "secondary-fixed-dim": "#00dce6",
+                        "secondary-container": "#00f1fd",
+                        "on-primary-fixed": "#410003",
+                        "secondary": "#dcfdff",
+                        "tertiary": "#c4c7c3",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e0e3df",
+                        "surface-tint": "#ffb3ad",
+                        "on-primary-container": "#fffeff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-fixed-variant": "#930011",
+                        "primary": "#ffb3ad",
+                        "outline-variant": "#5d3f3c",
+                        "surface-bright": "#393939",
+                        "surface-container-high": "#2a2a2a",
+                        "on-surface-variant": "#e7bdb9",
+                        "on-secondary-fixed-variant": "#004f53",
+                        "tertiary-container": "#737773",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#ffdad6",
+                        "surface-container-highest": "#353534",
+                        "tertiary-fixed-dim": "#c4c7c3",
+                        "surface": "#131313",
+                        "surface-variant": "#353534",
+                        "on-secondary": "#00373a",
+                        "on-tertiary": "#2d312e",
+                        "surface-container": "#201f1f",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-compact": "8px",
+                        "margin": "24px",
+                        "container-max": "100%",
+                        "gutter": "16px",
+                        "stack-loose": "32px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "data-point": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "display-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "data-point": ["32px", {"lineHeight": "1", "letterSpacing": "-0.05em", "fontWeight": "600"}],
+                        "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scan-lines {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 12px 0px rgba(0, 241, 253, 0.4);
+        }
+        .glow-red {
+            box-shadow: 0 0 12px 0px rgba(230, 30, 42, 0.4);
+        }
+        .brushed-steel {
+            background-image: linear-gradient(to bottom right, rgba(255,255,255,0.05), rgba(0,0,0,0.1));
+            border: 1px solid #121212;
+            outline: 1px solid #333533;
+        }
+        .precision-crosshair { cursor: crosshair; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-sm overflow-hidden selection:bg-primary-container selection:text-white">
+<!-- Global Scan-line Overlay -->
+<div class="fixed inset-0 z-[100] pointer-events-none opacity-[0.03] bg-[linear-gradient(to_bottom,transparent_0px,transparent_3px,#ffffff_4px)] bg-[length:100%_4px]"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full border-b border-outline-variant bg-surface-container-lowest flex justify-between items-center px-margin h-20 w-full z-50">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-display-lg text-display-lg text-primary-container dark:text-primary-container uppercase tracking-tighter">ZENITH-1 MISSION</h1>
+</div>
+<div class="flex items-center gap-stack-loose">
+<div class="flex items-center gap-gutter px-4 py-2 border border-primary-container/30 bg-primary-container/10">
+<span class="w-3 h-3 rounded-full bg-primary-container glow-red"></span>
+<span class="font-label-caps text-label-caps text-primary-container">GO/NO-GO STATUS: NOMINAL</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-gutter py-3 font-label-caps text-label-caps hover:bg-surface-container-high transition-colors active:scale-95 duration-75">
+                GO/NO-GO
+            </button>
+</div>
+</header>
+<div class="flex h-screen pt-20 pb-16">
+<!-- NavigationDrawer -->
+<nav class="flex flex-col h-full py-margin gap-stack-compact h-full w-64 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container-low shrink-0">
+<div class="px-gutter mb-margin">
+<p class="font-headline-md text-headline-md text-on-surface">SYSTEMS_DIAGNOSTIC</p>
+</div>
+<div class="flex flex-col gap-unit">
+<div class="bg-primary-container text-on-primary-container rounded-none border-l-4 border-secondary-container px-margin py-3 flex items-center gap-gutter transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps uppercase">Telemetry</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-margin py-3 flex items-center gap-gutter transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+<span class="font-label-caps text-label-caps uppercase">Payload</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-margin py-3 flex items-center gap-gutter transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="mode_fan">mode_fan</span>
+<span class="font-label-caps text-label-caps uppercase">Propulsion</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-margin py-3 flex items-center gap-gutter transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="podcasts">podcasts</span>
+<span class="font-label-caps text-label-caps uppercase">Comms</span>
+</div>
+<div class="text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high px-margin py-3 flex items-center gap-gutter transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-label-caps uppercase">Logs</span>
+</div>
+</div>
+</nav>
+<!-- Main Content (Canvas) -->
+<main class="flex-grow bg-background overflow-y-auto p-gutter custom-scrollbar relative">
+<div class="grid grid-cols-12 gap-gutter h-full max-w-7xl mx-auto">
+<!-- Live Launch Pad Stream -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-unit">
+<div class="relative w-full aspect-video brushed-steel overflow-hidden group">
+<img class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="A cinematic, high-definition live video feed of a massive orbital rocket positioned on a coastal launch pad at night. The scene is illuminated by powerful industrial floodlights that cast dramatic long shadows, creating a high-contrast tactical aerospace atmosphere. Technical data overlays in vibrant cyan and red pulse across the image. The mood is tense and professional, reflecting a high-stakes mission control environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAPHUPt7Y0xuJ7mFnzGG-bE6TbxkbuVDUqec3Xb-uoL_tYLzm5n-NnfqMyHR0mSphA4mnNMgaLWNOdove6QIbObOYK0TVgtjJE-5XWqEOchHkbgBZRPbR5SkSzVOSMLsoOekpJGBY3kgZE4HZBH9NJXJSYAVg9shWtXaUSXlRkDcIG17LGT81yQqOZPr0N5RXHcdsgWM7HM1D3OOdhyX7enj-zodVOoB-LVm53crDoeYZbcwz73CVpeFUDxDDjmBAPE04yyJoSh3I"/>
+<div class="absolute inset-0 scan-lines opacity-20"></div>
+<!-- Overlay: Status Markers -->
+<div class="absolute top-margin left-margin flex flex-col gap-unit">
+<div class="flex items-center gap-unit bg-black/80 px-2 py-1 border-l-2 border-secondary-container">
+<span class="font-label-caps text-[10px] text-secondary-container">REC • LIVE_FEED_01</span>
+</div>
+<div class="flex items-center gap-unit bg-black/80 px-2 py-1 border-l-2 border-primary-container">
+<span class="font-label-caps text-[10px] text-primary-container">PAD_SEC_ARMED</span>
+</div>
+</div>
+<!-- Precision Crosshair UI -->
+<div class="absolute inset-0 precision-crosshair flex items-center justify-center opacity-40">
+<div class="w-12 h-12 border-2 border-secondary-container/20 rounded-full flex items-center justify-center">
+<div class="w-1 h-1 bg-secondary-container"></div>
+</div>
+</div>
+<!-- Large Digital Countdown -->
+<div class="absolute bottom-margin right-margin text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">T-MINUS COUNTDOWN</p>
+<div class="font-data-point text-[80px] leading-none text-on-surface tracking-tighter flex items-baseline gap-1">
+<span class="text-primary-container">00</span>:<span class="text-primary-container">12</span>:<span class="text-secondary-container">48</span>
+<span class="text-on-surface-variant text-display-lg">.03</span>
+</div>
+</div>
+</div>
+<!-- Static-Fire Module -->
+<div class="grid grid-cols-3 gap-unit h-32">
+<div class="brushed-steel p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ENGINE_PSI</p>
+<div class="flex items-baseline gap-gutter">
+<span class="font-data-point text-data-point text-secondary-container">4,281</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">NOMINAL</span>
+</div>
+<div class="w-full bg-surface-container-high h-1">
+<div class="bg-secondary-container h-full glow-cyan" style="width: 72%;"></div>
+</div>
+</div>
+<div class="brushed-steel p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-on-surface-variant">THRUST_VEC</p>
+<div class="flex items-baseline gap-gutter">
+<span class="font-data-point text-data-point text-primary-container">102.4</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">kN</span>
+</div>
+<div class="w-full bg-surface-container-high h-1">
+<div class="bg-primary-container h-full glow-red" style="width: 88%;"></div>
+</div>
+</div>
+<div class="brushed-steel p-4 flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-on-surface-variant">TEMP_CORE</p>
+<div class="flex items-baseline gap-gutter">
+<span class="font-data-point text-data-point text-on-surface">2,940</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">KELVIN</span>
+</div>
+<div class="w-full bg-surface-container-high h-1">
+<div class="bg-on-surface h-full" style="width: 45%;"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Side Telemetry Dashboard -->
+<aside class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="brushed-steel flex-grow p-gutter relative overflow-hidden">
+<div class="flex justify-between items-center mb-margin border-b border-outline-variant pb-2">
+<h2 class="font-label-caps text-label-caps">SEQUENCE_LOGS</h2>
+<span class="material-symbols-outlined text-sm text-secondary-container" data-icon="data_usage">data_usage</span>
+</div>
+<div class="flex flex-col gap-stack-compact">
+<div class="flex gap-gutter items-start border-l border-outline-variant pl-4 py-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant shrink-0">12:45:01</span>
+<p class="text-[11px] font-data-point leading-tight">CHILL_PROCEDURE_COMPLETE [HE_SYS]</p>
+</div>
+<div class="flex gap-gutter items-start border-l border-primary-container pl-4 py-1 bg-primary-container/5">
+<span class="font-label-caps text-[10px] text-primary-container shrink-0">12:46:12</span>
+<p class="text-[11px] font-data-point leading-tight text-on-surface">EXTERNAL_POWER_DISCONNECT: SUCCESS</p>
+</div>
+<div class="flex gap-gutter items-start border-l border-outline-variant pl-4 py-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant shrink-0">12:47:30</span>
+<p class="text-[11px] font-data-point leading-tight">FLIGHT_COMP_SYNC: 100%</p>
+</div>
+<div class="flex gap-gutter items-start border-l border-secondary-container pl-4 py-1">
+<span class="font-label-caps text-[10px] text-secondary-container shrink-0">12:48:00</span>
+<p class="text-[11px] font-data-point leading-tight">AUTOSEQUENCE_START: T-0:12:48</p>
+</div>
+</div>
+<!-- Data Visualization Grid -->
+<div class="mt-margin pt-margin border-t border-outline-variant grid grid-cols-2 gap-unit">
+<div class="p-2 border border-outline-variant/20 bg-surface-container-lowest">
+<p class="font-label-caps text-[9px] text-on-surface-variant uppercase">Oxidizer_Level</p>
+<div class="flex items-center gap-unit mt-1">
+<div class="flex-grow h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-secondary-container h-full" style="width: 98%;"></div>
+</div>
+<span class="text-[10px] font-data-point">98%</span>
+</div>
+</div>
+<div class="p-2 border border-outline-variant/20 bg-surface-container-lowest">
+<p class="font-label-caps text-[9px] text-on-surface-variant uppercase">Fuel_Pressure</p>
+<div class="flex items-center gap-unit mt-1">
+<div class="flex-grow h-1 bg-surface-container-high rounded-full overflow-hidden">
+<div class="bg-primary-container h-full" style="width: 92%;"></div>
+</div>
+<span class="text-[10px] font-data-point">92%</span>
+</div>
+</div>
+</div>
+<!-- Status Matrix -->
+<div class="mt-margin">
+<div class="grid grid-cols-4 gap-unit">
+<div class="aspect-square brushed-steel flex items-center justify-center flex-col gap-1">
+<div class="w-2 h-2 rounded-full bg-secondary-container glow-cyan"></div>
+<span class="text-[8px] font-label-caps opacity-60">COMMS</span>
+</div>
+<div class="aspect-square brushed-steel flex items-center justify-center flex-col gap-1">
+<div class="w-2 h-2 rounded-full bg-secondary-container glow-cyan"></div>
+<span class="text-[8px] font-label-caps opacity-60">NAV</span>
+</div>
+<div class="aspect-square brushed-steel flex items-center justify-center flex-col gap-1">
+<div class="w-2 h-2 rounded-full bg-primary-container glow-red"></div>
+<span class="text-[8px] font-label-caps opacity-60">PROP</span>
+</div>
+<div class="aspect-square brushed-steel flex items-center justify-center flex-col gap-1 opacity-20">
+<div class="w-2 h-2 rounded-full bg-on-surface-variant"></div>
+<span class="text-[8px] font-label-caps opacity-60">SEP</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Abort Action Area -->
+<div class="bg-primary-container/10 border border-primary-container p-4 flex flex-col gap-stack-compact">
+<p class="font-label-caps text-label-caps text-primary-container text-center">MASTER ABORT SEQUENCE</p>
+<button class="bg-primary-container hover:bg-on-error py-4 font-label-caps text-label-caps text-white transition-all active:scale-[0.98]">
+                            ARM ABORT SWITCH
+                        </button>
+</div>
+</aside>
+</div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 w-full z-50 flex justify-around items-center h-16 px-gutter bg-background border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-secondary-container border-t-2 border-secondary-container pt-1 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps mt-1">COUNTDOWN</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-label-caps mt-1">HEALTH</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="cloudy_snowing">cloudy_snowing</span>
+<span class="font-label-caps text-label-caps mt-1">WEATHER</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-secondary-fixed transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps text-label-caps mt-1">MAP</span>
+</a>
+</footer>
+</body></html>

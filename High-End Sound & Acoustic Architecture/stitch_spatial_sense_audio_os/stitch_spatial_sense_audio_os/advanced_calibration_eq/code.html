@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Spatial-Sense | Advanced 3D Equalizer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;family=Geist:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #141313;
+            overflow: hidden;
+        }
+        .glass-panel {
+            background: rgba(20, 19, 19, 0.4);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .silk-wave {
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.2) 50%, rgba(255,255,255,0.05) 100%);
+            mask-image: linear-gradient(to right, transparent, black, transparent);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1d",
+                        "on-tertiary-fixed": "#0e1b34",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#b1b8cd",
+                        "on-background": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed-variant": "#454749",
+                        "on-tertiary-fixed-variant": "#3b4662",
+                        "on-secondary-fixed": "#141c2b",
+                        "on-secondary": "#293041",
+                        "primary-fixed-dim": "#c6c6c8",
+                        "surface-container-highest": "#353434",
+                        "inverse-on-surface": "#313030",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#e2e2e4",
+                        "on-tertiary": "#24304a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "inverse-primary": "#5d5e60",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-dim": "#141313",
+                        "on-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8f9194",
+                        "surface-tint": "#c6c6c8",
+                        "primary-container": "#e2e2e4",
+                        "tertiary-container": "#d9e2ff",
+                        "surface": "#141313",
+                        "primary": "#ffffff",
+                        "on-tertiary-container": "#586481",
+                        "secondary-container": "#41495a",
+                        "secondary": "#bfc6db",
+                        "secondary-fixed-dim": "#bfc6db",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "tertiary": "#ffffff",
+                        "on-primary": "#2f3132",
+                        "surface-variant": "#353434",
+                        "outline-variant": "#44474a",
+                        "background": "#141313",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-fixed-variant": "#3f4758",
+                        "tertiary-fixed-dim": "#bac6e7",
+                        "secondary-fixed": "#dbe2f8",
+                        "on-surface-variant": "#c5c7c9"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["manrope"],
+                        "display-lg": ["manrope"],
+                        "body-lg": ["manrope"],
+                        "headline-md": ["manrope"],
+                        "body-md": ["manrope"],
+                        "label-sm": ["geist"],
+                        "label-md": ["geist"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface flex h-screen w-screen overflow-hidden">
+<!-- Navigation Drawer (Side Anchor) -->
+<aside class="fixed left-0 h-full w-80 border-r border-white/5 bg-surface-container-high/60 backdrop-blur-[40px] shadow-2xl shadow-black/50 z-50 flex flex-col p-6 space-y-4">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-white/10">
+<img alt="Audio Profile" data-alt="A close-up of a high-end, futuristic carbon-fiber audio driver. The lighting is moody and dramatic with deep midnight blue shadows and sharp white highlights reflecting off the metallic surfaces. The image is clean, sharp, and embodies a premium tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6oqG5IRXK_MJoNR0n8aoJOZdeJ7G1jhcI6sueODYxovUfAbagAFx5gHwMROX_2EktfMQ-f2Mn8GBfl7Ob_qIMSShFe5JnAuo6934k9DWlUH9t3Ac-Uz4y597Be18BCgLEKeL-_RkBjjY_4ssXmC40KrH_Z7h7al9uuukhlMv--l5BJ2kU_Lq5wHUK_08a8ZhSJZXCngKMWSPY2ze50Y2_OQzaxncQ-bPrGkdpF8Eu8cVsKj8VGMYFcMvoxNyF93HOaCJhVlfXSWU"/>
+</div>
+<div>
+<h3 class="text-headline-md font-headline-md text-primary">Audiophile Prime</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Lossless 192kHz</p>
+</div>
+</div>
+<nav class="space-y-2">
+<div class="flex items-center gap-3 p-3 text-secondary font-bold bg-white/5 rounded-lg transition-all duration-150 translate-x-1 cursor-pointer">
+<span class="material-symbols-outlined">volume_up</span>
+<span class="text-body-md font-body-md">Master Volume</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined">group_work</span>
+<span class="text-body-md font-body-md">Zone Grouping</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined">dark_mode</span>
+<span class="text-body-md font-body-md">Night Mode</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-white/10 transition-all cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="text-body-md font-body-md">Advanced Calibration</span>
+</div>
+</nav>
+<div class="mt-auto pt-6 border-t border-white/5">
+<div class="p-4 rounded-xl bg-white/5 border border-white/5">
+<div class="flex justify-between items-center mb-2">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">CPU Load</span>
+<span class="text-label-sm font-label-sm text-primary">12%</span>
+</div>
+<div class="h-1 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full w-[12%] bg-primary shadow-[0_0_10px_rgba(255,255,255,0.5)]"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-80 flex-1 relative flex flex-col">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-8 py-4 h-16 z-40 bg-surface/30 backdrop-blur-[40px] border-b border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-headline-md">graphic_eq</span>
+<h1 class="text-headline-md font-headline-md font-semibold tracking-tight text-primary">Spatial-Sense</h1>
+</div>
+<div class="flex gap-4">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-on-surface-variant">search</span>
+</button>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-white/5 transition-colors active:scale-95 duration-150">
+<span class="material-symbols-outlined text-primary">settings</span>
+</button>
+</div>
+</header>
+<!-- 3D Visualization Background (Pseudo-3D via layered vectors and gradients) -->
+<div class="absolute inset-0 z-0 pointer-events-none opacity-40">
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- Large Scale Waveform Visualization Container -->
+<div class="w-full h-full relative overflow-hidden">
+<svg class="absolute bottom-0 w-full h-2/3 transform -skew-x-12 opacity-30" viewbox="0 0 1000 400">
+<path class="animate-pulse" d="M0,200 C150,50 350,350 500,200 C650,50 850,350 1000,200 L1000,400 L0,400 Z" fill="none" stroke="white" stroke-width="0.5"></path>
+</svg>
+<svg class="absolute bottom-20 w-full h-2/3 transform -skew-x-6 opacity-20" viewbox="0 0 1000 400">
+<path d="M0,200 C150,150 350,250 500,200 C650,150 850,250 1000,200 L1000,400 L0,400 Z" fill="none" stroke="white" stroke-width="0.5"></path>
+</svg>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+</div>
+</div>
+<!-- Dashboard Content -->
+<div class="flex-1 p-8 grid grid-cols-12 gap-6 z-10 overflow-y-auto">
+<!-- Left Side: Frequency Sliders (Bento Card) -->
+<div class="col-span-12 lg:col-span-8 flex flex-col gap-6">
+<div class="glass-panel rounded-3xl p-8 flex flex-col">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="text-headline-md font-headline-md text-primary">3D Frequency Sculptor</h2>
+<p class="text-body-md font-body-md text-on-surface-variant">Adjust per-band resonance and spatial spread</p>
+</div>
+<div class="flex gap-2">
+<span class="text-label-sm font-label-sm px-3 py-1 rounded-full bg-primary text-on-primary">REAL-TIME</span>
+<span class="text-label-sm font-label-sm px-3 py-1 rounded-full bg-white/5 border border-white/10 text-on-surface-variant">FLAT BYPASS</span>
+</div>
+</div>
+<!-- Freq Slider Bank -->
+<div class="flex-1 flex items-end justify-between gap-4 h-64 px-4 relative">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+</div>
+<!-- Band 1: Sub -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[75%] bg-gradient-to-t from-white/40 to-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.3)]"></div>
+<div class="absolute bottom-[75%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab active:scale-90 transition-transform"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">32Hz</span>
+</div>
+<!-- Band 2 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[45%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">64Hz</span>
+</div>
+<!-- Band 3 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[60%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[60%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">125Hz</span>
+</div>
+<!-- Band 4 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[30%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[30%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">250Hz</span>
+</div>
+<!-- Band 5 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[50%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[50%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">500Hz</span>
+</div>
+<!-- Band 6 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[85%] bg-gradient-to-t from-white/40 to-white rounded-full shadow-[0_0_15px_rgba(255,255,255,0.2)]"></div>
+<div class="absolute bottom-[85%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">1kHz</span>
+</div>
+<!-- Band 7 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[40%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[40%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">2kHz</span>
+</div>
+<!-- Band 8 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[65%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[65%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">4kHz</span>
+</div>
+<!-- Band 9 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[20%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[20%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">8kHz</span>
+</div>
+<!-- Band 10 -->
+<div class="flex flex-col items-center gap-4 group flex-1">
+<div class="w-full flex-1 flex flex-col items-center relative">
+<div class="w-2 h-full bg-white/5 rounded-full relative">
+<div class="absolute bottom-0 left-0 w-full h-[45%] bg-gradient-to-t from-white/40 to-white rounded-full"></div>
+<div class="absolute bottom-[45%] left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 bg-primary rounded-full border-4 border-surface shadow-xl cursor-grab"></div>
+</div>
+</div>
+<span class="text-label-sm font-label-sm text-on-surface-variant group-hover:text-primary transition-colors">16kHz</span>
+</div>
+</div>
+</div>
+<!-- Presets & Room Correction -->
+<div class="grid grid-cols-2 gap-6">
+<div class="glass-panel rounded-3xl p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-headline-md font-headline-md text-primary">Presets</h3>
+<button class="material-symbols-outlined text-primary">add_circle</button>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-3 rounded-xl bg-white/5 border border-white/10 cursor-pointer hover:bg-white/10">
+<span class="text-body-md font-body-md text-primary">Cinema Immersive</span>
+<span class="material-symbols-outlined text-sm text-primary">check</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-all cursor-pointer">
+<span class="text-body-md font-body-md text-on-surface-variant">Pure Vinyl</span>
+</div>
+<div class="flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-all cursor-pointer">
+<span class="text-body-md font-body-md text-on-surface-variant">Late Night Jazz</span>
+</div>
+</div>
+</div>
+<div class="glass-panel rounded-3xl p-6">
+<div class="flex items-center justify-between mb-4">
+<h3 class="text-headline-md font-headline-md text-primary">Room Analysis</h3>
+<span class="material-symbols-outlined text-primary">settings_input_antenna</span>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-xl bg-primary/10 border border-primary/20">
+<div class="w-12 h-12 flex items-center justify-center rounded-lg bg-primary">
+<span class="material-symbols-outlined text-on-primary">mic</span>
+</div>
+<div>
+<p class="text-label-md font-label-md text-primary">Calibrated: Living Room</p>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Standing wave correction active</p>
+</div>
+</div>
+<div class="mt-4 flex gap-4">
+<button class="flex-1 py-2 rounded-lg bg-white/5 border border-white/10 text-label-md font-label-md hover:bg-white/10 transition-colors">Recalibrate</button>
+<button class="flex-1 py-2 rounded-lg bg-white/5 border border-white/10 text-label-md font-label-md hover:bg-white/10 transition-colors">Bypass</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Mastering & Master Volume (Asymmetric) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<!-- Master Visualizer Card -->
+<div class="glass-panel rounded-3xl p-6 flex-1 flex flex-col">
+<h3 class="text-headline-md font-headline-md text-primary mb-6">Dynamics Engine</h3>
+<!-- Circular Meter -->
+<div class="relative w-full aspect-square flex items-center justify-center mb-8">
+<div class="absolute inset-0 rounded-full border-8 border-white/5 border-t-primary shadow-[0_0_30px_rgba(255,255,255,0.1)]"></div>
+<div class="text-center">
+<span class="text-display-lg font-display-lg text-primary">-1.4</span>
+<p class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-widest">Peak dB</p>
+</div>
+</div>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between">
+<label class="text-label-md font-label-md text-on-surface-variant">Limiter Threshold</label>
+<span class="text-label-md font-label-md text-primary">-3.0 dB</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[70%] bg-primary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between">
+<label class="text-label-md font-label-md text-on-surface-variant">Stereo Width</label>
+<span class="text-label-md font-label-md text-primary">120%</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-primary"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between">
+<label class="text-label-md font-label-md text-on-surface-variant">Air Band</label>
+<span class="text-label-md font-label-md text-primary">+2.5 dB</span>
+</div>
+<div class="h-1.5 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full w-[40%] bg-primary"></div>
+</div>
+</div>
+</div>
+<button class="mt-auto w-full py-4 rounded-xl bg-primary text-on-primary font-bold text-label-md tracking-wider uppercase hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] transition-all active:scale-95">
+                        Export Settings
+                    </button>
+</div>
+</div>
+</div>
+<!-- BottomNavBar (Filtered for Mobile, using logic from shell) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-6 pt-3 bg-surface-container/40 backdrop-blur-3xl border-t border-tertiary/10 shadow-[0_-8px_32px_rgba(0,0,0,0.3)] z-50 rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">layers</span>
+<span class="text-label-sm font-label-sm">Zones</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="text-label-sm font-label-sm">Sources</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container/30 text-secondary rounded-xl px-4 py-1.5 shadow-[0_0_15px_rgba(191,198,219,0.2)] active:scale-90 duration-200">
+<span class="material-symbols-outlined">equalizer</span>
+<span class="text-label-sm font-label-sm">Equalizer</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined">tune</span>
+<span class="text-label-sm font-label-sm">Settings</span>
+</div>
+</nav>
+</main>
+<!-- Floating Action Indicator (Only on dashboard-like screens) -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="w-16 h-16 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-2xl hover:scale-105 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl">play_arrow</span>
+</button>
+</div>
+</body></html>

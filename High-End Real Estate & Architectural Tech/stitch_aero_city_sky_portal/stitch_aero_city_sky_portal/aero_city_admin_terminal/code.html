@@ -1,0 +1,420 @@
+<html class="dark"><head>
+<meta charset="utf-8"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    .glass-panel {
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(185, 199, 228, 0.1);
+      background: linear-gradient(135deg, rgba(10, 25, 47, 0.8) 0%, rgba(10, 25, 47, 0.6) 100%);
+    }
+    .scanline {
+      background: linear-gradient(to bottom, transparent 50%, rgba(123, 208, 255, 0.05) 51%);
+      background-size: 100% 4px;
+    }
+    .hud-border {
+      position: relative;
+    }
+    .hud-border::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; width: 10px; height: 10px;
+      border-top: 2px solid #7bd0ff; border-left: 2px solid #7bd0ff;
+    }
+    .hud-border::after {
+      content: "";
+      position: absolute;
+      bottom: 0; right: 0; width: 10px; height: 10px;
+      border-bottom: 2px solid #7bd0ff; border-right: 2px solid #7bd0ff;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-tertiary-container": "#008cbd",
+            "surface-container-highest": "#323537",
+            "primary-fixed-dim": "#b9c7e4",
+            "primary": "#b9c7e4",
+            "tertiary": "#7bd0ff",
+            "on-primary-container": "#74829d",
+            "on-primary": "#233148",
+            "on-background": "#e0e3e5",
+            "on-secondary-fixed-variant": "#39485a",
+            "on-tertiary-fixed": "#001e2c",
+            "tertiary-fixed": "#c4e7ff",
+            "surface-dim": "#101415",
+            "primary-container": "#0a192f",
+            "on-error": "#690005",
+            "surface-bright": "#363a3b",
+            "background": "#101415",
+            "secondary-fixed": "#d4e4fa",
+            "tertiary-container": "#001c29",
+            "on-tertiary-fixed-variant": "#004c69",
+            "surface-tint": "#b9c7e4",
+            "inverse-on-surface": "#2d3133",
+            "surface-container-high": "#272a2c",
+            "inverse-surface": "#e0e3e5",
+            "on-primary-fixed-variant": "#39475f",
+            "error": "#ffb4ab",
+            "on-primary-fixed": "#0d1c32",
+            "inverse-primary": "#515f78",
+            "on-secondary-container": "#a7b6cc",
+            "outline-variant": "#44474d",
+            "on-tertiary": "#00354a",
+            "on-secondary": "#233143",
+            "tertiary-fixed-dim": "#7bd0ff",
+            "surface-container-lowest": "#0b0f10",
+            "on-secondary-fixed": "#0d1c2d",
+            "secondary-fixed-dim": "#b9c8de",
+            "surface": "#101415",
+            "on-surface-variant": "#c5c6cd",
+            "on-surface": "#e0e3e5",
+            "primary-fixed": "#d6e3ff",
+            "on-error-container": "#ffdad6",
+            "outline": "#8f9097",
+            "error-container": "#93000a",
+            "secondary": "#b9c8de",
+            "surface-variant": "#323537",
+            "surface-container-low": "#191c1e",
+            "secondary-container": "#39485a",
+            "surface-container": "#1d2022"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "unit": "4px",
+            "margin-edge": "40px",
+            "safe-zone": "64px",
+            "gutter": "24px"
+          },
+          "fontFamily": {
+            "body-md": ["Inter"],
+            "label-caps": ["Space Mono"],
+            "headline-lg": ["Inter"],
+            "body-lg": ["Inter"],
+            "data-mono": ["Space Mono"],
+            "headline-md": ["Inter"],
+            "display-xl": ["Inter"]
+          },
+          "fontSize": {
+            "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+            "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "400"}],
+            "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "500"}],
+            "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-tertiary/30 selection:text-tertiary">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container/60 backdrop-blur-md border-b border-outline-variant/30 shadow-[0_0_15px_rgba(123,208,255,0.1)] flex justify-between items-center px-margin-edge h-safe-zone">
+<div class="flex items-center gap-gutter">
+<span class="font-label-caps text-label-caps tracking-widest text-tertiary">AERO-VISTA COMMAND</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-body-md text-tertiary border-b border-tertiary cursor-pointer active:opacity-70 transition-colors duration-150" href="#">DASHBOARD</a>
+<a class="font-body-md text-on-surface-variant hover:text-tertiary transition-colors duration-150 cursor-pointer active:opacity-70" href="#">TELEMETRY</a>
+<a class="font-body-md text-on-surface-variant hover:text-tertiary transition-colors duration-150 cursor-pointer active:opacity-70" href="#">LOGS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-tertiary transition-colors cursor-pointer">notifications_active</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-error rounded-full animate-pulse"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary transition-colors cursor-pointer">sensors</span>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant/30">
+<span class="font-data-mono text-data-mono text-tertiary">LVL 4 CLEARANCE</span>
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-surface-container-lowest/80 backdrop-blur-xl border-r border-outline-variant/20 shadow-2xl flex flex-col pt-safe-zone pb-gutter">
+<div class="px-6 py-8 border-b border-outline-variant/10">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-10 h-10 rounded-sm bg-tertiary-container/50 border border-tertiary/30 flex items-center justify-center overflow-hidden">
+<img alt="OPERATOR 01" class="w-full h-full object-cover" data-alt="A futuristic digital avatar of a high-altitude drone operator wearing tactical communication gear. The character is rendered in a sleek, minimalist vector style with a cool blue and silver color palette. The background is a clean, dark cockpit environment with subtle HUD elements glowing in the periphery, emphasizing the sky-sleek aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCgaAZb_4j-tPEhbNRmh4m6YFMCQ-SUFImHYMEzda1wu4EXG-hsFNBi2dnuxtYRmZocZn32S_gbaZxcAauBVdRTL5_Vs9hWhuynuTV1jCZDU0L8fkkhOg5tzK_Wq7W4mHwZcFZfrBriyhEwLao8wiPX402KBKS5q2ZkSTo2l1mQdL0gcB2xdt4A3redSN6PeO8dKbJFlJ4RQhXXp4WCM8TTWWX6wI9jC0B9geSYy1XwUmQYv_E4_7FWQQ0hz2Y7jC67qJJ-YRG99BQ"/>
+</div>
+<div>
+<p class="font-label-caps text-tertiary text-sm leading-none">OPERATOR 01</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant/70 uppercase">Sector 7G - High Altitude</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 mt-6 overflow-y-auto">
+<div class="bg-tertiary-container/30 text-tertiary border-l-2 border-tertiary px-4 py-3 flex items-center gap-3 duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span class="font-label-caps text-label-caps">Command Center</span>
+</div>
+<div class="text-on-surface-variant/70 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">domain</span>
+<span class="font-label-caps text-label-caps">Vertical Assets</span>
+</div>
+<div class="text-on-surface-variant/70 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">flight_takeoff</span>
+<span class="font-label-caps text-label-caps">Helipad Ops</span>
+</div>
+<div class="text-on-surface-variant/70 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Logistics</span>
+</div>
+<div class="text-on-surface-variant/70 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps">Community</span>
+</div>
+<div class="text-on-surface-variant/70 px-4 py-3 flex items-center gap-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-150 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined">help_center</span>
+<span class="font-label-caps text-label-caps">System FAQ</span>
+</div>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-4 bg-tertiary text-on-tertiary font-label-caps text-label-caps tracking-widest shadow-[0_0_15px_rgba(123,208,255,0.4)] hover:brightness-110 transition-all">
+        INITIATE FLIGHT
+      </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="pl-64 pt-safe-zone min-h-screen bg-[url('https://images.unsplash.com/photo-1449156003053-c30670b968b9?auto=format&amp;fit=crop&amp;q=80&amp;w=2070')] bg-cover bg-fixed bg-center">
+<!-- Overlay for darkening the background image -->
+<div class="fixed inset-0 pointer-events-none bg-background/80 mix-blend-multiply"></div>
+<div class="relative z-10 p-gutter max-w-7xl mx-auto space-y-gutter">
+<!-- Top Level KPI HUD -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Helipad Occupancy -->
+<div class="glass-panel p-4 hud-border">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-mono text-[10px] text-tertiary">SYS.HLPD.04</span>
+<span class="material-symbols-outlined text-tertiary text-sm">flight_land</span>
+</div>
+<p class="font-label-caps text-on-surface-variant text-[10px] uppercase">Helipad Occupancy</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-on-surface">84</span>
+<span class="font-data-mono text-tertiary text-xs">% CAP</span>
+</div>
+<div class="w-full bg-surface-container h-1 mt-2">
+<div class="bg-tertiary h-full shadow-[0_0_5px_#7bd0ff]" style="width: 84%"></div>
+</div>
+</div>
+<!-- Energy Load -->
+<div class="glass-panel p-4 hud-border">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-mono text-[10px] text-tertiary">SYS.PWR.GRID</span>
+<span class="material-symbols-outlined text-tertiary text-sm">bolt</span>
+</div>
+<p class="font-label-caps text-on-surface-variant text-[10px] uppercase">Grid Load</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-on-surface">1.2</span>
+<span class="font-data-mono text-tertiary text-xs">GWh</span>
+</div>
+<p class="font-data-mono text-[10px] text-on-tertiary-container mt-2">NOMINAL OPERATING RANGE</p>
+</div>
+<!-- Resident Requests -->
+<div class="glass-panel p-4 hud-border">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-mono text-[10px] text-tertiary">SYS.RES.QUE</span>
+<span class="material-symbols-outlined text-tertiary text-sm">mail</span>
+</div>
+<p class="font-label-caps text-on-surface-variant text-[10px] uppercase">Active Requests</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-on-surface">12</span>
+<span class="font-data-mono text-error text-xs">+3 URGENT</span>
+</div>
+<div class="flex gap-1 mt-3">
+<div class="h-1 flex-1 bg-tertiary"></div>
+<div class="h-1 flex-1 bg-tertiary"></div>
+<div class="h-1 flex-1 bg-tertiary/20"></div>
+<div class="h-1 flex-1 bg-tertiary/20"></div>
+</div>
+</div>
+<!-- Security Alerts -->
+<div class="glass-panel p-4 hud-border">
+<div class="flex justify-between items-start mb-2">
+<span class="font-data-mono text-[10px] text-error">SYS.SEC.ALRT</span>
+<span class="material-symbols-outlined text-error text-sm animate-pulse">security</span>
+</div>
+<p class="font-label-caps text-on-surface-variant text-[10px] uppercase">Security Status</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-xl text-on-surface">SEC-1</span>
+<span class="font-data-mono text-tertiary text-xs">READY</span>
+</div>
+<p class="font-data-mono text-[10px] text-on-surface-variant mt-2 uppercase">Perimeter lockdown: Active</p>
+</div>
+</div>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Weekly Traffic Visualization -->
+<div class="col-span-12 lg:col-span-8 glass-panel p-6 min-h-[400px] flex flex-col relative overflow-hidden">
+<div class="scanline absolute inset-0 pointer-events-none opacity-20"></div>
+<div class="flex justify-between items-end mb-8 relative z-10">
+<div>
+<p class="font-data-mono text-[12px] text-tertiary uppercase tracking-tighter">DATA_STREAM_092</p>
+<h2 class="font-headline-md text-on-surface">WEEKLY VERTICAL TRAFFIC</h2>
+</div>
+<div class="flex gap-4 font-data-mono text-xs">
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-tertiary"></span> ARRIVALS</span>
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-on-tertiary-container"></span> DEPARTURES</span>
+</div>
+</div>
+<div class="flex-1 flex items-end justify-between gap-4 border-b border-outline-variant/30 pb-2 relative z-10">
+<!-- Simplified Bar Chart Visual -->
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary hover:brightness-125 transition-all" style="height: 60%"></div>
+<div class="w-4 bg-on-tertiary-container hover:brightness-125 transition-all" style="height: 45%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">MON</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 80%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 70%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">TUE</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 45%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 50%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">WED</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 95%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 85%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">THU</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 70%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 60%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">FRI</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 30%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 25%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">SAT</span>
+</div>
+<div class="flex flex-col items-center gap-2 flex-1 group cursor-help">
+<div class="w-full flex gap-1 items-end justify-center h-48">
+<div class="w-4 bg-tertiary" style="height: 20%"></div>
+<div class="w-4 bg-on-tertiary-container" style="height: 15%"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">SUN</span>
+</div>
+</div>
+<div class="mt-4 flex justify-between items-center text-on-surface-variant/60 font-data-mono text-[10px]">
+<span>COORDS: 40.7128° N, 74.0060° W</span>
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-tertiary rounded-full animate-ping"></span>
+              REAL-TIME UPLINK ESTABLISHED
+            </span>
+</div>
+</div>
+<!-- Live Diagnostics Terminal -->
+<div class="col-span-12 lg:col-span-4 glass-panel bg-surface-container-lowest/90 flex flex-col h-[400px] border-tertiary/20">
+<div class="p-3 bg-surface-container flex justify-between items-center border-b border-outline-variant/30">
+<span class="font-data-mono text-[10px] text-tertiary uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">terminal</span>
+              System Diagnostics
+            </span>
+<div class="flex gap-1">
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+</div>
+<div class="flex-1 p-4 overflow-y-auto font-data-mono text-xs space-y-2 text-on-tertiary-container selection:bg-tertiary selection:text-background">
+<p><span class="text-tertiary">[08:42:11]</span> INIT SYSTEM CHECK...</p>
+<p><span class="text-tertiary">[08:42:12]</span> HEALPAD SENSORS: <span class="text-on-surface">ONLINE</span></p>
+<p><span class="text-tertiary">[08:42:15]</span> ENERGY GRID BALANCING: <span class="text-on-surface">STABLE</span></p>
+<p><span class="text-error">[08:43:01] WARNING: UNKNOWN DRONE APPROACHING SECTOR 4</span></p>
+<p><span class="text-tertiary">[08:43:05]</span> RUNNING AUTO-IDENTIFICATION PROTOCOL...</p>
+<p><span class="text-tertiary">[08:43:10]</span> TARGET ID: VERTICAL_CORP_CARRIER_88</p>
+<p><span class="text-tertiary">[08:43:11]</span> STATUS: <span class="text-on-surface">AUTHORIZED</span></p>
+<p><span class="text-tertiary">[08:44:22]</span> AMENITY RESERVATION REQUEST: PENTHOUSE POOL</p>
+<p><span class="text-tertiary">[08:44:23]</span> USER: ALPHA_7_RESIDENT</p>
+<p><span class="text-tertiary">[08:44:30]</span> LOGGING EVENT ID: 88291-ZX</p>
+<p class="animate-pulse inline-block">_</p>
+</div>
+</div>
+<!-- Building Layout Visualization / Interactive Map Placeholder -->
+<div class="col-span-12 glass-panel p-6 relative overflow-hidden group">
+<div class="absolute top-4 right-4 z-20 flex gap-2">
+<button class="bg-surface-container-high/80 p-2 border border-outline-variant/30 hover:border-tertiary transition-colors">
+<span class="material-symbols-outlined text-sm">zoom_in</span>
+</button>
+<button class="bg-surface-container-high/80 p-2 border border-outline-variant/30 hover:border-tertiary transition-colors">
+<span class="material-symbols-outlined text-sm">layers</span>
+</button>
+</div>
+<div class="relative h-[300px] w-full bg-surface-container-lowest overflow-hidden flex items-center justify-center border border-outline-variant/10">
+<!-- Simulated HUD Map Background -->
+<div class="absolute inset-0 opacity-20 bg-[url('https://api.dicebear.com/7.x/initials/svg?seed=MAP&amp;backgroundColor=0a192f')] bg-repeat" data-location="New York City" style=""></div>
+<div class="relative z-10 flex flex-col items-center text-center max-w-md">
+<span class="material-symbols-outlined text-tertiary text-4xl mb-4">location_city</span>
+<h3 class="font-headline-md text-on-surface uppercase mb-2">Structural Node Overview</h3>
+<p class="font-body-md text-on-surface-variant mb-6 px-8">Real-time vertical logistics monitoring for all 102 floors. Select a sector to view environmental telemetry and localized maintenance requests.</p>
+<button class="px-6 py-2 border border-tertiary text-tertiary font-label-caps text-xs hover:bg-tertiary hover:text-background transition-all">ENTER FULL HUD VIEW</button>
+</div>
+<!-- Tech Detail Corner Overlays -->
+<div class="absolute bottom-2 left-2 text-[10px] font-data-mono text-tertiary opacity-40 uppercase">
+              Lat: 40.7128N | Long: 74.0060W<br/>Alt: 420.5m
+            </div>
+<div class="absolute top-2 left-2 text-[10px] font-data-mono text-tertiary opacity-40 uppercase">
+              VRSN: 4.2.0-STABLE<br/>NODES: 1,024 ACTIVE
+            </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Overlays (Corner GPS/Telemetrics) -->
+<div class="fixed bottom-margin-edge right-margin-edge z-50 text-right opacity-60 pointer-events-none">
+<p class="font-data-mono text-[10px] text-tertiary">WIND: 14 KNOTS NE</p>
+<p class="font-data-mono text-[10px] text-tertiary">VISIBILITY: 10NM</p>
+<p class="font-data-mono text-[10px] text-tertiary">TEMP: 18°C</p>
+</div>
+<!-- Footer -->
+<footer class="w-full py-4 bg-background/90 border-t border-outline-variant/10 flex justify-between items-center px-margin-edge max-w-full font-data-mono text-data-mono text-on-surface-variant relative z-10 mt-auto">
+<div class="flex items-center gap-6">
+<span class="font-label-caps text-on-surface">VLC</span>
+<span class="hidden md:inline">© 2024 VERTICAL LOGISTICS CORP. [COORD: 40.7128° N, 74.0060° W]</span>
+</div>
+<div class="flex gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-opacity duration-150" href="#">Privacy Protocol</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity duration-150" href="#">Terms of Service</a>
+<a class="text-on-surface-variant hover:text-primary transition-opacity duration-150" href="#">Security Matrix</a>
+</div>
+</footer>
+</main>
+<!-- Pulse Status Indicator Overlay (HUD Element) -->
+<div class="fixed top-24 right-8 z-50 glass-panel p-3 border-tertiary/40">
+<div class="flex items-center gap-3">
+<div class="relative w-3 h-3">
+<div class="absolute inset-0 bg-tertiary rounded-full animate-ping opacity-75"></div>
+<div class="relative w-3 h-3 bg-tertiary rounded-full"></div>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface uppercase tracking-widest">Global Uplink: Optimal</span>
+</div>
+</div>
+</body></html>

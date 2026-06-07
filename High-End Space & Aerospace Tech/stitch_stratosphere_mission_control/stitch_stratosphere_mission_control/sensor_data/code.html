@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STRATOS MISSION CONTROL - SENSORS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Space+Grotesk:wght@600;700&amp;family=Hanken+Grotesk:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .phosphor-glow-primary {
+            filter: drop-shadow(0 0 4px rgba(152, 203, 255, 0.6));
+        }
+        .phosphor-glow-error {
+            filter: drop-shadow(0 0 6px rgba(255, 180, 171, 0.4));
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(198, 198, 198, 0.2);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(152, 203, 255, 0.02) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#0c0e12",
+                        "inverse-surface": "#e2e2e8",
+                        "inverse-primary": "#00629d",
+                        "on-primary": "#003354",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "surface-container": "#1e2024",
+                        "surface-container-highest": "#333539",
+                        "on-primary-container": "#00375a",
+                        "on-tertiary-container": "#333535",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-error": "#690005",
+                        "surface-bright": "#37393e",
+                        "on-background": "#e2e2e8",
+                        "background": "#111318",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface": "#111318",
+                        "surface-dim": "#111318",
+                        "on-primary-fixed": "#001d33",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#333539",
+                        "outline": "#88919d",
+                        "primary-fixed-dim": "#98cbff",
+                        "surface-container-high": "#282a2e",
+                        "surface-tint": "#98cbff",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-secondary-container": "#b5b5b5",
+                        "secondary-container": "#454747",
+                        "primary-container": "#00a3ff",
+                        "inverse-on-surface": "#2f3035",
+                        "on-secondary-fixed-variant": "#454747",
+                        "tertiary": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "on-primary-fixed-variant": "#004a77",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "primary-fixed": "#cfe5ff",
+                        "secondary": "#c6c6c6",
+                        "outline-variant": "#3f4852",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-secondary": "#2f3131",
+                        "primary": "#98cbff",
+                        "tertiary-container": "#9c9d9d",
+                        "on-surface-variant": "#bec7d4",
+                        "on-surface": "#e2e2e8",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-low": "#1a1c20"
+                    },
+                    "fontFamily": {
+                        "display-telemetry": ["JetBrains Mono"],
+                        "data-readout": ["JetBrains Mono"],
+                        "headline-instrument": ["Space Grotesk"],
+                        "body-standard": ["Hanken Grotesk"],
+                        "label-monospace": ["JetBrains Mono"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-standard overflow-hidden selection:bg-primary/30 selection:text-primary">
+<!-- HUD BACKGROUND OVERLAY -->
+<div class="fixed inset-0 pointer-events-none scanline z-0"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 h-16 bg-surface-container/10 backdrop-blur-xl border-b border-outline/20 z-50 flex justify-between items-center px-container-padding">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="rocket_launch">rocket_launch</span>
+<h1 class="font-headline-instrument text-[24px] font-bold tracking-widest text-primary">STRATOS MISSION CONTROL</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<button class="font-label-monospace text-[12px] uppercase tracking-widest text-on-surface-variant opacity-60 hover:bg-primary/10 transition-colors duration-300 px-3 py-1">Map</button>
+<button class="font-label-monospace text-[12px] uppercase tracking-widest text-primary drop-shadow-[0_0_4px_rgba(152,203,255,0.6)] px-3 py-1 bg-primary/10 border-b-2 border-primary">Sensors</button>
+<button class="font-label-monospace text-[12px] uppercase tracking-widest text-on-surface-variant opacity-60 hover:bg-primary/10 transition-colors duration-300 px-3 py-1">Payload</button>
+<button class="font-label-monospace text-[12px] uppercase tracking-widest text-on-surface-variant opacity-60 hover:bg-primary/10 transition-colors duration-300 px-3 py-1">Recovery</button>
+</div>
+<span class="font-display-telemetry text-[18px] text-primary">GPS: LOCKED</span>
+</div>
+</header>
+<!-- NavigationDrawer (Subsystem Monitor) -->
+<aside class="fixed right-0 top-16 w-80 h-[calc(100vh-128px)] bg-surface-container-low/10 backdrop-blur-xl border-l border-outline/20 z-40 hidden lg:flex flex-col p-gutter gap-instrument-gap">
+<div class="flex items-center justify-between mb-4 border-b border-outline/20 pb-2">
+<h2 class="font-headline-instrument text-[18px] text-primary tracking-tight">SUBSYSTEM MONITOR</h2>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="settings">settings</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex items-center justify-between p-3 bg-primary/5 border-r-2 border-primary group cursor-pointer transition-all">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="font-label-monospace text-[12px] text-primary">Battery: 88%</span>
+</div>
+<div class="w-12 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-[88%] h-full bg-primary shadow-[0_0_8px_rgba(152,203,255,0.5)]"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-surface-variant/20 transition-all opacity-70 group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="gas_meter">gas_meter</span>
+<span class="font-label-monospace text-[12px] text-on-surface-variant">Gas: 420 PSI</span>
+</div>
+<span class="font-label-monospace text-[10px] text-on-surface-variant">NOMINAL</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-surface-variant/20 transition-all opacity-70 group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="thermostat">thermostat</span>
+<span class="font-label-monospace text-[12px] text-on-surface-variant">Thermal: -45C</span>
+</div>
+<span class="font-label-monospace text-[10px] text-error">CRITICAL</span>
+</div>
+<div class="flex items-center justify-between p-3 hover:bg-surface-variant/20 transition-all opacity-70 group cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="deployed_code">deployed_code</span>
+<span class="font-label-monospace text-[12px] text-on-surface-variant">Parachute: READY</span>
+</div>
+<span class="material-symbols-outlined text-primary text-xs" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+<div class="mt-auto p-4 glass-panel rounded-lg">
+<p class="font-label-monospace text-[10px] text-outline mb-2">TELEMETRY UPLINK STRENGTH</p>
+<div class="flex items-end gap-1 h-12">
+<div class="flex-1 bg-primary/40 h-[60%]"></div>
+<div class="flex-1 bg-primary/40 h-[80%]"></div>
+<div class="flex-1 bg-primary/60 h-[40%]"></div>
+<div class="flex-1 bg-primary/40 h-[90%]"></div>
+<div class="flex-1 bg-primary h-[70%] shadow-[0_0_8px_rgba(152,203,255,0.4)]"></div>
+</div>
+</div>
+</aside>
+<!-- Main HUD Content -->
+<main class="fixed top-16 left-0 right-0 lg:right-80 bottom-16 overflow-y-auto p-6 flex flex-col gap-6">
+<!-- Hero Instrument Cluster -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+<!-- Pressure Sensor Card -->
+<div class="glass-panel p-6 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-primary"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-primary"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-primary"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-primary"></div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-label-monospace text-[10px] text-outline tracking-[0.2em] uppercase">Atmospheric Pressure</span>
+<h3 class="font-headline-instrument text-primary flex items-baseline gap-2">
+<span class="font-display-telemetry text-[48px] tracking-tighter phosphor-glow-primary">1013.2</span>
+<span class="text-data-readout font-label-monospace opacity-70">hPa</span>
+</h3>
+</div>
+<div class="text-right">
+<span class="font-label-monospace text-[10px] text-primary bg-primary/10 px-2 py-0.5 rounded border border-primary/20">STABLE</span>
+</div>
+</div>
+<!-- Live Graph Placeholder -->
+<div class="h-32 w-full mt-4 flex items-end gap-1 border-b border-outline/20 pb-1">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 400 100">
+<path class="phosphor-glow-primary" d="M0,80 L40,75 L80,85 L120,70 L160,78 L200,60 L240,65 L280,50 L320,55 L360,40 L400,45" fill="none" stroke="#98cbff" stroke-width="2"></path>
+<path d="M0,80 L40,75 L80,85 L120,70 L160,78 L200,60 L240,65 L280,50 L320,55 L360,40 L400,45 V100 H0 Z" fill="url(#gradient-pressure)" opacity="0.1"></path>
+<defs>
+<lineargradient id="gradient-pressure" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#98cbff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#98cbff;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+</svg>
+</div>
+<div class="flex justify-between font-label-monospace text-[10px] text-outline">
+<span>T-10m</span>
+<span>T-5m</span>
+<span>CURRENT</span>
+</div>
+</div>
+<!-- UV Index Card -->
+<div class="glass-panel p-6 flex flex-col gap-4 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-error"></div>
+<div class="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-error"></div>
+<div class="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-error"></div>
+<div class="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-error"></div>
+<div class="flex justify-between items-center">
+<div class="flex flex-col">
+<span class="font-label-monospace text-[10px] text-outline tracking-[0.2em] uppercase">UV Radiation Level</span>
+<h3 class="font-headline-instrument text-error flex items-baseline gap-2">
+<span class="font-display-telemetry text-[48px] tracking-tighter phosphor-glow-error">8.4</span>
+<span class="text-data-readout font-label-monospace opacity-70">INDEX</span>
+</h3>
+</div>
+<div class="text-right">
+<span class="font-label-monospace text-[10px] text-error bg-error/10 px-2 py-0.5 rounded border border-error/20">WARNING</span>
+</div>
+</div>
+<!-- Radial Gauge Visualization -->
+<div class="flex gap-4 items-center h-32 mt-4">
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="6"></circle>
+<circle class="text-error phosphor-glow-error" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251" stroke-dashoffset="60" stroke-width="6"></circle>
+</svg>
+<span class="absolute font-display-telemetry text-[14px] text-error">84%</span>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex justify-between items-center text-[10px] font-label-monospace">
+<span class="text-outline">UVA SPECTRA</span>
+<span class="text-on-surface">6.2</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="w-[62%] h-full bg-error"></div>
+</div>
+<div class="flex justify-between items-center text-[10px] font-label-monospace">
+<span class="text-outline">UVB SPECTRA</span>
+<span class="text-on-surface">2.2</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="w-[22%] h-full bg-error"></div>
+</div>
+</div>
+</div>
+<p class="font-label-monospace text-[9px] text-outline-variant italic">Peak intensity recorded at 12:44:20 UTC</p>
+</div>
+</div>
+<!-- Secondary Readouts Bento -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="glass-panel p-4 flex flex-col gap-2 border-l-4 border-l-primary">
+<span class="font-label-monospace text-[10px] text-outline">ALTITUDE (MSL)</span>
+<div class="flex justify-between items-baseline">
+<span class="font-display-telemetry text-2xl text-on-surface">32,480</span>
+<span class="font-label-monospace text-[10px] text-primary">FT</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-2 border-l-4 border-l-primary">
+<span class="font-label-monospace text-[10px] text-outline">ASCENT RATE</span>
+<div class="flex justify-between items-baseline">
+<span class="font-display-telemetry text-2xl text-on-surface">+12.4</span>
+<span class="font-label-monospace text-[10px] text-primary">M/S</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-2 border-l-4 border-l-tertiary">
+<span class="font-label-monospace text-[10px] text-outline">LATITUDE</span>
+<div class="flex justify-between items-baseline">
+<span class="font-display-telemetry text-2xl text-on-surface">45.523</span>
+<span class="font-label-monospace text-[10px] text-on-surface-variant">°N</span>
+</div>
+</div>
+<div class="glass-panel p-4 flex flex-col gap-2 border-l-4 border-l-tertiary">
+<span class="font-label-monospace text-[10px] text-outline">LONGITUDE</span>
+<div class="flex justify-between items-baseline">
+<span class="font-display-telemetry text-2xl text-on-surface">122.676</span>
+<span class="font-label-monospace text-[10px] text-on-surface-variant">°W</span>
+</div>
+</div>
+</div>
+<!-- Atmospheric Feed Visualization -->
+<div class="relative glass-panel rounded-lg overflow-hidden flex-1 min-h-[300px]">
+<div class="absolute inset-0 bg-cover bg-center mix-blend-overlay opacity-30" data-alt="A highly detailed satellite view of Earth from the stratosphere, showing the deep black of space transitioning into the thin, bright blue atmosphere at the horizon. The lighting is harsh and direct from a high-altitude sun, creating sharp highlights and deep shadows across the cloud formations below. The overall aesthetic is scientific and clinical, using a palette of cold blues, blacks, and crisp whites to evoke a sense of high-altitude research and exploration." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBWiuquJZJIyXEToGaonsdY9JrCMStxOvKATrXM44pA8JPhRtlvlT93VltyjFJuPp-dODA6c3v1UcrWpud2NhcZTq0G1A0-oYUadVnAA32ErKkg_U_aReKp-5Y1wR9PK3PkiRGMWg6CChr34TqYuEe17xXr3iFQyuFhw28oOmqQpg-sghVhsF13Qg1aAa-aGUq9FgkWzauRwoCVpWJWcmJVCgcB1XfT-7reuHFMvAUyiQyIRAgjEhOOVXGSaiQQMi6EUwE60Gm33xNC')"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-64 h-64 border border-primary/20 rounded-full flex items-center justify-center">
+<div class="w-48 h-48 border border-primary/40 rounded-full flex items-center justify-center">
+<div class="w-32 h-32 border border-primary/60 rounded-full animate-pulse"></div>
+</div>
+</div>
+<div class="absolute h-px w-full bg-primary/20"></div>
+<div class="absolute w-px h-full bg-primary/20"></div>
+</div>
+<div class="absolute top-4 left-4 font-label-monospace text-[10px] text-primary flex items-center gap-2">
+<span class="relative flex h-2 w-2">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+</span>
+                LIVE DOWNLINK CHANNEL 04
+            </div>
+<div class="absolute bottom-4 right-4 flex flex-col gap-1 items-end">
+<span class="font-label-monospace text-[10px] text-on-surface-variant">FRAME: 104,229</span>
+<span class="font-label-monospace text-[10px] text-on-surface-variant">LATENCY: 42MS</span>
+</div>
+</div>
+</main>
+<!-- Footer Status Bar -->
+<footer class="fixed bottom-0 left-0 right-0 h-10 bg-black/40 backdrop-blur-md border-t border-outline/10 z-50 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-4">
+<span class="font-label-monospace text-[12px] text-primary">UPLINK: STABLE | 102.4kbps</span>
+<div class="h-4 w-px bg-outline/20"></div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="w-2 h-2 rounded-full bg-primary/40"></span>
+<span class="w-2 h-2 rounded-full bg-primary/40"></span>
+</div>
+</div>
+<div class="flex gap-6 font-label-monospace text-[12px]">
+<button class="text-on-surface-variant hover:text-white transition-colors cursor-pointer uppercase">Logs</button>
+<button class="text-on-surface-variant hover:text-white transition-colors cursor-pointer uppercase">Eject</button>
+<button class="text-error font-bold hover:brightness-110 transition-colors cursor-pointer uppercase">Abort</button>
+</div>
+</footer>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center h-16 bg-surface-container-lowest/30 backdrop-blur-2xl border-t border-outline/20 z-[60] px-4">
+<div class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-monospace text-[10px] uppercase">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary/10 text-primary border-t-2 border-primary pt-2 pb-1 ring-1 ring-primary/30">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-monospace text-[10px] uppercase">Sensors</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1">
+<span class="material-symbols-outlined" data-icon="package_2">package_2</span>
+<span class="font-label-monospace text-[10px] uppercase">Payload</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline opacity-50 pt-2 pb-1">
+<span class="material-symbols-outlined" data-icon="settings_backup_restore">settings_backup_restore</span>
+<span class="font-label-monospace text-[10px] uppercase">Recovery</span>
+</div>
+</nav>
+</body></html>
