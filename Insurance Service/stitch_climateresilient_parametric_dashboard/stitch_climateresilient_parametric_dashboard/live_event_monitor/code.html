@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>ClimateResilient - Live Event Monitor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-background": "#191c1d",
+                "outline-variant": "#c2c8bc",
+                "primary-fixed": "#c4eeb8",
+                "on-tertiary-fixed-variant": "#004c6e",
+                "tertiary-fixed": "#c9e6ff",
+                "on-primary": "#ffffff",
+                "surface-container-high": "#e7e8e9",
+                "surface-dim": "#d9dadb",
+                "surface-container-lowest": "#ffffff",
+                "on-error": "#ffffff",
+                "surface-container-highest": "#e1e3e4",
+                "on-secondary-container": "#596374",
+                "on-primary-container": "#c7f0bb",
+                "primary-fixed-dim": "#a9d19e",
+                "error-container": "#ffdad6",
+                "on-primary-fixed-variant": "#2c4f27",
+                "background": "#f8f9fa",
+                "on-error-container": "#93000a",
+                "surface": "#f8f9fa",
+                "on-secondary-fixed": "#121c2a",
+                "surface-variant": "#e1e3e4",
+                "on-primary-fixed": "#012202",
+                "tertiary": "#005479",
+                "inverse-primary": "#a9d19e",
+                "outline": "#73796f",
+                "surface-container-low": "#f3f4f5",
+                "inverse-on-surface": "#f0f1f2",
+                "secondary-fixed-dim": "#bdc7db",
+                "surface-container": "#edeeef",
+                "surface-bright": "#f8f9fa",
+                "inverse-surface": "#2e3132",
+                "on-surface": "#191c1d",
+                "secondary": "#555f70",
+                "primary": "#34562e",
+                "on-tertiary": "#ffffff",
+                "error": "#ba1a1a",
+                "on-secondary": "#ffffff",
+                "surface-tint": "#43673d",
+                "on-tertiary-container": "#cee9ff",
+                "secondary-fixed": "#d9e3f7",
+                "primary-container": "#4b6f44",
+                "tertiary-container": "#006d9c",
+                "tertiary-fixed-dim": "#89ceff",
+                "on-secondary-fixed-variant": "#3d4757",
+                "on-tertiary-fixed": "#001e2f",
+                "secondary-container": "#d6e0f4",
+                "on-surface-variant": "#42483f"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "base": "8px",
+                "margin": "32px",
+                "gutter": "24px",
+                "xl": "64px",
+                "sm": "12px",
+                "md": "24px",
+                "xs": "4px",
+                "lg": "40px"
+              },
+              "fontFamily": {
+                "headline-xl": ["Manrope"],
+                "label-sm": ["Inter"],
+                "body-lg": ["Inter"],
+                "data-mono": ["Inter"],
+                "body-md": ["Inter"],
+                "headline-lg": ["Manrope"],
+                "headline-md": ["Manrope"]
+              },
+              "fontSize": {
+                "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .weather-gradient {
+            background: linear-gradient(135deg, #34562e 0%, #005479 100%);
+        }
+        .scrolling-feed {
+            animation: scroll 30s linear infinite;
+        }
+        @keyframes scroll {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .map-pulse {
+            position: relative;
+        }
+        .map-pulse::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: rgba(186, 26, 26, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md shadow-sm border-b border-slate-200 dark:border-slate-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-emerald-800 dark:text-emerald-400" data-icon="menu">menu</span>
+<h1 class="text-xl font-black text-emerald-900 dark:text-emerald-50 font-manrope tracking-tight">ClimateResilient</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="User Professional Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a climate insurance analyst in a high-tech office. The lighting is soft and neutral, emphasizing a clean and professional look with subtle hints of emerald and sky blue in the background workspace. The mood is focused and authoritative, fitting the corporate glassmorphism aesthetic of the platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmLlrY-TkD9dl3yHt2_qDzUGzrrGZqrqC9rjRFKU7IOZhA9ll0qyf9usTKQ3vZY-DT3N1ilR0ZHfeue8LePU5VfwM5UmHr4GC_vLzrxz-Xgl9go_NCS_symj03BtGJfcUjBHOXVxCjSitXUjZGFon1G_KN2c8Ehj4gkcqPd17yUILE3gOVkfSSo9bIGviK8pqgynchfRew2Ri8on7FLWpgWCFDCrSzHA8j1eCVmnSyzz8zP3v02QNaT00Io86m02Cam97I09QVy4w0"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="pt-16 pb-24 md:pb-0 min-h-screen grid grid-cols-1 lg:grid-cols-12 gap-0">
+<!-- Sidebar Navigation Drawer (Desktop only, simplified for content focus) -->
+<aside class="hidden lg:flex lg:col-span-2 flex-col bg-white border-r border-slate-100 p-gutter gap-4 h-[calc(100vh-64px)] overflow-y-auto">
+<div class="p-4 rounded-xl bg-primary-container/10 border border-primary-container/20">
+<p class="text-label-sm text-primary uppercase tracking-widest mb-1">Status</p>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+<span class="font-data-mono text-primary font-bold">LIVE MONITORING</span>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-emerald-50 text-emerald-800 font-bold border-l-4 border-emerald-600 rounded-r-lg" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-manrope text-sm">Global View</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-manrope text-sm">Risk Reports</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-600 hover:bg-slate-50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-manrope text-sm">Claims History</span>
+</a>
+</nav>
+</aside>
+<!-- Dynamic Content Area -->
+<div class="col-span-1 lg:col-span-10 grid grid-cols-1 lg:grid-cols-4 gap-0 relative">
+<!-- Map Container - Centered Hero -->
+<section class="col-span-1 lg:col-span-3 h-[442px] lg:h-[calc(100vh-64px)] relative bg-slate-200 overflow-hidden">
+<img alt="Interactive Map" class="w-full h-full object-cover" data-alt="A high-resolution satellite-style interactive map showing agricultural plains in the Midwest. Dynamic weather overlays featuring storm paths and atmospheric pressure lines are rendered in Sky Blue and translucent white. The aesthetic is technical and precise, with a sophisticated professional UI overlay highlighting high-risk flood zones in soft translucent red tints." data-location="Kansas" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxBJ8FZc9xVHJiShoQRjSkJCasXJWNHXBja1MfXqIr_mUN7wbkghxbEfCePJAgtx6gF3NBU4oc6jg6lMzJTytbIBAlCzjqIRdgPNP2hBwRSSq0a-Ad46UeTwkf01UOqZlbtCLEsrWiBne1hkWY7lubZkUAq-s7QC-JbjS2828cdtCUaMyBaAoT7XD6hy6BavkNbMRadeHDlBYcmfrqTEHLNyN-GStdhc7UtIpZaSC62POaCo-piqsnQjvKiI75G1VjuqkFxNktMzxb"/>
+<!-- Map Overlays -->
+<div class="absolute top-4 right-4 flex flex-col gap-2">
+<button class="w-10 h-10 glass-panel rounded-lg shadow-sm flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+<button class="w-10 h-10 glass-panel rounded-lg shadow-sm flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="my_location">my_location</span>
+</button>
+</div>
+<!-- Active Trigger Indicator -->
+<div class="absolute bottom-8 left-8 glass-panel p-md rounded-xl shadow-lg border border-white/50 max-w-xs">
+<div class="flex items-center justify-between mb-3">
+<span class="bg-tertiary-container/10 text-tertiary px-3 py-1 rounded-full text-label-sm font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="thunderstorm" data-weight="fill">thunderstorm</span>
+                            ACTIVE EVENT
+                        </span>
+<span class="text-label-sm text-outline">ID: CR-9921</span>
+</div>
+<h3 class="font-headline-md text-on-surface mb-1">Supercell Delta</h3>
+<p class="text-body-md text-on-surface-variant mb-4">Kansas Central Corridor — Wind Speed 85mph</p>
+<div class="w-full bg-surface-container rounded-full h-2">
+<div class="bg-tertiary h-2 rounded-full w-3/4"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="text-label-sm text-outline">Parametric Trigger: 75%</span>
+<span class="text-label-sm text-tertiary font-bold">ALARM</span>
+</div>
+</div>
+<!-- Pulse on Map -->
+<div class="absolute top-1/2 left-1/3 w-8 h-8 map-pulse">
+<div class="w-8 h-8 rounded-full bg-error border-2 border-white shadow-xl relative z-10"></div>
+</div>
+</section>
+<!-- Sidebar Info Panel / Live Feed -->
+<section class="col-span-1 bg-white border-l border-slate-200 flex flex-col h-full">
+<!-- Alerts Header -->
+<div class="p-gutter border-b border-slate-100">
+<div class="flex items-center justify-between mb-4">
+<h2 class="font-headline-md text-on-surface">Live Events</h2>
+<span class="bg-error-container text-on-error-container px-2 py-0.5 rounded text-[10px] font-black uppercase">Critical</span>
+</div>
+<div class="space-y-3">
+<div class="flex gap-3 p-3 rounded-lg bg-surface-container-low border border-outline-variant/30">
+<span class="material-symbols-outlined text-error" data-icon="flood">flood</span>
+<div>
+<p class="text-body-md font-bold text-on-surface">Severe Flooding</p>
+<p class="text-label-sm text-on-surface-variant">Mississippi Basin Basin — 4h left</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Scrolling Weather Feed -->
+<div class="flex-1 overflow-hidden relative">
+<div class="absolute inset-0 scrolling-feed p-gutter space-y-gutter">
+<!-- Feed Item 1 -->
+<div class="group cursor-pointer">
+<span class="text-label-sm text-tertiary font-bold font-data-mono">14:02 UTC</span>
+<p class="text-body-md text-on-surface mt-1">Ground sensor GS-092 in <span class="font-bold">Iowa District 4</span> reports soil moisture saturation at 92%. Threshold exceeded.</p>
+<div class="mt-2 h-1 w-0 group-hover:w-full bg-primary transition-all duration-300"></div>
+</div>
+<!-- Feed Item 2 -->
+<div class="group cursor-pointer">
+<span class="text-label-sm text-tertiary font-bold font-data-mono">13:58 UTC</span>
+<p class="text-body-md text-on-surface mt-1">NOAA updates storm trajectory for <span class="font-bold">Delta Cell</span>. Projected impact window shifted +15 mins.</p>
+<div class="mt-2 h-1 w-0 group-hover:w-full bg-primary transition-all duration-300"></div>
+</div>
+<!-- Feed Item 3 -->
+<div class="group cursor-pointer">
+<span class="text-label-sm text-tertiary font-bold font-data-mono">13:45 UTC</span>
+<p class="text-body-md text-on-surface mt-1">Policy group <span class="font-bold">AG-MIDWEST-88</span> active trigger status: <span class="text-error font-bold">READY</span>.</p>
+<div class="mt-2 h-1 w-0 group-hover:w-full bg-primary transition-all duration-300"></div>
+</div>
+<!-- Feed Item 4 -->
+<div class="group cursor-pointer">
+<span class="text-label-sm text-tertiary font-bold font-data-mono">13:30 UTC</span>
+<p class="text-body-md text-on-surface mt-1">Precipitation intensity in <span class="font-bold">Kansas</span> correlates with Tier 2 payout parameters.</p>
+<div class="mt-2 h-1 w-0 group-hover:w-full bg-primary transition-all duration-300"></div>
+</div>
+<!-- Duplicate for Seamless Scroll -->
+<div class="group cursor-pointer">
+<span class="text-label-sm text-tertiary font-bold font-data-mono">14:02 UTC</span>
+<p class="text-body-md text-on-surface mt-1">Ground sensor GS-092 in <span class="font-bold">Iowa District 4</span> reports soil moisture saturation at 92%. Threshold exceeded.</p>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="p-gutter bg-surface-container-highest/50 border-t border-slate-200">
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="text-label-sm text-outline uppercase">Active Claims</p>
+<p class="text-headline-md font-bold text-primary">124</p>
+</div>
+<div>
+<p class="text-label-sm text-outline uppercase">Exposure</p>
+<p class="text-headline-md font-bold text-tertiary">$4.2M</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 pb-safe bg-white/90 dark:bg-slate-900/90 backdrop-blur-lg shadow-[0_-4px_12px_rgba(0,0,0,0.05)] border-t border-slate-200">
+<div class="flex flex-col items-center justify-center text-emerald-700 dark:text-emerald-400 bg-emerald-50/50 dark:bg-emerald-900/20 rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider">Monitor</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider">Simulator</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined" data-icon="agriculture">agriculture</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider">Impact</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500 dark:text-slate-400">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider">Claims</span>
+</div>
+</nav>
+</body></html>

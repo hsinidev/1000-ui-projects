@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClimateResilient | Agricultural Impact Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-secondary-fixed-variant": "#3d4757",
+                    "on-background": "#191c1d",
+                    "secondary-fixed": "#d9e3f7",
+                    "on-tertiary-fixed-variant": "#004c6e",
+                    "surface-dim": "#d9dadb",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f8f9fa",
+                    "surface-bright": "#f8f9fa",
+                    "on-tertiary-container": "#cee9ff",
+                    "on-secondary-fixed": "#121c2a",
+                    "tertiary-fixed-dim": "#89ceff",
+                    "primary": "#34562e",
+                    "surface-container": "#edeeef",
+                    "primary-container": "#4b6f44",
+                    "outline-variant": "#c2c8bc",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-container": "#006d9c",
+                    "surface-container-highest": "#e1e3e4",
+                    "inverse-primary": "#a9d19e",
+                    "secondary-fixed-dim": "#bdc7db",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-container": "#596374",
+                    "on-primary": "#ffffff",
+                    "on-primary-fixed": "#012202",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#e7e8e9",
+                    "primary-fixed": "#c4eeb8",
+                    "background": "#f8f9fa",
+                    "on-primary-fixed-variant": "#2c4f27",
+                    "inverse-on-surface": "#f0f1f2",
+                    "tertiary": "#005479",
+                    "surface-container-low": "#f3f4f5",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#43673d",
+                    "outline": "#73796f",
+                    "on-tertiary-fixed": "#001e2f",
+                    "on-primary-container": "#c7f0bb",
+                    "on-surface": "#191c1d",
+                    "error-container": "#ffdad6",
+                    "secondary": "#555f70",
+                    "tertiary-fixed": "#c9e6ff",
+                    "on-surface-variant": "#42483f",
+                    "inverse-surface": "#2e3132"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "40px",
+                    "xl": "64px",
+                    "sm": "12px",
+                    "xs": "4px",
+                    "margin": "32px",
+                    "base": "8px",
+                    "gutter": "24px",
+                    "md": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Manrope"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Manrope"],
+                    "data-mono": ["Inter"],
+                    "headline-xl": ["Manrope"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        body {
+            background-color: #f8f9fa;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-emerald-800 cursor-pointer">menu</span>
+<h1 class="text-xl font-black text-emerald-900 font-manrope tracking-tight">ClimateResilient</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-emerald-700 font-manrope font-bold text-sm tracking-tight transition-colors duration-200" href="#">Monitor</a>
+<a class="text-slate-500 hover:text-emerald-600 font-manrope font-semibold text-sm tracking-tight transition-colors duration-200" href="#">Simulator</a>
+<a class="text-emerald-700 bg-emerald-50 px-4 py-2 rounded-lg font-manrope font-bold text-sm tracking-tight transition-colors duration-200" href="#">Impact</a>
+<a class="text-slate-500 hover:text-emerald-600 font-manrope font-semibold text-sm tracking-tight transition-colors duration-200" href="#">Claims</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 text-slate-500 hover:bg-emerald-50 rounded-full transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<div class="h-10 w-10 rounded-full bg-primary-fixed overflow-hidden border-2 border-primary">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional portrait of an agricultural insurance executive in a modern, light-filled office. The lighting is soft and high-key, emphasizing a clean corporate aesthetic. The subject wears a charcoal suit and has a confident, approachable expression. The background is slightly blurred with hints of glass partitions and indoor greenery, maintaining the Moss Green and white color palette of the UI." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA-x0iLrAlC77sn2Dhzu_cIWmYg2ENhdVIEvfJHpB7i_exlzuumV2Adovqp9uo9zWgYpHj1kIfnoc9twl5ksIGCOQ1i_YFOkHC38tSdHrej5dg3MWe-r4-ETvjO6yLyYI2zOiPJ6yJ1FAP-1W12IMcJPNvRhl1pZtB292KWy8R2su92Gg1xjzz5d6m-JqVoPCW2zJjjg6hMOr4acxB1tdqKqiTuPz18PqfSeyrf5Jf2loteuE-aHUfNZDXEw5dDWtwaO_po6vyCdJQ0"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-12 px-6 max-w-[1600px] mx-auto">
+<!-- Header Section with Actions -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-6">
+<div>
+<nav class="flex items-center gap-2 text-label-sm font-label-sm text-on-surface-variant mb-2">
+<span>Global Portfolio</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-primary font-bold">Agricultural Impact</span>
+</nav>
+<h2 class="font-headline-xl text-headline-xl text-on-background">Regional Impact Dashboard</h2>
+<p class="text-body-lg text-on-surface-variant max-w-2xl mt-2">Real-time parametric monitoring and NDVI crop health analysis for policy P-8829-AG.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-surface-container-high text-on-surface font-semibold rounded-lg hover:bg-surface-container-highest transition-colors">
+<span class="material-symbols-outlined text-[20px]">filter_list</span>
+<span class="font-label-sm text-label-sm">Advanced Filters</span>
+</button>
+<button class="flex items-center gap-2 px-5 py-2.5 bg-primary text-on-primary font-bold rounded-lg hover:opacity-90 transition-opacity shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]">download</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Download Report</span>
+</button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Primary Map Visualization -->
+<div class="col-span-12 lg:col-span-8 bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden min-h-[500px] flex flex-col">
+<div class="p-md border-b border-slate-100 flex justify-between items-center">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Soil Moisture Heatmap</h3>
+<p class="text-label-sm font-label-sm text-on-surface-variant">Active monitoring across Midwest District A</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-emerald-50 text-emerald-800 text-[11px] font-bold uppercase rounded-full">Live Data</span>
+<span class="px-3 py-1 bg-sky-50 text-sky-800 text-[11px] font-bold uppercase rounded-full">Parametric Trigger</span>
+</div>
+</div>
+<div class="flex-grow relative bg-slate-100">
+<img class="w-full h-full object-cover grayscale-[0.3]" data-alt="A high-resolution satellite-style topographical map of agricultural farmland in the Midwest USA. The map features an overlay of a lush green heatmap indicating optimal soil moisture levels, with subtle sky blue contours representing irrigation systems. The visual style is technical and professional, using a clean color palette that integrates seamlessly with a modern financial technology dashboard." data-location="Midwest USA" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBaoP__fs0rX1sjILQGUkLm6FBcII7x_1xsx03m4T3GdAFB_gsKQzb6GAr6tNnFn2kTGzD2m3vXc_FB1qwavvS5FZsL5zIjLO7vYRVJkRZukFNArTI5--7AQvR6yPrL4ZiKayNFdDR8DBKax0xRgHdEp6IokxFxBGFBXiRtvq5DNKClpefBqbjilzFyGHjLmFemlmmEtcUmwX5DeQgKBXSIDbGqnd8ud2AU_89vptRNFG6bxlatesAgSDN1prWkbHnw7A7cM1NolT5t"/>
+<!-- Floating Data Overlay -->
+<div class="absolute bottom-6 left-6 p-4 glass-panel rounded-xl shadow-xl max-w-xs">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+<span class="font-headline-md text-headline-md">82.4%</span>
+</div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Current aggregate soil health index. Within optimal threshold for policy payout prevention.</p>
+<div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary w-4/5 h-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Cards: Quick Stats & Alerts -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- NDVI Progress Card -->
+<div class="bg-white p-md rounded-xl border border-slate-200 shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<h3 class="font-headline-md text-headline-md text-on-background">NDVI Health</h3>
+<span class="material-symbols-outlined text-on-surface-variant">monitoring</span>
+</div>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="text-label-sm font-label-sm">Corn Yield Trend</span>
+<span class="text-primary font-bold">+4.2%</span>
+</div>
+<div class="h-16 flex items-end gap-1">
+<div class="bg-primary/20 w-full h-8 rounded-t-sm"></div>
+<div class="bg-primary/20 w-full h-10 rounded-t-sm"></div>
+<div class="bg-primary/40 w-full h-12 rounded-t-sm"></div>
+<div class="bg-primary/60 w-full h-14 rounded-t-sm"></div>
+<div class="bg-primary w-full h-16 rounded-t-sm"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-slate-100">
+<div class="flex justify-between mb-2">
+<span class="text-label-sm font-label-sm">Soybean Resilience</span>
+<span class="text-tertiary font-bold">-1.8%</span>
+</div>
+<div class="h-16 flex items-end gap-1">
+<div class="bg-tertiary w-full h-16 rounded-t-sm"></div>
+<div class="bg-tertiary/80 w-full h-14 rounded-t-sm"></div>
+<div class="bg-tertiary/60 w-full h-12 rounded-t-sm"></div>
+<div class="bg-tertiary/40 w-full h-10 rounded-t-sm"></div>
+<div class="bg-tertiary/20 w-full h-6 rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Weather Risk Card -->
+<div class="bg-on-primary-fixed-variant p-md rounded-xl shadow-lg relative overflow-hidden">
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-primary-fixed">warning</span>
+<h3 class="font-headline-md text-headline-md text-white">Active Risk Alert</h3>
+</div>
+<p class="text-primary-fixed text-body-md mb-6">Unusual precipitation patterns detected in Northern Sectors. Potential parametric trigger activation in 48h.</p>
+<button class="w-full py-3 bg-primary-fixed text-on-primary-fixed font-bold rounded-lg text-sm uppercase tracking-widest hover:bg-white transition-colors">
+                            Analyze Scenarios
+                        </button>
+</div>
+<!-- Background texture/icon -->
+<span class="material-symbols-outlined absolute -right-4 -bottom-4 text-[120px] text-white/5 pointer-events-none">thunderstorm</span>
+</div>
+</div>
+<!-- Regional Risk Table/Cards -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter mt-2">
+<!-- Region 1 -->
+<div class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+<div class="h-32 relative">
+<img class="w-full h-full object-cover" data-alt="A close-up photograph of vibrant, healthy green crop leaves in a vast field during the golden hour. The sunlight creates a warm, atmospheric glow over the rows of plants. The composition is clean and focused, highlighting the texture and vitality of the agricultural landscape, aligning with a high-end corporate sustainability theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5njQ4JNVi8bsKQS1UlndBRl0pVmLYha44XocoWn3emVnwBFO6YRK6NsfKGW8TSfvvOVqmeCuDFdC-V8zVuj5tK9Drjd_3uw13VpnhvDblgYXcOkETWsokGIwu54jdvzCMqSOZYy6hD-8cFJAR4kzw4YmIMctJubqT2drfrIDNIkzVym1T-vB2t4qngvdO7Pg0KkjfOxpNlWm2HtqY6cw34zcCPehAiepJB4RwI4uPJbfBuw7YyOPXmJhO0hg-7be91RR6PJQKRXWf"/>
+<div class="absolute top-3 left-3 px-2 py-1 glass-panel rounded text-[10px] font-bold text-primary">SECTOR 01</div>
+</div>
+<div class="p-md">
+<h4 class="font-headline-md text-headline-md mb-1">Iowa Basin</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">High-Yield Zone</p>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Resilience Score</span>
+<span class="font-data-mono text-data-mono text-primary">94/100</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Policy Status</span>
+<span class="text-label-sm font-label-sm px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded">Active</span>
+</div>
+</div>
+</div>
+<!-- Region 2 -->
+<div class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+<div class="h-32 relative">
+<img class="w-full h-full object-cover" data-alt="An expansive view of rolling hills covered in vast wheat fields under a clear sky. The scene is illuminated by soft, natural daylight, creating a peaceful and stable mood. The color palette emphasizes natural earth tones and deep greens, consistent with a professional agricultural monitoring interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCWrzMFWJ1U2L0pu759WRoWzZYU9zcYTCismVYwr__qKygEr0QwPRsGtjCQeNPh91R6zYqTRCIhmHfmnQkvg-9INpvwu95PvVFVy1nDlr4CgIutYj31iVsRED0M8OnlJ4TmZJGsD7vEsWJTBAT2hdfGW4FmLOgnzTjEvPCms3F3lx2bbuw40Dv0jycB4G3FgGU8Z6-CZNoG9itOfBQwV4YTR1DOvA06HEZc7iXw-Le7TDUZ2GKKXB-DHhT3YOIZ1_g8Mm9e1QyxgMmO"/>
+<div class="absolute top-3 left-3 px-2 py-1 glass-panel rounded text-[10px] font-bold text-tertiary">SECTOR 04</div>
+</div>
+<div class="p-md">
+<h4 class="font-headline-md text-headline-md mb-1">Dakota Plains</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Arid Monitoring Zone</p>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Resilience Score</span>
+<span class="font-data-mono text-data-mono text-tertiary">68/100</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Policy Status</span>
+<span class="text-label-sm font-label-sm px-2 py-0.5 bg-sky-100 text-sky-800 rounded">Review</span>
+</div>
+</div>
+</div>
+<!-- Region 3 -->
+<div class="bg-white border border-slate-200 rounded-xl overflow-hidden hover:shadow-md transition-shadow">
+<div class="h-32 relative">
+<img class="w-full h-full object-cover" data-alt="A modern industrial agricultural facility with large silos and organized crop rows, captured from an elevated perspective. The lighting is crisp and detailed, showcasing technical precision and high-performance farming. The overall aesthetic is clean, structured, and modern corporate, utilizing a palette of greys, whites, and deep greens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFF1yPh1SPjHgGedV2hAjmvWNQtHQPdEyJ1rhBHOoS6H-iDwsHTzcYnMO1Pufpz-yFReFSDcr4BNpemadOJZajFJjkGElr9aWA6s773h11WSyIKUeZnlLWIUbieaJ24lVihK_Sbdp37zrACM61_2WniTdjj6ZiFn96VSueh9pfc3X_hlhnGVeydpcdn2NNh7Z5LFH7i5opHRhytxWH05mdsHXUJ0eA9VI8bAzuZfLMHySgiQxJ_raxutxt92ZpRWQsVIiPFsJwM7Ao"/>
+<div class="absolute top-3 left-3 px-2 py-1 glass-panel rounded text-[10px] font-bold text-on-surface-variant">SECTOR 09</div>
+</div>
+<div class="p-md">
+<h4 class="font-headline-md text-headline-md mb-1">Kansas Hub</h4>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-4">Logistic Center</p>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Resilience Score</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant">81/100</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-slate-100">
+<span class="text-body-md">Policy Status</span>
+<span class="text-label-sm font-label-sm px-2 py-0.5 bg-slate-100 text-slate-600 rounded">Pending</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Mobile only) -->
+<div class="md:hidden fixed inset-y-0 left-0 z-[60] flex flex-col h-full w-80 bg-white shadow-2xl transition-transform -translate-x-full">
+<div class="p-6 border-b border-slate-100 flex flex-col">
+<div class="flex items-center gap-4 mb-4">
+<div class="h-12 w-12 rounded-full bg-slate-200 overflow-hidden">
+<img alt="Alex Rivers" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1jXZ4as9oxGAj4zHW-hr7CZoGXOyjnU6W_WqMrO50pphifzWd_fTmc1kNtTewTQflutRtCb1e4jqHMAdx6mkmR3qeaytJif1DRvI0oMsFdq098qPqF3v8CyQluyyKQi2LAoXe-lQ7QHBpGMYhhrm2OOydb1hmJD6i8i-MUbvYUBLp3t4qqXMD-cE9vtuPoolWs7YQQGjqZv1bu1n0VwE5rOw6ZKWMICNg59ipalCxtSz5nIRZR3rDtKPtNbc_FWfAGBkGgDOskz4f"/>
+</div>
+<div>
+<h5 class="font-manrope text-lg font-bold text-emerald-900">Alex Rivers</h5>
+<p class="text-xs text-slate-500">PRM-8829-AG</p>
+</div>
+</div>
+<span class="text-[10px] uppercase font-bold tracking-widest text-emerald-700">Resilient Tier</span>
+</div>
+<nav class="flex-grow py-4 divide-y divide-slate-100">
+<div class="flex items-center gap-4 px-6 py-4 bg-emerald-50 text-emerald-800 font-bold border-l-4 border-emerald-600">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-manrope text-sm">Account Overview</span>
+</div>
+<div class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">description</span>
+<span class="font-manrope text-sm">Policy Details</span>
+</div>
+<div class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-manrope text-sm">Risk Reports</span>
+</div>
+<div class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-manrope text-sm">Weather Alerts</span>
+</div>
+<div class="flex items-center gap-4 px-6 py-4 text-slate-600 hover:bg-slate-50 transition-all">
+<span class="material-symbols-outlined">contact_support</span>
+<span class="font-manrope text-sm">Help &amp; Support</span>
+</div>
+</nav>
+</div>
+<!-- BottomNavBar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 py-3 bg-white/90 backdrop-blur-lg border-t border-slate-200 shadow-[0_-4px_12px_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">public</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider mt-1">Monitor</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider mt-1">Simulator</span>
+</div>
+<div class="flex flex-col items-center justify-center text-emerald-700 bg-emerald-50/50 rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">agriculture</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider mt-1">Impact</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-500">
+<span class="material-symbols-outlined">history</span>
+<span class="font-manrope text-[11px] font-semibold uppercase tracking-wider mt-1">Claims</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AdminCore | Org Health Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3136;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "secondary-container": "#44474d",
+                      "surface-tint": "#afc8f0",
+                      "background": "#131313",
+                      "on-secondary-fixed": "#191c21",
+                      "secondary": "#c4c6cd",
+                      "inverse-primary": "#476083",
+                      "on-tertiary-fixed-variant": "#0035be",
+                      "primary-fixed-dim": "#afc8f0",
+                      "on-primary-container": "#6f88ad",
+                      "surface-container-highest": "#353535",
+                      "on-tertiary-container": "#5d7cff",
+                      "primary": "#afc8f0",
+                      "on-surface": "#e5e2e1",
+                      "secondary-fixed": "#e0e2e9",
+                      "on-primary-fixed-variant": "#2f486a",
+                      "on-secondary-container": "#b3b5bc",
+                      "on-tertiary-fixed": "#001356",
+                      "on-error": "#690005",
+                      "surface-container": "#20201f",
+                      "on-primary": "#163152",
+                      "surface-variant": "#353535",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-error-container": "#ffdad6",
+                      "surface-bright": "#393939",
+                      "surface-container-high": "#2a2a2a",
+                      "primary-fixed": "#d4e3ff",
+                      "on-primary-fixed": "#001c3a",
+                      "surface-dim": "#131313",
+                      "on-secondary": "#2d3136",
+                      "on-tertiary": "#002388",
+                      "error": "#ffb4ab",
+                      "secondary-fixed-dim": "#c4c6cd",
+                      "outline-variant": "#43474e",
+                      "tertiary": "#b8c3ff",
+                      "error-container": "#93000a",
+                      "surface": "#131313",
+                      "surface-container-low": "#1c1b1b",
+                      "on-background": "#e5e2e1",
+                      "on-surface-variant": "#c4c6cf",
+                      "tertiary-fixed-dim": "#b8c3ff",
+                      "outline": "#8e9198",
+                      "inverse-surface": "#e5e2e1",
+                      "tertiary-fixed": "#dde1ff",
+                      "primary-container": "#001f3f",
+                      "tertiary-container": "#00155d",
+                      "on-secondary-fixed-variant": "#44474d",
+                      "inverse-on-surface": "#313030"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "container-max": "1440px",
+                      "margin": "24px",
+                      "density-high": "8px"
+              },
+              "fontFamily": {
+                      "body-fixed": ["Inter"],
+                      "display-lg": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "data-tabular": ["Inter"],
+                      "headline-md": ["Inter"]
+              },
+              "fontSize": {
+                      "body-fixed": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                      "data-tabular": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "headline-md": ["20px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-fixed selection:bg-primary-container selection:text-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-slate-950 dark:bg-black border-b border-slate-800/50">
+<div class="flex items-center gap-4">
+<span class="text-xl font-black tracking-tighter text-slate-100 uppercase">AdminCore</span>
+</div>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-4">
+<a class="text-blue-400 border-b-2 border-blue-500 pb-1 font-inter text-sm font-medium tracking-tight" href="#">Org Chart</a>
+<a class="text-slate-400 hover:text-slate-200 font-inter text-sm font-medium tracking-tight" href="#">Forecasting</a>
+<a class="text-slate-400 hover:text-slate-200 font-inter text-sm font-medium tracking-tight" href="#">Analytics</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative hidden sm:block">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-slate-500 text-sm" data-icon="search">search</span>
+<input class="bg-slate-900 border border-slate-800 text-xs rounded px-8 py-1.5 focus:outline-none focus:ring-1 focus:ring-blue-500 w-48" placeholder="Search..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-slate-400 hover:text-white" data-icon="notifications">notifications</button>
+<div class="h-8 w-8 rounded bg-primary-container flex items-center justify-center border border-outline-variant overflow-hidden">
+<img alt="Director Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a corporate executive in high-definition photography style. The setting is a minimalist, dimly lit office with cool blue ambient lighting and metallic silver accents. The executive has a serious, focused expression, reflecting an authoritative and analytical persona. The image follows a dark-mode aesthetic with deep navy shadows and sharp, technical clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCwjSx9JjaQl5vxkkpqoFtZ1Rrpz135xX4xCVOQPS4g2O_mX9Fr6XLH4D7rdyALnJMhLNvCUq9vvr4YCNrvQEf9mZNeyj_vruHFzAdJFDCkVWOwBFLHti0WbwOkXxAb0Jyx5uoCys2QgRjHmz_-crxWtb6VfWUjoAPCHE2oxp0UXz4-YRLxa0brw9huAp9rfDk1glsjunbLr-dAjUWV1A-NnY9tnRmtubku6_wNmXRKVYA5Jvszm2zO0HfLxzc6_UYZSteig8ijEQ1O"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar (Desktop Only) -->
+<aside class="fixed left-0 top-0 h-full hidden md:flex flex-col z-40 bg-slate-900 dark:bg-[#001F3F] w-64 border-r border-slate-800">
+<div class="p-6 pt-20">
+<div class="flex items-center gap-3 mb-8">
+<div class="h-10 w-10 rounded-lg bg-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-white" data-icon="admin_panel_settings">admin_panel_settings</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-white leading-tight">AdminCore</h2>
+<p class="text-[10px] text-blue-400 uppercase tracking-widest font-bold">Strategic HR Ops</p>
+</div>
+</div>
+<nav class="space-y-1">
+<a class="bg-slate-950 text-blue-400 border-l-2 border-blue-500 px-4 py-3 flex items-center gap-3 font-inter text-xs font-semibold uppercase tracking-widest transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span>Org Chart</span>
+</a>
+<a class="text-slate-400 hover:bg-slate-800/50 px-4 py-3 flex items-center gap-3 font-inter text-xs font-semibold uppercase tracking-widest transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span>Forecasting</span>
+</a>
+<a class="text-slate-400 hover:bg-slate-800/50 px-4 py-3 flex items-center gap-3 font-inter text-xs font-semibold uppercase tracking-widest transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span>Analytics</span>
+</a>
+<a class="text-slate-400 hover:bg-slate-800/50 px-4 py-3 flex items-center gap-3 font-inter text-xs font-semibold uppercase tracking-widest transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Budgeting</span>
+</a>
+<a class="text-slate-400 hover:bg-slate-800/50 px-4 py-3 flex items-center gap-3 font-inter text-xs font-semibold uppercase tracking-widest transition-all hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="model_training">model_training</span>
+<span>Scenarios</span>
+</a>
+</nav>
+<button class="mt-8 w-full py-3 bg-blue-600 hover:bg-blue-500 text-white font-bold text-[10px] uppercase tracking-widest rounded-sm transition-colors border border-blue-400">
+                New Scenario
+            </button>
+</div>
+<div class="mt-auto p-6 space-y-1">
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 font-inter text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+<a class="text-slate-400 hover:text-white px-4 py-2 flex items-center gap-3 font-inter text-[10px] font-semibold uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="pt-20 pb-24 px-4 md:pl-72 md:pr-8 max-w-container-max mx-auto">
+<!-- Header Section -->
+<header class="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="font-label-caps text-label-caps text-primary uppercase tracking-[0.2em] block mb-2">Corporate Intelligence</span>
+<h1 class="font-display-lg text-display-lg text-on-surface">Health of the Org</h1>
+</div>
+<div class="flex items-center gap-2">
+<div class="flex bg-surface-container-high rounded-sm p-1 border border-outline-variant/20">
+<button class="px-4 py-1 text-[10px] font-bold uppercase bg-primary-container text-primary rounded-sm">Today</button>
+<button class="px-4 py-1 text-[10px] font-bold uppercase text-on-surface-variant hover:text-on-surface">Forecast</button>
+</div>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:text-white bg-surface-container-high border border-outline-variant/20 rounded-sm" data-icon="download">download</button>
+</div>
+</header>
+<!-- High-Level Metric Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-gutter">
+<!-- Headcount -->
+<div class="bg-surface-container border border-outline-variant/20 p-6 relative overflow-hidden flex flex-col justify-between h-48 group hover:border-primary/50 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase mb-1">Total Headcount</p>
+<h3 class="font-display-lg text-4xl text-on-surface">1,284</h3>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-green-900/30 border border-green-800 text-[10px] font-bold text-green-400">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>
+                        2.4%
+                    </div>
+</div>
+<!-- Sparkline Mock -->
+<div class="h-12 w-full flex items-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<div class="flex-1 bg-primary/20 h-4 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-6 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-5 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-8 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-10 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary h-12 border-t border-primary"></div>
+</div>
+</div>
+<!-- Turnover Rate -->
+<div class="bg-surface-container border border-outline-variant/20 p-6 relative overflow-hidden flex flex-col justify-between h-48 group hover:border-error/50 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase mb-1">Turnover Rate</p>
+<h3 class="font-display-lg text-4xl text-on-surface">8.2%</h3>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-red-900/30 border border-red-800 text-[10px] font-bold text-red-400">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>
+                        0.5%
+                    </div>
+</div>
+<div class="h-12 w-full flex items-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<div class="flex-1 bg-error/20 h-10 border-t border-error/40"></div>
+<div class="flex-1 bg-error/20 h-8 border-t border-error/40"></div>
+<div class="flex-1 bg-error/20 h-9 border-t border-error/40"></div>
+<div class="flex-1 bg-error/20 h-6 border-t border-error/40"></div>
+<div class="flex-1 bg-error/20 h-7 border-t border-error/40"></div>
+<div class="flex-1 bg-error h-9 border-t border-error"></div>
+</div>
+</div>
+<!-- Budget Utilization -->
+<div class="bg-surface-container border border-outline-variant/20 p-6 relative overflow-hidden flex flex-col justify-between h-48 group hover:border-primary/50 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase mb-1">Budget Utilization</p>
+<h3 class="font-display-lg text-4xl text-on-surface">94.1%</h3>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-slate-800 border border-slate-700 text-[10px] font-bold text-on-surface-variant">
+                        NOMINAL
+                    </div>
+</div>
+<div class="h-12 w-full flex items-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<div class="flex-1 bg-primary/20 h-3 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-4 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-6 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-8 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary/20 h-9 border-t border-primary/40"></div>
+<div class="flex-1 bg-primary h-11 border-t border-primary"></div>
+</div>
+</div>
+<!-- Talent Pipeline -->
+<div class="bg-surface-container border border-outline-variant/20 p-6 relative overflow-hidden flex flex-col justify-between h-48 group hover:border-tertiary/50 transition-colors">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-secondary uppercase mb-1">Talent Pipeline</p>
+<h3 class="font-display-lg text-4xl text-on-surface">428</h3>
+</div>
+<div class="flex items-center gap-1 px-2 py-0.5 rounded-sm bg-blue-900/30 border border-blue-800 text-[10px] font-bold text-blue-400">
+<span class="material-symbols-outlined text-[12px]" data-icon="trending_up">trending_up</span>
+                        14%
+                    </div>
+</div>
+<div class="h-12 w-full flex items-end gap-1 opacity-60 group-hover:opacity-100 transition-opacity">
+<div class="flex-1 bg-tertiary/20 h-5 border-t border-tertiary/40"></div>
+<div class="flex-1 bg-tertiary/20 h-6 border-t border-tertiary/40"></div>
+<div class="flex-1 bg-tertiary/20 h-8 border-t border-tertiary/40"></div>
+<div class="flex-1 bg-tertiary/20 h-7 border-t border-tertiary/40"></div>
+<div class="flex-1 bg-tertiary/20 h-10 border-t border-tertiary/40"></div>
+<div class="flex-1 bg-tertiary h-12 border-t border-tertiary"></div>
+</div>
+</div>
+</div>
+<!-- Middle Section: Detailed Charts & Quick Links -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Main Forecast Chart -->
+<div class="lg:col-span-2 bg-surface-container border border-outline-variant/20 p-6">
+<div class="flex justify-between items-center mb-6">
+<h4 class="font-headline-md text-headline-md text-on-surface">Headcount Forecasting</h4>
+<span class="text-[10px] text-on-surface-variant font-bold uppercase tracking-widest border-b border-primary/30">Next 12 Months</span>
+</div>
+<div class="aspect-[16/7] w-full bg-surface-container-lowest border border-outline-variant/10 rounded-sm relative p-4 flex items-end gap-2 overflow-hidden">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-4 pointer-events-none opacity-10">
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+<div class="border-b border-on-surface"></div>
+</div>
+<!-- Data Points Visualization -->
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[60%]"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[65%]"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[63%]"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[70%]"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[75%]"></div>
+<div class="flex-1 bg-gradient-to-t from-primary/5 to-primary/20 border-t-2 border-primary h-[72%]"></div>
+<div class="flex-1 bg-gradient-to-t from-blue-500/10 to-blue-500/40 border-t-2 border-blue-400 border-dashed h-[80%]"></div>
+<div class="flex-1 bg-gradient-to-t from-blue-500/10 to-blue-500/40 border-t-2 border-blue-400 border-dashed h-[85%]"></div>
+<div class="flex-1 bg-gradient-to-t from-blue-500/10 to-blue-500/40 border-t-2 border-blue-400 border-dashed h-[82%]"></div>
+<div class="flex-1 bg-gradient-to-t from-blue-500/10 to-blue-500/40 border-t-2 border-blue-400 border-dashed h-[90%]"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-bold text-on-surface-variant uppercase tracking-tighter">
+<span>JAN</span><span>MAR</span><span>MAY</span><span>JUL</span><span>SEP</span><span>NOV</span>
+</div>
+</div>
+<!-- Quick Links / Actions -->
+<div class="space-y-gutter">
+<div class="bg-primary-container border border-primary/20 p-6 flex flex-col justify-between h-[calc(50%-8px)] group hover:bg-primary-container/80 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-primary text-3xl mb-4" data-icon="rocket_launch">rocket_launch</span>
+<div>
+<h4 class="font-headline-md text-on-surface mb-1">Execute Plan</h4>
+<p class="text-xs text-on-primary-container leading-relaxed">Transition the current approved scenario to active operational budget.</p>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant/20 p-6 flex flex-col justify-between h-[calc(50%-8px)] group hover:border-tertiary/40 cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-tertiary text-3xl mb-4" data-icon="hub">hub</span>
+<div>
+<h4 class="font-headline-md text-on-surface mb-1">Org Modeling</h4>
+<p class="text-xs text-on-surface-variant leading-relaxed">Simulate restructure impacts on department efficiency and budget.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- High Density Data Table Mock -->
+<div class="mt-gutter bg-surface-container border border-outline-variant/20 overflow-hidden">
+<div class="p-6 border-b border-outline-variant/10 flex justify-between items-center">
+<h4 class="font-headline-md text-headline-md text-on-surface">Departmental Health Matrix</h4>
+<div class="flex gap-2">
+<div class="h-2 w-2 rounded-full bg-primary"></div>
+<div class="h-2 w-2 rounded-full bg-tertiary"></div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-highest/30">
+<th class="px-6 py-3 font-label-caps text-label-caps text-secondary border-b border-outline-variant/10">Department</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-secondary border-b border-outline-variant/10">Capacity</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-secondary border-b border-outline-variant/10">Attrition Risk</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-secondary border-b border-outline-variant/10">Avg. Salary</th>
+<th class="px-6 py-3 font-label-caps text-label-caps text-secondary border-b border-outline-variant/10">Status</th>
+</tr>
+</thead>
+<tbody class="font-data-tabular text-data-tabular">
+<tr class="border-b border-outline-variant/5 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-3 text-on-surface">Engineering</td>
+<td class="px-6 py-3 text-on-surface-variant">92%</td>
+<td class="px-6 py-3">
+<div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-error w-1/4"></div>
+</div>
+</td>
+<td class="px-6 py-3 text-on-surface-variant">$164,200</td>
+<td class="px-6 py-3">
+<span class="px-2 py-0.5 rounded-sm bg-blue-900/30 text-blue-400 text-[10px] font-bold border border-blue-800 uppercase">Stable</span>
+</td>
+</tr>
+<tr class="bg-surface-container-lowest/20 border-b border-outline-variant/5 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-3 text-on-surface">Product Mgt</td>
+<td class="px-6 py-3 text-on-surface-variant">104%</td>
+<td class="px-6 py-3">
+<div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-error w-3/4"></div>
+</div>
+</td>
+<td class="px-6 py-3 text-on-surface-variant">$158,500</td>
+<td class="px-6 py-3">
+<span class="px-2 py-0.5 rounded-sm bg-error-container text-error text-[10px] font-bold border border-error/50 uppercase">Overcap</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-3 text-on-surface">Global Sales</td>
+<td class="px-6 py-3 text-on-surface-variant">88%</td>
+<td class="px-6 py-3">
+<div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+<div class="h-full bg-error w-1/2"></div>
+</div>
+</td>
+<td class="px-6 py-3 text-on-surface-variant">$142,000</td>
+<td class="px-6 py-3">
+<span class="px-2 py-0.5 rounded-sm bg-slate-800 text-on-surface-variant text-[10px] font-bold border border-outline-variant uppercase">Hiring</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-highest/10 flex justify-center">
+<button class="text-[10px] font-bold uppercase text-primary tracking-widest flex items-center gap-2 hover:gap-3 transition-all">
+                    View Full Matrix <span class="material-symbols-outlined text-[14px]" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 md:hidden flex justify-around items-center px-4 py-2 bg-slate-950 dark:bg-black border-t border-slate-800">
+<a class="flex flex-col items-center justify-center text-blue-400 bg-slate-900/80 rounded-lg py-1 px-4 active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-inter text-[10px] font-bold uppercase">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-inter text-[10px] font-bold uppercase">Forecast</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-inter text-[10px] font-bold uppercase">Budget</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 active:scale-95 duration-100" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-inter text-[10px] font-bold uppercase">Menu</span>
+</a>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed bottom-20 right-6 md:bottom-10 md:right-10 h-14 w-14 bg-blue-600 text-white rounded-full shadow-2xl flex items-center justify-center border border-blue-400 z-30 active:scale-95 duration-100">
+<span class="material-symbols-outlined" data-icon="add" style="font-variation-settings: 'wght' 700;">add</span>
+</button>
+</body></html>

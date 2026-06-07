@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FlexSchedule | Master Schedule</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&amp;family=Space+Grotesk:wght@300;400;600;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e4e2e1",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#393939",
+                        "inverse-surface": "#e4e2e1",
+                        "surface-container": "#1f2020",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#313030",
+                        "primary": "#fff6df",
+                        "secondary": "#c6c6c7",
+                        "secondary-fixed": "#e2e2e2",
+                        "primary-container": "#ffd700",
+                        "surface-tint": "#e9c400",
+                        "on-tertiary-container": "#605f5e",
+                        "on-secondary": "#2f3131",
+                        "on-surface-variant": "#d0c6ab",
+                        "secondary-container": "#454747",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-container": "#dcd9d9",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary": "#3a3000",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed": "#ffe16d",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "outline-variant": "#4d4732",
+                        "on-background": "#e4e2e1",
+                        "on-primary-container": "#705e00",
+                        "surface-container-highest": "#353535",
+                        "on-secondary-container": "#b4b5b5",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "surface-container-high": "#2a2a2a",
+                        "background": "#131313",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-fixed-variant": "#544600",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#e9c400",
+                        "inverse-on-surface": "#303030",
+                        "inverse-primary": "#705d00",
+                        "tertiary": "#f9f5f5",
+                        "on-primary-fixed": "#221b00",
+                        "outline": "#999077",
+                        "surface-container-low": "#1b1c1c",
+                        "surface-variant": "#353535",
+                        "on-secondary-fixed": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "touch-target-min": "48px",
+                        "xl": "40px",
+                        "container-margin": "20px",
+                        "sm": "8px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "h3": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "numeral-xl": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "numeral-xl": ["56px", {"lineHeight": "1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e4e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .industrial-border {
+            border: 2px solid #353535;
+        }
+        .active-press:active {
+            transform: translate(2px, 2px);
+        }
+        .grid-pattern {
+            background-image: radial-gradient(#353535 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-4 h-14 bg-zinc-950 docked full-width top-0 border-b-2 border-zinc-800 z-[100]">
+<div class="flex items-center gap-4">
+<button class="text-yellow-400 active:translate-y-0.5 active:translate-x-0.5 transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="text-2xl font-black text-yellow-400 italic tracking-tighter uppercase font-space-grotesk">FLEXSCHEDULE</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-space-grotesk font-black uppercase tracking-tighter text-lg text-yellow-400 hidden md:block">MASTER CONTROL</span>
+<div class="w-10 h-10 border-2 border-yellow-400 bg-zinc-800 overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional operations manager with a focused expression. The lighting is high-contrast with industrial cool tones and warm yellow rim lighting, matching a rugged tech aesthetic. The background is a blurred industrial control room with monitors showing data grids and schedules." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsojmT4qObvCrjzYIdXfX-244FjoAGKSwSDSV0AQUvzLgvXWalcN-Ui0ZT7OwSoiWGecWhKu-zcm9K4zB_M1RU76_sYQjGm04sGIId2wu-9PPB9SbRaFNmR8YvA1fe8hslLmahffSL3MulZ_scAzAKNcYBp4LCwu066B337nfs0q2v2Vvb8_v_Rcf__32nJhLRrC7b8M305KxOOlxatL3oYBmIOug5x6F2VKbFSD6nfWeEAvHZmUdu0TNlwSoStGQcdTnwPH2w-fL7"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex flex-col md:flex-row overflow-hidden pb-16 md:pb-0">
+<!-- NavigationDrawer (Sidebar on Desktop) -->
+<aside class="hidden md:flex flex-col h-full bg-zinc-950 h-full w-72 border-r-4 border-yellow-400 shrink-0">
+<div class="p-6 border-b border-zinc-800 bg-zinc-900">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-12 h-12 bg-yellow-400 flex items-center justify-center text-black font-black">OP</div>
+<div>
+<div class="font-space-grotesk font-bold uppercase text-yellow-400 leading-none">OPERATIONS LEAD</div>
+<div class="font-space-grotesk font-bold uppercase text-zinc-500 text-[10px] tracking-widest mt-1">SITE-04 COMMAND</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto">
+<div class="flex flex-col">
+<a class="flex items-center gap-4 px-6 py-4 bg-yellow-400 text-black border-none font-space-grotesk font-bold uppercase active:translate-x-1" href="#">
+<span class="material-symbols-outlined">assignment_ind</span>
+<span>MY ROSTER</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-100 border-b border-zinc-800 font-space-grotesk font-bold uppercase hover:bg-zinc-800 hover:text-yellow-400 active:translate-x-1 transition-colors" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span>TEAM CHAT</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-100 border-b border-zinc-800 font-space-grotesk font-bold uppercase hover:bg-zinc-800 hover:text-yellow-400 active:translate-x-1 transition-colors" href="#">
+<span class="material-symbols-outlined">event_available</span>
+<span>AVAILABILITY</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-100 border-b border-zinc-800 font-space-grotesk font-bold uppercase hover:bg-zinc-800 hover:text-yellow-400 active:translate-x-1 transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>PREFERENCES</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-4 px-6 py-4 text-zinc-100 border-t border-zinc-800 font-space-grotesk font-bold uppercase hover:bg-zinc-800 hover:text-yellow-400 active:translate-x-1 transition-colors" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>LOGOUT</span>
+</a>
+</div>
+</div>
+</nav>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 flex flex-col min-w-0 bg-zinc-950">
+<!-- Date Picker / Calendar Strip -->
+<div class="bg-zinc-900 border-b-2 border-zinc-800 p-4">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-4">
+<h2 class="font-h2 text-h2 text-yellow-400 uppercase tracking-tighter">OCTOBER 2024</h2>
+<div class="flex bg-zinc-950 border-2 border-zinc-800">
+<button class="p-2 border-r border-zinc-800 hover:bg-zinc-800 text-yellow-400 active-press">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 hover:bg-zinc-800 text-yellow-400 active-press">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<button class="bg-yellow-400 text-black px-6 py-2 font-space-grotesk font-black uppercase tracking-widest active-press flex items-center gap-2">
+<span class="material-symbols-outlined">add_box</span>
+                        NEW SHIFT
+                    </button>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 no-scrollbar">
+<!-- Day Items -->
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">MON</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">14</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-yellow-400 border-2 border-yellow-400 group cursor-pointer">
+<span class="font-label-caps text-label-caps text-black uppercase">TUE</span>
+<span class="font-numeral-xl text-[32px] font-black text-black leading-none mt-1">15</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">WED</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">16</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">THU</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">17</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">FRI</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">18</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400 opacity-50">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">SAT</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">19</span>
+</div>
+<div class="flex-shrink-0 w-20 py-3 flex flex-col items-center bg-zinc-950 border-2 border-zinc-800 group cursor-pointer hover:border-yellow-400 opacity-50">
+<span class="font-label-caps text-label-caps text-zinc-500 group-hover:text-yellow-400 uppercase">SUN</span>
+<span class="font-numeral-xl text-[32px] font-black text-zinc-300 group-hover:text-white leading-none mt-1">20</span>
+</div>
+</div>
+</div>
+<!-- Master Schedule Grid -->
+<div class="flex-1 overflow-auto p-4 md:p-6 grid-pattern">
+<div class="min-w-[1000px] flex flex-col gap-6">
+<!-- Shift Zone: MORNING -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 border-l-8 border-yellow-400 pl-3 py-1">
+<h3 class="font-space-grotesk font-black text-xl uppercase tracking-tighter">MORNING OPS</h3>
+<span class="bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2 py-0.5 tracking-widest">06:00 - 14:00</span>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Shift Card 1: Confirmed -->
+<div class="bg-zinc-900 border-2 border-zinc-800 group relative">
+<div class="absolute right-2 top-2 text-zinc-700 group-hover:text-yellow-400 cursor-grab">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="h-1 bg-green-500 w-full"></div>
+<div class="p-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 border border-zinc-700 overflow-hidden">
+<img alt="Marcus" class="w-full h-full object-cover" data-alt="Close up portrait of a male worker in industrial clothing, lit by blue and yellow environmental lights. The aesthetic is gritty and modern, emphasizing high reliability and a professional workforce persona. Background shows a blurred warehouse setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9_LcdTMmcXaflu9y5hYlqAUD6IDY_b_aeuvcGWQgfrj9r030zHm8FQYhDhbsOPSPQ_1Zw6gt7eY3wIDb7OBAThYFF4hSKxnbC6qjPrj7AgXoXmhkjYvHhdFUNOSLJrPMgZVohh_Fm6As-zCkdqVlaEC-E13OSe4DFpxfayQPXFHRP3u94QwwF4oxsNy8GQGcXWBcCVfr8g8z7T5LXZPaz5BuIw5XShZJNAZxDNomTXIZ0CVcybBcDKu9_9Je_jW-MbajUD1biB2da"/>
+</div>
+<div>
+<div class="font-space-grotesk font-bold uppercase text-on-surface">MARCUS R.</div>
+<div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">FLOOR SUP.</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-black font-space-grotesk text-yellow-400">06:00</div>
+<div class="bg-green-950/30 border border-green-500/50 px-2 py-0.5 text-[9px] font-bold text-green-400 uppercase">CONFIRMED</div>
+</div>
+</div>
+</div>
+<!-- Shift Card 2: Confirmed -->
+<div class="bg-zinc-900 border-2 border-zinc-800 group relative">
+<div class="absolute right-2 top-2 text-zinc-700 group-hover:text-yellow-400 cursor-grab">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="h-1 bg-green-500 w-full"></div>
+<div class="p-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 border border-zinc-700 overflow-hidden">
+<img alt="Elena" class="w-full h-full object-cover" data-alt="A professional woman with a confident expression, wearing a high-visibility industrial safety vest over a dark work shirt. The scene is lit with dramatic, cinematic lighting in a dark industrial facility. The visual style is clean, sharp, and authoritative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDfxokw2JWaQQqoYP_ZE-OuGaY3GNVE2mnksDpj47EPbp1eTrGAZ2bOUK76MQwANzdP6dAovsv4JvkDCqtmRVNkicvX32WZgma6wBi91rFA2RvnyUD-4nBlE4eGYQqBCZiVPH6fqmyIRHYuPy18F67-kt1QsqaDn0qgtb3rbF0XBAUDjdR_vVLz4N4RJe957MGc1aGer-eH7eN5PB2Pj4WeJFi4HcERswJwOK3_S2cRcvl34vL4fwSpI-w8TZKlkHSnqRT4tn0Q7a5i"/>
+</div>
+<div>
+<div class="font-space-grotesk font-bold uppercase text-on-surface">ELENA V.</div>
+<div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">LOGISTICS</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-black font-space-grotesk text-yellow-400">06:00</div>
+<div class="bg-green-950/30 border border-green-500/50 px-2 py-0.5 text-[9px] font-bold text-green-400 uppercase">CONFIRMED</div>
+</div>
+</div>
+</div>
+<!-- Shift Card 3: Urgent / Open -->
+<div class="bg-zinc-900 border-2 border-red-500 group relative">
+<div class="absolute right-2 top-2 text-red-500">
+<span class="material-symbols-outlined">warning</span>
+</div>
+<div class="h-1 bg-red-500 w-full"></div>
+<div class="p-4 flex flex-col justify-between h-full min-h-[120px]">
+<div>
+<div class="font-space-grotesk font-black text-red-500 uppercase tracking-tighter">OPEN SLOT</div>
+<div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-1">SAFETY OFFICER</div>
+</div>
+<div class="flex justify-between items-center">
+<div class="text-2xl font-black font-space-grotesk text-red-500">08:00</div>
+<button class="bg-red-500 text-black text-[10px] font-black px-2 py-1 uppercase active-press">ASSIGN</button>
+</div>
+</div>
+</div>
+<!-- Shift Card 4: Confirmed -->
+<div class="bg-zinc-900 border-2 border-zinc-800 group relative">
+<div class="absolute right-2 top-2 text-zinc-700 group-hover:text-yellow-400 cursor-grab">
+<span class="material-symbols-outlined">drag_indicator</span>
+</div>
+<div class="h-1 bg-green-500 w-full"></div>
+<div class="p-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 border border-zinc-700 overflow-hidden">
+<img alt="Chen" class="w-full h-full object-cover" data-alt="A male operations worker in a dark navy blue tech-wear uniform, standing against a background of steel beams and industrial machinery. The lighting is low-key with sharp cyan highlights, creating a gritty industrial feel. He has a neutral, professional expression." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLfpXpWasD6dCFiLq4njxQ1smLdLsPtfCW48oWyRhsEXob7xcRdrDk7fznvk6MqtoPUu2K55_FJOZWgImJbgtJp-lP-JFJ8_I9OFbAOihP2hL2AQOf1fAfhti1DQvN9TMoplgPDvS0xFuarSs2ZCK8aRHeYzlnxWFUk2BzciDFhdtQFGT_yCBsQ8ORUqq-cecKYP2l02E6xpRLJ1C_78wMO5Kv7-N6shcqTFMTpG-zmzkfdLxKxE3MTuaKgmUv6YgzLoZ-yn-dXEiN"/>
+</div>
+<div>
+<div class="font-space-grotesk font-bold uppercase text-on-surface">CHEN W.</div>
+<div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">OPERATOR</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-black font-space-grotesk text-yellow-400">06:00</div>
+<div class="bg-green-950/30 border border-green-500/50 px-2 py-0.5 text-[9px] font-bold text-green-400 uppercase">CONFIRMED</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Shift Zone: AFTERNOON -->
+<div class="flex flex-col gap-2">
+<div class="flex items-center gap-3 border-l-8 border-secondary-container pl-3 py-1">
+<h3 class="font-space-grotesk font-black text-xl uppercase tracking-tighter">AFTERNOON SHIFT</h3>
+<span class="bg-zinc-800 text-zinc-400 text-[10px] font-bold px-2 py-0.5 tracking-widest">14:00 - 22:00</span>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<!-- Pending Card -->
+<div class="bg-zinc-900 border-2 border-zinc-800 group relative">
+<div class="absolute right-2 top-2 text-zinc-700">
+<span class="material-symbols-outlined">hourglass_top</span>
+</div>
+<div class="h-1 bg-zinc-600 w-full"></div>
+<div class="p-4">
+<div class="flex items-center gap-3 mb-4">
+<div class="w-10 h-10 border border-zinc-700 overflow-hidden">
+<img alt="David" class="w-full h-full object-cover" data-alt="A man in his 40s wearing a technical utility jacket and a headset, looking off-camera. The setting is a darkened command center with yellow indicator lights in the background. The visual tone is high-contrast, moody, and hyper-realistic industrial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeqdSFp01PwmdXkUWoLUhKXKgDZar2nLUt3qMGXlzQvczBf08UUqsbsjiF5W7GcGEPnnfnLqrAz_vW7wENVsWAdsFYOGd6yV1mL3Y13cqc95Xhbmypx_5RwAjYeOARVuTsnlNj_35GUIJbMeGbatJ44m_-0dZQotlPxyQOyptqA-NFPWxhUH2otJLiGsWv-yelMEHXHgAr6ypEqG4x6_YzhlaHZrYfLWvPhEwxbudLY09kiLvj5BEzKfjCeDud4kQtadeL10RG97Ro"/>
+</div>
+<div>
+<div class="font-space-grotesk font-bold uppercase text-on-surface">DAVID L.</div>
+<div class="text-[10px] text-zinc-500 font-bold uppercase tracking-widest">DISPATCH</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="text-2xl font-black font-space-grotesk text-zinc-500">14:00</div>
+<div class="bg-zinc-800 border border-zinc-700 px-2 py-0.5 text-[9px] font-bold text-zinc-400 uppercase">PENDING</div>
+</div>
+</div>
+</div>
+<!-- Unassigned placeholder -->
+<div class="border-2 border-dashed border-zinc-800 flex flex-col items-center justify-center p-4 hover:border-yellow-400/50 cursor-pointer group">
+<span class="material-symbols-outlined text-zinc-800 group-hover:text-yellow-400 transition-colors text-4xl mb-2">add_circle</span>
+<span class="font-label-caps text-label-caps text-zinc-700 group-hover:text-yellow-400">ADD POSITION</span>
+</div>
+</div>
+</div>
+<!-- Statistics / Bento Summary Section -->
+<div class="grid grid-cols-12 gap-4 mt-8">
+<div class="col-span-8 bg-zinc-900 border-2 border-zinc-800 p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h4 class="font-space-grotesk font-black text-xl uppercase text-yellow-400">DAILY CAPACITY</h4>
+<p class="text-zinc-500 text-sm mt-1 uppercase font-bold tracking-widest">Site Throughput &amp; Staffing Ratio</p>
+</div>
+<span class="material-symbols-outlined text-zinc-700">analytics</span>
+</div>
+<div class="flex items-end gap-1 h-32 mt-6">
+<div class="flex-1 bg-yellow-400 h-[60%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-yellow-400 h-[85%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-yellow-400 h-[45%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-red-500 h-[95%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-yellow-400 h-[70%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-yellow-400 h-[80%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-yellow-400 h-[65%] border-t-2 border-white/20"></div>
+<div class="flex-1 bg-zinc-800 h-[20%]"></div>
+<div class="flex-1 bg-zinc-800 h-[15%]"></div>
+</div>
+</div>
+<div class="col-span-4 flex flex-col gap-4">
+<div class="flex-1 bg-zinc-900 border-2 border-yellow-400 p-6 flex flex-col justify-center items-center">
+<span class="font-numeral-xl text-numeral-xl text-yellow-400">92%</span>
+<span class="font-label-caps text-label-caps text-zinc-400 mt-2">TOTAL COVERAGE</span>
+</div>
+<div class="flex-1 bg-red-500 p-6 flex flex-col justify-center items-center">
+<span class="font-numeral-xl text-numeral-xl text-black">02</span>
+<span class="font-label-caps text-label-caps text-black mt-2">CRITICAL ALERTS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 bg-zinc-950 border-t-2 border-zinc-800">
+<button class="flex flex-col items-center justify-center bg-yellow-400 text-black px-2 py-1 h-full scale-100 transition-transform active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">calendar_view_month</span>
+<span class="font-space-grotesk font-bold text-[10px] uppercase tracking-widest">SCHEDULE</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 h-full hover:bg-zinc-900 transition-transform active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-space-grotesk font-bold text-[10px] uppercase tracking-widest">MARKET</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 h-full hover:bg-zinc-900 transition-transform active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-space-grotesk font-bold text-[10px] uppercase tracking-widest">PUNCH</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-400 h-full hover:bg-zinc-900 transition-transform active:translate-x-0.5 active:translate-y-0.5">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-space-grotesk font-bold text-[10px] uppercase tracking-widest">INSIGHTS</span>
+</button>
+</nav>
+</body></html>

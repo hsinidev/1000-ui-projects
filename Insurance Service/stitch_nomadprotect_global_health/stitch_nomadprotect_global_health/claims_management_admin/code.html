@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NomadProtect Admin - Claims Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neumorphic-flat {
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.05), -8px -8px 16px rgba(255, 255, 255, 0.8);
+        }
+        .neumorphic-inset {
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.05), inset -4px -4px 8px rgba(255, 255, 255, 0.8);
+        }
+        .neumorphic-button {
+            box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.08), -4px -4px 10px rgba(255, 255, 255, 0.9);
+            transition: all 0.2s ease-in-out;
+        }
+        .neumorphic-button:active {
+            box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.1), inset -2px -2px 5px rgba(255, 255, 255, 0.9);
+            transform: scale(0.98);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#f4f2ff",
+                        "tertiary-fixed-dim": "#c5c7c8",
+                        "surface-dim": "#d5d8f9",
+                        "secondary-fixed": "#f4dfcb",
+                        "primary-fixed": "#d7e2ff",
+                        "surface-tint": "#005cbc",
+                        "surface-variant": "#dee0ff",
+                        "tertiary": "#5a5c5d",
+                        "secondary": "#6b5c4c",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#241a0e",
+                        "inverse-surface": "#2b2f48",
+                        "tertiary-fixed": "#e1e3e4",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbf8ff",
+                        "on-background": "#161a32",
+                        "secondary-fixed-dim": "#d7c3b0",
+                        "surface-bright": "#fbf8ff",
+                        "surface-container": "#ececff",
+                        "background": "#fbf8ff",
+                        "primary-container": "#0072e5",
+                        "on-tertiary-container": "#fcfdfe",
+                        "on-surface-variant": "#414754",
+                        "on-primary": "#ffffff",
+                        "surface-container-high": "#e5e6ff",
+                        "surface-container-highest": "#dee0ff",
+                        "on-tertiary-fixed-variant": "#454748",
+                        "on-tertiary-fixed": "#191c1d",
+                        "on-secondary-fixed-variant": "#524436",
+                        "on-primary-fixed-variant": "#004590",
+                        "inverse-primary": "#abc7ff",
+                        "tertiary-container": "#737576",
+                        "on-primary-container": "#fefcff",
+                        "secondary-container": "#f4dfcb",
+                        "primary": "#005ab7",
+                        "error": "#ba1a1a",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-fixed": "#001b3f",
+                        "outline-variant": "#c1c6d7",
+                        "primary-fixed-dim": "#abc7ff",
+                        "on-secondary": "#ffffff",
+                        "inverse-on-surface": "#f0efff",
+                        "on-error-container": "#93000a",
+                        "error-container": "#ffdad6",
+                        "outline": "#717786",
+                        "on-surface": "#161a32",
+                        "on-secondary-container": "#716252"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "sm": "12px",
+                        "gutter": "24px",
+                        "base": "8px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "xs": "4px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "headline-md": ["Plus Jakarta Sans"],
+                        "headline-lg": ["Plus Jakarta Sans"],
+                        "body-lg": ["Plus Jakarta Sans"],
+                        "display-lg": ["Plus Jakarta Sans"],
+                        "body-md": ["Plus Jakarta Sans"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "label-md": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-[#F5F5F0]/80 backdrop-blur-xl border-b border-white/20 shadow-[0_4px_30px_rgba(0,0,0,0.05)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<span class="text-xl font-extrabold text-[#007FFF] font-display-lg tracking-tight">NomadProtect</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<span class="text-primary font-bold font-label-md cursor-pointer">Explorer</span>
+<span class="text-slate-500 font-label-md cursor-pointer hover:text-primary transition-colors">Visa</span>
+<span class="text-slate-500 font-label-md cursor-pointer hover:text-primary transition-colors">Care</span>
+<span class="text-primary font-bold font-label-md cursor-pointer border-b-2 border-primary">Claims</span>
+</div>
+<div class="h-10 w-10 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Admin Profile" data-alt="A professional headshot of a senior claims administrator in a bright, modern office environment. The person has a friendly but authoritative expression, lit by soft natural light from large windows. The overall aesthetic is clean and high-end, utilizing the brand's soft light-mode palette with subtle azure blue highlights in the background decor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATHxWWuWQ6VFH776yWDpHV5LVvLhaEatpIYJT6BT79d8TWOgdU1tVg31pumHq8ZtKYBqWQOJ2Fq02DN5Q9lUUsVYsf9gpv6fAt2rnTct51rSHxOaBrEhzsd3I-emmptyLj2RUecusQeGOCdsA_FCpWsqeyqQdfIYd9ITjC245dmUAhw_kDgWbLlMGwVyXNWQEh4GOL-ZlPMCETBYe3jy0vEvnhIefhERrwGtnd-5YYX6HzCKkaq3Ap-AFCpcazlee3W8ZzwFTTWw"/>
+</div>
+</div>
+</header>
+<!-- Sidebar Navigation -->
+<aside class="fixed inset-y-0 left-0 w-80 z-[60] p-6 bg-[#F5F5F0] rounded-r-3xl h-full shadow-2xl translate-x-[-100%] lg:translate-x-0 transition-transform duration-300">
+<div class="flex flex-col h-full">
+<div class="mb-12 pt-16">
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-white/60 neumorphic-flat mb-8">
+<img alt="Alex Walker" class="w-12 h-12 rounded-full border-2 border-primary" data-alt="A detailed closeup of a digital nomad's professional profile picture, showing a man with a slight beard wearing a crisp linen shirt. The lighting is warm and golden, suggesting a high-end Mediterranean travel setting. The background is softly blurred to emphasize the subject, maintaining the clean, adventurous, and premium brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOwqtpnwm9ff83yiquYQq3skFMXbVu1CF4WZ5imd7CFHsgiQf1vnu-NzFa5EXBOhQEc5Ehr9OKaHsv3GmL-1_CBN8SOr1i1veA1mANJR-RQPXbuNDoKfNaDpSkCnv_1M-_K_iPzobcXoaOUzdQPQX99xl0cg33K59IATMDNZPpCcNsNwGd7gMF4Y03fh7i73brX-Y5WjqyvpBYA1-4Ch1dqkYoxB3A2U2qA9EWO9Wr6rP9a6EWsQO453s3Lp4zF8HcrzLzkUlH1w"/>
+<div>
+<p class="font-headline-md text-sm text-on-surface">Alex Walker</p>
+<p class="text-xs text-slate-500">Premium Global Plan</p>
+</div>
+</div>
+<nav class="space-y-2">
+<div class="flex items-center gap-3 p-3 text-slate-600 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined">policy</span>
+<span class="font-label-md">My Policies</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-slate-600 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined">badge</span>
+<span class="font-label-md">Offline ID Card</span>
+</div>
+<div class="flex items-center gap-3 p-3 bg-white/60 text-[#007FFF] font-bold rounded-xl neumorphic-flat cursor-default">
+<span class="material-symbols-outlined">payments</span>
+<span class="font-label-md">Claims</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-slate-600 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined">contact_emergency</span>
+<span class="font-label-md">Emergency contacts</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-slate-600 hover:translate-x-2 transition-transform duration-300 cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md">Settings</span>
+</div>
+</nav>
+</div>
+<div class="mt-auto p-4 rounded-xl bg-primary-container text-on-primary-container shadow-lg">
+<p class="font-label-sm opacity-80 mb-1">Status</p>
+<p class="font-headline-md text-base">Active until Dec 2025</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-80 pt-24 px-8 pb-32 min-h-screen">
+<div class="max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+<div>
+<h1 class="font-display-lg text-4xl text-on-background mb-2">Claims Management</h1>
+<p class="font-body-lg text-slate-500">Monitor and process nomadic insurance claims with precision.</p>
+</div>
+<div class="flex gap-4">
+<button class="neumorphic-button bg-white px-6 py-3 rounded-2xl font-label-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">download</span> Export Report
+                    </button>
+<button class="neumorphic-button bg-primary px-6 py-3 rounded-2xl font-label-md text-on-primary flex items-center gap-2">
+<span class="material-symbols-outlined">add</span> New Entry
+                    </button>
+</div>
+</div>
+<!-- Bento Filter Section -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-10">
+<div class="md:col-span-1 p-6 rounded-[32px] bg-white neumorphic-flat">
+<label class="font-label-sm text-slate-400 block mb-3">Status</label>
+<div class="neumorphic-inset rounded-xl p-3 flex justify-between items-center bg-surface-container-low cursor-pointer">
+<span class="font-label-md text-on-surface">All Statuses</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 rounded-[32px] bg-white neumorphic-flat">
+<label class="font-label-sm text-slate-400 block mb-3">Region</label>
+<div class="neumorphic-inset rounded-xl p-3 flex justify-between items-center bg-surface-container-low cursor-pointer">
+<span class="font-label-md text-on-surface">Southeast Asia</span>
+<span class="material-symbols-outlined text-slate-400">expand_more</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 rounded-[32px] bg-white neumorphic-flat">
+<label class="font-label-sm text-slate-400 block mb-3">Urgency</label>
+<div class="flex gap-2">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm">High</span>
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm">Medium</span>
+<span class="px-3 py-1 rounded-full bg-surface-container-high text-slate-500 font-label-sm">Low</span>
+</div>
+</div>
+<div class="md:col-span-1 p-6 rounded-[32px] bg-white neumorphic-flat flex items-center justify-center">
+<div class="w-full neumorphic-inset rounded-xl p-3 flex items-center gap-3 bg-surface-container-low">
+<span class="material-symbols-outlined text-slate-400">search</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-label-md placeholder-slate-400" placeholder="Search Claim ID..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Detailed Data Table -->
+<div class="bg-[#F5F5F0] rounded-[40px] p-8 neumorphic-flat overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-separate border-spacing-y-4">
+<thead>
+<tr class="text-slate-400 font-label-sm uppercase tracking-widest">
+<th class="pb-4 px-4">Claimant</th>
+<th class="pb-4 px-4">Claim ID</th>
+<th class="pb-4 px-4">Category</th>
+<th class="pb-4 px-4">Region</th>
+<th class="pb-4 px-4">Status</th>
+<th class="pb-4 px-4">Amount</th>
+<th class="pb-4 px-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1 -->
+<tr class="bg-white/70 hover:bg-white transition-colors group">
+<td class="py-5 px-4 rounded-l-[24px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">SM</div>
+<div>
+<p class="font-label-md">Sarah Miller</p>
+<p class="text-xs text-slate-400">sarah.m@nomad.io</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-4 font-label-md text-slate-500">NP-99201</td>
+<td class="py-5 px-4">
+<span class="px-3 py-1 rounded-full bg-surface-container text-primary font-label-sm">Medical</span>
+</td>
+<td class="py-5 px-4 font-body-md">Bali, Indonesia</td>
+<td class="py-5 px-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="font-label-md">Pending</span>
+</div>
+</td>
+<td class="py-5 px-4 font-headline-md text-base">$1,240.00</td>
+<td class="py-5 px-4 rounded-r-[24px] text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-9 h-9 rounded-full neumorphic-button bg-surface-container-lowest text-primary flex items-center justify-center" title="Request Info">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-error-container text-error flex items-center justify-center" title="Reject">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-primary text-white flex items-center justify-center" title="Approve">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="bg-white/70 hover:bg-white transition-colors group">
+<td class="py-5 px-4 rounded-l-[24px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-secondary-fixed flex items-center justify-center text-secondary font-bold">JK</div>
+<div>
+<p class="font-label-md">James Kim</p>
+<p class="text-xs text-slate-400">j.kim@freelance.com</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-4 font-label-md text-slate-500">NP-99188</td>
+<td class="py-5 px-4">
+<span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container font-label-sm">Travel Tech</span>
+</td>
+<td class="py-5 px-4 font-body-md">Berlin, Germany</td>
+<td class="py-5 px-4">
+<div class="flex items-center gap-2 text-slate-400">
+<span class="w-2 h-2 rounded-full bg-slate-300"></span>
+<span class="font-label-md">Processing</span>
+</div>
+</td>
+<td class="py-5 px-4 font-headline-md text-base">$850.50</td>
+<td class="py-5 px-4 rounded-r-[24px] text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-9 h-9 rounded-full neumorphic-button bg-surface-container-lowest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-error-container text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="bg-white/70 hover:bg-white transition-colors group">
+<td class="py-5 px-4 rounded-l-[24px]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-tertiary-fixed flex items-center justify-center text-tertiary font-bold">LW</div>
+<div>
+<p class="font-label-md">Lina Wong</p>
+<p class="text-xs text-slate-400">lina@digitalstudio.cc</p>
+</div>
+</div>
+</td>
+<td class="py-5 px-4 font-label-md text-slate-500">NP-99175</td>
+<td class="py-5 px-4">
+<span class="px-3 py-1 rounded-full bg-error-container text-error font-label-sm">Emergency</span>
+</td>
+<td class="py-5 px-4 font-body-md">Lisbon, Portugal</td>
+<td class="py-5 px-4">
+<div class="flex items-center gap-2 text-error">
+<span class="w-2 h-2 rounded-full bg-error animate-ping"></span>
+<span class="font-label-md">Urgent</span>
+</div>
+</td>
+<td class="py-5 px-4 font-headline-md text-base">$4,900.00</td>
+<td class="py-5 px-4 rounded-r-[24px] text-right">
+<div class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="w-9 h-9 rounded-full neumorphic-button bg-surface-container-lowest text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">info</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-error-container text-error flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">close</span>
+</button>
+<button class="w-9 h-9 rounded-full neumorphic-button bg-primary text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">check</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="mt-8 flex justify-between items-center px-4">
+<p class="font-label-sm text-slate-400">Showing 1-10 of 248 claims</p>
+<div class="flex gap-2">
+<button class="w-10 h-10 rounded-xl neumorphic-button bg-white text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-10 h-10 rounded-xl neumorphic-button bg-primary text-white flex items-center justify-center font-label-md">1</button>
+<button class="w-10 h-10 rounded-xl neumorphic-button bg-white text-slate-600 flex items-center justify-center font-label-md">2</button>
+<button class="w-10 h-10 rounded-xl neumorphic-button bg-white text-slate-600 flex items-center justify-center font-label-md">3</button>
+<button class="w-10 h-10 rounded-xl neumorphic-button bg-white text-slate-400 flex items-center justify-center">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only for major actions on this page) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-primary text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl">priority_high</span>
+</button>
+</body></html>
