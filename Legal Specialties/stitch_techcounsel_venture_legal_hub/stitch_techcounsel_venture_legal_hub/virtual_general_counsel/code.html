@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TechCounsel - Virtual GC</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fbf8ff;
+        }
+        .font-space-grotesk {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#e1e1ef",
+                        "surface": "#fbf8ff",
+                        "secondary-fixed-dim": "#b7c8e1",
+                        "surface-tint": "#004ced",
+                        "surface-container-low": "#f3f2ff",
+                        "surface-container-high": "#e7e7f5",
+                        "on-tertiary-container": "#dde4ff",
+                        "surface-container": "#ededfb",
+                        "outline-variant": "#c3c5d9",
+                        "surface-dim": "#d9d9e7",
+                        "secondary-fixed": "#d3e4fe",
+                        "primary-fixed-dim": "#b7c4ff",
+                        "on-surface-variant": "#434656",
+                        "primary": "#003ec7",
+                        "tertiary-fixed-dim": "#bec6e0",
+                        "primary-container": "#0052ff",
+                        "tertiary-fixed": "#dae2fd",
+                        "on-primary-fixed-variant": "#0038b6",
+                        "surface-bright": "#fbf8ff",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-container": "#54647a",
+                        "tertiary": "#464e64",
+                        "inverse-on-surface": "#f0effe",
+                        "secondary-container": "#d0e1fb",
+                        "on-error": "#ffffff",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#3f465c",
+                        "inverse-primary": "#b7c4ff",
+                        "secondary": "#505f76",
+                        "on-primary-container": "#dfe3ff",
+                        "on-secondary-fixed-variant": "#38485d",
+                        "surface-variant": "#e1e1ef",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed": "#131b2e",
+                        "on-background": "#191b25",
+                        "tertiary-container": "#5e667d",
+                        "background": "#fbf8ff",
+                        "outline": "#737688",
+                        "inverse-surface": "#2e303a",
+                        "primary-fixed": "#dde1ff",
+                        "on-primary-fixed": "#001452",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#191b25",
+                        "error": "#ba1a1a",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed": "#0b1c30"
+                    },
+                    "spacing": {
+                        "md": "24px",
+                        "xl": "64px",
+                        "grid-gutter": "20px",
+                        "xs": "8px",
+                        "sm": "16px",
+                        "grid-margin": "32px",
+                        "base": "4px",
+                        "lg": "40px"
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-background min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-white/70 backdrop-blur-lg border-b border-slate-200 shadow-[0px_10px_30px_rgba(0,82,255,0.1)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="menu">menu</span>
+<h1 class="text-xl font-bold tracking-tighter text-blue-600 font-space-grotesk">TechCounsel</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-slate-500" data-icon="notifications">notifications</span>
+<div class="w-8 h-8 rounded-full bg-primary-container flex items-center justify-center overflow-hidden border border-slate-200">
+<img alt="User" data-alt="A high-quality professional portrait of a modern executive in a bright, airy office environment. The subject is wearing a tailored navy blazer over a crisp white shirt, looking directly at the camera with confidence. The background is a blurred minimalist office with floor-to-ceiling windows and soft morning light. The overall aesthetic is clean, high-end, and perfectly aligned with a professional legal-tech platform's corporate identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJlAkJhcTIldv-BmG_0D6Y-ARM1Yd48yeHiTAPpnQPfD8Ajv1LErsPTZ4sSsOnt-y2q6vGbSzvIuTKZA59ii0A2oXmXLiMlRROdc3NTzdgqglJgqmbuXPmG8uHZ30b6Ar5puFhlqG9c4FhL0nd8yGAwxsHDjS1SqWJ_3jZ1moRZJKtJhjaiAfS_28sXpx-2qkPUoM9yTQ1hatfqDn_OPDMFVWlcr3kbxXAodYs0BeCz1Wih_vKwrcsRfwuoyiYD-aHlRataMtuBrIQ"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-7xl mx-auto">
+<!-- Hero Section / Context Header -->
+<section class="mb-8">
+<h2 class="font-space-grotesk text-3xl font-bold text-on-surface tracking-tight mb-2">Virtual GC Dashboard</h2>
+<p class="text-slate-500 font-medium">Managing 12 active legal workstreams for <span class="text-primary">Apex Ventures</span></p>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- CTA Primary: Request a Contract Review (High Priority) -->
+<div class="md:col-span-8 group cursor-pointer relative overflow-hidden bg-primary-container rounded-2xl p-8 flex flex-col justify-between min-h-[220px] shadow-[0px_10px_30px_rgba(0,82,255,0.1)] transition-all hover:scale-[1.01] active:scale-95 duration-200 border border-white/10">
+<div class="relative z-10">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="draw" data-weight="fill" style="font-variation-settings: 'FILL' 1;">draw</span>
+<span class="bg-white/20 text-white text-[10px] font-bold uppercase tracking-widest px-2 py-1 rounded">Priority Action</span>
+</div>
+<h3 class="font-space-grotesk text-2xl font-bold text-white mb-2">Request a Contract Review</h3>
+<p class="text-blue-100 max-w-md">Submit any legal document for 24-hour turnaround by our specialist startup attorneys.</p>
+</div>
+<div class="relative z-10 mt-6 flex items-center text-white font-bold group-hover:translate-x-2 transition-transform">
+                    Start Review Process <span class="material-symbols-outlined ml-2" data-icon="arrow_forward">arrow_forward</span>
+</div>
+<!-- Glassy overlay pattern -->
+<div class="absolute top-0 right-0 w-64 h-64 bg-white/10 blur-3xl rounded-full -mr-20 -mt-20"></div>
+</div>
+<!-- Active Tasks (Status Tracking) -->
+<div class="md:col-span-4 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-space-grotesk text-lg font-bold">Active Tasks</h3>
+<span class="text-primary text-xs font-bold font-space-grotesk uppercase">View All</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-start p-3 bg-slate-50 rounded-xl border border-slate-100">
+<div class="w-10 h-10 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600">
+<span class="material-symbols-outlined text-xl" data-icon="history_edu">history_edu</span>
+</div>
+<div>
+<p class="text-sm font-bold">Series B SPA Review</p>
+<p class="text-[11px] text-slate-500">Awaiting Partner Signature</p>
+</div>
+</div>
+<div class="flex gap-4 items-start p-3 hover:bg-slate-50 rounded-xl transition-colors">
+<div class="w-10 h-10 rounded-lg bg-blue-100 flex items-center justify-center text-blue-600">
+<span class="material-symbols-outlined text-xl" data-icon="verified">verified</span>
+</div>
+<div>
+<p class="text-sm font-bold">Privacy Policy Update</p>
+<p class="text-[11px] text-slate-500">In Progress - 60% Complete</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Compliance Calendar -->
+<div class="md:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm overflow-hidden relative">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-space-grotesk text-lg font-bold">Compliance Calendar</h3>
+<div class="flex gap-2">
+<button class="p-1 hover:bg-slate-100 rounded transition-colors"><span class="material-symbols-outlined text-slate-400" data-icon="chevron_left">chevron_left</span></button>
+<button class="p-1 hover:bg-slate-100 rounded transition-colors"><span class="material-symbols-outlined text-slate-400" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-7 gap-2 text-center text-[10px] font-bold text-slate-400 uppercase tracking-tighter mb-4">
+<span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span>
+</div>
+<div class="grid grid-cols-7 gap-2">
+<!-- Placeholder calendar days -->
+<div class="aspect-square flex items-center justify-center text-xs text-slate-300">12</div>
+<div class="aspect-square flex items-center justify-center text-xs text-slate-300">13</div>
+<div class="aspect-square flex items-center justify-center text-xs text-slate-300">14</div>
+<div class="aspect-square flex items-center justify-center text-xs font-bold text-on-surface bg-slate-50 rounded-lg">15</div>
+<div class="aspect-square flex items-center justify-center text-xs font-bold text-on-surface relative">
+                        16
+                        <span class="absolute bottom-1 left-1/2 -translate-x-1/2 w-1 h-1 bg-error rounded-full"></span>
+</div>
+<div class="aspect-square flex items-center justify-center text-xs font-bold text-on-surface">17</div>
+<div class="aspect-square flex items-center justify-center text-xs font-bold text-on-surface">18</div>
+</div>
+<div class="mt-6 pt-4 border-t border-slate-100 flex items-center gap-3">
+<div class="w-2 h-2 bg-error rounded-full animate-pulse"></div>
+<p class="text-xs font-medium text-slate-600"><span class="font-bold text-on-surface">Upcoming:</span> GDPR Audit Deadline (Nov 16)</p>
+</div>
+</div>
+<!-- Legal Templates Library -->
+<div class="md:col-span-6 bg-white border border-slate-200 rounded-2xl p-6 shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-space-grotesk text-lg font-bold">Legal Templates Library</h3>
+<span class="material-symbols-outlined text-slate-400" data-icon="search">search</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 border border-slate-100 rounded-xl hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3 block group-hover:scale-110 transition-transform" data-icon="folder_zip">folder_zip</span>
+<p class="text-sm font-bold mb-1">Employment</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">12 Assets</p>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3 block group-hover:scale-110 transition-transform" data-icon="inventory">inventory</span>
+<p class="text-sm font-bold mb-1">Fundraising</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">8 Assets</p>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3 block group-hover:scale-110 transition-transform" data-icon="policy">policy</span>
+<p class="text-sm font-bold mb-1">IP &amp; Privacy</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">5 Assets</p>
+</div>
+<div class="p-4 border border-slate-100 rounded-xl hover:border-primary/30 transition-all cursor-pointer group">
+<span class="material-symbols-outlined text-primary mb-3 block group-hover:scale-110 transition-transform" data-icon="quick_reference_all">quick_reference_all</span>
+<p class="text-sm font-bold mb-1">M&amp;A Kit</p>
+<p class="text-[10px] text-slate-400 uppercase tracking-widest font-bold">14 Assets</p>
+</div>
+</div>
+</div>
+<!-- AI Legal Assistant Module -->
+<div class="md:col-span-12 bg-slate-900 text-white rounded-3xl p-8 overflow-hidden relative">
+<div class="flex flex-col md:flex-row gap-8 items-center relative z-10">
+<div class="flex-1">
+<div class="inline-flex items-center gap-2 bg-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest mb-6">
+<span class="material-symbols-outlined text-xs" data-icon="auto_awesome" data-weight="fill" style="font-variation-settings: 'FILL' 1;">auto_awesome</span> AI Co-Counsel Active
+                        </div>
+<h2 class="font-space-grotesk text-3xl font-bold mb-4 leading-tight">Need a quick legal sanity check?</h2>
+<p class="text-slate-400 mb-6 max-w-lg">Ask our specialized AI trained on venture legal standards for quick guidance on non-binding terms or standard clauses.</p>
+<div class="flex gap-4">
+<input class="flex-1 bg-white/10 border border-white/20 rounded-xl px-6 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Type your legal question..." type="text"/>
+<button class="bg-primary hover:bg-blue-700 px-6 py-3 rounded-xl font-bold transition-colors">Send</button>
+</div>
+</div>
+<div class="w-full md:w-1/3">
+<img alt="Tech Abstract" class="rounded-2xl opacity-80" data-alt="A futuristic, high-tech abstract visualization of complex neural networks and crystalline geometric patterns in shades of deep electric blue and obsidian black. The imagery features glowing lines of code and data particles floating in a three-dimensional dark void, creating a sense of advanced intelligence and cryptographic security. The lighting is dramatic, with cold neon highlights casting sharp reflections on polished surfaces, embodying a modern elite tech legal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtsPV_Pm6cjnJG_Wq4nW7njZ-JPXcixe8ywXNfU86QMwD3BAIFGUYyxIuY-HhELbhiMFq_CT3wOsuKLANPsxOKDzHBqLG7WSMRzsGmqGSOv2bzhtAJTonS1emqE8H6Uq8Z0XNvN945KP8rfz10vw4wqhtD5VYRhrh4R5HsOPyFWZr8eYqzCjyIhQjDnZ1NN2t4aU0_4EcbVxWHvPmtAjD67IGyfHYGHXJ2vGPUuHt1kyT07nrnMda2lPoywvmh9QbwZqHlInAi6c7O"/>
+</div>
+</div>
+<!-- Background decoration -->
+<div class="absolute -bottom-24 -right-24 w-96 h-96 bg-primary/20 blur-[120px] rounded-full"></div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Optimization) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-white/80 backdrop-blur-xl border-t border-slate-200 shadow-[0px_-10px_30px_rgba(0,82,255,0.05)] md:hidden">
+<div class="flex flex-col items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Funding</span>
+</div>
+<div class="flex flex-col items-center justify-center text-blue-600 bg-blue-50/50 rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" data-icon="gavel" data-weight="fill" style="font-variation-settings: 'FILL' 1;">gavel</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Legal</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="calculate">calculate</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Sim</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-space-grotesk text-[10px] font-medium uppercase tracking-widest mt-1">Profile</span>
+</div>
+</nav>
+<!-- NavigationDrawer (Desktop Side Rail - Hidden on Mobile) -->
+<aside class="hidden md:flex fixed top-0 left-0 h-full w-20 hover:w-64 transition-all duration-300 bg-white border-r border-slate-100 z-40 overflow-hidden flex-col pt-24 group">
+<div class="flex flex-col gap-2 px-3">
+<div class="flex items-center gap-4 p-3 bg-blue-600 text-white rounded-xl cursor-pointer">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-space-grotesk text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Virtual GC</span>
+</div>
+<div class="flex items-center gap-4 p-3 text-slate-600 hover:bg-slate-50 rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-space-grotesk text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Equity Packages</span>
+</div>
+<div class="flex items-center gap-4 p-3 text-slate-600 hover:bg-slate-50 rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-space-grotesk text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Series Funding</span>
+</div>
+<div class="flex items-center gap-4 p-3 text-slate-600 hover:bg-slate-50 rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-space-grotesk text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Data Privacy</span>
+</div>
+<div class="mt-auto mb-10 flex items-center gap-4 p-3 text-slate-600 hover:bg-slate-50 rounded-xl cursor-pointer transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-space-grotesk text-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">Settings</span>
+</div>
+</div>
+</aside>
+</body></html>

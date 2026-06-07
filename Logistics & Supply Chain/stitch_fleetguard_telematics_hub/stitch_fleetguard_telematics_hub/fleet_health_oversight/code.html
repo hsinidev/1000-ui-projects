@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TITAN SYSTEMS | Vehicle Health Diagnostics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            overflow-x: hidden;
+        }
+        /* Custom scrollbar for industrial feel */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #353535; border: 2px solid #0e0e0e; }
+        ::-webkit-scrollbar-thumb:hover { background: #ff6700; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#131313",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "surface-container-highest": "#353535",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-tint": "#ffb595",
+                        "surface-container": "#20201f",
+                        "on-tertiary-container": "#303030",
+                        "primary-fixed-dim": "#ffb595",
+                        "primary": "#ffb595",
+                        "on-surface-variant": "#e3bfb1",
+                        "surface-dim": "#131313",
+                        "secondary-fixed": "#e3e2e2",
+                        "outline-variant": "#5a4136",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "primary-container": "#ff6700",
+                        "on-secondary": "#2f3131",
+                        "inverse-on-surface": "#313030",
+                        "tertiary": "#c9c6c5",
+                        "on-secondary-container": "#b8b8b8",
+                        "inverse-primary": "#a23f00",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary": "#313030",
+                        "secondary-container": "#484949",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "secondary": "#c6c6c6",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-primary-container": "#561e00",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "outline": "#aa8a7d",
+                        "inverse-surface": "#e5e2e1",
+                        "background": "#131313",
+                        "tertiary-container": "#999797",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed": "#ffdbcd",
+                        "on-primary-fixed": "#351000",
+                        "on-surface": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "on-primary": "#571e00",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container-lowest": "#0e0e0e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "1rem",
+                        "stack-lg": "2rem",
+                        "gutter": "1.5rem",
+                        "margin": "2rem",
+                        "stack-sm": "0.5rem",
+                        "touch-target-min": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "data-display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "data-display": ["40px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md flex">
+<!-- SideNavBar (Shared Component) -->
+<aside class="h-screen w-64 border-r-2 border-zinc-800 sticky top-0 flex flex-col bg-zinc-950">
+<div class="flex flex-col p-4 gap-4 flex-1">
+<div class="mb-8">
+<h1 class="text-2xl font-black text-orange-600 tracking-widest">TITAN FLEET</h1>
+<p class="font-inter font-black uppercase tracking-tighter text-sm text-zinc-500">INDUSTRIAL TELEMATICS</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 p-3 transition-all duration-75 text-zinc-500 hover:text-zinc-200 border-2 border-transparent hover:bg-zinc-900 hover:border-zinc-700" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-inter font-black uppercase tracking-tighter text-sm">Fleet Oversight</span>
+</a>
+<a class="flex items-center gap-3 p-3 transition-all duration-75 bg-zinc-900 text-orange-600 border-2 border-orange-600 shadow-[4px_4px_0px_0px_rgba(234,88,12,1)] translate-x-1 translate-y-1" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-inter font-black uppercase tracking-tighter text-sm">Telematics Data</span>
+</a>
+<a class="flex items-center gap-3 p-3 transition-all duration-75 text-zinc-500 hover:text-zinc-200 border-2 border-transparent hover:bg-zinc-900 hover:border-zinc-700" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-inter font-black uppercase tracking-tighter text-sm">Support Hub</span>
+</a>
+<a class="flex items-center gap-3 p-3 transition-all duration-75 text-zinc-500 hover:text-zinc-200 border-2 border-transparent hover:bg-zinc-900 hover:border-zinc-700" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-inter font-black uppercase tracking-tighter text-sm">Admin Panel</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-orange-600 text-zinc-950 font-black p-3 flex items-center justify-center gap-2 active:translate-x-1 active:translate-y-1 transition-all">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+                    EMERGENCY OVERRIDE
+                </button>
+</div>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="flex-1 flex flex-col min-h-screen">
+<!-- TopAppBar (Shared Component) -->
+<header class="w-full border-b-2 border-zinc-800 sticky top-0 z-50 bg-zinc-950 flex justify-between items-center px-8 h-16">
+<div class="flex items-center gap-4">
+<span class="font-black text-xl text-zinc-100">TITAN SYSTEMS v4.2</span>
+<span class="h-4 w-[2px] bg-zinc-700"></span>
+<span class="font-inter font-bold uppercase text-xs tracking-widest text-orange-600">Diagnostics: AX-909</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<input class="bg-zinc-900 border-2 border-zinc-800 text-zinc-100 text-xs px-4 py-1.5 focus:border-orange-600 focus:ring-0 w-64 uppercase font-bold tracking-widest" placeholder="SEARCH SYSTEM..." type="text"/>
+<span class="material-symbols-outlined absolute right-2 top-1.5 text-zinc-500" data-icon="search">search</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-zinc-400 hover:text-orange-500 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="text-zinc-400 hover:text-orange-500 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<button class="text-zinc-400 hover:text-orange-500 transition-colors active:scale-95">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+</button>
+<img alt="Manager portrait" class="w-8 h-8 object-cover border-2 border-zinc-700" data-alt="A professional portrait of a senior fleet operations manager wearing a dark tactical polo shirt. The lighting is harsh and dramatic, creating high-contrast shadows against a dark industrial background of metal grates and glowing amber status lights. The manager has a focused, no-nonsense expression, embodying a high-performance, utilitarian professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ2Rt-wgJEr17TpL4NiYpH5xgjTzN-1zSnT_pzOmeKH5D83t7IkGly82j_U0Vq3A4DMIIHIza2fJEK-0TIEd-5AiTU3JeldZ3gR5bs28jfzG1-rFHdhmSguLhc1g1MhnKeLxIAnQn-s1qvaqNr0JrBaSKts5Q2WF0PB5JRVraiy093J0jLaTcxXWy4JMgqu5gZkYpcBrNJe148DEQXYakGmHDY9BW-xHM4HyPYjd4JeG6-eXoTs7yLQULP59SJFFfoysadTNJYXtk"/>
+</div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-8 grid grid-cols-12 gap-gutter flex-1 bg-surface-container-lowest">
+<!-- Left Panel: Live Sensor Data -->
+<div class="col-span-3 flex flex-col gap-gutter">
+<section class="border-2 border-zinc-800 bg-zinc-900 p-4">
+<div class="flex items-center justify-between mb-4 border-b-2 border-zinc-800 pb-2">
+<h2 class="font-headline-md text-headline-md text-orange-600 uppercase">System Status</h2>
+<span class="bg-orange-600 text-zinc-950 text-[10px] font-black px-2 py-0.5">NOMINAL</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs font-black uppercase mb-1">
+<span>Engine Heat</span>
+<span class="text-orange-600">198°F</span>
+</div>
+<div class="h-4 bg-zinc-800 border border-zinc-700 p-0.5">
+<div class="h-full bg-orange-600 w-[72%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-black uppercase mb-1">
+<span>Oil Pressure</span>
+<span class="text-zinc-100">45 PSI</span>
+</div>
+<div class="h-4 bg-zinc-800 border border-zinc-700 p-0.5">
+<div class="h-full bg-zinc-100 w-[45%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs font-black uppercase mb-1">
+<span>Brake Wear</span>
+<span class="text-error">CRITICAL</span>
+</div>
+<div class="h-4 bg-zinc-800 border border-zinc-700 p-0.5">
+<div class="h-full bg-error w-[89%]"></div>
+</div>
+</div>
+</div>
+</section>
+<section class="border-2 border-zinc-800 bg-zinc-900 p-4 flex-1">
+<div class="mb-4 border-b-2 border-zinc-800 pb-2">
+<h2 class="font-headline-md text-headline-md text-zinc-100 uppercase">Sensor Logs</h2>
+</div>
+<div class="space-y-3">
+<div class="p-2 border border-zinc-800 bg-zinc-950 font-mono text-[10px]">
+<span class="text-orange-600">[14:02:11]</span> ABS SENSOR CALIBRATION COMPLETE
+                        </div>
+<div class="p-2 border border-zinc-800 bg-zinc-950 font-mono text-[10px]">
+<span class="text-orange-600">[13:58:45]</span> FUEL INJECTOR 4 VARIANCE DETECTED
+                        </div>
+<div class="p-2 border border-zinc-800 bg-zinc-950 font-mono text-[10px]">
+<span class="text-orange-600">[13:45:01]</span> TRANSMISSION FLUID TEMP STABLE
+                        </div>
+<div class="p-2 border border-zinc-800 bg-zinc-950 font-mono text-[10px]">
+<span class="text-orange-600">[13:30:12]</span> REAR AXLE TORQUE LIMIT EXCEEDED
+                        </div>
+</div>
+</section>
+</div>
+<!-- Central Dashboard: 3D Schematic -->
+<div class="col-span-6 flex flex-col gap-gutter">
+<div class="flex-1 border-2 border-zinc-800 bg-zinc-950 relative overflow-hidden group">
+<!-- Riveted Header -->
+<div class="absolute top-0 left-0 right-0 h-10 bg-zinc-900 border-b-2 border-zinc-800 flex items-center px-4 justify-between z-10">
+<span class="font-black text-xs tracking-widest text-zinc-400">MODEL: TITAN-7 HEAVY HAULER</span>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-orange-600"></span>
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+<span class="w-2 h-2 rounded-full bg-zinc-700"></span>
+</div>
+</div>
+<!-- 3D Heat Map Image -->
+<div class="absolute inset-0 flex items-center justify-center p-12">
+<div class="w-full h-full relative">
+<img alt="Truck schematic" class="w-full h-full object-contain opacity-40 grayscale" data-alt="A highly detailed technical 3D schematic of a heavy industrial semi-truck, presented as a blueprint wireframe with vibrant safety orange heat-map glow points. The hotspots are concentrated on the engine block, transmission, and brake assemblies. The background is a deep charcoal black with a subtle hexagonal grid overlay, creating a high-performance, rugged telematics monitoring interface feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6qjR62WfJiHr-9vBOyu87fZjKrC7yFvBwepUyhyPtLpHLrbpZmKvahOdn8bhTUMr7fb7Unt7VmPQgRV9APQZYsGvsftSyXe8kttDitckqIiiSJU4tBnuysrY-Qo2xl7xoaBUOwHhDJSGPFbf8_WOJ6JyHYql7i5sQreYrFCvy52mtsRI_Lb7L7zOKxU8bdPaD6GLljXm-j-k1239F3f4L1t6AyNbLV6xIFD-Y_RzZMvUxdwP8GPdR_QNMayZNs1t4xqNcFln8Nuw"/>
+<!-- Heatmap Points Overlay -->
+<div class="absolute top-1/2 left-1/4 w-8 h-8 -mt-4 -ml-4 bg-orange-600/30 rounded-full animate-pulse border-2 border-orange-600 flex items-center justify-center shadow-[0_0_20px_rgba(234,88,12,0.5)]">
+<div class="w-2 h-2 bg-orange-600 rounded-full"></div>
+<div class="absolute -top-10 left-10 bg-zinc-900 border border-orange-600 p-2 whitespace-nowrap z-20">
+<p class="text-[10px] font-black text-orange-600 uppercase">Engine Temp: 198°F</p>
+</div>
+</div>
+<div class="absolute bottom-1/4 right-1/4 w-6 h-6 bg-error/30 rounded-full animate-pulse border-2 border-error flex items-center justify-center shadow-[0_0_20px_rgba(255,180,171,0.5)]">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+<div class="absolute top-10 right-10 bg-zinc-900 border border-error p-2 whitespace-nowrap z-20">
+<p class="text-[10px] font-black text-error uppercase">Brake Pad: 12% Life</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Schematic Controls -->
+<div class="absolute bottom-4 left-4 flex gap-2">
+<button class="bg-zinc-900 border-2 border-zinc-800 p-2 hover:border-orange-600 transition-colors">
+<span class="material-symbols-outlined text-zinc-100" data-icon="3d_rotation">3d_rotation</span>
+</button>
+<button class="bg-zinc-900 border-2 border-zinc-800 p-2 hover:border-orange-600 transition-colors">
+<span class="material-symbols-outlined text-zinc-100" data-icon="layers">layers</span>
+</button>
+<button class="bg-zinc-900 border-2 border-zinc-800 p-2 hover:border-orange-600 transition-colors">
+<span class="material-symbols-outlined text-zinc-100" data-icon="zoom_in">zoom_in</span>
+</button>
+</div>
+<div class="absolute bottom-4 right-4 text-right">
+<div class="text-[40px] font-data-display text-zinc-100 leading-none">94.2%</div>
+<div class="text-[10px] font-black tracking-widest text-orange-600 uppercase">Efficiency Rating</div>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-4 h-32">
+<div class="border-2 border-zinc-800 bg-zinc-900 p-4 flex flex-col justify-between">
+<span class="text-[10px] font-black text-zinc-500 uppercase">Tire Pressure</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-zinc-100">110</span>
+<span class="text-[10px] font-bold text-zinc-500">PSI</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-orange-600"></div>
+<div class="h-1 flex-1 bg-orange-600"></div>
+<div class="h-1 flex-1 bg-zinc-700"></div>
+</div>
+</div>
+<div class="border-2 border-zinc-800 bg-zinc-900 p-4 flex flex-col justify-between">
+<span class="text-[10px] font-black text-zinc-500 uppercase">Battery Volt</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-zinc-100">24.8</span>
+<span class="text-[10px] font-bold text-zinc-500">V</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-orange-600"></div>
+<div class="h-1 flex-1 bg-orange-600"></div>
+<div class="h-1 flex-1 bg-orange-600"></div>
+</div>
+</div>
+<div class="border-2 border-zinc-800 bg-zinc-900 p-4 flex flex-col justify-between">
+<span class="text-[10px] font-black text-zinc-500 uppercase">Coolant Level</span>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-zinc-100">OPTIM</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-orange-600"></div>
+<div class="h-1 flex-1 bg-zinc-700"></div>
+<div class="h-1 flex-1 bg-zinc-700"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Maintenance Form & Logs -->
+<div class="col-span-3 flex flex-col gap-gutter">
+<section class="border-2 border-zinc-800 bg-zinc-900 p-4">
+<div class="mb-4 border-b-2 border-zinc-800 pb-2">
+<h2 class="font-headline-md text-headline-md text-orange-600 uppercase">Service Request</h2>
+</div>
+<form class="space-y-4">
+<div class="space-y-1">
+<label class="text-[10px] font-black text-zinc-500 uppercase">Primary Issue</label>
+<select class="w-full bg-zinc-950 border-2 border-zinc-800 text-zinc-100 text-xs py-2 focus:border-orange-600 focus:ring-0 uppercase font-bold">
+<option>BRAKE SYSTEM DEGRADATION</option>
+<option>ENGINE VIBRATION</option>
+<option>TELEMATICS OFFLINE</option>
+<option>ROUTINE OIL CHANGE</option>
+</select>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-black text-zinc-500 uppercase">Urgency</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="border-2 border-zinc-800 py-2 text-[10px] font-black hover:bg-zinc-800 transition-colors" type="button">LOW</button>
+<button class="border-2 border-zinc-800 py-2 text-[10px] font-black hover:bg-zinc-800 transition-colors" type="button">MID</button>
+<button class="border-2 border-orange-600 bg-orange-600 text-zinc-950 py-2 text-[10px] font-black" type="button">HIGH</button>
+</div>
+</div>
+<div class="space-y-1">
+<label class="text-[10px] font-black text-zinc-500 uppercase">Additional Notes</label>
+<textarea class="w-full bg-zinc-950 border-2 border-zinc-800 text-zinc-100 text-xs focus:border-orange-600 focus:ring-0 uppercase font-bold" placeholder="ENTER DETAILS..." rows="3"></textarea>
+</div>
+<button class="w-full border-2 border-zinc-100 text-zinc-100 py-3 font-black uppercase tracking-widest text-xs hover:bg-zinc-100 hover:text-zinc-950 transition-all active:translate-x-1 active:translate-y-1" type="submit">
+                            SUBMIT TICKET
+                        </button>
+</form>
+</section>
+<section class="border-2 border-zinc-800 bg-zinc-900 p-4 flex-1">
+<div class="mb-4 border-b-2 border-zinc-800 pb-2 flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-zinc-100 uppercase">History</h2>
+<span class="material-symbols-outlined text-zinc-500 cursor-pointer" data-icon="history">history</span>
+</div>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<div class="w-1 bg-orange-600 h-10 shrink-0"></div>
+<div>
+<p class="text-xs font-black text-zinc-100">OIL FILTRATION REPLACED</p>
+<p class="text-[10px] text-zinc-500">2024-05-12 | DEPOT 4</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-1 bg-zinc-700 h-10 shrink-0"></div>
+<div>
+<p class="text-xs font-black text-zinc-100">TIRE ROTATION (AXLE 2)</p>
+<p class="text-[10px] text-zinc-500">2024-04-30 | ON-SITE</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<div class="w-1 bg-zinc-700 h-10 shrink-0"></div>
+<div>
+<p class="text-xs font-black text-zinc-100">ECU FIRMWARE UPDATE v3.1</p>
+<p class="text-[10px] text-zinc-500">2024-04-15 | OVER-THE-AIR</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Footer Metric Bar -->
+<footer class="h-12 border-t-2 border-zinc-800 bg-zinc-950 flex items-center px-8 gap-12 overflow-hidden">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-[10px] font-black tracking-widest text-zinc-500 uppercase">UPLINK ACTIVE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black tracking-widest text-zinc-500 uppercase">LATENCY:</span>
+<span class="text-[10px] font-black text-zinc-100">14ms</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] font-black tracking-widest text-zinc-500 uppercase">SATELLITE:</span>
+<span class="text-[10px] font-black text-zinc-100">TITAN-ORBIT-4</span>
+</div>
+<div class="ml-auto flex items-center gap-4">
+<span class="text-[10px] font-black tracking-widest text-orange-600 uppercase">SECURITY PROTOCOL: AES-256-HIGH</span>
+<span class="material-symbols-outlined text-zinc-500 text-sm" data-icon="lock">lock</span>
+</div>
+</footer>
+</main>
+<!-- Contextual FAB -->
+<button class="fixed bottom-20 right-8 bg-orange-600 text-zinc-950 w-14 h-14 rounded-full flex items-center justify-center shadow-[6px_6px_0px_0px_rgba(255,255,255,0.1)] active:scale-95 transition-all group border-4 border-zinc-950 z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="support" data-weight="fill">support</span>
+<span class="absolute right-16 bg-zinc-900 border-2 border-orange-600 px-4 py-2 text-orange-600 font-black text-xs uppercase opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">Open Diagnostics Chat</span>
+</button>
+</body></html>

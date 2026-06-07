@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HemoPoint - Blood Count Educational Tool</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&amp;family=Public+Sans:ital,wght@0,100..900;1,100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fcf9f8",
+                    "secondary": "#50606f",
+                    "on-secondary-fixed": "#0d1d2a",
+                    "on-tertiary-fixed-variant": "#434749",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-primary-container": "#ff907f",
+                    "inverse-primary": "#ffb4a8",
+                    "surface-container-highest": "#e5e2e1",
+                    "on-tertiary-container": "#acb0b2",
+                    "secondary-container": "#d1e1f4",
+                    "surface-tint": "#b52619",
+                    "secondary-fixed": "#d4e4f6",
+                    "on-primary-fixed-variant": "#920703",
+                    "on-secondary-container": "#556474",
+                    "primary": "#610000",
+                    "on-surface": "#1c1b1b",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e5e2e1",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error-container": "#93000a",
+                    "surface-bright": "#fcf9f8",
+                    "on-tertiary-fixed": "#181c1e",
+                    "on-error": "#ffffff",
+                    "surface-container": "#f0eded",
+                    "surface-container-high": "#eae7e7",
+                    "primary-fixed": "#ffdad4",
+                    "on-primary-fixed": "#410000",
+                    "surface-dim": "#dcd9d9",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#b8c8da",
+                    "outline-variant": "#e3beb8",
+                    "tertiary": "#292d2f",
+                    "error-container": "#ffdad6",
+                    "on-tertiary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "tertiary-fixed": "#e0e3e5",
+                    "primary-container": "#8b0000",
+                    "tertiary-container": "#3f4345",
+                    "on-secondary-fixed-variant": "#394857",
+                    "surface": "#fcf9f8",
+                    "surface-container-low": "#f6f3f2",
+                    "on-background": "#1c1b1b",
+                    "on-surface-variant": "#5a403c",
+                    "tertiary-fixed-dim": "#c4c7c9",
+                    "outline": "#8e706b",
+                    "inverse-surface": "#313030",
+                    "inverse-on-surface": "#f3f0ef"
+            },
+            "borderRadius": {
+                    "DEFAULT": "1rem",
+                    "lg": "2rem",
+                    "xl": "3rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-desktop": "48px",
+                    "stack-lg": "48px",
+                    "stack-sm": "12px",
+                    "container-max": "1280px",
+                    "stack-md": "24px",
+                    "margin-mobile": "16px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Newsreader"],
+                    "headline-lg": ["Newsreader"],
+                    "label-md": ["Public Sans"],
+                    "body-md": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "display-lg": ["Newsreader"],
+                    "label-sm": ["Public Sans"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .microscope-lens {
+            box-shadow: inset 0 0 40px rgba(0,0,0,0.05), 0 20px 50px rgba(112,128,144,0.15);
+        }
+        .cell-float {
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .cell-float:hover {
+            transform: scale(1.1) rotate(5deg);
+        }
+        .tonal-layer {
+            background: radial-gradient(circle at center, #ffffff 0%, #f6f3f2 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="bg-white dark:bg-stone-950 shadow-sm dark:shadow-none border-b border-stone-100 dark:border-stone-900 sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-6 py-3 max-w-screen-xl mx-auto">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-surface-container">
+<img alt="Medical Professional" class="w-full h-full object-cover" data-alt="A close-up portrait of a professional hematologist in a clean, white clinical coat, set against a blurred laboratory background with soft, cool lighting. The aesthetic is clinical and trustworthy, utilizing a bright light-mode palette with subtle deep crimson accents. The image conveys scientific authority and modern medical expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBULN-CLWwXzHHoVXm-QTQMq8Kv2ZoRWGtG9TbSIDELMME7gLqX93Tr9I7uxmjVwI212aO1vlfg5xybY6yjJ4jwUmPUPf5Vc7tcOFv0IQVG4FDwrGj7dRrTGEJhlkppHzKwlNKpBKm_PcOkVpBq0ZcM2GKABK2KL-hY7MmbeFuVnijpmQLx7mxd58QQc-Y7w2fCn6wTfn-VWjzc5XnXOAgY6J9sRW1PNIsR5CV1Scg9nDvdAhwQxTPyjeFyeWHEs631laDz8kaTNyJY"/>
+</div>
+<span class="font-newsreader text-xl font-bold text-red-900 dark:text-red-500">HemoPoint</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-stone-500 hover:opacity-80 transition-opacity active:scale-95 duration-200">notifications</button>
+</div>
+</div>
+</header>
+<main class="max-w-screen-xl mx-auto px-margin-mobile md:px-margin-desktop py-stack-md">
+<!-- Interactive Lens Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<!-- Left: Educational Content -->
+<div class="lg:col-span-5 space-y-stack-md order-2 lg:order-1">
+<div class="space-y-stack-sm">
+<span class="font-label-md text-primary bg-primary-fixed px-3 py-1 rounded-full">Interactive Lab</span>
+<h1 class="font-headline-lg text-display-lg text-primary">Microscopic View</h1>
+<p class="font-body-lg text-secondary">Explore the cellular composition of your blood. Tap any cell in the viewport to reveal clinical insights and your personal reference ranges.</p>
+</div>
+<div class="bg-white rounded-lg p-stack-md shadow-sm border border-surface-container-highest">
+<div class="flex items-center gap-4 mb-4">
+<div class="p-3 bg-red-50 rounded-full">
+<span class="material-symbols-outlined text-primary">science</span>
+</div>
+<div>
+<h3 class="font-headline-md text-on-surface">Red Blood Cells</h3>
+<p class="font-label-sm text-secondary">Transporting Oxygen (Hemoglobin)</p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center py-2 border-b border-surface-container">
+<span class="text-secondary font-label-md">Clinical Range</span>
+<span class="text-on-surface font-label-md">4.5 - 5.9 M/µL</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="text-secondary font-label-md">Your Last Result</span>
+<span class="text-primary font-label-md">5.2 M/µL (Normal)</span>
+</div>
+<p class="text-stone-600 text-sm leading-relaxed">
+                            RBCs are the most common type of blood cell. They contain hemoglobin, which carries oxygen from the lungs to the rest of the body.
+                        </p>
+</div>
+</div>
+<div class="flex flex-wrap gap-2">
+<button class="rounded-full px-6 py-2 bg-primary text-on-primary font-label-md active:scale-95 transition-transform">Download Report</button>
+<button class="rounded-full px-6 py-2 border border-outline text-secondary font-label-md hover:bg-surface-container-low transition-colors">Compare Results</button>
+</div>
+</div>
+<!-- Right: The "Microscope" -->
+<div class="lg:col-span-7 flex justify-center items-center order-1 lg:order-2 py-10">
+<div class="relative w-full max-w-[500px] aspect-square rounded-full microscope-lens tonal-layer border-[12px] border-surface-container-high flex items-center justify-center overflow-hidden">
+<!-- Decorative biological background texture -->
+<div class="absolute inset-0 opacity-10 pointer-events-none">
+<svg height="100%" preserveaspectratio="none" viewbox="0 0 100 100" width="100%">
+<defs>
+<pattern height="20" id="cellPattern" patternunits="userSpaceOnUse" width="20" x="0" y="0">
+<circle cx="10" cy="10" fill="#610000" r="2"></circle>
+</pattern>
+</defs>
+<rect fill="url(#cellPattern)" height="100%" width="100%"></rect>
+</svg>
+</div>
+<!-- Red Blood Cells (Interactive) -->
+<div class="absolute top-1/4 left-1/4 w-20 h-20 bg-primary/20 rounded-full border-4 border-primary/40 cell-float cursor-pointer flex items-center justify-center group" title="RBC">
+<div class="w-12 h-12 bg-primary rounded-full shadow-lg group-hover:bg-primary-container transition-colors"></div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 w-16 h-16 bg-primary/10 rounded-full border-2 border-primary/30 cell-float cursor-pointer" title="RBC">
+<div class="w-10 h-10 bg-primary/80 rounded-full absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+</div>
+<!-- White Blood Cells (Interactive) -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-28 h-28 bg-white rounded-full border-2 border-surface-container-highest shadow-xl cell-float cursor-pointer flex items-center justify-center" title="WBC">
+<div class="w-20 h-20 rounded-full border-[6px] border-secondary-container bg-white flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary text-4xl">biotech</span>
+</div>
+</div>
+<!-- Platelets (Interactive) -->
+<div class="absolute top-1/3 right-1/3 w-8 h-8 bg-stone-300 rounded-lg rotate-12 cell-float cursor-pointer" title="Platelets"></div>
+<div class="absolute bottom-1/4 left-1/2 w-6 h-6 bg-stone-400 rounded-sm -rotate-45 cell-float cursor-pointer" title="Platelets"></div>
+<!-- Label Overlays -->
+<div class="absolute bottom-10 bg-white/80 backdrop-blur px-4 py-1.5 rounded-full border border-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-sm">zoom_in</span>
+<span class="font-label-sm">400x Magnification</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid Insights -->
+<section class="mt-stack-lg">
+<h2 class="font-headline-md text-on-surface mb-6">Laboratory Insights</h2>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Insight Card 1 -->
+<div class="md:col-span-2 bg-white rounded-lg p-stack-md shadow-sm border border-surface-container-highest flex flex-col md:flex-row gap-6">
+<div class="w-full md:w-1/3 rounded-lg overflow-hidden">
+<img alt="Laboratory Microscope" class="w-full h-full object-cover" data-alt="A high-end modern laboratory microscope focused on a glass slide, illuminated by a crisp white light. The setting is sterile and futuristic with a palette of whites, cool slates, and deep crimson. The lighting is focused and professional, creating an atmosphere of scientific precision and meticulous care in a modern hematology department." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9OrlcHUe9Vu3V7sIHGHQ2RVo0CqmR5x1NViohaPaxVQpB5DuyfZdi6-JaFc1xoagelihmw3SW0rasOo2HFWm90Q9XoJ7URPbElcpeVpoecxY3vFcfs-JTEeib7HiP0rHZWEzddJ5bWkT-DeTwzbrwA4rW-xbELr72yO0XMuQUlc20r4gsPP_adqbZdtX6pmVcHLuNa1f37cth3hXHVYQxwR9ruLEVkfaondxNymBayCbsABV-4R3sHhudFHs_NL3gPvDadDgXgvZK"/>
+</div>
+<div class="w-full md:w-2/3 flex flex-col justify-center space-y-3">
+<span class="font-label-sm text-secondary uppercase tracking-widest">Cell Morphology</span>
+<h3 class="font-headline-md text-primary">Healthy Cell Patterns</h3>
+<p class="text-stone-600 text-sm">Your recent sample shows optimal biconcave shapes in red cells, indicating excellent iron absorption and oxygen-carrying capacity.</p>
+<a class="text-primary font-label-md flex items-center gap-1 hover:underline" href="#">
+                            Read detailed analysis <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- Insight Card 2 -->
+<div class="bg-secondary-container rounded-lg p-stack-md flex flex-col justify-between">
+<div class="space-y-2">
+<h3 class="font-headline-md text-on-secondary-container">Hydration Impact</h3>
+<p class="text-on-secondary-container/80 text-sm">Blood viscosity is heavily influenced by fluid intake. Maintain 2L/day for optimal cell mobility.</p>
+</div>
+<div class="mt-6 flex justify-center">
+<div class="w-24 h-24 rounded-full border-4 border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-4xl text-on-secondary-container">water_drop</span>
+</div>
+</div>
+</div>
+<!-- Insight Card 3 -->
+<div class="bg-tertiary text-on-tertiary rounded-lg p-stack-md border border-tertiary-container">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-on-tertiary-container">history</span>
+<span class="font-label-sm bg-tertiary-container px-2 py-1 rounded">3 Months</span>
+</div>
+<h3 class="font-headline-md mb-2">Trend Analysis</h3>
+<div class="h-16 flex items-end gap-1 mb-4">
+<div class="w-full bg-on-tertiary-container/30 h-1/2 rounded-t-sm"></div>
+<div class="w-full bg-on-tertiary-container/30 h-3/4 rounded-t-sm"></div>
+<div class="w-full bg-primary h-full rounded-t-sm"></div>
+<div class="w-full bg-on-tertiary-container/30 h-2/3 rounded-t-sm"></div>
+<div class="w-full bg-on-tertiary-container/30 h-1/2 rounded-t-sm"></div>
+</div>
+<p class="text-xs text-on-tertiary-container">Stable CBC values across last 4 tests.</p>
+</div>
+<!-- Insight Card 4 -->
+<div class="md:col-span-2 bg-white rounded-lg p-stack-md shadow-sm border border-surface-container-highest flex items-center justify-between">
+<div class="space-y-1">
+<h4 class="font-label-md text-on-surface">Schedule Follow-up</h4>
+<p class="text-secondary text-sm">Next routine screening due in 14 days.</p>
+</div>
+<button class="bg-primary text-on-primary px-6 py-2 rounded-full font-label-md active:scale-95 transition-transform">Book Now</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-6 pt-3 bg-white/90 dark:bg-stone-950/90 backdrop-blur-md border-t border-stone-200/30 dark:border-stone-800/30 shadow-[0_-10px_25px_-5px_rgba(112,128,144,0.1)]">
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 px-4 py-1.5 hover:text-red-700 dark:hover:text-red-300 transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-newsreader text-[10px] font-medium tracking-wide">Disorders</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 px-4 py-1.5 hover:text-red-700 dark:hover:text-red-300 transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">bloodtype</span>
+<span class="font-newsreader text-[10px] font-medium tracking-wide">Services</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 px-4 py-1.5 hover:text-red-700 dark:hover:text-red-300 transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-newsreader text-[10px] font-medium tracking-wide">Support</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-600 px-4 py-1.5 hover:text-red-700 dark:hover:text-red-300 transition-colors active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined">newspaper</span>
+<span class="font-newsreader text-[10px] font-medium tracking-wide">Updates</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-400 rounded-full px-4 py-1.5 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">biotech</span>
+<span class="font-newsreader text-[10px] font-medium tracking-wide">Lab</span>
+</a>
+</nav>
+</body></html>

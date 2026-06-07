@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(26, 26, 27, 0.4);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .aerodynamic-line {
+            height: 1px;
+            background: linear-gradient(90deg, rgba(171, 199, 255, 0.2) 0%, rgba(171, 199, 255, 0.05) 100%);
+        }
+        .status-glow-green { box-shadow: 0 0 8px rgba(74, 225, 131, 0.5); }
+        .status-glow-amber { box-shadow: 0 0 8px rgba(255, 180, 171, 0.5); }
+    </style>
+<title>SKYCARGO | Shipment Collaboration</title>
+</head>
+<body class="bg-surface-container-lowest text-on-surface font-body-base overflow-hidden h-screen flex flex-col">
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-highest": "#353436",
+                      "inverse-primary": "#005cbc",
+                      "secondary-container": "#484949",
+                      "tertiary-container": "#00a657",
+                      "surface-variant": "#353436",
+                      "primary-fixed-dim": "#abc7ff",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0e0e0f",
+                      "outline-variant": "#414754",
+                      "primary-container": "#448fff",
+                      "surface-container": "#1f1f20",
+                      "primary": "#abc7ff",
+                      "tertiary-fixed-dim": "#4ae183",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-bright": "#39393a",
+                      "on-tertiary-container": "#003115",
+                      "surface": "#131314",
+                      "surface-dim": "#131314",
+                      "on-secondary": "#2f3131",
+                      "secondary-fixed": "#e3e2e2",
+                      "on-tertiary-fixed-variant": "#005228",
+                      "on-background": "#e5e2e3",
+                      "on-secondary-fixed-variant": "#464747",
+                      "inverse-surface": "#e5e2e3",
+                      "tertiary-fixed": "#6bfe9c",
+                      "on-surface-variant": "#c1c6d7",
+                      "secondary": "#c6c6c6",
+                      "on-surface": "#e5e2e3",
+                      "error-container": "#93000a",
+                      "outline": "#8b91a0",
+                      "on-tertiary-fixed": "#00210c",
+                      "on-primary-container": "#002859",
+                      "surface-tint": "#abc7ff",
+                      "surface-container-low": "#1b1b1c",
+                      "error": "#ffb4ab",
+                      "tertiary": "#4ae183",
+                      "on-primary-fixed-variant": "#004590",
+                      "inverse-on-surface": "#303031",
+                      "background": "#131314",
+                      "surface-container-high": "#2a2a2b",
+                      "primary-fixed": "#d7e2ff",
+                      "on-primary-fixed": "#001b3f",
+                      "on-error-container": "#ffdad6",
+                      "on-primary": "#002f66",
+                      "on-secondary-container": "#b8b8b8",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "on-tertiary": "#003919"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "16px",
+                      "margin": "24px",
+                      "unit": "4px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "body-base": ["Inter"],
+                      "display-lg": ["Space Grotesk"],
+                      "data-mono": ["Inter"],
+                      "headline-md": ["Space Grotesk"],
+                      "label-caps": ["Inter"]
+              },
+              "fontSize": {
+                      "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<header class="bg-[#1A1A1B]/40 backdrop-blur-[12px] text-sky-500 dark:text-sky-400 font-['Space_Grotesk'] tracking-tight text-sm docked full-width top-0 border-b border-white/5 shadow-none flex justify-between items-center w-full px-6 h-16 shrink-0 z-50">
+<div class="flex items-center gap-8">
+<span class="text-xl font-bold tracking-tighter text-sky-500 italic">SKYCARGO</span>
+<nav class="hidden md:flex gap-6 items-center">
+<a class="text-sky-400 font-bold hover:bg-white/5 hover:text-sky-300 transition-all duration-200 ease-in-out" href="#">Cargo Manifest</a>
+<a class="text-zinc-400 hover:bg-white/5 hover:text-sky-300 transition-all duration-200 ease-in-out" href="#">Fleet Telemetry</a>
+<a class="text-zinc-400 hover:bg-white/5 hover:text-sky-300 transition-all duration-200 ease-in-out" href="#">Global Network</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-white/5 text-zinc-400 transition-all"><span class="material-symbols-outlined">notifications_active</span></button>
+<button class="p-2 hover:bg-white/5 text-zinc-400 transition-all"><span class="material-symbols-outlined">settings</span></button>
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden border border-white/10">
+<img alt="Flight Manager Avatar" class="w-full h-full object-cover" data-alt="A professional headshot of a logistics command officer wearing a sleek, dark techwear uniform. The lighting is dramatic and cool-toned, reflecting a high-tech airport control room environment. The image maintains a minimalist and professional aesthetic with deep blacks and sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAMtDiFwG0yzLyd4cF0Dje3u-WTtJ2oaWyhEKe6VWfI1JBxEL0gDK4lsCI1093CVrK1bpMmIs8rtALBs2Q5jzcKxUlDdf121DGNCe5VyohuNh29wvoNgPdofuF_OgDwsfE9Jcm8xsM_119YsJ9BFkQaTYSC0oLU0Z5jKCE2zh8S6byeP2ggaby_8ivHiYeSRZ5jysQGMPrzGrt3KWmhNkGqpGJXSKWvYLNCVPYq99_AUeH6plm7rv_6QFfmEsoS8wtpOM8zcuNoI9vK"/>
+</div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden">
+<aside class="fixed left-0 top-0 h-full flex flex-col py-6 bg-[#1A1A1B]/60 backdrop-blur-[16px] text-sky-500 dark:text-sky-400 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-medium h-screen w-72 border-r border-white/10 hidden lg:flex z-40 pt-20">
+<div class="px-6 mb-8">
+<div class="text-lg font-black text-white mb-1">OPERATIONS</div>
+<div class="text-zinc-500 text-[10px]">Terminal 4 - HKG</div>
+</div>
+<nav class="flex-1 px-2">
+<a class="bg-sky-500/10 text-sky-400 border-l-2 border-sky-500 flex items-center px-4 py-3 mb-1 active:opacity-80 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span>Logistics Console</span>
+</a>
+<a class="text-zinc-500 flex items-center px-4 py-3 mb-1 hover:text-zinc-200 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">flight_takeoff</span>
+<span>Fleet Telemetry</span>
+</a>
+<a class="text-zinc-500 flex items-center px-4 py-3 mb-1 hover:text-zinc-200 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">inventory_2</span>
+<span>Cargo Manifest</span>
+</a>
+<a class="text-zinc-500 flex items-center px-4 py-3 mb-1 hover:text-zinc-200 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">query_stats</span>
+<span>Route Analytics</span>
+</a>
+<a class="text-zinc-500 flex items-center px-4 py-3 mb-1 hover:text-zinc-200 hover:bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3">language</span>
+<span>Global Network</span>
+</a>
+</nav>
+<div class="px-4 mt-auto space-y-2">
+<button class="w-full py-3 bg-primary text-on-primary font-bold text-[12px] tracking-widest rounded-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                    NEW SHIPMENT
+                </button>
+<div class="pt-4 border-t border-white/5">
+<a class="text-zinc-500 flex items-center px-4 py-2 hover:text-zinc-200 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-sm">sensors</span>
+<span>System Health</span>
+</a>
+<a class="text-zinc-500 flex items-center px-4 py-2 hover:text-zinc-200 transition-colors" href="#">
+<span class="material-symbols-outlined mr-3 text-sm">power_settings_new</span>
+<span>Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<div class="flex-1 flex flex-col lg:pl-72">
+<div class="flex flex-1 overflow-hidden p-4 gap-4">
+<section class="flex-1 flex flex-col gap-4 overflow-y-auto pr-2">
+<div class="glass-panel p-6 rounded-lg">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h1 class="font-headline-md text-headline-md text-white mb-1">SC-9928-HKG-LHR</h1>
+<p class="font-label-caps text-label-caps text-zinc-500">PRIORITY A1 • PERISHABLE PHARMACEUTICALS</p>
+</div>
+<div class="flex items-center gap-2 px-3 py-1 bg-tertiary/10 border border-tertiary/30 rounded-full">
+<div class="w-2 h-2 rounded-full bg-tertiary status-glow-green"></div>
+<span class="text-[10px] font-bold text-tertiary tracking-widest uppercase">In Transit</span>
+</div>
+</div>
+<div class="grid grid-cols-3 gap-6 mb-8">
+<div class="space-y-1">
+<span class="font-label-caps text-label-caps text-zinc-500 block">DESTINATION</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sky-400 text-sm">location_on</span>
+<span class="font-data-mono text-white">LHR - TERMINAL 5</span>
+</div>
+</div>
+<div class="space-y-1">
+<span class="font-label-caps text-label-caps text-zinc-500 block">TOTAL WEIGHT</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sky-400 text-sm">weight</span>
+<span class="font-data-mono text-white">12,450.00 KG</span>
+</div>
+</div>
+<div class="space-y-1">
+<span class="font-label-caps text-label-caps text-zinc-500 block">ETA</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-sky-400 text-sm">schedule</span>
+<span class="font-data-mono text-white">04:20 UTC</span>
+</div>
+</div>
+</div>
+<div class="aerodynamic-line mb-6"></div>
+<div class="space-y-4">
+<h3 class="font-label-caps text-label-caps text-white mb-2 tracking-[0.2em]">MANIFEST BREAKDOWN</h3>
+<div class="space-y-2">
+<div class="flex justify-between items-center p-3 bg-white/5 border border-white/5 rounded-sm hover:border-sky-500/30 transition-all">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-500">package_2</span>
+<div>
+<p class="text-sm font-medium text-white">PX-77 Cold Chain Unit</p>
+<p class="text-[10px] text-zinc-500 uppercase tracking-tighter">Batch: #8829-01 • 450KG</p>
+</div>
+</div>
+<span class="text-[10px] font-bold text-sky-400 bg-sky-500/10 px-2 py-0.5 rounded">TEMP CRITICAL</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/5 border border-white/5 rounded-sm">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-zinc-500">package_2</span>
+<div>
+<p class="text-sm font-medium text-white">Medical Equipment Trays</p>
+<p class="text-[10px] text-zinc-500 uppercase tracking-tighter">Batch: #8829-02 • 1,200KG</p>
+</div>
+</div>
+<span class="text-[10px] font-bold text-zinc-400 bg-white/10 px-2 py-0.5 rounded">FRAGILE</span>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel p-4 rounded-lg relative overflow-hidden">
+<div class="absolute top-0 right-0 w-24 h-24 bg-sky-500/5 blur-2xl rounded-full -mr-12 -mt-12"></div>
+<h3 class="font-label-caps text-label-caps text-white mb-4">TELEMETRY DATA</h3>
+<div class="space-y-3">
+<div class="flex justify-between items-end">
+<span class="text-[10px] text-zinc-500">ALTITUDE</span>
+<span class="font-data-mono text-sky-400 text-lg">34,000 FT</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-sky-400 h-full w-3/4"></div>
+</div>
+<div class="flex justify-between items-end mt-4">
+<span class="text-[10px] text-zinc-500">CABIN TEMP</span>
+<span class="font-data-mono text-tertiary text-lg">4.2°C</span>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-1/2"></div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-0 rounded-lg overflow-hidden relative group">
+<img alt="Route Map" class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" data-alt="A high-contrast, dark satellite view map of a flight path over a coastline at night. Neon cyan flight lines connect two glowing points across a dark ocean. The aesthetic is futuristic and clinical, resembling a flight navigation display on a modern aircraft cockpit." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDXy5eenTkQU8RKsw7W6SHQ5N4NGx5l77d0apljs4g2xJ7ig1wLGcc5kNxSb2SMp5k1AXfxnNzxX0kSUkd0DJToX_wOcRIAgbP780HxZNTVkD_pRmeuoa9XzUzop2UNN_dYYg3W-vGF-vAtdDQszkaTYZ1RnaH_IA4GoA-J_6_P5up-6cK0A8QvDcNtzeSBm9m2e1fFmOO9xkEs1wVIYYvHmIHGF7OOf9mUn_UQxXhgmTlW2uQQypa6pMfXvA7UHYKo-PjzXreAUjf"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-container-lowest to-transparent pointer-events-none"></div>
+<div class="absolute bottom-4 left-4">
+<span class="font-label-caps text-label-caps text-white">ROUTE PROGRESS</span>
+<p class="text-[10px] text-sky-400 font-bold uppercase">72% TO DESTINATION</p>
+</div>
+</div>
+</div>
+</section>
+<aside class="w-96 flex flex-col glass-panel rounded-lg border-l-2 border-l-sky-500/40">
+<div class="p-4 border-b border-white/10 flex justify-between items-center">
+<div>
+<h2 class="font-headline-md text-[16px] text-white tracking-widest uppercase">Operations Log</h2>
+<p class="text-[10px] text-zinc-500 font-medium">REAL-TIME COORD FEED</p>
+</div>
+<span class="material-symbols-outlined text-zinc-500">history</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<div class="flex gap-3">
+<img class="w-8 h-8 rounded-sm object-cover border border-white/10 shrink-0" data-alt="A close-up portrait of an air traffic controller in high-definition digital art. He has a focused expression, wearing a headset with a glowing blue light. The background is a blurred dashboard of dials and digital screens, using a palette of slate grey and electric blue." src="https://lh3.googleusercontent.com/aida-public/AB6AXuChg_7rleA3mIKrQoJdoxnEbrSi01Lm-URZd0YIdQoU1ju1TfIO7ltH0QyOHepQSJZW8Fn80VsWKK8LRHn-keK9O49hb6052wIGIy8xlF5YnASeAamFgYB2ZA5wPqx4gBzRUT8Tb0k_DeOqJ0wDWuw2o18jqClrpKJ-RnKkr0OuhErpJfKyRGhKUXx25lCTw_GCY2UBfA6mCSLSAqgPuDmj-4_Yz0-73e0liQUu-1An2qaBFTCxYQmltkMYGF7dbxJhXLXNZ1mumcX0"/>
+<div class="space-y-1 flex-1">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-white uppercase tracking-wider">Terminal Manager</span>
+<span class="text-[9px] text-zinc-500 font-data-mono">14:05 UTC</span>
+</div>
+<div class="bg-white/5 p-3 rounded-sm border border-white/5">
+<p class="text-xs text-zinc-300 leading-relaxed">Ground clearance confirmed for Cargo Area 4. Pallets loaded and secured. Pre-flight temp checks optimal.</p>
+</div>
+<div class="flex gap-2 pt-1">
+<span class="text-[9px] px-2 py-0.5 bg-zinc-400/10 text-zinc-400 font-bold rounded uppercase">Info</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<img class="w-8 h-8 rounded-sm object-cover border border-white/10 shrink-0" data-alt="A portrait of a female cargo pilot looking determined, illuminated by the cool blue and warm amber glow of a cockpit instrument panel. Her features are sharp, emphasizing professional expertise. The photography style is high-contrast cinematic, consistent with a high-stakes aviation setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9wycO_LAx9ytZHj-UWQogHtb1yjgnnt1tle8q61RDjhHV8zQ3B9wuV6ePd-zcIte50CI0SpSGdFt1qLYal9UTQRMJvU0eR2tnisPVJiwUdtrcbJUaX1oTHUWfcijFh7gZR7ftusW5lnFbfeAUTiwFT7PmzkX2KmZAudb9rnnw9S52YIFsdXNUOl1UOx2Rbbm8klUGw8mOgrkdfZjCw-69PGKulEPpko7ykFkTQ3g6cho7G34efWDca2yyNAWgz4cLlO9jpkwHaEE2"/>
+<div class="space-y-1 flex-1">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-white uppercase tracking-wider">Pilot - Capt. Vance</span>
+<span class="text-[9px] text-zinc-500 font-data-mono">14:42 UTC</span>
+</div>
+<div class="bg-error/5 p-3 rounded-sm border border-error/20">
+<p class="text-xs text-on-surface leading-relaxed">Encountering moderate turbulence over South China Sea. Adjusting altitude to 36,000 FT to stabilize cargo temperature sensors.</p>
+</div>
+<div class="flex gap-2 pt-1">
+<span class="text-[9px] px-2 py-0.5 bg-error/20 text-error font-bold rounded uppercase">Urgent</span>
+</div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-8 h-8 rounded-sm bg-sky-500/20 flex items-center justify-center border border-sky-500/40 shrink-0">
+<span class="material-symbols-outlined text-sky-400 text-sm">smart_toy</span>
+</div>
+<div class="space-y-1 flex-1">
+<div class="flex justify-between items-center">
+<span class="text-xs font-bold text-white uppercase tracking-wider">Automated Telemetry</span>
+<span class="text-[9px] text-zinc-500 font-data-mono">15:00 UTC</span>
+</div>
+<div class="bg-sky-500/5 p-3 rounded-sm border border-sky-500/20">
+<p class="text-xs text-sky-200/80 italic leading-relaxed">Warning: Container #PX-77 temp deviation +0.4°C detected. Compensation system active.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 bg-surface-container-low border-t border-white/10">
+<div class="glass-panel p-2 rounded-sm mb-2 flex gap-2">
+<button class="p-1 hover:text-sky-400 text-zinc-500 transition-colors"><span class="material-symbols-outlined text-sm">format_bold</span></button>
+<button class="p-1 hover:text-sky-400 text-zinc-500 transition-colors"><span class="material-symbols-outlined text-sm">attach_file</span></button>
+<button class="p-1 hover:text-sky-400 text-zinc-500 transition-colors"><span class="material-symbols-outlined text-sm">alternate_email</span></button>
+<div class="w-px h-4 bg-white/10 my-auto mx-1"></div>
+<button class="p-1 hover:text-sky-400 text-zinc-500 transition-colors"><span class="material-symbols-outlined text-sm">warning</span></button>
+</div>
+<div class="relative">
+<textarea class="w-full bg-white/5 border border-white/10 rounded-sm p-3 text-xs text-white focus:border-sky-500 focus:ring-0 placeholder:text-zinc-600 h-24 resize-none transition-all" placeholder="Type an update or tag a user..."></textarea>
+<button class="absolute bottom-3 right-3 py-1.5 px-4 bg-primary text-on-primary font-bold text-[10px] tracking-widest rounded-sm flex items-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+                                POST UPDATE
+                                <span class="material-symbols-outlined text-sm">send</span>
+</button>
+</div>
+</div>
+</aside>
+</div>
+</div>
+</main>
+<footer class="md:hidden fixed bottom-0 left-0 w-full h-16 bg-[#1A1A1B]/60 backdrop-blur-[12px] flex justify-around items-center border-t border-white/5 z-50">
+<button class="flex flex-col items-center text-sky-400">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[8px] uppercase mt-1">Console</span>
+</button>
+<button class="flex flex-col items-center text-zinc-500">
+<span class="material-symbols-outlined">flight_takeoff</span>
+<span class="text-[8px] uppercase mt-1">Fleet</span>
+</button>
+<button class="flex flex-col items-center text-zinc-500">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="text-[8px] uppercase mt-1">Manifest</span>
+</button>
+<button class="flex flex-col items-center text-zinc-500">
+<span class="material-symbols-outlined">forum</span>
+<span class="text-[8px] uppercase mt-1">Logs</span>
+</button>
+</footer>
+</body></html>

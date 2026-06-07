@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenithAir | Fleet Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@400;500;700&amp;family=Manrope:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0d0e0f;
+            color: #e3e2e2;
+            -webkit-font-smoothing: antialiased;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-card {
+            background: rgba(31, 32, 32, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .hero-video-container::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(13, 14, 15, 0.4) 0%, rgba(13, 14, 15, 1) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e5e2e1",
+                        "secondary-container": "#474746",
+                        "on-secondary": "#313030",
+                        "surface-dim": "#121414",
+                        "surface": "#121414",
+                        "surface-container": "#1f2020",
+                        "on-primary-fixed-variant": "#534528",
+                        "on-tertiary-container": "#555453",
+                        "on-primary-container": "#615234",
+                        "on-background": "#e3e2e2",
+                        "error": "#ffb4ab",
+                        "background": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "primary": "#f8e2ba",
+                        "outline-variant": "#4c463c",
+                        "surface-container-high": "#292a2a",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-low": "#1b1c1c",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-container-lowest": "#0d0e0f",
+                        "primary-container": "#dbc6a0",
+                        "inverse-surface": "#e3e2e2",
+                        "tertiary-fixed": "#e5e2e1",
+                        "inverse-primary": "#6c5c3d",
+                        "on-surface-variant": "#cfc5b8",
+                        "on-secondary-container": "#b7b5b4",
+                        "on-tertiary": "#313030",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#d9c49e",
+                        "error-container": "#93000a",
+                        "on-primary": "#3b2f14",
+                        "surface-variant": "#343535",
+                        "tertiary": "#e7e4e3",
+                        "outline": "#989084",
+                        "secondary": "#c8c6c5",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "surface-container-highest": "#343535",
+                        "on-secondary-fixed-variant": "#474746",
+                        "surface-bright": "#383939",
+                        "primary-fixed": "#f6e0b8",
+                        "on-surface": "#e3e2e2",
+                        "surface-tint": "#d9c49e",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-container": "#cbc8c7",
+                        "on-primary-fixed": "#251a03",
+                        "inverse-on-surface": "#2f3031"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-edge": "64px",
+                        "section-gap": "120px",
+                        "gutter": "24px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display": ["Noto Serif"],
+                        "body-lg": ["Manrope"],
+                        "headline-md": ["Noto Serif"],
+                        "label-caps": ["Manrope"],
+                        "headline-lg": ["Noto Serif"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-surface-container-lowest overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-white/5 h-20 flex justify-between items-center px-margin-edge">
+<div class="flex items-center gap-12">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-[0.2em]">ZENITHAIR</span>
+<nav class="hidden md:flex gap-8">
+<a class="font-label-caps text-label-caps text-primary tracking-widest transition-colors duration-300" href="#">Fleet</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300" href="#">Experience</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300" href="#">Owners</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300" href="#">Membership</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<button class="material-symbols-outlined text-primary hover:text-primary-fixed-dim transition-colors active:scale-95" data-icon="notifications">notifications</button>
+<div class="w-10 h-10 rounded-full border border-primary/20 bg-surface-container-high overflow-hidden">
+<img alt="User profile silhouette" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDO38-kwW0aUh5GewuorhGBKgVvN01wdzIw50LIMB9z4CgI8NdjPw2mgxq59c49npoxpfv6S-WJFNOmVWosBOSn0HVXqb6A-DOln4Wt0L3pWUEGTLMiC0-Rj2X1FNDiHs9MEqUoqdJidMrA3Cz0xzu7qoZ7mjhCWM1qvVV5Lovjgpl4qf1QWnGcDnqipLnAlRuaLFWRSSiD21JKAeZzr2KmzIRWGUq0d_JrURTOZbrRi7N-aV2p2Z4LPraChOyvnnojm1rTF5DNV87r"/>
+</div>
+</div>
+</header>
+<main>
+<!-- Hero Section -->
+<section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 z-0 hero-video-container">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic wide shot of a sleek white long-range private business jet soaring majestically above a thick blanket of golden sunset clouds. The lighting is dramatic and low-key, capturing the executive stealth aesthetic with deep shadows and soft highlights on the aircraft's polished fuselage. The overall atmosphere is one of ultimate luxury and peaceful isolation high above the earth's atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCiKNtfsjPJ829V3_6wiIK3itNZPxryDghPdAAB_HUbhHjCHjztDdYkDpqn3VRJXCaLhnAxPvNX6SVby9nnsrXGYe3hG9xCLDlW79VQuhVlKcZmcY9lUd7hckw_WDso7mT0Z2ouznMPvQD_68vFJsc8QmHtHfcMjeYUDQRXTrTGqQ0ZknUgHIydAxBhPUntzr1GSmtEFEPF9zvCixjeAAaI1IQyriklUUqFRa7dVQnJG5GCPEvBHtClMy3ORfOf3nD_oZ8C9Le5LS-6')"></div>
+</div>
+<div class="relative z-10 text-center max-w-4xl px-gutter">
+<span class="font-label-caps text-label-caps text-primary tracking-[0.4em] mb-6 block">ULTRA LONG RANGE FLEET</span>
+<h1 class="font-display text-display text-on-background mb-8">The Pinnacle of Executive Aviation</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant/80 max-w-2xl mx-auto mb-12">Experience global reach without compromise. Our curated fleet offers the world's most advanced aircraft, designed for peak performance and absolute privacy.</p>
+<div class="flex gap-4 justify-center">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-10 py-5 hover:bg-primary-fixed transition-all active:scale-95">BOOK CHARTER</button>
+<button class="border border-primary text-primary font-label-caps text-label-caps px-10 py-5 hover:bg-primary/10 transition-all active:scale-95">VIEW SPECS</button>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 opacity-50">
+<span class="font-label-caps text-[10px] tracking-[0.2em]">EXPLORE FLEET</span>
+<div class="w-[1px] h-16 bg-gradient-to-b from-primary to-transparent"></div>
+</div>
+</section>
+<!-- Fleet Grid & Filters -->
+<section class="bg-surface-container-lowest px-margin-edge py-section-gap">
+<div class="max-w-container-max mx-auto">
+<!-- Filter Bar -->
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-2">Select Your Journey</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Filter by performance metrics and cabin capacity.</p>
+</div>
+<div class="flex gap-3 glass-card p-2 rounded-xl">
+<button class="px-6 py-2 bg-primary text-on-primary font-label-caps text-label-caps">All Aircraft</button>
+<button class="px-6 py-2 text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps">Ultra Long Range</button>
+<button class="px-6 py-2 text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps">Super Midsize</button>
+<button class="px-6 py-2 text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps">Short Range</button>
+</div>
+</div>
+<!-- Fleet Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Global 7500 -->
+<div class="md:col-span-8 group relative overflow-hidden h-[600px] border border-white/5">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A detailed interior shot of a Global 7500 private jet's master suite, featuring rich walnut textures, cream leather club seats, and soft ambient gold lighting. The setting is evening, with a warm glow illuminating the cabin's sophisticated textures. The image emphasizes high-tier luxury, executive stealth design, and spacious architectural elegance typical of elite business aviation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAghdzPdbjZ1vha6zMnZvzS_vA53az9jtSoWhIrIF8WLU35D43dmolLXNLSTdZ1vqH-uRgUXgqqQS57ABlAXagIGKQf7mUHMOpgwlaOP6_Hm5TwBJovLskEbdrGl8iCRITng2vun-L9F5jcGGdk9W4epqN3DMjh4ZOaEZcBq4DZUNsNdVwjDZA9w82BLBvWTI-_nVo2OpW7ucAXoWw5RbHypn4_nloBKMV29j-fnMigk8Fxw5IedCJtJ8E94CO2DyeLvLdQNsTTJTFD"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-12 w-full flex justify-between items-end">
+<div>
+<span class="text-primary font-label-caps text-label-caps tracking-widest mb-2 block">BOMBARDIER</span>
+<h3 class="font-headline-lg text-headline-lg mb-6">Global 7500</h3>
+<div class="flex gap-10">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant/60 mb-1">RANGE</p>
+<p class="font-headline-md text-headline-md text-primary">7,700nm</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant/60 mb-1">PASSENGERS</p>
+<p class="font-headline-md text-headline-md text-primary">19</p>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant/60 mb-1">SPEED</p>
+<p class="font-headline-md text-headline-md text-primary">Mach 0.925</p>
+</div>
+</div>
+</div>
+<button class="flex items-center gap-3 bg-white/5 backdrop-blur-md border border-white/10 px-6 py-4 font-label-caps text-label-caps hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" data-icon="360">360</span>
+                                VIEW 360
+                            </button>
+</div>
+</div>
+<!-- Side Stats / Small Card -->
+<div class="md:col-span-4 glass-card p-12 flex flex-col justify-between border-primary/20">
+<div>
+<span class="material-symbols-outlined text-primary mb-6" data-icon="star_rate">star_rate</span>
+<h4 class="font-headline-md text-headline-md mb-4 italic">"The definitive standard in transcontinental luxury."</h4>
+<p class="font-body-md text-body-md text-on-surface-variant">Ranked #1 for cabin quietness and altitude comfort. The Global 7500 is the only aircraft in its class with four distinct living spaces.</p>
+</div>
+<div class="space-y-4 pt-8 border-t border-white/5">
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-on-surface-variant">WiFi Connection</span>
+<span class="text-primary text-sm font-bold">Ka-Band High Speed</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-on-surface-variant">Master Suite</span>
+<span class="text-primary text-sm font-bold">Included</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-on-surface-variant">Baggage Capacity</span>
+<span class="text-primary text-sm font-bold">195 cu ft</span>
+</div>
+</div>
+</div>
+<!-- G650ER -->
+<div class="md:col-span-6 group relative overflow-hidden h-[500px] border border-white/5">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A close-up exterior view of a Gulfstream G650ER parked on a pristine, dark tarmac at sunset. The polished chrome engines reflect the golden hour sky, and the sharp lines of the winglets are prominent. The visual style is highly technical yet luxurious, with a focus on precision engineering and the executive stealth color palette of deep blacks, greys, and warm gold reflections." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7J8zgqTzcM-kIKiow8DYYdi0MbJ3HgZyR-mflcP5XrJ7pd6AHW0rpjOWKAUQFSpwXKR-hgtM11sWXlluFNZwXkb5MNdSEsuiL8VJMSeaj7baaNb3xEVfMNWlK9EmFDDaWWlA3JDPHVh7mJZ6175-Aj9GokzSo0VVVIy7un6Gv41E70yc7cnrpOaAU_JtWGu4dxbCEPdv2w_AnUHY3BUp7nk-SyfEmw9uqr72wVPCQCKHvegrYSqwj3GL1izgaxczGdPrVkb2TXcR"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-10 w-full flex justify-between items-end">
+<div>
+<span class="text-primary font-label-caps text-label-caps tracking-widest mb-1 block">GULFSTREAM</span>
+<h3 class="font-headline-md text-headline-md mb-2">G650ER</h3>
+<p class="font-label-caps text-on-surface-variant text-[10px] tracking-widest">LONG RANGE EXCELLENCE</p>
+</div>
+<button class="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+<!-- Falcon 8X -->
+<div class="md:col-span-6 group relative overflow-hidden h-[500px] border border-white/5">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="The elegant three-engine tail configuration of a Dassault Falcon 8X private jet, captured in a minimalist style against a moody, overcast sky. The cool grey tones of the aircraft body contrast with the warm interior lights visible through the cabin windows. This image showcases the unique aerodynamic profile and technical superiority of the Falcon series within the executive stealth design system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfioM_-Z4cHDfJ1ydpz9WuALD1hF4JyD5Y3_w0CxVhBXO1LQuC7I-yE2ZyYgEm0kRILyaaC-pES3D2wZ0FCuAUlpIBV6MflLKEIZ3EbayXi0BaZ4BSPRNSDZx9Q66GNuxoZquz74WwJYtyyClJmxuEss5VP2Qb9OJDnRL3rWoavXGEUCD3mHulGZtuw5MgHFYczNLmwW3uCRzqcvoLU_FME8T1nwze-w5ZkNBSa7c44vzQ9EjkCx-GG5_SvbrlFIXH4-K4VwMOAUAg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-10 w-full flex justify-between items-end">
+<div>
+<span class="text-primary font-label-caps text-label-caps tracking-widest mb-1 block">DASSAULT</span>
+<h3 class="font-headline-md text-headline-md mb-2">Falcon 8X</h3>
+<p class="font-label-caps text-on-surface-variant text-[10px] tracking-widest">PRECISION ENGINEERING</p>
+</div>
+<button class="w-12 h-12 rounded-full border border-primary/40 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Fleet Comparison Detail -->
+<section class="bg-surface-dim py-section-gap px-margin-edge border-y border-white/5">
+<div class="max-w-container-max mx-auto grid md:grid-cols-2 gap-32 items-center">
+<div class="space-y-12">
+<h2 class="font-display text-display leading-tight">Beyond Luxury: <br/><span class="text-primary">Operational Purity</span></h2>
+<div class="space-y-8">
+<div class="flex gap-6 items-start">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="shield">shield</span>
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Elite Maintenance</h4>
+<p class="font-body-md text-on-surface-variant">Our fleet undergoes checks exceeding FAA standards by 40%, ensuring mechanical perfection for every departure.</p>
+</div>
+</div>
+<div class="flex gap-6 items-start">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="wifi_tethering">wifi_tethering</span>
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Global Tracking</h4>
+<p class="font-body-md text-on-surface-variant">Real-time telemetry and flight path optimization provided by our dedicated command center.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="relative">
+<div class="glass-card p-8 rounded-2xl relative z-10">
+<div class="flex justify-between items-center mb-12">
+<h5 class="font-label-caps text-label-caps text-primary">LIVE FLEET METRICS</h5>
+<span class="flex items-center gap-2 text-[10px] text-on-surface-variant">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                                ACTIVE NOW
+                            </span>
+</div>
+<div class="space-y-8">
+<div class="h-1 bg-white/5 w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[85%]"></div>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-on-surface-variant">Fleet Availability</span>
+<span class="font-headline-md text-primary">85%</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-white/5 border border-white/5">
+<p class="text-[10px] font-label-caps mb-1 opacity-50">AIRBORNE</p>
+<p class="text-xl font-bold">42 Jets</p>
+</div>
+<div class="p-4 bg-white/5 border border-white/5">
+<p class="text-[10px] font-label-caps mb-1 opacity-50">AVG AGE</p>
+<p class="text-xl font-bold">1.8 Yrs</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Decorative Element -->
+<div class="absolute -top-12 -right-12 w-64 h-64 bg-primary/10 rounded-full blur-[100px]"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Suppressed on large screen via responsive logic) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-white/10 flex justify-around items-center h-24 px-8 pb-safe shadow-2xl">
+<div class="flex flex-col items-center justify-center text-primary font-bold gap-1 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+<span class="font-label-caps text-label-caps">Fleet</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 gap-1 hover:text-primary/80 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-caps text-label-caps">Search</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 gap-1 hover:text-primary/80 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="room_service">room_service</span>
+<span class="font-label-caps text-label-caps">Concierge</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 gap-1 hover:text-primary/80 transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-caps text-label-caps">Profile</span>
+</div>
+</nav>
+<footer class="bg-surface-container-lowest px-margin-edge py-24 border-t border-white/5 text-center">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary tracking-[0.4em] opacity-30 mb-8 block">ZENITHAIR</span>
+<div class="flex justify-center gap-12 mb-12">
+<a class="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">PRIVACY</a>
+<a class="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">TERMS</a>
+<a class="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">CHARTER AGREEMENT</a>
+<a class="font-label-caps text-on-surface-variant hover:text-primary transition-colors" href="#">PRESS</a>
+</div>
+<p class="font-label-caps text-[10px] text-on-surface-variant/40 tracking-widest">© 2024 ZENITHAIR AVIATION GROUP. ALL RIGHTS RESERVED.</p>
+</footer>
+</body></html>

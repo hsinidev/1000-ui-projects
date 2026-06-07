@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ImmunoHub - Research Lead Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .bio-gradient-teal {
+            background: radial-gradient(circle at top left, #80cbc4 0%, #136964 100%);
+        }
+        .cell-shadow {
+            box-shadow: 0 4px 24px 0 rgba(128, 203, 196, 0.15);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#89d4cd",
+                        "on-tertiary-fixed-variant": "#930010",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#d4e6e5",
+                        "on-error": "#ffffff",
+                        "inverse-on-surface": "#ecf2f2",
+                        "tertiary": "#ba1a20",
+                        "on-secondary-container": "#576867",
+                        "on-tertiary-fixed": "#410003",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#dde4e4",
+                        "secondary": "#516161",
+                        "on-secondary-fixed-variant": "#3a4a49",
+                        "on-primary-container": "#005652",
+                        "primary-fixed": "#a4f0e9",
+                        "on-primary-fixed": "#00201e",
+                        "outline": "#6f7977",
+                        "inverse-surface": "#2b3232",
+                        "background": "#f4fafa",
+                        "tertiary-container": "#ffa79f",
+                        "on-background": "#161d1d",
+                        "on-secondary-fixed": "#0e1e1e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-surface": "#161d1d",
+                        "error": "#ba1a1a",
+                        "on-primary": "#ffffff",
+                        "surface": "#f4fafa",
+                        "secondary-fixed-dim": "#b8cac9",
+                        "surface-container-highest": "#dde4e4",
+                        "surface-container": "#e9efef",
+                        "on-tertiary-container": "#9e0012",
+                        "surface-container-low": "#eff5f5",
+                        "surface-container-high": "#e3e9e9",
+                        "surface-tint": "#136964",
+                        "tertiary-fixed": "#ffdad6",
+                        "surface-bright": "#f4fafa",
+                        "on-primary-fixed-variant": "#00504b",
+                        "tertiary-fixed-dim": "#ffb3ac",
+                        "primary-container": "#80cbc4",
+                        "primary-fixed-dim": "#89d4cd",
+                        "primary": "#136964",
+                        "on-surface-variant": "#3f4947",
+                        "surface-dim": "#d5dbdb",
+                        "secondary-fixed": "#d4e6e5",
+                        "outline-variant": "#bec9c7",
+                        "on-secondary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "lg": "24px",
+                        "cytoplasmic-margin": "64px",
+                        "sm": "8px",
+                        "xxl": "48px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-md": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-md": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "code-md": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-background">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-white/70 backdrop-blur-md border-b border-white/20 shadow-[0_4px_20px_0_rgba(128,203,196,0.1)] flex items-center justify-between px-8 py-3 h-16">
+<div class="flex items-center gap-md">
+<span class="text-xl font-bold text-teal-600 uppercase tracking-widest font-inter">ImmunoHub</span>
+</div>
+<div class="flex-1 max-w-xl mx-xl">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-slate-400" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary/20 text-body-sm" placeholder="Search biological data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<button class="cursor-pointer active:scale-95 transition-transform text-slate-500 hover:text-teal-500 transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="cursor-pointer active:scale-95 transition-transform text-slate-500 hover:text-teal-500 transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+</button>
+<button class="cursor-pointer active:scale-95 transition-transform text-slate-500 hover:text-teal-500 transition-colors duration-200">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 z-40 bg-white/80 backdrop-blur-xl border-r border-teal-100/20 shadow-2xl shadow-teal-900/5 flex flex-col pt-20 pb-8">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 rounded-full bio-gradient-teal flex items-center justify-center text-white shadow-lg">
+<span class="material-symbols-outlined" data-icon="dna">genetics</span>
+</div>
+<div>
+<h2 class="text-lg font-black text-teal-600 leading-tight">ImmunoHub</h2>
+<p class="text-[10px] uppercase tracking-widest text-slate-400 font-bold">Biological Precision</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-md text-teal-700 font-bold border-r-4 border-teal-500 bg-teal-50/50 py-3 px-6 transition-all duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard" data-weight="fill" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-inter text-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-md text-slate-600 py-3 px-6 hover:bg-teal-50/30 hover:text-teal-600 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-inter text-sm">Publications</span>
+</a>
+<a class="flex items-center gap-md text-slate-600 py-3 px-6 hover:bg-teal-50/30 hover:text-teal-600 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-inter text-sm">FAQ</span>
+</a>
+<a class="flex items-center gap-md text-slate-600 py-3 px-6 hover:bg-teal-50/30 hover:text-teal-600 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-inter text-sm">Trial Data</span>
+</a>
+</nav>
+<div class="px-6 mt-auto space-y-4">
+<button class="w-full py-3 px-4 bg-primary text-white rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 hover:scale-[1.02] active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+<span>New Entry</span>
+</button>
+<div class="border-t border-slate-100 pt-4 space-y-1">
+<a class="flex items-center gap-md text-slate-600 py-2 px-2 hover:text-teal-600 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-sm">Settings</span>
+</a>
+<a class="flex items-center gap-md text-slate-600 py-2 px-2 hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-inter text-sm">Sign Out</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-20 p-8 min-h-screen">
+<!-- Header Section -->
+<header class="mb-xl flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Research Command</h1>
+<p class="text-body-md text-on-surface-variant">Monitoring real-time immunological responses across active trials.</p>
+</div>
+<div class="flex gap-md">
+<div class="px-md py-sm bg-white border border-teal-100 rounded-lg flex items-center gap-sm cell-shadow">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="text-label-md text-primary uppercase">Live Stream Active</span>
+</div>
+</div>
+</header>
+<!-- Stats Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-lg mb-xl">
+<!-- Total Patients -->
+<div class="bg-white p-lg rounded-xl cell-shadow relative overflow-hidden group hover:-translate-y-1 transition-transform border border-white">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="text-label-md text-slate-500 uppercase tracking-widest mb-xs">Total Patients</p>
+<h3 class="font-headline-xl text-headline-xl text-primary">12,482</h3>
+<p class="text-body-sm text-primary flex items-center gap-1 mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+                            +12% from last month
+                        </p>
+</div>
+<div class="w-12 h-12 bg-primary-fixed rounded-full flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+</div>
+</div>
+</div>
+<!-- Active Trials -->
+<div class="bg-white p-lg rounded-xl cell-shadow relative overflow-hidden group hover:-translate-y-1 transition-transform border border-white">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/10 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="text-label-md text-slate-500 uppercase tracking-widest mb-xs">Active Trials</p>
+<h3 class="font-headline-xl text-headline-xl text-secondary">84</h3>
+<p class="text-body-sm text-secondary flex items-center gap-1 mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="biotech">biotech</span>
+                            Phase III: 14 Trials
+                        </p>
+</div>
+<div class="w-12 h-12 bg-secondary-fixed rounded-full flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+</div>
+</div>
+</div>
+<!-- New Publications -->
+<div class="bg-white p-lg rounded-xl cell-shadow relative overflow-hidden group hover:-translate-y-1 transition-transform border border-white">
+<div class="absolute -right-4 -top-4 w-32 h-32 bg-tertiary/5 rounded-full blur-3xl group-hover:bg-tertiary/10 transition-colors"></div>
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="text-label-md text-slate-500 uppercase tracking-widest mb-xs">New Publications</p>
+<h3 class="font-headline-xl text-headline-xl text-tertiary">29</h3>
+<p class="text-body-sm text-tertiary flex items-center gap-1 mt-xs">
+<span class="material-symbols-outlined text-sm" data-icon="new_releases">new_releases</span>
+                            4 Critical peer reviews
+                        </p>
+</div>
+<div class="w-12 h-12 bg-tertiary-fixed rounded-full flex items-center justify-center text-tertiary">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<!-- Recent Patient Activity Table -->
+<div class="lg:col-span-2 bg-white rounded-xl cell-shadow p-lg border border-white">
+<div class="flex justify-between items-center mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">Recent Patient Activity</h2>
+<button class="text-primary font-bold text-label-md uppercase tracking-wider flex items-center gap-1">
+                        View Full Logs
+                        <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="text-label-md text-slate-400 border-b border-slate-50 uppercase tracking-widest">
+<th class="pb-md font-semibold">Patient ID</th>
+<th class="pb-md font-semibold">Marker Analysis</th>
+<th class="pb-md font-semibold">T-Cell Count</th>
+<th class="pb-md font-semibold">Status</th>
+<th class="pb-md font-semibold">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-50">
+<tr class="group hover:bg-slate-50/50 transition-colors">
+<td class="py-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-xs">P01</div>
+<div>
+<p class="font-bold text-slate-700">#IMM-9284</p>
+<p class="text-[10px] text-slate-400">Entry: 2h ago</p>
+</div>
+</div>
+</td>
+<td class="py-md text-body-sm font-medium">CD4+ Elevation</td>
+<td class="py-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[75%]"></div>
+</div>
+<span class="text-xs font-bold text-slate-600">750/μL</span>
+</div>
+</td>
+<td class="py-md">
+<span class="px-3 py-1 bg-teal-50 text-teal-600 rounded-full text-[10px] font-bold uppercase border border-teal-100">Stable</span>
+</td>
+<td class="py-md">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-md" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-slate-50/50 transition-colors">
+<td class="py-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center text-error font-bold text-xs">P02</div>
+<div>
+<p class="font-bold text-slate-700">#IMM-7712</p>
+<p class="text-[10px] text-slate-400">Entry: 5h ago</p>
+</div>
+</div>
+</td>
+<td class="py-md text-body-sm font-medium">Cytokine Storm Risk</td>
+<td class="py-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-error h-full w-[92%]"></div>
+</div>
+<span class="text-xs font-bold text-error">1200/μL</span>
+</div>
+</td>
+<td class="py-md">
+<span class="px-3 py-1 bg-red-50 text-error rounded-full text-[10px] font-bold uppercase border border-red-100">Critical</span>
+</td>
+<td class="py-md">
+<button class="p-2 text-slate-400 hover:text-error transition-colors">
+<span class="material-symbols-outlined text-md" data-icon="warning">warning</span>
+</button>
+</td>
+</tr>
+<tr class="group hover:bg-slate-50/50 transition-colors">
+<td class="py-md">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-lg bg-teal-50 flex items-center justify-center text-teal-600 font-bold text-xs">P03</div>
+<div>
+<p class="font-bold text-slate-700">#IMM-4491</p>
+<p class="text-[10px] text-slate-400">Entry: 1d ago</p>
+</div>
+</div>
+</td>
+<td class="py-md text-body-sm font-medium">Regulatory T-cells</td>
+<td class="py-md">
+<div class="flex items-center gap-2">
+<div class="w-16 h-1.5 bg-slate-100 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[45%]"></div>
+</div>
+<span class="text-xs font-bold text-slate-600">450/μL</span>
+</div>
+</td>
+<td class="py-md">
+<span class="px-3 py-1 bg-slate-50 text-slate-500 rounded-full text-[10px] font-bold uppercase border border-slate-100">Inactive</span>
+</td>
+<td class="py-md">
+<button class="p-2 text-slate-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-md" data-icon="visibility">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- System Health Visualization -->
+<div class="bg-white rounded-xl cell-shadow p-lg border border-white flex flex-col">
+<div class="mb-lg">
+<h2 class="font-headline-md text-headline-md text-on-surface">System Health</h2>
+<p class="text-body-sm text-slate-400">Bio-Computing Integrity</p>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center relative">
+<!-- Bio-Visualizer -->
+<div class="relative w-48 h-48 mb-lg">
+<div class="absolute inset-0 bg-primary/10 rounded-full animate-pulse scale-110"></div>
+<div class="absolute inset-0 bg-primary/5 rounded-full animate-pulse delay-75 scale-125"></div>
+<div class="relative w-full h-full bg-white rounded-full border-4 border-teal-500 shadow-inner flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-teal-500 text-5xl" data-icon="hub">hub</span>
+<div class="text-center mt-2">
+<p class="text-headline-md text-primary leading-none">99.4</p>
+<p class="text-[10px] font-bold text-primary uppercase tracking-widest">Normal</p>
+</div>
+</div>
+</div>
+<div class="w-full space-y-md">
+<div class="flex justify-between items-center p-md bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-md" data-icon="memory">memory</span>
+<span class="text-body-sm font-medium">Processing Load</span>
+</div>
+<span class="text-body-sm font-bold text-primary">24%</span>
+</div>
+<div class="flex justify-between items-center p-md bg-surface-container-low rounded-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-tertiary text-md" data-icon="security">security</span>
+<span class="text-body-sm font-medium">Alert Latency</span>
+</div>
+<span class="text-body-sm font-bold text-tertiary">0.02ms</span>
+</div>
+</div>
+</div>
+<button class="mt-lg w-full py-2 bg-slate-50 hover:bg-slate-100 text-slate-600 rounded-lg text-label-md font-bold uppercase transition-colors">
+                    System Diagnostics
+                </button>
+</div>
+</div>
+<!-- Featured Lab Visualization -->
+<section class="mt-xl grid grid-cols-1 md:grid-cols-2 gap-lg">
+<div class="relative h-64 rounded-xl overflow-hidden group">
+<img alt="Laboratory Microscopic View" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A high-resolution microscopic image of human immune cells, specifically T-cells and B-cells, interacting within a crystalline, glass-like medium. The lighting is ethereal and bright, reflecting a clinical yet biological aesthetic. Shades of soft teal and pristine white dominate the scene, creating a sense of sterile precision and biological depth. The atmosphere is professional and technologically advanced, mimicking a cutting-edge research laboratory environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDosgu0LoVFqDTYIEYNm0oTJzDC2FwiWX0ceRApuV-uPGmBLjCEfEtl-dFv-KWcfzrHPhU2lueA-BcORjZ31CDrz-9XOkgX-4y2TxrP2BHwNPC82c13SjkGosaSbu_2DbI5BtjvYyb-rbs_a6SWKziZ0wQCNEFHhONsrjXlqwzP2fhFJRqZWh_gMf8Hvyv7Pv35720HMj8OX6vf_RJWO4IhCI1qvCl22tU6-d4QU1cUTRAMooVtmjHa25obqk0Ea88v1Z8EcDR6YC0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-lg">
+<span class="px-3 py-1 bg-primary text-white text-[10px] font-bold uppercase rounded-full mb-2 inline-block">Lab Feed: Sector 7</span>
+<h4 class="text-white font-headline-md">Phase IV Interaction Monitoring</h4>
+</div>
+</div>
+<div class="relative h-64 rounded-xl overflow-hidden group">
+<img alt="Advanced Biotech Analysis" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A sophisticated digital visualization of DNA sequencing and protein folding structures displayed on a transparent glass interface. The background is a soft, blurred clinical setting with accents of teal and blood-red indicators highlighting anomalies. The overall style is minimalist and high-tech, using translucent layers to represent complex biological data. Bright, high-key lighting enhances the modern, trustworthy feel of the research facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwk3iCCkElp7jw16kRxcDSHQ4GMuIhAcAun0BNeoIeY32BlShXT5XR7J3wUuU0boCU1y7yBu6Mppld3gh4gvxRk5gcZdLkLaa1m8TEAUdUIBgZBA70xmsPqz-q9SN2pJh4HI-mXx2ERO1VfOV_ItFnneKfI8J-kSUsQnGruWpoo41N3Qi6dIjGXiskieAKpX62trcZgjA4B_Rmai-viu8y2TgwOWMILrOjxdvXbJnWRzorpilUDiPA9EKUY7dh_G4S0GvZm701h4Y"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-lg">
+<span class="px-3 py-1 bg-tertiary text-white text-[10px] font-bold uppercase rounded-full mb-2 inline-block">Critical Alert</span>
+<h4 class="text-white font-headline-md">Anomalous Protein Folding Detected</h4>
+</div>
+</div>
+</section>
+</main>
+<!-- FAB -->
+<button class="fixed bottom-lg right-lg w-14 h-14 bg-primary text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-2xl" data-icon="biotech">biotech</span>
+</button>
+</body></html>

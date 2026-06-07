@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GlobalRoute | Port Congestion Heatmap</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "inverse-primary": "#006875",
+                    "surface-bright": "#363a3b",
+                    "on-secondary": "#233148",
+                    "on-primary-container": "#00626e",
+                    "on-error-container": "#ffdad6",
+                    "on-secondary-fixed-variant": "#39475f",
+                    "on-secondary-container": "#abb9d6",
+                    "tertiary": "#e6ecff",
+                    "on-surface": "#e0e3e5",
+                    "on-primary-fixed": "#001f24",
+                    "primary-fixed": "#9cf0ff",
+                    "on-tertiary-container": "#49597a",
+                    "surface": "#101415",
+                    "secondary-fixed-dim": "#b9c7e4",
+                    "surface-container": "#1d2022",
+                    "outline-variant": "#3b494c",
+                    "on-tertiary": "#20304f",
+                    "on-surface-variant": "#bac9cc",
+                    "secondary-fixed": "#d6e3ff",
+                    "error-container": "#93000a",
+                    "surface-container-high": "#272a2c",
+                    "secondary-container": "#3c4962",
+                    "surface-variant": "#323537",
+                    "surface-dim": "#101415",
+                    "secondary": "#b9c7e4",
+                    "surface-container-low": "#191c1e",
+                    "tertiary-container": "#c0d0f7",
+                    "surface-tint": "#00daf3",
+                    "on-tertiary-fixed": "#091b39",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0b0f10",
+                    "on-tertiary-fixed-variant": "#374767",
+                    "surface-container-highest": "#323537",
+                    "outline": "#849396",
+                    "background": "#101415",
+                    "primary": "#c3f5ff",
+                    "on-background": "#e0e3e5",
+                    "on-primary": "#00363d",
+                    "tertiary-fixed-dim": "#b6c6ed",
+                    "tertiary-fixed": "#d8e2ff",
+                    "primary-container": "#00e5ff",
+                    "inverse-on-surface": "#2d3133",
+                    "primary-fixed-dim": "#00daf3",
+                    "inverse-surface": "#e0e3e5",
+                    "on-secondary-fixed": "#0d1c32",
+                    "on-primary-fixed-variant": "#004f58"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "xs": "8px",
+                    "lg": "32px",
+                    "gutter": "16px",
+                    "base": "4px",
+                    "md": "24px",
+                    "margin": "24px",
+                    "sm": "16px",
+                    "xl": "48px"
+            },
+            "fontFamily": {
+                    "label-caps": ["Space Grotesk"],
+                    "data-mono": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "headline-xl": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(16, 20, 21, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(132, 147, 150, 0.1);
+        }
+        .glow-cyan {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.15);
+        }
+        .heat-pulse-red {
+            animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-red {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: .5; transform: scale(1.2); }
+        }
+        .heat-pulse-green {
+            animation: pulse-green 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-green {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 0.3; }
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary">
+<!-- SIDE NAVIGATION BAR -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-slate-800 bg-slate-950/80 backdrop-blur-md shadow-[0_0_20px_rgba(0,229,255,0.05)] flex flex-col py-6 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold tracking-tighter text-cyan-400 font-['Space_Grotesk']">GlobalRoute</h1>
+<p class="text-[10px] uppercase tracking-[0.2em] text-slate-500 font-medium">Mission Control</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-300 transition-colors duration-200 ease-in-out hover:bg-slate-900 font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span>Admin</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-300 transition-colors duration-200 ease-in-out hover:bg-slate-900 font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span>Tracker</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-300 transition-colors duration-200 ease-in-out hover:bg-slate-900 font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">request_quote</span>
+<span>Quotes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-slate-500 hover:text-slate-300 transition-colors duration-200 ease-in-out hover:bg-slate-900 font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>Vault</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 bg-cyan-400/5 text-cyan-400 border-r-2 border-cyan-400 font-['Space_Grotesk'] text-sm tracking-tight" href="#">
+<span class="material-symbols-outlined">map</span>
+<span>Heatmap</span>
+</a>
+</nav>
+<div class="px-6 mt-auto">
+<div class="flex items-center gap-3 pt-6 border-t border-slate-800">
+<div class="w-8 h-8 rounded-full overflow-hidden bg-slate-800 border border-cyan-400/30">
+<img alt="GlobalRoute Operator" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDeZR4tLeRZ93hTEvxEONdHGGQTWOpgHgayc896uSuDhWhfdSMyT1G_3HPpYIB6otdIosCq5avhztgVttInmtc8Zze8b_FawEcb4c5GsGpVpBuRZLvxhpiI6rufIsZSnslHJd26GKWjpASGBr-0eHgBt3YA2N42TWJPzNCwfTH5b785zKc8P-L-MKD1aEouoT82dFNCAnya14q-7dswoyx1hAP52wVdMpciv_Oxq4iGZvurxa6aZLo13US-JeD6GtTjeiFp9eXUUqJs"/>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold text-slate-200">Ops_Commander</span>
+<span class="text-[10px] text-cyan-400">Verified Access</span>
+</div>
+</div>
+</div>
+</aside>
+<!-- TOP NAVIGATION BAR -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-slate-800 bg-slate-950/80 backdrop-blur-md flex items-center justify-between px-8 z-40 font-['Space_Grotesk']">
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-slate-500 text-sm">search</span>
+<input class="bg-slate-900/50 border border-slate-800 text-sm py-1.5 pl-10 pr-4 rounded-full w-64 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all" placeholder="Search Global Nodes..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 border-r border-slate-800 pr-6">
+<button class="text-slate-400 hover:text-cyan-400 active:scale-95 duration-150 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="text-slate-400 hover:text-cyan-400 active:scale-95 duration-150 transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="text-slate-400 hover:text-cyan-400 active:scale-95 duration-150 transition-colors">
+<span class="material-symbols-outlined">help_outline</span>
+</button>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></div>
+<span class="text-[10px] font-bold tracking-widest text-cyan-400 uppercase">System Live</span>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT CANVAS -->
+<main class="ml-64 pt-16 min-h-screen p-gutter flex flex-col gap-gutter overflow-x-hidden">
+<!-- TOP METRICS SECTION -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-panel p-sm rounded-lg glow-cyan">
+<p class="font-label-caps text-label-caps text-outline mb-xs">GLOBAL AVG WAIT</p>
+<div class="flex items-end gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">3.4</span>
+<span class="font-data-mono text-data-mono text-cyan-400 pb-1">DAYS</span>
+</div>
+<div class="mt-xs flex items-center gap-1 text-[10px] text-error">
+<span class="material-symbols-outlined text-xs">trending_up</span>
+<span>+12% VS LAST WEEK</span>
+</div>
+</div>
+<div class="glass-panel p-sm rounded-lg">
+<p class="font-label-caps text-label-caps text-outline mb-xs">PEAK THROUGHPUT</p>
+<div class="flex items-end gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">1,240</span>
+<span class="font-data-mono text-data-mono text-cyan-400 pb-1">TEU/H</span>
+</div>
+<div class="mt-xs flex items-center gap-1 text-[10px] text-surface-tint">
+<span class="material-symbols-outlined text-xs">trending_flat</span>
+<span>STABLE REGIONALLY</span>
+</div>
+</div>
+<div class="glass-panel p-sm rounded-lg">
+<p class="font-label-caps text-label-caps text-outline mb-xs">ACTIVE VESSELS</p>
+<div class="flex items-end gap-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface">8,922</span>
+<span class="font-data-mono text-data-mono text-cyan-400 pb-1">UNITS</span>
+</div>
+<div class="mt-xs flex items-center gap-1 text-[10px] text-primary-container">
+<span class="material-symbols-outlined text-xs">sync</span>
+<span>REAL-TIME UPDATE</span>
+</div>
+</div>
+<div class="glass-panel p-sm rounded-lg">
+<p class="font-label-caps text-label-caps text-outline mb-xs">CRITICAL NODES</p>
+<div class="flex items-end gap-xs">
+<span class="font-headline-lg text-headline-lg text-error">12</span>
+<span class="font-data-mono text-data-mono text-error/60 pb-1">RED ZONES</span>
+</div>
+<div class="mt-xs flex items-center gap-1 text-[10px] text-error">
+<span class="material-symbols-outlined text-xs">warning</span>
+<span>ACTION REQUIRED</span>
+</div>
+</div>
+</div>
+<!-- CENTER DASHBOARD (MAP & ALERTS) -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter flex-1">
+<!-- WORLD MAP HEATMAP -->
+<div class="lg:col-span-9 relative glass-panel rounded-lg overflow-hidden min-h-[500px]">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-slate-900 via-surface to-background opacity-50 z-0"></div>
+<div class="absolute top-6 left-6 z-10">
+<div class="bg-slate-950/90 border border-slate-800 p-3 rounded-lg flex flex-col gap-2">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-error heat-pulse-red"></div>
+<span class="text-[10px] font-label-caps text-on-surface">&gt; 72H DELAY</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.5)]"></div>
+<span class="text-[10px] font-label-caps text-on-surface">24-72H DELAY</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 rounded-full bg-primary-container heat-pulse-green"></div>
+<span class="text-[10px] font-label-caps text-on-surface">&lt; 24H DELAY</span>
+</div>
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center p-xl">
+<div class="relative w-full h-full opacity-60">
+<!-- Simplified Vector World Map Representation as SVG -->
+<img class="w-full h-full object-contain filter brightness-75 contrast-125" data-alt="A dark and futuristic global vector map displayed on a high-tech command center screen. The landmasses are rendered in deep charcoal navy with luminous cyan shipping lanes connecting major hubs. Heat zones are indicated by pulsing red, amber, and green circular glows at port locations. The overall aesthetic is professional, data-rich, and minimalist with a strong cyber-industrial mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbv-VfyYLLV9oP4tSWThTeZyoVEtJ7AqchoGvO9LIB1vqaLOhB39A47UVgFnytuAa07iNFlzH2mJM-TCvBqN6UK0RFuaEzvqGhjy8gp7lv4fU7VlKGiCFtGKH1YECo20SBQa5159FnHAzv60hzsqVzCNE63-KKeHz9h4f2_qSgVfoVsUmVQ4uOJtuJ3Z753YhYryci9Bjcr9NtpQ8dtj27is7r6Xvwl35E_qHtdaBOODk9IqD6riVJ7EaJiykBks_2Sv-1sGsvoTfp"/>
+<!-- Heat Dots Positioning -->
+<div class="absolute top-[42%] left-[18%] w-4 h-4 bg-error rounded-full heat-pulse-red blur-[2px]"></div> <!-- Long Beach -->
+<div class="absolute top-[38%] left-[48%] w-6 h-6 bg-error rounded-full heat-pulse-red blur-[4px]"></div> <!-- Rotterdam -->
+<div class="absolute top-[45%] left-[78%] w-8 h-8 bg-error rounded-full heat-pulse-red blur-[6px]"></div> <!-- Shanghai -->
+<div class="absolute top-[68%] left-[82%] w-3 h-3 bg-primary-container rounded-full blur-[1px] heat-pulse-green"></div> <!-- Singapore -->
+<div class="absolute top-[48%] left-[68%] w-4 h-4 bg-amber-400 rounded-full blur-[2px]"></div> <!-- Jebel Ali -->
+</div>
+</div>
+<!-- Connectivity Status Badge (Design System Specific) -->
+<div class="absolute bottom-6 right-6 flex items-center gap-2 glass-panel px-3 py-1.5 rounded-full border border-cyan-400/20">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+<span class="text-[10px] font-data-mono text-cyan-400 uppercase tracking-tighter">Satellite Sync Active</span>
+</div>
+</div>
+<!-- BOTTLENECK ALERTS -->
+<div class="lg:col-span-3 flex flex-col gap-gutter">
+<div class="glass-panel rounded-lg flex-1 flex flex-col">
+<div class="p-sm border-b border-slate-800 flex justify-between items-center">
+<h2 class="font-label-caps text-label-caps text-on-surface">BOTTLENECK ALERTS</h2>
+<span class="material-symbols-outlined text-slate-500 text-sm">filter_list</span>
+</div>
+<div class="flex-1 overflow-y-auto scrollbar-hide p-xs space-y-xs">
+<!-- Alert Item -->
+<div class="p-sm bg-slate-900/40 rounded border border-slate-800 hover:border-error/50 transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-data-mono text-[12px] text-error font-bold">CRITICAL</span>
+<span class="font-data-mono text-[10px] text-slate-500">REF: CN-SHA-01</span>
+</div>
+<p class="font-headline-lg text-sm text-on-surface mb-xs">SHANGHAI PORT</p>
+<div class="grid grid-cols-2 gap-2 text-[10px] font-data-mono">
+<div class="text-slate-400">VESSELS:<span class="text-on-surface ml-1">142</span></div>
+<div class="text-slate-400">DELAY:<span class="text-error ml-1">5.8D</span></div>
+</div>
+</div>
+<!-- Alert Item -->
+<div class="p-sm bg-slate-900/40 rounded border border-slate-800 hover:border-error/50 transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-data-mono text-[12px] text-error font-bold">CRITICAL</span>
+<span class="font-data-mono text-[10px] text-slate-500">REF: US-LGB-04</span>
+</div>
+<p class="font-headline-lg text-sm text-on-surface mb-xs">LONG BEACH</p>
+<div class="grid grid-cols-2 gap-2 text-[10px] font-data-mono">
+<div class="text-slate-400">VESSELS:<span class="text-on-surface ml-1">89</span></div>
+<div class="text-slate-400">DELAY:<span class="text-error ml-1">4.2D</span></div>
+</div>
+</div>
+<!-- Alert Item -->
+<div class="p-sm bg-slate-900/40 rounded border border-slate-800 hover:border-amber-400/50 transition-colors">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-data-mono text-[12px] text-amber-400 font-bold">HIGH</span>
+<span class="font-data-mono text-[10px] text-slate-500">REF: NL-ROT-09</span>
+</div>
+<p class="font-headline-lg text-sm text-on-surface mb-xs">ROTTERDAM</p>
+<div class="grid grid-cols-2 gap-2 text-[10px] font-data-mono">
+<div class="text-slate-400">VESSELS:<span class="text-on-surface ml-1">67</span></div>
+<div class="text-slate-400">DELAY:<span class="text-amber-400 ml-1">2.1D</span></div>
+</div>
+</div>
+<!-- Alert Item -->
+<div class="p-sm bg-slate-900/40 rounded border border-slate-800 opacity-60">
+<p class="font-headline-lg text-sm text-on-surface mb-xs">SINGAPORE HUB</p>
+<div class="grid grid-cols-2 gap-2 text-[10px] font-data-mono">
+<div class="text-slate-400">STATUS:<span class="text-primary-container ml-1">OPTIMAL</span></div>
+<div class="text-slate-400">WAIT:<span class="text-on-surface ml-1">0.8D</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- BOTTOM TRENDS SECTION -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter pb-gutter">
+<!-- EFFICIENCY PULSE BAR CHART -->
+<div class="lg:col-span-8 glass-panel rounded-lg p-sm">
+<div class="flex justify-between items-center mb-md">
+<h2 class="font-label-caps text-label-caps text-on-surface">EFFICIENCY PULSE (24H TREND)</h2>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-cyan-400 rounded-full"></span>
+<span class="text-[10px] font-data-mono text-slate-400">INBOUND</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-slate-700 rounded-full"></span>
+<span class="text-[10px] font-data-mono text-slate-400">OUTBOUND</span>
+</div>
+</div>
+</div>
+<div class="h-40 flex items-end justify-between gap-1 px-4">
+<!-- Dynamic Bars -->
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/20 h-[30%] rounded-t-sm relative group">
+<div class="absolute inset-0 bg-cyan-400 opacity-0 group-hover:opacity-40 transition-opacity"></div>
+</div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">00:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/20 h-[45%] rounded-t-sm"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">04:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/40 h-[60%] rounded-t-sm"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">08:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/60 h-[85%] rounded-t-sm shadow-[0_-4px_10px_rgba(0,229,255,0.2)]"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">12:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/50 h-[70%] rounded-t-sm"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">16:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/30 h-[50%] rounded-t-sm"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">20:00</span>
+</div>
+<div class="flex-1 flex flex-col gap-1 items-center">
+<div class="w-full bg-cyan-400/20 h-[35%] rounded-t-sm"></div>
+<span class="text-[8px] font-data-mono text-slate-600 mt-2">23:59</span>
+</div>
+</div>
+</div>
+<!-- TERMINAL THROUGHPUT MINI-CHARTS -->
+<div class="lg:col-span-4 glass-panel rounded-lg p-sm overflow-hidden">
+<h2 class="font-label-caps text-label-caps text-on-surface mb-md">TERMINAL PERFORMANCE</h2>
+<div class="space-y-md">
+<div class="space-y-xs">
+<div class="flex justify-between text-[11px] font-data-mono">
+<span class="text-slate-400">Terminal A (Auto)</span>
+<span class="text-on-surface">420 TEU/H</span>
+</div>
+<div class="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[85%]"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-[11px] font-data-mono">
+<span class="text-slate-400">Terminal B (Manual)</span>
+<span class="text-on-surface">180 TEU/H</span>
+</div>
+<div class="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+<div class="h-full bg-error w-[40%]"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between text-[11px] font-data-mono">
+<span class="text-slate-400">Liquid Bulk Ops</span>
+<span class="text-on-surface">640 TEU/H</span>
+</div>
+<div class="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[92%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FLOATING ACTION BUTTON (Suppressed per logic, but adding a "Live Support" variant for logistics) -->
+<div class="fixed bottom-6 right-6 z-50">
+<button class="bg-primary-container text-on-primary-container w-14 h-14 rounded-full shadow-[0_0_20px_rgba(0,229,255,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">support_agent</span>
+</button>
+</div>
+</body></html>

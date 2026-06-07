@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FLEETGUARD - Vehicle Health Diagnostics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .machined-border {
+            border: 2px solid #2a2a2a;
+        }
+        .riveted-header {
+            background-color: #20201f;
+            border-bottom: 2px solid #2a2a2a;
+        }
+        .led-segment {
+            height: 12px;
+            width: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                transparent,
+                transparent 4px,
+                #131313 4px,
+                #131313 6px
+            );
+            z-index: 10;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#313030",
+                        "secondary": "#c6c6c6",
+                        "primary": "#ffb595",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "surface-container": "#20201f",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-bright": "#393939",
+                        "secondary-container": "#484949",
+                        "on-surface-variant": "#e3bfb1",
+                        "tertiary-container": "#999797",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "surface-tint": "#ffb595",
+                        "on-tertiary-container": "#303030",
+                        "secondary-fixed": "#e3e2e2",
+                        "primary-container": "#ff6700",
+                        "on-secondary": "#2f3131",
+                        "surface-container-highest": "#353535",
+                        "on-secondary-container": "#b8b8b8",
+                        "on-primary-container": "#561e00",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-primary": "#571e00",
+                        "outline-variant": "#5a4136",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed": "#ffdbcd",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "inverse-primary": "#a23f00",
+                        "tertiary": "#c9c6c5",
+                        "on-primary-fixed": "#351000",
+                        "outline": "#aa8a7d",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-variant": "#353535",
+                        "background": "#131313",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "primary-fixed-dim": "#ffb595",
+                        "on-primary-fixed-variant": "#7c2e00"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "stack-md": "1rem",
+                        "touch-target-min": "48px",
+                        "gutter": "1.5rem",
+                        "stack-lg": "2rem",
+                        "margin": "2rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-display": ["Inter"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "label-bold": ["Inter"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-display": ["40px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "800"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "700"}],
+                        "label-bold": ["14px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dim selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-neutral-950 flex justify-between items-center w-full px-6 h-20 fixed top-0 z-[100] border-b-2 border-neutral-800">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Driver Profile" class="w-full h-full object-cover" data-alt="A rugged male truck driver with a determined expression, wearing a high-visibility industrial vest. He is positioned in a dimly lit truck cabin with orange dashboard illumination. The photography is high-contrast with deep blacks and sharp silver highlights, reflecting a professional and heavy-duty aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDz0rb4hpr222oEyqRUiW71MO_gLQp0wokeuaF23izhgzky3g1vrVD-cXWZ9sSw60u_xVY5KZbH3ialHipT3XuzroqGJHuBVyybDnmh6f3a6GkWX5BPaZ4_--0wcv6S8nQQcEmAb2_P9ej4TiFqmx4qB7hDHQBDZ6QipvLz_qCB-fd0Ntl-LArzNq2f7ghRBSuQN9ZOtS5Eawn3gy9pyLkhgkAAAg3XpyQQRj_96FSHni1lfcZW0tkwW419Tff9b71VkQhKbnqFHYI"/>
+</div>
+<h1 class="text-2xl font-black text-orange-600 italic tracking-tighter uppercase">FLEETGUARD</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-inter font-black uppercase tracking-widest text-orange-600 hidden md:block">UNIT: 8234-XJ</span>
+<span class="material-symbols-outlined text-orange-600 text-3xl cursor-pointer active:translate-x-[2px] active:translate-y-[2px] transition-transform">sensors</span>
+</div>
+</header>
+<div class="flex pt-20 pb-24 md:pb-0 min-h-screen">
+<!-- NavigationDrawer (Desktop Only) -->
+<aside class="hidden md:flex flex-col w-80 h-[calc(100vh-80px)] p-6 gap-4 bg-neutral-950 border-r-2 border-neutral-800 sticky top-20">
+<div class="flex flex-col gap-1 mb-6 border-l-4 border-orange-600 pl-4">
+<p class="font-inter font-bold uppercase text-orange-600 text-xs tracking-widest">Operator 42</p>
+<p class="font-inter font-black text-on-surface uppercase text-lg">Driver Alpha-7</p>
+<p class="font-inter text-neutral-500 uppercase text-[10px]">Status: Active Duty</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 text-neutral-300 hover:text-orange-500 hover:bg-neutral-900 duration-75 uppercase font-inter font-bold" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Fleet Overview</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-neutral-300 hover:text-orange-500 hover:bg-neutral-900 duration-75 uppercase font-inter font-bold" href="#">
+<span class="material-symbols-outlined">reset_settings</span>
+<span>Maintenance Logs</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-black bg-orange-600 font-black border-2 border-black active:translate-x-[4px] duration-75 uppercase font-inter" href="#">
+<span class="material-symbols-outlined">monitor_heart</span>
+<span>Health Diagnostics</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-neutral-300 hover:text-orange-500 hover:bg-neutral-900 duration-75 uppercase font-inter font-bold" href="#">
+<span class="material-symbols-outlined">local_gas_station</span>
+<span>Fuel Reports</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-neutral-300 hover:text-orange-500 hover:bg-neutral-900 duration-75 uppercase font-inter font-bold" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span>Safety Alerts</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-neutral-300 hover:text-orange-500 hover:bg-neutral-900 duration-75 uppercase font-inter font-bold" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-6 md:p-12 max-w-7xl mx-auto w-full">
+<div class="mb-8 border-b-4 border-primary-container inline-block pb-2">
+<h2 class="font-headline-xl text-on-surface uppercase italic">Health Overview</h2>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
+<!-- Engine Health Card -->
+<div class="md:col-span-8 machined-border bg-surface-container-low overflow-hidden">
+<div class="riveted-header px-4 py-3 flex justify-between items-center">
+<span class="font-label-bold text-secondary uppercase tracking-widest">System // Engine Core</span>
+<span class="flex items-center gap-2 text-green-500 text-xs font-black">
+<span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> OPERATIONAL
+                        </span>
+</div>
+<div class="p-6 grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="flex flex-col justify-center">
+<p class="text-neutral-500 uppercase font-bold text-xs mb-1">Operating Temp</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-on-surface">195</span>
+<span class="font-headline-md text-secondary">°F</span>
+</div>
+<div class="mt-4 relative w-full h-3 bg-neutral-800">
+<div class="absolute top-0 left-0 h-full bg-primary-container" style="width: 65%;"></div>
+<div class="led-segment"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-dim machined-border">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Load</p>
+<p class="font-headline-md text-primary-container">42%</p>
+</div>
+<div class="p-4 bg-surface-dim machined-border">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Oil Pressure</p>
+<p class="font-headline-md text-primary-container">58 PSI</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Fuel Level Card -->
+<div class="md:col-span-4 machined-border bg-surface-container-low overflow-hidden">
+<div class="riveted-header px-4 py-3">
+<span class="font-label-bold text-secondary uppercase tracking-widest">Reserves // Diesel</span>
+</div>
+<div class="p-6 h-full flex flex-col justify-between">
+<div>
+<span class="font-data-display text-primary-container">78%</span>
+<p class="text-neutral-500 uppercase font-bold text-xs">Estimated Range: 452 MI</p>
+</div>
+<div class="mt-4 flex gap-1 h-12">
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container opacity-30"></div>
+<div class="flex-1 bg-primary-container opacity-30"></div>
+</div>
+</div>
+</div>
+<!-- Tire Pressure Card -->
+<div class="md:col-span-12 machined-border bg-surface-container-low overflow-hidden">
+<div class="riveted-header px-4 py-3">
+<span class="font-label-bold text-secondary uppercase tracking-widest">Telematics // Tire Pressure Monitoring</span>
+</div>
+<div class="p-6">
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="p-4 bg-surface-dim machined-border border-l-4 border-l-primary-container">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Front Left</p>
+<p class="font-headline-md text-on-surface">105 <span class="text-xs text-neutral-500">PSI</span></p>
+</div>
+<div class="p-4 bg-surface-dim machined-border border-l-4 border-l-primary-container">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Front Right</p>
+<p class="font-headline-md text-on-surface">102 <span class="text-xs text-neutral-500">PSI</span></p>
+</div>
+<div class="p-4 bg-surface-dim machined-border border-l-4 border-l-error">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Rear Left</p>
+<div class="flex items-center gap-2">
+<p class="font-headline-md text-error">92 <span class="text-xs text-neutral-500">PSI</span></p>
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+</div>
+</div>
+<div class="p-4 bg-surface-dim machined-border border-l-4 border-l-primary-container">
+<p class="text-neutral-500 uppercase font-bold text-[10px]">Rear Right</p>
+<p class="font-headline-md text-on-surface">104 <span class="text-xs text-neutral-500">PSI</span></p>
+</div>
+</div>
+</div>
+</div>
+<!-- Diagnostic Log -->
+<div class="md:col-span-6 machined-border bg-surface-container-low overflow-hidden">
+<div class="riveted-header px-4 py-3 flex justify-between">
+<span class="font-label-bold text-secondary uppercase tracking-widest">Active Alerts</span>
+<span class="text-[10px] text-neutral-500">LIVE FEED</span>
+</div>
+<div class="p-0">
+<div class="border-b border-neutral-800 p-4 flex gap-4 items-start bg-error-container/10">
+<span class="material-symbols-outlined text-error" data-weight="fill">warning</span>
+<div>
+<p class="font-inter font-black uppercase text-xs text-error">Low Pressure Warning</p>
+<p class="text-[11px] text-neutral-400 mt-1 uppercase">Rear Left Axle: Pressure below 95 PSI threshold.</p>
+<p class="text-[10px] text-neutral-600 mt-2 font-mono">CODE: P0420_X</p>
+</div>
+</div>
+<div class="border-b border-neutral-800 p-4 flex gap-4 items-start">
+<span class="material-symbols-outlined text-secondary" data-weight="fill">build</span>
+<div>
+<p class="font-inter font-black uppercase text-xs text-secondary">Scheduled Service</p>
+<p class="text-[11px] text-neutral-400 mt-1 uppercase">Brake Pad Inspection Due in 1,200 Miles.</p>
+<p class="text-[10px] text-neutral-600 mt-2 font-mono">LOG: MNT_772</p>
+</div>
+</div>
+<div class="p-4 flex gap-4 items-start">
+<span class="material-symbols-outlined text-primary-container" data-weight="fill">info</span>
+<div>
+<p class="font-inter font-black uppercase text-xs text-primary-container">Firmware Updated</p>
+<p class="text-[11px] text-neutral-400 mt-1 uppercase">Telematics Node v4.2.1 synchronized.</p>
+<p class="text-[10px] text-neutral-600 mt-2 font-mono">SYS: AUTO_UPGRADE</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Maintenance Form -->
+<div class="md:col-span-6 machined-border bg-surface-container-low overflow-hidden">
+<div class="riveted-header px-4 py-3">
+<span class="font-label-bold text-secondary uppercase tracking-widest">Request Maintenance</span>
+</div>
+<div class="p-6">
+<form class="space-y-4">
+<div>
+<label class="block text-[10px] font-black uppercase text-neutral-500 mb-1">Issue Category</label>
+<select class="w-full bg-surface-dim machined-border p-4 text-on-surface font-inter font-bold uppercase focus:border-primary-container outline-none appearance-none">
+<option>Engine / Powertrain</option>
+<option>Braking System</option>
+<option>Electrical / Lights</option>
+<option>Tires / Wheels</option>
+</select>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase text-neutral-500 mb-1">Urgency Level</label>
+<div class="grid grid-cols-3 gap-2">
+<button class="p-3 machined-border text-[10px] font-black uppercase bg-surface-dim hover:bg-neutral-800" type="button">Low</button>
+<button class="p-3 machined-border text-[10px] font-black uppercase bg-surface-dim hover:bg-neutral-800 border-primary-container text-primary-container" type="button">High</button>
+<button class="p-3 machined-border text-[10px] font-black uppercase bg-surface-dim hover:bg-neutral-800" type="button">Critical</button>
+</div>
+</div>
+<div>
+<label class="block text-[10px] font-black uppercase text-neutral-500 mb-1">Operator Notes</label>
+<textarea class="w-full bg-surface-dim machined-border p-4 text-on-surface font-inter font-bold uppercase focus:border-primary-container outline-none placeholder:text-neutral-700" placeholder="DESCRIBE THE SYSTEM ANOMALY..." rows="2"></textarea>
+</div>
+<button class="w-full bg-primary-container text-black font-black uppercase p-5 active:translate-x-[2px] active:translate-y-[2px] transition-transform hover:brightness-110" type="submit">
+                                Submit Maintenance Ticket
+                            </button>
+</form>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-2 h-24 bg-neutral-950 border-t-2 border-neutral-800">
+<a class="flex flex-col items-center justify-center text-neutral-400 p-3 hover:bg-neutral-900 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-inter font-bold text-xs uppercase">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-400 p-3 hover:bg-neutral-900 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">list_alt</span>
+<span class="font-inter font-bold text-xs uppercase">ELD</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-orange-600 text-black rounded-sm p-3 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">monitor_heart</span>
+<span class="font-inter font-bold text-xs uppercase">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center text-neutral-400 p-3 hover:bg-neutral-900 active:scale-95 transition-all" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-inter font-bold text-xs uppercase">Dispatch</span>
+</a>
+</nav>
+</body></html>

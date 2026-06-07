@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>NEUROSYNAPSE Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#39294b",
+                        "on-primary-container": "#82778b",
+                        "primary-fixed-dim": "#cfc2d8",
+                        "on-secondary-fixed-variant": "#614000",
+                        "inverse-primary": "#645b6d",
+                        "surface-container-high": "#282a2b",
+                        "surface": "#121414",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary": "#432c00",
+                        "on-secondary-fixed": "#281800",
+                        "inverse-surface": "#e2e2e2",
+                        "on-secondary-container": "#694600",
+                        "on-primary-fixed-variant": "#4c4355",
+                        "surface-tint": "#cfc2d8",
+                        "on-tertiary-fixed": "#231435",
+                        "surface-dim": "#121414",
+                        "outline": "#958f96",
+                        "surface-container-lowest": "#0c0f0f",
+                        "tertiary-fixed-dim": "#d3bee9",
+                        "surface-variant": "#333535",
+                        "on-tertiary-container": "#86749a",
+                        "tertiary-fixed": "#eedbff",
+                        "surface-container-low": "#1a1c1c",
+                        "secondary-fixed-dim": "#ffba43",
+                        "on-surface": "#e2e2e2",
+                        "error": "#ffb4ab",
+                        "error-container": "#93000a",
+                        "surface-bright": "#38393a",
+                        "primary-container": "#120b1a",
+                        "secondary": "#ffd393",
+                        "on-surface-variant": "#cbc4cc",
+                        "inverse-on-surface": "#2f3131",
+                        "on-primary": "#352d3e",
+                        "tertiary": "#d3bee9",
+                        "surface-container-highest": "#333535",
+                        "background": "#121414",
+                        "secondary-fixed": "#ffddaf",
+                        "outline-variant": "#49454b",
+                        "on-tertiary-fixed-variant": "#504063",
+                        "on-primary-fixed": "#201828",
+                        "tertiary-container": "#150627",
+                        "surface-container": "#1e2020",
+                        "primary": "#cfc2d8",
+                        "secondary-container": "#fdaf00",
+                        "primary-fixed": "#ebdef4",
+                        "on-error": "#690005",
+                        "on-background": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-lg": ["Manrope"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "data-mono": ["Space Grotesk"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 11, 26, 0.4);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+        }
+        .diagnostic-card {
+            border-top: 2px solid #fdaf00;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0D0714;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2A1F3D;
+            border-radius: 2px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #fdaf00;
+        }
+    </style>
+</head>
+<body class="bg-[#0D0714] text-on-background font-body-md selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- SideNavBar -->
+<aside class="w-64 h-screen fixed left-0 top-0 border-r border-[#2A1F3D] bg-[#0D0714] flex flex-col py-6 z-50">
+<div class="px-6 mb-10">
+<h1 class="text-xl font-bold tracking-widest text-amber-500 font-headline-md">NEUROSYNAPSE</h1>
+<p class="text-[10px] text-slate-400 font-label-caps mt-1">Unit 402 - Sleep Lab</p>
+</div>
+<nav class="flex-grow space-y-1">
+<!-- Active Tab: Overview -->
+<a class="flex items-center px-6 py-3 text-amber-500 border-r-2 border-amber-500 bg-amber-500/5 transition-all duration-300 font-label-caps text-sm tracking-tight uppercase" href="#">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+                Overview
+            </a>
+<a class="flex items-center px-6 py-3 text-slate-400 hover:text-slate-200 hover:bg-amber-500/10 transition-all duration-300 font-label-caps text-sm tracking-tight uppercase" href="#">
+<span class="material-symbols-outlined mr-3">group</span>
+                Patients
+            </a>
+<a class="flex items-center px-6 py-3 text-slate-400 hover:text-slate-200 hover:bg-amber-500/10 transition-all duration-300 font-label-caps text-sm tracking-tight uppercase" href="#">
+<span class="material-symbols-outlined mr-3">biotech</span>
+                Lab Queue
+            </a>
+<a class="flex items-center px-6 py-3 text-slate-400 hover:text-slate-200 hover:bg-amber-500/10 transition-all duration-300 font-label-caps text-sm tracking-tight uppercase" href="#">
+<span class="material-symbols-outlined mr-3">monitoring</span>
+                Analytics
+            </a>
+<a class="flex items-center px-6 py-3 text-slate-400 hover:text-slate-200 hover:bg-amber-500/10 transition-all duration-300 font-label-caps text-sm tracking-tight uppercase" href="#">
+<span class="material-symbols-outlined mr-3">admin_panel_settings</span>
+                Administration
+            </a>
+</nav>
+<div class="mt-auto px-6 space-y-4 border-t border-[#2A1F3D] pt-6">
+<div class="flex items-center gap-3 mb-6">
+<img alt="Clinic Administrator" class="w-10 h-10 rounded-full object-cover border border-amber-500/30" data-alt="A professional medical administrator portrait with neutral laboratory lighting. The background is a clean, modern neurological clinic with soft focus on medical equipment. The subject wears a charcoal grey medical scrub, looking towards the camera with a calm and precise expression. The color palette is composed of deep charcoals, whites, and soft amber lens flares." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAuc0x-tYYrjaVc04GocRTThOCfwBLRSrcx6cstr3YsjnJvSCvdAUsmJEGGtsyNnmbLeLOAc30Wcr8tfY7lmvidYRHiFSo3F37NLevpy5yCOo8XXq4rF7Om10Sm4Akrm5eXWFpPSg0QZx4qDeUUmnu8XZ2J8z9Wg5jcmv_cUXjKZFlUBVU_XLvelDho1hXAA9bvmfPavjLUiKVHml-nNVMDhEybzO_MqDw0cqMpDohJvyaTH0moDNx3Qn7wDc9OtCORW4C1ZBCsemk"/>
+<div>
+<p class="text-sm font-bold text-slate-200">Admin Staff</p>
+<p class="text-xs text-slate-500">Chief Technician</p>
+</div>
+</div>
+<a class="flex items-center text-slate-400 hover:text-slate-200 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined text-sm mr-2">help</span>
+                Support
+            </a>
+<a class="flex items-center text-slate-400 hover:text-slate-200 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined text-sm mr-2">logout</span>
+                Logout
+            </a>
+</div>
+</aside>
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 w-[calc(100%-16rem)] h-16 border-b border-[#2A1F3D] bg-[#120B1A]/40 backdrop-blur-md flex justify-between items-center px-8 z-40 drop-shadow-[0_0_8px_rgba(255,176,0,0.1)]">
+<div class="flex items-center gap-8">
+<span class="text-lg font-black tracking-tighter text-amber-500 font-headline-md">PATIENT_PORTAL</span>
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm">search</span>
+<input class="w-full bg-[#0D0714] border-none text-sm py-2 pl-10 pr-4 text-slate-300 focus:ring-1 focus:ring-amber-500/50 rounded-lg" placeholder="Search patient ID, equipment, or staff..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden lg:flex items-center gap-6 font-['Space_Grotesk'] font-medium text-sm">
+<a class="text-slate-400 hover:text-amber-400 transition-colors" href="#">My Records</a>
+<a class="text-amber-500 border-b-2 border-amber-500 pb-1" href="#">Sleep Study</a>
+<a class="text-slate-400 hover:text-amber-400 transition-colors" href="#">Appointments</a>
+<a class="text-slate-400 hover:text-amber-400 transition-colors" href="#">Messaging</a>
+</nav>
+<div class="h-6 w-px bg-[#2A1F3D] mx-2"></div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-400 hover:text-amber-500 transition-colors cursor-pointer active:opacity-80">notifications</button>
+<button class="material-symbols-outlined text-slate-400 hover:text-amber-500 transition-colors cursor-pointer active:opacity-80">account_circle</button>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-24 px-8 pb-12">
+<!-- Header Actions -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<p class="text-amber-500 font-label-caps text-xs mb-1">DASHBOARD OVERVIEW</p>
+<h2 class="text-headline-md font-headline-md text-slate-100">Lab Command Center</h2>
+</div>
+<button class="bg-amber-500 hover:bg-amber-400 text-[#0D0714] px-6 py-2.5 font-label-caps text-xs font-bold transition-all duration-300 shadow-[0_0_12px_rgba(255,176,0,0.3)] flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span>
+                NEW STUDY INTAKE
+            </button>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Live Monitoring Status (Large Span) -->
+<section class="col-span-12 lg:col-span-8 diagnostic-card glass-panel p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-lg text-slate-100 flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                        Live Monitoring
+                    </h3>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-amber-500/10 text-amber-500 text-[10px] font-label-caps border border-amber-500/20">ROOM 04 ACTIVE</span>
+<span class="px-2 py-1 bg-slate-800 text-slate-400 text-[10px] font-label-caps">SIGNAL: OPTIMAL</span>
+</div>
+</div>
+<!-- Hypnogram Simulation -->
+<div class="w-full h-64 relative bg-[#0D0714]/50 border border-[#2A1F3D] p-4">
+<div class="absolute inset-0 flex flex-col justify-between p-4 py-8 pointer-events-none">
+<div class="w-full border-t border-slate-800/30"></div>
+<div class="w-full border-t border-slate-800/30"></div>
+<div class="w-full border-t border-slate-800/30"></div>
+<div class="w-full border-t border-slate-800/30"></div>
+</div>
+<div class="h-full w-full flex items-end gap-1">
+<!-- Simulated EEG Data Bars -->
+<div class="w-2 bg-amber-500/20 h-1/4"></div>
+<div class="w-2 bg-amber-500/40 h-2/4"></div>
+<div class="w-2 bg-amber-500/60 h-3/4"></div>
+<div class="w-2 bg-amber-500 h-full shadow-[0_0_10px_rgba(255,176,0,0.3)]"></div>
+<div class="w-2 bg-amber-500/60 h-4/5"></div>
+<div class="w-2 bg-amber-500/40 h-3/5"></div>
+<div class="w-2 bg-amber-500/20 h-2/5"></div>
+<div class="w-2 bg-amber-500/30 h-1/2"></div>
+<div class="w-2 bg-amber-500/50 h-2/3"></div>
+<div class="w-2 bg-amber-500/70 h-full"></div>
+<div class="w-2 bg-amber-500/40 h-3/4"></div>
+<div class="w-2 bg-amber-500/20 h-1/2"></div>
+<div class="w-2 bg-amber-500 h-5/6"></div>
+<div class="w-2 bg-amber-500/60 h-2/3"></div>
+<div class="w-2 bg-amber-500/30 h-1/3"></div>
+<div class="w-2 bg-amber-500/10 h-1/5"></div>
+<div class="w-2 bg-amber-500/40 h-2/4"></div>
+<div class="w-2 bg-amber-500/80 h-4/5"></div>
+<div class="w-2 bg-amber-500 h-full"></div>
+<div class="w-2 bg-amber-500/60 h-3/4"></div>
+<div class="w-2 bg-amber-500/20 h-1/4"></div>
+<div class="w-2 bg-amber-500/10 h-1/6"></div>
+<div class="w-2 bg-amber-500/40 h-2/4"></div>
+<div class="w-2 bg-amber-500/60 h-3/4"></div>
+<div class="w-2 bg-amber-500 h-full"></div>
+<div class="w-2 bg-amber-500/60 h-4/5"></div>
+<div class="w-2 bg-amber-500/40 h-3/5"></div>
+<div class="w-2 bg-amber-500/20 h-2/5"></div>
+<div class="w-2 bg-amber-500/30 h-1/2"></div>
+<div class="w-2 bg-amber-500/50 h-2/3"></div>
+<div class="w-2 bg-amber-500/70 h-full"></div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-label-caps text-slate-500">
+<span>22:00:00</span>
+<span>22:30:00</span>
+<span>23:00:00</span>
+<span>23:30:00</span>
+<span>00:00:00</span>
+</div>
+</div>
+<div class="grid grid-cols-4 gap-4 mt-6">
+<div class="p-3 bg-[#121414] border border-[#2A1F3D]">
+<p class="text-slate-500 text-[10px] font-label-caps mb-1">HEART RATE</p>
+<p class="text-xl font-headline-md text-amber-500">72 <span class="text-xs text-slate-400">BPM</span></p>
+</div>
+<div class="p-3 bg-[#121414] border border-[#2A1F3D]">
+<p class="text-slate-500 text-[10px] font-label-caps mb-1">SpO2</p>
+<p class="text-xl font-headline-md text-amber-500">98 <span class="text-xs text-slate-400">%</span></p>
+</div>
+<div class="p-3 bg-[#121414] border border-[#2A1F3D]">
+<p class="text-slate-500 text-[10px] font-label-caps mb-1">RESPIRATORY</p>
+<p class="text-xl font-headline-md text-amber-500">14 <span class="text-xs text-slate-400">RPM</span></p>
+</div>
+<div class="p-3 bg-[#121414] border border-[#2A1F3D]">
+<p class="text-slate-500 text-[10px] font-label-caps mb-1">SLEEP STAGE</p>
+<p class="text-xl font-headline-md text-amber-500">REM</p>
+</div>
+</div>
+</section>
+<!-- Patient Queue (Side Col) -->
+<section class="col-span-12 lg:col-span-4 glass-panel border border-[#2A1F3D] flex flex-col">
+<div class="p-6 border-b border-[#2A1F3D]">
+<h3 class="font-headline-md text-lg text-slate-100 uppercase tracking-tight">Active Queue</h3>
+</div>
+<div class="flex-grow overflow-y-auto max-h-[440px]">
+<!-- Queue Item 1 -->
+<div class="p-4 border-b border-[#2A1F3D] hover:bg-amber-500/5 transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-slate-100 font-bold text-sm">HARRISON, JAMES</p>
+<p class="text-xs text-slate-500">ID: #PX-9902 • Room 02</p>
+</div>
+<span class="text-[10px] font-label-caps bg-amber-500 text-[#0D0714] px-1.5 py-0.5">READY</span>
+</div>
+<p class="text-[10px] text-slate-400">Next Action: PSG Hook-up (22:45)</p>
+</div>
+<!-- Queue Item 2 -->
+<div class="p-4 border-b border-[#2A1F3D] hover:bg-amber-500/5 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-slate-100 font-bold text-sm">MARTINEZ, ELENA</p>
+<p class="text-xs text-slate-500">ID: #PX-9844 • Waiting</p>
+</div>
+<span class="text-[10px] font-label-caps border border-slate-700 text-slate-500 px-1.5 py-0.5 uppercase">Pending</span>
+</div>
+<p class="text-[10px] text-slate-400">Next Action: Physician Consult</p>
+</div>
+<!-- Queue Item 3 -->
+<div class="p-4 border-b border-[#2A1F3D] hover:bg-amber-500/5 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-slate-100 font-bold text-sm">CHEN, WEI</p>
+<p class="text-xs text-slate-500">ID: #PX-9711 • Room 04</p>
+</div>
+<span class="text-[10px] font-label-caps bg-amber-500/20 text-amber-500 px-1.5 py-0.5 uppercase">Monitoring</span>
+</div>
+<p class="text-[10px] text-slate-400">Duration: 01:24:12</p>
+</div>
+<!-- Queue Item 4 -->
+<div class="p-4 border-b border-[#2A1F3D] hover:bg-amber-500/5 transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="text-slate-100 font-bold text-sm">STEVENS, ALICE</p>
+<p class="text-xs text-slate-500">ID: #PX-9650 • Room 01</p>
+</div>
+<span class="text-[10px] font-label-caps bg-emerald-500/20 text-emerald-500 px-1.5 py-0.5 uppercase">Complete</span>
+</div>
+<p class="text-[10px] text-slate-400">Next Action: Discharge Processing</p>
+</div>
+</div>
+<div class="p-4 mt-auto">
+<button class="w-full py-2 border border-[#2A1F3D] text-slate-400 font-label-caps text-[10px] hover:text-amber-500 hover:border-amber-500 transition-all">VIEW ALL 24 PATIENTS</button>
+</div>
+</section>
+<!-- Equipment Availability -->
+<section class="col-span-12 lg:col-span-4 glass-panel p-6 border border-[#2A1F3D]">
+<h3 class="font-headline-md text-lg text-slate-100 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500">settings_input_component</span>
+                    Equipment
+                </h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<div>
+<p class="text-sm text-slate-200">Nihon Kohden G1</p>
+<p class="text-[10px] text-slate-500 font-label-caps">SERIAL: NK-44021</p>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5">IN USE</span>
+<p class="text-[10px] text-slate-500 mt-1">Due: 07:00 AM</p>
+</div>
+</div>
+<div class="w-full h-1 bg-[#2A1F3D]">
+<div class="w-[85%] h-full bg-amber-500 shadow-[0_0_8px_rgba(255,176,0,0.5)]"></div>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div>
+<p class="text-sm text-slate-200">Alice 6 Base</p>
+<p class="text-[10px] text-slate-500 font-label-caps">SERIAL: AL-6601</p>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-slate-400 bg-slate-800 px-2 py-0.5">AVAILABLE</span>
+</div>
+</div>
+<div class="w-full h-1 bg-[#2A1F3D]">
+<div class="w-0 h-full bg-amber-500"></div>
+</div>
+<div class="flex justify-between items-center mt-6">
+<div>
+<p class="text-sm text-slate-200">Compumedics Grael</p>
+<p class="text-[10px] text-slate-500 font-label-caps">SERIAL: CM-9022</p>
+</div>
+<div class="text-right">
+<span class="text-[10px] font-bold text-error bg-error-container/20 px-2 py-0.5">SERVICE REQ.</span>
+</div>
+</div>
+<div class="w-full h-1 bg-error-container/20">
+<div class="w-full h-full bg-error shadow-[0_0_8px_rgba(255,180,171,0.5)]"></div>
+</div>
+</div>
+</section>
+<!-- Staff Scheduling (Technical Checklist Style) -->
+<section class="col-span-12 lg:col-span-4 glass-panel p-6 border border-[#2A1F3D]">
+<h3 class="font-headline-md text-lg text-slate-100 mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-amber-500">calendar_month</span>
+                    Night Shift Staff
+                </h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between p-3 border-l-2 border-amber-500 bg-amber-500/5">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-amber-500" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<div>
+<p class="text-sm text-slate-200 font-bold">Dr. Aris Thorne</p>
+<p class="text-[10px] text-slate-400">Supervising Physician</p>
+</div>
+</div>
+<span class="text-[10px] font-label-caps text-amber-500">ON-CALL</span>
+</li>
+<li class="flex items-center justify-between p-3 border-l-2 border-slate-700">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-700">radio_button_unchecked</span>
+<div>
+<p class="text-sm text-slate-200">Sarah Jenkins, RPSGT</p>
+<p class="text-[10px] text-slate-400">Lead Technician</p>
+</div>
+</div>
+<span class="text-[10px] font-label-caps text-slate-500">LOGGED IN</span>
+</li>
+<li class="flex items-center justify-between p-3 border-l-2 border-slate-700">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-700">radio_button_unchecked</span>
+<div>
+<p class="text-sm text-slate-200">Michael Vane</p>
+<p class="text-[10px] text-slate-400">Night Technician</p>
+</div>
+</div>
+<span class="text-[10px] font-label-caps text-slate-500">BREAK</span>
+</li>
+</ul>
+</section>
+<!-- Lab Analytics (Small Card) -->
+<section class="col-span-12 lg:col-span-4 glass-panel p-6 border border-[#2A1F3D] overflow-hidden relative">
+<h3 class="font-headline-md text-lg text-slate-100 mb-4">Capacity</h3>
+<div class="flex items-center justify-center py-4">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-slate-800" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-amber-500" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="109.3" stroke-width="8"></circle>
+</svg>
+<div class="absolute text-center">
+<p class="text-2xl font-bold text-slate-100">70%</p>
+<p class="text-[8px] font-label-caps text-slate-500">UTILIZATION</p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-2">
+<div class="text-center">
+<p class="text-xs text-slate-500">Active Beds</p>
+<p class="text-lg font-bold text-slate-200">7/10</p>
+</div>
+<div class="text-center">
+<p class="text-xs text-slate-500">Wait Time</p>
+<p class="text-lg font-bold text-slate-200">12m</p>
+</div>
+</div>
+</section>
+<!-- Staff Image Section (Visual Anchor) -->
+<section class="col-span-12 h-64 relative overflow-hidden rounded-lg group">
+<img alt="Laboratory Control Room" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="A futuristic neurodiagnostic control room interior at night. The room is filled with multiple glowing computer monitors displaying complex EEG data and brain mapping visualizations in shades of amber and teal. The atmosphere is quiet, technological, and precise. Cool-toned blue ambient lighting contrasts with the warm amber glow from the screens. Soft focus on ergonomic workstations and high-tech medical interfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqOePEOPTA_69yh9NtWqHVgDWGNMaHZ1LmJnX9Ir5vBoAlNNynltRnA7KMZWK79qeWiPUBKjEVFxlzJqLXUouKeirPuWYp3rQ0xearjfrn2n9JmgPGjfs4wd5Sorni09lNQMo1gnWMzUjx7ptQdgOeVa0YbChgP9ObiSzuBSf3ObVymORD3GBwt6CzBoD3czaqbH4IQXnxKrrjQ3V1LNs0vPp4lgbtuwFJGXQjwMCT8zYHnN98Bz_Tkn9GzOrrBiGAVcTFddgCMMY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#0D0714] via-[#0D0714]/40 to-transparent"></div>
+<div class="absolute bottom-6 left-8">
+<h4 class="text-2xl font-headline-md text-slate-100">Facility Status: Nominal</h4>
+<p class="text-sm text-slate-400 mt-2 max-w-xl">All systems are operational. Data synchronization between local Unit 402 and central NeuroSynapse cloud is running at 99.9% uptime.</p>
+</div>
+</section>
+</div>
+</main>
+<!-- Floating Action for Quick Alert (Contextual FAB Suppression Logic applied - only on main dashboard) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-error text-on-error rounded-full shadow-2xl flex items-center justify-center active:scale-95 transition-transform group">
+<span class="material-symbols-outlined text-2xl group-hover:animate-pulse">emergency</span>
+<span class="absolute right-full mr-4 bg-error text-on-error text-[10px] font-bold px-2 py-1 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity">QUICK ALERT</span>
+</button>
+</body></html>
