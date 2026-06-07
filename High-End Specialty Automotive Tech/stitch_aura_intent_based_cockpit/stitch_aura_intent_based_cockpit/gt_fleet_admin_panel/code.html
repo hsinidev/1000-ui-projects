@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aura GT Fleet Cockpit</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-container": "#d7daec",
+                        "secondary-container": "#494c4d",
+                        "tertiary-fixed-dim": "#c3c6d7",
+                        "surface-container-lowest": "#060e1b",
+                        "surface-bright": "#323a47",
+                        "on-secondary-fixed-variant": "#454748",
+                        "on-tertiary-container": "#5b5f6e",
+                        "tertiary-fixed": "#dfe2f3",
+                        "secondary-fixed": "#e1e3e4",
+                        "on-tertiary-fixed": "#171b28",
+                        "on-primary-fixed-variant": "#004f54",
+                        "on-error-container": "#ffdad6",
+                        "tertiary": "#f7f6ff",
+                        "inverse-primary": "#00696f",
+                        "surface-variant": "#2d3543",
+                        "primary-container": "#00f2ff",
+                        "on-surface-variant": "#b9cacb",
+                        "on-tertiary": "#2c303d",
+                        "surface": "#0b1420",
+                        "on-surface": "#dbe3f4",
+                        "on-tertiary-fixed-variant": "#434654",
+                        "outline-variant": "#3a494b",
+                        "on-primary-container": "#006a71",
+                        "inverse-on-surface": "#29313e",
+                        "on-secondary": "#2e3132",
+                        "error-container": "#93000a",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#2d3543",
+                        "on-secondary-fixed": "#191c1d",
+                        "secondary": "#c5c7c8",
+                        "on-background": "#dbe3f4",
+                        "inverse-surface": "#dbe3f4",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#babcbd",
+                        "primary-fixed-dim": "#00dbe7",
+                        "primary-fixed": "#74f5ff",
+                        "surface-container": "#18202d",
+                        "outline": "#849495",
+                        "background": "#0b1420",
+                        "surface-tint": "#00dbe7",
+                        "primary": "#e1fdff",
+                        "surface-container-low": "#141c28",
+                        "surface-container-high": "#222a37",
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "on-primary-fixed": "#002022",
+                        "on-primary": "#00363a",
+                        "surface-dim": "#0b1420"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "container-padding": "40px",
+                        "unit": "8px",
+                        "element-gap": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "display-lg": ["Montserrat"],
+                        "body-md": ["Inter"],
+                        "data-viz": ["JetBrains Mono"],
+                        "display-md": ["Montserrat"],
+                        "body-lg": ["Inter"],
+                        "headline-sm": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.2em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "data-viz": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                        "display-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "headline-sm": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.03em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        };
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .neon-border-focus:focus-within {
+            border-color: #00f2ff;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+        .neon-glass-button {
+            border: 1px solid #00f2ff;
+            transition: all 0.3s ease;
+        }
+        .neon-glass-button:hover {
+            background: rgba(0, 242, 255, 0.15);
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.4);
+        }
+        .biometric-ring {
+            border: 1px solid #00f2ff;
+            box-shadow: 0 0 8px rgba(0, 242, 255, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface/30 backdrop-blur-2xl border-r border-outline-variant/10 flex flex-col h-full py-8 px-4 z-50">
+<div class="mb-12 px-2">
+<h1 class="font-display-md text-display-md font-bold text-primary-container tracking-wider">Aura-Cockpit</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-2 uppercase">System Admin</p>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 text-primary-container border-r-2 border-primary-container bg-primary-container/5 group" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<!-- Telemetry -->
+<a class="flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 text-on-surface-variant font-label-caps hover:bg-surface-variant/20 hover:text-primary group" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span>Telemetry</span>
+</a>
+<!-- Fleet -->
+<a class="flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 text-on-surface-variant font-label-caps hover:bg-surface-variant/20 hover:text-primary group" href="#">
+<span class="material-symbols-outlined" data-icon="directions_car">directions_car</span>
+<span>Fleet</span>
+</a>
+<!-- Security -->
+<a class="flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 text-on-surface-variant font-label-caps hover:bg-surface-variant/20 hover:text-primary group" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Security</span>
+</a>
+<!-- Settings -->
+<a class="flex items-center gap-4 py-3 px-4 rounded-lg transition-all duration-300 text-on-surface-variant font-label-caps hover:bg-surface-variant/20 hover:text-primary group" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-6 px-2">
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary-container/30">
+<img alt="System Administrator Profile" data-alt="A professional headshot of a system administrator in a high-tech environment. The lighting is moody and cinematic with cool blue and cyan rim lights reflecting off their features. The background is a blurred server room with glowing data indicators, maintaining a minimalist-luxe tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUCmxF-nTVNfgvApYOGyfRpYgusz-jOKjOliqRbvn-OrCJsvXWLwH118swWQqhH5VLDv1dbT2gPWBDLZCxdR5ZJIUFJRWg1nNej2EzgA2YdMIbJ7s_wlnfO_80a6Pagy4zdle9HqFqW6C-TOD4u1GPmgzssu0avvQA74oE04yjFVw22oXxAlrnpUM4ooTIzzx0yjFcLCSlr_A5iUb6XBi-v-b_J0LLIPVHdtPirOZ92vn6AFTj6acf2h75Tl6ON77mG--x6TBIxlE"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary text-[10px]">Admin Active</p>
+<p class="font-headline-sm text-[14px]">Marc Durand</p>
+</div>
+</div>
+<div class="py-2 px-4 glass-card rounded-lg text-center">
+<p class="font-label-caps text-label-caps text-primary-container text-[10px]">System Status: Active</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-container-padding">
+<!-- TopAppBar Context -->
+<header class="flex justify-between items-center mb-10 h-16 w-full">
+<div>
+<h2 class="font-display-md text-display-md text-primary">Fleet Intelligence</h2>
+<p class="text-on-surface-variant font-body-md opacity-70">Aura GT Network • Global Real-time Monitoring</p>
+</div>
+<div class="flex items-center gap-element-gap">
+<div class="relative glass-card px-4 py-2 rounded-full flex items-center gap-3 neon-border-focus">
+<span class="material-symbols-outlined text-primary-container" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-on-surface placeholder:text-outline-variant/60 font-label-caps text-label-caps w-48" placeholder="Search Fleet ID..." type="text"/>
+</div>
+<div class="glass-card p-2 rounded-full cursor-pointer hover:bg-surface-variant/40 transition-colors">
+<span class="material-symbols-outlined text-primary" data-icon="notifications">notifications</span>
+</div>
+</div>
+</header>
+<!-- Bento Grid: Main Dashboard -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- System Integrity Overview -->
+<div class="col-span-8 glass-card rounded-xl p-6 flex flex-col justify-between overflow-hidden relative">
+<div class="absolute -right-20 -top-20 w-80 h-80 bg-primary-container/5 rounded-full blur-[100px]"></div>
+<div class="flex justify-between items-start mb-8 relative z-10">
+<div>
+<p class="font-label-caps text-label-caps text-primary-container mb-1">NETWORK STATUS</p>
+<h3 class="font-headline-sm text-headline-sm">System Integrity: 99.98%</h3>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-outline text-[10px]">ACTIVE VEHICLES</p>
+<p class="font-data-viz text-data-viz text-primary-container text-lg">1,402</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-outline text-[10px]">POWER CONSUMPTION</p>
+<p class="font-data-viz text-data-viz text-primary-container text-lg">4.2 MW</p>
+</div>
+</div>
+</div>
+<!-- Data Visualization Area -->
+<div class="h-48 w-full border-b border-l border-outline-variant/20 relative mt-auto flex items-end px-4 pb-4">
+<!-- Faux Telemetry Graph -->
+<div class="flex items-end justify-between w-full h-32">
+<div class="w-2 bg-primary-container/20 rounded-t h-[60%]"></div>
+<div class="w-2 bg-primary-container/30 rounded-t h-[80%]"></div>
+<div class="w-2 bg-primary-container/40 rounded-t h-[70%]"></div>
+<div class="w-2 bg-primary-container/60 rounded-t h-[95%]"></div>
+<div class="w-2 bg-primary-container/40 rounded-t h-[85%]"></div>
+<div class="w-2 bg-primary-container/30 rounded-t h-[65%]"></div>
+<div class="w-2 bg-primary-container/50 rounded-t h-[75%]"></div>
+<div class="w-2 bg-primary-container rounded-t h-[90%] shadow-[0_0_10px_#00f2ff]"></div>
+<div class="w-2 bg-primary-container/70 rounded-t h-[80%]"></div>
+<div class="w-2 bg-primary-container/50 rounded-t h-[60%]"></div>
+<div class="w-2 bg-primary-container/30 rounded-t h-[40%]"></div>
+<div class="w-2 bg-primary-container/20 rounded-t h-[55%]"></div>
+</div>
+</div>
+</div>
+<!-- Global Deployment Map -->
+<div class="col-span-4 glass-card rounded-xl p-1 relative overflow-hidden h-[340px]">
+<div class="absolute top-4 left-4 z-10 glass-card bg-surface/60 px-3 py-1 rounded-full">
+<p class="font-label-caps text-label-caps text-[10px] text-primary">LIVE DEPLOYMENT</p>
+</div>
+<img class="w-full h-full object-cover rounded-lg opacity-60" data-alt="A dark, high-contrast satellite map showing the glowing city lights of a major tech hub at night. Overlayed on the map are translucent glass-cyan UI markers representing electric vehicle locations. The overall aesthetic is dark navy with bioluminescent cyan pulses, creating a sense of high-precision fleet management and real-time connectivity." data-location="San Francisco" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA2saeIH-Bl2IjsPlHJo70uYEK2NYcJ8CHsv3cifkxmx13KSxcdXUqWcKd_3lMU4aEwKBG_mETrBYmnn6zEBxuJ_cdbyVVj7ZiVOu40tslCLcYpdSWj2D-TMe40yBq3WNOv23mDSmYzT1fj5jQ_08zsExWNi7G-ekT3zSXUDRA49ZEWiurHJaBBdTNyLbSW0ULGhlTfelK6Pfr4l2B1reFaterPf4jE7IKRIFtcwcAVuKLy9DgohUsXELqVLxmVNwDlNLcwHRcZD7U"/>
+</div>
+<!-- Telemetry Widgets -->
+<div class="col-span-12 grid grid-cols-3 gap-gutter">
+<!-- Power Delivery -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">AVG. POWER DELIVERY</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-viz text-display-md text-primary">742</span>
+<span class="font-label-caps text-label-caps text-outline">kW</span>
+</div>
+</div>
+<div class="w-20 h-20 rounded-full border-2 border-outline-variant/30 flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border-t-2 border-primary-container rotate-45 animate-pulse"></div>
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="bolt">bolt</span>
+</div>
+</div>
+<!-- Torque Response -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">PEAK TORQUE AVG.</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-viz text-display-md text-primary">1,120</span>
+<span class="font-label-caps text-label-caps text-outline">Nm</span>
+</div>
+</div>
+<div class="w-20 h-20 rounded-full border-2 border-outline-variant/30 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full border border-primary-container/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container text-3xl" data-icon="speed">speed</span>
+</div>
+</div>
+</div>
+<!-- Battery Health -->
+<div class="glass-card rounded-xl p-6 flex items-center justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">BATTERY DEGRADATION</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-viz text-display-md text-primary">0.04</span>
+<span class="font-label-caps text-label-caps text-outline">% / YR</span>
+</div>
+</div>
+<div class="w-20 h-20 rounded-full border-2 border-outline-variant/30 flex items-center justify-center relative">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-primary-container" cx="40" cy="40" fill="transparent" r="34" stroke="currentColor" stroke-dasharray="213" stroke-dashoffset="20" stroke-width="2"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="material-symbols-outlined text-primary-container text-2xl" data-icon="battery_very_low" style="font-variation-settings: 'FILL' 1;">battery_very_low</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Vehicle List -->
+<div class="col-span-12 glass-card rounded-xl overflow-hidden">
+<div class="px-6 py-4 border-b border-outline-variant/10 flex justify-between items-center bg-surface-container-low/50">
+<h4 class="font-label-caps text-label-caps text-primary uppercase tracking-[0.25em]">Active Vehicle Registry</h4>
+<button class="neon-glass-button px-4 py-2 rounded-lg font-label-caps text-[10px] text-primary-container uppercase">Export Telemetry</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="bg-surface-container/30">
+<tr>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">VEHICLE ID</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">STATUS</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">LOCATION</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">BATTERY</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">THERMAL</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-outline text-[10px]">ACTIONS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Vehicle Row 1 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#00f2ff]"></div>
+<span class="font-data-viz text-data-viz text-primary">AGT-992-DELTA</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-label-caps bg-primary-container/10 text-primary-container border border-primary-container/20">
+                                        CRUISING
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-on-surface-variant text-sm">37.7749° N, 122.4194° W</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden w-24">
+<div class="bg-primary-container h-full" style="width: 82%"></div>
+</div>
+<span class="font-data-viz text-data-viz text-primary text-xs">82%</span>
+</div>
+</td>
+<td class="px-6 py-5 font-data-viz text-data-viz text-on-surface-variant">32°C</td>
+<td class="px-6 py-5">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Vehicle Row 2 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-error shadow-[0_0_8px_#ffb4ab]"></div>
+<span class="font-data-viz text-data-viz text-primary">AGT-441-OMEGA</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-label-caps bg-error/10 text-error border border-error/20">
+                                        CHARGING
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-on-surface-variant text-sm">40.7128° N, 74.0060° W</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden w-24">
+<div class="bg-error h-full" style="width: 12%"></div>
+</div>
+<span class="font-data-viz text-data-viz text-error text-xs">12%</span>
+</div>
+</td>
+<td class="px-6 py-5 font-data-viz text-data-viz text-on-surface-variant">45°C</td>
+<td class="px-6 py-5">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+<!-- Vehicle Row 3 -->
+<tr class="hover:bg-primary-container/5 transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#00f2ff]"></div>
+<span class="font-data-viz text-data-viz text-primary">AGT-108-SIGMA</span>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-[10px] font-label-caps bg-primary-container/10 text-primary-container border border-primary-container/20">
+                                        IDLE
+                                    </span>
+</td>
+<td class="px-6 py-5">
+<span class="font-body-md text-on-surface-variant text-sm">51.5074° N, 0.1278° W</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-1 bg-outline-variant/20 rounded-full overflow-hidden w-24">
+<div class="bg-primary-container h-full" style="width: 95%"></div>
+</div>
+<span class="font-data-viz text-data-viz text-primary text-xs">95%</span>
+</div>
+</td>
+<td class="px-6 py-5 font-data-viz text-data-viz text-on-surface-variant">28°C</td>
+<td class="px-6 py-5">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]" data-icon="open_in_new">open_in_new</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button (FAB) - Suppression Logic: Rendered here because it's the Dashboard -->
+<div class="fixed bottom-10 right-10 z-[100]">
+<button class="w-16 h-16 bg-primary-container text-on-primary-container rounded-full shadow-[0_0_30px_rgba(0,242,255,0.4)] flex items-center justify-center hover:scale-110 transition-transform active:scale-95 group">
+<span class="material-symbols-outlined text-3xl" data-icon="add" style="font-variation-settings: 'FILL' 1;">add</span>
+<span class="absolute right-20 bg-surface-container-high px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none border border-outline-variant/20 whitespace-nowrap font-label-caps text-label-caps">Register New GT</span>
+</button>
+</div>
+</body></html>

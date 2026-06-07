@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELLAR-TECH | Live Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-orange {
+            box-shadow: 0 0 15px rgba(255, 140, 0, 0.3);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(147, 0, 10, 0.5);
+        }
+        .inner-glow-orange {
+            box-shadow: inset 0 0 8px rgba(255, 140, 0, 0.2);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1b110a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3f3229;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#690005",
+                      "background": "#1b110a",
+                      "surface-variant": "#3f3229",
+                      "primary-fixed": "#ffdcc3",
+                      "on-tertiary": "#00344c",
+                      "surface-container-high": "#33281f",
+                      "tertiary-container": "#00b5fc",
+                      "on-primary": "#4d2600",
+                      "inverse-surface": "#f3dfd1",
+                      "on-tertiary-container": "#004360",
+                      "secondary-fixed": "#dde4e6",
+                      "surface-container-low": "#241912",
+                      "on-surface-variant": "#ddc1ae",
+                      "tertiary-fixed-dim": "#85cfff",
+                      "primary-fixed-dim": "#ffb77d",
+                      "secondary-fixed-dim": "#c1c8ca",
+                      "surface-bright": "#43372e",
+                      "secondary-container": "#434a4c",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#3f3229",
+                      "surface-container": "#281d15",
+                      "tertiary-fixed": "#c7e7ff",
+                      "on-primary-fixed-variant": "#6e3900",
+                      "surface-dim": "#1b110a",
+                      "on-tertiary-fixed": "#001e2e",
+                      "primary-container": "#ff8c00",
+                      "on-primary-container": "#623200",
+                      "on-secondary-container": "#b2babc",
+                      "outline": "#a48c7a",
+                      "on-background": "#f3dfd1",
+                      "inverse-primary": "#904d00",
+                      "surface-tint": "#ffb77d",
+                      "surface-container-lowest": "#150c06",
+                      "primary": "#ffb77d",
+                      "secondary": "#c1c8ca",
+                      "tertiary": "#85cfff",
+                      "outline-variant": "#564334",
+                      "on-secondary-fixed": "#161d1f",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#41484a",
+                      "on-surface": "#f3dfd1",
+                      "surface": "#1b110a",
+                      "inverse-on-surface": "#3a2e25",
+                      "on-secondary": "#2b3234",
+                      "on-tertiary-fixed-variant": "#004c6c",
+                      "on-primary-fixed": "#2f1500"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "margin": "16px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "xl": "48px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "label-caps": ["Inter"],
+                      "display-data": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "code-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "display-data": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["18px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant flex items-center justify-between px-margin h-16 w-full flat no shadows">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary" data-icon="sensors">sensors</span>
+<h1 class="font-display-data text-headline-lg tracking-tighter text-primary dark:text-primary uppercase">CELLAR-TECH</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+</button>
+<button class="hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors active:scale-95 duration-100 p-2 rounded-full">
+<span class="material-symbols-outlined text-primary dark:text-primary" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-16 pb-24 px-margin max-w-7xl mx-auto min-h-screen">
+<!-- Critical Threshold Alert -->
+<div class="mt-gutter mb-gutter bg-error-container border border-error p-md flex items-center justify-between rounded-lg glow-red">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-error animate-pulse" data-icon="warning">warning</span>
+<div>
+<h2 class="font-label-caps text-label-caps text-on-error-container">CRITICAL THRESHOLD ALERT</h2>
+<p class="font-code-sm text-code-sm text-error">ERROR_CODE: SENSOR_04_TEMP_EXCEEDED [18.4°C]</p>
+</div>
+</div>
+<button class="bg-error text-on-error px-4 py-2 font-label-caps text-label-caps rounded-lg hover:opacity-90 transition-opacity">
+                ACKNOWLEDGE
+            </button>
+</div>
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Primary Temp Card -->
+<div class="md:col-span-4 bg-surface-container border border-outline-variant p-lg relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-0.5 bg-primary-container"></div>
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CURRENT TEMPERATURE</span>
+<span class="flex h-2 w-2 rounded-full bg-primary-container glow-orange animate-pulse"></span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-data text-display-data text-primary">12.8</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">°C</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-sm">TARGET RANGE: 12.0 - 14.0°C</p>
+<div class="mt-lg h-24 w-full opacity-40 group-hover:opacity-60 transition-opacity">
+<!-- Simple Sparkline Representation -->
+<svg class="w-full h-full stroke-primary fill-none stroke-[1.5]" viewbox="0 0 100 30">
+<path d="M0 25 Q 10 22, 20 25 T 40 18 T 60 22 T 80 15 T 100 20"></path>
+</svg>
+</div>
+</div>
+<!-- Humidity Card -->
+<div class="md:col-span-4 bg-surface-container border border-outline-variant p-lg relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full h-0.5 bg-tertiary"></div>
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant">RELATIVE HUMIDITY</span>
+<span class="flex h-2 w-2 rounded-full bg-tertiary"></span>
+</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-display-data text-display-data text-tertiary">68.2</span>
+<span class="font-headline-md text-headline-md text-on-surface-variant">%</span>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface-variant mt-sm">OPTIMAL RANGE: 65 - 75%</p>
+<div class="mt-lg h-24 w-full opacity-40 group-hover:opacity-60 transition-opacity">
+<svg class="w-full h-full stroke-tertiary fill-none stroke-[1.5]" viewbox="0 0 100 30">
+<path d="M0 15 Q 15 18, 30 15 T 60 12 T 90 18 T 100 15"></path>
+</svg>
+</div>
+</div>
+<!-- Sensor Status Feed -->
+<div class="md:col-span-4 bg-surface-container border border-outline-variant p-lg">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-lg flex justify-between">
+                    ACTIVE HARDWARE <span>06 ONLINE</span>
+</h3>
+<div class="space-y-sm overflow-y-auto max-h-[180px] pr-sm">
+<div class="flex items-center justify-between p-sm bg-surface-container-low border border-outline-variant/30 inner-glow-orange">
+<div class="flex items-center gap-sm">
+<span class="h-2 w-2 rounded-full bg-primary-container glow-orange"></span>
+<span class="font-code-sm text-code-sm">SEN-01_A1</span>
+</div>
+<span class="font-code-sm text-code-sm text-primary">12.8°C</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-sm">
+<span class="h-2 w-2 rounded-full bg-primary-container"></span>
+<span class="font-code-sm text-code-sm">SEN-02_A1</span>
+</div>
+<span class="font-code-sm text-code-sm text-on-surface-variant">12.9°C</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-error-container/20 border border-error/50">
+<div class="flex items-center gap-sm">
+<span class="h-2 w-2 rounded-full bg-error glow-red animate-pulse"></span>
+<span class="font-code-sm text-code-sm text-error">SEN-04_B1</span>
+</div>
+<span class="font-code-sm text-code-sm text-error font-bold">18.4°C</span>
+</div>
+<div class="flex items-center justify-between p-sm bg-surface-container-low border border-outline-variant/30">
+<div class="flex items-center gap-sm">
+<span class="h-2 w-2 rounded-full bg-tertiary"></span>
+<span class="font-code-sm text-code-sm">HUM-01_H1</span>
+</div>
+<span class="font-code-sm text-code-sm text-tertiary">68.2%</span>
+</div>
+</div>
+</div>
+<!-- Temperature Deep Dive Chart -->
+<div class="md:col-span-8 bg-surface-container border border-outline-variant p-lg">
+<div class="flex justify-between items-center mb-xl">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">24H TEMPERATURE LOG</h3>
+<p class="font-code-sm text-code-sm text-on-surface-variant">SYSTEM CLOCK: 2023-10-27 14:02:11</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-highest border border-outline-variant px-sm py-1 font-label-caps text-label-caps text-primary">LIVE</button>
+<button class="border border-outline-variant px-sm py-1 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors">EXPORT CSV</button>
+</div>
+</div>
+<div class="relative h-[300px] w-full border-l border-b border-outline-variant/30">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none">
+<div class="w-full h-px bg-outline-variant/10"></div>
+<div class="w-full h-px bg-outline-variant/10"></div>
+<div class="w-full h-px bg-outline-variant/10"></div>
+<div class="w-full h-px bg-outline-variant/10"></div>
+<div class="w-full h-px bg-outline-variant/10"></div>
+</div>
+<!-- Chart Graphic -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="chartGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#ffb77d" stop-opacity="0.1"></stop>
+<stop offset="100%" stop-color="#ffb77d" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0 250 L 50 245 L 100 248 L 150 240 L 200 242 L 250 230 L 300 235 L 350 240 L 400 245 L 450 242 L 500 248 L 550 235 L 600 220 L 650 180 L 700 150 L 750 120 L 800 140 L 850 160 L 900 155 L 950 150 L 1000 145" fill="none" stroke="#ffb77d" stroke-width="1.5"></path>
+<path d="M0 250 L 50 245 L 100 248 L 150 240 L 200 242 L 250 230 L 300 235 L 350 240 L 400 245 L 450 242 L 500 248 L 550 235 L 600 220 L 650 180 L 700 150 L 750 120 L 800 140 L 850 160 L 900 155 L 950 150 L 1000 145 V 300 H 0 Z" fill="url(#chartGradient)"></path>
+<!-- Critical Threshold Marker -->
+<line stroke="#ffb4ab" stroke-dasharray="4" stroke-width="1" x1="0" x2="1000" y1="130" y2="130"></line>
+</svg>
+<div class="absolute top-[120px] right-0 bg-error text-on-error font-code-sm text-code-sm px-1">THRESHOLD: 16.0°C</div>
+</div>
+<div class="flex justify-between mt-sm font-code-sm text-code-sm text-on-surface-variant">
+<span>14:00</span>
+<span>16:00</span>
+<span>18:00</span>
+<span>20:00</span>
+<span>22:00</span>
+<span>00:00</span>
+</div>
+</div>
+<!-- Maintenance/System Stats Card -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border border-outline-variant p-md flex-1">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-md">COOLING SYSTEM LOAD</h4>
+<div class="w-full bg-surface-container-low h-8 border border-outline-variant relative overflow-hidden">
+<div class="h-full bg-primary-container/20 w-[84%] relative">
+<div class="absolute right-0 top-0 h-full w-1 bg-primary-container glow-orange"></div>
+</div>
+<span class="absolute inset-0 flex items-center justify-center font-code-sm text-code-sm text-primary">84.2%</span>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-md flex-1">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-md">IMAGE FEED: RACK_4</h4>
+<div class="relative aspect-video bg-black overflow-hidden group">
+<img class="w-full h-full object-cover opacity-60 grayscale hover:grayscale-0 transition-all duration-500" data-alt="A high-contrast wide-angle view of a professional wine cellar with rows of wooden racks receding into a dark background. The lighting is dramatic, with subtle orange LED glows highlighting the bottle labels. The atmosphere is quiet, technological, and premium, following a stealth-industrial aesthetic with sharp details and deep shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCT0LQZuTnSxhFoDLhwXj1AU1esl00caFY8mtRJYoRl3e958tZ__IqYzjO0G11uGeAmK58Afg_hnPKVVu17Tf5txBgi_hx_Z65tvGx176KSv91ubJr0LqocIx14cM9ux4HXdaGCw6gO5x5zr859J68pdmzvDpoYL3txcN2nHtgV-53SPPh718LlcJNLepSnxWHAXH4rK8e236_hJH1-UMTedI1DB0oNlVQqFylQBvy04dDphDNlT9xtDX6oJczCjjJFmU9Z5MI3qJDp"/>
+<div class="absolute inset-0 border-[8px] border-black/50 pointer-events-none"></div>
+<div class="absolute top-2 left-2 flex items-center gap-sm">
+<span class="flex h-2 w-2 rounded-full bg-red-600 animate-pulse"></span>
+<span class="font-code-sm text-code-sm text-white drop-shadow-md">REC [00:42:11:09]</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container dark:bg-surface-container border-t border-outline-variant dark:border-outline-variant flex justify-around items-center h-20 w-full px-4 pb-safe flat no shadows">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold bg-primary-container/10 rounded-xl px-3 py-1 hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="thermostat" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="font-label-caps text-label-caps uppercase">Climate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps uppercase">Security</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="font-label-caps text-label-caps uppercase">Cameras</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+<span class="font-label-caps text-label-caps uppercase">Alerts</span>
+</a>
+</nav>
+</body></html>

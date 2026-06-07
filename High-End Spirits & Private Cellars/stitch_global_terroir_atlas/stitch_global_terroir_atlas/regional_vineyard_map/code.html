@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terroir-Maps | Regional GIS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#586330",
+                        "background": "#fdfae7",
+                        "primary-container": "#606c38",
+                        "on-primary-fixed-variant": "#404b1b",
+                        "on-tertiary-container": "#d8e9f3",
+                        "on-primary-container": "#dfedac",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#bfcd8f",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#b9c9d3",
+                        "surface-dim": "#dddbc8",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#d5e5ef",
+                        "surface-container-high": "#ece9d6",
+                        "surface-container-low": "#f7f4e1",
+                        "outline": "#77786b",
+                        "tertiary-container": "#5a6972",
+                        "on-tertiary-fixed-variant": "#3a4951",
+                        "primary-fixed": "#dbe9a9",
+                        "on-secondary-fixed-variant": "#5c4224",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#46483c",
+                        "inverse-primary": "#bfcd8f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1c1c11",
+                        "inverse-surface": "#313124",
+                        "on-primary-fixed": "#171e00",
+                        "surface": "#fdfae7",
+                        "secondary": "#75593a",
+                        "secondary-fixed-dim": "#e5c099",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fdfae7",
+                        "secondary-container": "#fdd6ae",
+                        "surface-variant": "#e6e3d0",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#ffddbb",
+                        "inverse-on-surface": "#f4f1de",
+                        "on-secondary-fixed": "#2b1701",
+                        "surface-container": "#f1eedb",
+                        "primary": "#485422",
+                        "outline-variant": "#c7c8b9",
+                        "on-background": "#1c1c11",
+                        "on-secondary-container": "#785b3c",
+                        "tertiary": "#425159",
+                        "on-tertiary-fixed": "#0e1d25",
+                        "surface-container-highest": "#e6e3d0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Libre Caslon Text"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "h2": ["Libre Caslon Text"],
+                        "h3": ["Libre Caslon Text"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "data-mono": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "h1": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .map-texture {
+            background-image: radial-gradient(#485422 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.05;
+        }
+        .parchment-grain {
+            background: linear-gradient(to bottom, rgba(253, 250, 231, 0.8), rgba(253, 250, 231, 0.8)), 
+                        url("https://www.transparenttextures.com/patterns/natural-paper.png");
+        }
+        .organic-pill {
+            border-radius: 45% 55% 50% 50% / 55% 50% 50% 45%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin h-16 bg-background border-b border-outline-variant/30 transition-colors">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="menu">menu</span>
+</div>
+<h1 class="font-h3 text-h3 font-semibold text-primary">Terroir-Maps</h1>
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="search">search</span>
+</div>
+</header>
+<!-- Main Canvas: Map Interface -->
+<main class="relative w-full h-screen parchment-grain">
+<!-- SVG Map Layer (Representing minimalist GIS vector data) -->
+<div class="absolute inset-0 z-0 flex items-center justify-center pointer-events-none overflow-hidden">
+<div class="absolute inset-0 map-texture"></div>
+<svg class="w-[200%] h-[200%] opacity-20 scale-150 rotate-12" viewbox="0 0 800 800" xmlns="http://www.w3.org/2000/svg">
+<path d="M100,200 Q150,100 250,150 T400,200 T600,100 T750,250" fill="none" stroke="#485422" stroke-width="1"></path>
+<path d="M50,400 Q200,350 350,450 T650,400 T800,500" fill="none" stroke="#77786b" stroke-width="0.5"></path>
+<path d="M150,600 Q300,550 450,650 T700,600" fill="none" stroke="#485422" stroke-width="1.5"></path>
+<circle cx="320" cy="410" fill="#485422" opacity="0.4" r="8"></circle>
+<circle cx="480" cy="220" fill="#485422" opacity="0.6" r="12"></circle>
+<circle cx="610" cy="380" fill="#75593a" opacity="0.5" r="6"></circle>
+</svg>
+</div>
+<!-- GIS Markers -->
+<div class="absolute top-[35%] left-[25%] group cursor-pointer">
+<div class="bg-primary text-on-primary p-xs organic-pill shadow-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="pentagon" style="font-variation-settings: 'FILL' 1;">pentagon</span>
+<span class="font-label-sm text-label-sm pr-xs">Clos de la Roche</span>
+</div>
+</div>
+<div class="absolute top-[55%] left-[60%] group cursor-pointer">
+<div class="bg-surface-container-high border border-outline/20 p-xs organic-pill shadow-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant pr-xs">Estate Center</span>
+</div>
+</div>
+<!-- Floating Action Buttons -->
+<div class="absolute bottom-40 right-6 flex flex-col gap-base z-10">
+<button class="w-14 h-14 bg-surface-container-lowest text-primary shadow-lg organic-pill flex items-center justify-center hover:bg-surface-container transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+<button class="w-14 h-14 bg-primary text-on-primary shadow-xl organic-pill flex items-center justify-center hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined" data-icon="my_location" style="font-variation-settings: 'FILL' 1;">my_location</span>
+</button>
+</div>
+<!-- Pull-up Bottom Sheet (Simplified UI Representation) -->
+<section class="fixed bottom-16 left-0 w-full z-40 bg-surface-container-low rounded-t-[32px] shadow-[0_-10px_30px_rgba(43,23,1,0.08)] px-margin pt-sm pb-xl transition-transform transform translate-y-0">
+<div class="w-12 h-1 bg-outline-variant/50 rounded-full mx-auto mb-md"></div>
+<div class="flex justify-between items-end mb-md">
+<div>
+<h2 class="font-h3 text-h3 text-on-surface">Featured Regions</h2>
+<p class="font-body-md text-on-surface-variant">Exploring the Côte de Nuits</p>
+</div>
+<button class="text-primary font-label-sm text-label-sm hover:underline">View All</button>
+</div>
+<!-- Horizontal Carousel of Cards -->
+<div class="flex gap-gutter overflow-x-auto pb-base no-scrollbar -mx-margin px-margin">
+<div class="min-w-[240px] flex-shrink-0 bg-background border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group">
+<img alt="Vineyard Rows" class="w-full h-32 object-cover" data-alt="A cinematic overhead photograph of perfectly aligned vineyard rows in a French valley during the golden hour. The soft, warm sunlight illuminates the vibrant green vines against a rich, loamy earth background. The composition is structured and minimalist, emphasizing the rhythmic patterns of the landscape in a high-end editorial style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB58h0mDFl822qnLOqbXjRXdfJJVieVrVmnrNrM3XVhdp8BtPU7XCkmVL12ZXvkB6jaR7lv4O4r58mHH7lN-vU26Mo1GoqL0lH0dr0RWQ0-9O4KmWfElxv1RsntaeF1mIrM2UUB31WLexSKejFZ-69Vo0ql4ASH3PNY3Ap2rSuhlR_huIWyUzx87lPr9zzGTzL6OiJwKlm_uw9Bl_jo6JDbbYKKRJuTJ9oWCC7SjErWHrYhFmud4kwYoPpurtf1JTWeNnz0XmACSaNt"/>
+<div class="p-sm">
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Corton-Charlemagne</p>
+<h3 class="font-h3 text-h3 text-on-surface leading-tight">Limestone Plateau</h3>
+</div>
+</div>
+<div class="min-w-[240px] flex-shrink-0 bg-background border border-outline-variant/30 rounded-xl overflow-hidden shadow-sm group">
+<img alt="Hilly Terrain" class="w-full h-32 object-cover" data-alt="A serene landscape of rolling hills covered in lush vineyards under a hazy, soft-focus sky. The lighting is diffused and atmospheric, creating a sense of timeless heritage and artisanal agriculture. Deep olive greens and soft sand tones dominate the palette, reflecting a premium, organic winemaking aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAyNM-8XbvDkQCYwo5rAO_ZKLijKKSad75C0T-GChkVbvqVfU-9v8gQZGZHEg3t-83InNEm4hu7a57_ctqYMKdFQAAT_bwXwkxoZU-X52qkPDn6kFSDnRyK2DJWv3g9XAoClm2qWtq_wUaMj8bvSFWT1hmIj95uNre_jmymiQ4BjcH0Js_rslTUL5WjtSXJYfrz5_uoHYq8YB-BIJIHyDsO4qhu6mEAnYTtoX5z2ndkpl28e6hTtCTt-mhoUjBg4xL4zPZseGKRkxLo"/>
+<div class="p-sm">
+<p class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Vosne-Romanée</p>
+<h3 class="font-h3 text-h3 text-on-surface leading-tight">Silica &amp; Clay Basin</h3>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low shadow-[0_-2px_10px_rgba(0,0,0,0.05)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center text-primary bg-secondary-container/50 rounded-full px-4 py-1 active:scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Discover</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Account</span>
+</button>
+</nav>
+<!-- Side Drawer (Hidden by default, structure provided) -->
+<aside class="fixed inset-y-0 left-0 z-[60] flex flex-col py-lg bg-background w-80 rounded-r-xl shadow-xl -translate-x-full transition-transform duration-300 ease-in-out">
+<div class="px-margin mb-lg">
+<h3 class="font-h3 text-h3 text-primary">Field Journal</h3>
+</div>
+<nav class="flex-1">
+<div class="bg-primary-container text-on-primary-container font-semibold rounded-lg mx-2 px-4 py-3 mb-xs flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Vineyard Atlas</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg px-4 py-3 mb-xs flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
+<span>Climate Archives</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg px-4 py-3 mb-xs flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+<span>Producer Directory</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg px-4 py-3 mb-xs flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+<span>Vintage Ratings</span>
+</div>
+<div class="mt-auto pt-lg border-t border-outline-variant/30">
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg px-4 py-3 flex items-center gap-sm">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</div>
+</div>
+</nav>
+</aside>
+</body></html>

@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Vitis-Vault | Cellar Inventory</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&amp;family=EB+Garamond:wght@400;500&amp;family=Work+Sans:wght@400;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .parchment-texture {
+            background-color: #fcf9f8;
+            background-image: radial-gradient(#dcc0bd 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .sommelier-ribbon {
+            position: relative;
+        }
+        .sommelier-ribbon::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: #735c00;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e4e2e1",
+                        "on-secondary-fixed": "#241a00",
+                        "error": "#ba1a1a",
+                        "outline-variant": "#dcc0bd",
+                        "on-primary-container": "#d26a5f",
+                        "on-surface": "#1b1c1c",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-fixed-variant": "#4f4538",
+                        "inverse-on-surface": "#f3f0f0",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-fixed": "#410001",
+                        "surface-container-low": "#f6f3f2",
+                        "surface-container-high": "#eae7e7",
+                        "on-primary": "#ffffff",
+                        "surface-tint": "#9d4139",
+                        "primary": "#210000",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary-container": "#745c00",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "on-background": "#1b1c1c",
+                        "inverse-surface": "#303030",
+                        "secondary": "#735c00",
+                        "on-error": "#ffffff",
+                        "background": "#fcf9f8",
+                        "primary-fixed": "#ffdad5",
+                        "outline": "#89726f",
+                        "surface-container": "#f0eded",
+                        "secondary-fixed": "#ffe088",
+                        "tertiary-fixed": "#efe0cd",
+                        "on-tertiary-fixed": "#221a0f",
+                        "on-error-container": "#93000a",
+                        "on-primary-fixed-variant": "#7e2b23",
+                        "surface-bright": "#fcf9f8",
+                        "surface-container-lowest": "#ffffff",
+                        "secondary-container": "#fed65b",
+                        "tertiary-container": "#282014",
+                        "tertiary-fixed-dim": "#d2c4b2",
+                        "on-tertiary-container": "#938777",
+                        "on-secondary-fixed-variant": "#574500",
+                        "primary-container": "#4a0404",
+                        "surface-variant": "#e4e2e1",
+                        "on-surface-variant": "#554240",
+                        "on-tertiary": "#ffffff",
+                        "tertiary": "#0f0902",
+                        "inverse-primary": "#ffb4aa"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "container-max": "1280px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["EB Garamond"],
+                        "headline-lg-mobile": ["Playfair Display"],
+                        "label-caps": ["Work Sans"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-md": ["EB Garamond"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["28px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface parchment-texture min-h-screen flex flex-col font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline docked full-width top-0 z-40">
+<div class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop h-16">
+<div class="flex items-center">
+<span class="material-symbols-outlined text-on-primary-container mr-4 cursor-pointer">menu</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg-mobile tracking-widest text-on-primary-container dark:text-primary-fixed-dim uppercase">VITIS-VAULT</h1>
+<div class="w-10 h-10 overflow-hidden border border-secondary shadow-sm">
+<img alt="Sommelier profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of an elegant sommelier in a formal deep burgundy vest, standing in a dimly lit, high-end wine cellar. The lighting is soft and directional, highlighting the texture of the fine fabric and the sophisticated atmosphere. The color palette is dominated by warm sepia, dark woods, and rich burgundy tones, reflecting a sense of prestige and meticulous expertise." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCn4T4xPB2pYML_SxKlEqVsT09bNPA89XLryxVjJ3Lj5syL8nLMb6x6Qq_HmjVAi7Pk9tuyqGVL96yMO-xEPwqxePPRavJtT0u4I9bN_FFMjv8WSQmIu-iovJEyLQax_S6J5mnCx2_K9TIZXhrnLtP03rqJ0k1hdbLhaeUoYZla6Cuvs2UlJmWrFsa_GvNZU-dEdhp3C9_lKpTu9CWL67W2L5xHXyieyZmr-L-uD-bB9S_pEJEnWHm8LAukCuZfLPAMCgw22sLtbzN4"/>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow max-w-[1280px] mx-auto w-full px-margin-mobile md:px-margin-desktop pt-8 pb-32">
+<!-- Section Header -->
+<div class="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="font-label-caps text-label-caps text-secondary block mb-2">CURATED COLLECTION</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">Cellar Inventory</h2>
+</div>
+<div class="flex gap-4">
+<div class="relative flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-outline">search</span>
+<input class="bg-transparent border-b border-outline focus:border-secondary focus:ring-0 pl-10 py-2 font-body-md w-full md:w-64" placeholder="Search Vintages..." type="text"/>
+</div>
+</div>
+</div>
+<!-- Inventory List (Table-like structured list) -->
+<div class="space-y-4">
+<!-- Table Headers (Hidden on Mobile) -->
+<div class="hidden md:grid grid-cols-12 gap-gutter px-4 py-2 border-b border-primary/10">
+<div class="col-span-1"></div>
+<div class="col-span-4 font-label-caps text-label-caps text-on-surface-variant">WINE &amp; WINERY</div>
+<div class="col-span-2 font-label-caps text-label-caps text-on-surface-variant">VINTAGE</div>
+<div class="col-span-3 font-label-caps text-label-caps text-on-surface-variant">MATURITY</div>
+<div class="col-span-2 font-label-caps text-label-caps text-on-surface-variant text-right">QUANTITY</div>
+</div>
+<!-- Bottle Entry 1: Investment Grade -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-gutter items-center p-4 bg-surface border border-secondary/20 sommelier-ribbon shadow-sm transition-all hover:bg-primary-container/5 cursor-pointer">
+<div class="col-span-1 flex justify-center md:block">
+<div class="w-16 h-16 md:w-12 md:h-12 border border-outline-variant p-1">
+<img class="w-full h-full object-cover" data-alt="A close-up studio shot of a prestige vintage red wine label, featuring intricate gold foil crests and elegant serif typography. The lighting is dramatic and moody, casting soft shadows on a textured parchment background. The palette consists of deep mahogany, brilliant gold, and aged paper white, evoking a sense of heritage and luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqm-dbvqG1F2525ATUTRZF9ivO0oA9rYaof5c6MIcsxWwaW26MAHm7bdOu_A_8mzMZAzrOBb-N3pFP52xIgszpat4hYz6NwRXfgReT1BIkjMD_000YOH5UZOEwkGA-z2gnleM0lFz-t1lio7ZqB9SRT48yVLfXvkv_gUD3Vh4jYmXe-3HnIdOtSARDsxDYY6XVBmljA8Tw0qh9B-LN3FychF2d4j_R5vvO1RhE9H07ijYV_yv9GvSqwsq7bQKUDOGMjj1F4BHSC3K1"/>
+</div>
+</div>
+<div class="col-span-4">
+<p class="font-headline-md text-headline-md text-primary leading-none mb-1">Château Margaux</p>
+<p class="font-body-md text-on-surface-variant">Premier Grand Cru Classé, Bordeaux</p>
+</div>
+<div class="col-span-2">
+<span class="font-label-caps text-label-caps px-2 py-1 border border-outline">2015</span>
+</div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-body-md text-secondary font-semibold">Peak Maturity</span>
+<div class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-label-caps">DRINK BY 2035</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="font-headline-md text-headline-md text-primary">06</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant ml-1">BOTTLES</span>
+</div>
+</div>
+<!-- Bottle Entry 2: Alert State -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-gutter items-center p-4 bg-surface border border-outline-variant shadow-sm transition-all hover:bg-primary-container/5 cursor-pointer">
+<div class="col-span-1 flex justify-center md:block">
+<div class="w-16 h-16 md:w-12 md:h-12 border border-outline-variant p-1">
+<img class="w-full h-full object-cover" data-alt="Macro photography of a wine bottle neck showing a perfectly preserved wax seal in deep burgundy red. The setting is a minimalist, luxury tasting room with soft, high-key lighting that emphasizes the smooth texture of the wax and the subtle grain of the vintage paper label below it. The color scheme is clean whites and rich reds." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBP0wM_VVyIALkH-sGYhy98aGJvIHb7F4N_2LvH3U6taVHbrR_9vqg3lH4aGplQRHiZz9trcRRaDo3qrjTXhAFfIjxKBPkE5JRpQ0TG-OkAg3MLkV8BSSGCOjfb_afIHiT_FtK-ulbTNyT7sinLprMmJ-NJ9439r-nbps8SakoEbRWe0LdfSq8jHuyP4lms7c9U4X806EHiyL3ClHBrTXqW10afCW_1EkiqoDf9cXv9JIZc7mZxkHwzUMiLaX0Tv1yMJ9lDIv64PuBw"/>
+</div>
+</div>
+<div class="col-span-4">
+<p class="font-headline-md text-headline-md text-primary leading-none mb-1">Domaine de la Romanée-Conti</p>
+<p class="font-body-md text-on-surface-variant">Grands Échezeaux, Burgundy</p>
+</div>
+<div class="col-span-2">
+<span class="font-label-caps text-label-caps px-2 py-1 border border-outline">2010</span>
+</div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-error">hourglass_empty</span>
+<span class="font-body-md text-error font-semibold">Drink Now</span>
+<div class="bg-error-container text-on-error-container text-[10px] px-2 py-0.5 rounded-full font-label-caps">EXPIRING 2024</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="font-headline-md text-headline-md text-primary">02</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant ml-1">BOTTLES</span>
+</div>
+</div>
+<!-- Bottle Entry 3 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-gutter items-center p-4 bg-surface border border-outline-variant shadow-sm transition-all hover:bg-primary-container/5 cursor-pointer">
+<div class="col-span-1 flex justify-center md:block">
+<div class="w-16 h-16 md:w-12 md:h-12 border border-outline-variant p-1">
+<img class="w-full h-full object-cover" data-alt="A wide angle view of an elegant, modern wine rack holding several dark glass bottles horizontally. The lighting is warm and golden, reflecting off the glass and metallic supports. The atmosphere is quiet, serene, and prestigious, using a palette of golden ambers, deep blacks, and soft parchment neutrals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD2bEg3Dyb1dKR_l8geFQvswpcgw_lMwWm6x2M-f8iwwmgjTew-pWJ90-TeXGmAoBbDwZ9uVAy_scWOF5mzc1TOMP99Xi_aJANLhV4sHBSzeGqMVHeyy3wGgQH4J6UoUwmE2X2FC8-NZf3nrKuQ0SdKTUQEVS_eGfhbCvRrdeJBed5xjM26BMwHShAA5Pwu2nfhWqcI97R6IyTTlKfCplQ578dAOjmykScrZaRuS-QhCdYOkwLzVLebcxljScUub9na89ikFFxtqxVc"/>
+</div>
+</div>
+<div class="col-span-4">
+<p class="font-headline-md text-headline-md text-primary leading-none mb-1">Sassicaia</p>
+<p class="font-body-md text-on-surface-variant">Tenuta San Guido, Bolgheri</p>
+</div>
+<div class="col-span-2">
+<span class="font-label-caps text-label-caps px-2 py-1 border border-outline">2018</span>
+</div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-on-surface-variant">bedtime</span>
+<span class="font-body-md text-on-surface-variant italic">Laying Down</span>
+<div class="bg-surface-container-highest text-on-surface-variant text-[10px] px-2 py-0.5 rounded-full font-label-caps">READY 2028</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="font-headline-md text-headline-md text-primary">12</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant ml-1">BOTTLES</span>
+</div>
+</div>
+<!-- Bottle Entry 4 -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-4 md:gap-gutter items-center p-4 bg-surface border border-outline-variant shadow-sm transition-all hover:bg-primary-container/5 cursor-pointer">
+<div class="col-span-1 flex justify-center md:block">
+<div class="w-16 h-16 md:w-12 md:h-12 border border-outline-variant p-1">
+<img class="w-full h-full object-cover" data-alt="Artistic macro shot of a cork being removed from a bottle of rare white wine. The cork shows natural textures and a faint brand stamp. The lighting is bright and ethereal, highlighting the liquid's pale golden hue. The environment is high-end and minimalist, focusing on the refined tactile experience of a professional cellar." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAU2kegT7nVHkoi40Ir54SYmO_rH06PKYOyb4eQ-4eXGwv1Xd9Tx4dT63hcV047RrwU4AnvYKuxDfd_WruX1L9jC98M538IVsum6PSn3LAs_9UoSaK5f8d7HrMVdbqN2Bfor4RhPC3cvnAivOkd4hIkIEKA6soQnG0o7qWRZVJsqszoPqrnSa2X1b_rD0D8FWkln1nDS3EEBrbsdOuAqjQRk4GEWuAPAJ0WYoeRDbHxBOZDIV3LWQF0Oh1JChWmyZDVCzSQs6UxsEfu"/>
+</div>
+</div>
+<div class="col-span-4">
+<p class="font-headline-md text-headline-md text-primary leading-none mb-1">Krug Grande Cuvée</p>
+<p class="font-body-md text-on-surface-variant">169ème Édition, Champagne</p>
+</div>
+<div class="col-span-2">
+<span class="font-label-caps text-label-caps px-2 py-1 border border-outline">NV</span>
+</div>
+<div class="col-span-3 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">stars</span>
+<span class="font-body-md text-secondary font-semibold">Peak Maturity</span>
+<div class="bg-secondary-container text-on-secondary-container text-[10px] px-2 py-0.5 rounded-full font-label-caps">DRINK BY 2030</div>
+</div>
+<div class="col-span-2 text-right">
+<span class="font-headline-md text-headline-md text-primary">03</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant ml-1">BOTTLES</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Scan Label FAB -->
+<button class="fixed bottom-24 right-8 bg-primary text-on-primary flex items-center gap-3 px-6 py-4 shadow-xl active:scale-95 transition-transform duration-150 z-50">
+<span class="material-symbols-outlined">document_scanner</span>
+<span class="font-label-caps text-label-caps tracking-widest">SCAN LABEL</span>
+</button>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface dark:bg-surface-dim border-t border-outline-variant dark:border-outline shadow-sm">
+<!-- Cellar (Active) -->
+<a class="flex flex-col items-center justify-center text-on-primary-container dark:text-primary-fixed-dim border-t-2 border-secondary font-bold pt-2 h-full transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-1">Cellar</span>
+</a>
+<!-- Map -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container pt-2 h-full hover:text-on-primary-container dark:hover:text-primary-fixed-dim transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps mt-1">Map</span>
+</a>
+<!-- Market -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container pt-2 h-full hover:text-on-primary-container dark:hover:text-primary-fixed-dim transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-label-caps mt-1">Market</span>
+</a>
+<!-- Log -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container pt-2 h-full hover:text-on-primary-container dark:hover:text-primary-fixed-dim transition-transform duration-150 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-label-caps mt-1">Log</span>
+</a>
+</nav>
+</body></html>

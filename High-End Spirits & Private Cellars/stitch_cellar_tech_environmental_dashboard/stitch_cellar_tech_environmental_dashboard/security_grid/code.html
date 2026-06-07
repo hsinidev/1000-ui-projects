@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELLAR-TECH | Security Camera Grid</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-orange {
+            box-shadow: 0 0 20px 2px rgba(255, 140, 0, 0.2);
+        }
+        .glow-red {
+            box-shadow: 0 0 20px 2px rgba(147, 0, 10, 0.4);
+        }
+        .pulse-orange {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .camera-feed-overlay {
+            background: linear-gradient(to bottom, rgba(27,17,10,0.7) 0%, transparent 20%, transparent 80%, rgba(27,17,10,0.7) 100%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#690005",
+                      "background": "#1b110a",
+                      "surface-variant": "#3f3229",
+                      "primary-fixed": "#ffdcc3",
+                      "on-tertiary": "#00344c",
+                      "surface-container-high": "#33281f",
+                      "tertiary-container": "#00b5fc",
+                      "on-primary": "#4d2600",
+                      "inverse-surface": "#f3dfd1",
+                      "on-tertiary-container": "#004360",
+                      "secondary-fixed": "#dde4e6",
+                      "surface-container-low": "#241912",
+                      "on-surface-variant": "#ddc1ae",
+                      "tertiary-fixed-dim": "#85cfff",
+                      "primary-fixed-dim": "#ffb77d",
+                      "secondary-fixed-dim": "#c1c8ca",
+                      "surface-bright": "#43372e",
+                      "secondary-container": "#434a4c",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#3f3229",
+                      "surface-container": "#281d15",
+                      "tertiary-fixed": "#c7e7ff",
+                      "on-primary-fixed-variant": "#6e3900",
+                      "surface-dim": "#1b110a",
+                      "on-tertiary-fixed": "#001e2e",
+                      "primary-container": "#ff8c00",
+                      "on-primary-container": "#623200",
+                      "on-secondary-container": "#b2babc",
+                      "outline": "#a48c7a",
+                      "on-background": "#f3dfd1",
+                      "inverse-primary": "#904d00",
+                      "surface-tint": "#ffb77d",
+                      "surface-container-lowest": "#150c06",
+                      "primary": "#ffb77d",
+                      "secondary": "#c1c8ca",
+                      "tertiary": "#85cfff",
+                      "outline-variant": "#564334",
+                      "on-secondary-fixed": "#161d1f",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#41484a",
+                      "on-surface": "#f3dfd1",
+                      "surface": "#1b110a",
+                      "inverse-on-surface": "#3a2e25",
+                      "on-secondary": "#2b3234",
+                      "on-tertiary-fixed-variant": "#004c6c",
+                      "on-primary-fixed": "#2f1500"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "margin": "16px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "xl": "48px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "label-caps": ["Inter"],
+                      "display-data": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "code-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "display-data": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["18px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant flex items-center justify-between px-margin h-16 w-full">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+<h1 class="font-display-data text-headline-lg tracking-tighter text-primary dark:text-primary">CELLAR-TECH</h1>
+</div>
+<button class="hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</button>
+</header>
+<!-- Main Content Area -->
+<main class="pt-20 pb-32 px-margin max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-lg">
+<div>
+<h2 class="font-headline-lg text-on-surface mb-xs">Live Surveillance</h2>
+<div class="flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container pulse-orange"></span>
+<span class="font-code-sm text-on-surface-variant uppercase tracking-widest">System Active // 4 Feeds</span>
+</div>
+</div>
+<div class="hidden md:flex gap-gutter">
+<div class="bg-surface-container border border-outline-variant px-md py-sm rounded-lg">
+<span class="font-label-caps block text-on-surface-variant opacity-60">NET SPEED</span>
+<span class="font-display-data text-headline-md text-primary">1.2 GBPS</span>
+</div>
+<div class="bg-surface-container border border-outline-variant px-md py-sm rounded-lg">
+<span class="font-label-caps block text-on-surface-variant opacity-60">STORAGE</span>
+<span class="font-display-data text-headline-md text-primary">84%</span>
+</div>
+</div>
+</div>
+<!-- 2x2 Camera Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-xl">
+<!-- Camera 01 -->
+<div class="relative aspect-video bg-surface-container border border-outline-variant group overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A low-light, high-contrast security camera view of a dark industrial wine cellar. Rows of dusty bottles on graphite metal racks disappear into deep shadows. The atmosphere is cold and technical, lit only by a faint, monochromatic blue-tinted infrared light that reveals textures of stone walls and metallic structures. The aesthetic is stealth-industrial with sharp details and a sense of silent, automated monitoring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA4HLc-HA2Gx7HMQ8VRVz4U29r5wfiWxE7ADiDMK7g6iIDrTybzGtBsDGQzBzYk8hE2q5tITmC_mwgb7_oV7TILxeFqSF0napjp4K5tDGq2pU52W2Mve0EgJi_N53tVfHYgwjgVpUvF8o16Suehj78dioYodZ5VLmSAQK8BakTcIGmd2kajWJD_ne66MZP0cfhxe-IwU-IJWQfDW3FyU6CaT-scVRTHbp881SF43lqfieLW8mwg4-Abww5hZq002zTLYtLurGlUdygD"/>
+<div class="absolute inset-0 camera-feed-overlay pointer-events-none"></div>
+<!-- Overlays -->
+<div class="absolute top-sm left-sm flex items-center gap-xs">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-xs font-code-sm text-[10px] font-bold">REC</span>
+<span class="font-code-sm text-primary text-[10px]">CAM-01 / SECTOR-A</span>
+</div>
+<div class="absolute top-sm right-sm text-right">
+<div class="font-code-sm text-on-surface-variant text-[10px]">2023-11-24 23:14:02</div>
+<div class="font-code-sm text-primary text-[10px]">BITRATE: 4.8 MBPS</div>
+</div>
+<div class="absolute bottom-sm left-sm border-l border-b border-primary-container w-16 h-16 opacity-30"></div>
+<div class="absolute bottom-sm right-sm border-r border-b border-primary-container w-16 h-16 opacity-30"></div>
+<div class="absolute bottom-sm left-sm px-sm flex flex-col">
+<span class="font-label-caps text-on-surface-variant text-[10px]">MOTION ZONE 4</span>
+<div class="flex items-center gap-xs">
+<div class="w-12 h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-1/3 h-full bg-primary-container"></div>
+</div>
+<span class="font-code-sm text-primary text-[10px]">32%</span>
+</div>
+</div>
+</div>
+<!-- Camera 02 -->
+<div class="relative aspect-video bg-surface-container border border-outline-variant group overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A monochromatic security camera feed of a high-tech equipment rack inside a temperature-controlled vault. The scene shows glowing server lights and thick industrial cabling in a dark, midnight blue environment. Precise 1px hairline details of the rack's frame are visible under harsh, low-angle artificial lighting. The mood is mission-critical and utilitarian, reflecting a stealth-industrial design philosophy with high data density." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBZh7ZTx1OvjJLA9mLqoVAjHQrDBE4w9dEh-PSZd6Fn8-9PSyt8USAn2bwBMTIm8EfrlogjwRW0Pgf3RYUMSka1kxN03pQZvdZwvqBVL-yGm1AgIQCZaHrUWT-CUNbDMNvna_yXoe1rpV-EBL4X3AYtCrYnp1RDB29iuAB9P6x5e2mBKZyfcl4pkaIlMHK4ma4Qaz1BPLZriHz2uBhgGcKIC_R-GLMUr97aUta2p_hI_FNfUue-hJdPim37Ba5N9fcmfqS_slHZ6kzn"/>
+<div class="absolute inset-0 camera-feed-overlay pointer-events-none"></div>
+<div class="absolute top-sm left-sm flex items-center gap-xs">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-xs font-code-sm text-[10px] font-bold">REC</span>
+<span class="font-code-sm text-primary text-[10px]">CAM-02 / ENTRANCE</span>
+</div>
+<div class="absolute top-sm right-sm text-right">
+<div class="font-code-sm text-on-surface-variant text-[10px]">2023-11-24 23:14:02</div>
+<div class="font-code-sm text-primary text-[10px]">BITRATE: 6.2 MBPS</div>
+</div>
+<div class="absolute bottom-sm right-sm px-sm text-right">
+<span class="font-label-caps text-on-surface-variant text-[10px]">TEMP THRESHOLD</span>
+<span class="font-code-sm block text-primary text-[10px]">14.2°C STABLE</span>
+</div>
+</div>
+<!-- Camera 03 -->
+<div class="relative aspect-video bg-surface-container border border-outline-variant group overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="An ultra-low light infrared surveillance shot of a long concrete corridor in a cellar. The floor is polished and reflects tiny pinpoints of light. The ceiling features exposed industrial pipes and conduit. The style is stark and brutalist, with deep blacks and high-contrast graphite greys. The image conveys a sense of absolute control and technical monitoring in a secure, sterile industrial facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeHnGcHdYY2taTsx1h5hiJBpu2E56H7BxhbcnGS76ghTr5sIZQ0KyCDsLiR9rOwVYLBjVDvDL7Hg3RqREytipnv9GQMTPrbduyExvEmWK9mbdUnLEUzEeeHUmw8MvW9iCUFhbzEPqdDf8Dgm8STNg8Blg0KmJJ2L1V2H9HIhDh4MubcVdDtipRcOklTubBmidwPNWXYenCuSJ_qbk8g0E4EHfFhRV2ej1-n97Jh6s2Qhrb4yrEe8cKV24tvAAhj8mt5clRL2HhkcUx"/>
+<div class="absolute inset-0 camera-feed-overlay pointer-events-none"></div>
+<div class="absolute top-sm left-sm flex items-center gap-xs">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-xs font-code-sm text-[10px] font-bold">REC</span>
+<span class="font-code-sm text-primary text-[10px]">CAM-03 / SECTOR-B</span>
+</div>
+<div class="absolute top-sm right-sm text-right">
+<div class="font-code-sm text-on-surface-variant text-[10px]">2023-11-24 23:14:02</div>
+<div class="font-code-sm text-primary text-[10px]">BITRATE: 5.1 MBPS</div>
+</div>
+<!-- Mock Motion Grid Overlay -->
+<div class="absolute inset-0 grid grid-cols-8 grid-rows-8 opacity-20 pointer-events-none">
+<div class="border border-primary-container/20"></div><div class="border border-primary-container/20"></div>
+<div class="border border-primary-container/20"></div><div class="border border-primary-container/20"></div>
+<div class="border border-primary-container/20 bg-primary-container/30"></div><div class="border border-primary-container/20 bg-primary-container/30"></div>
+<div class="border border-primary-container/20"></div><div class="border border-primary-container/20"></div>
+</div>
+</div>
+<!-- Camera 04 -->
+<div class="relative aspect-video bg-surface-container border border-outline-variant group overflow-hidden">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A technical, dark-mode perspective of industrial ventilation shafts and cooling systems in a subterranean cellar. The image emphasizes rhythmic geometric patterns, heavy metal textures, and graphite-colored surfaces. Low-key lighting highlights the technical complexity of the climate control hardware. The visual style is stealth-industrial, prioritizing reliability and high-performance monitoring aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAtRI3AaB2UzT5f33wuG8DA96gE_VgJ1XGv6e8HJY1HoI0hhbJUV4Ia6vfDFt5bHexBACOjDBzGLO6GmuP3RPW9X6-2gQsVq7yVXw4AGFCvb9uGwiUrtLSPp96w41WF93e8k9HaaH1B27IVU-lIpSuVlcpfoV2K588PkEXCjpiz6EyWv8U4HZCsaOLPTZ8wZ510VyNERREsGZ3vhXjL_5f965mcWqnBB15EAGThbFh6KFD2iUTYJumkYMZkaJGoDgGhgNq0QUHFBhED"/>
+<div class="absolute inset-0 camera-feed-overlay pointer-events-none"></div>
+<div class="absolute top-sm left-sm flex items-center gap-xs">
+<span class="bg-primary-container text-on-primary-container px-2 py-0.5 rounded-xs font-code-sm text-[10px] font-bold">REC</span>
+<span class="font-code-sm text-primary text-[10px]">CAM-04 / VENT-X</span>
+</div>
+<div class="absolute top-sm right-sm text-right">
+<div class="font-code-sm text-on-surface-variant text-[10px]">2023-11-24 23:14:02</div>
+<div class="font-code-sm text-primary text-[10px]">BITRATE: 4.2 MBPS</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="border-2 border-primary-container/40 w-1/4 h-1/4"></div>
+</div>
+</div>
+</div>
+<!-- Instant Alarm Override Section -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-50 w-full px-margin md:w-auto">
+<button class="w-full md:w-80 h-16 bg-primary-container text-on-primary-container font-headline-md uppercase tracking-tighter glow-orange border-2 border-white/20 active:scale-95 duration-150 flex items-center justify-center gap-md rounded-lg">
+<span class="material-symbols-outlined" data-icon="emergency_home" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+                INSTANT ALARM
+            </button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container dark:bg-surface-container border-t border-outline-variant dark:border-outline-variant flex justify-around items-center h-20 w-full px-4 pb-safe">
+<!-- Climate -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-label-caps mt-1">Climate</span>
+</a>
+<!-- Security -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps mt-1">Security</span>
+</a>
+<!-- Cameras (Active) -->
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold bg-primary-container/10 rounded-xl px-3 py-1 transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="videocam" style="font-variation-settings: 'FILL' 1;">videocam</span>
+<span class="font-label-caps text-label-caps mt-1">Cameras</span>
+</a>
+<!-- Alerts -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+<span class="font-label-caps text-label-caps mt-1">Alerts</span>
+</a>
+</nav>
+</body></html>

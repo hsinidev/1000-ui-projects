@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Heritage-EV | Battery Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&amp;family=Hanken+Grotesk:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.leather-texture {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuAFbfKp21FYNeLembU6J5iIYn4c3rtBrIoJK-tmIUAtYjqi6ljONgzdY1DPPD6CnlEpndask25t97qSMGQFbEtSjQi-B0kypZnMxjwtKUjE8vVlCqZ6fq1ibC90LABCwG2_qxAKT8ZgNHTF54vYAyDq71Sacj5QW7evfgRuh_H51VTPdp_uRJOACYHU1yKM2ESdoehw7vjRsNgcMbFePKNpHPFa4WZT9FDxDwdL55TjDtwIFksr41KjqjZ9B03t7D5SZWijXa13pA4);
+    background-blend-mode: overlay
+    }
+.chrome-border {
+    box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.4), 0 0 0 1px rgba(138, 147, 139, 0.5), 0 2px 4px rgba(0, 0, 0, 0.5)
+    }
+.analog-needle {
+    transform-origin: bottom center;
+    transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1)
+    }
+.knurled-switch {
+    background: linear-gradient(145deg, #8a938b, #404942);
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5), inset 1px 1px 2px rgba(255, 255, 255, 0.2)
+    }
+.stitching {
+    border: 1px dashed rgba(210, 180, 140, 0.3)
+    }</style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-lowest": "#0e0e0e",
+            "surface-container-high": "#2a2a2a",
+            "outline-variant": "#404942",
+            "surface": "#131313",
+            "surface-container-highest": "#353535",
+            "surface-variant": "#353535",
+            "on-secondary-container": "#d2b48c",
+            "outline": "#8a938b",
+            "primary-fixed": "#b4f0c7",
+            "secondary": "#e1c299",
+            "secondary-container": "#5b4526",
+            "surface-container-low": "#1c1b1b",
+            "primary-container": "#004225",
+            "primary": "#98d4ac",
+            "on-surface": "#e5e2e1",
+            "on-surface-variant": "#c0c9c0",
+            "surface-bright": "#393939",
+            "on-secondary": "#402d10",
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "fontFamily": {
+            "body-lg": ["Hanken Grotesk"],
+            "headline-md": ["EB Garamond"],
+            "label-caps": ["Hanken Grotesk"],
+            "label-data": ["Space Mono"]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-secondary/30 min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-surface border-b border-outline-variant shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]">
+<div class="flex items-center gap-4 cursor-pointer active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-secondary">menu</span>
+<h1 class="font-headline-md text-headline-md tracking-widest text-secondary uppercase">HERITAGE-EV</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-outline-variant cursor-pointer active:scale-95 transition-transform">
+<img alt="Profile picture of classic car enthusiast" data-alt="A close-up, sophisticated portrait of a mature automotive enthusiast with salt-and-pepper hair, wearing a high-quality leather driving jacket. The lighting is moody and dramatic, with warm amber tones reminiscent of a luxury garage at sunset. The background is softly blurred, showing the polished chrome and dark racing green curves of a vintage vehicle. The overall aesthetic is one of refined heritage and modern sustainability." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXsdSqob9LFHjBKPI-Jm8BbQdtWv_dmlWGCooeoz6etLqPkR1PVVERfHJ8TMbynv06tEvJkiruGy5jVZ1bHwj5Ez85hwJCUUtULqgsIk7TNZgBhDw4blBQ7nHO8FAlP4WTxPWuQ5gMP8bfomSJVpv4mQNqypLMSaxSjlG4Ll841Erqt0EbXF8T4_3eo-syEa48eXksyHmZQPktENM6BHe35s1PcDlYz-FTbTxagRh7hcbRNrYZ6oXIjFQXh3rVzkNeeNKZ2JUASLU"/>
+</div>
+</header>
+<main class="pt-20 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto space-y-8">
+<!-- Hero Header -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-6 border-b border-outline-variant pb-8">
+<div>
+<span class="font-label-caps text-label-caps text-secondary tracking-[0.2em] mb-2 block uppercase">SYSTEM DIAGNOSTICS</span>
+<h2 class="font-headline-md text-4xl text-on-surface">Battery Management</h2>
+</div>
+<div class="flex items-center gap-4">
+<div class="chrome-rimmed px-4 py-2 bg-surface-container-high rounded-lg border border-outline flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-[#4CAF50] shadow-[0_0_8px_#4CAF50]"></div>
+<span class="font-label-data text-label-data text-on-surface">SYS_STATUS: OPTIMAL</span>
+</div>
+</div>
+</div>
+<!-- Main Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Schematic & Gauges -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- 3D Schematic Canvas -->
+<section class="bg-primary-container/20 rounded-xl border border-outline-variant relative overflow-hidden h-[400px] flex items-center justify-center p-8 leather-texture">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent to-black/40 pointer-events-none"></div>
+<div class="relative w-full h-full flex flex-col items-center">
+<img class="w-full h-full object-contain opacity-60 mix-blend-screen" data-alt="A highly technical 3D wireframe schematic of a 1960s sports car chassis, glowing in a digital British Racing Green. The battery packs are highlighted in a warm, translucent tan amber, positioned low within the frame for a low center of gravity. The background is a deep, textured black, mimicking carbon fiber or high-end leather. The lighting emphasizes the mechanical precision and electric modernization of a classic icon." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHTCrhTsSbxV4Ni3G8qJRjLlJDr6o7hsl_LQqhjZjAVX1C3knb6SkhHiB4a2QmPkbqSGq6J5QT-ov5pmkoBS52nw0SIZD0Pnvy5l0kgmxQ71rpkVBRQ55fNnP-44Gs973bp_tNKH5qixjMWlcF-YYJcvgHUZVxz8WKdnd3_aG4-BIfBYagB84rkV2V7h6gkF6BcTQHE13tYxs5McINY1j2xz3kDhSzh2IXiaqz_PIMzRVE5Z0W6_kWjGww3V5MuWoOjBxIugQIiVI"/>
+<!-- Hotspots -->
+<div class="absolute top-1/2 left-1/4 -translate-y-1/2 group">
+<div class="w-4 h-4 rounded-full bg-secondary shadow-[0_0_12px_#e1c299] cursor-pointer"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest border border-secondary px-3 py-1 text-label-data rounded-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  FWD ARRAY: 38°C
+                </div>
+</div>
+<div class="absolute top-1/2 right-1/4 -translate-y-1/2 group">
+<div class="w-4 h-4 rounded-full bg-secondary shadow-[0_0_12px_#e1c299] cursor-pointer"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest border border-secondary px-3 py-1 text-label-data rounded-sm opacity-0 group-hover:opacity-100 transition-opacity">
+                  AFT ARRAY: 41°C
+                </div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 font-label-caps text-secondary text-[10px] tracking-widest uppercase">Vintage Chassis Safety Interface v2.4</div>
+</section>
+<!-- Analog Gauges Row -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant flex flex-col items-center text-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Core Charge</span>
+<div class="relative w-24 h-24 flex items-center justify-center border-4 border-outline-variant rounded-full mb-3">
+<div class="absolute inset-2 border-2 border-primary/30 rounded-full"></div>
+<span class="font-label-data text-2xl text-primary">84%</span>
+</div>
+<p class="font-label-data text-xs text-outline">240 MI REMAINING</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant flex flex-col items-center text-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Voltage Output</span>
+<div class="relative w-24 h-24 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-outline-variant" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-secondary" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-dasharray="251.2" stroke-dashoffset="60" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-label-data text-2xl text-secondary">398v</span>
+</div>
+<p class="font-label-data text-xs text-outline">STABLE PEAK</p>
+</div>
+<div class="bg-surface-container-low p-6 rounded-xl border border-outline-variant flex flex-col items-center text-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Thermal Load</span>
+<div class="relative w-24 h-24 flex items-center justify-center border-4 border-outline-variant rounded-full mb-3">
+<div class="absolute h-full w-1 bg-secondary rounded-full analog-needle rotate-[45deg]"></div>
+<span class="mt-8 font-label-data text-lg text-on-surface">39°C</span>
+</div>
+<p class="font-label-data text-xs text-outline">ACTIVE COOLING</p>
+</div>
+</div>
+</div>
+<!-- Right Column: Controls & Alerts -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Controls Card -->
+<section class="bg-secondary-container/10 p-6 rounded-xl border border-secondary/20 leather-texture stitching">
+<h3 class="font-label-caps text-label-caps text-secondary mb-6 tracking-widest uppercase">Performance Controls</h3>
+<div class="space-y-8">
+<!-- Thermal Management Toggle -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md text-on-surface font-bold">Thermal Management</p>
+<p class="font-label-caps text-[10px] text-outline uppercase">Active Liquid Cooling</p>
+</div>
+<div class="w-14 h-7 bg-surface-container-lowest rounded-full p-1 relative border border-outline-variant cursor-pointer">
+<div class="w-5 h-5 knurled-switch rounded-full absolute right-1"></div>
+</div>
+</div>
+<!-- Power Delivery Toggle -->
+<div class="flex items-center justify-between">
+<div>
+<p class="font-body-md text-on-surface font-bold">Overdrive Mode</p>
+<p class="font-label-caps text-[10px] text-outline uppercase">Max Power Extraction</p>
+</div>
+<div class="w-14 h-7 bg-surface-container-lowest rounded-full p-1 relative border border-outline-variant cursor-pointer">
+<div class="w-5 h-5 knurled-switch rounded-full absolute left-1 opacity-50"></div>
+</div>
+</div>
+<!-- Isolation Switch -->
+<button class="w-full py-4 bg-secondary text-on-secondary font-label-caps text-label-caps tracking-widest rounded shadow-[inset_0_1px_1px_rgba(255,255,255,0.4)] active:scale-95 transition-transform uppercase">
+              Emergency Disconnect
+            </button>
+</div>
+</section>
+<!-- Battery-Safety Alert Cards -->
+<div class="space-y-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant px-2 uppercase">Safety Ledger</h3>
+<div class="bg-surface-container-high p-4 rounded-lg border-l-4 border-primary chrome-border flex gap-4">
+<span class="material-symbols-outlined text-primary">verified_user</span>
+<div>
+<p class="font-label-data text-sm text-on-surface">Isolation Check Passed</p>
+<p class="font-label-caps text-[10px] text-outline uppercase">CHASSIS_GROUND_SECURE</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-4 rounded-lg border-l-4 border-secondary chrome-border flex gap-4">
+<span class="material-symbols-outlined text-secondary">thermostat</span>
+<div>
+<p class="font-label-data text-sm text-on-surface">Ambient Optimization</p>
+<p class="font-label-caps text-[10px] text-outline uppercase">Pre-conditioning_Active</p>
+</div>
+</div>
+<div class="bg-surface-container-high p-4 rounded-lg border-l-4 border-outline-variant chrome-border flex gap-4 opacity-60">
+<span class="material-symbols-outlined text-outline">history</span>
+<div>
+<p class="font-label-data text-sm text-on-surface">Cell Balance Routine</p>
+<p class="font-label-caps text-[10px] text-outline uppercase">Next Scheduled: 48h</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 bg-surface-container-low border-t border-outline-variant rounded-t-xl shadow-[0_-4px_12px_rgba(0,0,0,0.5)]">
+<div class="flex flex-col items-center justify-center text-outline p-2 active:scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined">speed</span>
+<span class="font-label-caps text-[10px] mt-1">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-6 py-2 shadow-[inset_0_2px_4px_rgba(0,0,0,0.3),0_1px_0_rgba(255,255,255,0.1)] active:scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined">battery_charging_full</span>
+<span class="font-label-caps text-[10px] mt-1">BATTERY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 active:scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined">ev_station</span>
+<span class="font-label-caps text-[10px] mt-1">CHARGING</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline p-2 active:scale-90 duration-200 ease-out">
+<span class="material-symbols-outlined">history_edu</span>
+<span class="font-label-caps text-[10px] mt-1">REGISTRY</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .corner-bracket {
+            position: relative;
+        }
+        .corner-bracket::before, .corner-bracket::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+        .bracket-tl::before { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+        .bracket-tr::before { top: 0; right: 0; border-top: 1px solid; border-right: 1px solid; }
+        .bracket-bl::before { bottom: 0; left: 0; border-bottom: 1px solid; border-left: 1px solid; }
+        .bracket-br::before { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+        
+        .hud-glow {
+            box-shadow: 0 0 12px rgba(233, 195, 73, 0.2);
+        }
+        
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: rgba(16, 15, 47, 1);
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(144, 143, 158, 0.3);
+            border-radius: 2px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#3239a3",
+                        "primary-fixed": "#e0e0ff",
+                        "outline": "#908f9e",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary-container": "#888989",
+                        "tertiary-container": "#202222",
+                        "background": "#100f2f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary": "#c6c6c7",
+                        "secondary-fixed-dim": "#e9c349",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed-variant": "#574500",
+                        "outline-variant": "#464653",
+                        "surface-container-lowest": "#0a0a2a",
+                        "surface-container-high": "#272747",
+                        "surface-variant": "#313153",
+                        "surface": "#100f2f",
+                        "surface-container-highest": "#313153",
+                        "on-primary-fixed": "#00006e",
+                        "surface-container": "#1c1c3c",
+                        "surface-dim": "#100f2f",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#2d2d4e",
+                        "primary-container": "#000080",
+                        "on-surface": "#e2dfff",
+                        "primary": "#bfc2ff",
+                        "on-secondary-fixed": "#231a00",
+                        "surface-bright": "#363657",
+                        "surface-tint": "#bfc2ff",
+                        "inverse-surface": "#e2dfff",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#bfc2ff",
+                        "on-primary-container": "#777eea",
+                        "inverse-primary": "#4b53bc",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-surface-variant": "#c6c5d5",
+                        "on-tertiary": "#2f3131",
+                        "secondary-fixed": "#ffe087",
+                        "on-primary": "#181d8c",
+                        "error-container": "#93000a",
+                        "on-background": "#e2dfff",
+                        "on-secondary": "#3c2f00",
+                        "secondary": "#e9c349",
+                        "secondary-container": "#ae8d10",
+                        "surface-container-low": "#181838",
+                        "tertiary-fixed": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "grid-margin": "48px",
+                        "hud-padding": "16px",
+                        "section-gap": "80px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "mono-data": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "technical-label": ["Hanken Grotesk"],
+                        "display-xl": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "mono-data": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "40px", "fontWeight": "500"}],
+                        "technical-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "display-xl": ["72px", {"lineHeight": "80px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-lg": ["40px", {"lineHeight": "48px", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-secondary/30">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-72 bg-surface-container-lowest border-r border-outline-variant/20 flex flex-col pt-20 pb-8 z-[60]">
+<div class="px-6 mb-12">
+<h2 class="font-headline-md text-primary uppercase tracking-tighter">AERO SHOWROOM</h2>
+<div class="mt-4 flex items-center gap-3">
+<img alt="Operator Profile Image" class="w-10 h-10 rounded-full border border-secondary/40" data-alt="A professional headshot of a high-end aviation logistics operator, set against a dark, technical backdrop with faint blue hud overlays. The lighting is dramatic and low-key, highlighting precise features and a clean, authoritative appearance in a modern, luxury tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUeapxISjwHN28-u6FzlxzXpBl5phuLuzgApqhZqivfDQwYyDwaNSRF-plKdCrxWeg_47yLGH7za0T-Jt4KG8G_LBOd9HVENJHZWyGaqK0PoVgw1YqVbPSBUuM4JBVQQy7hhMoWbX8J0juZpR55xmpgjVGeEGiNenz8qGCkyF-oCjnpTGikN0ksl3z54OvpGuU8Tn8w2V4uYExQreF8VnePdIhh33vy23uM_BIZcoiTiKCHO8jhnHrowmuFH_1WhkxbG8C0loFyMDA"/>
+<div>
+<p class="font-technical-label text-technical-label text-on-surface">OPERATOR 01</p>
+<p class="font-mono-data text-[10px] text-secondary opacity-80 uppercase tracking-widest">SECTOR-7 AUTHENTICATED</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col">
+<a class="flex items-center gap-4 text-secondary bg-secondary-container/10 border-r-2 border-secondary px-6 py-4 transition-all duration-200 scale-98 shadow-[0_0_12px_rgba(233,195,73,0.3)]" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-technical-label text-technical-label uppercase">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-4 opacity-60 hover:bg-surface-variant/20 hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined">airplanemode_active</span>
+<span class="font-technical-label text-technical-label uppercase">Fleet Discovery</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-4 opacity-60 hover:bg-surface-variant/20 hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-technical-label text-technical-label uppercase">Command Center</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-4 opacity-60 hover:bg-surface-variant/20 hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-technical-label text-technical-label uppercase">Community</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-4 opacity-60 hover:bg-surface-variant/20 hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-technical-label text-technical-label uppercase">Intelligence</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-4 opacity-60 hover:bg-surface-variant/20 hover:text-on-surface transition-all duration-200" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-technical-label text-technical-label uppercase">Archive</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/10 pt-6">
+<button class="mx-6 mb-6 w-[calc(100%-48px)] py-3 border border-secondary text-secondary font-technical-label uppercase tracking-widest hover:bg-secondary hover:text-on-secondary transition-all">
+                INITIATE ACQUISITION
+            </button>
+<div class="flex flex-col">
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-3 opacity-60 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">encrypted</span>
+<span class="font-technical-label text-[11px] uppercase">Security Settings</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant px-6 py-3 opacity-60 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined text-[20px]">power_settings_new</span>
+<span class="font-technical-label text-[11px] uppercase">System Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Top App Bar -->
+<header class="flex justify-between items-center w-full px-grid-margin h-20 fixed top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 pl-[336px]">
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">sync_lock</span>
+<span class="font-technical-label text-technical-label text-on-surface-variant uppercase">Encrypted Session</span>
+</div>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="font-technical-label text-technical-label text-secondary uppercase">Sector: 7-Alpha</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-secondary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">security</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary cursor-pointer transition-colors">account_circle</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-20 h-screen overflow-y-auto custom-scrollbar bg-background">
+<div class="p-hud-padding md:p-12 space-y-gutter">
+<!-- Dashboard Stats HUD -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- Stat Card -->
+<div class="glass-card p-6 corner-bracket bracket-tl bracket-br">
+<p class="font-technical-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Fleet Valuation</p>
+<div class="flex items-end gap-2">
+<span class="font-mono-data text-headline-md text-secondary">$1.84B</span>
+<span class="font-mono-data text-[12px] text-green-400 mb-2">+2.4%</span>
+</div>
+<div class="mt-4 h-1 bg-surface-variant overflow-hidden">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_8px_rgba(233,195,73,0.5)]"></div>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="glass-card p-6 corner-bracket bracket-tl bracket-br">
+<p class="font-technical-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Active Mandates</p>
+<div class="flex items-end gap-2">
+<span class="font-mono-data text-headline-md text-primary">142</span>
+<span class="font-mono-data text-[12px] text-on-surface-variant mb-2">Units</span>
+</div>
+<div class="mt-4 flex gap-1">
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-secondary"></div>
+<div class="h-1 flex-1 bg-outline-variant/30"></div>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="glass-card p-6 corner-bracket bracket-tl bracket-br">
+<p class="font-technical-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">Global Traffic</p>
+<div class="flex items-end gap-2">
+<span class="font-mono-data text-headline-md text-on-surface">8.2k</span>
+<span class="font-mono-data text-[12px] text-on-surface-variant mb-2">Queries</span>
+</div>
+<div class="mt-4 flex items-center justify-between">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-mono-data text-[10px] text-secondary">LIVE FEED ACTIVE</span>
+</div>
+</div>
+<!-- Stat Card -->
+<div class="glass-card p-6 corner-bracket bracket-tl bracket-br">
+<p class="font-technical-label text-[10px] text-on-surface-variant uppercase tracking-widest mb-1">System Integrity</p>
+<div class="flex items-end gap-2">
+<span class="font-mono-data text-headline-md text-on-surface">99.9%</span>
+</div>
+<div class="mt-4 flex justify-between text-[10px] font-mono-data uppercase opacity-60">
+<span>P: 0.2ms</span>
+<span>S: AUTH</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Fleet Inventory (Bento Large) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="glass-card p-0 overflow-hidden corner-bracket bracket-tr">
+<div class="p-6 border-b border-outline-variant/20 flex justify-between items-center">
+<h3 class="font-technical-label text-body-md uppercase tracking-widest text-primary flex items-center gap-3">
+<span class="material-symbols-outlined">inventory_2</span>
+                                Global Inventory Management
+                            </h3>
+<div class="flex gap-4">
+<button class="text-on-surface-variant hover:text-secondary transition-colors font-technical-label uppercase text-[10px] border-b border-secondary">AIRCRAFT</button>
+<button class="text-on-surface-variant hover:text-secondary transition-colors font-technical-label uppercase text-[10px]">YACHTS</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono-data text-[12px]">
+<thead class="bg-surface-variant/30 text-on-surface-variant uppercase">
+<tr>
+<th class="px-6 py-4 font-medium">Asset ID</th>
+<th class="px-6 py-4 font-medium">Model / Specification</th>
+<th class="px-6 py-4 font-medium">Status</th>
+<th class="px-6 py-4 font-medium">Price (M)</th>
+<th class="px-6 py-4 font-medium text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5 text-secondary">#AX-2041</td>
+<td class="px-6 py-5">
+<div class="font-bold">GULFSTREAM G700</div>
+<div class="text-[10px] opacity-60 uppercase">Range: 7,500nm | Pax: 19</div>
+</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                                AVAILABLE
+                                            </span>
+</td>
+<td class="px-6 py-5">$75.0</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary">settings_ethernet</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5 text-secondary">#YT-9920</td>
+<td class="px-6 py-5">
+<div class="font-bold">FEADSHIP 80M HYBRID</div>
+<div class="text-[10px] opacity-60 uppercase">Eco-Drive | Master Suite: 2</div>
+</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-on-surface-variant"></span>
+                                                IN-TRANSIT
+                                            </span>
+</td>
+<td class="px-6 py-5">$112.5</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary">settings_ethernet</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-variant/20 transition-colors">
+<td class="px-6 py-5 text-secondary">#AX-1182</td>
+<td class="px-6 py-5">
+<div class="font-bold">BOMBARDIER GLOBAL 7500</div>
+<div class="text-[10px] opacity-60 uppercase">Speed: Mach 0.925</div>
+</td>
+<td class="px-6 py-5">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                                                AVAILABLE
+                                            </span>
+</td>
+<td class="px-6 py-5">$73.2</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined cursor-pointer hover:text-secondary">settings_ethernet</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Telemetry Chart Module -->
+<div class="glass-card p-6 corner-bracket bracket-bl">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-technical-label text-body-md uppercase tracking-widest text-on-surface">Regional Market Density</h3>
+<div class="flex items-center gap-4 text-[10px] font-mono-data opacity-60">
+<span class="flex items-center gap-1"><span class="w-2 h-0.5 bg-secondary"></span> SALES</span>
+<span class="flex items-center gap-1"><span class="w-2 h-0.5 bg-primary"></span> ENQUIRIES</span>
+</div>
+</div>
+<div class="h-48 w-full relative flex items-end justify-between px-2">
+<!-- SVG Grid lines -->
+<div class="absolute inset-0 grid grid-rows-4 pointer-events-none opacity-10">
+<div class="border-t border-white w-full"></div>
+<div class="border-t border-white w-full"></div>
+<div class="border-t border-white w-full"></div>
+<div class="border-t border-white w-full"></div>
+</div>
+<!-- Mock Bars/Data -->
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-24"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-32"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-40"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-28"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-36"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-44"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-16"></div>
+<div class="w-8 bg-secondary/20 border-t-2 border-secondary h-24"></div>
+</div>
+</div>
+</div>
+<!-- Right Column: Queue & Intelligence -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Client Request Queue -->
+<div class="glass-card flex flex-col h-[400px] corner-bracket bracket-tr bracket-bl">
+<div class="p-4 border-b border-outline-variant/20">
+<h3 class="font-technical-label text-[12px] uppercase tracking-widest text-primary">Pending Acquisitions</h3>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Request Item -->
+<div class="p-4 border-b border-outline-variant/10 hover:bg-surface-variant/10 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-[12px] text-on-surface">V. ROSS (Hedge Fund)</span>
+<span class="px-2 py-0.5 bg-secondary/10 border border-secondary/40 text-secondary text-[9px] font-bold uppercase">Priority 1</span>
+</div>
+<p class="text-[11px] text-on-surface-variant font-mono-data mb-3">Request: Citation Latitude Fleet Package (3x Units)</p>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline font-mono-data">2m ago</span>
+<span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 text-secondary transition-opacity">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Request Item -->
+<div class="p-4 border-b border-outline-variant/10 hover:bg-surface-variant/10 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-[12px] text-on-surface">L. CHEN (Admiralty)</span>
+<span class="px-2 py-0.5 bg-primary/10 border border-primary/40 text-primary text-[9px] font-bold uppercase">In-Review</span>
+</div>
+<p class="text-[11px] text-on-surface-variant font-mono-data mb-3">Custom Interior Spec: Oceanco 90M Project</p>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline font-mono-data">14m ago</span>
+<span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 text-secondary transition-opacity">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Request Item -->
+<div class="p-4 border-b border-outline-variant/10 hover:bg-surface-variant/10 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-mono-data text-[12px] text-on-surface">M. DUVAL (Air Logistics)</span>
+<span class="px-2 py-0.5 bg-outline-variant/10 border border-outline-variant/40 text-on-surface-variant text-[9px] font-bold uppercase">Queued</span>
+</div>
+<p class="text-[11px] text-on-surface-variant font-mono-data mb-3">Fuel Strategy Analysis: Sustainable Bio-jet</p>
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-outline font-mono-data">42m ago</span>
+<span class="material-symbols-outlined text-[18px] opacity-0 group-hover:opacity-100 text-secondary transition-opacity">arrow_forward_ios</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Intelligence Feed -->
+<div class="glass-card p-6 corner-bracket bracket-tr bracket-br relative overflow-hidden">
+<!-- Radar Pulse Effect -->
+<div class="absolute -right-4 -top-4 w-24 h-24 border border-secondary/20 rounded-full animate-ping opacity-20"></div>
+<h3 class="font-technical-label text-[12px] uppercase tracking-widest text-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" style="font-variation-settings: 'FILL' 1;">analytics</span>
+                            Market Intelligence
+                        </h3>
+<div class="space-y-4">
+<div class="flex gap-4">
+<div class="w-1 bg-secondary h-auto shrink-0"></div>
+<div>
+<p class="font-mono-data text-[11px] text-on-surface">GLOBAL TAX ALERT</p>
+<p class="font-mono-data text-[10px] text-on-surface-variant opacity-70">EU zone yacht mooring regulations updated for Q4.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-1 bg-primary h-auto shrink-0"></div>
+<div>
+<p class="font-mono-data text-[11px] text-on-surface">FUEL SPIKE</p>
+<p class="font-mono-data text-[10px] text-on-surface-variant opacity-70">Sustainable aviation fuel availability limited in SE Sector.</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-1 bg-secondary h-auto shrink-0"></div>
+<div>
+<p class="font-mono-data text-[11px] text-on-surface">FLEET TREND</p>
+<p class="font-mono-data text-[10px] text-on-surface-variant opacity-70">Pre-owned Global 6000 values rising +12% YoY.</p>
+</div>
+</div>
+</div>
+<button class="mt-6 w-full py-2 bg-surface-variant/20 hover:bg-surface-variant/40 border border-outline-variant/30 text-on-surface font-technical-label uppercase text-[10px] tracking-widest transition-all">
+                            Full Sector Report
+                        </button>
+</div>
+</div>
+</div>
+<!-- Footer Status Bar -->
+<footer class="flex items-center justify-between font-mono-data text-[10px] uppercase tracking-widest opacity-40 py-4 px-2">
+<div class="flex gap-6">
+<span>Server: HK-Cluster-04</span>
+<span>Lat: 22.3193° N, Long: 114.1694° E</span>
+</div>
+<div class="flex gap-6">
+<span class="flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-green-500 rounded-full"></span>
+                        Firewall Active
+                    </span>
+<span>System Clock: 14:22:08 UTC</span>
+</div>
+</footer>
+</div>
+</main>
+<!-- Contextual FAB (Hidden on Admin screens by logic, but for design consistency) -->
+<div class="hidden">
+<button class="fixed bottom-10 right-10 w-16 h-16 bg-secondary text-on-secondary rounded-full flex items-center justify-center shadow-xl hud-glow z-50">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</body></html>

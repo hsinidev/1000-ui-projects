@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AR In-Home Preview | CURATOR-WALL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary-fixed-dim": "#c9c6c5",
+                  "secondary-fixed": "#e3e2e2",
+                  "on-secondary-fixed-variant": "#464747",
+                  "surface-bright": "#3a3939",
+                  "surface-container": "#201f1f",
+                  "on-surface-variant": "#c4c7c7",
+                  "tertiary-fixed": "#e5e2e1",
+                  "on-primary-container": "#797777",
+                  "on-primary": "#313030",
+                  "surface-variant": "#353434",
+                  "outline-variant": "#444748",
+                  "background": "#141313",
+                  "secondary-fixed-dim": "#c6c6c6",
+                  "on-error": "#690005",
+                  "inverse-surface": "#e5e2e1",
+                  "tertiary": "#c9c6c5",
+                  "surface": "#141313",
+                  "tertiary-container": "#050505",
+                  "secondary": "#c6c6c6",
+                  "secondary-container": "#484949",
+                  "on-tertiary-container": "#797777",
+                  "primary": "#c9c6c5",
+                  "surface-dim": "#141313",
+                  "on-surface": "#e5e2e1",
+                  "surface-container-low": "#1c1b1b",
+                  "inverse-primary": "#5f5e5e",
+                  "surface-container-lowest": "#0e0e0e",
+                  "surface-tint": "#c9c6c5",
+                  "primary-container": "#050505",
+                  "outline": "#8e9192",
+                  "on-error-container": "#ffdad6",
+                  "surface-container-highest": "#353434",
+                  "primary-fixed": "#e5e2e1",
+                  "on-tertiary": "#313030",
+                  "inverse-on-surface": "#313030",
+                  "error": "#ffb4ab",
+                  "on-background": "#e5e2e1",
+                  "on-secondary-container": "#b8b8b8",
+                  "primary-fixed-dim": "#c9c6c5",
+                  "on-secondary": "#2f3131",
+                  "on-tertiary-fixed-variant": "#474646",
+                  "on-secondary-fixed": "#1a1c1c",
+                  "surface-container-high": "#2b2a2a",
+                  "on-primary-fixed-variant": "#474646",
+                  "on-tertiary-fixed": "#1c1b1b",
+                  "on-primary-fixed": "#1c1b1b",
+                  "error-container": "#93000a"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "unit": "4px",
+                  "margin-desktop": "80px",
+                  "container-max": "1440px",
+                  "margin-mobile": "20px",
+                  "gutter": "32px",
+                  "margin-tablet": "40px"
+          },
+          "fontFamily": {
+                  "headline-md": ["Playfair Display"],
+                  "body-md": ["Inter"],
+                  "display-lg": ["Playfair Display"],
+                  "body-lg": ["Inter"],
+                  "headline-lg": ["Playfair Display"],
+                  "label-md": ["Inter"],
+                  "headline-sm": ["Playfair Display"],
+                  "headline-lg-mobile": ["Playfair Display"]
+          },
+          "fontSize": {
+                  "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                  "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "display-lg": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                  "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                  "label-md": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                  "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                  "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      background-color: #050505;
+      color: #e5e2e1;
+      overflow-x: hidden;
+    }
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      background-color: rgba(32, 31, 31, 0.6);
+      border: 0.5px solid rgba(196, 199, 199, 0.2);
+    }
+    .thin-border {
+      border: 0.5px solid rgba(196, 199, 199, 0.2);
+    }
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 2px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: #141313;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #444748;
+    }
+  </style>
+</head>
+<body class="font-body-md text-body-md antialiased">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container/80 backdrop-blur-xl border-b-[0.5px] border-outline-variant flex justify-between items-center px-margin-desktop h-20">
+<div class="font-headline-md text-headline-md tracking-tighter text-on-surface">CURATOR-WALL</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-300" href="#">Gallery</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-300" href="#">Artists</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-primary transition-all duration-300" href="#">Vault</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+<input class="bg-surface-container-low border-b-[0.5px] border-outline focus:border-primary outline-none px-10 py-2 text-label-md w-48 transition-all" placeholder="Search Archives" type="text"/>
+</div>
+<button class="p-2 rounded-full hover:bg-surface-variant transition-colors">
+<span class="material-symbols-outlined text-on-surface">person</span>
+</button>
+</div>
+</header>
+<!-- Side Navigation Bar -->
+<aside class="h-screen w-64 fixed left-0 top-0 pt-24 bg-surface-container-lowest border-r-[0.5px] border-outline-variant hidden lg:flex flex-col px-4 z-40">
+<div class="mb-10 px-4">
+<h2 class="font-headline-sm text-headline-sm text-on-surface mb-1">ADMIN PANEL</h2>
+<p class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant">System Controller</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 py-3 px-4 rounded-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors translate-x-0 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-label-md text-label-md uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 rounded-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors translate-x-0 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">insights</span>
+<span class="font-label-md text-label-md uppercase tracking-widest">Analytics</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 rounded-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors translate-x-0 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">collections</span>
+<span class="font-label-md text-label-md uppercase tracking-widest">Inventory</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 rounded-sm bg-secondary-container/30 text-primary border-r-2 border-primary" href="#">
+<span class="material-symbols-outlined">auto_awesome</span>
+<span class="font-label-md text-label-md uppercase tracking-widest">Curations</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-4 rounded-sm text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-colors translate-x-0 hover:translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-md text-label-md uppercase tracking-widest">Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-4 mb-4 border-t-[0.5px] border-outline-variant pt-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-variant rounded-full overflow-hidden border border-outline-variant">
+<img alt="Admin User" data-alt="A close-up portrait of a sophisticated person with a refined, intellectual appearance. The lighting is dramatic and high-contrast, characteristic of a high-end photography studio. The background is a deep, dark charcoal grey that complements the minimalist and cinematic aesthetic of a futuristic digital gallery." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjvwid1hOgtgowoGmzasfF3h8c5OFuBBXyX4U-rwSp-AOMsPg3PMdQrLgvNAikL7DaA1NwAz5GEkUcws-EUyyS3rqWfm-Ttf8mbqeTuLSbrANgYEgOYs5zT0Z5TVKVtlD_PhAgpDRWu_C-nfdC0k-ihLi6ERBsuS03km4tZG-Qi_ePrAxH_YHbZBIdZSF9jqV0gcGvYYOzNehLIF9xSEKcnGgqciOakffjmxFugMqXN3SDoTg9e_2wysuqZKmQO9kLGa7x1nkUoI77"/>
+</div>
+<div>
+<p class="font-label-md text-[10px] text-on-surface font-bold uppercase">Collector Mode</p>
+<p class="text-[10px] text-on-surface-variant">Active Session</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-64 pt-20 h-screen flex overflow-hidden">
+<!-- AR Viewport -->
+<section class="flex-1 relative bg-black overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-80" data-alt="A wide-angle shot of a luxurious, ultra-modern living room featuring expansive floor-to-ceiling glass windows that reveal a hazy, futuristic metropolitan skyline at dusk. The interior is defined by brutalist concrete walls, polished dark stone floors, and minimalist furniture. The room is bathed in a cool, atmospheric light that emphasizes its architectural precision and premium, exclusive character." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv_s7yQdye6hqDQ9ikD3jdtm9FJJRDD3Aoz8gd6LWoFqEDLsme_QpJUpK5SSkmYSK30IGfEMvfOCN7hjG3fV5nHpd_JbKkFMPBUWbiPtaigu2OjvUGU4Qmwh50bYiLkXPTpd4LYgPWn-TUeo-s3lFVVNVbvCYibyc11P9IMb3Owvr9u63zq2GMbcpVGgj9xF1IW6myKMszC3CDrZFJKMM8jn8faZktTq3qA2Bo0H9Cu_tlJ3msIWUXX-WUp1pU0sig9wSyYDndL2Gu"/>
+</div>
+<!-- The Art Piece Overlay -->
+<div class="absolute inset-0 flex items-center justify-center z-10">
+<div class="relative w-[50%] aspect-square shadow-[0_0_50px_rgba(0,0,0,0.8)] border-[0.5px] border-white/10 overflow-hidden group-hover:scale-[1.02] transition-transform duration-700 ease-out">
+<img class="w-full h-full object-cover" data-alt="An abstract digital artwork titled Event Horizon IV, showcasing a complex interplay of deep obsidian textures and vibrant electric blue energy filaments that seem to pulse from a central void. The visual style is cinematic and sophisticated, evoking a sense of cosmic mystery and technical excellence. The high-contrast palette is dominated by dark tones with brilliant, sharp metallic accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAeNMZ42UzJFCNfKNQ2Y-WSEx_ws1f8hluDcQjRlPJVh7iwGkLYPt_OK5WLvQwLFQ5pjhU4vxXwhRBUUcuga7f96FUoLKTIAnfXAl5hZtWPdWxCUZT1FFsPfcKlXczKL6b9t4hlL40MbNn2GLn6lulLAPmpIQ1Oi02YBtgnLpbQz_6Pq1usOd6rjsgW_8Vn895VrBxyAiL7-b40tGj_6HQSsOjJK4TdNTb8yWIIe2cDHrdOCfu7kzFp39hZbPdxGanOvRt7xjON9Sn"/>
+<!-- Glass Reflection Overlay -->
+<div class="absolute inset-0 bg-gradient-to-tr from-transparent via-white/5 to-white/10 pointer-events-none"></div>
+<!-- Metadata Tag -->
+<div class="absolute bottom-4 left-4 glass-panel px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+<p class="text-primary font-label-md text-[10px] uppercase tracking-tighter">Event Horizon IV</p>
+<p class="text-on-surface text-[12px] font-headline-sm">240cm x 240cm</p>
+</div>
+</div>
+</div>
+<!-- Interaction Indicators -->
+<div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex items-center gap-6 z-20">
+<div class="flex items-center gap-2 glass-panel px-4 py-2 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+<span class="text-label-md text-on-surface uppercase tracking-widest">Active Visualizer</span>
+</div>
+</div>
+<!-- Quick View Controls (Floating) -->
+<div class="absolute top-8 right-8 flex flex-col gap-4 z-20">
+<button class="w-12 h-12 glass-panel flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all duration-300">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="w-12 h-12 glass-panel flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all duration-300">
+<span class="material-symbols-outlined">fullscreen</span>
+</button>
+<button class="w-12 h-12 glass-panel flex items-center justify-center hover:bg-primary hover:text-on-primary transition-all duration-300">
+<span class="material-symbols-outlined">photo_camera</span>
+</button>
+</div>
+</section>
+<!-- Environmental Settings Panel -->
+<section class="w-96 h-full bg-surface-container-lowest border-l-[0.5px] border-outline-variant flex flex-col custom-scrollbar overflow-y-auto">
+<div class="p-8 space-y-10">
+<!-- Section: Scene Selection -->
+<div>
+<h3 class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant mb-6 flex items-center justify-between">
+            Environments
+            <span class="material-symbols-outlined text-[16px]">architecture</span>
+</h3>
+<div class="grid grid-cols-2 gap-3">
+<button class="aspect-video bg-surface-container border-2 border-primary relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity" data-alt="A thumbnail image of a luxury penthouse living room with concrete walls and panoramic city views, designed for an AR visualizer interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZDP3H-HNSwOpxMMY9ena1iYH1Ztc-7kZljjjDJ7TEAo8cHZP5WjzOq-b2SsIUXbsM34lTQU2SvA8WMEFRbSkcVkya1H5l0yvL2NccYmTrLZoS8OieDgvJx6t2htriBRXKCeic0cvYX2Nd_zuQs2s5JMaYUlrp2m-K--ksoHtHhVtW3eVeR7PsTfOMEccBHPhOIAZGbiOLxrVBK0eLWdy2WRSvZCu2Fu8qOioqGDXCPNvfiWA_cCnO8fR684Ec0jZgqU2i6p21UsLK"/>
+<div class="absolute inset-0 bg-primary/10"></div>
+<p class="absolute bottom-1 left-2 text-[8px] uppercase font-bold text-primary">Penthouse</p>
+</button>
+<button class="aspect-video bg-surface-container border-[0.5px] border-outline-variant relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity" data-alt="A thumbnail of a minimalist gallery white-cube space with high ceilings and track lighting, used as a backdrop for digital art previewing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDW_jKindzWFZxPgLzByFNGny_epwfwbzqW9niQt496tZNIg3N-khUKfVp45To2vOpoQzIZv7r7NOif2XU06p4NavNDgjKlWhJL1t_kibgNgM2W0pIGjqjfJRiGizOvuVfKr6wK04Z8Yh5eOYWQq-CZANfWKlVEIc_0e_k-Ahl8O4VfLy5bbMriVx4e0kQngFUe0tNOZo9bC4_42V9-F0FSyHV29nJcWKuwZe97rsu5n1NCpm9QD-Wp1JCf-crQswS0bjk1LFYpmpvG"/>
+<p class="absolute bottom-1 left-2 text-[8px] uppercase font-bold text-on-surface-variant">Gallery</p>
+</button>
+<button class="aspect-video bg-surface-container border-[0.5px] border-outline-variant relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity" data-alt="A thumbnail image showing a brutalist corporate lobby with high-gloss floors and industrial accents, intended as a visualizer setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuASRVxkAqHIDlSq0yJODfMD5e2MCePjwOK-EZL_QgU0hXJ1c_JDKcm6odVL4yndb3DUpmhiPUNV9ELreRHavAr1QuVbgj7XQr4teE0f4VUv6F2IUoTaDnExrFMi1Qaj0GyQo7kPO0nZ9j5LuTUkP9filHGRNWAuKOd8nQPxfzXJQDxpMw9DrIxdv_BOlmvGPleHZj9gbZdOgj7Xvj85RkrAEw9CWPBB9YWo4p2V7jqVhcJ40AZkgymSr7osNvZNhkiHJfVrRzy_Ey48"/>
+<p class="absolute bottom-1 left-2 text-[8px] uppercase font-bold text-on-surface-variant">Industrial</p>
+</button>
+<button class="aspect-video bg-surface-container border-[0.5px] border-outline-variant relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-40 group-hover:opacity-100 transition-opacity" data-alt="A thumbnail of a bright, mediterranean-style villa interior with warm plaster walls and natural light, used for previewing digital artwork." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV0lNrhnmmroMfHWwOWhLcgxyWVcisFUEz4X670iubfWSxNEkMAJ2---5o74EzKP_JX7SCm4ghg0zEAJKx-T_gB0pROWZEYea-6cC_KSCj0dqcxB-CZ1u_OEKu4wg9DLGMFTMCxYYjwbA01AT0V7_YhNvNfTO0FajsBPERxu_1sJg5E2siPafLEK7Bz_OBrKppNWiJQo5UVtbI-zeZrr_5Xprb799xJ6tPDzVPbFNPrahnYy8jydlbXAeaU3afKY7dV7sBtZpiUny6"/>
+<p class="absolute bottom-1 left-2 text-[8px] uppercase font-bold text-on-surface-variant">Villa</p>
+</button>
+</div>
+</div>
+<!-- Section: Wall Controls -->
+<div>
+<h3 class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant mb-6">Wall Attributes</h3>
+<div class="space-y-6">
+<div>
+<label class="font-label-md text-[10px] uppercase tracking-widest text-on-surface block mb-3">Texture</label>
+<div class="flex gap-2">
+<button class="w-8 h-8 rounded-full border border-primary bg-[#2a2a2a] ring-2 ring-primary/20 ring-offset-2 ring-offset-background"></button>
+<button class="w-8 h-8 rounded-full border border-outline-variant bg-[#e5e5e5]"></button>
+<button class="w-8 h-8 rounded-full border border-outline-variant bg-[#4a413a]"></button>
+<button class="w-8 h-8 rounded-full border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-[14px]">add</span>
+</button>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-md text-[10px] uppercase tracking-widest text-on-surface">Wall Tone</label>
+<span class="text-[10px] text-primary">85%</span>
+</div>
+<input class="w-full h-[1px] bg-outline-variant appearance-none accent-primary cursor-pointer" type="range"/>
+</div>
+</div>
+</div>
+<!-- Section: Lighting -->
+<div>
+<h3 class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant mb-6">Luminance Engine</h3>
+<div class="space-y-6">
+<div class="flex items-center justify-between p-3 border-[0.5px] border-outline-variant rounded-sm group hover:border-primary transition-colors cursor-pointer">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">wb_sunny</span>
+<span class="font-label-md text-[11px] uppercase tracking-widest">Natural Day</span>
+</div>
+<span class="material-symbols-outlined text-[16px] text-primary">check_circle</span>
+</div>
+<div class="flex items-center justify-between p-3 border-[0.5px] border-outline-variant rounded-sm group hover:border-primary transition-colors cursor-pointer opacity-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">nightlight</span>
+<span class="font-label-md text-[11px] uppercase tracking-widest">Nocturnal</span>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-md text-[10px] uppercase tracking-widest text-on-surface">Spotlight Intensity</label>
+<span class="text-[10px] text-on-surface-variant">42%</span>
+</div>
+<input class="w-full h-[1px] bg-outline-variant appearance-none accent-on-surface cursor-pointer" type="range"/>
+</div>
+</div>
+</div>
+<!-- Section: Dimensionality -->
+<div>
+<h3 class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant mb-6">Scale Calibration</h3>
+<div class="flex gap-4">
+<button class="flex-1 py-3 border-[0.5px] border-outline-variant text-[10px] uppercase font-bold hover:bg-surface-variant transition-colors">Imperial</button>
+<button class="flex-1 py-3 border border-primary text-[10px] uppercase font-bold bg-primary/5">Metric</button>
+</div>
+<div class="mt-6 p-4 bg-surface-container-low border-[0.5px] border-outline-variant">
+<p class="text-[10px] text-on-surface-variant uppercase mb-1">Canvas Width</p>
+<p class="font-headline-sm text-headline-sm text-on-surface">2.40 <span class="text-label-md text-on-surface-variant">m</span></p>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full py-4 bg-primary text-on-primary font-label-md text-[12px] uppercase tracking-widest hover:opacity-90 active:scale-[0.98] transition-all">
+          Request Physical Mockup
+        </button>
+</div>
+</section>
+</main>
+<!-- Footer (Suppressed on AR screen per relevance check, but included as per task requirements for page structure) -->
+<footer class="lg:pl-64 w-full bg-background border-t-[0.5px] border-outline-variant mt-0">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center px-margin-desktop py-12 w-full max-w-container-max mx-auto">
+<div class="mb-8 md:mb-0">
+<div class="font-headline-md text-headline-md text-on-surface mb-2">CURATOR-WALL</div>
+<p class="font-label-md text-label-md text-on-surface-variant">© 2024 CURATOR-WALL. ALL RIGHTS RESERVED.</p>
+</div>
+<div class="flex flex-wrap gap-8">
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">FAQ</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Twitter</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Instagram</a>
+<a class="font-label-md text-label-md text-on-surface-variant hover:text-primary transition-colors" href="#">Newsletter</a>
+</div>
+</div>
+</footer>
+</body></html>

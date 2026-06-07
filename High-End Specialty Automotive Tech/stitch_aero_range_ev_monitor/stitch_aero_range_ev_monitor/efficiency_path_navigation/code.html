@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Range Efficiency Path</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .chamfer-br {
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+        }
+        .chamfer-tl {
+            clip-path: polygon(12px 0, 100% 0, 100% 100%, 0 100%, 0 12px);
+        }
+        .glass-panel {
+            background: rgba(13, 18, 40, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 230, 255, 0.15);
+            box-shadow: inset 1px 1px 0px rgba(201, 230, 255, 0.1);
+        }
+        .glow-line {
+            box-shadow: 0 0 15px rgba(154, 204, 243, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "primary-fixed": "#c9e6ff",
+                "on-tertiary": "#2f3131",
+                "inverse-on-surface": "#2a2f47",
+                "error": "#ffb4ab",
+                "surface-container-highest": "#2f334b",
+                "surface-tint": "#9accf3",
+                "primary-container": "#a5d8ff",
+                "outline": "#8b9198",
+                "on-error-container": "#ffdad6",
+                "surface-dim": "#0d1228",
+                "on-surface": "#dde1ff",
+                "surface-container-low": "#151a31",
+                "inverse-primary": "#2e6385",
+                "surface-container-lowest": "#080d22",
+                "error-container": "#93000a",
+                "on-tertiary-fixed": "#1a1c1c",
+                "on-primary-fixed": "#001e2f",
+                "primary-fixed-dim": "#9accf3",
+                "on-secondary": "#2f3131",
+                "on-tertiary-fixed-variant": "#454747",
+                "on-secondary-fixed": "#1a1c1c",
+                "on-primary-fixed-variant": "#0c4b6c",
+                "surface-container-high": "#242940",
+                "on-background": "#dde1ff",
+                "on-secondary-container": "#b8b8b8",
+                "outline-variant": "#41484d",
+                "background": "#0d1228",
+                "surface-variant": "#2f334b",
+                "on-primary": "#00344d",
+                "surface-container": "#191e35",
+                "on-surface-variant": "#c1c7ce",
+                "tertiary-fixed": "#e2e2e2",
+                "on-primary-container": "#285f80",
+                "secondary-fixed": "#e3e2e2",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "on-secondary-fixed-variant": "#464747",
+                "surface-bright": "#333850",
+                "secondary": "#c6c6c6",
+                "secondary-container": "#484949",
+                "on-tertiary-container": "#585a5a",
+                "primary": "#e1f0ff",
+                "surface": "#0d1228",
+                "tertiary-container": "#d1d2d2",
+                "tertiary": "#eeeeee",
+                "inverse-surface": "#dde1ff",
+                "on-error": "#690005",
+                "secondary-fixed-dim": "#c6c6c6"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.125rem",
+                "lg": "0.25rem",
+                "xl": "0.5rem",
+                "full": "0.75rem"
+              },
+              "spacing": {
+                "micro": "4px",
+                "container-padding": "32px",
+                "xl": "40px",
+                "lg": "24px",
+                "md": "16px",
+                "base": "8px"
+              },
+              "fontFamily": {
+                "display-hero": ["Space Grotesk"],
+                "label-caps": ["JetBrains Mono"],
+                "data-lg": ["JetBrains Mono"],
+                "caption-technical": ["JetBrains Mono"],
+                "body-md": ["Inter"],
+                "headline-md": ["Space Grotesk"]
+              },
+              "fontSize": {
+                "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "data-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                "caption-technical": ["10px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-lg py-md">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary-fixed-dim">AERO_RANGE_v1.0</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="text-right">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant uppercase tracking-widest">SYSTEM_STATUS</p>
+<p class="font-label-caps text-label-caps text-primary-fixed">98% | 342mi</p>
+</div>
+<div class="h-8 w-px bg-outline-variant/30"></div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- Main Viewport (Map Container) -->
+<main class="relative h-screen w-full pt-[72px] pb-[96px]">
+<!-- Background Map Image -->
+<div class="absolute inset-0 z-0">
+<img alt="Efficiency Map" class="w-full h-full object-cover opacity-60 grayscale brightness-50" data-alt="A sophisticated digital satellite map displayed in a high-tech dark mode aesthetic. The terrain features deep navy blues and charcoal grays with glowing neon ice-blue veins representing high-efficiency transit paths. The lighting is low-key, emphasizing technical clarity with a subtle grid overlay. This visual style communicates premium automotive navigation and advanced data processing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCjpVD7M6YGaaseHEOYINoaEzWIcg7q3O0o6SQ0PviuY4SvnL77nzUAJWLjiKvfrz0JbDoakljVh48OtHK3vOIhkGJyMRAm_tK3NDi5pI3SHnfVvv9acGjHr32UTLvLmZ9JP1sDsKEfv-3EUUliydwpNE3EkcxBi7JtZyhGEkYoduS-fGfQsVZxiP9KHBFVxXwwivyy6uDBkWxZFzBjO_4ggNRB3yRGhEbXYXQVAMgnHILhe-SLUhf1oF_w9ffSuBZHbbO_Px6zvGRz"/>
+<!-- Simulated Glow Path Overlay -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-80" preserveaspectratio="none" viewbox="0 0 1000 1000">
+<path class="glow-line" d="M 200 800 Q 400 700 500 500 T 800 200" fill="none" stroke="#c9e6ff" stroke-dasharray="8 4" stroke-width="4"></path>
+<circle class="glow-line" cx="200" cy="800" fill="#c9e6ff" r="6"></circle>
+<circle class="glow-line" cx="800" cy="200" fill="#c9e6ff" r="8"></circle>
+<!-- Charging Node A -->
+<circle class="animate-pulse" cx="450" cy="550" fill="none" r="10" stroke="#c9e6ff" stroke-width="1"></circle>
+<circle cx="450" cy="550" fill="#c9e6ff" r="4"></circle>
+</svg>
+</div>
+<!-- Dashboard Overlays (HUD Style) -->
+<div class="relative z-10 p-xl h-full flex flex-col justify-between pointer-events-none">
+<!-- Top Section: Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-lg pointer-events-auto">
+<!-- Stat Card 1 -->
+<div class="glass-panel p-md chamfer-br border-l-2 border-primary-fixed/50">
+<div class="flex justify-between items-start mb-base">
+<span class="font-caption-technical text-caption-technical text-on-surface-variant uppercase tracking-widest">EST_ARRIVAL_RANGE</span>
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="bolt">bolt</span>
+</div>
+<div class="flex items-baseline gap-base">
+<span class="font-data-lg text-data-lg text-primary-fixed">284</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">mi</span>
+</div>
+<div class="w-full h-1 bg-surface-container mt-md relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary-fixed w-3/4 glow-line"></div>
+</div>
+</div>
+<!-- Stat Card 2 -->
+<div class="glass-panel p-md chamfer-br border-l-2 border-primary-fixed/50">
+<div class="flex justify-between items-start mb-base">
+<span class="font-caption-technical text-caption-technical text-on-surface-variant uppercase tracking-widest">WIND_RESISTANCE_IDX</span>
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="air">air</span>
+</div>
+<div class="flex items-baseline gap-base">
+<span class="font-data-lg text-data-lg text-primary-fixed">0.24</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">CDA_AVG</span>
+</div>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant mt-md">OPTIMIZED PATH: TAILWIND +12MPH</p>
+</div>
+<!-- Stat Card 3 -->
+<div class="glass-panel p-md chamfer-br border-l-2 border-primary-fixed/50">
+<div class="flex justify-between items-start mb-base">
+<span class="font-caption-technical text-caption-technical text-on-surface-variant uppercase tracking-widest">ALTITUDE_PROFILE</span>
+<span class="material-symbols-outlined text-primary-fixed text-sm" data-icon="show_chart">show_chart</span>
+</div>
+<div class="h-10 flex items-end gap-1">
+<div class="bg-primary-fixed/20 w-full h-1/2"></div>
+<div class="bg-primary-fixed/40 w-full h-3/4"></div>
+<div class="bg-primary-fixed w-full h-full"></div>
+<div class="bg-primary-fixed/60 w-full h-2/3"></div>
+<div class="bg-primary-fixed/30 w-full h-1/3"></div>
+</div>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant mt-micro">PEAK: 1,420 FT (REGEN OPTIMIZED)</p>
+</div>
+</div>
+<!-- Side Overlay: Navigation Steps -->
+<div class="absolute right-xl top-1/2 -translate-y-1/2 w-72 pointer-events-auto hidden md:block">
+<div class="glass-panel p-md chamfer-tl border-r-2 border-primary-fixed/50 space-y-md">
+<h3 class="font-label-caps text-label-caps text-primary-fixed border-b border-outline-variant/30 pb-base">PATH_TELEMETRY_LOG</h3>
+<div class="space-y-base">
+<div class="flex gap-md items-start p-base bg-primary-fixed/5">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="ev_station">ev_station</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">VORTEX_CHARGER_07</p>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">250KW | 15min req.</p>
+</div>
+</div>
+<div class="flex gap-md items-start p-base opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="navigation">navigation</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">NW_TRANSIT_BYPASS</p>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">Minimizing lateral drag</p>
+</div>
+</div>
+<div class="flex gap-md items-start p-base opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="flag">flag</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">DESTINATION_01</p>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">ETA: 14:42 | SoC: 12%</p>
+</div>
+</div>
+</div>
+<button class="w-full py-base border border-primary-fixed/30 text-primary-fixed font-label-caps text-label-caps hover:bg-primary-fixed/10 transition-all flex items-center justify-center gap-base">
+<span>INITIATE_PATH</span>
+<span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Bottom Left: Wind Telemetry -->
+<div class="pointer-events-auto flex items-end gap-lg">
+<div class="w-24 h-24 glass-panel rounded-full flex items-center justify-center relative">
+<div class="absolute inset-0 border-2 border-dashed border-primary-fixed/20 rounded-full"></div>
+<span class="material-symbols-outlined text-primary-fixed text-4xl transform rotate-45" data-icon="north">north</span>
+<span class="absolute top-0 font-caption-technical text-caption-technical text-on-surface-variant">N</span>
+<span class="absolute bottom-base font-caption-technical text-caption-technical text-primary-fixed">14 MPH</span>
+</div>
+<div class="glass-panel p-md border-t-2 border-primary-fixed/50">
+<p class="font-label-caps text-label-caps text-on-surface-variant">AERO_EFFICIENCY_SCORE</p>
+<p class="font-display-hero text-headline-md text-primary-fixed">94.2%</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mandatory Shell) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/50 flex justify-around items-center px-md pb-lg pt-base shadow-[0_-10px_20px_rgba(154,204,243,0.1)]">
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-label-caps text-label-caps">DRAG</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">AERO</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-label-caps">THERMAL</span>
+</button>
+<!-- ACTIVE TAB: PATH -->
+<button class="flex flex-col items-center justify-center text-primary-fixed bg-primary-container/20 rounded-xl px-md py-micro ring-1 ring-primary-fixed/50 shadow-[0_0_15px_rgba(154,204,243,0.3)] active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">PATH</span>
+</button>
+</nav>
+<!-- Map Floating Action Contextual (FAB) -->
+<button class="fixed bottom-24 right-lg z-40 h-14 w-14 glass-panel rounded-full border border-primary-fixed/50 flex items-center justify-center text-primary-fixed glow-line hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="recenter">recenter</span>
+</button>
+</body></html>

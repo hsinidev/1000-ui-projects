@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Range: Thermal Dynamics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-pane {
+            background: rgba(21, 26, 49, 0.7);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(201, 230, 255, 0.2);
+            border-left: 1px solid rgba(201, 230, 255, 0.2);
+        }
+        .technical-border {
+            position: relative;
+            border: 1px solid #41484d;
+        }
+        .chamfer-tr {
+            clip-path: polygon(0 0, calc(100% - 10px) 0, 100% 10px, 100% 100%, 0 100%);
+        }
+        .thermal-grid {
+            background-image: radial-gradient(#41484d 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .glow-line {
+            box-shadow: 0 0 15px rgba(154, 204, 243, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#c9e6ff",
+                        "on-tertiary": "#2f3131",
+                        "inverse-on-surface": "#2a2f47",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#2f334b",
+                        "surface-tint": "#9accf3",
+                        "primary-container": "#a5d8ff",
+                        "outline": "#8b9198",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#0d1228",
+                        "on-surface": "#dde1ff",
+                        "surface-container-low": "#151a31",
+                        "inverse-primary": "#2e6385",
+                        "surface-container-lowest": "#080d22",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-primary-fixed": "#001e2f",
+                        "primary-fixed-dim": "#9accf3",
+                        "on-secondary": "#2f3131",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-primary-fixed-variant": "#0c4b6c",
+                        "surface-container-high": "#242940",
+                        "on-background": "#dde1ff",
+                        "on-secondary-container": "#b8b8b8",
+                        "outline-variant": "#41484d",
+                        "background": "#0d1228",
+                        "surface-variant": "#2f334b",
+                        "on-primary": "#00344d",
+                        "surface-container": "#191e35",
+                        "on-surface-variant": "#c1c7ce",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-primary-container": "#285f80",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface-bright": "#333850",
+                        "secondary": "#c6c6c6",
+                        "secondary-container": "#484949",
+                        "on-tertiary-container": "#585a5a",
+                        "primary": "#e1f0ff",
+                        "surface": "#0d1228",
+                        "tertiary-container": "#d1d2d2",
+                        "tertiary": "#eeeeee",
+                        "inverse-surface": "#dde1ff",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#c6c6c6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "micro": "4px",
+                        "container-padding": "32px",
+                        "xl": "40px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "display-hero": ["Space Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "caption-technical": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "caption-technical": ["10px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-lg py-md">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary-fixed-dim">AERO_RANGE_v1.0</h1>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-caption-technical text-caption-technical text-primary-fixed uppercase tracking-widest">System_Live</span>
+<button class="bg-primary/10 px-md py-micro border border-primary-fixed/20 text-primary-fixed font-caption-technical text-caption-technical hover:bg-primary/20 transition-colors active:scale-95 duration-100">
+                98% | 342mi
+            </button>
+</div>
+</header>
+<main class="pt-[80px] pb-[100px] px-md md:px-xl min-h-screen">
+<!-- Alerts & Notifications -->
+<div class="max-w-6xl mx-auto mb-lg">
+<div class="glass-pane chamfer-tr p-md border-primary-fixed/30 flex items-center justify-between glow-line">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed animate-pulse" data-icon="bolt">bolt</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary-fixed">CHARGING_ALERT_01</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">Charging at 250kW - Peak Efficiency reached</p>
+</div>
+</div>
+<div class="hidden md:block">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant text-right">TIME_TO_FULL</p>
+<p class="font-data-lg text-data-lg text-primary-fixed">14:22</p>
+</div>
+</div>
+</div>
+<!-- Main Bento Grid -->
+<div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Left Panel: Thermal Controls & KPIs -->
+<div class="md:col-span-4 space-y-md">
+<div class="glass-pane p-md border border-outline-variant/30 relative">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">AVG_CELL_TEMP</p>
+<div class="flex items-baseline gap-micro">
+<span class="font-data-lg text-data-lg text-primary-fixed">32.4</span>
+<span class="text-headline-md font-headline-md text-primary-fixed-dim">°C</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mt-md">
+<div class="bg-primary-fixed h-full glow-line" style="width: 45%;"></div>
+</div>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant mt-micro">RANGE: 28°C - 38°C (OPTIMAL)</p>
+</div>
+<div class="glass-pane p-md border border-outline-variant/30 relative">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">THERMAL_HEALTH_CORE</p>
+<div class="flex items-center justify-between mb-md">
+<div>
+<p class="font-body-md text-body-md text-on-surface">Battery Degradation</p>
+<p class="font-data-lg text-data-lg text-primary-fixed">1.2%</p>
+</div>
+<span class="bg-primary-fixed/20 text-primary-fixed border border-primary-fixed/50 px-md py-micro text-label-caps font-label-caps rounded-full">HEALTHY</span>
+</div>
+<div class="grid grid-cols-2 gap-base border-t border-outline-variant/30 pt-base">
+<div>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">CYCLES</p>
+<p class="font-label-caps text-label-caps">142</p>
+</div>
+<div>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">VOLTAGE</p>
+<p class="font-label-caps text-label-caps">798V</p>
+</div>
+</div>
+</div>
+<div class="glass-pane p-md border border-outline-variant/30 relative">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">SYSTEM_STATUS</p>
+<div class="flex items-center gap-md p-base bg-surface-container/50 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="ac_unit">ac_unit</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary-fixed">COOLING SYSTEM</p>
+<p class="font-body-md text-body-md text-on-surface">Optimal Performance</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Center Panel: 3D Floor Pan Heatmap -->
+<div class="md:col-span-8 glass-pane border border-outline-variant/30 p-md relative flex flex-col min-h-[500px] overflow-hidden thermal-grid">
+<div class="absolute top-md left-md">
+<p class="font-label-caps text-label-caps text-primary-fixed-dim">FLOOR_PAN_TELEMETRY_MAP</p>
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">LIVE_SCAN_v4.2</p>
+</div>
+<!-- 3D Car Visual -->
+<div class="flex-grow flex items-center justify-center py-lg relative">
+<div class="relative w-full max-w-lg aspect-[2/1] bg-surface-container-highest/20 rounded-xl border border-primary-fixed/10 p-base shadow-[0_0_50px_rgba(201,230,255,0.05)]">
+<img alt="EV Battery Architecture" class="w-full h-full object-cover opacity-60 mix-blend-screen rounded-lg" data-alt="A technical top-down schematic of an electric vehicle's battery floor pan. The visual features a scientific glassmorphism aesthetic with a grid-like layout of individual battery cells glowing in ice blue and cool white temperature gradients. The image is set against a deep space navy background with technical monospaced overlays and thin luminescent lines showing cooling channel paths. The overall mood is cold, high-tech, and elite." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQLp31aVNcI_wld5IlbXoJ1oEEcxd8JtJzpOSAG9PHUi7Vtj9fRg2u7Hu8_wAGxRflByyz0CqkA59LQEAtoNMVjJlMzCXQPJjW8A4zKhiC9AbNBLdgtLXa_F7S0lfdCqCdJC9bzWhdtcbOHvF3AkJVA3JrhopedRZ60ErJqxNhe6xmRsiMBN9-qr4KOz5OFEew188nrFD3qMOYCgNimRoHauF4xMWbMv5gCaWc_8mkxUVCByJ8qSDUwYS1lARJM2wEDXb_v0znSo04"/>
+<!-- Overlay Heatmap Zones (Simulated) -->
+<div class="absolute inset-0 grid grid-cols-6 grid-rows-4 gap-1 p-base opacity-40">
+<div class="bg-primary-fixed/40 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/20 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/30 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/50 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/10 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/20 blur-sm rounded-sm"></div>
+<!-- Rows -->
+<div class="bg-primary-fixed/30 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/60 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/40 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/30 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/20 blur-sm rounded-sm"></div>
+<div class="bg-primary-fixed/10 blur-sm rounded-sm"></div>
+</div>
+</div>
+</div>
+<!-- Heatmap Legend -->
+<div class="mt-auto border-t border-outline-variant/30 pt-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<div class="flex h-3 w-40 rounded-full bg-gradient-to-r from-[#00344d] via-primary-fixed to-white border border-outline-variant/50"></div>
+<div class="flex justify-between w-40 text-caption-technical font-caption-technical text-on-surface-variant">
+<span>20°C</span>
+<span>35°C</span>
+<span>50°C</span>
+</div>
+</div>
+<div class="flex gap-md">
+<button class="flex items-center gap-micro text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="rotate_90_degrees_cw">rotate_90_degrees_cw</span>
+<span class="font-label-caps text-label-caps">ROTATE</span>
+</button>
+<button class="flex items-center gap-micro text-on-surface-variant hover:text-primary-fixed transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="layers">layers</span>
+<span class="font-label-caps text-label-caps">LAYERS</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Data Grid (Bottom Row) -->
+<div class="max-w-6xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-md mt-md">
+<div class="glass-pane p-md border border-outline-variant/30">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">MODULE_DELTA</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">0.8°C</p>
+</div>
+<div class="glass-pane p-md border border-outline-variant/30">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">PUMP_FLOW</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">4.2 L/min</p>
+</div>
+<div class="glass-pane p-md border border-outline-variant/30">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">VALVE_POS</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">100%_OPEN</p>
+</div>
+<div class="glass-pane p-md border border-outline-variant/30">
+<p class="font-caption-technical text-caption-technical text-on-surface-variant">INLET_TEMP</p>
+<p class="font-headline-md text-headline-md text-primary-fixed">24.1°C</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-lg pt-base bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/50 shadow-[0_-10px_20px_rgba(154,204,243,0.1)] z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-label-caps text-label-caps">DRAG</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">AERO</span>
+</div>
+<!-- Active Tab: THERMAL -->
+<div class="flex flex-col items-center justify-center text-primary-fixed bg-primary-container/20 rounded-xl px-md py-micro ring-1 ring-primary-fixed/50 shadow-[0_0_15px_rgba(154,204,243,0.3)] active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-label-caps">THERMAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity active:translate-y-1 duration-200">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">PATH</span>
+</div>
+</nav>
+</body></html>

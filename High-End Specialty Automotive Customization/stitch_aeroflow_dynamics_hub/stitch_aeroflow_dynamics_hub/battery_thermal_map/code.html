@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO-EFFICIENCY | Thermal Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#001e2f",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#b8b8b8",
+                        "on-background": "#e5e2e1",
+                        "on-secondary": "#2f3131",
+                        "primary-fixed-dim": "#9accf3",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed-variant": "#0c4b6c",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-container-highest": "#353535",
+                        "primary-fixed": "#c9e6ff",
+                        "on-tertiary": "#2f3131",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "surface-dim": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "inverse-primary": "#2e6385",
+                        "surface-tint": "#9accf3",
+                        "primary-container": "#a5d8ff",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8b9198",
+                        "surface": "#131313",
+                        "tertiary-container": "#d1d2d2",
+                        "secondary-container": "#484949",
+                        "secondary": "#c6c6c6",
+                        "primary": "#e1f0ff",
+                        "on-tertiary-container": "#585a5a",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "tertiary": "#eeeeee",
+                        "on-primary": "#00344d",
+                        "outline-variant": "#41484d",
+                        "background": "#131313",
+                        "surface-variant": "#353535",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-bright": "#393939",
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary-fixed": "#e2e2e2",
+                        "surface-container": "#20201f",
+                        "on-surface-variant": "#c1c7ce",
+                        "on-primary-container": "#285f80"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "data-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "data-lg": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                        "data-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.6);
+            backdrop-filter: blur(12px);
+            border: 0.5px solid rgba(192, 192, 192, 0.2);
+        }
+        .thermal-gradient {
+            background: linear-gradient(90deg, #3b82f6 0%, #10b981 50%, #f59e0b 80%, #ef4444 100%);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(154, 204, 243, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 z-50 w-full bg-surface/80 dark:bg-surface/80 backdrop-blur-md border-b border-outline/20 flex justify-between items-center px-margin-mobile h-14">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" data-icon="speed">speed</span>
+<h1 class="font-label-caps text-label-caps tracking-widest text-primary dark:text-primary-fixed-dim">AERO-EFFICIENCY</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6">
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">TELEMETRY</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">AERO</button>
+<button class="font-label-caps text-label-caps text-primary border-b-2 border-primary pb-1">THERMAL</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors">RANGE</button>
+</div>
+<div class="font-data-sm text-data-sm text-primary dark:text-primary-fixed-dim bg-primary-container/10 px-3 py-1 rounded-sm border border-primary/20">
+                98% | 350kW
+            </div>
+</div>
+</header>
+<main class="pt-20 pb-28 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Sidebar Diagnostics -->
+<aside class="md:col-span-3 flex flex-col gap-gutter">
+<section class="glass-panel p-4 flex flex-col gap-4">
+<div class="flex justify-between border-t border-outline/20 pt-1">
+<span class="font-label-caps text-label-caps opacity-60">ID: THRM_01</span>
+<span class="font-label-caps text-label-caps opacity-60">LIVE_T_09:41</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-primary">BATTERY_HEALTH</h2>
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center">
+<span class="font-data-sm text-data-sm">CORE_STABILITY</span>
+<span class="font-data-sm text-data-sm text-primary">OPTIMAL</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full bg-primary w-[94%] shadow-[0_0_8px_rgba(225,240,255,0.5)]"></div>
+</div>
+<div class="flex justify-between items-center mt-2">
+<span class="font-data-sm text-data-sm">CELL_VARIANCE</span>
+<span class="font-data-sm text-data-sm text-primary">0.4°C</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full bg-primary w-[12%]"></div>
+</div>
+</div>
+<div class="mt-4 p-3 border border-error-container/50 bg-error-container/10">
+<div class="flex items-center gap-2 text-error font-label-caps text-label-caps mb-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="warning">warning</span>
+                        CHARGING-SPEED ALERT
+                    </div>
+<p class="font-data-sm text-data-sm text-on-surface-variant">Thermal ceiling reached in Node_B4. Fast charge limited to 150kW.</p>
+</div>
+</section>
+<section class="glass-panel p-4 flex flex-col gap-4">
+<div class="flex justify-between border-t border-outline/20 pt-1">
+<span class="font-label-caps text-label-caps opacity-60">ID: COOL_08</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-secondary">COOLANT_FLOW</h2>
+<div class="flex flex-col items-center py-6">
+<div class="text-[48px] font-data-lg text-primary leading-none">14.2</div>
+<div class="font-label-caps text-label-caps text-on-surface-variant">LITERS / MIN</div>
+</div>
+<div class="flex justify-between text-on-surface-variant border-t border-outline/20 pt-4">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps">PUMP_PWM</span>
+<span class="font-data-sm text-data-sm">88%</span>
+</div>
+<div class="flex flex-col text-right">
+<span class="font-label-caps text-label-caps">INLET_TEMP</span>
+<span class="font-data-sm text-data-sm">22.4°C</span>
+</div>
+</div>
+</section>
+</aside>
+<!-- Main Heat Map Viewport -->
+<section class="md:col-span-9 relative flex flex-col gap-gutter">
+<div class="glass-panel relative flex-1 min-h-[500px] flex flex-col overflow-hidden">
+<div class="flex justify-between p-4 border-b border-outline/20 bg-surface/40">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="grid_view">grid_view</span>
+<h3 class="font-label-caps text-label-caps">3D_THERMAL_TOPOLOGY</h3>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 border border-primary/40 text-primary font-label-caps text-[10px] hover:bg-primary/10 transition-colors">ROT_X</button>
+<button class="px-3 py-1 border border-outline/40 text-on-surface-variant font-label-caps text-[10px] hover:bg-surface-variant transition-colors">ISO_VIEW</button>
+</div>
+</div>
+<!-- Technical Heat Map Visualization Area -->
+<div class="relative flex-1 bg-surface-container-lowest/50 scanline flex items-center justify-center p-8">
+<!-- Abstract representation of the battery pack with temperature overlay -->
+<div class="relative w-full max-w-2xl aspect-[16/9] border border-outline/30 flex flex-wrap gap-[2px] p-[2px]">
+<!-- Iterative cells for the grid effect -->
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-yellow-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-yellow-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-red-400/40 border border-white/5 animate-pulse"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-red-500/40 border border-white/5 animate-pulse"></div>
+<!-- Middle Section -->
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<!-- Lower Section -->
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-500/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-emerald-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-400/40 border border-white/5"></div>
+<div class="flex-1 min-w-[5%] h-[12%] bg-blue-500/40 border border-white/5"></div>
+<!-- Technical Overlays -->
+<div class="absolute -top-12 -left-12 flex flex-col gap-1">
+<span class="font-label-caps text-[10px] text-primary">NORTH_BUS_V</span>
+<div class="h-1 w-24 bg-primary/20">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div class="absolute -bottom-12 -right-12 flex flex-col gap-1 text-right items-end">
+<span class="font-label-caps text-[10px] text-error">CRITICAL_NODE_B4</span>
+<div class="font-data-sm text-data-sm text-error">42.8°C</div>
+</div>
+<!-- Legend Overlay -->
+<div class="absolute bottom-4 left-4 w-48 flex flex-col gap-2 p-2 glass-panel">
+<div class="h-2 w-full thermal-gradient rounded-full"></div>
+<div class="flex justify-between font-label-caps text-[8px] text-on-surface-variant">
+<span>15°C</span>
+<span>25°C</span>
+<span>35°C</span>
+<span class="text-error">45°C</span>
+</div>
+</div>
+</div>
+<!-- Schematic Image Background (Hidden on small, used as aesthetic base) -->
+<div class="absolute inset-0 opacity-10 pointer-events-none overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A detailed technical blueprint of an electric vehicle battery pack showing intricate internal cell structures and cooling channels. The aesthetic is highly scientific and minimalist, with thin silver vector lines over a deep slate background. Soft cyan and amber light highlights specific thermal sensors and data connection points in a high-tech laboratory setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA7rPihhSft5Abzrrh7TnxIOJ9BW_64_YU5BUWxmdL1_Dp3mTxNi8mQPDtC0B4K5EWMy83Z_1ZthzLL3zcwzkG2KxCS9UL-U8Qyd6heJA6AMZNYBPRBNpmkLpJ0oMhwinUcgbyQjEA3xRM5ehUAqyC8YAFPeLsc6GqpoIYagzzpE-tuVBIcYhOqmmvbx7srV_Y2epPLgm913fpFMLK6rZzmEsSnH9HOEI9YJ9RzlXSOzJBdK-kuf1AwKH6ro5mSRx6br4QOOgZ6BMo"/>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="grid grid-cols-2 md:grid-cols-4 border-t border-outline/20">
+<div class="p-4 border-r border-outline/20">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">AVG_TEMP</span>
+<span class="font-data-lg text-data-lg text-primary">28.4°C</span>
+</div>
+<div class="p-4 border-r border-outline/20">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">PEAK_TEMP</span>
+<span class="font-data-lg text-data-lg text-error">42.8°C</span>
+</div>
+<div class="p-4 border-r border-outline/20">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">DELTA_V</span>
+<span class="font-data-lg text-data-lg text-primary">0.02V</span>
+</div>
+<div class="p-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">STATE_OF_CHARGE</span>
+<span class="font-data-lg text-data-lg text-primary">74.1%</span>
+</div>
+</div>
+</div>
+<!-- Real-time Event Log -->
+<div class="glass-panel p-4 h-32 overflow-y-auto">
+<div class="flex justify-between border-b border-outline/10 pb-1 mb-2">
+<span class="font-label-caps text-label-caps text-primary">THERMAL_EVENT_LOG</span>
+<span class="font-label-caps text-label-caps opacity-40">AUTO_REFRESH_ON</span>
+</div>
+<div class="space-y-1">
+<div class="flex gap-4 font-data-sm text-data-sm">
+<span class="text-on-surface-variant/40">09:41:02</span>
+<span class="text-on-surface-variant">[INFO]</span>
+<span>COOLANT_VALVE_04 TOGGLED_OPEN</span>
+</div>
+<div class="flex gap-4 font-data-sm text-data-sm">
+<span class="text-on-surface-variant/40">09:40:48</span>
+<span class="text-error">[WARN]</span>
+<span class="text-error">NODE_B4 EXCEEDED OPTIMAL THRESHOLD (42.0°C)</span>
+</div>
+<div class="flex gap-4 font-data-sm text-data-sm">
+<span class="text-on-surface-variant/40">09:39:15</span>
+<span class="text-on-surface-variant">[INFO]</span>
+<span>CELL_BALANCING_PROCEDURE_COMPLETE</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer (Mobile Toggleable - Simulated as hidden or present for layout reference) -->
+<!-- Not rendering on main viewport per instructions for focused journey, but logic is there -->
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-t border-outline/20 flex justify-around items-center px-4 pb-4 h-20">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 pt-2 hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">TELEMETRY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 pt-2 hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-label-caps text-label-caps">AERO</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim border-t-2 border-primary dark:border-primary-fixed-dim pt-2 transition-all duration-500 ease-out">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-label-caps">THERMAL</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 dark:text-on-surface-variant/60 pt-2 hover:bg-primary/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="battery_charging_full">battery_charging_full</span>
+<span class="font-label-caps text-label-caps">RANGE</span>
+</button>
+</nav>
+</body></html>

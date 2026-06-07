@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>Maintenance Alerts | CELLAR-TECH</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-error": "#690005",
+                      "background": "#1b110a",
+                      "surface-variant": "#3f3229",
+                      "primary-fixed": "#ffdcc3",
+                      "on-tertiary": "#00344c",
+                      "surface-container-high": "#33281f",
+                      "tertiary-container": "#00b5fc",
+                      "on-primary": "#4d2600",
+                      "inverse-surface": "#f3dfd1",
+                      "on-surface-variant": "#ddc1ae",
+                      "tertiary-fixed-dim": "#85cfff",
+                      "primary-fixed-dim": "#ffb77d",
+                      "secondary-fixed-dim": "#c1c8ca",
+                      "surface-bright": "#43372e",
+                      "secondary-container": "#434a4c",
+                      "on-error-container": "#ffdad6",
+                      "surface-container-highest": "#3f3229",
+                      "surface-container": "#281d15",
+                      "tertiary-fixed": "#c7e7ff",
+                      "on-primary-fixed-variant": "#6e3900",
+                      "surface-dim": "#1b110a",
+                      "on-tertiary-fixed": "#001e2e",
+                      "primary-container": "#ff8c00",
+                      "on-primary-container": "#623200",
+                      "on-secondary-container": "#b2babc",
+                      "outline": "#a48c7a",
+                      "on-background": "#f3dfd1",
+                      "inverse-primary": "#904d00",
+                      "surface-tint": "#ffb77d",
+                      "surface-container-lowest": "#150c06",
+                      "primary": "#ffb77d",
+                      "secondary": "#c1c8ca",
+                      "tertiary": "#85cfff",
+                      "outline-variant": "#564334",
+                      "on-secondary-fixed": "#161d1f",
+                      "error": "#ffb4ab",
+                      "error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#41484a",
+                      "on-surface": "#f3dfd1",
+                      "surface": "#1b110a",
+                      "inverse-on-surface": "#3a2e25",
+                      "on-secondary": "#2b3234",
+                      "on-tertiary-fixed-variant": "#004c6c",
+                      "on-primary-fixed": "#2f1500"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "base": "4px",
+                      "margin": "16px",
+                      "sm": "8px",
+                      "xs": "4px",
+                      "xl": "48px",
+                      "md": "16px",
+                      "lg": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "code-sm": ["JetBrains Mono"],
+                      "label-caps": ["Inter"],
+                      "display-data": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "headline-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "code-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "label-caps": ["11px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "display-data": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["18px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .status-glow-orange {
+            box-shadow: 0 0 15px 2px rgba(255, 140, 0, 0.2);
+        }
+        .status-glow-red {
+            box-shadow: 0 0 15px 2px rgba(255, 180, 171, 0.2);
+        }
+        .heartbeat-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface border-b border-outline-variant dark:border-outline-variant fixed top-0 w-full z-50 flex items-center justify-between px-margin h-16">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary">sensors</span>
+<h1 class="font-display-data text-headline-lg tracking-tighter text-primary dark:text-primary">CELLAR-TECH</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="hover:bg-surface-container-highest dark:hover:bg-surface-container-highest transition-colors p-2 rounded-full active:scale-95 duration-100">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant">account_circle</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin max-w-7xl mx-auto space-y-gutter">
+<!-- System Health Heartbeat Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<div class="md:col-span-8 bg-surface-container border border-outline-variant p-lg rounded relative overflow-hidden">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">System Heartbeat</p>
+<h2 class="font-headline-md text-headline-md text-primary">OPERATIONAL_STABLE</h2>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary-container status-glow-orange animate-pulse"></div>
+<span class="font-code-sm text-code-sm text-primary">98.4ms LATENCY</span>
+</div>
+</div>
+<!-- Heartbeat Visualization -->
+<div class="h-32 w-full flex items-end gap-[2px]">
+<!-- Mocking a digital heartbeat with divs for high-density feel -->
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[25%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[22%]"></div>
+<div class="flex-1 bg-primary-container h-[80%]"></div>
+<div class="flex-1 bg-primary-container h-[40%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[15%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[18%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[30%]"></div>
+<div class="flex-1 bg-primary-container h-[90%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[25%]"></div>
+<div class="flex-1 bg-primary-container h-[70%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[15%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[18%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[22%]"></div>
+<div class="flex-1 bg-primary-container h-[85%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[20%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[25%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[22%]"></div>
+<div class="flex-1 bg-primary-container h-[60%]"></div>
+<div class="flex-1 bg-primary-container/20 h-[15%]"></div>
+</div>
+</div>
+<div class="md:col-span-4 grid grid-cols-1 gap-gutter">
+<div class="bg-surface-container border-t-2 border-t-primary-container border-x border-b border-outline-variant p-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Active Alerts</p>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-data text-display-data text-primary">03</span>
+<span class="font-body-md text-on-surface-variant">PRIORITY_1</span>
+</div>
+</div>
+<div class="bg-surface-container border-t-2 border-t-outline-variant border-x border-b border-outline-variant p-md">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Hardware Nodes</p>
+<div class="flex items-baseline gap-sm">
+<span class="font-display-data text-display-data text-secondary">42</span>
+<span class="font-body-md text-on-surface-variant">ONLINE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Maintenance Log Section -->
+<section class="space-y-sm">
+<div class="flex items-center justify-between px-xs">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant uppercase">Maintenance Event Log</h3>
+<div class="flex gap-md">
+<button class="font-code-sm text-code-sm text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">filter_list</span> FILTER
+                    </button>
+<button class="font-code-sm text-code-sm text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">download</span> EXPORT.LOG
+                    </button>
+</div>
+</div>
+<div class="space-y-[2px]">
+<!-- High Density Log Item 1: Critical -->
+<div class="group bg-surface-container-low border border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center p-md gap-md">
+<div class="w-1 h-10 bg-error rounded-full status-glow-red shrink-0"></div>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-md items-center">
+<div class="md:col-span-1">
+<p class="font-code-sm text-code-sm text-error mb-xs">ERR_THR_CRIT_09</p>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight">Humidity Spike</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Sensor ID</p>
+<p class="font-code-sm text-code-sm">S-774-ALPHA</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Timestamp</p>
+<p class="font-code-sm text-code-sm text-on-surface">2023-10-24 14:22:01</p>
+</div>
+<div class="flex justify-end">
+<span class="bg-error-container text-on-error-container font-label-caps text-label-caps px-sm py-1 rounded">CRITICAL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- High Density Log Item 2: Warning -->
+<div class="group bg-surface-container-low border border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center p-md gap-md">
+<div class="w-1 h-10 bg-primary-container rounded-full status-glow-orange shrink-0"></div>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-md items-center">
+<div class="md:col-span-1">
+<p class="font-code-sm text-code-sm text-primary-container mb-xs">WRN_BAT_LOW_22</p>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight">Backup Power Low</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Sensor ID</p>
+<p class="font-code-sm text-code-sm">P-001-CORE</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Timestamp</p>
+<p class="font-code-sm text-code-sm text-on-surface">2023-10-24 13:45:12</p>
+</div>
+<div class="flex justify-end">
+<span class="bg-primary-container/20 text-primary-container border border-primary-container font-label-caps text-label-caps px-sm py-1 rounded">WARNING</span>
+</div>
+</div>
+</div>
+</div>
+<!-- High Density Log Item 3: Info -->
+<div class="group bg-surface-container-low border border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center p-md gap-md">
+<div class="w-1 h-10 bg-outline-variant rounded-full shrink-0"></div>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-md items-center">
+<div class="md:col-span-1">
+<p class="font-code-sm text-code-sm text-on-surface-variant mb-xs">INF_SYS_CALIB_00</p>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight">Calibration Sync</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Sensor ID</p>
+<p class="font-code-sm text-code-sm">G-GLOBAL-NET</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Timestamp</p>
+<p class="font-code-sm text-code-sm text-on-surface">2023-10-24 12:00:00</p>
+</div>
+<div class="flex justify-end">
+<span class="text-on-surface-variant font-label-caps text-label-caps px-sm py-1 rounded">INFO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- High Density Log Item 4: Warning -->
+<div class="group bg-surface-container-low border border-outline-variant hover:bg-surface-container transition-all cursor-pointer">
+<div class="flex items-center p-md gap-md">
+<div class="w-1 h-10 bg-primary-container rounded-full status-glow-orange shrink-0"></div>
+<div class="flex-1 grid grid-cols-1 md:grid-cols-4 gap-md items-center">
+<div class="md:col-span-1">
+<p class="font-code-sm text-code-sm text-primary-container mb-xs">WRN_TMP_FLUX_04</p>
+<p class="font-headline-md text-headline-md text-on-surface leading-tight">Temp Variance</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Sensor ID</p>
+<p class="font-code-sm text-code-sm">S-221-DELTA</p>
+</div>
+<div class="md:col-span-1">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-xs">Timestamp</p>
+<p class="font-code-sm text-code-sm text-on-surface">2023-10-24 11:32:44</p>
+</div>
+<div class="flex justify-end">
+<span class="bg-primary-container/20 text-primary-container border border-primary-container font-label-caps text-label-caps px-sm py-1 rounded">WARNING</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Maintenance Hardware Status Summary Bento -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="bg-surface-container-low border border-outline-variant p-md flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-sm">database</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Storage Health</p>
+</div>
+<div class="mt-md">
+<div class="w-full bg-surface-variant h-1 rounded-full mb-xs">
+<div class="bg-primary-container h-1 w-[88%] rounded-full"></div>
+</div>
+<p class="font-code-sm text-code-sm text-on-surface">88% CAPAC_REMAINING</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-md flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-sm">router</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Node Connectivity</p>
+</div>
+<div class="mt-md flex items-end justify-between">
+<p class="font-display-data text-headline-lg text-on-surface">41/42</p>
+<p class="font-code-sm text-code-sm text-on-surface-variant">ACTIVE_MESH</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-md flex flex-col justify-between">
+<div>
+<span class="material-symbols-outlined text-primary mb-sm">bolt</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Load Average</p>
+</div>
+<div class="mt-md flex items-end justify-between">
+<p class="font-display-data text-headline-lg text-on-surface">0.42</p>
+<p class="font-code-sm text-code-sm text-primary">OPTIMAL</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface-container dark:bg-surface-container border-t border-outline-variant dark:border-outline-variant fixed bottom-0 w-full z-50 flex justify-around items-center h-20 px-4 pb-safe">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">thermostat</span>
+<span class="font-label-caps text-label-caps">Climate</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">security</span>
+<span class="font-label-caps text-label-caps">Security</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-label-caps text-label-caps">Cameras</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary font-bold bg-primary-container/10 rounded-xl px-3 py-1 hover:text-primary dark:hover:text-primary transition-all active:scale-90 duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</a>
+</nav>
+</body></html>

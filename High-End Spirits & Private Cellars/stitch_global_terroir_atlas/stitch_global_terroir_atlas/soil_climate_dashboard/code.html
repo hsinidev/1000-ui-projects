@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terroir-Maps | Soil &amp; Climate Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:wght@400;600;700&amp;family=Hanken+Grotesk:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary": "#ffffff",
+                        "surface-tint": "#586330",
+                        "background": "#fdfae7",
+                        "primary-container": "#606c38",
+                        "on-primary-fixed-variant": "#404b1b",
+                        "on-tertiary-container": "#d8e9f3",
+                        "on-primary-container": "#dfedac",
+                        "on-error-container": "#93000a",
+                        "primary-fixed-dim": "#bfcd8f",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed-dim": "#b9c9d3",
+                        "surface-dim": "#dddbc8",
+                        "on-error": "#ffffff",
+                        "tertiary-fixed": "#d5e5ef",
+                        "surface-container-high": "#ece9d6",
+                        "surface-container-low": "#f7f4e1",
+                        "outline": "#77786b",
+                        "tertiary-container": "#5a6972",
+                        "on-tertiary-fixed-variant": "#3a4951",
+                        "primary-fixed": "#dbe9a9",
+                        "on-secondary-fixed-variant": "#5c4224",
+                        "on-secondary": "#ffffff",
+                        "on-surface-variant": "#46483c",
+                        "inverse-primary": "#bfcd8f",
+                        "on-primary": "#ffffff",
+                        "on-surface": "#1c1c11",
+                        "inverse-surface": "#313124",
+                        "on-primary-fixed": "#171e00",
+                        "surface": "#fdfae7",
+                        "secondary": "#75593a",
+                        "secondary-fixed-dim": "#e5c099",
+                        "error-container": "#ffdad6",
+                        "surface-bright": "#fdfae7",
+                        "secondary-container": "#fdd6ae",
+                        "surface-variant": "#e6e3d0",
+                        "error": "#ba1a1a",
+                        "secondary-fixed": "#ffddbb",
+                        "inverse-on-surface": "#f4f1de",
+                        "on-secondary-fixed": "#2b1701",
+                        "surface-container": "#f1eedb",
+                        "primary": "#485422",
+                        "outline-variant": "#c7c8b9",
+                        "on-background": "#1c1c11",
+                        "on-secondary-container": "#785b3c",
+                        "tertiary": "#425159",
+                        "on-tertiary-fixed": "#0e1d25",
+                        "surface-container-highest": "#e6e3d0"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "md": "24px",
+                        "sm": "12px",
+                        "base": "8px",
+                        "xs": "4px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h1": ["Libre Caslon Text"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "h2": ["Libre Caslon Text"],
+                        "h3": ["Libre Caslon Text"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "data-mono": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "h1": ["48px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .grain-overlay {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+        }
+        .organic-path {
+            clip-path: polygon(10% 0%, 100% 0%, 90% 100%, 0% 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-surface selection:bg-secondary-container/50 min-h-screen pb-32">
+<div class="fixed inset-0 grain-overlay z-0"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-background flex justify-between items-center px-margin h-16 border-b border-outline-variant/30">
+<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-h3 text-h3 font-semibold text-primary">Terroir-Maps</h1>
+<button class="p-2 text-primary hover:bg-surface-container-high transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="relative z-10 pt-20 px-margin max-w-2xl mx-auto">
+<!-- Terroir Header -->
+<section class="mb-lg">
+<div class="flex items-center gap-xs mb-xs">
+<span class="text-tertiary font-label-sm uppercase tracking-widest">Region Analysis</span>
+<div class="h-[1px] flex-grow bg-outline/20"></div>
+</div>
+<h2 class="font-h1 text-h1 text-on-surface mb-xs">Côte de Nuits</h2>
+<p class="font-body-md text-on-surface-variant max-w-prose">
+                Premium limestone-heavy terroir specializing in nuanced Pinot Noir expressions.
+            </p>
+</section>
+<!-- Map Feature -->
+<section class="mb-lg overflow-hidden rounded-xl border border-outline/10 bg-surface-container-low shadow-sm relative aspect-video">
+<img class="w-full h-full object-cover opacity-80 mix-blend-multiply filter sepia-[0.2]" data-alt="A minimalist, high-angle aerial view of a geometric vineyard landscape in Burgundy. The photograph captures the structured rows of vines in soft golden hour lighting, emphasizing the earthy sand and olive tones of the terroir. The overall mood is peaceful and scholarly, resembling a premium digital field guide illustration with clean lines and natural textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcUUf18moMSb89T5PRjMsXgFnTyH3Apva_cxQLoxudf-WFJDFgjZvbWJ43HFv3tpbOzDluqiUR4Q4iAjv7_juSr3bboCd0Zh8VG5NzD3JZDk-ABzPDD-agr60iYuGCLbggfZbmqpmbqk_QI8aYexwuMwH2Nr1pmWJr3apRIJS3VxJw8It9O1zQFSNmpSGZt81KJvbbNRspj-8unFsk_5NQccKAuBIuJxzfMHqCoCTgQ5RRRJLxNbg_flMlhaNHE2QRR3ii5mkCt08z"/>
+<div class="absolute inset-0 p-md flex flex-col justify-end bg-gradient-to-t from-background/80 to-transparent">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="location_on" style="font-variation-settings: 'FILL' 1;">location_on</span>
+<span class="font-data-mono text-data-mono text-primary">47.1654° N, 4.9542° E</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Data Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-xl">
+<!-- Average Rainfall -->
+<div class="p-md rounded-xl border border-outline/15 bg-surface-container flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary" data-icon="water_drop">water_drop</span>
+<span class="text-label-sm font-label-sm text-tertiary px-2 py-1 bg-tertiary/10 rounded-full">Annual Avg</span>
+</div>
+<div>
+<span class="font-h2 text-h2 text-on-surface">750mm</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Moderate Precipitation</p>
+</div>
+<!-- Slate colored chart mock -->
+<div class="flex items-end gap-1 h-12 w-full mt-auto">
+<div class="bg-tertiary/20 w-full h-1/2 rounded-t-sm"></div>
+<div class="bg-tertiary/40 w-full h-3/4 rounded-t-sm"></div>
+<div class="bg-tertiary w-full h-full rounded-t-sm"></div>
+<div class="bg-tertiary/60 w-full h-2/3 rounded-t-sm"></div>
+<div class="bg-tertiary/30 w-full h-1/3 rounded-t-sm"></div>
+</div>
+</div>
+<!-- Soil pH -->
+<div class="p-md rounded-xl border border-outline/15 bg-surface-container flex flex-col gap-sm">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-secondary" data-icon="science">science</span>
+<span class="text-label-sm font-label-sm text-secondary px-2 py-1 bg-secondary-container/30 rounded-full">Calcareous</span>
+</div>
+<div>
+<span class="font-h2 text-h2 text-on-surface">7.8 pH</span>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Optimal Alkalinity</p>
+</div>
+<!-- Organic shape visual -->
+<div class="relative h-12 flex items-center">
+<div class="absolute inset-0 bg-outline/10 rounded-full overflow-hidden">
+<div class="h-full w-[78%] bg-secondary/80 organic-path"></div>
+</div>
+</div>
+</div>
+<!-- Sun Exposure -->
+<div class="col-span-full p-md rounded-xl border border-outline/15 bg-surface-container flex flex-col md:flex-row md:items-center justify-between gap-md">
+<div class="flex flex-col gap-xs">
+<div class="flex items-center gap-xs">
+<span class="material-symbols-outlined text-primary" data-icon="wb_sunny">wb_sunny</span>
+<h3 class="font-h3 text-h3">Sun Exposure</h3>
+</div>
+<p class="font-body-md text-on-surface-variant">Southeast orientation, maximizing morning light absorption.</p>
+</div>
+<div class="flex flex-col items-center justify-center p-md bg-background rounded-lg border border-outline/10">
+<span class="font-h2 text-h2 text-primary">2,100</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">Hours/Year</span>
+</div>
+</div>
+</div>
+<!-- Climate-over-time slider -->
+<section class="fixed bottom-24 left-1/2 -translate-x-1/2 w-[calc(100%-64px)] max-w-2xl bg-surface-container-low/95 backdrop-blur-md p-md rounded-2xl border border-outline/20 shadow-xl z-40">
+<div class="flex justify-between items-center mb-base">
+<h4 class="font-label-sm text-label-sm text-primary uppercase tracking-wider">Climate History Archive</h4>
+<span class="font-data-mono text-data-mono text-tertiary">Vintage 2022</span>
+</div>
+<div class="relative h-8 flex items-center">
+<div class="absolute w-full h-1 bg-outline/20 rounded-full"></div>
+<div class="absolute w-[80%] h-1 bg-primary rounded-full"></div>
+<div class="absolute left-[80%] w-6 h-6 bg-primary border-4 border-background rounded-full shadow-md cursor-pointer transition-transform hover:scale-110"></div>
+<div class="absolute w-full flex justify-between px-1 top-6">
+<span class="text-[10px] font-label-sm text-outline">1990</span>
+<span class="text-[10px] font-label-sm text-outline">2000</span>
+<span class="text-[10px] font-label-sm text-outline">2010</span>
+<span class="text-[10px] font-label-sm text-primary font-bold">Today</span>
+</div>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer (Simulated closed state) -->
+<div class="fixed inset-y-0 left-0 z-[60] flex flex-col py-lg bg-background w-80 rounded-r-xl shadow-xl -translate-x-full transition-transform duration-300" id="drawer">
+<div class="px-margin mb-lg">
+<h3 class="font-h3 text-h3 text-primary">Field Journal</h3>
+</div>
+<nav class="flex flex-col gap-xs">
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg flex items-center gap-md px-md py-sm cursor-pointer transition-colors">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-body-md">Vineyard Atlas</span>
+</div>
+<div class="bg-primary-container text-on-primary-container font-semibold rounded-lg mx-2 flex items-center gap-md px-md py-sm cursor-pointer">
+<span class="material-symbols-outlined" data-icon="wb_sunny">wb_sunny</span>
+<span class="font-body-md">Climate Archives</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg flex items-center gap-md px-md py-sm cursor-pointer">
+<span class="material-symbols-outlined" data-icon="factory">factory</span>
+<span class="font-body-md">Producer Directory</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg flex items-center gap-md px-md py-sm cursor-pointer">
+<span class="material-symbols-outlined" data-icon="grade">grade</span>
+<span class="font-body-md">Vintage Ratings</span>
+</div>
+<div class="mt-auto text-on-surface-variant hover:bg-surface-container mx-2 rounded-lg flex items-center gap-md px-md py-sm cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</div>
+</nav>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low shadow-[0_-2px_10px_rgba(0,0,0,0.05)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-sm text-label-sm">Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-sm text-label-sm">Discover</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary bg-secondary-container/50 rounded-full px-4 py-1 scale-90 duration-200 ease-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="description" style="font-variation-settings: 'FILL' 1;">description</span>
+<span class="font-label-sm text-label-sm font-bold">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="font-label-sm text-label-sm">Account</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>HRV Trends - BIO-CABIN</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&amp;family=Plus+Jakarta+Sans:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-container": "#c2e4b4",
+                        "on-tertiary-container": "#dadbdb",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "on-primary-fixed": "#062104",
+                        "surface-container-low": "#f3f4f3",
+                        "secondary": "#6c538b",
+                        "primary": "#334f2b",
+                        "on-secondary": "#ffffff",
+                        "secondary-fixed-dim": "#d8bafa",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "surface-container": "#edeeed",
+                        "on-secondary-fixed-variant": "#543b71",
+                        "on-primary-fixed-variant": "#324e2a",
+                        "surface-tint": "#496640",
+                        "surface-variant": "#e1e3e2",
+                        "on-surface-variant": "#434840",
+                        "primary-fixed": "#caecbc",
+                        "inverse-on-surface": "#f0f1f0",
+                        "inverse-surface": "#2e3131",
+                        "surface-container-highest": "#e1e3e2",
+                        "inverse-primary": "#afd0a1",
+                        "background": "#f9f9f8",
+                        "error-container": "#ffdad6",
+                        "secondary-container": "#dbbdfd",
+                        "outline-variant": "#c3c8bd",
+                        "surface-dim": "#d9dad9",
+                        "on-surface": "#191c1c",
+                        "tertiary-container": "#5e6060",
+                        "on-error": "#ffffff",
+                        "on-secondary-fixed": "#260e43",
+                        "primary-fixed-dim": "#afd0a1",
+                        "secondary-fixed": "#eedbff",
+                        "tertiary": "#464849",
+                        "outline": "#73796f",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary-container": "#624980",
+                        "surface-container-high": "#e7e8e7",
+                        "primary-container": "#4a6741",
+                        "error": "#ba1a1a",
+                        "on-background": "#191c1c",
+                        "surface": "#f9f9f8",
+                        "surface-bright": "#f9f9f8",
+                        "on-tertiary-fixed": "#1a1c1c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "1rem",
+                        "lg": "2rem",
+                        "xl": "3rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "touch-target": "48px",
+                        "section-gap": "64px",
+                        "container-padding": "40px",
+                        "gutter": "24px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Plus Jakarta Sans"],
+                        "display-lg-mobile": ["Manrope"],
+                        "label-md": ["Plus Jakarta Sans"],
+                        "body-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "headline-md": ["Manrope"],
+                        "headline-sm": ["Manrope"],
+                        "display-lg": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.03em", "fontWeight": "500"}],
+                        "display-lg-mobile": ["36px", {"lineHeight": "1.1", "fontWeight": "300"}],
+                        "label-md": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "300"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .breathing-glow {
+            box-shadow: 0 0 30px rgba(108, 83, 139, 0.15);
+        }
+        .chart-gradient {
+            background: linear-gradient(180deg, rgba(108, 83, 139, 0.1) 0%, rgba(108, 83, 139, 0) 100%);
+        }
+        .pulse-dot {
+            animation: pulse 3s infinite ease-in-out;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen selection:bg-secondary-container">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-xl border-b border-white/30 dark:border-outline-variant/20 shadow-[0_0_30px_rgba(51,79,43,0.05)]">
+<div class="flex justify-between items-center px-container-padding h-touch-target w-full">
+<div class="flex items-center gap-4 text-primary dark:text-primary-fixed-dim hover:opacity-80 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined">clinical_notes</span>
+<h1 class="font-display-lg text-headline-sm tracking-widest text-primary dark:text-primary-fixed-dim">BIO-CABIN</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full bg-secondary/20 flex items-center justify-center border border-secondary/10">
+<span class="material-symbols-outlined text-secondary text-sm">person</span>
+</div>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-32 px-container-padding max-w-[1440px] mx-auto">
+<!-- Hero Header -->
+<section class="mb-section-gap max-w-2xl">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary" data-weight="fill">favorite</span>
+<span class="font-label-md text-label-md uppercase tracking-widest text-on-surface-variant">Vitals Monitoring</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-primary mb-6">Heart-Rate Variability</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant/80">
+                Welcome to your space of restoration. Your HRV indicates a gentle, resilient rhythm today. Take a moment to acknowledge the harmony within your body as we travel.
+            </p>
+</section>
+<!-- Bento Grid Visualization -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Central HRV Trend Card -->
+<div class="md:col-span-8 glass-panel rounded-lg p-container-padding breathing-glow flex flex-col min-h-[480px] relative overflow-hidden">
+<div class="flex justify-between items-start mb-8 relative z-10">
+<div>
+<h3 class="font-headline-sm text-headline-sm text-primary">24-Hour Trend</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant mt-1">Measured in milliseconds (ms)</p>
+</div>
+<div class="flex items-center gap-2 glass-panel px-4 py-2 rounded-full border-white/50">
+<span class="w-2 h-2 rounded-full bg-secondary pulse-dot"></span>
+<span class="font-label-md text-label-md text-secondary">Live Tracking</span>
+</div>
+</div>
+<!-- Abstract Line Chart Visualization -->
+<div class="flex-grow flex items-end justify-between relative h-full">
+<div class="absolute inset-0 chart-gradient rounded-b-lg"></div>
+<!-- SVG Path for the HRV Trend -->
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 200">
+<defs>
+<filter id="glow">
+<fegaussianblur result="blur" stddeviation="4"></fegaussianblur>
+<fecomposite in="SourceGraphic" in2="blur" operator="over"></fecomposite>
+</filter>
+</defs>
+<path d="M0,150 Q100,80 200,120 T400,60 T600,140 T800,90 T1000,110" fill="none" stroke="#6c538b" stroke-linecap="round" stroke-width="3" style="filter: url(#glow);"></path>
+<!-- Glowing Lavender Points -->
+<circle class="breathing-glow" cx="200" cy="120" fill="#6c538b" r="6"></circle>
+<circle class="breathing-glow" cx="400" cy="60" fill="#6c538b" r="6"></circle>
+<circle class="breathing-glow" cx="600" cy="140" fill="#6c538b" r="6"></circle>
+<circle class="breathing-glow" cx="800" cy="90" fill="#6c538b" r="6"></circle>
+</svg>
+<!-- Chart X-Axis Labels -->
+<div class="absolute bottom-0 left-0 w-full flex justify-between font-label-sm text-label-sm text-on-surface-variant/40 pt-8 border-t border-white/20">
+<span>Yesterday</span>
+<span>04:00</span>
+<span>12:00</span>
+<span>20:00</span>
+<span>Now</span>
+</div>
+</div>
+</div>
+<!-- Callout Columns -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Recovery State -->
+<div class="glass-panel rounded-lg p-8 flex-grow relative overflow-hidden group hover:scale-[1.02] transition-transform duration-500">
+<div class="absolute -right-8 -top-8 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors"></div>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">eco</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-primary">Recovery State</h4>
+</div>
+<div class="text-display-lg font-display-lg text-primary mb-2">Deep</div>
+<p class="font-body-md text-body-md text-on-surface-variant/70 leading-relaxed">
+                        Your autonomic nervous system is signaling a high capacity for rejuvenation. This cabin environment is currently optimizing oxygen flow to support this recovery.
+                    </p>
+<div class="mt-6 flex items-center gap-2">
+<span class="font-label-md text-label-md text-primary">Optimal Range</span>
+<div class="h-1.5 flex-grow bg-primary/10 rounded-full overflow-hidden">
+<div class="h-full w-[85%] bg-primary rounded-full pulse-dot"></div>
+</div>
+</div>
+</div>
+<!-- Stress Resistance -->
+<div class="glass-panel rounded-lg p-8 flex-grow relative overflow-hidden group hover:scale-[1.02] transition-transform duration-500">
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-secondary/5 rounded-full blur-3xl group-hover:bg-secondary/10 transition-colors"></div>
+<div class="flex items-center gap-3 mb-6">
+<div class="w-10 h-10 rounded-full bg-secondary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">shield_with_heart</span>
+</div>
+<h4 class="font-headline-sm text-headline-sm text-secondary">Stress Resistance</h4>
+</div>
+<div class="text-display-lg font-display-lg text-secondary mb-2">High</div>
+<p class="font-body-md text-body-md text-on-surface-variant/70 leading-relaxed">
+                        You are maintaining excellent composure. Your HRV variability suggests you are well-equipped to handle cognitive demands with grace.
+                    </p>
+<div class="mt-6">
+<div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 rounded-full">
+<span class="material-symbols-outlined text-secondary text-sm">trending_up</span>
+<span class="font-label-sm text-label-sm text-secondary">Improving 12% vs last trip</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Restoration Suggestions -->
+<section class="mt-section-gap">
+<h3 class="font-headline-sm text-headline-sm text-primary mb-8">Guided Restoration</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Card 1 -->
+<div class="relative h-64 rounded-lg overflow-hidden glass-panel group cursor-pointer shadow-sm">
+<img alt="Lush green moss and ferns" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="Close-up macro photography of deep green forest moss and delicate fern leaves covered in crystalline dew drops. The lighting is soft and diffused, creating a serene and organic atmosphere consistent with biological minimalism. The color palette is dominated by rich moss greens and earthy tones, evoking a high-end sanctuary environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnLze9qB_t9JOZudBKyiVZzBiLZ1XL8fpNrR6cX-eO6q1Iw2z3z5j3KGbVazf8JXp0M9ZTs-YRYSK5FlSAyIbCpHtpFDsUwrf0IiRmyuguhsi81Sq795nv0l0-_mzripBmG5avgLZqS4eCPDZNxfFsvf_wN-OLzG1h6cenbSs_6-IMJvtFfx35rKZ88gPfewpN1MPExT_YykAgNnkiA3mpV2fP6hyRL4tg6IpwJ2GZjnFbuyx8y4cU0ZB9uaUdtRi8doMuefo9R2s"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="font-label-md text-label-md text-white/80 uppercase mb-2">Environment</div>
+<div class="font-headline-sm text-headline-sm text-white">Forest Air Infusion</div>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="relative h-64 rounded-lg overflow-hidden glass-panel group cursor-pointer shadow-sm">
+<img alt="Abstract flowing purple silk" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="Abstract imagery of fluid, flowing silk in shades of lavender and soft purple, twisting gently in a weightless environment. The visual style is glassmorphic and biological, using soft glows and depth of field to create a dreamlike, restorative mood. The palette emphasizes lavender and translucent white tones for a luxury health-tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALFDZQwZ6VMigQCOieuDlj_1lSf7zP_Sp-G2RUIu37XXKZNMnRfiF9dKwJvgJ6E6kpub031hiwMsSuq26PClZsIipTdlJtja8C5w7LjNg5j_iT7wN4MYjE-Q0eMlesyqst5hsm0CoWN4dh3Lo_9HMsWAF9eyj1oxyKqe5VHX75ZAkFQU4zGf35-m2-7ijK3nTUETDTf79q16kH4IB7Sa3TBCvoHsGvYqQOFQet10yrK0yJB28C88yKmJnCmQ4FBFfnDjtQq8QO1cg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="font-label-md text-label-md text-white/80 uppercase mb-2">Audiology</div>
+<div class="font-headline-sm text-headline-sm text-white">Circadian Rhythms</div>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="relative h-64 rounded-lg overflow-hidden glass-panel group cursor-pointer shadow-sm">
+<img alt="Microscopic cell structure" class="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700" data-alt="A stylized, artistic interpretation of biological cell membranes and glowing mitochondria in a soft white and moss green environment. The image uses translucent layers and light-mode aesthetics to suggest microscopic vitality and precision medicine. The mood is clinical yet warm, fitting a high-end bio-cabin health monitoring interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB_UZrBBhijIAU-NeGhv8IcaNcJT2q3eGPrP1znthooWaNZBbaG6u6OKAVp4qk606glpD8aStcBOfAhU1W9GPXXg9NsfxBwakWLGBCKWvWSEanghdEgCjZSywSU28c7stjhFZ8r9Cy_Uuy8HuL7ha2e7kvEoumbfxDq_6gy8nTPvR_g660voomWSjtuyxEw5gUtGfTTbMMenM7V0H__7VLmGgcR8hvki5W7de3OK7NWXuO4txNlGQqMIkrcnm5pR4DvusLjjD3AcQo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+<div class="absolute bottom-6 left-6 right-6">
+<div class="font-label-md text-label-md text-white/80 uppercase mb-2">Haptics</div>
+<div class="font-headline-sm text-headline-sm text-white">Diaphragmatic Assist</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-gutter py-4 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-2xl border-t border-white/30 dark:border-outline-variant/20 shadow-[0_-10px_40px_rgba(51,79,43,0.08)] z-50 rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors group" href="#">
+<span class="material-symbols-outlined mb-1">speed</span>
+<span class="font-label-sm text-label-sm">Readiness</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container/20 dark:bg-primary-container text-on-primary-container rounded-full px-6 py-2 animate-pulse transition-transform duration-500 ease-out scale-110" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-sm text-label-sm font-semibold">Vitals</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">wb_twilight</span>
+<span class="font-label-sm text-label-sm">Environment</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 dark:text-on-tertiary-fixed-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined mb-1">assessment</span>
+<span class="font-label-sm text-label-sm">Log</span>
+</a>
+</nav>
+</body></html>

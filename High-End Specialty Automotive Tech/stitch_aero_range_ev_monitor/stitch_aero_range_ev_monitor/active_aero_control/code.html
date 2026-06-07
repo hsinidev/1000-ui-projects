@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO_RANGE_v1.0 | Active Wing Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(201, 230, 255, 0.2);
+            position: relative;
+        }
+        .glass-panel::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-top: 1px solid rgba(201, 230, 255, 0.3);
+            border-left: 1px solid rgba(201, 230, 255, 0.3);
+            pointer-events: none;
+        }
+        .chamfer-tr {
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+        .glow-line {
+            box-shadow: 0 0 15px rgba(154, 204, 243, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed": "#c9e6ff",
+                      "on-tertiary": "#2f3131",
+                      "inverse-on-surface": "#2a2f47",
+                      "error": "#ffb4ab",
+                      "surface-container-highest": "#2f334b",
+                      "surface-tint": "#9accf3",
+                      "primary-container": "#a5d8ff",
+                      "outline": "#8b9198",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#0d1228",
+                      "on-surface": "#dde1ff",
+                      "surface-container-low": "#151a31",
+                      "inverse-primary": "#2e6385",
+                      "surface-container-lowest": "#080d22",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "on-primary-fixed": "#001e2f",
+                      "primary-fixed-dim": "#9accf3",
+                      "on-secondary": "#2f3131",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-primary-fixed-variant": "#0c4b6c",
+                      "surface-container-high": "#242940",
+                      "on-background": "#dde1ff",
+                      "on-secondary-container": "#b8b8b8",
+                      "outline-variant": "#41484d",
+                      "background": "#0d1228",
+                      "surface-variant": "#2f334b",
+                      "on-primary": "#00344d",
+                      "surface-container": "#191e35",
+                      "on-surface-variant": "#c1c7ce",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-primary-container": "#285f80",
+                      "secondary-fixed": "#e3e2e2",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-secondary-fixed-variant": "#464747",
+                      "surface-bright": "#333850",
+                      "secondary": "#c6c6c6",
+                      "secondary-container": "#484949",
+                      "on-tertiary-container": "#585a5a",
+                      "primary": "#e1f0ff",
+                      "surface": "#0d1228",
+                      "tertiary-container": "#d1d2d2",
+                      "tertiary": "#eeeeee",
+                      "inverse-surface": "#dde1ff",
+                      "on-error": "#690005",
+                      "secondary-fixed-dim": "#c6c6c6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "micro": "4px",
+                      "container-padding": "32px",
+                      "xl": "40px",
+                      "lg": "24px",
+                      "md": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "display-hero": ["Space Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-lg": ["JetBrains Mono"],
+                      "caption-technical": ["JetBrains Mono"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "data-lg": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                      "caption-technical": ["10px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-lg py-md">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary-fixed">signal_cellular_alt</span>
+<h1 class="font-display-hero text-headline-md tracking-tighter text-primary-fixed-dim">AERO_RANGE_v1.0</h1>
+</div>
+<div class="font-caption-technical text-caption-technical text-primary-fixed flex items-center gap-md">
+<span class="bg-primary-container/10 px-base py-micro border border-primary-fixed/20 rounded-sm">SYS_READY_00</span>
+<span class="text-primary-fixed font-bold">98% | 342mi</span>
+</div>
+</header>
+<main class="pt-[80px] pb-[100px] px-container-padding max-w-[1440px] mx-auto grid grid-cols-12 gap-md">
+<!-- Left Control Column -->
+<aside class="col-span-12 md:col-span-3 flex flex-col gap-md">
+<!-- Mode Selector Card -->
+<section class="glass-panel p-md chamfer-tr">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CONTROL_MODE_01</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">settings_input_antenna</span>
+</div>
+<div class="space-y-md">
+<div class="flex items-center justify-between p-base bg-primary-fixed/5 border border-primary-fixed/10 rounded-sm">
+<span class="font-label-caps text-label-caps">AUTO_AERO</span>
+<button class="w-12 h-6 bg-primary-fixed rounded-full relative flex items-center px-micro transition-all duration-300">
+<div class="w-5 h-5 bg-on-primary-fixed rounded-full shadow-lg translate-x-6 transition-transform"></div>
+</button>
+</div>
+<div class="flex items-center justify-between p-base border border-outline-variant/30 rounded-sm opacity-50">
+<span class="font-label-caps text-label-caps">MANUAL_OVERRIDE</span>
+<button class="w-12 h-6 bg-surface-container-highest border border-outline-variant rounded-full relative flex items-center px-micro">
+<div class="w-5 h-5 bg-on-surface-variant rounded-full"></div>
+</button>
+</div>
+</div>
+</section>
+<!-- Real-time Telemetry -->
+<section class="glass-panel p-md chamfer-tr">
+<div class="mb-md">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TELEMETRY_04</span>
+</div>
+<div class="space-y-lg">
+<div>
+<div class="flex justify-between items-end mb-micro">
+<span class="font-caption-technical text-caption-technical uppercase opacity-60">Eff. Delta</span>
+<span class="font-data-lg text-headline-md text-primary-fixed">+5.2<span class="text-sm ml-1">%</span></span>
+</div>
+<div class="h-[2px] w-full bg-surface-container-highest">
+<div class="h-full bg-primary-fixed glow-line w-[75%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-end mb-micro">
+<span class="font-caption-technical text-caption-technical uppercase opacity-60">Drag Coeff</span>
+<span class="font-data-lg text-headline-md text-secondary">0.208</span>
+</div>
+<div class="h-[2px] w-full bg-surface-container-highest">
+<div class="h-full bg-secondary w-[40%]"></div>
+</div>
+</div>
+</div>
+</section>
+</aside>
+<!-- Main Visualization (Bento Center) -->
+<section class="col-span-12 md:col-span-6 flex flex-col gap-md">
+<div class="glass-panel flex-1 min-h-[400px] relative overflow-hidden group">
+<!-- Exploded View Image Container -->
+<div class="absolute inset-0 flex items-center justify-center p-xl">
+<img alt="Aero components visualization" class="w-full h-full object-contain mix-blend-screen opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="A highly detailed 3D technical wireframe of a high-performance electric hypercar, presented in an exploded view format. The rear wing, front air flaps, and wheel curtains are separated from the main chassis with glowing blue data lines connecting them. The scene is set against a deep navy blue background with a faint hexagonal grid. Precise white and ice-blue technical annotations point to specific aerodynamic components. The overall mood is futuristic, elite, and clinical." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDs6sMWpfhqsWOPNu33iNeuX_RmwvgWsaecnzzRoHXY4OrjWkXycme48E4iPcLTTS0k2xVWtUdVC2iESg0g2rEjJ9Q9LWGwIf1_V9bqRlDaMlT4byZskaEDe1WnU4v5SMalyfqbUYITn1AJBsQJtWLJaa8YjNqHZG-OvhEU5I9ncvdE_0Qtrjx_IHVxmaYH-Go5VjElzZOJdmKS1d91U_OAls-Yw4J6MS3eMD5YLCB1QYY-3Ad0fJFo0fdQAKTAVTql_O8JqBnhrT2X"/>
+</div>
+<!-- HUD Overlays -->
+<div class="absolute top-md left-md">
+<div class="flex items-center gap-base">
+<div class="w-2 h-2 rounded-full bg-primary-fixed animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary-fixed">DYNAMIC_STABILITY_ACTIVE</span>
+</div>
+</div>
+<div class="absolute bottom-md left-md right-md flex justify-between items-end">
+<div class="bg-surface-dim/80 p-base border border-primary-fixed/20">
+<span class="font-caption-technical text-caption-technical block mb-micro opacity-60">CURRENT_STATE</span>
+<span class="font-label-caps text-label-caps text-primary-fixed">HIGH_DOWNFORCE_MODE</span>
+</div>
+<div class="text-right">
+<span class="font-caption-technical text-caption-technical block mb-micro opacity-60">VEHICLE_SPEED</span>
+<span class="font-data-lg text-headline-md text-on-surface">142 <span class="text-sm">MPH</span></span>
+</div>
+</div>
+</div>
+<!-- Horizontal Details -->
+<div class="grid grid-cols-3 gap-md">
+<div class="glass-panel p-md">
+<span class="font-caption-technical text-caption-technical block mb-base opacity-60 uppercase">Front Flap</span>
+<span class="font-data-lg text-headline-md text-primary-fixed">12°</span>
+</div>
+<div class="glass-panel p-md">
+<span class="font-caption-technical text-caption-technical block mb-base opacity-60 uppercase">Rear Wing</span>
+<span class="font-data-lg text-headline-md text-primary-fixed">34°</span>
+</div>
+<div class="glass-panel p-md">
+<span class="font-caption-technical text-caption-technical block mb-base opacity-60 uppercase">Curtains</span>
+<span class="font-data-lg text-headline-md text-primary-fixed">CLOSED</span>
+</div>
+</div>
+</section>
+<!-- Right Control Column -->
+<aside class="col-span-12 md:col-span-3 flex flex-col gap-md">
+<!-- Wing Angle Adjuster -->
+<section class="glass-panel p-md flex-1 chamfer-tr">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant">WING_ANGLE_SET</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">change_history</span>
+</div>
+<div class="flex flex-col h-full gap-lg">
+<div class="flex-1 flex flex-col items-center justify-center gap-md">
+<div class="relative w-full flex items-center justify-center py-xl">
+<!-- Circular Gauge Simulation -->
+<svg class="w-32 h-32 transform -rotate-90">
+<circle class="text-surface-container-highest" cx="64" cy="64" fill="transparent" r="60" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-fixed drop-shadow-[0_0_8px_rgba(154,204,243,0.8)]" cx="64" cy="64" fill="transparent" r="60" stroke="currentColor" stroke-dasharray="377" stroke-dashoffset="180" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-data-lg text-display-hero leading-none">34</span>
+<span class="font-label-caps text-label-caps opacity-60">DEGREES</span>
+</div>
+</div>
+<!-- Steppers -->
+<div class="flex w-full gap-base">
+<button class="flex-1 border border-outline-variant/30 py-base hover:bg-primary-fixed/10 transition-colors flex items-center justify-center active:scale-95 duration-100">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="flex-1 border border-outline-variant/30 py-base hover:bg-primary-fixed/10 transition-colors flex items-center justify-center active:scale-95 duration-100">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+<!-- Slider -->
+<div class="space-y-base">
+<div class="flex justify-between font-caption-technical text-caption-technical opacity-60">
+<span>0°</span>
+<span>45° MAX</span>
+</div>
+<input class="w-full h-1 bg-surface-container-highest appearance-none rounded-full accent-primary-fixed cursor-pointer" type="range"/>
+</div>
+</div>
+</section>
+<!-- Quick Actions -->
+<section class="grid grid-cols-1 gap-base">
+<button class="glass-panel p-md text-left hover:bg-primary-fixed/10 transition-colors flex items-center justify-between group">
+<span class="font-label-caps text-label-caps">CALIBRATE_SENSORS</span>
+<span class="material-symbols-outlined text-sm opacity-40 group-hover:translate-x-1 transition-transform">arrow_forward_ios</span>
+</button>
+<button class="bg-primary-fixed text-on-primary-fixed p-md text-left flex items-center justify-between font-bold shadow-[0_0_20px_rgba(154,204,243,0.3)] hover:brightness-110 active:scale-95 duration-100">
+<span class="font-label-caps text-label-caps">COMMIT_CHANGES</span>
+<span class="material-symbols-outlined">bolt</span>
+</button>
+</section>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-md pb-lg pt-base bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/50 shadow-[0_-10px_20px_rgba(154,204,243,0.1)] z-50">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">air</span>
+<span class="font-label-caps text-label-caps mt-micro">DRAG</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-fixed bg-primary-container/20 rounded-xl px-md py-micro ring-1 ring-primary-fixed/50 shadow-[0_0_15px_rgba(154,204,243,0.3)]">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-label-caps text-label-caps mt-micro">AERO</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">thermostat</span>
+<span class="font-label-caps text-label-caps mt-micro">THERMAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-label-caps mt-micro">PATH</span>
+</div>
+</nav>
+</body></html>

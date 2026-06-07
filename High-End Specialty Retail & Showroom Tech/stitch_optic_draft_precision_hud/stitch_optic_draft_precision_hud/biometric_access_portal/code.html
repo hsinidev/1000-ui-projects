@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f131f;
+            background-image: 
+                linear-gradient(rgba(0, 242, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scan-line {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+        .glass-panel {
+            background: rgba(15, 19, 31, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(225, 253, 255, 0.1);
+        }
+        .active-glow {
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2), 0 0 5px rgba(0, 242, 255, 0.1);
+        }
+        .cyan-bloom {
+            text-shadow: 0 0 8px rgba(0, 242, 255, 0.5);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#00dbe7",
+                      "on-background": "#dfe2f3",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "inverse-surface": "#dfe2f3",
+                      "on-tertiary-fixed-variant": "#3f465b",
+                      "on-primary": "#00363a",
+                      "tertiary-fixed": "#dae2fc",
+                      "outline-variant": "#3a494b",
+                      "tertiary-container": "#d3daf4",
+                      "on-tertiary": "#283044",
+                      "error-container": "#93000a",
+                      "on-tertiary-container": "#575f75",
+                      "surface-container-highest": "#313442",
+                      "primary": "#e1fdff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-secondary-container": "#b4b5b5",
+                      "primary-fixed": "#74f5ff",
+                      "surface-dim": "#0f131f",
+                      "surface": "#0f131f",
+                      "on-secondary": "#2f3131",
+                      "primary-container": "#00f2ff",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#313442",
+                      "surface-container-low": "#171b28",
+                      "surface-container-lowest": "#0a0e1a",
+                      "surface-container": "#1b1f2c",
+                      "on-surface": "#dfe2f3",
+                      "surface-tint": "#00dbe7",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-tertiary-fixed": "#131b2e",
+                      "on-error": "#690005",
+                      "background": "#0f131f",
+                      "tertiary-fixed-dim": "#bec6df",
+                      "surface-container-high": "#262a37",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-fixed": "#002022",
+                      "outline": "#849495",
+                      "secondary": "#c6c6c7",
+                      "secondary-container": "#454747",
+                      "on-secondary-fixed-variant": "#454747",
+                      "inverse-on-surface": "#2c303d",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#00696f",
+                      "on-primary-container": "#006a71",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "tertiary": "#f7f6ff",
+                      "surface-bright": "#353946"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "panel-gap": "8px",
+                      "container-padding": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "body-lg": ["JetBrains Mono"],
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "mono-data": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "body-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "mono-data": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col items-center justify-center p-container-padding overflow-hidden">
+<!-- Global Scan Line Decoration -->
+<div class="scan-line opacity-20"></div>
+<!-- Background Decoration Elements -->
+<div class="fixed top-0 left-0 w-full h-full pointer-events-none opacity-10">
+<div class="absolute top-10 left-10 border-l border-t border-primary-container w-24 h-24"></div>
+<div class="absolute bottom-10 right-10 border-r border-b border-primary-container w-24 h-24"></div>
+</div>
+<!-- Main Authentication Portal -->
+<main class="relative w-full max-w-4xl flex flex-col md:flex-row glass-panel overflow-hidden border border-outline-variant/30 active-glow">
+<!-- Left Side: Biometric Visualization -->
+<section class="hidden md:flex flex-1 relative bg-surface-container-low/50 items-center justify-center border-r border-outline-variant/20 p-12">
+<div class="relative w-full aspect-square flex items-center justify-center">
+<!-- Concentric Rings -->
+<div class="absolute w-64 h-64 border border-primary-container/20 rounded-full"></div>
+<div class="absolute w-48 h-48 border border-primary-fixed-dim/40 rounded-full border-dashed"></div>
+<div class="absolute w-32 h-32 border-2 border-primary-container rounded-full"></div>
+<!-- Crosshair Overlays -->
+<div class="absolute w-full h-px bg-primary-container/10"></div>
+<div class="absolute w-px h-full bg-primary-container/10"></div>
+<!-- The Graphic -->
+<div class="relative z-20 w-40 h-40 overflow-hidden rounded-full border border-primary-container shadow-[0_0_30px_rgba(0,242,255,0.2)]">
+<img alt="Biometric Scan" class="w-full h-full object-cover grayscale brightness-125 opacity-80" data-alt="A highly detailed close-up of a human eye iris being scanned by digital blue light. Concentric technological rings, data readouts, and thin cyan horizontal lines are superimposed over the iris. The lighting is cold and clinical, with a deep indigo background and vibrant neon cyan accents. The aesthetic is futuristic HUD technology for a high-security biometric interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPaGgsgMggw18Opbly-iUA0TcVwfQszbzPaad9WYckZPth0NxpLMR5_k0fxDnq4q0cWIFCPdb8ENsB9sSRotsy0_YvP77Qkm6cPyXQgAYpAv5y6ne81St83wH9FqyEKg3smgmEhgizDUQWyGKlCnKYV3sIirP8e9YWfiL18vqbMNYI4vfkybpNUY1XHGgwobNJyumVJuwkM6_FA27uXRa_TAepqely87u3N79q1HHR5mlaRgpysxNdEE8nHm1D5CazpL_Z2n-3LLk"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary-container/20 to-transparent"></div>
+</div>
+<!-- Telemetry Tags -->
+<div class="absolute top-0 left-0 font-mono-data text-mono-data text-primary-fixed-dim bg-background/80 px-2 py-1 border border-primary-container/30">
+                    MATCH_STRENGTH: 99.82%
+                </div>
+<div class="absolute bottom-10 right-0 font-mono-data text-mono-data text-primary-fixed-dim bg-background/80 px-2 py-1 border border-primary-container/30">
+                    EYE_COORD: 40.7/74.0
+                </div>
+</div>
+<div class="absolute bottom-8 left-8 right-8">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-2">SYSTEM_LOG_v.24.4</p>
+<p class="font-body-sm text-body-sm text-on-surface/60 leading-relaxed">
+                    SECURE_LENS_HANDSHAKE: INITIALIZING... <br/>
+                    ENCRYPTION_LAYER: AES_512_QUANTUM_RESISTANT <br/>
+                    STATUS: AWAITING_OPERATOR_INPUT
+                </p>
+</div>
+</section>
+<!-- Right Side: Interaction Fields -->
+<section class="flex-1 p-8 md:p-12 flex flex-col justify-center">
+<header class="mb-8">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">security</span>
+<h1 class="font-headline-md text-headline-md text-primary-container font-bold tracking-tighter">OPTIC-DRAFT</h1>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">OPERATOR_AUTHENTICATION_PORTAL</p>
+</header>
+<form class="space-y-6">
+<!-- Input Group 1 -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-primary-fixed-dim" for="operator_id">OPERATOR_ID</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest/30 border border-outline-variant/50 focus:border-primary-container focus:ring-0 text-on-surface font-body-sm px-4 py-3 placeholder:text-on-surface-variant/30 transition-all outline-none" id="operator_id" placeholder="LENS_LAB_VERIFIED_NAME" type="text"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px] text-primary-container">qr_code_scanner</span>
+</div>
+</div>
+</div>
+<!-- Input Group 2 -->
+<div class="space-y-2">
+<label class="block font-label-caps text-label-caps text-primary-fixed-dim" for="access_key">ACCESS_ENCRYPTION_KEY</label>
+<div class="relative group">
+<input class="w-full bg-surface-container-highest/30 border border-outline-variant/50 focus:border-primary-container focus:ring-0 text-on-surface font-body-sm px-4 py-3 placeholder:text-on-surface-variant/30 transition-all outline-none" id="access_key" placeholder="••••••••••••••••" type="password"/>
+<div class="absolute right-3 top-1/2 -translate-y-1/2 opacity-0 group-focus-within:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-[16px] text-primary-container">lock_open</span>
+</div>
+</div>
+</div>
+<!-- Action Buttons -->
+<div class="pt-4 space-y-3">
+<button class="w-full bg-primary-container text-on-primary font-label-caps text-label-caps py-4 border border-primary-container active:scale-[0.98] transition-transform flex items-center justify-center gap-2 hover:bg-primary-fixed shadow-[0_0_20px_rgba(0,242,255,0.2)]" type="submit">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">fingerprint</span>
+                        INITIALIZE_BIOMETRIC_LOGIN
+                    </button>
+<button class="w-full border border-outline-variant text-on-surface font-label-caps text-label-caps py-4 hover:border-primary-container hover:text-primary-container transition-colors active:scale-[0.98]" type="button">
+                        REQUEST_NEW_VERIFICATION
+                    </button>
+</div>
+</form>
+<footer class="mt-8 space-y-4">
+<div class="flex items-start gap-3 p-3 bg-surface-container-highest/20 border border-outline-variant/20">
+<span class="material-symbols-outlined text-primary-fixed-dim text-[18px]">info</span>
+<p class="font-mono-data text-[10px] text-on-surface-variant uppercase leading-tight">
+                        By proceeding, you authorize OPTIC-DRAFT to perform a high-resolution iris/retina analysis. Data is stored on-device in a secure 'LENS_VAULT' and encrypted with hardware-level keys. 
+                        <a class="text-primary-container underline" href="#">TERMS_v2.4</a>
+</p>
+</div>
+<div class="flex justify-between items-center text-[10px] font-mono-data text-on-surface-variant/50 border-t border-outline-variant/20 pt-4">
+<span>SYSTEM_STATUS: NOMINAL</span>
+<span>ENCRYPTION: ACTIVE</span>
+<span>v.4.0.0-PRO</span>
+</div>
+</footer>
+</section>
+</main>
+<!-- Overlay Info Tags -->
+<div class="fixed top-8 right-8 text-right hidden lg:block">
+<p class="font-mono-data text-mono-data text-primary-container cyan-bloom">COORDINATES: 40.7128° N, 74.0060° W</p>
+<p class="font-mono-data text-[10px] text-on-surface-variant opacity-50">LENS_CALIBRATION_PENDING</p>
+</div>
+<div class="fixed bottom-8 left-8 hidden lg:block">
+<p class="font-mono-data text-mono-data text-primary-container opacity-40">SESSION_TOKEN: 0xFD29...92A1</p>
+</div>
+</body></html>

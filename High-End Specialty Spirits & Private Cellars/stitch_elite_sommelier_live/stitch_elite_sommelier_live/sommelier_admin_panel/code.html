@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sommelier-Live Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary": "#ffffff",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#2f3033",
+                        "on-tertiary-fixed": "#351002",
+                        "outline": "#74777f",
+                        "on-surface-variant": "#43474e",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e9e7eb",
+                        "primary-container": "#001f3f",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-secondary": "#ffffff",
+                        "tertiary": "#110200",
+                        "on-primary-container": "#6f88ad",
+                        "tertiary-container": "#391303",
+                        "surface-bright": "#faf9fc",
+                        "primary": "#000613",
+                        "inverse-primary": "#afc8f0",
+                        "secondary-container": "#e0dfdf",
+                        "on-tertiary-fixed-variant": "#6b3a25",
+                        "surface-dim": "#dbd9dd",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "on-error": "#ffffff",
+                        "on-secondary-container": "#626363",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-background": "#1a1c1e",
+                        "outline-variant": "#c4c6cf",
+                        "surface-container": "#efedf0",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-variant": "#e3e2e5",
+                        "surface-container-low": "#f4f3f6",
+                        "primary-fixed": "#d4e3ff",
+                        "tertiary-fixed-dim": "#fdb69a",
+                        "surface": "#faf9fc",
+                        "on-surface": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-highest": "#e3e2e5",
+                        "error": "#ba1a1a",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "on-tertiary-container": "#b5785f",
+                        "inverse-on-surface": "#f2f0f3",
+                        "on-primary-fixed": "#001c3a",
+                        "on-tertiary": "#ffffff",
+                        "secondary": "#5d5e5f",
+                        "surface-tint": "#476083",
+                        "background": "#faf9fc"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "section-mobile": "40px",
+                        "section-desktop": "80px",
+                        "margin-mobile": "20px",
+                        "base": "8px",
+                        "margin-desktop": "64px"
+                    },
+                    "fontFamily": {
+                        "display-lg-mobile": ["Playfair Display"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-sm": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "display-lg": ["Playfair Display"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-lg-mobile": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .soft-ui-extruded {
+            box-shadow: 6px 6px 12px #c0c0c04d, -6px -6px 12px #ffffff;
+        }
+        .soft-ui-pressed {
+            box-shadow: inset 4px 4px 8px #c0c0c04d, inset -4px -4px 8px #ffffff;
+        }
+        .glass-card {
+            background: rgba(250, 249, 252, 0.8);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(192, 192, 192, 0.3);
+        }
+        .pulsate-navy {
+            animation: pulsate 2s infinite ease-in-out;
+        }
+        @keyframes pulsate {
+            0% { opacity: 0.4; transform: scale(0.9); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.4; transform: scale(0.9); }
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- SideNavBar Shell -->
+<aside class="h-full w-64 fixed left-0 top-0 bg-surface z-40 hidden md:flex flex-col py-base gap-2 shadow-lg border-r border-outline-variant/30">
+<div class="px-6 py-8">
+<h1 class="font-display-lg text-headline-sm text-primary">Sommelier-Live</h1>
+<div class="mt-6 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full soft-ui-extruded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional portrait of a senior sommelier in a sharp navy blue suit, standing in a sophisticated, low-lit wine cellar. The lighting is dramatic and warm, highlighting the textures of aged wood and glass. The overall aesthetic is one of refined expertise and luxury, consistent with a high-end private tasting room environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAhBO-v5kRnzRMzCFBhFGby2uMedLwMFSvjSdsqoV52MWetLfNeRmc8015UbcbOtVQpa6YBAeTu-FBoZlTcRo_KYVJ4L98wNivK-ZFT9se-ooFtAComzZTI_Ansa11OZkIFDq_w41vYBgUtlEcebuCbRUXNwLUrbfo8arDfYPMyHQmd9qDv_07NSJ5Cfr0eUakMUov7XMdfec0PoYQOPTBDETWKgFmUPw_wdyxXYjBV-R4AOa9iiD0eEcMg2O_AEfgEZyi6LjeiO5U"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary font-semibold">Elite Member</p>
+<p class="text-[10px] text-secondary">Collector Status</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<!-- Active: Dashboard -->
+<a class="bg-secondary-container text-primary font-semibold rounded-xl mx-2 shadow-inner flex items-center gap-3 px-4 py-3 translate-x-1" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="text-secondary hover:bg-surface-container-low mx-2 rounded-xl flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Sommeliers</span>
+</a>
+<a class="text-secondary hover:bg-surface-container-low mx-2 rounded-xl flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="video_chat">video_chat</span>
+<span>Live Session</span>
+</a>
+<a class="text-secondary hover:bg-surface-container-low mx-2 rounded-xl flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="wine_bar">wine_bar</span>
+<span>Inventory</span>
+</a>
+<a class="text-secondary hover:bg-surface-container-low mx-2 rounded-xl flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="event">event</span>
+<span>Events</span>
+</a>
+<a class="text-secondary hover:bg-surface-container-low mx-2 rounded-xl flex items-center gap-3 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Settings</span>
+</a>
+</nav>
+<div class="px-4 py-6 mt-auto">
+<button class="w-full py-3 bg-primary text-on-primary rounded-xl font-semibold shadow-md active:scale-95 transition-transform">
+                Book Sommelier
+            </button>
+<div class="mt-6 flex flex-col gap-1">
+<a class="text-secondary flex items-center gap-3 px-4 py-2 text-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="help">help</span>
+<span>Support</span>
+</a>
+<a class="text-secondary flex items-center gap-3 px-4 py-2 text-sm" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 min-h-screen pb-24 md:pb-8">
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-0 md:left-64 z-30 backdrop-blur-md bg-surface/80 h-20 border-b border-outline-variant/50 flex items-center justify-between px-margin-desktop">
+<div class="flex items-center gap-4">
+<h2 class="font-display-lg text-headline-sm font-bold text-primary">Dashboard</h2>
+<div class="flex items-center gap-2 bg-surface-container-low px-3 py-1 rounded-full soft-ui-pressed border border-outline-variant/20">
+<div class="w-2 h-2 rounded-full bg-[#001f3f] pulsate-navy"></div>
+<span class="text-xs font-label-caps uppercase tracking-wider text-primary">Live Status</span>
+<label class="relative inline-flex items-center cursor-pointer ml-2">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-9 h-5 bg-secondary-fixed rounded-full peer peer-checked:after:translate-x-full after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-4 after:w-4 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 font-body-md" placeholder="Search collectors..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" data-icon="notifications">notifications</button>
+<button class="material-symbols-outlined text-secondary hover:text-primary transition-colors" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</header>
+<div class="pt-28 px-margin-desktop max-w-7xl mx-auto space-y-section-desktop">
+<!-- Bento Grid Header Stats -->
+<section class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-gutter">
+<div class="lg:col-span-2 p-8 rounded-xl soft-ui-extruded bg-surface flex flex-col justify-between min-h-[180px]">
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2">Upcoming Consultations</p>
+<h3 class="font-display-lg text-headline-md text-primary">4 Today</h3>
+</div>
+<div class="flex -space-x-3 mt-4">
+<div class="w-10 h-10 rounded-full border-2 border-surface overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Close-up portrait of a sophisticated male wine enthusiast in a high-end setting. Soft, natural lighting highlights elegant features against a blurred background of a luxurious library. Silk white and silver tones define the airy, premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSnUXhSKfE16cHfeNy80ymoMCwTsKszAWkCP9pex5p_kxbATHpuvHJssztNYS2JgDEVtOGdebgzRNe4JKioMhMQE3p22kIZBTBVOvB91ocxjJLLUkpFmUgsY1VstN4HfNGtugylS5H9oWzeq3lU6DPS16p4ZTA464HV78IlS9EyFcYhzwKeNSaVTFtd23R0Dxd4WzeqoyIjjD7ImW5LLtEf8e8evzuEfqyMy51H0rW3CbiGqGUXjV4nsXdvI-Xfmu2lDklQxQcBcI"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover" data-alt="Portrait of a refined female collector in a modern tasting room. High-key lighting creates a bright and airy atmosphere. The color palette is composed of pristine whites and subtle grays, evoking a sense of calm and exclusive luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAv3D0RxGULw6Ifh9iGJgUM5ptZDs31MSfGl_htPsYWP0fDRhY-1Agr7TphJ5iE6PsujaD-MDlCwLTcZYgtHi18A_i7xlaZo7xXOBKY_OerLhRlxdvEzemLsd_X8rJqXHvZcbbjcf1lqyhjYISgG2fTaFPC5bkCXeXYEqhyZ30piR2FerhVXytcG_zZLwHPH3l4oWUaybvQlqflSv2BsYYNRcsaq9mdpRsSEliilIsnOLzsq5wHguEsAnlEqwHo_xAcGM9WTpPi7M4"/>
+</div>
+<div class="w-10 h-10 rounded-full border-2 border-surface flex items-center justify-center bg-secondary-fixed text-primary text-xs font-bold shadow-sm">+2</div>
+</div>
+</div>
+<div class="p-8 rounded-xl soft-ui-extruded bg-surface flex flex-col justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-secondary mb-2">Monthly Earnings</p>
+<h3 class="font-display-lg text-headline-sm text-primary">$12,450</h3>
+</div>
+<div class="text-primary font-bold text-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>+12% vs last month</span>
+</div>
+</div>
+<div class="p-8 rounded-xl bg-primary text-on-primary flex flex-col justify-between shadow-xl">
+<div>
+<p class="font-label-caps text-label-caps opacity-70 mb-2">Elite Status</p>
+<h3 class="font-display-lg text-headline-sm">Master</h3>
+</div>
+<button class="w-full py-2 bg-on-primary text-primary rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity">
+                        View Portfolio
+                    </button>
+</div>
+</section>
+<!-- Main Management View -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Column: Upcoming & Active Notes -->
+<div class="lg:col-span-8 space-y-gutter">
+<!-- Curate Section -->
+<div class="flex items-center justify-between">
+<h4 class="font-display-lg text-headline-sm text-primary">Active Consultations</h4>
+<button class="flex items-center gap-2 bg-surface soft-ui-extruded px-6 py-3 rounded-xl text-primary font-semibold hover:translate-y-[-2px] transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                            Curate New List
+                        </button>
+</div>
+<!-- Consultation Cards List -->
+<div class="space-y-4">
+<!-- Card 1 -->
+<div class="p-6 rounded-xl glass-card flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-surface-container-low flex flex-col items-center justify-center text-primary border border-outline-variant/30">
+<span class="text-xs font-bold">OCT</span>
+<span class="text-xl font-display-lg">24</span>
+</div>
+<div>
+<h5 class="font-semibold text-lg text-primary">Bordeaux Vintage Deep-Dive</h5>
+<p class="text-sm text-secondary">Private Collection: Julian Vane • 2:00 PM (45 mins)</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="p-3 rounded-full soft-ui-extruded text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+</button>
+<button class="p-3 rounded-full soft-ui-extruded text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="p-6 rounded-xl glass-card flex items-center justify-between">
+<div class="flex items-center gap-6">
+<div class="w-16 h-16 rounded-lg bg-surface-container-low flex flex-col items-center justify-center text-primary border border-outline-variant/30">
+<span class="text-xs font-bold">OCT</span>
+<span class="text-xl font-display-lg">24</span>
+</div>
+<div>
+<h5 class="font-semibold text-lg text-primary">Napa Valley Selection Review</h5>
+<p class="text-sm text-secondary">New Collector: Sarah Chen • 4:30 PM (30 mins)</p>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="p-3 rounded-full soft-ui-extruded text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+</button>
+<button class="p-3 rounded-full soft-ui-extruded text-secondary hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="edit">edit</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Active Tasting Notes (Grid) -->
+<div class="pt-base">
+<h4 class="font-display-lg text-headline-sm text-primary mb-6">Recent Tasting Notes</h4>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="soft-ui-extruded bg-surface p-6 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start mb-4">
+<img class="h-24 w-auto object-contain" data-alt="High-end studio photography of a bottle of vintage red wine. The bottle is backlit by soft, warm light that catches the condensation and glass texture. The background is a clean silk white with silver reflections, creating a premium and luxurious editorial look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs_sIwit1gsD70z7-3r_tFBV_GPqkKDwZoK5GQ73kw030zE4tXqN1_TRsYzqjZ9zle6Vm3kK1Pi1WZdqGUJFImrKtG_Ik5z0nS7Uc8sBiP6WJn3CRhMxrnEOoDjYCSjDHo7YgrBSI2N_c0ySgCEBsGjOSfs61H-RPVkl3EohtP-XI9K5K-AcE2rTkD-L7e1ti_TCG4RL5h3tVhmHyQLXjXwSDBCbX2cNdm110gpTAi_finPUT7jO7ENXSLDyayMteN4v88lxQZXCg"/>
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed text-[10px] font-bold rounded">PENDING APPROVAL</span>
+</div>
+<h6 class="font-bold text-primary">Château Latour 2015</h6>
+<p class="text-xs text-secondary mt-1">Deep garnet, notes of cedar and cassis. Still developing structural complexity.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="text-[10px] font-label-caps text-secondary">CURATED FOR: R. MILLER</span>
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+</div>
+<div class="soft-ui-extruded bg-surface p-6 rounded-xl border border-outline-variant/20">
+<div class="flex justify-between items-start mb-4">
+<img class="h-24 w-auto object-contain" data-alt="Macro photography of white wine being poured into a crystal glass. The lighting is crisp and bright, focusing on the clarity and golden hue of the liquid. The aesthetic is clean, sophisticated, and evokes the feeling of an elite private tasting session." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlmmMrTRIUEmb6Pyoj4ZmtZ6FOouUhPQP7O_c4ujBOBHQfkMJ8yAj02MSnCxgIYlnpe_xtaW4M_v0LWO5H2U3kD_VrXoUcuRXUbxNQsKlbfGqzZtoSlDbeUAq98numfvP2spaC1QbJxPYFF9b6e-iujdltzYKySzGtq6QWTBiZ9MY74KztCxTcrFrAUVZohgsWUhuJB54N9xh91ALE3Iz29AgAR3GtgTh5ThQoRrR2Mfxn2qhB4b2gLWFiWYeO2z82tE_HtMNxDeA"/>
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-bold rounded">PUBLISHED</span>
+</div>
+<h6 class="font-bold text-primary">Domaine Leflaive 2018</h6>
+<p class="text-xs text-secondary mt-1">Vibrant citrus acidity with a flinty mineral finish. Exceptional Puligny-Montrachet.</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="text-[10px] font-label-caps text-secondary">CURATED FOR: L. CHASE</span>
+<span class="material-symbols-outlined text-sm" data-icon="more_horiz">more_horiz</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Assigned Collectors & Insights -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container-low p-8 rounded-xl soft-ui-pressed border border-outline-variant/20">
+<h4 class="font-display-lg text-headline-sm text-primary mb-6">Assigned Collectors</h4>
+<div class="space-y-6">
+<!-- Collector 1 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full soft-ui-extruded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of a male art and wine collector in a bright, modern penthouse. The style is professional and high-end, utilizing a palette of silver, white, and navy. Soft window light creates a serene and wealthy ambiance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB4SVtdOmLOO4aLhHGvNrcT1DOgFsRgMghWMY7NnmFltWC93CPji_7hvIJS-RHq7cLjXGjf4nBIvtnqsQp9bw-vX9X6vZzfWjInEGShmRmlRwFIk-vytSbx4VkhSc0n8uUxm5Ed3SE5ihO3DZvZOKNKvdCPy48ZdQGFAUoWOJ9we5KQ-hdBtdot9eHnwzB0-_UZYdeWSuuhuQpvVxDlZnz8QOYM3KTierebovvDQIfZuHYHSGw7e4Z0lo8hMqq6N0rbBYBkPf2yGLo"/>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Marcus Thorne</p>
+<p class="text-[10px] text-secondary">Portfolio: $240k • Active</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-primary" data-icon="chat">chat</button>
+</div>
+<!-- Collector 2 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full soft-ui-extruded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Portrait of an elegant female collector in a sophisticated setting. The lighting is soft and flattering, with a modern minimalist aesthetic using a color scheme of pristine white and warm silver tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAEtDdEXBZSic5Zy4l7zEMZcK0eh8FuTNQEsvcWAnZ_yCKhkR_iuOIlw0jw4AfWturT-9jMiglao_imDnsqIeBdIX-NQjP9J1Q0UBPBmDHXDpM_N9suIKKx7u_xt5esIhuOBXyWWpVG5XylhtJVASmVL5xcPPWuAh68rRL-eYozFSdGPi7lThNgq3os9MaFdKUcWratWU0iXVxVZ58iOWHg3MbVc1_zIdYqm1TjdM9OKEzaclmbyY_qbdQsjHmFp3TA5ROKt3IO5Xs"/>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Elena Rodriguez</p>
+<p class="text-[10px] text-secondary">Portfolio: $185k • Inactive</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-secondary" data-icon="chat">chat</button>
+</div>
+<!-- Collector 3 -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-full soft-ui-extruded overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up of a gentleman wine enthusiast in a high-class, minimal environment. Natural light highlights the clean lines and premium materials of the setting. The aesthetic is luxurious and understated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlVlxtnzkUl8qwhfH1kjrcSofwzCz5lpIeWUvfi9ucFHx9yLndmHhcp1m-feFsc4sz-uG9qlmEFMAgsHW9NuE_kFPHByP_SkGUxfDv10QumnDS8EUeXztK-lZtZaZLz1C-8NjmXbCF_A3lQWr1lYt6et8cHcF3BRV2Zz7yu1q7ZFA98TbcHoacxWB6z0yoei677-l5W_ntzHx1KCOYcvI5kGKKVH8MgwWNeNbWmbvfd7MQdDL4LVAZUpqn0P0RiDV6_gryhLG-GJM"/>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Arthur P. Sloane</p>
+<p class="text-[10px] text-secondary">Portfolio: $412k • Active</p>
+</div>
+</div>
+<button class="material-symbols-outlined text-primary" data-icon="chat">chat</button>
+</div>
+</div>
+<button class="w-full mt-8 py-3 border border-outline text-primary font-bold text-xs font-label-caps rounded-lg hover:bg-surface-container transition-colors">
+                            VIEW ALL COLLECTORS
+                        </button>
+</div>
+<div class="soft-ui-extruded bg-surface p-8 rounded-xl border border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-secondary mb-4">Availability Overview</p>
+<div class="space-y-3">
+<div class="flex justify-between text-xs">
+<span class="text-secondary">Mon - Fri</span>
+<span class="text-primary font-bold">10:00 - 18:00</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-secondary">Sat - Sun</span>
+<span class="text-primary font-bold">12:00 - 16:00</span>
+</div>
+</div>
+<div class="mt-6 p-4 bg-primary-container rounded-lg">
+<p class="text-[10px] text-on-primary-container font-label-caps mb-1">Quick Note</p>
+<p class="text-xs text-on-primary-container/80 italic">"Remember to follow up with Sloane regarding the Krug 2008 availability."</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar Shell (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter py-4 bg-surface shadow-[0_-4px_10px_rgba(192,192,192,0.3)] rounded-t-full">
+<a class="flex flex-col items-center justify-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="text-[10px] font-label-caps">Explore</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="text-[10px] font-label-caps">Live</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="text-[10px] font-label-caps">Cellar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span class="text-[10px] font-label-caps">Profile</span>
+</a>
+</nav>
+</body></html>

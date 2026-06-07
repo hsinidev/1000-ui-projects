@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SPIRIT-ARCHIVE | SECURITY TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.05) 50%, rgba(255, 255, 255, 0) 100%);
+            height: 2px;
+            width: 100%;
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .grid-bg {
+            background-image: 
+                linear-gradient(to right, rgba(30, 27, 75, 0.2) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(30, 27, 75, 0.2) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .hardened-border {
+            position: relative;
+            border: 1px solid #ffffff;
+        }
+        .hardened-border::after {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            pointer-events: none;
+        }
+        .corner-crosshair::before {
+            content: '+';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono';
+            font-size: 14px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffffff",
+                    "secondary-fixed-dim": "#c3c0ff",
+                    "on-error": "#690005",
+                    "inverse-surface": "#e3e1ec",
+                    "primary": "#ffffff",
+                    "on-tertiary-container": "#656464",
+                    "secondary-container": "#3e3c8f",
+                    "secondary": "#c3c0ff",
+                    "tertiary-container": "#e5e2e1",
+                    "surface": "#12131a",
+                    "on-primary-container": "#646463",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-container": "#1e1f26",
+                    "on-surface-variant": "#c4c7c4",
+                    "surface-bright": "#383941",
+                    "on-secondary-fixed-variant": "#3e3c8f",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "secondary-fixed": "#e2dfff",
+                    "surface-variant": "#33343c",
+                    "outline-variant": "#444845",
+                    "background": "#12131a",
+                    "on-primary": "#303130",
+                    "surface-container-high": "#292931",
+                    "on-primary-fixed-variant": "#464746",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-secondary-fixed": "#100563",
+                    "on-secondary": "#272377",
+                    "primary-fixed-dim": "#c7c6c4",
+                    "on-secondary-container": "#afadff",
+                    "on-background": "#e3e1ec",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#1b1c1b",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-error-container": "#ffdad6",
+                    "outline": "#8e918e",
+                    "surface-tint": "#c7c6c4",
+                    "primary-container": "#e3e2e0",
+                    "surface-container-lowest": "#0d0e15",
+                    "inverse-primary": "#5e5e5d",
+                    "surface-container-low": "#1a1b22",
+                    "surface-dim": "#12131a",
+                    "on-surface": "#e3e1ec",
+                    "inverse-on-surface": "#2f3038",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#e3e2e0",
+                    "on-tertiary": "#313030",
+                    "surface-container-highest": "#33343c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "unit": "4px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-xl": ["Space Grotesk"],
+                    "data-mono": ["JetBrains Mono"],
+                    "headline-lg": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md grid-bg min-h-screen selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 bg-surface dark:bg-surface border-b-2 border-double border-outline-variant fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-headline-md text-headline-md font-bold uppercase tracking-widest text-primary">SPIRIT-ARCHIVE</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="text-primary font-bold font-label-caps text-label-caps tracking-widest border-b border-primary" href="#">COMMAND</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-label-caps tracking-widest" href="#">ARCHIVE</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors font-label-caps text-label-caps tracking-widest" href="#">NODES</a>
+</nav>
+<div class="flex items-center gap-4 border-l border-outline-variant pl-8">
+<div class="text-right">
+<p class="font-data-mono text-[10px] text-on-surface-variant leading-none">AUTH_LEVEL</p>
+<p class="font-data-mono text-label-caps text-primary">ADMIN_OVR</p>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-20">
+<!-- NavigationDrawer -->
+<aside class="hidden md:flex flex-col h-full py-8 gap-4 bg-surface-container-low dark:bg-surface-container-low w-80 border-r-4 border-double border-outline-variant sticky top-20">
+<div class="px-6 mb-4">
+<h2 class="font-data-mono text-data-mono text-primary font-bold tracking-widest">SECURITY TERMINAL</h2>
+<div class="h-1 w-12 bg-primary mt-2"></div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 py-3 px-6 bg-secondary-container text-on-secondary-container font-bold border-l-4 border-primary translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-data-mono text-data-mono">Verification Log</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-6 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-data-mono text-data-mono">Blockchain Vault</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-6 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-data-mono text-data-mono">Legal Registry</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-6 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-data-mono text-data-mono">API Documentation</span>
+</a>
+</nav>
+<div class="mt-auto px-6 border-t border-outline-variant pt-6">
+<div class="p-4 bg-surface-container-lowest border border-outline-variant">
+<p class="font-data-mono text-[10px] text-on-surface-variant mb-2">SYSTEM_HEALTH</p>
+<div class="flex gap-1">
+<div class="h-4 w-2 bg-primary"></div>
+<div class="h-4 w-2 bg-primary"></div>
+<div class="h-4 w-2 bg-primary"></div>
+<div class="h-4 w-2 bg-primary"></div>
+<div class="h-4 w-2 bg-outline-variant"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto px-margin-mobile md:px-margin-desktop py-8">
+<!-- Breadcrumbs / Status Header -->
+<div class="flex justify-between items-end mb-8 border-b border-outline-variant pb-4">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase tracking-tighter">Command Center</h2>
+<p class="font-data-mono text-on-surface-variant uppercase text-xs">Node: 0x82...FA21 // Latency: 14ms // Uptime: 99.98%</p>
+</div>
+<div class="flex gap-4">
+<div class="bg-surface-container-high px-4 py-2 border-2 border-primary flex items-center gap-2">
+<div class="w-2 h-2 bg-primary animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary">LIVE SCAN ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Provenance Registry (Centerpiece) -->
+<section class="col-span-12 lg:col-span-8">
+<div class="hardened-border bg-surface-container-lowest p-1 corner-crosshair">
+<div class="border border-outline-variant bg-surface p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-caps text-label-caps text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="database">database</span>
+                                    PROVENANCE_REGISTRY
+                                </h3>
+<button class="font-label-caps text-[10px] text-on-surface-variant border border-outline-variant px-3 py-1 hover:border-primary hover:text-primary transition-colors">EXPORT_CSV</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-data-mono text-data-mono">
+<thead>
+<tr class="bg-primary text-on-primary">
+<th class="p-3 font-label-caps text-label-caps">ASSET_ID</th>
+<th class="p-3 font-label-caps text-label-caps">TIMESTAMP</th>
+<th class="p-3 font-label-caps text-label-caps">VALIDATOR</th>
+<th class="p-3 font-label-caps text-label-caps">STATUS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="p-4 text-primary font-bold">#SPIRIT-9921</td>
+<td class="p-4 text-on-surface-variant">2023.10.24 14:22:01</td>
+<td class="p-4 text-on-surface-variant">NODE_A_77</td>
+<td class="p-4">
+<span class="border-l-2 border-primary bg-secondary-container px-3 py-1 text-on-secondary-container text-[10px] font-bold">VERIFIED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="p-4 text-primary font-bold">#SPIRIT-8102</td>
+<td class="p-4 text-on-surface-variant">2023.10.24 13:45:12</td>
+<td class="p-4 text-on-surface-variant">NODE_C_12</td>
+<td class="p-4">
+<span class="border-l-2 border-primary bg-secondary-container px-3 py-1 text-on-secondary-container text-[10px] font-bold">VERIFIED</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="p-4 text-primary font-bold">#SPIRIT-4491</td>
+<td class="p-4 text-on-surface-variant">2023.10.24 12:10:55</td>
+<td class="p-4 text-on-surface-variant">NODE_B_09</td>
+<td class="p-4">
+<span class="border-l-2 border-error bg-error-container/20 px-3 py-1 text-error text-[10px] font-bold">SUSPICIOUS</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="p-4 text-primary font-bold">#SPIRIT-2011</td>
+<td class="p-4 text-on-surface-variant">2023.10.24 11:05:33</td>
+<td class="p-4 text-on-surface-variant">NODE_A_77</td>
+<td class="p-4">
+<span class="border-l-2 border-primary bg-secondary-container px-3 py-1 text-on-secondary-container text-[10px] font-bold">VERIFIED</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+<!-- Blockchain Status & Quick Actions -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Verification Tools -->
+<div class="hardened-border bg-surface-container p-6">
+<h3 class="font-label-caps text-label-caps text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="qr_code_scanner">qr_code_scanner</span>
+                            QUICK_VERIFY
+                        </h3>
+<div class="space-y-4">
+<div class="relative group">
+<div class="absolute inset-0 bg-primary opacity-5 group-hover:opacity-10 transition-opacity"></div>
+<div class="border border-outline-variant p-4 flex items-center justify-center border-dashed border-2 hover:border-primary transition-colors cursor-pointer">
+<div class="text-center">
+<span class="material-symbols-outlined text-4xl text-on-surface-variant mb-2" data-icon="upload_file">upload_file</span>
+<p class="font-data-mono text-[10px] text-on-surface-variant uppercase">Drop Certificate Here</p>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps tracking-widest flex items-center justify-center gap-3 hover:bg-tertiary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+                                RUN_AUTHENTICATION
+                            </button>
+</div>
+</div>
+<!-- Node Status Monitoring -->
+<div class="hardened-border bg-surface-container-lowest p-1">
+<div class="border border-outline-variant bg-surface p-6">
+<h3 class="font-label-caps text-label-caps text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_tree">account_tree</span>
+                                NODE_NET_STATUS
+                            </h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-24 h-1 bg-outline-variant relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary w-2/3"></div>
+</div>
+<div class="flex-1">
+<p class="font-data-mono text-[10px] text-on-surface-variant uppercase">Global Consensus</p>
+<p class="font-data-mono text-label-caps text-primary">68.2% SYNC</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-24 h-1 bg-outline-variant relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary w-full"></div>
+</div>
+<div class="flex-1">
+<p class="font-data-mono text-[10px] text-on-surface-variant uppercase">Local Node</p>
+<p class="font-data-mono text-label-caps text-primary">OPERATIONAL</p>
+</div>
+</div>
+</div>
+<!-- Decorative Visualizer -->
+<div class="mt-8 h-24 border border-outline-variant bg-surface-container-lowest relative overflow-hidden group">
+<div class="absolute inset-0 opacity-20 bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary via-transparent to-transparent"></div>
+<div class="flex items-end justify-between h-full px-2 pb-2 gap-1">
+<div class="w-full bg-primary/40 h-8 group-hover:h-12 transition-all"></div>
+<div class="w-full bg-primary/40 h-14 group-hover:h-10 transition-all"></div>
+<div class="w-full bg-primary/40 h-10 group-hover:h-16 transition-all"></div>
+<div class="w-full bg-primary/40 h-16 group-hover:h-8 transition-all"></div>
+<div class="w-full bg-primary/40 h-12 group-hover:h-14 transition-all"></div>
+<div class="w-full bg-primary/40 h-9 group-hover:h-12 transition-all"></div>
+<div class="w-full bg-primary/40 h-15 group-hover:h-11 transition-all"></div>
+<div class="w-full bg-primary/40 h-7 group-hover:h-13 transition-all"></div>
+</div>
+<p class="absolute top-2 left-2 font-data-mono text-[8px] text-primary/60 tracking-widest uppercase">Traffic_Waveform</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Asset Highlights (Bento Section) -->
+<div class="mt-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter pb-20">
+<div class="hardened-border bg-surface-container h-64 overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-70 transition-all duration-700" data-alt="A macro photograph of a high-tech diamond encrusted with microscopic nanotechnology sensors. The lighting is dramatic and cold, with platinum highlights reflecting off the facets. The style is hyper-realistic and clinical, conveying a sense of absolute luxury protected by advanced cryptography. The background is a deep, dark indigo texture with faint grid lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCbHvzU71f4DA3NXO9xzG3aGqmGH2lmu5xonSwFENxIWFBHKLHjcUIjdYXZGm4_QUze8g8D0hqrPQhrltM3RkRdV96Bg7UDWBwlEOEsq1oRLLjsqK6ygTNLxCifJPXc3hxsd5RMbjEI5016HNleg3sauvSzbbuirbl9rQDDyRf-DP9Iam5Vf-wQX6-yGPBE1FE4ZMOzUd_Q1wAqigvinMkANl-vZVHHEffNokx5onjxyBC0sDDHRxakdFvC_f2ObgNPCNCg-Im8889v"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="bg-primary text-on-primary w-fit px-2 py-1 font-label-caps text-[10px]">LATEST_MINT</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Ether-Link Diamond</h4>
+<p class="font-data-mono text-xs text-on-surface-variant uppercase">Secured by Vault-7</p>
+</div>
+</div>
+<div class="scanline"></div>
+</div>
+<div class="hardened-border bg-surface-container h-64 overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-70 transition-all duration-700" data-alt="A close-up view of a secure hardware security module with glowing data ports and intricate circuit patterns. The aesthetic is industrial and hardened, with heavy metallic casings and silver screws. The lighting is a moody deep indigo with stark white highlights from the indicator LEDs. The atmosphere is one of impenetrable digital and physical security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwFQ9HAUTECeR4kpBGmspUdcxFA6BY-QLSTuDyRH5d12sWrWBe3Ddj-vhQCwlJiQrZTPrE_v0rSB8cADx1uUyN3RJ-BaAed1SXtqokGuU6QdcgO7CeEk1ge4gw6BeIyi4flKFPzkUGqTe4aDCmvuCn9hFN2IBldywCikLL9A1c_04jZlIce51OhqmJHBoATXzPcVnire8GUqfVEHxKe9R7vNNwJyqXgHZu58EBkGCl89SZ_dMsqNKgZTp8tGnIzKSs9vBW0QTd1-6t"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="bg-primary text-on-primary w-fit px-2 py-1 font-label-caps text-[10px]">NODE_HEALTH</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Primary HSM-01</h4>
+<p class="font-data-mono text-xs text-on-surface-variant uppercase">Temperature: 24°C</p>
+</div>
+</div>
+<div class="scanline"></div>
+</div>
+<div class="hardened-border bg-surface-container h-64 overflow-hidden relative group">
+<img class="w-full h-full object-cover opacity-50 grayscale group-hover:grayscale-0 group-hover:opacity-70 transition-all duration-700" data-alt="An abstract visualization of a blockchain network appearing as a glowing crystalline structure in a dark void. The nodes are connected by thin beams of platinum light, creating a complex web of provenance. The color palette is strictly deep indigo, black, and white. The mood is futuristic, orderly, and highly technical, representing the permanence of the digital archive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFNgOf6EtcaU_t14iN1oBiH62IB92bc2LyCHzWLUucxUMyD2etCMVuv8TmMOtbInrX_sSpzphqJRefLk2UvHcCN9hcVGpTlUT_NhPl2I4U6x-AIACtsg57K2eyNr1Z3O9gS8ySIeh1ROnK5DaXgBnHiDgVlyq4AUGFHpiOrCvuo20n07rlZAgzZ4YeQv0MVBpaJZz1Y85sGO9Ra1ysgx0GvE6GJzIjzYpYK1GC6AiEvS2ah2udJk8oFW3Hsw6q-dG5aGYxBCyD5Kbj"/>
+<div class="absolute inset-0 p-6 flex flex-col justify-between">
+<div class="bg-primary text-on-primary w-fit px-2 py-1 font-label-caps text-[10px]">NETWORK_LOAD</div>
+<div>
+<h4 class="font-headline-md text-headline-md text-primary">Global Ledger</h4>
+<p class="font-data-mono text-xs text-on-surface-variant uppercase">Blocks: 14,882,019</p>
+</div>
+</div>
+<div class="scanline"></div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-background border-t-4 border-double border-outline-variant">
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container border-2 border-primary p-2 scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-label-caps">VERIFY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-label-caps">HISTORY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-label-caps">LEGAL</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-label-caps">PORTAL</span>
+</a>
+</nav>
+</body></html>

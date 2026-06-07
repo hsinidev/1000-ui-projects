@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VigneAtlas Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Caslon+Text:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#bfcd8f",
+                    "outline-variant": "#c7c8b9",
+                    "surface-container": "#f1f1bb",
+                    "on-secondary-fixed": "#1d1c0d",
+                    "tertiary": "#445433",
+                    "tertiary-container": "#5c6c49",
+                    "tertiary-fixed-dim": "#bbcda3",
+                    "on-secondary-fixed-variant": "#494835",
+                    "secondary-fixed-dim": "#cac7af",
+                    "on-primary-fixed-variant": "#404b1b",
+                    "primary": "#485422",
+                    "on-tertiary-fixed": "#121f05",
+                    "surface-container-lowest": "#ffffff",
+                    "on-error": "#ffffff",
+                    "surface-variant": "#e5e6b1",
+                    "inverse-on-surface": "#f4f4be",
+                    "on-secondary-container": "#65634f",
+                    "secondary-fixed": "#e7e3ca",
+                    "on-primary-fixed": "#171e00",
+                    "tertiary-fixed": "#d7e9bd",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed-variant": "#3d4b2b",
+                    "primary-fixed": "#dbe9a9",
+                    "inverse-surface": "#31320d",
+                    "on-error-container": "#93000a",
+                    "surface": "#fcfdc6",
+                    "surface-container-highest": "#e5e6b1",
+                    "error": "#ba1a1a",
+                    "on-background": "#1c1d00",
+                    "surface-tint": "#586330",
+                    "on-surface-variant": "#46483c",
+                    "error-container": "#ffdad6",
+                    "background": "#fcfdc6",
+                    "primary-fixed-dim": "#bfcd8f",
+                    "surface-container-low": "#f6f7c1",
+                    "on-surface": "#1c1d00",
+                    "on-tertiary-container": "#daecc1",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#dfedac",
+                    "secondary": "#615f4b",
+                    "surface-container-high": "#ebebb6",
+                    "primary-container": "#606c38",
+                    "surface-bright": "#fcfdc6",
+                    "on-tertiary": "#ffffff",
+                    "surface-dim": "#dddda9",
+                    "secondary-container": "#e4e0c7",
+                    "outline": "#77786b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "stack-md": "24px",
+                    "unit": "8px",
+                    "stack-lg": "48px",
+                    "margin-desktop": "48px",
+                    "sidebar-width": "280px",
+                    "container-max": "1440px",
+                    "gutter": "32px",
+                    "stack-sm": "8px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Libre Caslon Text"],
+                    "display-xl": ["Libre Caslon Text"],
+                    "label-sm": ["Libre Caslon Text"],
+                    "body-lg": ["Libre Caslon Text"],
+                    "body-md": ["Libre Caslon Text"],
+                    "caption-italic": ["Libre Caslon Text"],
+                    "headline-lg": ["Libre Caslon Text"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-sm": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "caption-italic": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #fcfdc6; /* surface */
+            font-family: 'Libre Caslon Text', serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .active-nav-indicator {
+            position: absolute;
+            left: 0;
+            width: 4px;
+            height: 24px;
+            background-color: #485422; /* primary */
+        }
+    </style>
+</head>
+<body class="flex min-h-screen">
+<!-- SideNavBar (Authority: JSON & Style Guidance) -->
+<aside class="h-screen w-64 docked left-0 bg-surface-container-low dark:bg-surface-container-highest flex flex-col p-md gap-base border-r border-outline-variant/20 flex-shrink-0 sticky top-0">
+<div class="px-4 py-8">
+<h1 class="font-h3 text-h3 font-bold text-primary dark:text-primary-fixed-dim">VigneAtlas</h1>
+<p class="text-on-surface-variant font-label-sm text-label-sm opacity-70">VigneAtlas Systems</p>
+</div>
+<nav class="flex-grow flex flex-col gap-2 px-2">
+<!-- Dashboard (Active) -->
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container dark:bg-primary-container text-on-primary-container dark:text-on-primary-container rounded-lg font-bold active:translate-x-1 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-dim rounded-lg active:translate-x-1 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-body-md text-body-md">Vineyard Listings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-dim rounded-lg active:translate-x-1 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">User Management</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-dim rounded-lg active:translate-x-1 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-body-md text-body-md">Analytics</span>
+</a>
+</nav>
+<div class="px-2 py-4 border-t border-outline-variant/20 flex flex-col gap-2">
+<button class="w-full bg-primary text-on-primary py-2 rounded-lg font-label-sm text-label-sm mb-4 hover:opacity-90 transition-opacity">
+                Export Global Data
+            </button>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-surface-variant hover:bg-surface-container-high rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+</div>
+<div class="mt-auto p-4 flex items-center gap-3 border-t border-outline-variant/10">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden">
+<img alt="Vineyard Administrator Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a vineyard administrator in his late 40s with a warm smile. He is standing in a lush, sun-drenched vineyard during the golden hour. The visual style is crisp and high-resolution, featuring soft natural lighting that emphasizes an earthy, professional atmosphere consistent with a premium botanical archive aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD008Y2XMWlg4toiLkq5sJkgnKeG_gZA_q9BsKZe63ZWL4LFj_lObvpKXdtEt07BsBSCnQIoM_sjEGgdeSDbEPAHw-r96n5bR1DY26pp5LUS-qelbYDQzYD9YiFlBzg0-yfPSKf6f6WQHnjcSznbJLbuAMG_KoJQt0Pw-J35oIIiu1osDmY8tt8ae-hNlWVZb2DLfezUGimWsfNgtMK-WRZtBf982ea6LzS3uu_qpZ473FI8i4NuMYKizgJ3hLYguHWGO94mz_scsV-"/>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface">Admin Panel</p>
+<p class="text-[11px] text-on-surface-variant opacity-60">Master View</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-grow min-h-screen px-margin-desktop py-stack-lg max-w-container-max mx-auto overflow-x-hidden">
+<!-- Header -->
+<header class="mb-stack-lg">
+<h2 class="font-headline-lg text-headline-lg text-primary mb-2">Regional Oversight</h2>
+<p class="font-body-md text-body-md text-on-surface-variant">Real-time viticulture monitoring and resource management for the 2024 season.</p>
+</header>
+<!-- Bento Grid: Analytics & Data Cards -->
+<div class="grid grid-cols-12 gap-gutter mb-stack-lg">
+<!-- Soil Temperature Index (Large Card) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border border-outline/20 rounded-xl p-6 relative overflow-hidden shadow-sm">
+<div class="flex justify-between items-start mb-6">
+<div>
+<span class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-widest opacity-60">Field Metrics</span>
+<h3 class="font-headline-md text-headline-md text-primary">Soil Temperature Index</h3>
+</div>
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="thermostat">thermostat</span>
+</div>
+<div class="h-64 flex items-end gap-2 px-2 border-b border-outline/10">
+<div class="flex-1 bg-primary/20 h-[40%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[55%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[65%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/60 h-[85%] rounded-t-sm hover:bg-primary/80 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[75%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[60%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[50%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[65%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/30 h-[45%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+<div class="flex-1 bg-primary/20 h-[30%] rounded-t-sm hover:bg-primary/40 transition-colors"></div>
+</div>
+<div class="flex justify-between mt-4 font-caption-italic text-caption-italic text-on-surface-variant">
+<span>MAR 01</span>
+<span>MAR 15</span>
+<span>MAR 30</span>
+</div>
+</div>
+<!-- Hydration Levels (Small Card) -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 flex flex-col gap-gutter">
+<div class="flex-grow bg-surface-container-highest border border-outline/20 rounded-xl p-6 shadow-sm">
+<div class="flex items-center justify-between mb-4">
+<span class="material-symbols-outlined text-primary" data-icon="water_drop">water_drop</span>
+<span class="text-primary font-bold">+12% vs last week</span>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant mb-1">Current Status</p>
+<h4 class="font-headline-md text-headline-md text-primary">Hydration Levels</h4>
+<p class="font-display-xl text-display-xl text-primary mt-2">74<span class="text-headline-md opacity-60">%</span></p>
+<div class="w-full bg-surface-container-low h-2 rounded-full mt-4 overflow-hidden">
+<div class="bg-primary h-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline/20 rounded-xl p-6 shadow-sm flex items-center justify-between">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Active Sensors</p>
+<p class="font-headline-md text-headline-md text-primary">1,248 Units</p>
+</div>
+<div class="p-3 rounded-full bg-primary/10">
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Recent Vintage Reports & Vineyard Table -->
+<section class="grid grid-cols-12 gap-gutter items-start">
+<!-- Table Section -->
+<div class="col-span-12 xl:col-span-9 bg-surface-container-lowest border border-outline/15 rounded-xl overflow-hidden shadow-sm">
+<div class="p-6 border-b border-outline/10 flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">Vineyard Listings</h3>
+<div class="flex gap-2">
+<button class="px-4 py-2 border border-outline/30 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                            Filter
+                        </button>
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-opacity">
+                            Add Vineyard
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low/50">
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant">BLOCK ID</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant">VARIETAL</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant">ACREAGE</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant">YIELD EST.</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant">HEALTH</th>
+<th class="px-6 py-4 font-label-sm text-label-sm text-on-surface-variant"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline/5">
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">V-091 North Ridge</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Cabernet Sauvignon</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">4.2 Acres</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">12.5 Tons</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-[11px] uppercase">Optimal</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">V-112 East Valley</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Pinot Noir</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">8.1 Acres</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">24.0 Tons</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-error-container text-on-error-container font-label-sm text-[11px] uppercase">Stress Warning</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low/30 transition-colors">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">V-045 Sunset Basin</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Chardonnay</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">3.5 Acres</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">10.2 Tons</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 rounded-full bg-primary/10 text-primary font-label-sm text-[11px] uppercase">Optimal</span>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Recent Vintage Reports -->
+<div class="col-span-12 xl:col-span-3 flex flex-col gap-gutter">
+<h3 class="font-label-sm text-label-sm uppercase text-on-surface-variant tracking-widest px-1">Recent Vintage Reports</h3>
+<div class="bg-surface-container-low border border-outline/20 rounded-xl p-5 hover:border-primary/40 transition-colors cursor-pointer group">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex-shrink-0 border border-outline/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="description">description</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-on-surface group-hover:text-primary transition-colors">2023 Harvest Summary</h4>
+<p class="font-caption-italic text-caption-italic text-on-surface-variant mt-1">Updated 2 days ago by J. Miller</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline/20 rounded-xl p-5 hover:border-primary/40 transition-colors cursor-pointer group">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex-shrink-0 border border-outline/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="microbiology">microbiology</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Soil Ph Profile - Q1</h4>
+<p class="font-caption-italic text-caption-italic text-on-surface-variant mt-1">Updated 1 week ago by Lab Team</p>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline/20 rounded-xl p-5 hover:border-primary/40 transition-colors cursor-pointer group">
+<div class="flex items-start gap-4">
+<div class="w-12 h-12 rounded-lg bg-surface flex-shrink-0 border border-outline/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="cloud_done">cloud_done</span>
+</div>
+<div>
+<h4 class="font-body-md text-body-md font-bold text-on-surface group-hover:text-primary transition-colors">Micro-climate Analysis</h4>
+<p class="font-caption-italic text-caption-italic text-on-surface-variant mt-1">Updated 3 weeks ago by R. Costa</p>
+</div>
+</div>
+</div>
+<button class="text-primary font-label-sm text-label-sm flex items-center gap-2 mt-2 hover:translate-x-1 transition-transform w-fit">
+                    View all reports <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+</section>
+<!-- Asymmetric Layout: Geographical Context -->
+<section class="mt-stack-lg">
+<div class="bg-surface-container-highest rounded-xl p-stack-md flex flex-col md:flex-row gap-gutter items-center border border-outline/10">
+<div class="flex-grow">
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Terroir Mapping</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">Integrate high-fidelity satellite imagery with ground-level sensor data to visualize mineral distribution across all active blocks.</p>
+<div class="flex gap-4 mt-6">
+<button class="bg-primary text-on-primary px-6 py-3 rounded-lg font-label-sm text-label-sm hover:opacity-90 transition-opacity">Launch Map Explorer</button>
+<button class="border border-outline/30 px-6 py-3 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">Download Atlas</button>
+</div>
+</div>
+<div class="w-full md:w-1/3 aspect-video md:aspect-square bg-surface border border-outline/20 rounded-lg overflow-hidden relative shadow-inner">
+<img alt="Aerial Vineyard Map" class="w-full h-full object-cover grayscale-[0.2] hover:grayscale-0 transition-all duration-700" data-alt="A cinematic overhead aerial photograph of a symmetrical vineyard during early morning. The rows of grapevines create a rhythmic, geometric pattern against the undulating landscape of a misty valley. The lighting is soft and ethereal, with long shadows stretching across the earth. The color palette is dominated by deep forest greens and golden-hour earth tones, evoking the feel of a premium historical atlas." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXrGa0JhcbsALCIzfwgnWwqrXNcBLhnZ03oRVJX5Y441_W40er6kVHWzm_R4QjWyHz2IHjN5JBUq-GBd8w2oTI0ZXnu9l-L9V2eYWiAGjE9gHKhpBE5M56xgnMgZXLWP7UQ6HPpFRpHhhxjrLW2otCCK9W4grXSUFrvcTkQF58KV-moYC7A80ZHJ-dgStYv8uC-aRfdpO75RSUPWH5OV_3OD3mrz6eOnRzhwvgIkCMP95xdSNXFIUN78vyMtlqtKVoeiz3q7ZGME07"/>
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<div class="absolute bottom-4 left-4 bg-surface/90 backdrop-blur px-3 py-1 rounded text-[10px] font-label-sm text-on-surface-variant border border-outline/20">
+                        LAT: 45.348 | LONG: -122.956
+                    </div>
+</div>
+</div>
+</section>
+</main>
+<!-- Contextual FAB (Only on dashboard) -->
+<button class="fixed bottom-10 right-10 w-14 h-14 bg-primary text-on-primary rounded-full shadow-lg flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</body></html>

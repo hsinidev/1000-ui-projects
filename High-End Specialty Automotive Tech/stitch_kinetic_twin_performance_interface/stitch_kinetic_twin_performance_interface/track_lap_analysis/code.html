@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC-TWIN | Track-Lap Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#410000",
+                        "inverse-on-surface": "#313030",
+                        "secondary-fixed-dim": "#c6c6ce",
+                        "surface-container-highest": "#353534",
+                        "on-secondary": "#2f3036",
+                        "outline-variant": "#603e39",
+                        "on-surface-variant": "#ebbbb4",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-primary-fixed-variant": "#930100",
+                        "primary": "#ffb4a8",
+                        "secondary-fixed": "#e2e2ea",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1c1b1b",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-fixed": "#1a1b21",
+                        "on-tertiary-container": "#2a2a2a",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#45464d",
+                        "surface": "#131313",
+                        "surface-bright": "#3a3939",
+                        "surface-variant": "#353534",
+                        "surface-tint": "#ffb4a8",
+                        "surface-container": "#201f1f",
+                        "secondary": "#c6c6ce",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#313030",
+                        "on-primary": "#690100",
+                        "on-primary-container": "#5c0000",
+                        "outline": "#b18780",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#ffdad4",
+                        "surface-container-lowest": "#0e0e0e",
+                        "background": "#131313",
+                        "on-error": "#690005",
+                        "inverse-primary": "#c00100",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#929090",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-secondary-container": "#b4b4bc",
+                        "primary-container": "#ff5540",
+                        "secondary-container": "#45464d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "32px",
+                        "container-max": "1440px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "headline-display": ["Space Grotesk"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "data-numeral": ["Space Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "headline-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "data-numeral": ["20px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .carbon-bg {
+            background-color: #0e0e0e;
+            background-image: linear-gradient(45deg, #131313 25%, transparent 25%), 
+                              linear-gradient(-45deg, #131313 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #131313 75%), 
+                              linear-gradient(-45deg, transparent 75%, #131313 75%);
+            background-size: 4px 4px;
+        }
+        .recessed-well {
+            box-shadow: inset 0 2px 10px 0 rgba(0, 0, 0, 0.8);
+            background: #050505;
+        }
+        .beveled-edge {
+            border-top: 1px solid rgba(255, 180, 168, 0.2);
+            border-left: 1px solid rgba(255, 180, 168, 0.1);
+        }
+        .hazard-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #690100,
+                #690100 10px,
+                #000 10px,
+                #000 20px
+            );
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(255, 85, 64, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-background dark:bg-background border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">speed</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tighter text-primary dark:text-primary">KINETIC-TWIN</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">settings</span>
+</div>
+</header>
+<main class="pt-20 pb-24 px-4 max-w-container-max mx-auto grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Hero Analysis Header -->
+<div class="md:col-span-12 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant/20 pb-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Session: Qualifying Phase 2</p>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">LAP 14 ANALYSIS</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Lap Time</p>
+<p class="font-data-numeral text-headline-lg text-primary">1:24.402</p>
+</div>
+<div class="text-right border-l border-outline-variant/30 pl-6">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Delta to Ghost</p>
+<p class="font-data-numeral text-headline-lg text-primary-container">-0.142s</p>
+</div>
+</div>
+</div>
+<!-- Track Map Widget -->
+<div class="md:col-span-8 lg:col-span-7 aspect-video recessed-well rounded-lg border border-outline-variant/20 overflow-hidden relative group">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+<div class="flex items-center gap-2 bg-surface/80 backdrop-blur-md px-3 py-1 rounded border border-outline-variant/20">
+<div class="w-3 h-3 bg-primary rounded-full"></div>
+<span class="font-label-caps text-[10px] text-on-surface">ACTUAL LINE</span>
+</div>
+<div class="flex items-center gap-2 bg-surface/80 backdrop-blur-md px-3 py-1 rounded border border-outline-variant/20">
+<div class="w-3 h-3 bg-on-tertiary-container rounded-full opacity-50 border border-white"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">GHOST LINE (IDEAL)</span>
+</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none p-12">
+<!-- SVG Track Representation -->
+<svg class="w-full h-full drop-shadow-2xl" viewbox="0 0 800 500">
+<!-- Ghost Lap -->
+<path d="M100,250 C100,100 300,50 400,150 S600,450 700,250 S500,50 300,350 S100,400 100,250" fill="none" stroke="#2a2a2a" stroke-dasharray="10 5" stroke-width="8"></path>
+<!-- Actual Lap -->
+<path class="drop-shadow-[0_0_8px_rgba(255,180,168,0.6)]" d="M105,255 C105,105 310,45 405,155 S590,440 695,255 S510,45 305,345 S105,405 105,255" fill="none" stroke="#ffb4a8" stroke-linecap="round" stroke-width="4"></path>
+<!-- Apex Indicators -->
+<circle cx="400" cy="150" fill="#ff5540" r="4"></circle>
+<circle cx="600" cy="350" fill="#ff5540" r="4"></circle>
+</svg>
+</div>
+<!-- Track Telemetry Overlays -->
+<div class="absolute bottom-4 right-4 flex flex-col gap-2 items-end">
+<div class="recessed-well p-3 border border-outline-variant/30 rounded-lg min-w-[120px]">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">TRACK TEMP</span>
+<span class="font-data-numeral text-on-surface text-xl">42°C</span>
+</div>
+<div class="recessed-well p-3 border border-outline-variant/30 rounded-lg min-w-[120px]">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">CURB IMPACT</span>
+<span class="font-data-numeral text-primary-container text-xl">LOW</span>
+</div>
+</div>
+</div>
+<!-- Sector Breakdown -->
+<div class="md:col-span-4 lg:col-span-5 flex flex-col gap-gutter">
+<div class="recessed-well border border-outline-variant/20 p-6 rounded-lg beveled-edge flex-1">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">segment</span>
+                    SECTOR-BY-SECTOR
+                </h3>
+<div class="space-y-4">
+<!-- Sector 1 -->
+<div class="flex items-center justify-between p-3 border-l-2 border-primary-container bg-primary-container/5">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SECTOR 1</span>
+<span class="font-data-numeral text-on-surface">24.102s</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-primary-container">-0.045s</span>
+<span class="material-symbols-outlined text-primary-container block" style="font-variation-settings: 'FILL' 1;">stat_1</span>
+</div>
+</div>
+<!-- Sector 2 -->
+<div class="flex items-center justify-between p-3 border-l-2 border-on-error-container bg-on-error/5">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SECTOR 2</span>
+<span class="font-data-numeral text-on-surface">32.445s</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-error">+0.102s</span>
+<span class="material-symbols-outlined text-error block" style="font-variation-settings: 'FILL' 1;">stat_minus_1</span>
+</div>
+</div>
+<!-- Sector 3 -->
+<div class="flex items-center justify-between p-3 border-l-2 border-primary-container bg-primary-container/5">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SECTOR 3</span>
+<span class="font-data-numeral text-on-surface">27.855s</span>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-primary-container">-0.199s</span>
+<span class="material-symbols-outlined text-primary-container block" style="font-variation-settings: 'FILL' 1;">stat_2</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-outline-variant/10">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">TIRE WEAR ESTIMATE</span>
+<span class="font-label-caps text-label-caps text-primary">82% LIFE</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden flex gap-1">
+<div class="h-full bg-primary-container w-[20.5%]"></div>
+<div class="h-full bg-primary-container w-[20.5%]"></div>
+<div class="h-full bg-primary-container w-[20.5%]"></div>
+<div class="h-full bg-primary-container w-[20.5%] opacity-30"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Inputs Graph -->
+<div class="md:col-span-12 recessed-well border border-outline-variant/20 p-6 rounded-lg beveled-edge">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">legend_toggle</span>
+                    THROTTLE VS. BRAKE INPUT (%)
+                </h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<div class="w-3 h-0.5 bg-primary-container"></div>
+<span class="font-label-caps text-[10px]">THROTTLE</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-0.5 bg-error"></div>
+<span class="font-label-caps text-[10px]">BRAKE</span>
+</div>
+</div>
+</div>
+<div class="h-48 relative w-full">
+<!-- Graph Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between opacity-10 pointer-events-none">
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+<div class="w-full h-px bg-white"></div>
+</div>
+<svg class="absolute inset-0 w-full h-full overflow-visible" preserveaspectratio="none" viewbox="0 0 1000 100">
+<!-- Throttle Curve -->
+<path d="M0,100 L50,80 L100,20 L150,5 L200,5 L250,15 L300,60 L350,95 L400,100 L450,100 L500,80 L550,20 L600,0 L650,0 L700,5 L750,50 L800,100 L850,100 L900,100 L950,80 L1000,50" fill="none" stroke="#ff5540" stroke-width="2"></path>
+<!-- Brake Curve -->
+<path class="opacity-50" d="M0,0 L50,0 L100,0 L150,0 L200,0 L250,50 L300,90 L350,100 L400,80 L450,20 L500,0 L550,0 L600,0 L650,0 L700,0 L750,0 L800,0 L850,20 L900,100 L950,50 L1000,0" fill="none" stroke="#ffb4ab" stroke-width="2"></path>
+</svg>
+<!-- Vertical Progress Scrub -->
+<div class="absolute top-0 bottom-0 left-[35%] w-px bg-primary flex items-center justify-center">
+<div class="absolute top-0 w-2 h-2 bg-primary rotate-45"></div>
+<div class="bg-primary text-background font-label-caps text-[9px] px-1 absolute -top-6 rounded whitespace-nowrap">MARKER: T1 APEX</div>
+</div>
+</div>
+<div class="flex justify-between mt-4">
+<span class="font-label-caps text-[9px] text-on-surface-variant">0:00</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">TURN 1</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">TURN 4</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">CHICANE</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">TURN 9</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">FINISH</span>
+</div>
+</div>
+<!-- Action Grid -->
+<div class="md:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
+<button class="bg-surface-container-high hover:bg-surface-container-highest transition-colors border border-outline-variant/30 p-4 rounded-lg flex flex-col items-center gap-2 group active:scale-95 duration-75">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">share</span>
+<span class="font-label-caps text-[10px]">EXPORT CSV</span>
+</button>
+<button class="bg-surface-container-high hover:bg-surface-container-highest transition-colors border border-outline-variant/30 p-4 rounded-lg flex flex-col items-center gap-2 group active:scale-95 duration-75">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">compare</span>
+<span class="font-label-caps text-[10px]">COMPARE SESSIONS</span>
+</button>
+<button class="bg-surface-container-high hover:bg-surface-container-highest transition-colors border border-outline-variant/30 p-4 rounded-lg flex flex-col items-center gap-2 group active:scale-95 duration-75">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">cloud_upload</span>
+<span class="font-label-caps text-[10px]">SYNC TEAM CLOUD</span>
+</button>
+<button class="hazard-stripe hover:opacity-90 transition-opacity p-4 rounded-lg flex flex-col items-center gap-2 group active:scale-95 duration-75">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-caps text-[10px] text-white">RE-CALIBRATE ECU</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 bg-background/95 backdrop-blur-md pb-safe h-16 border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 transition-colors" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">LIVE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary border-t-2 border-primary pt-2 pb-1 hover:bg-surface-container-highest/10 transition-colors" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">timer</span>
+<span class="font-label-caps text-label-caps">TRACK</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 transition-colors" href="#">
+<span class="material-symbols-outlined">Engine</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 transition-colors" href="#">
+<span class="material-symbols-outlined">vitals</span>
+<span class="font-label-caps text-label-caps">REMOTE</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Details Screens per logic, but adding a specialized "Ghost Toggle" mini-FAB if needed) -->
+</body></html>

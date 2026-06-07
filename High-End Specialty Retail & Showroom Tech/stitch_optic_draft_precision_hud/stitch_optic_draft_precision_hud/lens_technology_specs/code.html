@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f131f;
+            background-image: 
+                linear-gradient(rgba(116, 245, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(116, 245, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: rgba(116, 245, 255, 0.1);
+            position: absolute;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .flicker-on-hover:hover {
+            animation: flicker 0.2s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#74f5ff",
+                        "inverse-on-surface": "#2c303d",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#3f465b",
+                        "on-primary-fixed": "#002022",
+                        "surface": "#0f131f",
+                        "surface-container-high": "#262a37",
+                        "on-background": "#dfe2f3",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#00696f",
+                        "surface-variant": "#313442",
+                        "outline": "#849495",
+                        "outline-variant": "#3a494b",
+                        "on-secondary": "#2f3131",
+                        "tertiary": "#f7f6ff",
+                        "surface-container-highest": "#313442",
+                        "on-primary-container": "#006a71",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-container": "#1b1f2c",
+                        "surface-dim": "#0f131f",
+                        "on-tertiary-fixed": "#131b2e",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-error": "#690005",
+                        "surface-bright": "#353946",
+                        "tertiary-fixed": "#dae2fc",
+                        "on-primary": "#00363a",
+                        "on-surface-variant": "#b9cacb",
+                        "primary-container": "#00f2ff",
+                        "error-container": "#93000a",
+                        "tertiary-container": "#d3daf4",
+                        "on-secondary-fixed-variant": "#454747",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "background": "#0f131f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-tertiary-container": "#575f75",
+                        "secondary": "#c6c6c7",
+                        "surface-tint": "#00dbe7",
+                        "surface-container-low": "#171b28",
+                        "inverse-surface": "#dfe2f3",
+                        "secondary-container": "#454747",
+                        "surface-container-lowest": "#0a0e1a",
+                        "on-surface": "#dfe2f3",
+                        "tertiary-fixed-dim": "#bec6df",
+                        "on-secondary-container": "#b4b5b5",
+                        "primary": "#e1fdff",
+                        "on-tertiary": "#283044",
+                        "on-primary-fixed-variant": "#004f54"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "24px",
+                        "panel-gap": "8px",
+                        "gutter": "12px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "mono-data": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "mono-data": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background selection:bg-primary-container selection:text-on-primary-container overflow-x-hidden">
+<!-- TopAppBar -->
+<nav class="fixed top-0 w-full z-50 flex items-center justify-between px-container-padding h-16 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-[0_1px_0_0_rgba(116,245,255,0.1)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed" style="font-variation-settings: 'FILL' 1;">FilmStrip</span>
+<h1 class="font-headline-md text-headline-md font-bold tracking-tighter text-primary-fixed drop-shadow-[0_0_8px_#00f2ff]">OPTIC-DRAFT // V2.0.4</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="font-mono-data text-primary-fixed bg-primary-fixed/10 px-3 py-1 border border-primary-fixed/20">FOV: 120° STABLE</span>
+<div class="hidden md:flex gap-8 items-center">
+<a class="font-label-caps text-label-caps text-primary-fixed transition-colors duration-150 flicker-on-hover" href="#">LENS_CORE</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-150 flicker-on-hover" href="#">DIAGNOSTICS</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed transition-colors duration-150 flicker-on-hover" href="#">CALIBRATION</a>
+</div>
+</div>
+</nav>
+<!-- NavigationDrawer -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 z-40 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/10 w-20">
+<div class="flex flex-col gap-8 items-center py-4">
+<div class="flex flex-col items-center gap-1 group cursor-pointer text-outline hover:text-on-surface-variant transition-colors duration-150">
+<span class="material-symbols-outlined">center_focus_strong</span>
+<span class="font-label-caps text-[10px]">SCAN</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer text-primary-fixed bg-primary-fixed/10 border-r-2 border-primary-fixed shadow-[0_0_15px_rgba(0,242,255,0.3)] w-full py-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">visibility</span>
+<span class="font-label-caps text-[10px]">LENS</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer text-outline hover:text-on-surface-variant transition-colors duration-150">
+<span class="material-symbols-outlined">architecture</span>
+<span class="font-label-caps text-[10px]">CAD</span>
+</div>
+<div class="flex flex-col items-center gap-1 group cursor-pointer text-outline hover:text-on-surface-variant transition-colors duration-150">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-[10px]">ARCHIVE</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-20 pt-24 px-container-padding pb-12 min-h-screen">
+<!-- Header Section -->
+<header class="mb-8 border-l-4 border-primary-fixed pl-6">
+<div class="flex flex-col">
+<span class="font-label-caps text-primary-fixed tracking-[0.2em] mb-1">FIRMWARE_UPDATE_REPORT // 09-XRAY</span>
+<h2 class="font-headline-lg text-headline-lg text-on-surface font-extrabold uppercase">Lens Tech Specifications</h2>
+<div class="flex gap-4 mt-2 font-mono-data text-on-surface-variant">
+<span>STATUS: <span class="text-primary-fixed">OPTIMIZED</span></span>
+<span>ENCRYPTION: AES-256</span>
+<span>HARDWARE: GEN-4 OPTICS</span>
+</div>
+</div>
+</header>
+<!-- Bento Grid Diagnostics -->
+<div class="grid grid-cols-12 gap-panel-gap">
+<!-- Blue-Light Filtration (Large Feature) -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container-low border border-white/10 p-6 relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-4 font-mono-data text-[10px] text-outline text-right">
+                    REF: 450NM_PEAK<br/>MODEL: BLUE-SHIELD_V2
+                </div>
+<div class="flex flex-col h-full">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed p-2 bg-primary-fixed/10">filter_alt</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Blue-Light Filtration</h3>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center flex-grow">
+<div class="relative aspect-video bg-surface-container-highest border border-white/5 flex items-center justify-center">
+<!-- Visual Diagram Representation -->
+<div class="absolute inset-0 flex items-center justify-center opacity-30">
+<div class="w-48 h-48 border border-primary-fixed rounded-full animate-pulse"></div>
+<div class="w-32 h-32 border border-primary-fixed/50 rounded-full absolute"></div>
+</div>
+<img alt="Blue light filtration spectrum" class="z-10 mix-blend-screen opacity-80" data-alt="A detailed technical 3D visualization of a lens layer interacting with high-energy blue light waves. The waves are shown as vibrant cyan and violet lines hitting a semi-transparent dark glass surface and being reflected or absorbed. The aesthetic is high-tech medical laboratory with glowing data callouts and a dark indigo background. Cinematic lighting emphasizes the refraction and precision engineering of the lens surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDSDcg1NsUZ1F-o5p5eryRQ78bV4Sdb23uWa-RXcih2llkPvcWPyXLl0sCPYUWW7Ag3K0jmY5_C2GB6Pmh00jk2GuTP-h6BiyjQ3ZaaPF3IUgIXxLF6qIZSPHKvH5Q1JZbKiPa2t2NDFv9njY82qWPPjle6hlO0CQJGz4I5ZQdLaZdP8uX86dIf4jAvbleEkUQsBCPO8_W-e4GnpxgMUUHVcBwmVaSEsBJFos2twv_CymockGEQf85XhW_Q9uaU3v0ik6omkdTrX0A"/>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-surface-container/50 border-l-2 border-primary-fixed">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-caps text-outline">HEV ABSORPTION</span>
+<span class="font-mono-data text-primary-fixed">98.4%</span>
+</div>
+<div class="w-full h-1 bg-surface-variant">
+<div class="h-full bg-primary-fixed w-[98.4%] shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant leading-relaxed">
+                                Advanced molecular bonding within the lens substrate specifically targets and neutralizes harmful high-energy visible (HEV) light between 380nm and 450nm while maintaining color fidelity.
+                            </p>
+<button class="w-full py-3 bg-primary-fixed text-on-primary-fixed font-label-caps hover:bg-primary-fixed-dim transition-all flicker-on-hover">RUN_SIMULATION</button>
+</div>
+</div>
+</div>
+</div>
+<!-- UV Protection (Small Feature) -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-low border border-white/10 p-6 relative">
+<div class="flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-4">shield</span>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">UV Protection</h3>
+<div class="relative w-32 h-32 mb-4 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary-fixed shadow-[0_0_10px_#00f2ff]" cx="64" cy="64" fill="transparent" r="58" stroke="currentColor" stroke-dasharray="364.4" stroke-dashoffset="0" stroke-width="4"></circle>
+</svg>
+<span class="absolute font-headline-md text-primary-fixed">100%</span>
+</div>
+<span class="font-label-caps text-outline mb-6">UVA / UVB / UVC BLOCK</span>
+<ul class="text-left w-full space-y-2 border-t border-white/10 pt-4 font-mono-data text-[12px]">
+<li class="flex justify-between"><span class="text-outline">WAVELENGTH:</span> <span class="text-on-surface">400nm</span></li>
+<li class="flex justify-between"><span class="text-outline">MATERIAL:</span> <span class="text-on-surface">POLY-DIA</span></li>
+<li class="flex justify-between"><span class="text-outline">COATING:</span> <span class="text-on-surface">E-SPF 50+</span></li>
+</ul>
+</div>
+</div>
+<!-- Anti-Reflective Coating (Data Table Layout) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low border border-white/10 p-6">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary-fixed">flare</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Anti-Reflective</h3>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-mono-data">
+<thead>
+<tr class="border-b border-white/20">
+<th class="py-2 text-outline font-label-caps text-[10px]">LAYER_ID</th>
+<th class="py-2 text-outline font-label-caps text-[10px]">TYPE</th>
+<th class="py-2 text-outline font-label-caps text-[10px]">REDUCTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr>
+<td class="py-3 text-on-surface">AR_01</td>
+<td class="py-3 text-on-surface-variant">HYDROPHOBIC</td>
+<td class="py-3 text-primary-fixed">99.2%</td>
+</tr>
+<tr>
+<td class="py-3 text-on-surface">AR_02</td>
+<td class="py-3 text-on-surface-variant">OPI-CLEAN</td>
+<td class="py-3 text-primary-fixed">98.7%</td>
+</tr>
+<tr>
+<td class="py-3 text-on-surface">AR_03</td>
+<td class="py-3 text-on-surface-variant">SCRATCH-X</td>
+<td class="py-3 text-primary-fixed">N/A</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-6 flex justify-center">
+<div class="h-24 w-full bg-gradient-to-r from-transparent via-primary-fixed/10 to-transparent flex items-center justify-around border-y border-white/5">
+<div class="text-center">
+<div class="text-[10px] text-outline">GLARE</div>
+<div class="text-lg text-primary-fixed">-99%</div>
+</div>
+<div class="w-px h-12 bg-white/10"></div>
+<div class="text-center">
+<div class="text-[10px] text-outline">TRANSMIT</div>
+<div class="text-lg text-primary-fixed">99.8%</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Photochromic Response (Asymmetric/Interactive Feel) -->
+<div class="col-span-12 md:col-span-6 bg-surface-container-low border border-white/10 p-6 relative overflow-hidden">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary-fixed">wb_sunny</span>
+<h3 class="font-headline-md text-headline-md text-on-surface">Photochromic Response</h3>
+</div>
+<div class="flex gap-4 mb-6">
+<div class="flex-1 p-3 bg-surface-container-highest border border-primary-fixed/30 text-center">
+<div class="text-primary-fixed text-xl font-bold">12s</div>
+<div class="text-[10px] text-outline uppercase">Activation</div>
+</div>
+<div class="flex-1 p-3 bg-surface-container-highest border border-white/10 text-center">
+<div class="text-on-surface text-xl font-bold">45s</div>
+<div class="text-[10px] text-outline uppercase">Fade Back</div>
+</div>
+</div>
+<div class="relative h-48 bg-black/40 border border-white/10 flex flex-col justify-end p-4">
+<!-- Graph Placeholder -->
+<div class="absolute inset-0 flex items-end px-2 gap-1 overflow-hidden opacity-40">
+<div class="w-full bg-primary-fixed/20 h-[10%]"></div>
+<div class="w-full bg-primary-fixed/20 h-[15%]"></div>
+<div class="w-full bg-primary-fixed/20 h-[30%]"></div>
+<div class="w-full bg-primary-fixed/20 h-[60%]"></div>
+<div class="w-full bg-primary-fixed/40 h-[90%] border-t-2 border-primary-fixed shadow-[0_0_15px_#00f2ff]"></div>
+<div class="w-full bg-primary-fixed/30 h-[85%]"></div>
+<div class="w-full bg-primary-fixed/20 h-[70%]"></div>
+<div class="w-full bg-primary-fixed/20 h-[40%]"></div>
+</div>
+<div class="z-10 flex justify-between items-end font-mono-data text-[10px]">
+<div>
+<span class="text-primary-fixed">●</span> UV INDEX: 8.5
+                        </div>
+<div class="text-right">
+                            TEMP: 22°C <br/> DENSITY: CAT 3
+                        </div>
+</div>
+</div>
+</div>
+<!-- Telemetry Bar -->
+<div class="col-span-12 bg-surface-container-highest border border-white/10 py-2 px-6 flex flex-wrap justify-between items-center text-[10px] font-mono-data text-outline">
+<div class="flex gap-6">
+<span class="flex items-center gap-2"><span class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span> SYSTEM_LIVE</span>
+<span>PACKET_LOSS: 0.00%</span>
+<span>LATENCY: 4ms</span>
+</div>
+<div class="flex gap-6">
+<span>COORD: 34.0522° N, 118.2437° W</span>
+<span class="text-primary-fixed font-bold">SECURE_LINK_ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- Technical Overlay Tags (Connected by leader lines concept) -->
+<div class="mt-12 flex flex-wrap gap-4">
+<div class="px-3 py-1 bg-surface-container border border-white/10 rounded-full flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-primary-fixed rotate-45"></div>
+<span class="font-mono-data text-[11px] text-on-surface">NANO_TECH_VERIFIED</span>
+</div>
+<div class="px-3 py-1 bg-surface-container border border-white/10 rounded-full flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-primary-fixed rotate-45"></div>
+<span class="font-mono-data text-[11px] text-on-surface">ISO_CERT_9001</span>
+</div>
+<div class="px-3 py-1 bg-surface-container border border-white/10 rounded-full flex items-center gap-2">
+<div class="w-1.5 h-1.5 bg-primary-fixed rotate-45"></div>
+<span class="font-mono-data text-[11px] text-on-surface">BPA_FREE_POLYMER</span>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar (Contextual) -->
+<div class="fixed bottom-0 left-20 right-0 h-16 bg-surface-container-highest/90 backdrop-blur-xl border-t border-white/10 flex items-center justify-between px-container-padding z-30">
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-outline">CONFIGURATION</span>
+<span class="font-mono-data text-on-surface">CUSTOM_LENS_PRESET_A1</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 border border-white/20 font-label-caps text-on-surface hover:bg-white/5 transition-colors">EXPORT_DATA</button>
+<button class="px-6 py-2 bg-primary-fixed text-on-primary-fixed font-label-caps font-bold shadow-[0_0_20px_rgba(0,242,255,0.4)] flicker-on-hover">APPLY_FIRMWARE</button>
+</div>
+</div>
+<!-- Background Scanline effect -->
+<div class="fixed inset-0 pointer-events-none opacity-5 bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] z-[100] bg-[length:100%_2px,3px_100%]"></div>
+</body></html>

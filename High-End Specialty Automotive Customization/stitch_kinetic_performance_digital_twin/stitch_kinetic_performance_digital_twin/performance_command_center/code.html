@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC-MIRROR | Performance Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Sora:wght@300;400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .carbon-texture {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+        }
+        .segmented-bar-bg {
+            background: repeating-linear-gradient(90deg, transparent, transparent 4px, #131313 4px, #131313 6px);
+        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #0e0e0e; }
+        ::-webkit-scrollbar-thumb { background: #ff5357; border-radius: 2px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#c8c6c5",
+                      "on-secondary-container": "#b8b8b8",
+                      "on-tertiary-container": "#2a2a29",
+                      "inverse-primary": "#bf0024",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "on-tertiary": "#313030",
+                      "surface-bright": "#393939",
+                      "inverse-surface": "#e4e2e1",
+                      "surface-container-high": "#2a2a2a",
+                      "secondary-container": "#484949",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#131313",
+                      "error-container": "#93000a",
+                      "primary": "#ffb3af",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#353535",
+                      "surface": "#131313",
+                      "outline-variant": "#5f3e3d",
+                      "on-primary-container": "#5c000b",
+                      "secondary": "#c6c6c6",
+                      "inverse-on-surface": "#303030",
+                      "surface-container": "#1f2020",
+                      "background": "#131313",
+                      "on-primary": "#68000e",
+                      "primary-fixed-dim": "#ffb3af",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "surface-container-low": "#1b1c1c",
+                      "surface-container-highest": "#353535",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "on-primary-fixed": "#410006",
+                      "on-background": "#e4e2e1",
+                      "on-secondary": "#2f3131",
+                      "outline": "#b08784",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "primary-container": "#ff5357",
+                      "on-surface": "#e4e2e1",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-error": "#690005",
+                      "secondary-fixed": "#e3e2e2",
+                      "tertiary-container": "#929090",
+                      "tertiary-fixed": "#e5e2e1",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-tint": "#ffb3af",
+                      "on-secondary-fixed-variant": "#464747",
+                      "on-primary-fixed-variant": "#930019",
+                      "primary-fixed": "#ffdad8",
+                      "on-surface-variant": "#e9bcb9"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "stack-sm": "8px",
+                      "margin-mobile": "16px",
+                      "margin-desktop": "32px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "stack-md": "16px",
+                      "stack-lg": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Grotesk"],
+                      "data-display": ["JetBrains Mono"],
+                      "data-label": ["JetBrains Mono"],
+                      "body-lg": ["Sora"],
+                      "headline-md": ["Space Grotesk"],
+                      "label-sm": ["JetBrains Mono"],
+                      "body-md": ["Sora"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "data-display": ["28px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "data-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["10px", {"lineHeight": "12px", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-hidden carbon-texture">
+<!-- TopNavBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-[0_0_15px_rgba(255,179,175,0.1)] flex justify-between items-center px-margin-desktop h-16 w-full">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md tracking-tighter text-primary italic">KINETIC-MIRROR</span>
+<nav class="hidden md:flex gap-stack-md">
+<a class="font-data-label text-data-label text-primary border-b-2 border-primary pb-1" href="#">Telemetry</a>
+<a class="font-data-label text-data-label text-secondary hover:text-on-surface-variant transition-colors" href="#">Fleet</a>
+<a class="font-data-label text-data-label text-secondary hover:text-on-surface-variant transition-colors" href="#">Support</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-sm">search</span>
+<input class="bg-surface-container-lowest border-none text-data-label font-data-label pl-10 pr-4 py-2 w-64 focus:ring-1 focus:ring-primary-container" placeholder="QUERY SYSTEM..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-secondary hover:bg-white/5 p-2 rounded-full transition-all">settings</button>
+<button class="material-symbols-outlined text-secondary hover:bg-white/5 p-2 rounded-full transition-all">notifications</button>
+<img alt="Engineer Profile" class="w-8 h-8 rounded-full border border-primary/30" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNeLP2xcz-wI_MxJSt0i9cNB0JzylBwPMDDjvjpHVzE1fxeK9loLf65ztRIuubSP4TsJ83KyOvgfe-GJhw3y_KKVuW4ZWnoxy-2u8RGMV9bLHGAnVyde2J3qqAjJZkt6joFkFEfve54YYq9cm_a4WrqPhK5U4UDkvGXQQqzGwaSqpz6kw-VQ_NnJUI7Ydhb-i8m-xTbYV-_F68i-DHlSVXjPORg_BFt--2Vls_QcMTcDIoeT4Ub0j2J1EPps7V4iVM39aHaQLbDgo"/>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-white/5 shadow-2xl flex flex-col py-stack-lg px-stack-md space-y-stack-sm pt-20 z-40">
+<div class="mb-stack-lg px-2">
+<div class="flex items-center gap-stack-sm mb-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-headline-lg text-primary uppercase tracking-widest text-[18px]">MARK-IV</span>
+</div>
+<p class="font-data-label text-data-label text-secondary opacity-70">ACTIVE_LINK_STABLE</p>
+</div>
+<nav class="flex-grow space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-container text-on-primary-container shadow-[0_0_20px_rgba(255,83,87,0.3)] rounded-lg font-data-display text-data-label" href="#">
+<span class="material-symbols-outlined">speed</span>
+                Command Center
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-secondary-container hover:text-primary hover:translate-x-1 transition-all font-data-display text-data-label" href="#">
+<span class="material-symbols-outlined">directions_car</span>
+                Fleet Manager
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-secondary-container hover:text-primary hover:translate-x-1 transition-all font-data-display text-data-label" href="#">
+<span class="material-symbols-outlined">forum</span>
+                Community Hub
+            </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-secondary-container hover:text-primary hover:translate-x-1 transition-all font-data-display text-data-label" href="#">
+<span class="material-symbols-outlined">terminal</span>
+                Diagnostics
+            </a>
+</nav>
+<div class="space-y-4 pt-4 border-t border-white/5">
+<button class="w-full py-3 bg-primary text-on-primary font-bold text-xs tracking-widest rounded-sm hover:brightness-110 active:scale-95 transition-all">
+                DEPLOY UPDATE
+            </button>
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-4 py-2 text-on-secondary-container hover:text-primary text-xs font-data-label" href="#">
+<span class="material-symbols-outlined text-sm">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-on-secondary-container hover:text-error text-xs font-data-label" href="#">
+<span class="material-symbols-outlined text-sm">logout</span> Logout
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 pt-16 h-screen flex flex-col p-6 gap-6">
+<!-- Dashboard Top Row: Digital Twin & Controls -->
+<div class="flex-grow grid grid-cols-12 gap-6 overflow-hidden">
+<!-- Left: 3D X-Ray Car View -->
+<section class="col-span-8 glass-panel bg-surface-container-low/40 rounded-xl relative flex flex-col overflow-hidden">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-2">
+<div class="bg-black/60 px-3 py-1 border-l-2 border-primary">
+<span class="text-primary font-data-label text-[10px] block">CHASSIS STATUS</span>
+<span class="font-data-display text-headline-md text-white">NOMINAL</span>
+</div>
+</div>
+<!-- 3D Viewport Placeholder -->
+<div class="flex-grow flex items-center justify-center relative">
+<img class="w-full h-full object-cover opacity-60" data-alt="A detailed 3D wireframe schematic of a high-performance supercar, rendered in metallic silver lines against a deep charcoal carbon fiber background. The car is surrounded by glowing neon red data nodes and technical telemetry labels. The scene is lit by a high-contrast HUD aesthetic with floating holographic interfaces and a sense of aggressive engineering precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBgdkC_gDPvO20fDpTgf-R65iRURb9tXExSNYdC13LoQzfPq3itiFj1Xb_4t7dnDIDAL-cck8GakVDe06nE_ThbkSxgm1Nu8jcd_yPCGbtQ2IS3wh5uxaUFN1sfTjlBlsCMNZngA0K_LmAUw1deUtWJD56ldklNeV-AkL3fVpLtwPefELrl4l4vRJ-gaFWlx5yMmvv04K5l75kOYO7GffHyTkndDzBVuQ5Zf2_dK4yyNHhqMftBUeJg3B_VD3iZWRQ5pVOdT9HGhiE"/>
+<!-- Floating Data Nodes -->
+<div class="absolute top-1/4 right-1/4 flex flex-col items-end">
+<div class="w-16 h-[1px] bg-primary mb-2"></div>
+<div class="bg-primary/10 border border-primary/40 p-2 backdrop-blur-md">
+<span class="text-primary font-data-label text-[9px] uppercase">Aero-Drag</span>
+<span class="text-white font-data-display text-lg block">0.28 <small class="text-[10px]">Cd</small></span>
+</div>
+</div>
+<div class="absolute bottom-1/3 left-1/4 flex flex-col items-start">
+<div class="w-16 h-[1px] bg-primary mb-2"></div>
+<div class="bg-primary/10 border border-primary/40 p-2 backdrop-blur-md">
+<span class="text-primary font-data-label text-[9px] uppercase">Torque-Vector</span>
+<span class="text-white font-data-display text-lg block">84<small class="text-[10px]">%</small></span>
+</div>
+</div>
+</div>
+<!-- Live Zonal Telemetry Overlays -->
+<div class="h-20 border-t border-white/10 flex divide-x divide-white/10 bg-black/40">
+<div class="flex-1 p-3 flex flex-col justify-center items-center">
+<span class="text-secondary font-data-label text-[9px]">FRONT TIRES</span>
+<div class="flex gap-4">
+<span class="text-white font-data-display text-xl">82°C</span>
+<span class="text-white font-data-display text-xl">84°C</span>
+</div>
+</div>
+<div class="flex-1 p-3 flex flex-col justify-center items-center">
+<span class="text-secondary font-data-label text-[9px]">BRAKE PRESSURE</span>
+<div class="w-full bg-surface-container h-1.5 mt-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[65%]"></div>
+</div>
+</div>
+<div class="flex-1 p-3 flex flex-col justify-center items-center">
+<span class="text-secondary font-data-label text-[9px]">SUSPENSION COMP.</span>
+<div class="flex gap-2 items-end h-6">
+<div class="w-1 bg-primary h-3"></div>
+<div class="w-1 bg-primary h-5"></div>
+<div class="w-1 bg-primary h-2"></div>
+<div class="w-1 bg-primary h-4"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right: Detailed Tuning Sliders -->
+<section class="col-span-4 flex flex-col gap-6 overflow-y-auto pr-2">
+<div class="glass-panel bg-surface-container-high/40 p-5 rounded-xl">
+<h3 class="font-headline-md text-sm text-primary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">tune</span> TUNING MATRIX
+                    </h3>
+<div class="space-y-6">
+<!-- Slider Block -->
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-data-label text-secondary uppercase">
+<span>Suspension Stiffness</span>
+<span class="text-primary">8.5 / 10.0</span>
+</div>
+<div class="relative h-6 flex items-center">
+<div class="absolute w-full h-1 bg-surface-container-highest rounded-full"></div>
+<div class="absolute w-[85%] h-1 bg-primary rounded-full shadow-[0_0_10px_rgba(255,83,87,0.5)]"></div>
+<div class="absolute left-[85%] -translate-x-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full cursor-pointer hover:scale-125 transition-transform"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-data-label text-secondary uppercase">
+<span>Steering Ratio</span>
+<span class="text-primary">12.2:1</span>
+</div>
+<div class="relative h-6 flex items-center">
+<div class="absolute w-full h-1 bg-surface-container-highest rounded-full"></div>
+<div class="absolute w-[45%] h-1 bg-primary rounded-full shadow-[0_0_10px_rgba(255,83,87,0.5)]"></div>
+<div class="absolute left-[45%] -translate-x-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full cursor-pointer"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between text-[10px] font-data-label text-secondary uppercase">
+<span>Aero Balance</span>
+<span class="text-primary">F 42% / R 58%</span>
+</div>
+<div class="relative h-6 flex items-center">
+<div class="absolute w-full h-1 bg-surface-container-highest rounded-full"></div>
+<div class="absolute left-[42%] w-[16%] h-1 bg-primary rounded-full shadow-[0_0_10px_rgba(255,83,87,0.5)]"></div>
+<div class="absolute left-[50%] -translate-x-1/2 w-4 h-4 bg-white border-2 border-primary rounded-full cursor-pointer"></div>
+</div>
+</div>
+</div>
+<button class="mt-8 w-full py-2 border border-primary/50 text-primary font-data-label text-[10px] tracking-[0.2em] hover:bg-primary hover:text-on-primary transition-all">
+                        COMMIT CALIBRATION
+                    </button>
+</div>
+<!-- Quick Status Bento -->
+<div class="grid grid-cols-2 gap-4">
+<div class="glass-panel bg-surface-container-lowest/60 p-4 rounded-xl">
+<span class="text-secondary font-data-label text-[9px]">ENGINE LOAD</span>
+<div class="text-2xl font-data-display text-white mt-1">94%</div>
+<div class="w-full bg-surface-container h-1 mt-2">
+<div class="bg-primary h-full w-[94%]"></div>
+</div>
+</div>
+<div class="glass-panel bg-surface-container-lowest/60 p-4 rounded-xl">
+<span class="text-secondary font-data-label text-[9px]">OIL TEMP</span>
+<div class="text-2xl font-data-display text-error mt-1">112°</div>
+<div class="w-full bg-surface-container h-1 mt-2">
+<div class="bg-error h-full w-[88%]"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Dashboard Bottom Row: Live Telemetry Stream -->
+<div class="h-64 grid grid-cols-12 gap-6">
+<!-- G-Force Graph -->
+<section class="col-span-4 glass-panel bg-surface-container-low/40 rounded-xl p-4 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<span class="font-data-label text-[10px] text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">analytics</span> G-FORCE VECTOR
+                    </span>
+<span class="font-data-display text-white text-xs">MAX 4.2G</span>
+</div>
+<div class="flex-grow flex items-center justify-center relative">
+<!-- Circular G-Grid -->
+<div class="w-32 h-32 border border-white/10 rounded-full flex items-center justify-center relative">
+<div class="w-24 h-24 border border-white/5 rounded-full"></div>
+<div class="w-16 h-16 border border-white/5 rounded-full"></div>
+<!-- Axis -->
+<div class="absolute h-full w-[1px] bg-white/10"></div>
+<div class="absolute w-full h-[1px] bg-white/10"></div>
+<!-- Live Point -->
+<div class="absolute top-1/4 right-1/3 w-3 h-3 bg-primary rounded-full shadow-[0_0_15px_#ff5357]"></div>
+</div>
+<!-- Trail -->
+<svg class="absolute inset-0 w-full h-full opacity-30" viewbox="0 0 100 100">
+<path d="M50,50 Q60,30 80,40" fill="none" stroke="#ff5357" stroke-width="0.5"></path>
+</svg>
+</div>
+</section>
+<!-- Thermal Mapping Stream -->
+<section class="col-span-8 glass-panel bg-surface-container-low/40 rounded-xl p-4 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<span class="font-data-label text-[10px] text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">thermostat</span> THERMAL STREAM [CHANNEL_04]
+                    </span>
+<div class="flex gap-2">
+<div class="bg-primary/20 text-primary text-[9px] px-2 py-0.5 border border-primary/30">LIVE</div>
+<div class="bg-surface-container text-secondary text-[9px] px-2 py-0.5">REC</div>
+</div>
+</div>
+<div class="flex-grow grid grid-cols-4 gap-2">
+<!-- Segmented Telemetry Bars -->
+<div class="flex flex-col gap-1">
+<span class="text-[8px] font-data-label text-secondary">CORE_1</span>
+<div class="flex-grow bg-surface-container relative segmented-bar-bg">
+<div class="absolute bottom-0 w-full bg-primary h-[70%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[8px] font-data-label text-secondary">CORE_2</span>
+<div class="flex-grow bg-surface-container relative segmented-bar-bg">
+<div class="absolute bottom-0 w-full bg-primary h-[85%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[8px] font-data-label text-secondary">CORE_3</span>
+<div class="flex-grow bg-surface-container relative segmented-bar-bg">
+<div class="absolute bottom-0 w-full bg-error h-[95%] animate-pulse"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[8px] font-data-label text-secondary">CORE_4</span>
+<div class="flex-grow bg-surface-container relative segmented-bar-bg">
+<div class="absolute bottom-0 w-full bg-primary h-[60%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 flex justify-between font-data-label text-[10px] text-secondary">
+<span>14:02:44.22</span>
+<span>BUFFER: 100%</span>
+<span class="text-primary">AVG_TEMP: 92°C</span>
+</div>
+</section>
+</div>
+</main>
+<!-- FAB Overlay (Only for specific action) -->
+<button class="fixed bottom-8 right-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0_0_30px_#ff5357] flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-50">
+<span class="material-symbols-outlined text-3xl" data-weight="fill">bolt</span>
+</button>
+</body></html>

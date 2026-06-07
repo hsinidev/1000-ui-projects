@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background-color: #0f131f;
+            background-image: linear-gradient(rgba(0, 242, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 4px;
+        }
+        .glass-panel {
+            background: rgba(23, 27, 40, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(225, 253, 255, 0.1);
+        }
+        .cyan-glow-border {
+            border: 1px solid #00f2ff;
+            box-shadow: inset 0 0 10px rgba(0, 242, 255, 0.2), 0 0 5px rgba(0, 242, 255, 0.1);
+        }
+        .scan-line {
+            position: relative;
+            overflow: hidden;
+        }
+        .scan-line::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(0, 242, 255, 0.1);
+            animation: none; /* Requested no animations */
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#00dbe7",
+                      "on-background": "#dfe2f3",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "inverse-surface": "#dfe2f3",
+                      "on-tertiary-fixed-variant": "#3f465b",
+                      "on-primary": "#00363a",
+                      "tertiary-fixed": "#dae2fc",
+                      "outline-variant": "#3a494b",
+                      "tertiary-container": "#d3daf4",
+                      "on-tertiary": "#283044",
+                      "error-container": "#93000a",
+                      "on-tertiary-container": "#575f75",
+                      "surface-container-highest": "#313442",
+                      "primary": "#e1fdff",
+                      "on-primary-fixed-variant": "#004f54",
+                      "on-secondary-container": "#b4b5b5",
+                      "primary-fixed": "#74f5ff",
+                      "surface-dim": "#0f131f",
+                      "surface": "#0f131f",
+                      "on-secondary": "#2f3131",
+                      "primary-container": "#00f2ff",
+                      "error": "#ffb4ab",
+                      "surface-variant": "#313442",
+                      "surface-container-low": "#171b28",
+                      "surface-container-lowest": "#0a0e1a",
+                      "surface-container": "#1b1f2c",
+                      "on-surface": "#dfe2f3",
+                      "surface-tint": "#00dbe7",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-tertiary-fixed": "#131b2e",
+                      "on-error": "#690005",
+                      "background": "#0f131f",
+                      "tertiary-fixed-dim": "#bec6df",
+                      "surface-container-high": "#262a37",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-fixed": "#002022",
+                      "outline": "#849495",
+                      "secondary": "#c6c6c7",
+                      "secondary-container": "#454747",
+                      "on-secondary-fixed-variant": "#454747",
+                      "inverse-on-surface": "#2c303d",
+                      "on-error-container": "#ffdad6",
+                      "inverse-primary": "#00696f",
+                      "on-primary-container": "#006a71",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "tertiary": "#f7f6ff",
+                      "surface-bright": "#353946"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "panel-gap": "8px",
+                      "container-padding": "24px",
+                      "gutter": "12px"
+              },
+              "fontFamily": {
+                      "body-lg": ["JetBrains Mono"],
+                      "label-caps": ["JetBrains Mono"],
+                      "headline-md": ["JetBrains Mono"],
+                      "mono-data": ["JetBrains Mono"],
+                      "headline-lg": ["JetBrains Mono"],
+                      "body-sm": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-lg": ["16px", {"lineHeight": "24px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "mono-data": ["13px", {"lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "letterSpacing": "0em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex">
+<!-- SideNavBar Component -->
+<aside class="hidden md:flex flex-col h-screen py-container-padding bg-surface-container-low border-r border-outline-variant backdrop-blur-xl w-64 fixed left-0 top-0 z-50">
+<div class="px-container-padding mb-10">
+<h1 class="font-headline-lg text-headline-lg text-primary-fixed-dim tracking-tighter">OPTIC-DRAFT</h1>
+<div class="mt-2 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#00f2ff]"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">LENS_LAB_VERIFIED</span>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<!-- Active Tab: SCAN (Dashboard Context) -->
+<a class="flex items-center gap-3 bg-primary-container/10 border-l-2 border-primary-container text-primary-container p-panel-gap font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="biometric_setup">FilmStrip</span>
+<span>SCAN</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant p-panel-gap font-label-caps text-label-caps opacity-70 hover:bg-primary-container/5 hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="architecture">architecture</span>
+<span>DESIGN</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant p-panel-gap font-label-caps text-label-caps opacity-70 hover:bg-primary-container/5 hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span>CLINIC</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant p-panel-gap font-label-caps text-label-caps opacity-70 hover:bg-primary-container/5 hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span>USER</span>
+</a>
+</nav>
+<div class="px-container-padding mt-auto space-y-6">
+<button class="w-full py-3 border border-primary-container text-primary-container font-label-caps text-label-caps hover:bg-primary-container hover:text-on-primary transition-all active:scale-95">
+                CALIBRATE_SYSTEM
+            </button>
+<div class="pt-6 border-t border-outline-variant">
+<a class="flex items-center gap-3 text-on-surface-variant p-panel-gap font-label-caps text-label-caps opacity-70 hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>SETTINGS</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant p-panel-gap font-label-caps text-label-caps opacity-70 hover:text-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>LOGOUT</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 md:ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar Component -->
+<header class="flex justify-between items-center px-container-padding h-16 w-full z-50 bg-surface-container border-b border-outline-variant sticky top-0">
+<div class="flex items-center gap-6">
+<span class="font-headline-md text-headline-md font-bold text-primary-container tracking-tighter">ADMIN_DASHBOARD</span>
+<div class="hidden lg:flex items-center gap-4">
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm" data-icon="sensors">sensors</span>
+<span class="font-mono-data text-mono-data text-primary-fixed-dim">UPLINK_STABLE</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="glass-panel px-4 py-1 flex items-center gap-3 border border-outline-variant">
+<span class="font-mono-data text-mono-data text-on-surface-variant">NODE_09: NYC_NORTH</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="security">security</span>
+</div>
+<div class="w-10 h-10 rounded bg-primary-container/20 flex items-center justify-center border border-primary-container/50">
+<span class="material-symbols-outlined text-primary-container" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-container-padding space-y-gutter">
+<!-- Summary Grid -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="glass-panel p-4 border-l-4 border-l-primary-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SCAN_THROUGHPUT</p>
+<h3 class="font-headline-lg text-headline-lg text-primary-container mt-1">1,284</h3>
+<div class="flex items-center gap-1 text-primary-fixed-dim mt-2">
+<span class="material-symbols-outlined text-xs" data-icon="trending_up">trending_up</span>
+<span class="font-mono-data text-mono-data">+12.4% PER_HR</span>
+</div>
+</div>
+<div class="glass-panel p-4 border-l-4 border-l-primary-fixed-dim">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ACTIVE_SUBJECTS</p>
+<h3 class="font-headline-lg text-headline-lg text-primary-fixed-dim mt-1">42</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mt-2">
+<span class="material-symbols-outlined text-xs" data-icon="group">group</span>
+<span class="font-mono-data text-mono-data">CURRENT_SESSIONS</span>
+</div>
+</div>
+<div class="glass-panel p-4 border-l-4 border-l-tertiary-fixed-dim">
+<p class="font-label-caps text-label-caps text-on-surface-variant">FABRICATION_QUEUE</p>
+<h3 class="font-headline-lg text-headline-lg text-tertiary-fixed-dim mt-1">18</h3>
+<div class="flex items-center gap-1 text-on-surface-variant mt-2">
+<span class="material-symbols-outlined text-xs" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="font-mono-data text-mono-data">AVG_WAIT: 14M</span>
+</div>
+</div>
+<div class="glass-panel p-4 border-l-4 border-l-primary-container">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM_HEALTH</p>
+<h3 class="font-headline-lg text-headline-lg text-primary-container mt-1">99.9%</h3>
+<div class="flex items-center gap-1 text-primary-container mt-2">
+<span class="material-symbols-outlined text-xs" data-icon="check_circle">check_circle</span>
+<span class="font-mono-data text-mono-data">ALL_SYSTEMS_GO</span>
+</div>
+</div>
+</div>
+<!-- Analytics Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Scan Velocity Chart -->
+<div class="lg:col-span-8 glass-panel p-6 scan-line">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">SCAN_VELOCITY_INDEX</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant">REAL-TIME DATA STREAM // PHOTOGRAMMETRIC THROUGHPUT</p>
+</div>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-primary-container/20 border border-primary-container text-primary-container font-mono-data text-xs">24H_CYCLE</span>
+<span class="px-3 py-1 border border-outline-variant text-on-surface-variant font-mono-data text-xs">ARCHIVE</span>
+</div>
+</div>
+<!-- Mock Chart Visualization -->
+<div class="h-64 flex items-end gap-2 px-2 border-b border-l border-outline-variant">
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[40%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[60%]"></div>
+<div class="flex-1 bg-primary-container/20 border-t-2 border-primary-container h-[55%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[75%]"></div>
+<div class="flex-1 bg-primary-container/30 border-t-2 border-primary-container h-[90%] shadow-[0_0_15px_rgba(0,242,255,0.3)]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[65%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[45%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[80%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[70%]"></div>
+<div class="flex-1 bg-primary-container/10 border-t-2 border-primary-container h-[85%]"></div>
+</div>
+<div class="flex justify-between mt-4 font-mono-data text-xs text-on-surface-variant opacity-50">
+<span>00:00</span><span>04:00</span><span>08:00</span><span>12:00</span><span>16:00</span><span>20:00</span>
+</div>
+</div>
+<!-- Calibration Monitor -->
+<div class="lg:col-span-4 glass-panel p-6 flex flex-col">
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight mb-6">CALIBRATION_MONITOR</h2>
+<div class="space-y-6 flex-1">
+<div class="space-y-2">
+<div class="flex justify-between font-label-caps text-label-caps">
+<span class="text-on-surface">LENS_AXIS_PRECISION</span>
+<span class="text-primary-container">99.98%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full overflow-hidden">
+<div class="h-full bg-primary-container w-[99.98%] shadow-[0_0_10px_#00f2ff]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-caps text-label-caps">
+<span class="text-on-surface">PRISM_STABILITY</span>
+<span class="text-primary-fixed-dim">98.42%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[98.42%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-caps text-label-caps">
+<span class="text-on-surface">COATING_UNIFORMITY</span>
+<span class="text-tertiary-fixed-dim">94.10%</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full overflow-hidden">
+<div class="h-full bg-tertiary-fixed-dim w-[94.1%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 p-4 bg-primary-container/5 border border-primary-container/20">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary-container" data-icon="info">info</span>
+<div class="font-body-sm text-body-sm text-on-surface-variant">
+                                NEXT CALIBRATION CYCLE SCHEDULED IN <span class="text-primary-container font-bold">04:12:33</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Layout: Queue & Active Sessions -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- Fabrication Queue -->
+<div class="glass-panel">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-label-caps text-label-caps text-primary tracking-widest">FABRICATION_QUEUE</h2>
+<span class="font-mono-data text-mono-data text-on-surface-variant text-xs">TOTAL_LOAD: 82%</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-4 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale brightness-125" data-alt="A macro photograph of high-tech eyeglasses lenses being precision-cut in a dark optical laboratory. The lenses glow with a faint cyan light from laser measuring tools. The atmosphere is clinical and futuristic, emphasizing the technical craftsmanship of the eyewear fabrication process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5fPqgHfEOLbkXKz8Rbon0kpScVC_ZZeL5iZVcS_KWEEr3C4PxGBli9fzZB2h37I37lBpFDmnx4YN08G9C-EitPMU3EoBVZm7cIs_rvau5p4O5ZxHuWJ0OyCD8b2e4xrhIUj73894KXtK-1obguGJC-Og0e4ywwatsC07TrJ9vr7PzLaC-oSI80bUsaSTVJNMst_s2j3lYPmoKYg0aKjV0n9QUMBOz3N7srXPr1Jhb2-hjNu8DGYPiVPSnzAZxRiaO8at9Z7xUYXM"/>
+</div>
+<div>
+<p class="font-mono-data text-mono-data text-on-surface">JOB_ID: #FF-9021</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">BIFOCAL_DIGITAL_RESURFACING</p>
+</div>
+</div>
+<span class="px-2 py-1 bg-primary-container/10 border border-primary-container text-primary-container font-mono-data text-[10px]">POLISHING</span>
+</div>
+<div class="p-4 flex justify-between items-center">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-surface-container-highest overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover grayscale brightness-125" data-alt="Technical schematic view of an eyeglass frame displayed on a high-resolution digital screen. The frame is rendered with cyan vector lines and measurement data overlays. The surrounding lab is dark indigo with subtle reflections of the digital interface on polished metal surfaces." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJv7-HDyti4hJRc5hGbiC4DjLeoZ0FlMfOhnEBFONZb4xchqpBeHNXyC0zLbTGA1A7mn099joIqDMRBR0-cVT--qAdDiE_cLAst0D6MAbWEXRhABaQCahP-uo3uzh-SBZPJBXZjIHlRXUr68BjAS0Tjk-5fqUKbZ_O5_TiRLsx3l55MI61T5yu2Xg6_fjXZJQvJET4nIwFeSsKyJmlHLXO31wEeMjJ93S5FsKej5kmMee32dSUBq4xEtMCkfwQYP0VA4OjQyqdlfI"/>
+</div>
+<div>
+<p class="font-mono-data text-mono-data text-on-surface">JOB_ID: #FF-9022</p>
+<p class="font-body-sm text-body-sm text-on-surface-variant">CARBON_FIBER_FRAME_MILLING</p>
+</div>
+</div>
+<span class="px-2 py-1 bg-surface-container-highest border border-outline-variant text-on-surface-variant font-mono-data text-[10px]">QUEUED</span>
+</div>
+</div>
+<button class="w-full p-3 font-label-caps text-label-caps text-primary-container/70 hover:text-primary-container transition-colors">VIEW_ALL_QUEUE_DATA</button>
+</div>
+<!-- System Diagnostic Feed -->
+<div class="glass-panel overflow-hidden">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-label-caps text-label-caps text-primary tracking-widest">SYSTEM_DIAGNOSTIC_FEED</h2>
+<span class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-mono-data text-mono-data text-primary-container text-[10px]">LIVE</span>
+</span>
+</div>
+<div class="p-4 space-y-3 font-mono-data text-[11px] h-64 overflow-y-auto">
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:01]</span>
+<span class="text-primary-fixed-dim">DATA_PACKET_RECEIVED: NODE_09_NYC</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:04]</span>
+<span class="text-on-surface">SCANNER_AXIS_01: ALIGNMENT_COMPLETE</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:08]</span>
+<span class="text-error">WARNING: THERMAL_THROTTLING_DEVIATION +2.4%</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:12]</span>
+<span class="text-on-surface">LENS_INDEX_CALCULATION: 0.002ms</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:15]</span>
+<span class="text-primary-container">CRYPTOGRAPHIC_HANDSHAKE: SUCCESS</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:19]</span>
+<span class="text-on-surface">HEARTBEAT_PULSE: DETECTED</span>
+</div>
+<div class="flex gap-4">
+<span class="text-on-surface-variant">[14:22:22]</span>
+<span class="text-on-surface">SYSTEM_STATE: OPERATIONAL</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Component -->
+<footer class="flex justify-between items-center px-container-padding h-10 w-full z-40 bg-surface-container-lowest border-t border-outline-variant mt-auto">
+<span class="font-mono-data text-mono-data text-on-surface-variant text-[10px]">©2024 OPTIC-DRAFT // REAL_TIME_COORDINATES: 40.7128° N, 74.0060° W // LENS_CALIBRATION: ACTIVE</span>
+<div class="flex gap-6">
+<a class="font-mono-data text-mono-data text-on-surface-variant text-[10px] hover:text-primary-fixed-dim transition-colors" href="#">SYSTEM_STATUS</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant text-[10px] hover:text-primary-fixed-dim transition-colors" href="#">SECURITY_ENCRYPTION_v2</a>
+</div>
+</footer>
+</main>
+<!-- Contextual Telemetry Overlay (Example of UI Detail) -->
+<div class="fixed bottom-12 right-6 glass-panel cyan-glow-border px-3 py-2 flex flex-col items-end pointer-events-none opacity-60">
+<span class="font-mono-data text-[10px] text-primary-container">LATENCY: 12ms</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant">DROPPED_FRAMES: 0</span>
+</div>
+</body></html>

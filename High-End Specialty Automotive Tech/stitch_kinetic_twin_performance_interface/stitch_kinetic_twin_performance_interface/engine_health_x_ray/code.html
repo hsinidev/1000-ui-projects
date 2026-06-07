@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC-TWIN | Engine Health &amp; X-Ray</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&amp;family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#e5e2e1",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "error-container": "#93000a",
+                    "on-primary-fixed": "#410000",
+                    "inverse-on-surface": "#313030",
+                    "secondary-fixed-dim": "#c6c6ce",
+                    "surface-container-highest": "#353534",
+                    "on-secondary": "#2f3036",
+                    "outline-variant": "#603e39",
+                    "on-surface-variant": "#ebbbb4",
+                    "on-surface": "#e5e2e1",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-primary-fixed-variant": "#930100",
+                    "primary": "#ffb4a8",
+                    "secondary-fixed": "#e2e2ea",
+                    "primary-fixed-dim": "#ffb4a8",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-low": "#1c1b1b",
+                    "on-background": "#e5e2e1",
+                    "on-secondary-fixed": "#1a1b21",
+                    "on-tertiary-container": "#2a2a2a",
+                    "tertiary": "#c8c6c5",
+                    "on-secondary-fixed-variant": "#45464d",
+                    "surface": "#131313",
+                    "surface-bright": "#3a3939",
+                    "surface-variant": "#353534",
+                    "surface-tint": "#ffb4a8",
+                    "surface-container": "#201f1f",
+                    "secondary": "#c6c6ce",
+                    "surface-container-high": "#2a2a2a",
+                    "on-tertiary": "#313030",
+                    "on-primary": "#690100",
+                    "on-primary-container": "#5c0000",
+                    "outline": "#b18780",
+                    "error": "#ffb4ab",
+                    "primary-fixed": "#ffdad4",
+                    "surface-container-lowest": "#0e0e0e",
+                    "background": "#131313",
+                    "on-error": "#690005",
+                    "inverse-primary": "#c00100",
+                    "surface-dim": "#131313",
+                    "tertiary-container": "#929090",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "on-secondary-container": "#b4b4bc",
+                    "primary-container": "#ff5540",
+                    "secondary-container": "#45464d"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-desktop": "32px",
+                    "container-max": "1440px",
+                    "unit": "4px",
+                    "margin-mobile": "16px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "headline-display": ["Space Grotesk"],
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "data-numeral": ["Space Grotesk"],
+                    "label-caps": ["JetBrains Mono"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "headline-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "data-numeral": ["20px", {"lineHeight": "1", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0e0e0e;
+            background-image: 
+                radial-gradient(circle at 2px 2px, rgba(255, 180, 168, 0.05) 1px, transparent 0);
+            background-size: 32px 32px;
+        }
+        .carbon-texture {
+            background-color: #131313;
+            background-image: 
+                linear-gradient(45deg, #0a0a0a 25%, transparent 25%), 
+                linear-gradient(-45deg, #0a0a0a 25%, transparent 25%), 
+                linear-gradient(45deg, transparent 75%, #0a0a0a 75%), 
+                linear-gradient(-45deg, transparent 75%, #0a0a0a 75%);
+            background-size: 4px 4px;
+            background-position: 0 0, 0 2px, 2px -2px, -2px 0px;
+        }
+        .beveled-edge {
+            border: 1px solid rgba(198, 198, 206, 0.2);
+            border-top: 1px solid rgba(198, 198, 206, 0.4);
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(255, 85, 64, 0.4);
+        }
+        .hazard-stripes {
+            background: repeating-linear-gradient(
+                45deg,
+                #690100,
+                #690100 10px,
+                #0e0e0e 10px,
+                #0e0e0e 20px
+            );
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-background dark:bg-background border-b border-outline-variant/20">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary dark:text-primary">speed</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tighter text-primary dark:text-primary">KINETIC-TWIN</h1>
+</div>
+<button class="active:opacity-80">
+<span class="material-symbols-outlined text-on-surface-variant dark:text-on-surface-variant hover:text-primary transition-colors duration-100">settings</span>
+</button>
+</header>
+<main class="pt-20 pb-32 px-4 max-w-container-max mx-auto">
+<!-- X-Ray Perspective Section -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-gutter">
+<div class="lg:col-span-8 relative carbon-texture rounded-lg beveled-edge overflow-hidden aspect-video lg:aspect-auto lg:h-[600px] flex items-center justify-center">
+<!-- X-Ray Image Placeholder with Blueprint Style -->
+<div class="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none">
+<img alt="Technical X-Ray view" class="w-full h-full object-cover grayscale invert" data-alt="A highly detailed technical 3D X-ray blueprint of a high-performance sports car drivetrain. The image showcases the internal mechanical components including the engine block, turbochargers, and transmission in a translucent, glowing blue and silver wireframe style. The background is a dark, textured carbon fiber mesh. Bright neon red hotspots illuminate specific critical sensors and fluid reservoirs, creating an atmosphere of advanced automotive engineering and high-stakes performance monitoring." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTcUafOIgzGgxxgVw21Zoy3VEpxYrkdiiqOsUVgctCgJie45Givw1TIf0GgEK135GIL0J36CmGof8IuUB1eLjU0aCvH6rCZB20vDXsSr2Y8zSGjQ3WTKl1v4uRQ9sbbPRUrHK46fA5N752aq8e3EHoLz9vPF4PUbgMiNj8h7HvuSMmt5JYnU2jN1G5obScmbo0dZ-3citOg0xVNfkJHJElCp7Tb5nhcNicoqrHa302aU21-c_0d58snI4TumYZO-xUYgq6_luYO9k"/>
+</div>
+<!-- Interactive Hotspots -->
+<div class="relative w-full h-full">
+<!-- Turbo Boost Hotspot -->
+<div class="absolute top-1/3 left-1/4 group cursor-pointer">
+<div class="w-4 h-4 bg-primary-container rounded-full neon-glow animate-pulse"></div>
+<div class="absolute left-6 top-[-12px] bg-surface-container-high p-3 beveled-edge w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<p class="font-label-caps text-label-caps text-primary mb-1">TURBO BOOST</p>
+<p class="font-data-numeral text-data-numeral">2.4 <span class="text-[10px] font-label-caps text-on-surface-variant">BAR</span></p>
+<div class="w-full bg-surface-container-highest h-1 mt-2">
+<div class="bg-primary-container h-full w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Cylinder Temp Hotspot -->
+<div class="absolute top-1/2 left-1/2 group cursor-pointer">
+<div class="w-4 h-4 bg-primary-container rounded-full neon-glow"></div>
+<div class="absolute left-6 top-[-12px] bg-surface-container-high p-3 beveled-edge w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<p class="font-label-caps text-label-caps text-primary mb-1">CYLINDER TEMP</p>
+<p class="font-data-numeral text-data-numeral">104 <span class="text-[10px] font-label-caps text-on-surface-variant">°C</span></p>
+<div class="w-full bg-surface-container-highest h-1 mt-2">
+<div class="bg-primary-container h-full w-[72%]"></div>
+</div>
+</div>
+</div>
+<!-- Oil Level Hotspot -->
+<div class="absolute bottom-1/4 right-1/3 group cursor-pointer">
+<div class="w-4 h-4 bg-on-surface rounded-full shadow-[0_0_10px_rgba(255,255,255,0.2)]"></div>
+<div class="absolute left-6 top-[-12px] bg-surface-container-high p-3 beveled-edge w-48 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+<p class="font-label-caps text-label-caps text-on-surface mb-1">OIL LEVEL</p>
+<p class="font-data-numeral text-data-numeral">98 <span class="text-[10px] font-label-caps text-on-surface-variant">%</span></p>
+<div class="w-full bg-surface-container-highest h-1 mt-2">
+<div class="bg-on-surface h-full w-[98%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Overlay Labels -->
+<div class="absolute top-4 left-4">
+<span class="font-label-caps text-label-caps bg-primary-container text-on-primary-container px-2 py-1">X-RAY LIVE FEED</span>
+</div>
+<div class="absolute bottom-4 right-4 text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant">DRIVETRAIN STATUS</p>
+<p class="font-headline-lg text-headline-lg text-primary">NOMINAL</p>
+</div>
+</div>
+<!-- Right Sidebar Telemetry -->
+<div class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Vitals Summary -->
+<div class="bg-surface-container-low beveled-edge p-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-6 border-b border-outline-variant/20 pb-2">ENGINE VITALS</h3>
+<div class="space-y-6">
+<div class="flex justify-between items-end">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">REV LIMITER</p>
+<p class="font-data-numeral text-headline-lg text-primary">8,200</p>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant pb-1">RPM</p>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">INTAKE TEMP</p>
+<p class="font-data-numeral text-headline-lg text-on-surface">42</p>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant pb-1">°C</p>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">GEAR RATIO</p>
+<p class="font-data-numeral text-headline-lg text-on-surface">3.42</p>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface-variant pb-1">RATIO</p>
+</div>
+</div>
+</div>
+<!-- Diagnostics Trigger -->
+<div class="bg-surface-container-highest beveled-edge overflow-hidden group hover:border-primary transition-colors cursor-pointer">
+<div class="hazard-stripes h-2"></div>
+<div class="p-6">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">memory</span>
+<h3 class="font-label-caps text-label-caps text-primary">REMOTE DIAGNOSTICS</h3>
+</div>
+<p class="text-on-surface-variant text-sm mb-4">Run full system handshake and sub-component health verification.</p>
+<button class="w-full bg-primary-container text-on-primary-container py-3 font-label-caps text-label-caps tracking-widest active:scale-[0.98] transition-transform">
+                            INITIATE SCAN
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Telemetry Grid (Bento Style) -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Fluid Levels -->
+<div class="bg-surface-container-low beveled-edge p-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">COOLANT PRESSURE</p>
+<div class="flex flex-col gap-1">
+<div class="h-6 flex gap-1">
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-primary-container"></div>
+<div class="flex-1 bg-surface-container-highest"></div>
+</div>
+<div class="flex justify-between mt-1">
+<span class="font-data-numeral text-sm">1.8 BAR</span>
+<span class="font-label-caps text-[10px] text-primary">OPTIMAL</span>
+</div>
+</div>
+</div>
+<!-- Exhaust Temps -->
+<div class="bg-surface-container-low beveled-edge p-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">EXHAUST TEMP</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-numeral text-headline-lg">740</span>
+<span class="font-label-caps text-on-surface-variant">°C</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest mt-2 relative">
+<div class="absolute left-[70%] top-[-4px] w-1 h-3 bg-primary neon-glow"></div>
+</div>
+</div>
+<!-- Oil Pressure -->
+<div class="bg-surface-container-low beveled-edge p-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">OIL PRESSURE</p>
+<div class="flex items-baseline gap-2">
+<span class="font-data-numeral text-headline-lg">5.2</span>
+<span class="font-label-caps text-on-surface-variant">BAR</span>
+</div>
+<div class="flex gap-2 mt-3">
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-surface-container-highest"></div>
+</div>
+</div>
+<!-- Critical Component Modal Trigger (The Kill Switch Style) -->
+<div class="bg-error-container/20 beveled-edge p-4 border-error/50 flex flex-col justify-center items-center text-center">
+<span class="material-symbols-outlined text-error text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">warning</span>
+<p class="font-label-caps text-error text-[10px] mb-2">EMERGENCY OVERRIDE</p>
+<button class="bg-error text-on-error px-4 py-2 font-label-caps text-[10px] rounded-none active:scale-95 transition-transform">
+                    KILL ENGINE
+                </button>
+</div>
+</section>
+<!-- Technical Log -->
+<section class="mt-gutter bg-surface-container-lowest beveled-edge p-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">history</span>
+                RECENT DIAGNOSTIC EVENTS
+            </h3>
+<div class="space-y-3 font-label-caps text-[11px] text-on-surface-variant uppercase tracking-wider">
+<div class="flex items-center justify-between border-l-2 border-primary-container pl-3 py-1 bg-surface-container-low/30">
+<div class="flex items-center gap-4">
+<span class="text-primary">14:22:01</span>
+<span>Fuel mixture enrichment sequence initiated</span>
+</div>
+<span class="text-primary">COMPLETE</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-on-surface-variant pl-3 py-1">
+<div class="flex items-center gap-4">
+<span class="opacity-50">14:18:45</span>
+<span>Cylinder 4 pressure variance detected (+0.2%)</span>
+</div>
+<span class="opacity-50">STABLE</span>
+</div>
+<div class="flex items-center justify-between border-l-2 border-on-surface-variant pl-3 py-1">
+<div class="flex items-center gap-4">
+<span class="opacity-50">14:15:10</span>
+<span>Adaptive suspension damping recalibrated for high-load</span>
+</div>
+<span class="opacity-50">SYNCED</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 bg-background/95 backdrop-blur-md pb-safe h-16 border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps">LIVE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined">timer</span>
+<span class="font-label-caps text-label-caps">TRACK</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary border-t-2 border-primary pt-2 pb-1 hover:bg-surface-container-highest/10 active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">Engine</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 hover:bg-surface-container-highest/10 active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined">vitals</span>
+<span class="font-label-caps text-label-caps">REMOTE</span>
+</a>
+</nav>
+</body></html>

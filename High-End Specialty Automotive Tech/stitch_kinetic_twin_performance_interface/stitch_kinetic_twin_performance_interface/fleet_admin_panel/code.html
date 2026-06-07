@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KINETIC-TWIN Fleet Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline": "#b18780",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "primary-fixed": "#ffdad4",
+                        "on-primary-fixed-variant": "#930100",
+                        "on-secondary-container": "#b4b4bc",
+                        "tertiary-container": "#929090",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "background": "#131313",
+                        "on-tertiary-container": "#2a2a2a",
+                        "on-secondary-fixed-variant": "#45464d",
+                        "error": "#ffb4ab",
+                        "tertiary": "#c8c6c5",
+                        "secondary-fixed-dim": "#c6c6ce",
+                        "outline-variant": "#603e39",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-variant": "#353534",
+                        "surface-container-highest": "#353534",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#131313",
+                        "surface-container": "#201f1f",
+                        "on-primary-fixed": "#410000",
+                        "primary": "#ffb4a8",
+                        "on-surface": "#e5e2e1",
+                        "primary-container": "#ff5540",
+                        "inverse-on-surface": "#313030",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "surface-tint": "#ffb4a8",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-fixed": "#1a1b21",
+                        "secondary-fixed": "#e2e2ea",
+                        "on-tertiary": "#313030",
+                        "on-surface-variant": "#ebbbb4",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "inverse-primary": "#c00100",
+                        "on-primary-container": "#5c0000",
+                        "on-background": "#e5e2e1",
+                        "on-primary": "#690100",
+                        "error-container": "#93000a",
+                        "secondary-container": "#45464d",
+                        "secondary": "#c6c6ce",
+                        "on-secondary": "#2f3036",
+                        "tertiary-fixed": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-mobile": "16px",
+                        "container-max": "1440px",
+                        "margin-desktop": "32px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Space Grotesk"],
+                        "headline-display": ["Space Grotesk"],
+                        "data-numeral": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "headline-display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-numeral": ["20px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .carbon-pattern {
+            background-color: #131313;
+            background-image: linear-gradient(45deg, #0e0e0e 25%, transparent 25%), 
+                              linear-gradient(-45deg, #0e0e0e 25%, transparent 25%), 
+                              linear-gradient(45deg, transparent 75%, #0e0e0e 75%), 
+                              linear-gradient(-45deg, transparent 75%, #0e0e0e 75%);
+            background-size: 4px 4px;
+        }
+        .recessed-panel {
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        }
+        .glow-red {
+            box-shadow: 0 0 15px rgba(255, 180, 168, 0.3);
+        }
+        .kill-switch-stripes {
+            background: repeating-linear-gradient(
+                45deg,
+                #93000a,
+                #93000a 10px,
+                #131313 10px,
+                #131313 20px
+            );
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-background dark:bg-background border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary" data-icon="speed">speed</span>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile font-bold tracking-tighter text-primary dark:text-primary">KINETIC-TWIN</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 items-center">
+<span class="font-label-caps text-label-caps text-primary dark:text-primary transition-colors duration-100 hover:text-primary">FLEET</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant transition-colors duration-100 hover:text-primary">TELEMETRY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant transition-colors duration-100 hover:text-primary">LOGS</span>
+</div>
+<span class="material-symbols-outlined text-primary dark:text-primary active:opacity-80" data-icon="settings">settings</span>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin-mobile md:px-margin-desktop max-w-container-max mx-auto">
+<!-- System Health Board -->
+<section class="grid grid-cols-1 md:grid-cols-4 gap-gutter mb-8">
+<div class="col-span-1 md:col-span-4 bg-surface-container-lowest border-t border-outline-variant/20 p-unit mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM_HEALTH_INDEX // LIVE_SYNC</span>
+</div>
+<!-- Health Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-4 recessed-panel">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-secondary">ECU_UPLINK</span>
+<div class="w-3 h-3 bg-primary glow-red"></div>
+</div>
+<div class="font-data-numeral text-headline-lg text-on-surface">98.4<span class="text-body-md font-normal ml-1">%</span></div>
+<div class="mt-2 h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-primary w-[98.4%]"></div>
+</div>
+</div>
+<!-- Health Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-4 recessed-panel">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-secondary">LATENCY</span>
+<div class="w-3 h-3 bg-primary glow-red"></div>
+</div>
+<div class="font-data-numeral text-headline-lg text-on-surface">12<span class="text-body-md font-normal ml-1">MS</span></div>
+<div class="mt-2 h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-primary w-[15%]"></div>
+</div>
+</div>
+<!-- Health Card 3 -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-4 recessed-panel">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-secondary">TWIN_COHERENCE</span>
+<div class="w-3 h-3 bg-primary glow-red"></div>
+</div>
+<div class="font-data-numeral text-headline-lg text-on-surface">STABLE</div>
+<div class="mt-2 flex gap-1">
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-primary"></div>
+<div class="w-2 h-2 bg-surface-variant"></div>
+</div>
+</div>
+<!-- Health Card 4 -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-4 recessed-panel">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-secondary">ACTIVE_NODES</span>
+<div class="w-3 h-3 bg-primary glow-red"></div>
+</div>
+<div class="font-data-numeral text-headline-lg text-on-surface">42<span class="text-body-md font-normal ml-1">/42</span></div>
+<div class="mt-2 h-1 bg-surface-variant w-full overflow-hidden">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+</section>
+<!-- Main Configuration & Management Bento -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- ECU Settings (Toggle Board) -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border border-outline-variant/20 p-6 flex-1">
+<h2 class="font-label-caps text-label-caps text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="settings_input_component">settings_input_component</span>
+                        ECU_CONFIGURATION_OVERRIDES
+                    </h2>
+<div class="space-y-4">
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-3 border-b border-outline-variant/10">
+<div>
+<div class="font-label-caps text-[10px] text-secondary">PARAM_01</div>
+<div class="font-body-md text-on-surface">ABS_OVERRIDE_ACTIVE</div>
+</div>
+<button class="w-12 h-6 bg-surface-variant relative flex items-center px-1 border border-outline-variant/20">
+<div class="w-4 h-4 bg-primary"></div>
+</button>
+</div>
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-3 border-b border-outline-variant/10">
+<div>
+<div class="font-label-caps text-[10px] text-secondary">PARAM_02</div>
+<div class="font-body-md text-on-surface">TRACTION_MAPPING_V4</div>
+</div>
+<button class="w-12 h-6 bg-surface-variant relative flex items-center justify-end px-1 border border-outline-variant/20">
+<div class="w-4 h-4 bg-primary"></div>
+</button>
+</div>
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-3 border-b border-outline-variant/10">
+<div>
+<div class="font-label-caps text-[10px] text-secondary">PARAM_03</div>
+<div class="font-body-md text-on-surface">O2_SENSOR_BYPASS</div>
+</div>
+<button class="w-12 h-6 bg-surface-variant relative flex items-center px-1 border border-outline-variant/20">
+<div class="w-4 h-4 bg-on-surface-variant"></div>
+</button>
+</div>
+<!-- Toggle Item -->
+<div class="flex items-center justify-between p-3 border-b border-outline-variant/10">
+<div>
+<div class="font-label-caps text-[10px] text-secondary">PARAM_04</div>
+<div class="font-body-md text-on-surface">KERS_REGEN_PEAK</div>
+</div>
+<button class="w-12 h-6 bg-surface-variant relative flex items-center justify-end px-1 border border-outline-variant/20">
+<div class="w-4 h-4 bg-primary"></div>
+</button>
+</div>
+</div>
+<button class="mt-8 w-full py-4 kill-switch-stripes text-on-primary font-label-caps text-label-caps tracking-[0.2em] border border-primary/40 hover:opacity-90 transition-opacity">
+                        EMERGENCY_SYSTEM_HALT
+                    </button>
+</div>
+<!-- User Permissions -->
+<div class="bg-surface-container border border-outline-variant/20 p-6">
+<h2 class="font-label-caps text-label-caps text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="admin_panel_settings">admin_panel_settings</span>
+                        ACCESS_CONTROL
+                    </h2>
+<div class="space-y-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-variant border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<div class="font-body-md text-on-surface">J. CARTER</div>
+<div class="font-label-caps text-[10px] text-secondary">ROOT_ADMIN</div>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="verified_user" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-variant border border-outline-variant/20 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<div class="font-body-md text-on-surface">M. TANAKA</div>
+<div class="font-label-caps text-[10px] text-secondary">ENG_OBSERVER</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="shield">shield</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Diagnostic Logs Table -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container border border-outline-variant/20 flex flex-col">
+<div class="p-6 border-b border-outline-variant/20 flex flex-col md:flex-row md:items-center justify-between gap-4">
+<h2 class="font-label-caps text-label-caps text-primary flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="history_edu">history_edu</span>
+                        DIAGNOSTIC_EVENT_LOGS
+                    </h2>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]" data-icon="search">search</span>
+<input class="bg-surface-container-lowest border-b border-outline-variant/40 text-on-surface font-label-caps text-[12px] pl-10 pr-4 py-2 w-full md:w-64 focus:border-primary focus:ring-0 outline-none" placeholder="FILTER BY HEX_CODE..." type="text"/>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant/10 bg-surface-container-high/30">
+<th class="p-4 font-label-caps text-[10px] text-secondary">TIMESTAMP</th>
+<th class="p-4 font-label-caps text-[10px] text-secondary">NODE_ID</th>
+<th class="p-4 font-label-caps text-[10px] text-secondary">EVENT_DESC</th>
+<th class="p-4 font-label-caps text-[10px] text-secondary text-right">STATUS_HEX</th>
+</tr>
+</thead>
+<tbody class="font-label-caps text-[12px]">
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">14:02:11:422</td>
+<td class="p-4 text-on-surface">WHEEL_FR_01</td>
+<td class="p-4 text-on-surface">HEAT_THRESHOLD_EXCEEDED (112C)</td>
+<td class="p-4 text-primary text-right">0x88FF12</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">14:02:09:881</td>
+<td class="p-4 text-on-surface">ECU_MAIN</td>
+<td class="p-4 text-on-surface">PACKET_LOSS_DETECTION_RECOVERED</td>
+<td class="p-4 text-secondary text-right">0x00A1B2</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">14:01:55:102</td>
+<td class="p-4 text-on-surface">FUEL_SYS_04</td>
+<td class="p-4 text-on-surface">FLOW_RATE_OPTIMIZATION_SYNC</td>
+<td class="p-4 text-secondary text-right">0x00FFBB</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">14:01:30:449</td>
+<td class="p-4 text-on-surface">BRAKE_RE_02</td>
+<td class="p-4 text-on-surface">PRESSURE_VALVE_CALIBRATION</td>
+<td class="p-4 text-secondary text-right">0x1122AA</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">14:00:12:332</td>
+<td class="p-4 text-on-surface">WHEEL_FL_01</td>
+<td class="p-4 text-on-surface">VIBRATION_DAMPER_ACTIVE</td>
+<td class="p-4 text-secondary text-right">0xBB4411</td>
+</tr>
+<tr class="border-b border-outline-variant/5 hover:bg-surface-variant/20 transition-colors">
+<td class="p-4 text-on-surface-variant">13:58:44:901</td>
+<td class="p-4 text-on-surface">TRANS_01</td>
+<td class="p-4 text-on-surface">SHIFT_PRESSURE_ADJUST_HIGH</td>
+<td class="p-4 text-secondary text-right">0x44CC22</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="mt-auto p-6 bg-surface-container-low flex items-center justify-between">
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary font-label-caps text-[10px] px-4 py-2 hover:opacity-90">EXPORT_CSV</button>
+<button class="border border-outline-variant/40 text-on-surface-variant font-label-caps text-[10px] px-4 py-2 hover:bg-surface-variant/40">CLEAR_CACHE</button>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant font-label-caps text-[10px]">
+<span>PAGE 01 OF 128</span>
+<div class="flex gap-1">
+<button class="p-1 border border-outline-variant/20 hover:text-primary"><span class="material-symbols-outlined text-[16px]" data-icon="chevron_left">chevron_left</span></button>
+<button class="p-1 border border-outline-variant/20 hover:text-primary"><span class="material-symbols-outlined text-[16px]" data-icon="chevron_right">chevron_right</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Module: Fleet Map / Location (Stylized) -->
+<section class="mt-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-1 md:col-span-2 h-64 bg-surface-container-lowest border border-outline-variant/20 relative overflow-hidden recessed-panel">
+<div class="absolute inset-0 carbon-pattern opacity-30"></div>
+<!-- Simulated Map UI -->
+<div class="absolute inset-0 flex items-center justify-center">
+<img class="w-full h-full object-cover grayscale opacity-40 mix-blend-luminosity" data-alt="A highly detailed dark-themed satellite map interface displaying a high-performance vehicle track from a top-down perspective. The map is overlaid with glowing red telemetry lines and vector icons representing active fleet nodes. The visual style is technical and industrial, with sharp high-contrast details and a UI inspired by modern automotive cockpit displays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8FkQ7HLwBvet5iD-zhwnNewdirOCnAQule7BYrO9rxDoqSjSL-v03hf0vwN8BHxkaSNVFqXWZ-O1Y89zE4CbsVkwjQ4kwMcVWB570gl7gqblk8JSk3oVmCETbhmoJ2MsAX6QAud1dzKjxDGNwigHemra_5xl17sFpGBQkDyVpNdeiMIgQ_d5E5iZeZL8cmsjYhmZfrcBg6u9lAlINq4nrDptnICQ5fdXHs34eiHXtXOipp7tIKDNlbLaQ1VmHyooweHMv90tdmDM"/>
+</div>
+<div class="absolute top-4 left-4 bg-background/80 backdrop-blur-md p-3 border border-primary/20">
+<div class="font-label-caps text-[10px] text-primary">LIVE_GPS_ARRAY</div>
+<div class="font-headline-lg-mobile text-on-surface">NURBURGRING_GP</div>
+</div>
+<!-- Target Reticle -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none">
+<div class="w-12 h-12 border-2 border-primary/40 rounded-full animate-pulse"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-primary"></div>
+</div>
+</div>
+<div class="col-span-1 bg-surface-container border border-outline-variant/20 p-6 flex flex-col justify-between">
+<div>
+<h2 class="font-label-caps text-label-caps text-primary mb-4">ACTIVE_FLEET_METRICS</h2>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span class="text-secondary">BATTERY_LOAD</span>
+<span class="text-on-surface">62%</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-primary w-[62%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span class="text-secondary">TIRE_WEAR_EST</span>
+<span class="text-on-surface">41%</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-primary w-[41%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span class="text-secondary">SIGNAL_STRENGTH</span>
+<span class="text-on-surface">94%</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-primary w-[94%]"></div>
+</div>
+</div>
+</div>
+</div>
+<button class="w-full py-3 border border-outline-variant/40 font-label-caps text-[10px] text-on-surface hover:bg-primary hover:text-on-primary transition-all">
+                    INITIATE_REMOTE_DIAGNOSTIC
+                </button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 bg-background/95 backdrop-blur-md pb-safe border-t border-outline-variant/20">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 active:scale-95 transition-transform duration-75 hover:bg-surface-container-highest/10" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">LIVE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 active:scale-95 transition-transform duration-75 hover:bg-surface-container-highest/10" href="#">
+<span class="material-symbols-outlined" data-icon="timer">timer</span>
+<span class="font-label-caps text-label-caps">TRACK</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant pt-2 pb-1 active:scale-95 transition-transform duration-75 hover:bg-surface-container-highest/10" href="#">
+<span class="material-symbols-outlined" data-icon="engine">earth_engine</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary border-t-2 border-primary pt-2 pb-1 active:scale-95 transition-transform duration-75 hover:bg-surface-container-highest/10" href="#">
+<span class="material-symbols-outlined" data-icon="vitals">vitals</span>
+<span class="font-label-caps text-label-caps">REMOTE</span>
+</a>
+</nav>
+</body></html>

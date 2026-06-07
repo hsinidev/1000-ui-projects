@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SPIRIT-ARCHIVE | SECURITY TERMINAL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "tertiary": "#ffffff",
+                "secondary-fixed-dim": "#c3c0ff",
+                "on-error": "#690005",
+                "inverse-surface": "#e3e1ec",
+                "primary": "#ffffff",
+                "on-tertiary-container": "#656464",
+                "secondary-container": "#3e3c8f",
+                "secondary": "#c3c0ff",
+                "tertiary-container": "#e5e2e1",
+                "surface": "#12131a",
+                "on-primary-container": "#646463",
+                "tertiary-fixed": "#e5e2e1",
+                "surface-container": "#1e1f26",
+                "on-surface-variant": "#c4c7c4",
+                "surface-bright": "#383941",
+                "on-secondary-fixed-variant": "#3e3c8f",
+                "tertiary-fixed-dim": "#c9c6c5",
+                "secondary-fixed": "#e2dfff",
+                "surface-variant": "#33343c",
+                "outline-variant": "#444845",
+                "background": "#12131a",
+                "on-primary": "#303130",
+                "surface-container-high": "#292931",
+                "on-primary-fixed-variant": "#464746",
+                "on-tertiary-fixed-variant": "#474646",
+                "on-secondary-fixed": "#100563",
+                "on-secondary": "#272377",
+                "primary-fixed-dim": "#c7c6c4",
+                "on-secondary-container": "#afadff",
+                "on-background": "#e3e1ec",
+                "error-container": "#93000a",
+                "on-primary-fixed": "#1b1c1b",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-error-container": "#ffdad6",
+                "outline": "#8e918e",
+                "surface-tint": "#c7c6c4",
+                "primary-container": "#e3e2e0",
+                "surface-container-lowest": "#0d0e15",
+                "inverse-primary": "#5e5e5d",
+                "surface-container-low": "#1a1b22",
+                "surface-dim": "#12131a",
+                "on-surface": "#e3e1ec",
+                "inverse-on-surface": "#2f3038",
+                "error": "#ffb4ab",
+                "primary-fixed": "#e3e2e0",
+                "on-tertiary": "#313030",
+                "surface-container-highest": "#33343c"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "gutter": "24px",
+                "margin-mobile": "16px",
+                "container-max": "1440px",
+                "unit": "4px",
+                "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                "label-caps": ["JetBrains Mono"],
+                "headline-xl": ["Space Grotesk"],
+                "data-mono": ["JetBrains Mono"],
+                "headline-lg": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "body-md": ["Inter"],
+                "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .grid-bg {
+            background-image: linear-gradient(to right, rgba(30, 27, 75, 0.1) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(30, 27, 75, 0.1) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(to right, transparent, #ffffff, transparent);
+            opacity: 0.1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .hardened-border {
+            border: 1px solid #8e918e;
+            position: relative;
+        }
+        .hardened-border::after {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            right: 2px;
+            bottom: 2px;
+            border: 1px solid #8e918e;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary grid-bg min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4 docked full-width top-0 border-b-2 border-outline border-double border-outline-variant z-[60]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-headline-md text-headline-md font-bold uppercase tracking-widest text-primary">SPIRIT-ARCHIVE</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<button class="font-label-caps text-label-caps text-primary font-bold hover:bg-surface-container-high transition-colors px-3 py-1">TERMINAL</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1">ARCHIVES</button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1">NODES</button>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="account_balance_wallet">account_balance_wallet</span>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- NavigationDrawer -->
+<aside class="hidden md:flex flex-col h-full py-8 gap-4 bg-surface-container-low dark:bg-surface-container-low h-full w-80 border-r-4 border-double border-outline-variant shrink-0 overflow-y-auto">
+<div class="px-8 mb-6">
+<h2 class="font-headline-md text-headline-md text-primary font-bold tracking-tighter">SECURITY TERMINAL</h2>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="bg-secondary-container text-on-secondary-container font-bold border-l-4 border-primary font-data-mono text-data-mono px-8 py-4 flex items-center gap-3 translate-x-1 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+                    Verification Log
+                </a>
+<a class="text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-10 transition-all font-data-mono text-data-mono px-8 py-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+                    Blockchain Vault
+                </a>
+<a class="text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-10 transition-all font-data-mono text-data-mono px-8 py-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+                    Legal Registry
+                </a>
+<a class="text-on-surface-variant hover:text-primary hover:bg-surface-container-high hover:pl-10 transition-all font-data-mono text-data-mono px-8 py-4 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+                    API Documentation
+                </a>
+</nav>
+<div class="mt-auto px-8 py-4 border-t border-outline-variant/30">
+<div class="bg-surface-container-high p-4 border border-outline-variant">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">SYSTEM UPTIME</p>
+<p class="font-data-mono text-primary text-sm">99.9997% ACTIVE</p>
+<div class="w-full bg-background h-1 mt-2">
+<div class="bg-primary h-full w-[99%]"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop relative">
+<div class="scanline"></div>
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-6 mb-12">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-primary uppercase tracking-tighter">ADMIN_CORE_v4.0</h2>
+<p class="font-data-mono text-on-surface-variant flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                        SYSTEM STATUS: LEVEL_5_CLEARANCE_REQUIRED
+                    </p>
+</div>
+<div class="flex gap-4">
+<button class="relative group">
+<div class="absolute -inset-1 border border-primary/20 transition-all group-hover:border-primary/50"></div>
+<div class="bg-black text-primary border border-primary px-6 py-2 font-label-caps text-label-caps flex items-center gap-2 hover:bg-primary hover:text-background transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="sync">sync</span>
+                            REFRESH_NODES
+                        </div>
+</button>
+<button class="relative group">
+<div class="absolute -inset-1 border border-error/20 transition-all group-hover:border-error/50"></div>
+<div class="bg-error-container text-on-error-container border border-error px-6 py-2 font-label-caps text-label-caps flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+                            EMERGENCY_LOCK
+                        </div>
+</button>
+</div>
+</div>
+<!-- Bento Grid Stats -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-12">
+<!-- Data Vis Main -->
+<div class="md:col-span-8 hardened-border bg-surface-container p-6 flex flex-col gap-6 min-h-[400px]">
+<div class="flex justify-between items-center border-b border-outline-variant pb-4">
+<h3 class="font-label-caps text-label-caps text-primary">REGISTRY_GROWTH_HISTOGRAM</h3>
+<div class="flex gap-2">
+<span class="w-2 h-2 bg-primary"></span>
+<span class="w-2 h-2 bg-outline-variant"></span>
+<span class="w-2 h-2 bg-outline-variant"></span>
+</div>
+</div>
+<div class="flex-1 flex items-end gap-2 px-2 relative">
+<!-- Simulated Bar Chart -->
+<div class="w-full bg-surface-container-highest/30 h-32 border-l border-outline-variant flex items-end justify-around p-4 relative">
+<div class="absolute inset-0 grid grid-cols-1 grid-rows-4 pointer-events-none">
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+<div class="border-t border-outline-variant/10"></div>
+</div>
+<div class="w-8 bg-primary h-1/2"></div>
+<div class="w-8 bg-primary h-2/3"></div>
+<div class="w-8 bg-primary h-1/3"></div>
+<div class="w-8 bg-primary h-3/4"></div>
+<div class="w-8 bg-primary h-5/6"></div>
+<div class="w-8 bg-primary h-1/2"></div>
+<div class="w-8 bg-primary h-4/5"></div>
+<div class="w-8 bg-primary h-full"></div>
+</div>
+<div class="absolute top-4 right-4 font-data-mono text-[10px] text-on-surface-variant text-right">
+                            NODE_01: ACTIVE<br/>
+                            NODE_02: ACTIVE<br/>
+                            NODE_03: SCANNING...
+                        </div>
+</div>
+</div>
+<!-- Active Security Card -->
+<div class="md:col-span-4 bg-surface-container-high p-6 border-l-4 border-primary flex flex-col gap-4">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="gavel">gavel</span>
+<h3 class="font-label-caps text-label-caps text-primary">SECURITY_ALERTS</h3>
+</div>
+<div class="space-y-4">
+<div class="border-b border-outline-variant pb-2">
+<p class="font-data-mono text-error text-xs">UNAUTHORIZED_ACCESS_ATTEMPT</p>
+<p class="font-body-md text-xs text-on-surface-variant">IP: 192.168.1.104 | ORIGIN: UNKNOWN</p>
+</div>
+<div class="border-b border-outline-variant pb-2">
+<p class="font-data-mono text-primary text-xs">HASH_VERIFICATION_COMPLETE</p>
+<p class="font-body-md text-xs text-on-surface-variant">ID: SP-9902 | STATUS: SUCCESS</p>
+</div>
+<div class="border-b border-outline-variant pb-2">
+<p class="font-data-mono text-on-surface-variant text-xs">NEW_NODE_DETECTION</p>
+<p class="font-body-md text-xs text-on-surface-variant">NODE_88 | SYNCING...</p>
+</div>
+</div>
+<div class="mt-auto pt-4 border-t border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">THREAT_LEVEL</span>
+<span class="font-data-mono text-primary text-xs">MINIMAL_01</span>
+</div>
+</div>
+</div>
+<!-- Technical Verification Section -->
+<div class="mb-12">
+<h3 class="font-headline-lg text-headline-lg text-primary mb-8 tracking-tighter uppercase">RECENT_VERIFICATIONS</h3>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Verification Card 1 -->
+<div class="hardened-border bg-surface p-4 group cursor-pointer overflow-hidden">
+<div class="relative h-48 mb-4">
+<img alt="Digital Artifact" class="w-full h-full object-cover filter grayscale brightness-50 group-hover:brightness-100 transition-all duration-500" data-alt="A macro photography shot of a futuristic silicon wafer with glowing etched pathways and microcircuitry. The lighting is cold and clinical, utilizing deep indigo and platinum silver tones to emphasize technical precision. The image is framed as a high-security archive entry, feeling both permanent and technologically advanced. Sharp geometric lines cross the surface, suggesting an intricate blockchain structure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3Goj6HHY3a754NetMacSJw4Z98bzUJP3EkmI-vpqJQper2lOWfmjIjfVbot-F_vTr_qtTKOjvZvUdBgxcRC37SSi45Gh14rnfEucmPdvn8kptVs0v6-8QBamWUf54QJ43IlisqZ6eLiguPddv3jJqxzjAvnGanOMV-rTtDIRB1__HYCiIwMStfUVk6WzZdNOHYKZhf9dNWAEPQ2EX_xEBwrCbIe7MK2G6vIA8WFTnKxF5dZBW7vjLCMp2vwSiz6JaZLILjCZy4lnC"/>
+<div class="absolute top-2 left-2 bg-surface px-2 py-1 border border-outline text-[10px] font-data-mono text-primary">ID_77812_SEC</div>
+</div>
+<div class="border-b-2 border-outline-variant pb-2 mb-4">
+<h4 class="font-label-caps text-label-caps text-primary">ETHEREAL_PRISM</h4>
+<p class="font-data-mono text-[10px] text-on-surface-variant">HASH: 0x44A...881F</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="bg-secondary-container px-2 py-1 border-l-2 border-primary">
+<span class="font-label-caps text-[10px] text-on-secondary-container">VERIFIED</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">12.04.24:14:02</span>
+</div>
+</div>
+<!-- Verification Card 2 -->
+<div class="hardened-border bg-surface p-4 group cursor-pointer overflow-hidden">
+<div class="relative h-48 mb-4">
+<img alt="Digital Artifact" class="w-full h-full object-cover filter grayscale brightness-50 group-hover:brightness-100 transition-all duration-500" data-alt="Abstract digital rendering of a complex data cluster floating in a void of deep indigo. The structure is composed of hundreds of small, glowing platinum squares connected by thin laser-like lines. The lighting is high-contrast, casting sharp shadows and highlights that suggest a high-security terminal environment. The mood is one of absolute trust and structural integrity, consistent with a blockchain-based registry for luxury assets." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoIr0xHXv8DuDzBPpSZZdG5rEtf0R1Rzmug_jQ22-Wis7UTkiGAk79xA6kqTiVix3V4EJI9CqoDjr1cwQA0Cooz0PXsPFAWH5JOuMUbiQCwThyot5Dh_JE23DZNu0nb1JTIKtXLDrQo9PrvKuQDO3Bqtl6BDYcewrSARIGhm2gjmxz0lz9Hpl1aDas2_ftMqWfLqC_5adbaueZRcgWxmhkOUme4K0wbH5FjOjg4Arv--9_kt6LIX6UQYdv53nl3bgWQbLTUGf_cqsu"/>
+<div class="absolute top-2 left-2 bg-surface px-2 py-1 border border-outline text-[10px] font-data-mono text-primary">ID_99201_SEC</div>
+</div>
+<div class="border-b-2 border-outline-variant pb-2 mb-4">
+<h4 class="font-label-caps text-label-caps text-primary">VOID_KERNEL</h4>
+<p class="font-data-mono text-[10px] text-on-surface-variant">HASH: 0x11B...229C</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="bg-secondary-container px-2 py-1 border-l-2 border-primary">
+<span class="font-label-caps text-[10px] text-on-secondary-container">VERIFIED</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">12.04.24:13:45</span>
+</div>
+</div>
+<!-- Verification Card 3 (Tampered State) -->
+<div class="hardened-border bg-surface p-4 group cursor-pointer overflow-hidden">
+<div class="relative h-48 mb-4">
+<img alt="Digital Artifact" class="w-full h-full object-cover filter grayscale brightness-50 group-hover:brightness-100 transition-all duration-500" data-alt="A close-up shot of a high-tech security screen displaying a visual error or data corruption. Red digital artifacts and glitches tear across a background of complex hex codes and circuit diagrams. The lighting is harsh and dramatic, reflecting off a metallic surface. The overall style is brutalist and hardened, evoking a high-stakes moment of security breach or technical failure in a premium archival vault." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBrvLPFaAqyYLb_Cy5vHfvS_IZYK_5nDAgjdCUDWvJX00SV1KQ4C0Ofp12UM8Iu8uh1DzoK3Z1pBSgA14V4laiksVrfY_htWHTVW7aDax5VS_bz_fb4Yu5bdecIA_k6Lii8ma951F_uwjgN4FUjuVefFpgGt1ooW_CihWao4cuL9XbWlhSV8-Ib9oAVtCInyTDfQ4eNagvFGGwz8ZIuLiYPqieLypsFc9ERuIrtZqF-Trenf4BTHxrqSNBTE-dEqyfbLsga7nxx7Q2_"/>
+<div class="absolute top-2 left-2 bg-surface px-2 py-1 border border-error text-[10px] font-data-mono text-error">ERR_404_TAMPER</div>
+</div>
+<div class="border-b-2 border-outline-variant pb-2 mb-4">
+<h4 class="font-label-caps text-label-caps text-error">CHRONOS_KEY</h4>
+<p class="font-data-mono text-[10px] text-error">HASH: CORRUPTED_DATA</p>
+</div>
+<div class="flex justify-between items-center">
+<div class="bg-black px-2 py-1 border-l-2 border-error">
+<span class="font-label-caps text-[10px] text-error animate-pulse">TAMPERED</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant">12.04.24:12:10</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Permission Management Table -->
+<div class="bg-surface-container hardened-border">
+<div class="bg-primary px-6 py-4 flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-background">USER_PERMISSION_REGISTRY</h3>
+<span class="material-symbols-outlined text-background text-sm" data-icon="database">database</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-data-mono text-sm">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="px-6 py-4 text-on-surface-variant font-bold">OPERATOR_ID</th>
+<th class="px-6 py-4 text-on-surface-variant font-bold">ACCESS_NODE</th>
+<th class="px-6 py-4 text-on-surface-variant font-bold">CLEARANCE</th>
+<th class="px-6 py-4 text-on-surface-variant font-bold">LAST_LOGIN</th>
+<th class="px-6 py-4 text-on-surface-variant font-bold">ACTIONS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-4">ARCHIVIST_01</td>
+<td class="px-6 py-4">NODE_ALPHA</td>
+<td class="px-6 py-4"><span class="text-primary border border-primary px-2 py-0.5">LEVEL_5</span></td>
+<td class="px-6 py-4 text-on-surface-variant">T-MINUS 04:00</td>
+<td class="px-6 py-4 flex gap-4">
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-primary" data-icon="edit">edit</span>
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-error" data-icon="lock">lock</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-4">ARCHIVIST_04</td>
+<td class="px-6 py-4">NODE_DELTA</td>
+<td class="px-6 py-4"><span class="text-on-surface-variant border border-outline-variant px-2 py-0.5">LEVEL_2</span></td>
+<td class="px-6 py-4 text-on-surface-variant">T-MINUS 02:15</td>
+<td class="px-6 py-4 flex gap-4">
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-primary" data-icon="edit">edit</span>
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-error" data-icon="lock">lock</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-container-high transition-colors">
+<td class="px-6 py-4">SECURITY_OFF_09</td>
+<td class="px-6 py-4">GATEWAY_CORE</td>
+<td class="px-6 py-4"><span class="text-primary border border-primary px-2 py-0.5">LEVEL_4</span></td>
+<td class="px-6 py-4 text-on-surface-variant">T-MINUS 00:05</td>
+<td class="px-6 py-4 flex gap-4">
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-primary" data-icon="edit">edit</span>
+<span class="material-symbols-outlined text-xs cursor-pointer hover:text-error" data-icon="lock">lock</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Footer Decorative -->
+<div class="mt-20 flex justify-between items-center text-[10px] font-data-mono text-on-surface-variant opacity-50 uppercase tracking-[0.2em]">
+<div>© 2024 SPIRIT-ARCHIVE SECURE ASSET MGMT</div>
+<div>ENCRYPTION_PROTOCOL: SHA-512_QUANTUM_RESISTANT</div>
+<div>TERMINAL_ID: ARC-D-0992</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 bg-background border-t-4 border-double border-outline-variant">
+<button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container border-2 border-primary p-2 scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="qr_code_scanner">qr_code_scanner</span>
+<span class="font-label-caps text-[10px]">VERIFY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-[10px]">HISTORY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-[10px]">LEGAL</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-primary hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-label-caps text-[10px]">PORTAL</span>
+</button>
+</nav>
+</body></html>

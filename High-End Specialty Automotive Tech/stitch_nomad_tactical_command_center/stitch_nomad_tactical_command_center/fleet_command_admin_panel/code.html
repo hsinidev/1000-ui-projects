@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS COMMAND - Fleet Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anton&amp;family=Inter:wght@400;700;800&amp;family=JetBrains+Mono:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#bcc7dd",
+                      "on-tertiary-container": "#737e92",
+                      "on-secondary-fixed": "#351000",
+                      "on-background": "#e2e2e5",
+                      "surface-container-low": "#1a1c1e",
+                      "on-error-container": "#ffdad6",
+                      "primary": "#bfc6db",
+                      "on-primary-fixed-variant": "#3f4758",
+                      "secondary-fixed": "#ffdbcc",
+                      "primary-fixed-dim": "#bfc6db",
+                      "on-surface": "#e2e2e5",
+                      "tertiary-fixed": "#d8e3fa",
+                      "outline-variant": "#45474c",
+                      "on-surface-variant": "#c6c6cd",
+                      "on-secondary": "#561f00",
+                      "surface-container-highest": "#333537",
+                      "secondary-fixed-dim": "#ffb693",
+                      "on-primary-fixed": "#141c2b",
+                      "inverse-on-surface": "#2f3133",
+                      "on-tertiary-fixed": "#111c2c",
+                      "inverse-surface": "#e2e2e5",
+                      "error-container": "#93000a",
+                      "secondary-container": "#fe6b00",
+                      "primary-container": "#0a1221",
+                      "on-secondary-container": "#572000",
+                      "on-tertiary-fixed-variant": "#3c475a",
+                      "tertiary-fixed-dim": "#bcc7dd",
+                      "tertiary-container": "#071222",
+                      "surface-dim": "#121416",
+                      "inverse-primary": "#575e70",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0c0e10",
+                      "background": "#121416",
+                      "primary-fixed": "#dbe2f8",
+                      "outline": "#8f9097",
+                      "error": "#ffb4ab",
+                      "on-primary-container": "#767d90",
+                      "on-tertiary": "#263142",
+                      "on-primary": "#293041",
+                      "surface-container-high": "#282a2c",
+                      "secondary": "#ffb693",
+                      "surface-container": "#1e2022",
+                      "surface-variant": "#333537",
+                      "surface-bright": "#37393b",
+                      "surface-tint": "#bfc6db",
+                      "surface": "#121416",
+                      "on-secondary-fixed-variant": "#7a3000"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "margin-desktop": "32px",
+                      "unit": "4px",
+                      "margin-mobile": "16px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Anton"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "display-alert": ["Anton"],
+                      "data-lg": ["JetBrains Mono"],
+                      "data-sm": ["JetBrains Mono"],
+                      "label-caps": ["Inter"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["20px", {"lineHeight": "1.4", "fontWeight": "700"}],
+                      "display-alert": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "data-lg": ["18px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "800"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .tactical-border {
+            border: 1px solid #45474c;
+            position: relative;
+        }
+        .tactical-border::before, .tactical-border::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #ffb693;
+        }
+        .tactical-border::before { top: -1px; left: -1px; }
+        .tactical-border::after { bottom: -1px; right: -1px; }
+        
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+        .segment {
+            height: 8px;
+            flex: 1;
+            background: #1a1c1e;
+        }
+        .segment.active {
+            background: #ffb693;
+            box-shadow: 0 0 8px rgba(255, 182, 147, 0.4);
+        }
+        .led-glow {
+            box-shadow: 0 0 10px currentColor;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary selection:text-on-secondary">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col z-40 bg-surface-container-lowest border-r border-outline-variant w-64">
+<div class="p-6">
+<h2 class="font-headline-md text-headline-md text-on-surface">OPERATIONS</h2>
+<p class="font-data-sm text-data-sm uppercase tracking-widest text-secondary">Sector 7G Alpha</p>
+</div>
+<nav class="flex-1 mt-4">
+<a class="bg-secondary-container text-on-secondary-container border-l-4 border-secondary flex items-center px-4 py-3 transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="local_shipping">local_shipping</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Fleet Status</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="map">map</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Tactical Map</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="security">security</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Threat Intel</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="shield">shield</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Armory</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="groups">groups</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Personnel</span>
+</a>
+<a class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-on-surface transition-all duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="inventory_2">inventory_2</span>
+<span class="font-data-sm text-data-sm uppercase tracking-widest">Logistics</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full bg-error-container text-on-error-container font-headline-md py-3 uppercase tracking-tighter active:scale-95 transition-transform">
+                EMERGENCY SOS
+            </button>
+</div>
+<div class="p-2 border-t border-outline-variant">
+<div class="flex items-center px-4 py-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-data-sm text-data-sm uppercase">System Health</span>
+</div>
+<div class="flex items-center px-4 py-2 text-on-surface-variant hover:bg-surface-container-highest transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="logout">logout</span>
+<span class="font-data-sm text-data-sm uppercase">Logout</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 z-50 border-b border-outline-variant bg-surface-container-low">
+<div class="flex items-center gap-8">
+<h1 class="font-headline-lg text-headline-lg uppercase text-secondary">AEGIS COMMAND</h1>
+<nav class="hidden md:flex gap-6">
+<a class="text-secondary font-bold border-b-2 border-secondary h-16 flex items-center" href="#">DASHBOARD</a>
+<a class="text-on-surface-variant font-medium h-16 flex items-center hover:bg-surface-container-highest transition-colors px-2" href="#">ANALYTICS</a>
+<a class="text-on-surface-variant font-medium h-16 flex items-center hover:bg-surface-container-highest transition-colors px-2" href="#">REPORTS</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative flex items-center bg-surface-container-highest px-3 py-1 rounded-sm border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-data-sm font-data-sm w-48 text-on-surface uppercase" placeholder="QUERY DATABASE..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 hover:bg-surface-container-highest transition-colors text-primary active:scale-95">
+<span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest transition-colors text-primary active:scale-95">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest transition-colors text-primary active:scale-95 relative">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="absolute top-1 right-1 w-2 h-2 bg-secondary rounded-full led-glow text-secondary"></span>
+</button>
+</div>
+<div class="h-10 w-10 border border-secondary p-0.5">
+<img alt="Authenticated Operative Avatar" class="w-full h-full object-cover grayscale" data-alt="A close-up, high-contrast portrait of a serious male security professional in tactical gear, lit by the cold blue glow of a computer monitor. The image has a grainy, cinematic quality with deep shadows and sharp highlights, emphasizing a rugged and vigilant operational aesthetic. The background is a dark, tech-filled command center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA5kryadUKVhpXn8HfddPXHv-QDJkcSlKFwiz6uFaX49uRB2Jgd5UIq-4nEE_IpF8s5KKMyQ-BT9QzMTUyn3HxjY69qrR5xlYYNSce6K-hiXzPTDcMXjMWX85SSARag5Vr7PJMH9Ij4LfgiAsq4EFlZc3QPzIXc043cyIClO5gQ9geNBn_CIuimgN1X716jPLZgGjdWhm1jSoGhoTkmADTb3yFHsK35wucIMOzUpj0SsVUNqN_WNCtKfiPT3uxSJgNZyseRDC2vrlk"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-8 grid grid-cols-12 gap-gutter bg-background flex-1">
+<!-- Global Fleet Readiness Grid -->
+<section class="col-span-12 lg:col-span-8 flex flex-col gap-gutter">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight text-on-surface">Fleet Readiness Protocol</h3>
+<div class="flex gap-2">
+<span class="flex items-center gap-1 text-data-sm font-data-sm text-secondary">
+<span class="w-2 h-2 rounded-full bg-secondary led-glow"></span>
+                            ACTIVE OPS: 14
+                        </span>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Vehicle Card 1 -->
+<div class="tactical-border bg-surface-container-low p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">UNIT ALPHA-01</p>
+<p class="font-data-lg text-data-lg">ARMORED TRANSPORT</p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="shield" data-weight="fill" style="font-variation-settings: 'FILL' 1;">shield</span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>SHIELD INTEGRITY</span>
+<span class="text-secondary">92%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>POWER CORE</span>
+<span class="text-secondary">64%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center">
+<span class="text-data-sm font-data-sm">CREW: 04/04</span>
+<span class="text-data-sm font-data-sm text-primary">STATUS: NOMINAL</span>
+</div>
+</div>
+<!-- Vehicle Card 2 -->
+<div class="tactical-border bg-surface-container-low p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">UNIT ALPHA-02</p>
+<p class="font-data-lg text-data-lg">INTERCEPTOR</p>
+</div>
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>SHIELD INTEGRITY</span>
+<span class="text-error">24%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active bg-error shadow-[0_0_8px_rgba(255,180,171,0.4)]"></div><div class="segment active bg-error"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div><div class="segment"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>POWER CORE</span>
+<span class="text-secondary">88%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment"></div>
+</div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center">
+<span class="text-data-sm font-data-sm">CREW: 02/02</span>
+<span class="text-data-sm font-data-sm text-error">STATUS: CRITICAL</span>
+</div>
+</div>
+<!-- Vehicle Card 3 -->
+<div class="tactical-border bg-surface-container-low p-4 flex flex-col gap-4">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">UNIT BRAVO-01</p>
+<p class="font-data-lg text-data-lg">COMMAND CARRIER</p>
+</div>
+<span class="material-symbols-outlined text-secondary" data-icon="battery_charging_full">battery_charging_full</span>
+</div>
+<div class="space-y-3">
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>SHIELD INTEGRITY</span>
+<span class="text-secondary">100%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-data-sm mb-1">
+<span>POWER CORE</span>
+<span class="text-secondary">95%</span>
+</div>
+<div class="segmented-progress">
+<div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div><div class="segment active"></div>
+</div>
+</div>
+</div>
+<div class="pt-2 border-t border-outline-variant flex justify-between items-center">
+<span class="text-data-sm font-data-sm">CREW: 12/12</span>
+<span class="text-data-sm font-data-sm text-primary">STATUS: STANDBY</span>
+</div>
+</div>
+</div>
+<!-- Tactical Map -->
+<div class="flex-1 min-h-[400px] tactical-border overflow-hidden bg-surface-container-lowest">
+<div class="absolute top-4 left-4 z-10 bg-surface/80 backdrop-blur p-4 border border-outline-variant space-y-2">
+<p class="font-label-caps text-label-caps text-secondary">MAP OVERLAY: ACTIVE</p>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-secondary led-glow"></span>
+<span class="text-data-sm font-data-sm">FLEET POSITION</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-error led-glow"></span>
+<span class="text-data-sm font-data-sm">UNIDENTIFIED CONTACT</span>
+</div>
+</div>
+<div class="w-full h-full grayscale contrast-125 opacity-40 mix-blend-screen" data-location="Los Angeles" style="">
+<img alt="Tactical Map" class="w-full h-full object-cover" data-alt="A highly detailed satellite topographical map of a metropolitan city at night, rendered in a futuristic tactical aesthetic. The color palette is restricted to deep midnight blues, graphite grays, and glowing orange vector overlays showing traffic flow and building footprints. The style is sharp and technical, resembling a high-resolution command center HUD with digital noise and scanline textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu2Rm_y_SI6BbjFsqmCnXMC2epPI36BmekdDo8B0oXV3qLDNXVXhoy2CFY-GwXmTAXOfzjy5p1rrsOPQFJr0wLt9Hb6hL4ras_XVmDt9ILGTgCTA8FFzi4IRREcts4ieqGKyY4K-5HJE5nzmZQyznF9KcbTTKySZWxzpB11kC5tb93hgykJ6-iIqfgXOioikooHhTgHN6h-yXFZRNxEcuDGjaX4ocGTN1HeTvL9dcWgDsaQqRwulNfI0fqdQU4GZRgCifmeKGZx9w"/>
+</div>
+</div>
+</section>
+<!-- Critical Alerts Feed -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="flex items-center justify-between">
+<h3 class="font-headline-md text-headline-md uppercase tracking-tight text-on-surface">Tactical Intel Feed</h3>
+<span class="text-data-sm font-data-sm bg-error-container text-on-error-container px-2 py-0.5">3 ALERTS</span>
+</div>
+<div class="flex-1 bg-surface-container-low border border-outline-variant flex flex-col overflow-hidden">
+<div class="p-4 border-b border-outline-variant bg-surface-container-high flex justify-between items-center">
+<span class="font-label-caps text-label-caps uppercase">Time-stamped Logs</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-on-surface" data-icon="filter_list">filter_list</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4 font-data-sm text-data-sm">
+<!-- Alert 1 -->
+<div class="border-l-2 border-error pl-4 space-y-1">
+<p class="text-error font-bold">[14:02:44] CRITICAL THREAT DETECTED</p>
+<p class="text-on-surface-variant">Sector 7G: Unidentified armored convoy approaching Perimeter Alpha. Defensive protocols engaged.</p>
+<p class="text-[10px] text-outline italic">Source: Remote Drone 04</p>
+</div>
+<!-- Alert 2 -->
+<div class="border-l-2 border-secondary pl-4 space-y-1">
+<p class="text-secondary font-bold">[13:58:12] STATUS UPDATE: ALPHA-02</p>
+<p class="text-on-surface-variant">Hull integrity drop to 24%. Rerouting primary power to rear shielding modules. RTB requested.</p>
+<p class="text-[10px] text-outline italic">Source: Unit Vitals Telemetry</p>
+</div>
+<!-- Alert 3 -->
+<div class="border-l-2 border-primary pl-4 space-y-1">
+<p class="text-primary font-bold">[13:45:00] LOGISTICS SYNC</p>
+<p class="text-on-surface-variant">Resupply shuttle Echo-09 has docked at Forward Operating Base. Armory levels replenished.</p>
+</div>
+<!-- Alert 4 -->
+<div class="border-l-2 border-outline pl-4 space-y-1">
+<p class="text-on-surface-variant font-bold">[13:30:11] ROUTINE SYSTEM SWEEP</p>
+<p class="text-on-surface-variant opacity-70">All internal comms encrypted. No anomalies detected in backbone mesh network.</p>
+</div>
+<!-- Alert 5 -->
+<div class="border-l-2 border-error pl-4 space-y-1">
+<p class="text-error font-bold">[13:15:22] ACCESS DENIED</p>
+<p class="text-on-surface-variant">Multiple failed login attempts detected at Terminal 4-C. Physical security dispatched.</p>
+</div>
+</div>
+<div class="p-4 bg-surface-container-highest border-t border-outline-variant">
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant focus:border-secondary focus:ring-0 text-data-sm font-data-sm p-3 text-on-surface uppercase resize-none" placeholder="BROADCAST COMMAND..." rows="2"></textarea>
+<button class="absolute bottom-3 right-3 text-secondary hover:text-on-secondary-fixed transition-colors">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Secondary Data Module -->
+<div class="tactical-border bg-surface-container-low p-4 space-y-4">
+<p class="font-label-caps text-label-caps text-secondary">ENVIRONMENTAL DATA</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<p class="text-on-surface-variant text-[10px] uppercase">Ambient Temp</p>
+<p class="font-data-lg text-data-lg">24°C / 75°F</p>
+</div>
+<div class="space-y-1">
+<p class="text-on-surface-variant text-[10px] uppercase">Wind Vector</p>
+<p class="font-data-lg text-data-lg">12KM/H NW</p>
+</div>
+<div class="space-y-1">
+<p class="text-on-surface-variant text-[10px] uppercase">Radiation Level</p>
+<p class="font-data-lg text-data-lg">0.02 μSv/h</p>
+</div>
+<div class="space-y-1">
+<p class="text-on-surface-variant text-[10px] uppercase">Comms Latency</p>
+<p class="font-data-lg text-data-lg">42MS</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Contextual Floating Action -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="bg-secondary text-on-secondary p-4 rounded-none shadow-xl active:scale-95 transition-transform border-4 border-surface-container-lowest flex items-center justify-center">
+<span class="material-symbols-outlined scale-150" data-icon="add_moderator" data-weight="fill" style="font-variation-settings: 'FILL' 1;">add_moderator</span>
+</button>
+</div>
+</body></html>
