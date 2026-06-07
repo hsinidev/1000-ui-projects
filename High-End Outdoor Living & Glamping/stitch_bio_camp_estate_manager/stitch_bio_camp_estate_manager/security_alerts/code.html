@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIO-CAMP | Security &amp; Perimeter Alerts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "outline": "#8f9097",
+                    "secondary-container": "#fe6b00",
+                    "surface-dim": "#131315",
+                    "on-tertiary": "#303030",
+                    "surface-bright": "#39393b",
+                    "primary-container": "#0a192f",
+                    "surface-container-high": "#2a2a2c",
+                    "secondary": "#ffb693",
+                    "on-secondary": "#561f00",
+                    "on-primary-container": "#74829d",
+                    "on-tertiary-container": "#838281",
+                    "on-surface": "#e4e2e4",
+                    "surface-container-low": "#1b1b1d",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "background": "#131315",
+                    "error-container": "#93000a",
+                    "on-surface-variant": "#c5c6cd",
+                    "surface-tint": "#b9c7e4",
+                    "on-background": "#e4e2e4",
+                    "error": "#ffb4ab",
+                    "surface-container-highest": "#343536",
+                    "surface": "#131315",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e4e2e4",
+                    "primary-fixed": "#d6e3ff",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "on-primary": "#233148",
+                    "tertiary-fixed": "#e4e2e1",
+                    "on-primary-fixed": "#0d1c32",
+                    "secondary-fixed": "#ffdbcc",
+                    "on-secondary-container": "#572000",
+                    "inverse-on-surface": "#303032",
+                    "surface-variant": "#343536",
+                    "on-error": "#690005",
+                    "surface-container-lowest": "#0e0e10",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "primary": "#b9c7e4",
+                    "on-primary-fixed-variant": "#39475f",
+                    "secondary-fixed-dim": "#ffb693",
+                    "on-secondary-fixed-variant": "#7a3000",
+                    "tertiary-fixed-dim": "#c8c6c6",
+                    "tertiary-container": "#191919",
+                    "tertiary": "#c8c6c6",
+                    "on-secondary-fixed": "#351000",
+                    "surface-container": "#1f1f21",
+                    "outline-variant": "#44474d",
+                    "inverse-primary": "#515f78"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "base": "8px",
+                    "margin": "24px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "lg": "40px",
+                    "xl": "64px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["JetBrains Mono"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["JetBrains Mono"],
+                    "body-sm": ["Inter"],
+                    "body-base": ["Inter"],
+                    "display-lg": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                    "data-mono": ["18px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                    "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "display-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .safety-glow {
+            box-shadow: 0px 0px 12px #fe6b00;
+        }
+        .industrial-border {
+            border-left: 4px solid #fe6b00;
+        }
+        .critical-border {
+            border-left: 4px solid #ffb4ab;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-base min-h-screen pb-20 md:pb-0 md:pl-80">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-40 bg-primary-container text-secondary-container border-b border-outline-variant flex justify-between items-center w-full px-margin h-16 md:hidden">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined">menu</span>
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-secondary-container">BIO-CAMP</span>
+</div>
+<span class="material-symbols-outlined">emergency_share</span>
+</header>
+<!-- NavigationDrawer (Sidebar for Desktop) -->
+<aside class="hidden md:flex fixed left-0 top-0 h-full w-80 bg-surface-container-low border-r border-outline-variant flex-col py-lg px-md z-50">
+<div class="mb-xl">
+<span class="font-headline-md text-headline-md font-black text-secondary-container">BIO-CAMP</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-xs">COMMAND CENTER</p>
+</div>
+<nav class="flex flex-col gap-base">
+<a class="flex items-center gap-sm p-base text-on-surface-variant hover:bg-surface-container-high hover:text-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined">hub</span>
+<span class="font-data-mono text-data-mono">Situation Room</span>
+</a>
+<a class="flex items-center gap-sm p-base bg-secondary-container text-on-secondary-container font-bold shadow-[0px_0px_12px_#fe6b00]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span class="font-data-mono text-data-mono">Security</span>
+</a>
+<a class="flex items-center gap-sm p-base text-on-surface-variant hover:bg-surface-container-high hover:text-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span class="font-data-mono text-data-mono">Alert History</span>
+</a>
+<a class="flex items-center gap-sm p-base text-on-surface-variant hover:bg-surface-container-high hover:text-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined">library_books</span>
+<span class="font-data-mono text-data-mono">Protocol Library</span>
+</a>
+<a class="flex items-center gap-sm p-base text-on-surface-variant hover:bg-surface-container-high hover:text-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-data-mono text-data-mono">Maintenance Log</span>
+</a>
+<a class="flex items-center gap-sm p-base text-on-surface-variant hover:bg-surface-container-high hover:text-secondary-container transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-data-mono text-data-mono">System Settings</span>
+</a>
+</nav>
+<div class="mt-auto p-base bg-surface-container border border-outline-variant">
+<p class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM STATUS</p>
+<div class="flex items-center gap-xs mt-xs">
+<div class="w-2 h-2 bg-secondary-container rounded-full animate-pulse shadow-[0px_0px_8px_#fe6b00]"></div>
+<span class="font-data-mono text-[14px] text-secondary">ENCRYPTED UP-LINK</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pt-20 md:pt-md px-margin max-w-7xl mx-auto">
+<header class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface uppercase tracking-tight">Perimeter Security</h1>
+<p class="font-body-base text-on-surface-variant max-w-xl">Real-time telemetry and intrusion detection for Sector 7-G. Immediate tactical response required for flagged incidents.</p>
+</div>
+<div class="flex gap-base">
+<div class="bg-surface-container-high px-md py-sm border border-outline-variant flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ACTIVE ALERTS</span>
+<span class="font-data-mono text-headline-md text-secondary-container">03</span>
+</div>
+<div class="bg-surface-container-high px-md py-sm border border-outline-variant flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SECTOR STATUS</span>
+<span class="font-data-mono text-headline-md text-secondary">SECURE</span>
+</div>
+</div>
+</header>
+<!-- Bento Grid for Security Dashboard -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Critical Incident List (Asymmetric Priority) -->
+<section class="lg:col-span-8 flex flex-col gap-base">
+<div class="flex items-center justify-between mb-xs">
+<h2 class="font-label-caps text-label-caps text-on-surface tracking-widest flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]">priority_high</span>
+                        PENDING ACKNOWLEDGMENT
+                    </h2>
+<button class="font-label-caps text-label-caps text-secondary-container hover:underline">CLEAR ALL NON-CRITICAL</button>
+</div>
+<!-- Alert Card 1: Perimeter Breach -->
+<article class="bg-surface-container-highest industrial-border p-md flex flex-col md:flex-row gap-md items-start md:items-center relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-xs bg-secondary-container text-on-secondary-container font-label-caps text-[10px] uppercase">CRITICAL</div>
+<div class="bg-surface-container-low p-md border border-outline-variant">
+<span class="material-symbols-outlined text-secondary-container text-[40px]">Pencil</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-data-mono text-data-mono text-on-surface uppercase">Perimeter Breach</span>
+<span class="bg-surface-container-high border border-outline-variant text-on-surface-variant px-xs py-0.5 font-label-caps text-[10px]">ZONE 04</span>
+</div>
+<div class="grid grid-cols-2 md:flex md:gap-lg mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">TIMESTAMP</span>
+<span class="font-data-mono text-body-base">14:22:09:44</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SENSOR ID</span>
+<span class="font-data-mono text-body-base">IR-BEAM-741</span>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant">Physical barrier integrity compromised at North-West coordinate. Thermal signature detected (Large Mammal/Humanoid).</p>
+</div>
+<div class="w-full md:w-auto flex md:flex-col gap-base">
+<button class="flex-grow md:flex-none bg-secondary-container text-on-secondary-container px-md py-base font-label-caps text-label-caps font-bold safety-glow hover:bg-secondary transition-all">ACKNOWLEDGE</button>
+<button class="flex-grow md:flex-none border border-outline-variant bg-surface-container-low px-md py-base font-label-caps text-label-caps hover:bg-surface-container-high">DEPLOY DRONE</button>
+</div>
+</article>
+<!-- Alert Card 2: Unauthorized Access -->
+<article class="bg-surface-container-highest industrial-border p-md flex flex-col md:flex-row gap-md items-start md:items-center">
+<div class="bg-surface-container-low p-md border border-outline-variant">
+<span class="material-symbols-outlined text-secondary-container text-[40px]">lock_open</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-data-mono text-data-mono text-on-surface uppercase">Unauthorized Access</span>
+<span class="bg-surface-container-high border border-outline-variant text-on-surface-variant px-xs py-0.5 font-label-caps text-[10px]">MAIN HUB</span>
+</div>
+<div class="grid grid-cols-2 md:flex md:gap-lg mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">TIMESTAMP</span>
+<span class="font-data-mono text-body-base">14:18:32:01</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">CREDENTIAL</span>
+<span class="font-data-mono text-body-base text-error">FAILED_ATTEMPT</span>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant">Multiple failed RFID authentication attempts at Bio-Lab primary airlock. Locking down secondary access ports.</p>
+</div>
+<div class="w-full md:w-auto flex md:flex-col gap-base">
+<button class="flex-grow md:flex-none bg-secondary-container text-on-secondary-container px-md py-base font-label-caps text-label-caps font-bold safety-glow hover:bg-secondary transition-all">ACKNOWLEDGE</button>
+<button class="flex-grow md:flex-none border border-outline-variant bg-surface-container-low px-md py-base font-label-caps text-label-caps hover:bg-surface-container-high">LOCKDOWN</button>
+</div>
+</article>
+<!-- Alert Card 3: Comms Interference -->
+<article class="bg-surface-container-highest border-l-4 border-outline p-md flex flex-col md:flex-row gap-md items-start md:items-center opacity-80">
+<div class="bg-surface-container-low p-md border border-outline-variant">
+<span class="material-symbols-outlined text-outline text-[40px]">signal_disconnected</span>
+</div>
+<div class="flex-grow">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-data-mono text-data-mono text-on-surface uppercase">Comms Interference</span>
+<span class="bg-surface-container-high border border-outline-variant text-on-surface-variant px-xs py-0.5 font-label-caps text-[10px]">UPLINK-B</span>
+</div>
+<div class="grid grid-cols-2 md:flex md:gap-lg mb-sm">
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px] text-on-surface-variant">TIMESTAMP</span>
+<span class="font-data-mono text-body-base">13:55:00:12</span>
+</div>
+</div>
+<p class="font-body-sm text-on-surface-variant">Satellite link degradation. Atmospheric conditions or local jamming suspected. Switching to low-freq backup.</p>
+</div>
+<div class="w-full md:w-auto">
+<button class="w-full border border-outline-variant bg-surface-container-low px-md py-base font-label-caps text-label-caps hover:bg-surface-container-high">VIEW LOGS</button>
+</div>
+</article>
+</section>
+<!-- Sidebar/Right Column: Live Visuals & Meta -->
+<section class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Tactical Map View -->
+<div class="bg-surface-container border border-outline-variant overflow-hidden">
+<div class="p-base border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<span class="font-label-caps text-label-caps">SECTOR MAP (7-G)</span>
+<div class="flex gap-xs">
+<div class="w-2 h-2 bg-secondary-container rounded-full"></div>
+<div class="w-2 h-2 bg-surface-variant rounded-full"></div>
+</div>
+</div>
+<div class="relative aspect-square bg-primary-container">
+<img class="w-full h-full object-cover opacity-60 mix-blend-overlay" data-alt="A tactical satellite map view of a remote campsite in a dense dark forest at night. The map displays glowing orange heat signatures and blue outlined perimeter boundaries. Technical overlays like grid lines, GPS coordinates, and sensor nodes are visible in a sharp high-contrast industrial UI style. The color palette is dominated by midnight blue and safety orange." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDcPo0HSThyWED5AYktYmAVx2p1p4ukta5Iofo86aob1BJtaUYn_pryeb4IzE0jS3lWLKdkYyAb_AXOmkhmLthTZ1Jhjm50FKs3iK02LXIuvcszyK-ELFPfCVaznpZh6qKAbkAFj-phVNbv4PSAyXS1KFnTf-Be-Ot_4mxaRh78fM83CtsSPNcpOffHtt_yenbllYc4RMj56ugr97CADgTeNTRvJ_nWwKxjaTYIwOf3Y34aEtqOvCqapZA-L8C2O9rSW9HuG9LScok"/>
+<div class="absolute inset-0 p-md pointer-events-none">
+<div class="absolute top-1/4 left-1/3 w-4 h-4 bg-secondary-container rounded-full animate-ping"></div>
+<div class="absolute top-1/4 left-1/3 w-4 h-4 bg-secondary-container rounded-full shadow-[0px_0px_12px_#fe6b00]"></div>
+<div class="absolute bottom-1/2 right-1/4 w-3 h-3 bg-secondary-container rounded-full opacity-50"></div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between font-data-mono text-[10px] text-secondary">
+<span>LAT: 45.332° N</span>
+<span>LON: 121.711° W</span>
+</div>
+</div>
+</div>
+<!-- Active Personnel -->
+<div class="bg-surface-container border border-outline-variant p-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md border-b border-outline-variant pb-xs">FIELD OPERATIVES</h3>
+<div class="space-y-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 bg-surface-container-highest border border-outline flex items-center justify-center font-bold">R1</div>
+<div>
+<p class="font-data-mono text-[14px]">Ranger Alpha</p>
+<p class="font-label-caps text-[10px] text-secondary">ON PATROL</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline">radio_button_checked</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-base">
+<div class="w-8 h-8 bg-surface-container-highest border border-outline flex items-center justify-center font-bold">R2</div>
+<div>
+<p class="font-data-mono text-[14px]">Ranger Beta</p>
+<p class="font-label-caps text-[10px] text-on-tertiary-fixed-variant">OFFLINE</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline opacity-20">radio_button_unchecked</span>
+</div>
+</div>
+</div>
+<!-- System Telemetry Widget -->
+<div class="bg-surface-container-low border border-outline-variant p-md">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps">BATTERY RESERVES</span>
+<span class="font-data-mono text-secondary">84%</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest">
+<div class="h-full bg-secondary-container shadow-[0px_0px_8px_#fe6b00]" style="width: 84%"></div>
+</div>
+<div class="grid grid-cols-2 gap-base mt-md">
+<div class="bg-surface-container p-base border border-outline-variant">
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">CPU Load</span>
+<span class="font-data-mono text-body-base">12.4%</span>
+</div>
+<div class="bg-surface-container p-base border border-outline-variant">
+<span class="block font-label-caps text-[10px] text-on-surface-variant uppercase">Temp</span>
+<span class="font-data-mono text-body-base">42°C</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- BottomNavBar (Visible on Mobile) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-base bg-surface border-t border-outline-variant md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">sensors</span>
+<span class="font-label-caps text-label-caps">Sensors</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container p-2 rounded-none" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+<span class="font-label-caps text-label-caps">Security</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-caps text-label-caps">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-label-caps text-label-caps">Resources</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-highest" href="#">
+<span class="material-symbols-outlined">assignment</span>
+<span class="font-label-caps text-label-caps">Tasks</span>
+</a>
+</nav>
+</body></html>

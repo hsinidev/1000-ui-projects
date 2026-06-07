@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>EcoLogix Fleet Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .liquid-progress {
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-progress::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            animation: wave 2s infinite linear;
+        }
+        @keyframes wave {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#3f6653",
+                        "on-tertiary-fixed": "#191c1e",
+                        "secondary-container": "#d5e3fc",
+                        "surface-dim": "#dadad7",
+                        "primary-container": "#1b4332",
+                        "on-surface-variant": "#414844",
+                        "on-surface": "#1a1c1a",
+                        "surface-container-high": "#e8e8e5",
+                        "on-tertiary-container": "#a4a6a8",
+                        "surface": "#f9faf6",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "tertiary-container": "#393c3e",
+                        "surface-container-highest": "#e2e3e0",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#eeeeeb",
+                        "error-container": "#ffdad6",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f3f4f1",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1a1c1a",
+                        "primary-fixed": "#c1ecd4",
+                        "on-primary": "#ffffff",
+                        "outline-variant": "#c1c8c2",
+                        "on-primary-container": "#86af99",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "primary-fixed-dim": "#a5d0b9",
+                        "secondary-fixed": "#d5e3fc",
+                        "background": "#f9faf6",
+                        "primary": "#012d1d",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#a5d0b9",
+                        "inverse-on-surface": "#f0f1ee",
+                        "tertiary": "#232628",
+                        "surface-variant": "#e2e3e0",
+                        "outline": "#717973",
+                        "error": "#ba1a1a",
+                        "surface-bright": "#f9faf6",
+                        "on-primary-fixed": "#002114",
+                        "secondary": "#515f74",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#274e3d",
+                        "on-secondary-container": "#57657a",
+                        "inverse-surface": "#2f312f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-margin": "40px",
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "stack-md": "24px",
+                        "stack-sm": "12px",
+                        "stack-lg": "48px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "body-lg": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "display-xl": ["Manrope"],
+                        "data-mono": ["Manrope"],
+                        "body-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- SideNavBar -->
+<aside class="h-screen w-72 fixed left-0 top-0 bg-surface flex flex-col py-stack-md px-stack-sm border-r border-outline-variant z-50">
+<div class="mb-stack-lg px-4">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary">EcoLogix</h1>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Carbon Intelligence</p>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">dashboard</span>
+<span class="font-label-sm text-label-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">admin_panel_settings</span>
+<span class="font-label-sm text-label-sm">Admin</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">analytics</span>
+<span class="font-label-sm text-label-sm">Analytics</span>
+</a>
+<!-- Active Tab: Fleet -->
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-4 border-primary bg-surface-container-low" href="#">
+<span class="material-symbols-outlined text-[24px]">directions_boat</span>
+<span class="font-label-sm text-label-sm">Fleet</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-low transition-colors group" href="#">
+<span class="material-symbols-outlined text-[24px]">support_agent</span>
+<span class="font-label-sm text-label-sm">Support</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-stack-md border-t border-outline-variant">
+<div class="flex items-center gap-3 mb-stack-sm">
+<img alt="ESG Executive Profile" class="w-10 h-10 rounded-full bg-surface-container-highest" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbD5_lfP33oUBUMkx5tMoC3_w8UZ2pA1yCMFMXygCzpRbt-kbbtTi9NgWoBtkEo-tzfyYlY8HW0ZUNfJqSoLqYL7CX3rYuuTI-0ZRmLA2b_5nlUTarEDDo6lqZ5kSUzUcWefF71dRLwM55ORj8CG4Vep2DY-IyD64nTH9TTsyhOK19I_hmvSO2neoalo2PZXOoFdiBasy33G-rKagpAJi3N3FuOxxRSVGbgZ9cxTU_9W7-MvCVap7x3-aHonYCfe1xtcjA9AHLrStu"/>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface font-bold">Alex Sterling</p>
+<p class="text-[10px] text-on-surface-variant">Fleet Director</p>
+</div>
+</div>
+<button class="w-full py-3 px-4 bg-primary text-on-primary rounded-lg font-label-sm text-label-sm hover:bg-primary-container transition-all active:scale-95">
+                Upgrade Plan
+            </button>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="flex items-center justify-between h-20 px-container-margin ml-72 w-[calc(100%-18rem)] sticky top-0 bg-surface z-40 border-b border-outline-variant">
+<div class="flex items-center gap-stack-md flex-1">
+<div class="relative w-96">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant">search</span>
+<input class="w-full bg-surface-container-low border-none rounded-lg pl-10 pr-4 py-2 text-body-md focus:ring-2 focus:ring-primary-container outline-none transition-all" placeholder="Search vessels, routes, or cargo..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-all">settings</span>
+</div>
+<div class="h-8 w-[1px] bg-outline-variant"></div>
+<span class="font-headline-md text-headline-md font-extrabold text-primary">EcoLogix Platform</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-72 p-container-margin grid grid-cols-12 gap-gutter">
+<!-- Dashboard Header -->
+<section class="col-span-12 mb-stack-md flex justify-between items-end">
+<div>
+<h2 class="font-display-xl text-display-xl text-primary mb-2">Fleet Operations</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant">Coordinating the next generation of zero-emission maritime logistics.</p>
+</div>
+<div class="flex gap-stack-sm">
+<div class="flex items-center gap-2 bg-surface border border-outline-variant px-4 py-2 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">24 Vessels Active</span>
+</div>
+<div class="flex items-center gap-2 bg-surface border border-outline-variant px-4 py-2 rounded-full">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="font-label-sm text-label-sm text-on-surface-variant">8 In Transit</span>
+</div>
+</div>
+</section>
+<!-- Main Vessel List -->
+<div class="col-span-8 space-y-gutter">
+<!-- Vessel Card 1: BEV -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all duration-300 group">
+<div class="flex">
+<div class="w-1/3 relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" data-alt="A sleek, futuristic electric cargo vessel sailing through calm, crystal-clear deep blue waters. The ship features minimalist white surfaces with carbon fiber accents and integrated solar panels. The lighting is high-key midday sun, highlighting the clean, aerodynamic lines of the hull. The atmosphere is serene and environmentally conscious, reflecting a premium luxury logistics brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMfNjYo82dw2Hp-hZiLaEN_WlAW8avZ0ChwxCvwwtPcVKDUxeU2mdmyOigtHW5NXco65L7EAlwFUzin1CaV4s89zMW4EzGzIxdkJ2kCW4wSdWyTuZQCkmesnMWws-8n3hKaIkxUSeJCRET5zsN8DQqXH6wlwQ8VA5XpxQdPoXry-882IDvj2bCGi4skraoSKD44XvQ4wAJ9EmV4elWi3Lmu-oHSVuquUp964t1KRPGBWCLCEP0MIX1Y0XuuwG3-lCtRhCFn23Rt3xA"/>
+<div class="absolute top-4 left-4 bg-primary text-white font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-tighter">
+                            BEV • Active
+                        </div>
+</div>
+<div class="w-2/3 p-stack-md flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Aeon-1 Electric</h3>
+<div class="flex gap-2">
+<span class="bg-primary-fixed text-on-primary-fixed-variant px-3 py-1 rounded-full font-label-sm text-label-sm">98% Efficient</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Short-haul coastal freighter optimized for zero-noise urban port entry.</p>
+<div class="grid grid-cols-3 gap-stack-md mb-6">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Range</p>
+<p class="font-headline-md text-headline-md">1,200 nm</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Payload</p>
+<p class="font-headline-md text-headline-md">4,500 TEU</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Charge</p>
+<p class="font-headline-md text-headline-md">84%</p>
+</div>
+</div>
+</div>
+<div class="w-full">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Carbon Offset Progress</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">12,400 kg CO2</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full liquid-progress">
+<div class="h-full bg-primary rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vessel Card 2: Hydrogen -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all duration-300 group">
+<div class="flex">
+<div class="w-1/3 relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" data-alt="A large-scale hydrogen-powered container ship crossing the Atlantic ocean. The vessel is massive and finished in a matte Slate-50 paint with sophisticated green detailing. Soft sunrise lighting creates a warm glow on the horizon, casting long, elegant shadows across the ship's modular deck. The aesthetic is professional, technological, and high-performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1VDjMCBBr7OnUhTyUkmVEn1p4GTDzNalbwqaKCKA-kpH3p8wDXzKm_RpZfXR84wj6449QBwh110PePB2GaQIAg4GeLWQ7zYvUKQtkXDguyTj2dEIABVhK4-XI4neXNUrbrH-SNx921d__vd7nrk9AQQWQ3Hg72DZ56F9XyGMDyihQ6A23aZS-D9GGmiQ5NyjupL8wSmWymmEgzwW8kL4W9X1OXliLv1pZnsDJkR8-XbT1VjhLNsKkkhD8utsdTmmY_i-I2vghu5YO"/>
+<div class="absolute top-4 left-4 bg-secondary text-white font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-tighter">
+                            Hydrogen • Standby
+                        </div>
+</div>
+<div class="w-2/3 p-stack-md flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Helius DeepSea</h3>
+<div class="flex gap-2">
+<span class="bg-surface-container-high text-on-surface-variant px-3 py-1 rounded-full font-label-sm text-label-sm">High Endurance</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Trans-oceanic cargo vessel utilizing liquid hydrogen fuel cells for unlimited range.</p>
+<div class="grid grid-cols-3 gap-stack-md mb-6">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Range</p>
+<p class="font-headline-md text-headline-md">8,500 nm</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Payload</p>
+<p class="font-headline-md text-headline-md">18,000 TEU</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Fuel Cell</p>
+<p class="font-headline-md text-headline-md">92%</p>
+</div>
+</div>
+</div>
+<div class="w-full">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Current Performance Efficiency</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">Optimal</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full liquid-progress">
+<div class="h-full bg-primary rounded-full" style="width: 92%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vessel Card 3: BEV (Docked) -->
+<div class="bg-surface border border-outline-variant rounded-xl overflow-hidden hover:border-primary transition-all duration-300 group">
+<div class="flex">
+<div class="w-1/3 relative h-64 overflow-hidden">
+<img class="w-full h-full object-cover grayscale-[20%] group-hover:grayscale-0 transition-all duration-500" data-alt="A modern port terminal with advanced electric charging cranes docked to a minimalist freighter. The scene is illuminated by cool, atmospheric twilight lighting. The color palette consists of Slate blues, Forest greens, and clean whites. The setting is highly organized and high-tech, showcasing the efficiency of sustainable maritime infrastructure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4NZAHaib0XS18IE53X6fZWABo6oTlk6Rf3JQ8YdTauJubXxZqBrUJGrlMiGudKFmjjWCQkdx-f3TMgmRJQcKgcvBGt9xN8190hnzgp61rilkpAnoYkjt9IjQLHk4KSrIE-JR9yM561-uZPzJ8QctEuhFD_X5gTqgsuEF6CQHZChyzg-KDQLQ2qh2w53de1ltrrLM2z8dlGvmmKg4lzlf1APDRT1hqLf7G7IrjaEwXsjIMkLPZGhVOFgYWmuGGhRImQ_xZAv8R4c56"/>
+<div class="absolute top-4 left-4 bg-outline text-white font-label-sm text-label-sm px-3 py-1 rounded-full uppercase tracking-tighter">
+                            BEV • Charging
+                        </div>
+</div>
+<div class="w-2/3 p-stack-md flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-md text-headline-md text-primary">Terra Volt-9</h3>
+<div class="flex gap-2">
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full font-label-sm text-label-sm">Fast Charge</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Regional distribution vessel. Currently undergoing high-speed induction charging at Singapore Hub.</p>
+<div class="grid grid-cols-3 gap-stack-md mb-6">
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Range</p>
+<p class="font-headline-md text-headline-md">600 nm</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Payload</p>
+<p class="font-headline-md text-headline-md">1,200 TEU</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase mb-1">Status</p>
+<p class="font-headline-md text-headline-md">42m ETA</p>
+</div>
+</div>
+</div>
+<div class="w-full">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-sm text-label-sm text-on-surface-variant">Charging Level</span>
+<span class="font-label-sm text-label-sm text-primary font-bold">45%</span>
+</div>
+<div class="h-3 w-full bg-surface-container rounded-full liquid-progress">
+<div class="h-full bg-secondary rounded-full" style="width: 45%"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Side: Stakeholder Coordination Panel -->
+<aside class="col-span-4 h-fit sticky top-24">
+<div class="bg-surface border border-outline-variant rounded-xl flex flex-col h-[750px]">
+<div class="p-stack-md border-b border-outline-variant bg-surface-container-low">
+<h3 class="font-headline-md text-headline-md text-primary">Fleet Coordination</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Real-time Stakeholder Communication</p>
+</div>
+<div class="flex-1 overflow-y-auto p-stack-md space-y-stack-md">
+<!-- Comment 1 -->
+<div class="flex gap-3">
+<img alt="Stakeholder Avatar" class="w-8 h-8 rounded-full bg-secondary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFekJ0mus5r-3MMGgSEcu8ylolD7iusDxVAOdQCZPPSVyRUCBePS_alVtp5R_kAzFhuwpWn9em6_JQqVYnvzNPUEV_7dTToPnVWUv740H9mRvkQNYdA9JW4E9Bt-HeOfQdrpQNTpPZ-1-s2v8ITArkOY2Evsl4yBt39Ybvzk7xYTUYSO_5PXQpGsO0COO-cQKfJ19yA58lNzl6z7bHMAL8hATq2ecQf7GSXGEkxot6vsjFWVWW14uwPAwWhDeWzDs7QrLdfyxFVZpy"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm font-bold">Julien Dubois</span>
+<span class="text-[10px] text-on-surface-variant">12:42 PM</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3">
+<p class="font-body-md text-[14px]">The Aeon-1 charging cycle is running 12 minutes ahead of schedule. Can we expedite the cargo load at berth 4?</p>
+</div>
+<div class="mt-2 flex gap-4">
+<button class="text-primary font-label-sm text-[11px] uppercase tracking-wider">Acknowledge</button>
+<button class="text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider">Reply</button>
+</div>
+</div>
+</div>
+<!-- Comment 2 -->
+<div class="flex gap-3">
+<img alt="Stakeholder Avatar" class="w-8 h-8 rounded-full bg-primary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXRG545k7lFkolf8Pf8AlsPw0xNt2pXxehKU3h3WB2bp8OuAIKu34qMrbRZvfjLVS-Sv5YCqBMgvtw0AfqREDvwath0ybiKzXk9banwr2SAN8rsHLZe9dCpB6aWV4C2wARmHyUWEZcwjTd8sRcyOuZmq-iuscmI9DLj75xBAVWYz3fyHi7b9B1lDm0a1VpxMwSMXIZd1o0qTbKZ3VpyttP1UgbeJGhfRJpTQ4kS65HhO5R2MV0m-0ycE2-c7b49csMhZYJPxv_xOEw"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm font-bold">Sarah Miller</span>
+<span class="text-[10px] text-on-surface-variant">1:05 PM</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3">
+<p class="font-body-md text-[14px]">Helius DeepSea reporting minor turbulence in the Atlantic corridor. Adjusting route for optimal energy conservation. Carbon metrics will shift by ~0.4%.</p>
+</div>
+<div class="mt-2 flex gap-4">
+<button class="text-primary font-label-sm text-[11px] uppercase tracking-wider">Approved</button>
+<button class="text-on-surface-variant font-label-sm text-[11px] uppercase tracking-wider">Reply</button>
+</div>
+</div>
+</div>
+<!-- System Alert -->
+<div class="bg-primary-container/10 border-l-4 border-primary p-3 rounded-r-lg">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[18px] text-primary">eco</span>
+<span class="font-label-sm text-label-sm font-bold text-primary">Fleet Intelligence</span>
+</div>
+<p class="font-body-md text-[13px] text-on-primary-container">Recommended provisioning for Terra Volt-9: Utilize Shore Power Module B for 20% faster turnover.</p>
+</div>
+<!-- Comment 3 -->
+<div class="flex gap-3">
+<img alt="Stakeholder Avatar" class="w-8 h-8 rounded-full bg-tertiary-fixed" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDizSfLq7jRTEWZxTCo4aNnV7gJDELNAMA_zu-ES5oBAjtFyN2V4rBRaaHKuAWWxiIn8Aye9gk6E7BKTU10Gb1K4FQnr3rvX-mWhkAQgpoSmkRYMXV_Em7t_4fFw91kBuItcyJL9AZobxHy11SzDBE8Zx557L68o4wcv6twnjnSPCsOrsBpTMjjkh2La7tOzO1kjw-7RZjbeutb5wPUGiYnSt9pBLDGSYz8A3HtnLXA1B5EgOt_-dL5TV4U5t3y-NGZEv1Xml8SFw4W"/>
+<div class="flex-1">
+<div class="flex justify-between items-center mb-1">
+<span class="font-label-sm text-label-sm font-bold">Raj Kapoor</span>
+<span class="text-[10px] text-on-surface-variant">1:45 PM</span>
+</div>
+<div class="bg-surface-container rounded-lg p-3">
+<p class="font-body-md text-[14px]">Coordinating with port authorities for the new Hydrogen refueling protocols. Need the Helius specs PDF re-verified by EOD.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-stack-md border-t border-outline-variant bg-surface">
+<div class="relative">
+<textarea class="w-full bg-slate-50 border border-outline-variant rounded-lg p-3 font-body-md text-sm min-h-[100px] focus:ring-2 focus:ring-primary outline-none transition-all resize-none" placeholder="Add a coordination note..."></textarea>
+<div class="absolute bottom-3 right-3 flex gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">attach_file</span>
+</button>
+<button class="bg-primary text-white p-2 rounded-lg hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Fleet Analytics Map Placeholder -->
+<section class="col-span-12 mt-stack-lg">
+<div class="bg-surface border border-outline-variant rounded-xl p-stack-md">
+<div class="flex justify-between items-center mb-stack-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Global Fleet Position</h3>
+<p class="font-label-sm text-label-sm text-on-surface-variant">Live telemetry and route optimization mapping.</p>
+</div>
+<button class="flex items-center gap-2 border border-outline-variant px-4 py-2 rounded-lg font-label-sm text-label-sm hover:bg-surface-container-low transition-colors">
+<span class="material-symbols-outlined text-[18px]">open_in_full</span>
+                        Fullscreen Map
+                    </button>
+</div>
+<div class="aspect-[21/9] rounded-lg overflow-hidden bg-slate-100 relative">
+<img class="w-full h-full object-cover grayscale brightness-50" data-alt="A sophisticated digital map visualization of the global oceans with glowing pulse markers representing vessels. The map style is minimalist and dark, with bright neon green traces indicating shipping lanes and active vessel routes. The aesthetic is data-heavy but clean, like a high-end logistics command center screen." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAUfnrH9YG16G0qQXTQb1FZXJMX7BDShxVoMorbAYQvxow2_IbtP_q7EbjHC2JqcKeYA6oe6pS1f-lhcsH5ByXOTcK-wszsJkxip_0cA_vfmP_Xt_cWs9AMsxDeuMOu15YRuborv2N2dML6A8PR_Ve3r9mp02HPuS1UmcQQc1XWWMM2ZIscai6v8fkoKvj7Ubu6ChUHRBnhsfB3uXNJv2FlJCOD0FBBnEYIF4m6NZ9HlXgLt7AKtOvcphVHb--VkBQT3dZmHRGEZV6"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-surface/90 backdrop-blur px-8 py-4 rounded-full border border-primary flex items-center gap-4">
+<span class="flex h-3 w-3 relative">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+</span>
+<p class="font-label-sm text-label-sm font-bold text-primary">All Systems Nominal • Data Refreshing (3s)</p>
+</div>
+</div>
+<div data-location="Global Maritime Routes" style=""></div>
+</div>
+</div>
+</section>
+</main>
+</body></html>

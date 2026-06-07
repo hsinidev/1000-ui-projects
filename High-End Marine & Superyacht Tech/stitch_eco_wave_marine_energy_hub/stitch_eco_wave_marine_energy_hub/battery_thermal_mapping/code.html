@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Eco-Wave | Battery Thermal Mapping</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 192, 200, 0.1);
+        }
+        .thermal-gradient-cool {
+            background: linear-gradient(180deg, #A5D8FF 0%, #2f486a 100%);
+        }
+        body {
+            background-color: #121414;
+            color: #e2e2e2;
+            overflow-x: hidden;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#d2d2d2",
+                      "tertiary": "#efeeee",
+                      "on-tertiary-fixed-variant": "#464747",
+                      "primary-fixed": "#c9e6ff",
+                      "on-primary": "#00344d",
+                      "surface": "#121414",
+                      "surface-container": "#1e2020",
+                      "on-primary-container": "#285f80",
+                      "surface-container-lowest": "#0c0f0f",
+                      "background": "#121414",
+                      "error-container": "#93000a",
+                      "surface-container-highest": "#333535",
+                      "on-secondary-container": "#9eb7de",
+                      "on-tertiary-container": "#595a5a",
+                      "primary-fixed-dim": "#9accf3",
+                      "on-surface-variant": "#c1c7ce",
+                      "surface-dim": "#121414",
+                      "surface-variant": "#333535",
+                      "secondary-fixed-dim": "#afc8f0",
+                      "primary-container": "#a5d8ff",
+                      "on-error": "#690005",
+                      "surface-tint": "#9accf3",
+                      "secondary-fixed": "#d4e3ff",
+                      "on-primary-fixed": "#001e2f",
+                      "primary": "#e1f0ff",
+                      "outline": "#8b9198",
+                      "inverse-surface": "#e2e2e2",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "surface-container-high": "#282a2b",
+                      "on-secondary-fixed-variant": "#2f486a",
+                      "surface-container-low": "#1a1c1c",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-fixed-variant": "#0c4b6c",
+                      "secondary-container": "#2f486a",
+                      "outline-variant": "#41484d",
+                      "on-surface": "#e2e2e2",
+                      "inverse-primary": "#2e6385",
+                      "on-secondary-fixed": "#001c3a",
+                      "on-background": "#e2e2e2",
+                      "inverse-on-surface": "#2f3131",
+                      "secondary": "#afc8f0",
+                      "surface-bright": "#37393a",
+                      "tertiary-fixed": "#e3e2e2",
+                      "on-tertiary": "#2f3131",
+                      "on-secondary": "#163152",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "margin-edge": "32px",
+                      "unit": "8px",
+                      "stack-md": "16px",
+                      "stack-lg": "32px",
+                      "gutter": "16px",
+                      "stack-sm": "8px"
+              },
+              "fontFamily": {
+                      "data-display": ["Inter"],
+                      "headline-lg-mobile": ["Montserrat"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Montserrat"],
+                      "headline-lg": ["Montserrat"],
+                      "label-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "headline-xl": ["Montserrat"]
+              },
+              "fontSize": {
+                      "data-display": ["20px", {"lineHeight": "24px", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "34px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                      "headline-xl": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline-variant/20 shadow-sm flex justify-between items-center px-margin-edge h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">waves</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim tracking-tight">Eco-Wave</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-8">
+<span class="text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm cursor-pointer hover:opacity-80 transition-opacity">Fleet View</span>
+<span class="text-primary dark:text-primary-fixed-dim font-label-sm text-label-sm cursor-pointer">Thermal Mapping</span>
+<span class="text-on-surface-variant dark:text-on-surface-variant font-label-sm text-label-sm cursor-pointer hover:opacity-80 transition-opacity">Maintenance</span>
+</nav>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim active:scale-95 transition-transform duration-200 cursor-pointer">battery_charging_full</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin-edge max-w-[1600px] mx-auto min-h-screen">
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Sidebar: Real-time efficiency metrics -->
+<aside class="md:col-span-3 space-y-gutter">
+<section class="glass-panel rounded-xl p-stack-md">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-4">Core Metrics</h3>
+<div class="space-y-6">
+<div class="flex flex-col gap-1">
+<span class="text-on-surface-variant text-label-sm">Overall Efficiency</span>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-primary">94.8</span>
+<span class="text-on-surface-variant text-label-sm">%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden mt-2">
+<div class="h-full bg-primary-container w-[94.8%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-on-surface-variant text-label-sm">Discharge Rate</span>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-primary">12.4</span>
+<span class="text-on-surface-variant text-label-sm">kW/h</span>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-on-surface-variant text-label-sm">Est. Cycle Life</span>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-primary">2,480</span>
+<span class="text-on-surface-variant text-label-sm">Cycles Remaining</span>
+</div>
+</div>
+</div>
+</section>
+<section class="glass-panel rounded-xl p-stack-md">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Cooling Status</h3>
+<span class="flex h-2 w-2 rounded-full bg-primary-container"></span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Active Pump</span>
+<span class="text-on-surface">PUMP-04</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Coolant Flow</span>
+<span class="text-on-surface">4.2 L/min</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Inlet Temp</span>
+<span class="text-on-surface">18.4°C</span>
+</div>
+<div class="flex justify-between text-body-md">
+<span class="text-on-surface-variant">Outlet Temp</span>
+<span class="text-on-surface">22.1°C</span>
+</div>
+</div>
+</section>
+</aside>
+<!-- Center Content: 3D Visualization -->
+<section class="md:col-span-6 space-y-gutter relative">
+<div class="glass-panel rounded-xl overflow-hidden aspect-square md:aspect-auto md:h-[600px] flex items-center justify-center relative group">
+<!-- Visualization Overlay UI -->
+<div class="absolute top-6 left-6 z-10">
+<h2 class="font-headline-md text-headline-md text-primary">Tidal-Stack B1</h2>
+<p class="text-on-surface-variant text-body-md">Real-time Thermal Distribution</p>
+</div>
+<div class="absolute bottom-6 left-6 right-6 z-10 flex justify-between items-end">
+<div class="glass-panel rounded-lg p-3 px-4 flex gap-6">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Avg Temp</span>
+<span class="font-data-display text-data-display text-primary">24.2°C</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase tracking-tighter">Delta T</span>
+<span class="font-data-display text-data-display text-secondary">3.7°C</span>
+</div>
+</div>
+<div class="flex flex-col items-end gap-2">
+<div class="h-32 w-4 flex flex-col-reverse rounded-full bg-surface-container-highest overflow-hidden border border-outline-variant/20">
+<div class="h-1/6 bg-error"></div>
+<div class="h-1/6 bg-amber-400"></div>
+<div class="h-4/6 bg-primary-container"></div>
+</div>
+<span class="text-[10px] text-on-surface-variant font-bold">THERMAL SCALE</span>
+</div>
+</div>
+<!-- Isometric 3D Battery Placeholder Image -->
+<img alt="Isometric Battery Pack Visualization" class="w-full h-full object-cover opacity-40 mix-blend-screen grayscale" data-alt="A highly technical 3D isometric cutaway visualization of a modular battery storage system for marine energy. The scene is rendered in a futuristic glassmorphic style with deep navy and ice blue lighting. Individual battery cells within the modules glow with a cool blue luminescence, while a single module in the center exhibits a soft amber pulse indicating a localized temperature rise. The background is a dark, sleek laboratory setting with faint technical schematics and floating digital data nodes." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAJ8bzkOBXVP4ICfj1LQNt81tTHzPmBtPR1Xoe86Odvg7mk9SjoNDEBNxHdWL4koXUyGafGrahQZsBflF_RRX6NL3a4N_3JoLzPzvGU2uqpEcbDB0zUxIsafcCWzlOhf1NjZe9gnDYqlrUlNWwXd7NT-Xu8wBVYCSRscsUrAFAzoMnRsE_22cV0Jk_ORKXAwWO3-dBuPBqCccK6cFeA_qXj_7tBAtu8Fm7V5eolfkd89Sthvy67W6mYAYaLjnGle-A538F4HrcBE7g"/>
+<!-- Decorative AR Elements -->
+<div class="absolute inset-0 pointer-events-none border-[1px] border-primary/10 rounded-xl m-4"></div>
+</div>
+</section>
+<!-- Right Sidebar: Individual Module Temps -->
+<aside class="md:col-span-3 space-y-gutter">
+<section class="glass-panel rounded-xl p-stack-md h-full flex flex-col">
+<h3 class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest mb-6">Module Breakdown</h3>
+<div class="space-y-4 flex-grow overflow-y-auto pr-2 custom-scrollbar">
+<!-- Module Card -->
+<div class="p-3 rounded-lg bg-surface-container-high border border-outline-variant/10 flex items-center justify-between">
+<div>
+<p class="text-label-sm font-bold text-on-surface">MODULE 01</p>
+<p class="text-[10px] text-on-surface-variant">SOC: 88%</p>
+</div>
+<div class="text-right">
+<p class="font-data-display text-body-md text-primary">21.4°C</p>
+<p class="text-[10px] text-primary/60 uppercase">Optimal</p>
+</div>
+</div>
+<!-- Module Card -->
+<div class="p-3 rounded-lg bg-surface-container-high border border-outline-variant/10 flex items-center justify-between">
+<div>
+<p class="text-label-sm font-bold text-on-surface">MODULE 02</p>
+<p class="text-[10px] text-on-surface-variant">SOC: 87%</p>
+</div>
+<div class="text-right">
+<p class="font-data-display text-body-md text-primary">22.8°C</p>
+<p class="text-[10px] text-primary/60 uppercase">Optimal</p>
+</div>
+</div>
+<!-- Module Card Warning State -->
+<div class="p-3 rounded-lg bg-secondary-container/20 border border-amber-400/30 flex items-center justify-between">
+<div>
+<p class="text-label-sm font-bold text-on-surface">MODULE 03</p>
+<p class="text-[10px] text-on-surface-variant">SOC: 91%</p>
+</div>
+<div class="text-right">
+<p class="font-data-display text-body-md text-amber-400">31.2°C</p>
+<p class="text-[10px] text-amber-400/80 uppercase">Warning</p>
+</div>
+</div>
+<!-- Module Card -->
+<div class="p-3 rounded-lg bg-surface-container-high border border-outline-variant/10 flex items-center justify-between">
+<div>
+<p class="text-label-sm font-bold text-on-surface">MODULE 04</p>
+<p class="text-[10px] text-on-surface-variant">SOC: 85%</p>
+</div>
+<div class="text-right">
+<p class="font-data-display text-body-md text-primary">20.9°C</p>
+<p class="text-[10px] text-primary/60 uppercase">Optimal</p>
+</div>
+</div>
+<!-- Additional Rows -->
+<div class="p-3 rounded-lg bg-surface-container-high border border-outline-variant/10 flex items-center justify-between">
+<div>
+<p class="text-label-sm font-bold text-on-surface">MODULE 05</p>
+<p class="text-[10px] text-on-surface-variant">SOC: 89%</p>
+</div>
+<div class="text-right">
+<p class="font-data-display text-body-md text-primary">22.1°C</p>
+<p class="text-[10px] text-primary/60 uppercase">Optimal</p>
+</div>
+</div>
+</div>
+<button class="w-full py-3 mt-6 rounded-lg bg-primary-container text-on-primary font-bold font-label-sm hover:opacity-90 active:scale-95 transition-all">
+                        RUN THERMAL DIAGNOSTIC
+                    </button>
+</section>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container/60 dark:bg-surface-container/60 backdrop-blur-2xl border-t border-outline-variant/10 shadow-[0_-4px_24px_rgba(165,216,255,0.1)] flex justify-around items-center h-20 px-4 pb-2">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:bg-white/5 transition-colors cursor-pointer active:scale-90 transition-all duration-300 ease-out">
+<span class="material-symbols-outlined mb-1">water_drop</span>
+<span class="font-label-sm text-label-sm">Hydrogen</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:bg-white/5 transition-colors cursor-pointer active:scale-90 transition-all duration-300 ease-out">
+<span class="material-symbols-outlined mb-1">light_mode</span>
+<span class="font-label-sm text-label-sm">Solar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim bg-secondary-container/30 dark:bg-secondary-container/40 rounded-xl px-3 py-1 active:scale-90 transition-all duration-300 ease-out">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="font-label-sm text-label-sm">Battery</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:bg-white/5 transition-colors cursor-pointer active:scale-90 transition-all duration-300 ease-out">
+<span class="material-symbols-outlined mb-1">distance</span>
+<span class="font-label-sm text-label-sm">Range</span>
+</div>
+</nav>
+</body></html>

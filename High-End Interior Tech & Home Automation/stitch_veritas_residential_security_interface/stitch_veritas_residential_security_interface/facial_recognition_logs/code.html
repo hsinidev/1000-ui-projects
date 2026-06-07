@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Veritas-Security | Facial Recognition Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-fixed": "#e2e0fc",
+                        "on-tertiary": "#303030",
+                        "on-background": "#e5e2e1",
+                        "surface-variant": "#353434",
+                        "outline": "#8e918e",
+                        "secondary-fixed-dim": "#c6c4df",
+                        "surface-bright": "#3a3939",
+                        "on-secondary-container": "#b8b6d0",
+                        "on-primary-fixed-variant": "#464746",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-secondary-fixed-variant": "#45455b",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353434",
+                        "on-secondary-fixed": "#1a1a2e",
+                        "inverse-on-surface": "#313030",
+                        "surface-tint": "#c7c6c4",
+                        "tertiary": "#ffffff",
+                        "secondary": "#c6c4df",
+                        "primary-fixed": "#e3e2e0",
+                        "on-secondary": "#2f2e43",
+                        "surface": "#141313",
+                        "surface-container-high": "#2a2a29",
+                        "on-tertiary-container": "#646464",
+                        "surface-container": "#201f1f",
+                        "on-surface": "#e5e2e1",
+                        "background": "#141313",
+                        "primary": "#ffffff",
+                        "on-primary-container": "#646463",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface-variant": "#c4c7c4",
+                        "primary-fixed-dim": "#c7c6c4",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "tertiary-container": "#e2e2e2",
+                        "on-error": "#690005",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-container": "#e3e2e0",
+                        "outline-variant": "#444845",
+                        "inverse-primary": "#5e5e5d",
+                        "error": "#ffb4ab",
+                        "secondary-container": "#47475d",
+                        "on-primary-fixed": "#1b1c1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "surface-dim": "#141313",
+                        "on-primary": "#303130",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "density-tight": "8px",
+                        "density-comfortable": "24px",
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["Inter"],
+                        "telemetry": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "telemetry": ["14px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(26, 26, 46, 0.6);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .pulse-red {
+            box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 180, 171, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-b border-outline-variant flex justify-between items-center px-gutter h-20">
+<div class="flex items-center gap-density-tight">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-display-xl text-display-xl tracking-tighter text-primary uppercase">VERITAS-SECURITY</h1>
+</div>
+<button class="hover:bg-surface-variant/50 transition-colors p-2 active:scale-95 duration-150 rounded">
+<span class="material-symbols-outlined text-primary" data-icon="fingerprint">fingerprint</span>
+</button>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 pb-32 px-gutter max-w-container-max mx-auto">
+<!-- Header Section -->
+<section class="mb-margin flex flex-col md:flex-row md:items-end justify-between gap-density-comfortable">
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">MONITORING HUB</span>
+<h2 class="font-headline-lg text-headline-lg text-primary">FACIAL RECOGNITION LOGS</h2>
+</div>
+<div class="flex flex-col sm:flex-row gap-density-tight items-center w-full md:w-auto">
+<div class="relative w-full sm:w-64">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+<input class="w-full bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-0 text-on-surface py-2 pl-10 pr-4 rounded placeholder:text-on-surface-variant/50" placeholder="Search Identity..." type="text"/>
+</div>
+<div class="flex bg-surface-container-low border border-outline-variant rounded p-1">
+<button class="px-4 py-1.5 font-label-caps text-label-caps bg-secondary-container text-on-secondary-container rounded">ALL</button>
+<button class="px-4 py-1.5 font-label-caps text-label-caps text-on-surface-variant hover:text-primary">KNOWN</button>
+<button class="px-4 py-1.5 font-label-caps text-label-caps text-on-surface-variant hover:text-primary">UNKNOWN</button>
+</div>
+</div>
+</section>
+<!-- Logs Feed -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-density-comfortable">
+<!-- Active Threat Panel (Featured Alert) -->
+<div class="lg:col-span-4 flex flex-col gap-density-comfortable">
+<div class="glass-panel p-gutter border border-outline-variant rounded-xl flex flex-col gap-density-comfortable">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-density-tight">
+<span class="w-2 h-2 rounded-full bg-error pulse-red"></span>
+<span class="font-label-caps text-label-caps text-error">HUMAN DETECTED • HIGH PRIORITY</span>
+</div>
+<span class="font-telemetry text-telemetry text-on-surface-variant">04:12:09 AM</span>
+</div>
+<div class="relative overflow-hidden rounded bg-black aspect-video group">
+<img class="w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-700" data-alt="A high-contrast cinematic portrait of a suspicious man wearing a dark hoodie, captured through a security camera lens with a clinical, sharp focus. The lighting is moody and dramatic, with deep indigo shadows and platinum silver highlights reflecting off his skin. A digital crosshair overlay in bright red sits at the center of the frame, emphasizing the surveillance aesthetic of Veritas-Security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnURfkgquUgP8HZwkmwlZhhZDBY6Ac8Yn8PYmAn7tTMb9Y7A4IVi1T-sY257OA4kOPyALhhHCkhWRhd7DbouMFjDVVawXP3AMvR2QXPvN37FA5L2q_9zeKTGBWS-vctFUaOeSxGHu9y-aPI8e8SRlB6jYUyPHDENWVJuz83GoWpdYe8Cru9wOc6_D-fLPN-MYd1iWGAHFTU6e_8Reibos-M5O7VSgCX31YXYODhlKMXhmH-g7PBme0rQqBup0KZv93vEWfaPt-1vg"/>
+<div class="absolute inset-0 flex items-center justify-center border-2 border-error/30">
+<div class="w-12 h-12 border border-error relative">
+<div class="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-error"></div>
+<div class="absolute -top-1 -right-1 w-2 h-2 border-t-2 border-r-2 border-error"></div>
+<div class="absolute -bottom-1 -left-1 w-2 h-2 border-b-2 border-l-2 border-error"></div>
+<div class="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-error"></div>
+</div>
+</div>
+</div>
+<div class="flex flex-col gap-density-tight">
+<div class="flex justify-between border-b border-outline-variant/30 pb-2">
+<span class="text-on-surface-variant">Identity</span>
+<span class="text-primary font-bold">UNKNOWN VISITOR</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-2">
+<span class="text-on-surface-variant">Location</span>
+<span class="text-primary">Vault Perimeter Zone A</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Confidence</span>
+<span class="text-primary">98.4%</span>
+</div>
+</div>
+<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps tracking-widest hover:opacity-90 active:scale-[0.98] transition-all">INITIATE LOCKDOWN</button>
+</div>
+<!-- Threat Meter -->
+<div class="glass-panel p-6 border border-outline-variant rounded-xl">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4">SYSTEM THREAT LEVEL</h3>
+<div class="flex gap-2 h-12">
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary/20"></div>
+<div class="flex-1 bg-primary/20"></div>
+<div class="flex-1 bg-primary/20"></div>
+<div class="flex-1 border border-primary/20"></div>
+<div class="flex-1 border border-primary/20"></div>
+</div>
+<div class="mt-4 flex justify-between items-center">
+<span class="font-telemetry text-telemetry text-on-surface-variant">SECURE</span>
+<span class="font-telemetry text-telemetry text-primary">MODERATE VIGILANCE</span>
+</div>
+</div>
+</div>
+<!-- Scrollable Log List -->
+<div class="lg:col-span-8 flex flex-col gap-density-tight">
+<!-- Log Entry 1 -->
+<div class="glass-panel p-4 flex flex-col sm:flex-row items-center gap-density-comfortable hover:bg-surface-variant/20 transition-colors border border-outline-variant">
+<div class="w-20 h-20 shrink-0 bg-black border border-outline-variant rounded-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Close-up facial capture from a security terminal, featuring a professional woman with a neutral expression. The image is rendered with a cool, clinical blue tint and sharp metallic clarity, typical of a high-end Veritas-Security interface. Digital data overlays flicker subtly in the periphery, emphasizing the high-density telemetry look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATX7l63epqO5aj_MZs0NmCPkA1TpmdPaHrt1bNyNT0LCvNDH5eGPi4tfrvmrEQEvkiL7rVV_bWyQ1KzDEj0AZAMQ_jkXzzYuJBuQ_JA2VF6epZZT7JX4T32dSXux0G0ev_xJ__51sf_e3oeXN3c5WEEMIqKvQfEl70kjmZ5A0TlX9E5lTZzPs0IC-Yob8WM1vSnp4wNeyOeP2pr-1sLP-d6OZ4RhdCxyz8NPc-LMfxKpKlNUlvkcvXwanV9fY3QkBzDRJzN9UUulg"/>
+</div>
+<div class="flex-1 flex flex-col gap-unit text-center sm:text-left">
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">Juliana Vance</span>
+<span class="px-2 py-0.5 border border-primary/40 text-[10px] font-label-caps text-primary w-max mx-auto sm:mx-0">LEVEL 4 ACCESS</span>
+</div>
+<p class="text-on-surface-variant text-sm">Accessed: West Wing Executive Suite</p>
+</div>
+<div class="flex flex-col items-center sm:items-end gap-unit">
+<span class="font-telemetry text-telemetry text-on-surface-variant">04:08:12 AM</span>
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-label-caps">KNOWN PERSONNEL</span>
+</div>
+</div>
+<!-- Log Entry 2 -->
+<div class="glass-panel p-4 flex flex-col sm:flex-row items-center gap-density-comfortable bg-surface-container/40 hover:bg-surface-variant/20 transition-colors border border-outline-variant">
+<div class="w-20 h-20 shrink-0 bg-black border border-error rounded-sm overflow-hidden relative">
+<img class="w-full h-full object-cover grayscale" data-alt="A pixelated, high-noise security capture of an unrecognized individual in a dark corridor. The visual style is aggressive and high-contrast, dominated by deep indigo and stark whites. The perimeter of the facial thumbnail is framed by a glowing amber border to signal a potential threat in the Veritas-Security log feed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrNICd6F-ZbAQTJ65OgDLRmACQ-UCtA4iL0shVzNQIlO8JdZ6r8L7f8zpuaPvaexHtwlZnRmxiy74I424NtkB-sXpbjuArTNwFbcZdpRXJJfw-9eSO7lsK84mg4I1Bqw6UxU-4TZcCGcIBsyMOgBaiu3hRBhhIyVhodMp3jFlmMH_cYBMKbTX0UtIG5WUnYYf3YZVldZ8Ho7IZX6llwR-i7BDDx2GU2ZT-wPzT3G7zYTiDRr7SKepP185ERF6vebBW1IztsMkBRV0"/>
+<div class="absolute inset-0 bg-error/10"></div>
+</div>
+<div class="flex-1 flex flex-col gap-unit text-center sm:text-left">
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="font-headline-md text-headline-md text-error">UNKNOWN ENTITY</span>
+<span class="px-2 py-0.5 bg-error text-on-error text-[10px] font-label-caps w-max mx-auto sm:mx-0">UNAUTHORIZED</span>
+</div>
+<p class="text-on-surface-variant text-sm">Proximity Alert: Perimeter Fence Sector 4</p>
+</div>
+<div class="flex flex-col items-center sm:items-end gap-unit">
+<span class="font-telemetry text-telemetry text-on-surface-variant">03:55:45 AM</span>
+<span class="px-2 py-1 bg-error-container text-on-error-container text-[10px] font-label-caps">THREAT FLAG</span>
+</div>
+</div>
+<!-- Log Entry 3 -->
+<div class="glass-panel p-4 flex flex-col sm:flex-row items-center gap-density-comfortable hover:bg-surface-variant/20 transition-colors border border-outline-variant">
+<div class="w-20 h-20 shrink-0 bg-black border border-outline-variant rounded-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A sharp, monochromatic security log thumbnail of an older man with glasses, identified as a trusted asset. The image features a cool, platinum silver palette with deep charcoal shadows, set within a clinical and professional UI frame. The mood is calm and authoritative, reflecting the Silent Sentinel brand personality." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDWPsr0WiyciwQivrm2pFWwupn9kAYu7FohuExj6Pxpc6VTFcPTHvvk97vF2DzKldO6GFOfAkdpV902PjogTyjdvEkiYQ5l3UcVQ7YWRhOJFb4fb5XRnQi2SogbT5DiDUWCUpVp8NBE1gGIWFNLXasg3YQrPdqnOidKx9-SFMafCIqkTgevSqEut2wyWY3q-Uyfm8JlgdV5YEIcELbu9gRWhZOJyznajSkEeAOhPB9SxyD_c--pIz73RC_pkvcEecMsYEMGCuVODLE"/>
+</div>
+<div class="flex-1 flex flex-col gap-unit text-center sm:text-left">
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">Marcus Thorne</span>
+<span class="px-2 py-0.5 border border-primary/40 text-[10px] font-label-caps text-primary w-max mx-auto sm:mx-0">RESIDENT</span>
+</div>
+<p class="text-on-surface-variant text-sm">Accessed: Main Entrance Gate</p>
+</div>
+<div class="flex flex-col items-center sm:items-end gap-unit">
+<span class="font-telemetry text-telemetry text-on-surface-variant">03:42:19 AM</span>
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-label-caps">KNOWN PERSONNEL</span>
+</div>
+</div>
+<!-- Log Entry 4 -->
+<div class="glass-panel p-4 flex flex-col sm:flex-row items-center gap-density-comfortable bg-surface-container/40 hover:bg-surface-variant/20 transition-colors border border-outline-variant">
+<div class="w-20 h-20 shrink-0 bg-black border border-outline-variant rounded-sm overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A biometric scan image of a female staff member, presented in a high-fidelity surveillance style. The lighting is harsh and overhead, creating sharp highlights on the forehead and cheekbones, evoking a laboratory or high-security environment. The palette is strictly deep indigo and platinum silver." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCG240bglJrqMBuNhVaMKCEIngcEnFNKo3czTsosnDafaZKoGv6SeCiUB3GfJ9OffdKAuie00HRHk2UODG54dAC0ZoTunPUdOvChQW6BTKxfPDsmA3Y8Hy2827tt58LHyDrzglg6ijX3RaFSOCc89L5U_bEEFCpMvcZ50F98jhLOmJbrHhD2W9EgUEpnl-jFV9hhbEAQs2CPeGcNY9HOPAcndDofzzmVJEX_XFKDDEuqQYKRUaA5zo0fDy9ibazwkt6Yrdf0I8ty0s"/>
+</div>
+<div class="flex-1 flex flex-col gap-unit text-center sm:text-left">
+<div class="flex flex-col sm:flex-row sm:items-center gap-2">
+<span class="font-headline-md text-headline-md text-primary">Elena Rodriguez</span>
+<span class="px-2 py-0.5 border border-primary/40 text-[10px] font-label-caps text-primary w-max mx-auto sm:mx-0">SERVICE STAFF</span>
+</div>
+<p class="text-on-surface-variant text-sm">Accessed: Service Elevator B</p>
+</div>
+<div class="flex flex-col items-center sm:items-end gap-unit">
+<span class="font-telemetry text-telemetry text-on-surface-variant">03:15:00 AM</span>
+<span class="px-2 py-1 bg-secondary-container text-on-secondary-container text-[10px] font-label-caps">KNOWN PERSONNEL</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface/80 backdrop-blur-2xl border-t border-outline-variant h-24 flex justify-around items-center px-margin pb-safe">
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-2 hover:text-primary transition-all active:opacity-80">
+<span class="material-symbols-outlined mb-1" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">Live Grid</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-2 hover:text-primary transition-all active:opacity-80">
+<span class="material-symbols-outlined mb-1" data-icon="face">face</span>
+<span class="font-label-caps text-label-caps">Logs</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-2 hover:text-primary transition-all active:opacity-80">
+<span class="material-symbols-outlined mb-1" data-icon="radar">radar</span>
+<span class="font-label-caps text-label-caps">Perimeter</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-2 hover:text-primary transition-all active:opacity-80">
+<span class="material-symbols-outlined mb-1" data-icon="encrypted">encrypted</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</div>
+</nav>
+</body></html>

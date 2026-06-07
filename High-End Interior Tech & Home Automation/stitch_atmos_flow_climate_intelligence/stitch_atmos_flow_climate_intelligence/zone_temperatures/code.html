@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Atmos-Flow | Zone Temperatures</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#003d9b",
+                    "inverse-on-surface": "#eff1f3",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b2c5ff",
+                    "on-secondary": "#ffffff",
+                    "surface-dim": "#d8dadc",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-error": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "on-secondary-fixed": "#091f21",
+                    "outline": "#737685",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed": "#9cf0ff",
+                    "on-tertiary": "#ffffff",
+                    "inverse-surface": "#2d3133",
+                    "primary-container": "#0052cc",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#33e6ff",
+                    "surface-tint": "#0c56d0",
+                    "surface-bright": "#f7f9fb",
+                    "on-surface-variant": "#434654",
+                    "surface-variant": "#e0e3e5",
+                    "secondary-container": "#d0e7ea",
+                    "tertiary-fixed-dim": "#00daf3",
+                    "secondary": "#4d6265",
+                    "surface-container-highest": "#e0e3e5",
+                    "surface": "#f7f9fb",
+                    "tertiary": "#004a54",
+                    "tertiary-container": "#006470",
+                    "error-container": "#ffdad6",
+                    "surface-container": "#eceef0",
+                    "on-tertiary-fixed": "#001f24",
+                    "on-primary-fixed": "#001848",
+                    "on-secondary-fixed-variant": "#364a4d",
+                    "outline-variant": "#c3c6d6",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "on-secondary-container": "#53686b",
+                    "secondary-fixed-dim": "#b4cbce",
+                    "on-tertiary-fixed-variant": "#004f58",
+                    "surface-container-low": "#f2f4f6",
+                    "secondary-fixed": "#d0e7ea",
+                    "background": "#f7f9fb",
+                    "on-primary-container": "#c4d2ff",
+                    "on-surface": "#191c1e",
+                    "surface-container-high": "#e6e8ea",
+                    "primary-fixed": "#dae2ff",
+                    "on-background": "#191c1e"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "md": "16px",
+                    "gutter": "24px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "lg": "24px",
+                    "xl": "40px",
+                    "unit": "8px",
+                    "container-padding": "32px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Space Grotesk"],
+                    "data-mono": ["Inter"],
+                    "body-md": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "headline-lg": ["Space Grotesk"],
+                    "body-lg": ["Inter"],
+                    "display": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(224, 247, 250, 0.4);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .status-pulse {
+            box-shadow: 0 0 15px currentColor;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg py-md bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30 shadow-[0_4px_30px_rgba(0,82,204,0.05)]">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[32px]">air</span>
+<h1 class="font-headline-lg text-headline-lg font-bold tracking-tight text-primary">Atmos-Flow</h1>
+</div>
+<div class="flex items-center gap-md">
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-primary-container/10 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">settings_input_antenna</span>
+</button>
+</div>
+</header>
+<main class="pt-[100px] pb-[120px] px-gutter max-w-7xl mx-auto">
+<!-- Header Section -->
+<section class="mb-xl">
+<h2 class="font-headline-md text-headline-md text-on-surface mb-xs">Zone Temperatures</h2>
+<p class="font-body-md text-on-surface-variant">Precise environmental control for every quadrant of your facility.</p>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Sidebar: Zone List -->
+<aside class="lg:col-span-4 space-y-md">
+<div class="glass-panel rounded-xl p-md">
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-md">Active Zones</h3>
+<div class="space-y-sm">
+<!-- Living Room (Active) -->
+<div class="flex items-center justify-between p-md rounded-lg bg-primary-container text-on-primary-container shadow-lg scale-[1.02] transition-all">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">weekend</span>
+<div>
+<p class="font-data-mono text-data-mono">Living Room</p>
+<p class="font-label-sm text-label-sm opacity-80 uppercase">Active • Heating</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md">22.4°</span>
+</div>
+<!-- Master Bedroom -->
+<div class="flex items-center justify-between p-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20">
+<div class="flex items-center gap-md text-on-surface">
+<span class="material-symbols-outlined">bed</span>
+<div>
+<p class="font-data-mono text-data-mono">Master Bedroom</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Idle • Standby</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">19.8°</span>
+</div>
+<!-- Kitchen -->
+<div class="flex items-center justify-between p-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20">
+<div class="flex items-center gap-md text-on-surface">
+<span class="material-symbols-outlined">kitchen</span>
+<div>
+<p class="font-data-mono text-data-mono">Kitchen</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Active • Cooling</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">20.1°</span>
+</div>
+<!-- Office -->
+<div class="flex items-center justify-between p-md rounded-lg bg-surface-container-low hover:bg-surface-container transition-colors border border-outline-variant/20">
+<div class="flex items-center gap-md text-on-surface">
+<span class="material-symbols-outlined">work</span>
+<div>
+<p class="font-data-mono text-data-mono">Office</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant uppercase">Idle • Standby</p>
+</div>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">21.5°</span>
+</div>
+</div>
+</div>
+<!-- Technical Specs Drawer -->
+<div class="bg-surface-container-highest/30 rounded-xl p-md border border-outline-variant/30">
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-widest mb-sm">System Diagnostics</h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="p-sm bg-white/40 rounded-lg">
+<p class="font-label-sm text-on-surface-variant">Global Humidity</p>
+<p class="font-data-mono text-primary text-lg">48.2%</p>
+</div>
+<div class="p-sm bg-white/40 rounded-lg">
+<p class="font-label-sm text-on-surface-variant">Filter Efficacy</p>
+<p class="font-data-mono text-primary text-lg">94%</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Control: Living Room Canvas -->
+<div class="lg:col-span-8">
+<div class="glass-panel rounded-2xl p-xl h-full flex flex-col shadow-2xl relative overflow-hidden">
+<!-- Background Visual Element -->
+<div class="absolute top-0 right-0 w-1/2 h-full opacity-10 pointer-events-none">
+<img class="object-cover w-full h-full grayscale" data-alt="A clean architectural interior of a minimalist modern living room with high ceilings and large windows. The lighting is cold and clinical, with a soft blue tint to emphasize a controlled environment. Atmospheric dust particles are visible in a beam of light to suggest air purity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA3XIJU-R0DfKF-Zr0jqRWahBWSeeBI_AYOsFiqO6SomWV1EZ5jdT-1VA37xYIoEZI3vo5PWh7R3fokPIiP0gY5yQeXf5m-5DoQ-LjJ7UxN3ebZl7cgmd9O8ftQ-uUe47GPIRZuf_WSZEkgGyKyx3p_Az2wiaduEYKLvy2EH1moKw6qp7XA3CJEIcVQ013JXbluiELB1Pa9T6OCnvmygSB38u3BtjMFi_eRaIPoMd04oVbe1c65tZSEHCsA-Gra8ntrgjcMv5xyHqY"/>
+</div>
+<div class="relative z-10 flex flex-col h-full">
+<div class="flex justify-between items-start mb-xl">
+<div>
+<h3 class="font-headline-lg text-headline-lg text-primary">Living Room</h3>
+<div class="flex items-center gap-sm mt-xs">
+<div class="w-3 h-3 rounded-full bg-amber-500 status-pulse"></div>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-widest">Warming Cycle Active</span>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-sm text-on-surface-variant uppercase">Airflow Velocity</p>
+<p class="font-data-mono text-headline-md text-primary">4.2 m/s</p>
+</div>
+</div>
+<!-- Main Dial / Control Area -->
+<div class="flex-grow flex items-center justify-center py-xl">
+<div class="relative w-64 h-64 md:w-80 md:h-80 flex items-center justify-center">
+<!-- Circular Progress / Track -->
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-primary-container/20" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-width="24"></circle>
+<circle class="text-primary shadow-xl" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-dasharray="280 1000" stroke-linecap="round" stroke-width="24"></circle>
+</svg>
+<div class="text-center z-10 bg-white/60 backdrop-blur-md rounded-full w-48 h-48 md:w-56 md:h-56 flex flex-col items-center justify-center border border-white shadow-inner">
+<p class="font-label-sm text-on-surface-variant uppercase mb-xs">Target Temp</p>
+<p class="font-display text-display text-primary leading-none">23.5°</p>
+<div class="flex gap-md mt-md">
+<button class="w-10 h-10 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 rounded-full border border-primary text-primary flex items-center justify-center hover:bg-primary hover:text-white transition-all active:scale-90">
+<span class="material-symbols-outlined">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="grid grid-cols-2 gap-lg mt-auto">
+<button class="flex items-center justify-center gap-md py-lg rounded-xl bg-tertiary-container text-on-tertiary-container font-headline-md hover:brightness-110 transition-all active:scale-95 group shadow-lg">
+<span class="material-symbols-outlined text-[32px] group-hover:animate-pulse">ac_unit</span>
+<span>Instant Cool</span>
+</button>
+<button class="flex items-center justify-center gap-md py-lg rounded-xl bg-primary text-on-primary font-headline-md hover:brightness-110 transition-all active:scale-95 group shadow-lg">
+<span class="material-symbols-outlined text-[32px] group-hover:animate-pulse">local_fire_department</span>
+<span>Instant Heat</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Cluster: Environmental Data -->
+<section class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-md rounded-xl">
+<div class="flex items-center gap-md mb-md">
+<span class="material-symbols-outlined text-primary">air_purifier</span>
+<h4 class="font-data-mono text-data-mono text-on-surface">CO2 Concentration</h4>
+</div>
+<div class="flex items-end gap-sm">
+<p class="font-display text-headline-lg text-primary">412</p>
+<p class="font-label-sm text-on-surface-variant pb-1">PPM</p>
+</div>
+<div class="mt-md h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-emerald-500 w-[15%]"></div>
+</div>
+</div>
+<div class="glass-panel p-md rounded-xl">
+<div class="flex items-center gap-md mb-md">
+<span class="material-symbols-outlined text-primary">water_drop</span>
+<h4 class="font-data-mono text-data-mono text-on-surface">Humidity Variance</h4>
+</div>
+<div class="flex items-end gap-sm">
+<p class="font-display text-headline-lg text-primary">±1.2</p>
+<p class="font-label-sm text-on-surface-variant pb-1">PERCENTAGE</p>
+</div>
+<div class="mt-md h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[35%]"></div>
+</div>
+</div>
+<div class="glass-panel p-md rounded-xl">
+<div class="flex items-center gap-md mb-md">
+<span class="material-symbols-outlined text-primary">speed</span>
+<h4 class="font-data-mono text-data-mono text-on-surface">Duct Pressure</h4>
+</div>
+<div class="flex items-end gap-sm">
+<p class="font-display text-headline-lg text-primary">102</p>
+<p class="font-label-sm text-on-surface-variant pb-1">PA</p>
+</div>
+<div class="mt-md h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-amber-500 w-[60%]"></div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-gutter pb-6 pt-3 bg-surface/60 backdrop-blur-xl border-t border-white/20 shadow-[0_-10px_30px_rgba(0,82,204,0.08)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-5 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">air_purifier</span>
+<span class="font-label-sm text-label-sm">Breathe</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-5 py-1.5 transition-all duration-300 scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="font-label-sm text-label-sm">Zones</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-5 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">humidity_percentage</span>
+<span class="font-label-sm text-label-sm">Humidity</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-outline-variant px-5 py-1.5 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[24px]">vital_signs</span>
+<span class="font-label-sm text-label-sm">Health</span>
+</a>
+</nav>
+</body></html>

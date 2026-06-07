@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Desk | Fleet Discovery</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .glass-stroke {
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+        }
+        .flight-path-pulse {
+            position: relative;
+            overflow: hidden;
+        }
+        .flight-path-pulse::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(233, 195, 73, 0.4), transparent);
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            100% { left: 100%; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#303030",
+                        "on-background": "#1b1c1c",
+                        "secondary-fixed-dim": "#e9c349",
+                        "secondary-container": "#fed65b",
+                        "on-primary-fixed": "#001c3a",
+                        "secondary": "#735c00",
+                        "tertiary": "#040607",
+                        "error-container": "#ffdad6",
+                        "tertiary-fixed": "#e1e3e4",
+                        "outline": "#74777f",
+                        "on-surface": "#1b1c1c",
+                        "on-secondary-fixed": "#241a00",
+                        "background": "#fbf9f8",
+                        "primary-container": "#001f3f",
+                        "on-error": "#ffffff",
+                        "secondary-fixed": "#ffe088",
+                        "on-secondary-container": "#745c00",
+                        "primary-fixed-dim": "#afc8f0",
+                        "on-primary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#191c1d",
+                        "inverse-on-surface": "#f2f0f0",
+                        "inverse-primary": "#afc8f0",
+                        "error": "#ba1a1a",
+                        "primary-fixed": "#d4e3ff",
+                        "surface-variant": "#e4e2e2",
+                        "surface": "#fbf9f8",
+                        "on-tertiary": "#ffffff",
+                        "on-secondary": "#ffffff",
+                        "surface-container": "#efeded",
+                        "on-error-container": "#93000a",
+                        "surface-tint": "#476083",
+                        "on-primary-container": "#6f88ad",
+                        "surface-bright": "#fbf9f8",
+                        "primary": "#000613",
+                        "outline-variant": "#c4c6cf",
+                        "on-surface-variant": "#43474e",
+                        "tertiary-container": "#1c1f20"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "margin-edge": "48px",
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "stack-sm": "12px",
+                        "stack-xs": "4px",
+                        "stack-lg": "48px",
+                        "stack-xl": "80px",
+                        "stack-md": "24px"
+                    },
+                    "fontFamily": {
+                        "interactive-sm": ["Montserrat"],
+                        "headline-md": ["Playfair Display"],
+                        "headline-lg": ["Playfair Display"],
+                        "body-lg": ["Montserrat"],
+                        "label-caps": ["Montserrat"],
+                        "display-xl": ["Playfair Display"],
+                        "body-md": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "interactive-sm": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Sidebar Navigation Shell -->
+<nav class="fixed left-0 top-0 h-full w-64 z-40 bg-primary dark:bg-primary border-r border-white/5 flex flex-col h-screen py-stack-lg shadow-xl">
+<div class="px-6 mb-stack-xl">
+<div class="font-headline-lg text-headline-lg font-semibold text-primary-fixed mb-1">Aero-Desk</div>
+<div class="font-label-caps text-label-caps uppercase tracking-widest text-on-primary-container">Elite Operations</div>
+</div>
+<div class="flex-grow flex flex-col">
+<!-- Active State Navigation Logic: Fleet is current context -->
+<a class="bg-white/5 text-secondary-fixed-dim border-l-4 border-secondary-fixed-dim py-4 px-6 flex items-center gap-stack-sm hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">airplanemode_active</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Fleet</span>
+</a>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Scheduling</span>
+</a>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">room_service</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Concierge</span>
+</a>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">settings_applications</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Admin</span>
+</a>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Community</span>
+</a>
+</div>
+<div class="mt-auto px-6 space-y-4">
+<button class="w-full bg-secondary-fixed-dim text-primary py-3 font-interactive-sm text-interactive-sm rounded-none hover:brightness-110 transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+                New Charter
+            </button>
+<div class="flex flex-col gap-2 pt-4 border-t border-white/10">
+<a class="text-on-primary-container py-2 flex items-center gap-stack-sm opacity-70 hover:text-white transition-all text-xs uppercase tracking-tighter font-bold" href="#">
+<span class="material-symbols-outlined text-sm">help_outline</span>
+                    Support
+                </a>
+<a class="text-on-primary-container py-2 flex items-center gap-stack-sm opacity-70 hover:text-white transition-all text-xs uppercase tracking-tighter font-bold" href="#">
+<span class="material-symbols-outlined text-sm">settings</span>
+                    Settings
+                </a>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="ml-64 min-h-screen">
+<!-- TopAppBar Navigation Shell -->
+<header class="bg-surface/60 backdrop-blur-xl border-b border-white/10 docked full-width top-0 z-50 sticky shadow-[0_40px_40px_-15px_rgba(0,31,63,0.05)]">
+<div class="flex justify-between items-center w-full px-margin-edge h-20 max-w-container-max mx-auto">
+<div class="font-display-xl text-display-xl font-bold text-primary tracking-tight">Discover</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative hidden lg:block">
+<input class="bg-surface-container border-none h-10 w-64 rounded-full pl-10 pr-4 text-sm focus:ring-1 focus:ring-secondary-fixed-dim" placeholder="Search Fleet..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-2.5 text-on-surface-variant text-lg">search</span>
+</div>
+<div class="flex items-center gap-stack-sm">
+<button class="p-2 text-primary hover:text-secondary-fixed transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="p-2 text-primary hover:text-secondary-fixed transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">support_agent</span>
+</button>
+<div class="h-10 w-10 bg-primary-container rounded-full ml-2 overflow-hidden border border-secondary-fixed-dim/30">
+<img alt="Executive User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of an executive male with a refined appearance, captured in soft studio lighting. The background is a blurred, high-end office environment with cool blue tones. The portrait has a high-fidelity, polished finish, suitable for an elite aviation service platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDYR9vZQqtenQnHGaYPMnd7PZ15KqqvtnCtcbTRZt2gy6jE8h26sA3SZI6u8_xGR5TlFVjPtQ9_pmAsWlHzCkI1VehzYdvsDyVt3_GRI51YBemsZtBILn6KKKlLUvtiFJvw90irB-RHEV-xdfybAiJV_cvkqfKc-i4YVNlfk9umbtTZipRzxtmqG2KhxYkkr5YaHoakUA9Yq4tABXi4JfooSmhuNUrPiqIy1dHLp48mN89UmT-OE5S0iH90HnyhjAZ4OkUSATqttnI"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Hero Section: Immersive Gallery -->
+<section class="relative h-[870px] w-full bg-primary flex items-end">
+<div class="absolute inset-0 overflow-hidden">
+<img class="w-full h-full object-cover opacity-60" data-alt="A cinematic wide shot of a Bombardier Global 7500 private jet flying majestically above a sea of clouds during the golden hour. The sunlight reflects off the aircraft's polished white and navy exterior, creating a brilliant sheen. The sky is a gradient of deep indigo and warm gold, embodying a serene and high-performance atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCeaN-r8DhmOQvNy2h9FLBHC_fRar1Hn8253XKNhr2aONtBfiK_jT0ytz3ovErKVNg3K-TQvcuwQzrkUe8a3dajKlLQa4goFzMFj-NRbfdL9px81TNvvNwC866ll697jk22xZB89fcDIzPeH2-bMBrDTPk-5Gaiu0sbnFGO2fMAQMFzBMHmEp5wi2bsbwQpSWCmy8asXBCa8zmeQZ_Jv9J7MwD36LuatsAnJOQu2HJS4L1dkS3Fo-kr2ww3uA_3TK_-IAbFEm7qQGM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary via-primary/20 to-transparent"></div>
+</div>
+<div class="relative z-10 w-full px-margin-edge pb-stack-xl max-w-container-max mx-auto flex justify-between items-end">
+<div class="max-w-2xl">
+<div class="flex items-center gap-4 mb-4">
+<span class="px-4 py-1 border border-secondary-fixed-dim text-secondary-fixed-dim font-label-caps text-[10px] uppercase tracking-[0.2em] rounded-full">Aircraft Spotlight</span>
+<div class="h-[1px] w-12 bg-secondary-fixed-dim"></div>
+</div>
+<h1 class="font-display-xl text-display-xl text-primary-fixed mb-6 leading-[1.05]">Bombardier Global 7500</h1>
+<p class="font-body-lg text-body-lg text-on-primary-container max-w-lg mb-stack-md opacity-90">
+                        The world’s largest and longest range business jet. Experience an industry-leading cabin with four true living spaces and a full-size kitchen.
+                    </p>
+<div class="flex gap-stack-md">
+<button class="bg-primary-container text-on-primary border border-white/20 px-8 py-4 font-interactive-sm text-interactive-sm flex items-center gap-2 hover:bg-white/10 transition-all glass-stroke">
+<span class="material-symbols-outlined">visibility</span>
+                            View Configuration
+                        </button>
+<button class="bg-secondary-fixed-dim text-primary px-8 py-4 font-interactive-sm text-interactive-sm flex items-center gap-2 hover:brightness-110 transition-all border-b-2 border-transparent hover:border-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                            Charter Now
+                        </button>
+</div>
+</div>
+<div class="glass-panel p-stack-md min-w-[320px] mb-4">
+<div class="space-y-6">
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Top Speed</span>
+<span class="font-headline-md text-headline-md text-primary">Mach 0.925</span>
+</div>
+<div class="flex justify-between items-center border-b border-white/10 pb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Max Range</span>
+<span class="font-headline-md text-headline-md text-primary">7,700 nm</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">Passengers</span>
+<span class="font-headline-md text-headline-md text-primary">Up to 19</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Stats and Discovery Bento Grid -->
+<section class="py-stack-xl px-margin-edge max-w-container-max mx-auto">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- 360 Cabin Tour Preview -->
+<div class="col-span-12 lg:col-span-8 h-[500px] relative group overflow-hidden bg-surface-container-high rounded-none shadow-sm">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" data-alt="A luxurious private jet cabin interior featuring deep leather seats in a creamy beige, high-gloss mahogany wood paneling, and soft ambient floor lighting. The cabin is spacious and empty, illuminated by natural light from oval windows. The perspective is a wide-angle 360-degree preview, emphasizing the high-altitude tranquility and elite craftsmanship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDq0_DGNh0V8gv6nWQfgmWUjUG43fXSFIv4gQ4jq_DfoEtXK7bmoyIPCHrE0dVBIDsMc1bviaePXZjxuVG7_mLBthO0pdLIm3uNEXTMhvPsJ5uf5ljI--MlAY8OfQfegNFbprEnPjadB0e7yurTypC0u4XtCjqtAjO_RNdYis23nJ4aEJhVUIuNgFLrmY35fMKQnIeGcSHMvQiUJc52ROMAGgeurAfKGCTfLXKi_DX2oZqxrkBqgtw5lKnm0EOuVd-yG91arZUu2d0"/>
+<div class="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors"></div>
+<div class="absolute inset-0 flex flex-col items-center justify-center text-white">
+<div class="w-20 h-20 rounded-full border-2 border-white/40 flex items-center justify-center bg-white/10 backdrop-blur-md mb-6 hover:scale-110 transition-all cursor-pointer">
+<span class="material-symbols-outlined text-4xl">360</span>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-white mb-2">360° Cabin Experience</h3>
+<p class="font-label-caps text-label-caps text-white/80 tracking-widest uppercase">Immersive virtual walk-through</p>
+</div>
+</div>
+<!-- Range Stats Card -->
+<div class="col-span-12 lg:col-span-4 glass-panel p-stack-lg flex flex-col justify-between">
+<div>
+<h4 class="font-label-caps text-label-caps text-secondary mb-2 uppercase">Operational Excellence</h4>
+<h3 class="font-headline-md text-headline-md text-primary mb-6">Unrivaled Distance</h3>
+<div class="space-y-8">
+<div class="space-y-2">
+<div class="flex justify-between font-label-caps text-[10px] text-on-surface-variant">
+<span>LONDON</span>
+<span>HONG KONG</span>
+</div>
+<div class="h-1 w-full bg-surface-variant flight-path-pulse">
+<div class="h-full bg-secondary-fixed-dim" style="width: 100%;"></div>
+</div>
+<span class="text-xs text-on-surface-variant font-bold">7,200 nm • Non-stop</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between font-label-caps text-[10px] text-on-surface-variant">
+<span>NEW YORK</span>
+<span>DUBAI</span>
+</div>
+<div class="h-1 w-full bg-surface-variant flight-path-pulse">
+<div class="h-full bg-secondary-fixed-dim" style="width: 85%;"></div>
+</div>
+<span class="text-xs text-on-surface-variant font-bold">6,850 nm • Non-stop</span>
+</div>
+</div>
+</div>
+<div class="pt-stack-md">
+<p class="text-xs text-on-surface-variant leading-relaxed italic border-l-2 border-secondary-fixed-dim pl-4">
+                            "The Global 7500 offers the only cabin with four separate living environments, defining the new standard in long-range flight."
+                        </p>
+</div>
+</div>
+</div>
+</section>
+<!-- Secondary Fleet Showcase -->
+<section class="bg-surface-container-low py-stack-xl px-margin-edge">
+<div class="max-w-container-max mx-auto">
+<div class="flex justify-between items-end mb-stack-lg">
+<div>
+<span class="font-label-caps text-label-caps text-secondary uppercase tracking-widest">Compare Tiers</span>
+<h2 class="font-display-xl text-headline-lg text-primary mt-2">Extended Fleet Selection</h2>
+</div>
+<div class="flex gap-4">
+<button class="w-12 h-12 rounded-full border border-outline/30 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="w-12 h-12 rounded-full border border-outline/30 flex items-center justify-center hover:bg-primary hover:text-white transition-all">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Gulfstream G650ER Card -->
+<div class="bg-white p-4 shadow-sm group">
+<div class="aspect-video overflow-hidden mb-6 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A Gulfstream G650ER luxury business jet parked on a wet tarmac during twilight. The surrounding lights reflect beautifully on the aircraft's sleek silver and navy fuselage. The image has a high-contrast, premium aesthetic, with crisp details and a sense of quiet authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsDw9CsKUOuN3CNtscrK2reEBpzErh9Nr335-mLHPWBGjZOlrqKC0G-2TYG8Yo_hOKNcbNNNJlqn38CZEoDMmjvdinFlt3nWxi3pGa4oUVaTeM5uqdRAZmGPRB7HZ7R-NfL_NSBiu8d-Bv7TuHASpeIJSKDUytRv20af0VmlEydZrqOVCQzNtSjcRFNcElaLG06JuOgI3MnMVArVqZADnIqn9stVr00CCyp3Id3Ah9dEIBia-aqZcGx6y_XT-vSZl9EPTjO6gPamI"/>
+<div class="absolute top-4 right-4 bg-primary text-secondary-fixed-dim px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Ultra Long Range</div>
+</div>
+<h3 class="font-headline-md text-[24px] text-primary mb-2">Gulfstream G650ER</h3>
+<p class="text-xs text-on-surface-variant font-label-caps uppercase tracking-tighter mb-4">Speed: Mach 0.925 • Range: 7,500 nm</p>
+<button class="w-full border border-primary py-3 font-interactive-sm text-interactive-sm hover:bg-primary hover:text-white transition-all uppercase tracking-widest">Explore Aircraft</button>
+</div>
+<!-- Gulfstream G500 Card -->
+<div class="bg-white p-4 shadow-sm group">
+<div class="aspect-video overflow-hidden mb-6 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A modern Gulfstream G500 jet ascending through a clear blue morning sky. The lighting is bright and high-key, highlighting the aerodynamic lines of the aircraft. The mood is optimistic and professional, with a focus on cutting-edge aviation technology and luxury." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAa1ZI43acw5uhQGKyAFxZ7ayQYX2LilJ-KRtwsJiLn46s4bjo-Yz_citcsFA32MXQbpDNwGcY6SUXjWQuTgJKS7wZ1zRMHNYrY6UmvAXRl_NmavJd9iZNJawRexVhxng7d3hHFxWy6jLl1znXD9dac80WVMNPvgpGo5V4nMiLFmVGTrvH7kfZBoHilAXEElH61Fvse2YxZ7OX54Pbc2hlqBndpoWEJfdopdlgBefywEfyj1oi-zZAmwi39o1XftwdJWQJnToPnST0"/>
+<div class="absolute top-4 right-4 bg-primary text-secondary-fixed-dim px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Large Cabin</div>
+</div>
+<h3 class="font-headline-md text-[24px] text-primary mb-2">Gulfstream G500</h3>
+<p class="text-xs text-on-surface-variant font-label-caps uppercase tracking-tighter mb-4">Speed: Mach 0.925 • Range: 5,300 nm</p>
+<button class="w-full border border-primary py-3 font-interactive-sm text-interactive-sm hover:bg-primary hover:text-white transition-all uppercase tracking-widest">Explore Aircraft</button>
+</div>
+<!-- Bombardier Challenger 350 Card -->
+<div class="bg-white p-4 shadow-sm group">
+<div class="aspect-video overflow-hidden mb-6 relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="A Bombardier Challenger 350 business jet captured in a side profile during takeoff from a mountain-rimmed airport. The lighting is dramatic, with long shadows and a crisp, cold-weather feel. The aircraft's white paint is brilliantly white against the deep blue of the sky, emphasizing precision and performance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAo0Fz6hmgU6pTZfbdZtMeeDukAV37p7eKQSoiHf0DFhFNfqoIH8bgVndXegVUPsX0kVPeRcHcbmnY5tCbrauDY0eNqWTUm90ySR-Bn6byoGhcxF0EkIKR9On1O9jMGjuOviYx56-kTg8ET8Y87wAxOO6qpq210dJYbxZ67IDyvgOThJPpMGmEGi4lqnuGFwh5g_IBFVFx-_bUc2xB-qfwt8s4F4MtsNFkvTmMd0hse21YMd18Nnjp6vuV7McuJTO9s7zgjITnAxL4"/>
+<div class="absolute top-4 right-4 bg-primary text-secondary-fixed-dim px-3 py-1 text-[10px] font-bold tracking-widest uppercase">Super Mid-Size</div>
+</div>
+<h3 class="font-headline-md text-[24px] text-primary mb-2">Challenger 350</h3>
+<p class="text-xs text-on-surface-variant font-label-caps uppercase tracking-tighter mb-4">Speed: Mach 0.83 • Range: 3,200 nm</p>
+<button class="w-full border border-primary py-3 font-interactive-sm text-interactive-sm hover:bg-primary hover:text-white transition-all uppercase tracking-widest">Explore Aircraft</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Footer Section -->
+<footer class="bg-surface-container-lowest dark:bg-tertiary-container w-full py-stack-lg border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-edge flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div class="flex flex-col gap-2">
+<div class="font-headline-md text-headline-md text-primary">Aero-Desk</div>
+<p class="font-body-md text-body-md text-on-surface-variant opacity-70">© 2024 Aero-Desk. All Rights Reserved.</p>
+</div>
+<div class="flex gap-stack-lg">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Operational Standards</a>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary">public</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-secondary">verified</span>
+</div>
+</div>
+</footer>
+</main>
+</body></html>

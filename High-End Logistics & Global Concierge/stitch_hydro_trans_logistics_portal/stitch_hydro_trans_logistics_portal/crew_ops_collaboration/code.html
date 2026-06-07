@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VesselCommand - Crew Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@500;700&amp;family=Metropolis:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#0a0f0f",
+                    "on-primary": "#003737",
+                    "error-container": "#93000a",
+                    "on-surface": "#dfe3e2",
+                    "primary-container": "#008080",
+                    "on-error": "#690005",
+                    "on-tertiary-container": "#f9f9f9",
+                    "on-error-container": "#ffdad6",
+                    "background": "#101414",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "surface-container-high": "#262b2b",
+                    "on-primary-fixed-variant": "#004f4f",
+                    "outline-variant": "#3e4949",
+                    "primary-fixed": "#93f2f2",
+                    "on-secondary": "#293236",
+                    "surface-variant": "#313635",
+                    "outline": "#879392",
+                    "inverse-on-surface": "#2c3131",
+                    "surface-container-low": "#181c1c",
+                    "secondary-container": "#414a4f",
+                    "tertiary-container": "#717373",
+                    "surface-dim": "#101414",
+                    "secondary": "#bec8cd",
+                    "surface-container-highest": "#313635",
+                    "on-primary-container": "#e3fffe",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "secondary-fixed-dim": "#bec8cd",
+                    "primary": "#76d6d5",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed": "#dbe4e9",
+                    "on-surface-variant": "#bdc9c8",
+                    "on-tertiary": "#2f3131",
+                    "inverse-primary": "#006a6a",
+                    "surface-container": "#1c2020",
+                    "on-secondary-container": "#b0babf",
+                    "primary-fixed-dim": "#76d6d5",
+                    "on-background": "#dfe3e2",
+                    "inverse-surface": "#dfe3e2",
+                    "tertiary": "#c6c6c7",
+                    "surface-bright": "#353a3a",
+                    "on-primary-fixed": "#002020",
+                    "surface-tint": "#76d6d5",
+                    "surface": "#101414",
+                    "on-secondary-fixed": "#141d21",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#3f484c",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "touch-target": "44px",
+                    "margin-edge": "40px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "data-tabular": ["JetBrains Mono"],
+                    "headline-md": ["Metropolis"],
+                    "body-reg": ["Inter"],
+                    "headline-xl": ["Metropolis"],
+                    "label-caps": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "data-tabular": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-reg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #3e4949; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-reg overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar -->
+<header class="bg-surface-container-lowest text-primary font-headline-md text-headline-md tracking-wider docked full-width top-0 z-50 border-b border-outline-variant flex justify-between items-center w-full px-margin-edge h-touch-target">
+<div class="flex items-center gap-gutter">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">VesselCommand</span>
+<nav class="hidden md:flex gap-6 h-full items-center ml-8">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Fleet Ops</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Weather</a>
+<a class="text-primary border-b-2 border-primary font-bold hover:text-primary transition-colors duration-200" href="#">Crew</a>
+</nav>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-surface-container-low border border-outline-variant px-3 py-1 rounded">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48 text-on-surface" placeholder="Search roster..." type="text"/>
+</div>
+<button class="bg-primary-container text-on-primary px-4 py-1 font-label-caps text-label-caps rounded hover:opacity-90 transition-opacity">
+                Deploy Scan
+            </button>
+<div class="flex gap-4 text-on-surface-variant">
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined cursor-pointer hover:text-primary" data-icon="settings">settings</span>
+<img alt="Chief Officer Profile" class="w-8 h-8 rounded-full border border-primary" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnlSvKFGn9PBsAa8g6uUSHZnLfxNnhqF8z53c_qVQWooEndV9cdMuf_VJtYxdK6uxBw-3Mq9Dccx8ARZxNgKT5ciuks3P5KSfL2jniSdVV2sb4mPoQWVJv0AeERplLTV8oNxIFPIO0O4pktSW06vFaFRKXMEBMZRhxAbAR-6AedKB7qkphCK3Y73ym64mSwTcmwxb9-jHIIp2GHDVTsPy7x-wwZm9wTpY8lYDV40esJ7taZlxUMll9y6iDAuXploQQ7TskB328yRsh"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar -->
+<aside class="bg-surface-container-low text-primary font-data-tabular text-data-tabular uppercase docked left-0 h-full w-64 border-r border-outline-variant flex flex-col py-6">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="directions_boat">directions_boat</span>
+</div>
+<div>
+<div class="font-headline-md text-headline-md text-on-surface tracking-tighter leading-none">MY AQUARIUS</div>
+<div class="text-[10px] text-primary mt-1 opacity-70">Status: On Anchor</div>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span>Inventory</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span>Logs</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span>Maintenance</span>
+</a>
+<a class="flex items-center gap-4 bg-surface-container-highest text-primary border-r-4 border-primary px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span>Personnel</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface transition-all px-4 py-3 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span>Safety</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-4 space-y-4">
+<button class="w-full bg-primary border border-primary text-on-primary py-2 font-label-caps text-label-caps hover:bg-transparent hover:text-primary transition-all active:scale-90">
+                    Quick Log
+                </button>
+<div class="pt-4 border-t border-outline-variant">
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface transition-colors py-2" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>Help</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant hover:text-on-surface transition-colors py-2" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Crew Roster Section -->
+<div class="flex-1 flex flex-col p-8 overflow-y-auto">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface mb-2">CREW ROSTER</h1>
+<p class="font-data-tabular text-data-tabular text-primary uppercase">Active Complement: 24 / 28</p>
+</div>
+<div class="flex gap-2">
+<button class="border border-outline-variant px-4 py-2 font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-high transition-colors">EXPORT MANIFEST</button>
+<button class="bg-primary text-on-primary px-6 py-2 font-label-caps text-label-caps hover:opacity-90 transition-opacity">ADD CREW MEMBER</button>
+</div>
+</div>
+<!-- Roster Table -->
+<div class="bg-surface-container border border-outline-variant">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high border-b border-outline-variant font-label-caps text-label-caps text-on-surface-variant">
+<th class="px-6 py-4 font-bold tracking-widest">RANK / NAME</th>
+<th class="px-6 py-4 font-bold tracking-widest">DEPARTMENT</th>
+<th class="px-6 py-4 font-bold tracking-widest">SHIFT STATUS</th>
+<th class="px-6 py-4 font-bold tracking-widest text-center">LOCATION</th>
+<th class="px-6 py-4 font-bold tracking-widest text-right">ROTATION</th>
+</tr>
+</thead>
+<tbody class="font-data-tabular text-data-tabular divide-y divide-outline-variant">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 flex items-center gap-4">
+<div class="relative">
+<img alt="John Smith Profile" class="w-10 h-10 border border-outline group-hover:border-primary transition-colors" data-alt="A cinematic, high-contrast portrait of a professional male yacht officer in a crisp white uniform. The lighting is dramatic and moody, reflecting a high-end maritime setting with subtle metallic textures in the background. The aesthetic is nautical-industrial, with deep gunmetal tones and sharp teal highlights emphasizing expertise and authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPkFNU58Cns80fZpq-Q2FdIZT3xOPPBR6O7MjE7BYtxD-tTh3mZDqBBozWbZxgThtQTdhRW1I2mWZDlvJ3kRZgxzLqndHywKBUW6mmeMBImWaP_gQY60BvA2I3N_itU1xcelV-GalSECmC1azqvifrXMNTvrx9aI5EABUosyA_liOKKONAyj3y86uyUwO868AlHu8L-4mTtVcybBlPT37HJgrpYWkoARh-cQwgOqhPxGzkL8QYmv3Bz5Ym5P62o1TagHV9bjD2kINc"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-surface-container rounded-full"></span>
+</div>
+<div>
+<div class="text-on-surface font-bold">CPT. JOHN SMITH</div>
+<div class="text-[10px] text-primary opacity-60">MASTER MARINER</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">DECK (COMMAND)</td>
+<td class="px-6 py-4">
+<span class="border border-primary text-primary px-3 py-1 rounded-sm text-[11px] font-bold">ON DUTY</span>
+</td>
+<td class="px-6 py-4 text-center">BRIDGE</td>
+<td class="px-6 py-4 text-right text-on-surface-variant">6 ON / 6 OFF</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 flex items-center gap-4">
+<div class="relative">
+<img alt="Elena Moretti Profile" class="w-10 h-10 border border-outline group-hover:border-primary transition-colors" data-alt="A sophisticated close-up portrait of a female chief stewardess in a premium uniform. The setting is a luxury yacht interior with soft, warm golden lighting and high-end mahogany finishes blurred in the background. The visual style follows a nautical-industrial theme with a refined, professional atmosphere and a cool-toned color palette of deep grays and vibrant teals." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlepQGLN2DPfbJIz_7nnQQR-ss73zks5McUKYuCzD85hI32PTeEtMzYqytkcccpNKnKUJRs9f_VahVW75s5zXP_QwR5Neu2TRIIRJ7KXcACt7pFfNX0ADdnfsbMtRGAkRPcUGKJp1zpQ1GVJhkwD2ij79WyomBEXFq4RFyhwTARhu089mt_YikGGXO0WLgR3ZkfO_fZHKvXSAbi4d0BByL_SrLRRePYqWWIIJGHY9jlqGUWBg8auGXBPzA-jAQF5VQd7A65mVQQXRH"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-secondary-container border-2 border-surface-container rounded-full"></span>
+</div>
+<div>
+<div class="text-on-surface font-bold">ELENA MORETTI</div>
+<div class="text-[10px] text-primary opacity-60">CHIEF STEWARDESS</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">INTERIOR</td>
+<td class="px-6 py-4">
+<span class="border border-outline-variant text-on-surface-variant px-3 py-1 rounded-sm text-[11px] font-bold">OFF WATCH</span>
+</td>
+<td class="px-6 py-4 text-center">CREW MESS</td>
+<td class="px-6 py-4 text-right text-on-surface-variant">12 ON / 12 OFF</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 flex items-center gap-4">
+<div class="relative">
+<img alt="Klaus Vogel Profile" class="w-10 h-10 border border-outline group-hover:border-primary transition-colors" data-alt="A detailed portrait of a marine engineer in a high-tech engine room setting. Heavy machinery, pipes, and digital readouts are visible in a shallow depth-of-field background. The lighting is cool-toned and industrial, highlighting metallic surfaces. The aesthetic is authoritative and engineered, dominated by dark gunmetal shades and teal accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFZyiuqeDTY-RN3GkgXkUyhJiKeNvaeSc1Xl_VbPV7Ywnmj9sr4CInzRR-hRXEysLx4W_KU3QZjz-9L9TnnUKpUsu63xQDg9RNnRtvKxpBy5hCYEDts5bGYdiZa8A0BtaiFfslRqApwvXV4xzukrMalLR6mnnz4THF_yIDFgf2ONGlF9ndz_XG98bq4VyK0mEjWEgA8LUO83pXfytSf6lrI5wPT20arU93N2QvJ3McW9Dw7zrfuA0hA7cE8cxwpDJinsZ4L_QJVSLC"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary border-2 border-surface-container rounded-full"></span>
+</div>
+<div>
+<div class="text-on-surface font-bold">KLAUS VOGEL</div>
+<div class="text-[10px] text-primary opacity-60">CHIEF ENGINEER</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">ENGINEERING</td>
+<td class="px-6 py-4">
+<span class="border border-primary text-primary px-3 py-1 rounded-sm text-[11px] font-bold">ON DUTY</span>
+</td>
+<td class="px-6 py-4 text-center">ENGINE ROOM</td>
+<td class="px-6 py-4 text-right text-on-surface-variant">4 ON / 8 OFF</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-highest transition-colors group">
+<td class="px-6 py-4 flex items-center gap-4">
+<div class="relative">
+<img alt="Amara Reddy Profile" class="w-10 h-10 border border-outline group-hover:border-primary transition-colors" data-alt="A professional portrait of a female navigation officer on a yacht bridge. In the background, sophisticated radar displays and navigation equipment glow with teal light. The lighting is crisp and modern, emphasizing a sense of precision and luxury. The design follows a nautical-industrial palette with deep charcoal surfaces and bright teal interactive elements." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB3bm21eP8HyoS7AUc_kF-GW1eWZuXRS-wsvtP8hZbj2KcNDuwXMPs2y6wkiRSjhmfCKGcrs84TeItrmUIUD8D9in4JBrOhfyzYQKlG5FPfzMwv4pcgFNtJ4Gk2JRS-q4fE7mGQpJ-wz0Be8wJz9bcL7D0iXKVWO1xfBnFFyiKd-wJ19Vf2eSHDcbqQaifcYehFASfYcEKbSxJASdg-A1yiCOZT_H3tYiGQ31SGyjYfQCM2gFK0g2hg5Zb1Gxq3s1lxb8Q02XmLufFP"/>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-error border-2 border-surface-container rounded-full"></span>
+</div>
+<div>
+<div class="text-on-surface font-bold">AMARA REDDY</div>
+<div class="text-[10px] text-primary opacity-60">SECOND OFFICER</div>
+</div>
+</td>
+<td class="px-6 py-4 text-on-surface-variant">DECK</td>
+<td class="px-6 py-4">
+<span class="border border-error text-error px-3 py-1 rounded-sm text-[11px] font-bold">SICK LEAVE</span>
+</td>
+<td class="px-6 py-4 text-center">CABIN B-12</td>
+<td class="px-6 py-4 text-right text-on-surface-variant">ROTATION PAUSED</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Analytics / Metrics -->
+<div class="grid grid-cols-3 gap-gutter mt-8">
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2">WATCH READINESS</div>
+<div class="text-3xl font-headline-md text-on-surface font-bold">98.4%</div>
+<div class="mt-4 h-1 bg-surface-container-highest w-full">
+<div class="h-full bg-primary" style="width: 98%;"></div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2">CERTIFICATION STATUS</div>
+<div class="text-3xl font-headline-md text-on-surface font-bold">ALL CLEAR</div>
+<p class="text-[10px] font-data-tabular text-primary mt-2">Next Audit: 14 Days</p>
+</div>
+<div class="bg-surface-container border border-outline-variant p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-full h-1 bg-primary"></div>
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-2">UPCOMING TURNOVER</div>
+<div class="text-3xl font-headline-md text-on-surface font-bold">03 SEP</div>
+<p class="text-[10px] font-data-tabular text-primary mt-2">6 Crew Members cycling off</p>
+</div>
+</div>
+</div>
+<!-- Collaboration Sidebar Panel -->
+<div class="w-80 bg-surface-container-low border-l border-outline-variant flex flex-col">
+<div class="p-6 border-b border-outline-variant">
+<h2 class="font-label-caps text-label-caps text-primary tracking-widest mb-1">CREW COLLAB</h2>
+<p class="text-xs text-on-surface-variant">Real-time shift notes &amp; coordination</p>
+</div>
+<!-- Comments Stream -->
+<div class="flex-1 overflow-y-auto p-4 space-y-6">
+<div class="space-y-2">
+<div class="flex items-center justify-between font-data-tabular text-[10px]">
+<span class="text-primary font-bold">CHIEF OFFICER</span>
+<span class="text-on-surface-variant opacity-50">14:20 GMT</span>
+</div>
+<div class="bg-surface-container-high p-3 border-l-2 border-primary">
+<p class="text-xs text-on-surface">Anchor chain check scheduled for 16:00. Deck crew stand by for deployment.</p>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between font-data-tabular text-[10px]">
+<span class="text-primary font-bold">ELENA MORETTI</span>
+<span class="text-on-surface-variant opacity-50">12:15 GMT</span>
+</div>
+<div class="bg-surface-container-high p-3 border-l-2 border-outline-variant">
+<p class="text-xs text-on-surface">Provisioning delivery arriving at Marina 4. Need 2 hands for offloading at 15:30.</p>
+</div>
+<div class="flex gap-2 mt-1">
+<span class="bg-surface-container-highest px-2 py-0.5 rounded text-[9px] text-primary font-bold uppercase">Acknowledged</span>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex items-center justify-between font-data-tabular text-[10px]">
+<span class="text-primary font-bold">SYSTEM ALERT</span>
+<span class="text-on-surface-variant opacity-50">09:00 GMT</span>
+</div>
+<div class="bg-surface-container-high p-3 border-l-2 border-error">
+<p class="text-xs text-on-surface font-bold">CERTIFICATE EXPIRY</p>
+<p class="text-xs text-on-surface-variant">Second Officer Reddy: STCW Advanced Firefighting expires in 30 days.</p>
+</div>
+</div>
+</div>
+<!-- Input Field -->
+<div class="p-4 bg-surface-container-high border-t border-outline-variant">
+<div class="relative">
+<textarea class="w-full bg-surface-container-low border-b border-primary border-t-0 border-x-0 focus:ring-0 text-xs text-on-surface py-2 h-20 resize-none mb-3" placeholder="Type a shift note..."></textarea>
+<div class="flex justify-between items-center">
+<div class="flex gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary" data-icon="attach_file">attach_file</span>
+<span class="material-symbols-outlined text-sm cursor-pointer hover:text-primary" data-icon="alternate_email">alternate_email</span>
+</div>
+<button class="bg-primary text-on-primary font-label-caps text-[10px] px-3 py-1 hover:opacity-80 transition-opacity">POST NOTE</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Action Button (FAB) - Suppressed as per Task Logic for specific screens, but included for Dashboard/Main contexts if needed. On this detail-heavy screen, we use explicit top actions instead. -->
+</body></html>

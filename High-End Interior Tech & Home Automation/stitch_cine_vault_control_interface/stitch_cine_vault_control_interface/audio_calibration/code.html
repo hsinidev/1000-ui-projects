@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Audio Calibration | Cine-Vault</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Noto+Serif:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#c8c6c5",
+                        "on-primary-container": "#d26a5f",
+                        "on-surface-variant": "#dcc0bd",
+                        "surface-container-highest": "#333535",
+                        "surface-container-high": "#282a2b",
+                        "on-secondary": "#3c2f00",
+                        "background": "#121414",
+                        "primary-container": "#4a0404",
+                        "primary": "#ffb4aa",
+                        "surface-tint": "#ffb4aa",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "on-secondary-fixed": "#241a00",
+                        "primary-fixed": "#ffdad5",
+                        "surface": "#121414",
+                        "secondary-fixed": "#ffe088",
+                        "error": "#ffb4ab",
+                        "inverse-surface": "#e2e2e2",
+                        "on-background": "#e2e2e2",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#e9c349",
+                        "surface-container-low": "#1a1c1c",
+                        "on-surface": "#e2e2e2",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-bright": "#38393a",
+                        "on-secondary-fixed-variant": "#574500",
+                        "secondary": "#e9c349",
+                        "on-primary": "#5f1410",
+                        "surface-dim": "#121414",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#333535",
+                        "secondary-container": "#af8d11",
+                        "on-secondary-container": "#342800",
+                        "on-tertiary": "#313030",
+                        "tertiary-container": "#212121",
+                        "surface-container-lowest": "#0d0f0f",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-primary-fixed-variant": "#7e2b23",
+                        "error-container": "#93000a",
+                        "inverse-primary": "#9d4139",
+                        "surface-container": "#1e2020",
+                        "on-primary-fixed": "#410001",
+                        "outline": "#a38b88",
+                        "outline-variant": "#554240",
+                        "on-tertiary-container": "#8a8888"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "24px",
+                        "stack-sm": "12px",
+                        "stack-lg": "48px",
+                        "gutter": "16px",
+                        "unit": "8px",
+                        "stack-md": "24px",
+                        "touch-target-min": "44px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Noto Serif"],
+                        "label-caps": ["Manrope"],
+                        "control-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "title-sm": ["Manrope"],
+                        "headline-md": ["Noto Serif"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "control-lg": ["18px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(233, 195, 73, 0.1);
+        }
+        .tactile-dial {
+            background: radial-gradient(circle at 30% 30%, #333535 0%, #121414 100%);
+            box-shadow: -4px -4px 10px rgba(255,255,255,0.05), 4px 4px 15px rgba(0,0,0,0.5);
+        }
+        .tactile-glow {
+            box-shadow: 0 0 20px rgba(233, 195, 73, 0.15);
+        }
+        .slider-thumb::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #e9c349;
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(233, 195, 73, 0.5);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #4a0404;
+            height: 2px;
+            border-radius: 1px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-container-padding h-16 fixed top-0 z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-secondary">settings_input_component</span>
+<h1 class="text-title-sm font-display-lg tracking-widest uppercase text-secondary dark:text-secondary">Cine-Vault</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<span class="text-on-surface-variant text-label-caps font-label-caps hover:text-secondary transition-colors cursor-pointer">Status</span>
+<span class="text-secondary font-bold text-label-caps font-label-caps cursor-pointer">Calibration</span>
+<span class="text-on-surface-variant text-label-caps font-label-caps hover:text-secondary transition-colors cursor-pointer">Presets</span>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container-high border border-outline-variant/30 flex items-center justify-center overflow-hidden">
+<img alt="User" data-alt="A sophisticated close-up portrait of a professional AV technician in a dimly lit, high-end private cinema. The technician is wearing a dark, minimal uniform. Soft golden rim lighting highlights their features against a background of blurred audio-visual equipment and deep burgundy acoustic panels. The atmosphere is focused and luxurious." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfJ9NKNSAQgmk9AJEF6AtpAr80fg0VPcFru8LxC-yweVMqquRo-_HIMb3xBYCdf7Kqbz6tnwJYaQG7mNSkieaiH0FEIAlbiZ_RHpbkgmVzvVeoZ5pdEuFnP7Cwdn-IXlD33Ly94TNiK2KzVk47CnzzdEJVNcgFMPxPQF1RR2uBi9jMT4qMakfsF099oz5_wErbYwet0mjjwm7Sh0-79IZyhi3-N2jdi_3TqR9f9SPiUQ3SB16vjyWXS8vdcsJ0MHV2omdNocs1enE0"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-container-padding max-w-7xl mx-auto space-y-stack-lg">
+<!-- Spatial Visualization & Master Control -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- 7.1.4 Visualizer -->
+<div class="lg:col-span-8 glass-panel rounded-xl p-stack-md relative overflow-hidden aspect-video lg:aspect-auto min-h-[400px]">
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none opacity-20">
+<div class="w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-primary-container/20 via-transparent to-transparent"></div>
+</div>
+<div class="relative h-full flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<h2 class="text-headline-md font-headline-md text-on-surface">Spatial Engine</h2>
+<p class="text-on-surface-variant text-label-caps font-label-caps">Dolby Atmos 7.1.4 Active</p>
+</div>
+<div class="flex gap-2">
+<span class="bg-primary-container text-on-primary-container px-3 py-1 rounded-full text-label-caps font-label-caps">4K UHD</span>
+<span class="bg-secondary-container text-on-secondary-container px-3 py-1 rounded-full text-label-caps font-label-caps">Atmos</span>
+</div>
+</div>
+<!-- Schematic Layout (Representative) -->
+<div class="flex-grow flex items-center justify-center relative">
+<!-- Top View Mockup -->
+<div class="w-64 h-80 border border-outline-variant/20 rounded-lg relative flex items-center justify-center">
+<div class="absolute inset-0 grid grid-cols-3 grid-rows-4 opacity-10">
+<div class="border-r border-b border-outline-variant"></div>
+<div class="border-r border-b border-outline-variant"></div>
+<div class="border-b border-outline-variant"></div>
+<div class="border-r border-b border-outline-variant"></div>
+<div class="border-r border-b border-outline-variant"></div>
+<div class="border-b border-outline-variant"></div>
+</div>
+<!-- Listening Position -->
+<div class="w-12 h-12 bg-secondary/20 rounded-full border border-secondary flex items-center justify-center tactile-glow">
+<span class="material-symbols-outlined text-secondary text-sm">person</span>
+</div>
+<!-- Speakers -->
+<div class="absolute top-4 left-4 w-4 h-6 bg-outline-variant rounded-sm flex flex-col items-center justify-center border border-secondary/50">
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+</div>
+<div class="absolute top-4 right-4 w-4 h-6 bg-outline-variant rounded-sm flex flex-col items-center justify-center border border-secondary/50">
+<div class="w-2 h-2 bg-secondary rounded-full animate-pulse"></div>
+</div>
+<div class="absolute top-4 left-1/2 -translate-x-1/2 w-8 h-4 bg-outline-variant rounded-sm"></div>
+<div class="absolute bottom-4 left-4 w-4 h-6 bg-outline-variant rounded-sm"></div>
+<div class="absolute bottom-4 right-4 w-4 h-6 bg-outline-variant rounded-sm"></div>
+<div class="absolute top-1/2 left-0 -translate-y-1/2 -translate-x-full w-4 h-6 bg-outline-variant rounded-sm"></div>
+<div class="absolute top-1/2 right-0 -translate-y-1/2 translate-x-full w-4 h-6 bg-outline-variant rounded-sm"></div>
+</div>
+</div>
+<div class="flex justify-center gap-stack-md">
+<button class="bg-primary hover:bg-primary-fixed-dim text-on-primary font-bold px-6 py-2 rounded-lg transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined">play_circle</span>
+<span class="text-label-caps font-label-caps">Test Tone</span>
+</button>
+<button class="border border-secondary text-secondary hover:bg-secondary/10 px-6 py-2 rounded-lg transition-all active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined">mic</span>
+<span class="text-label-caps font-label-caps">Auto Calibrate</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Master Volume Dial -->
+<div class="lg:col-span-4 glass-panel rounded-xl p-stack-md flex flex-col items-center justify-center space-y-stack-md">
+<span class="text-on-surface-variant text-label-caps font-label-caps">Master Volume</span>
+<div class="relative w-56 h-56 rounded-full tactile-dial flex items-center justify-center border-4 border-surface-container-highest">
+<div class="absolute inset-4 rounded-full border border-secondary/20 border-dashed animate-[spin_20s_linear_infinite]"></div>
+<div class="text-center">
+<span class="text-display-lg font-display-lg text-secondary">-18.5</span>
+<p class="text-label-caps font-label-caps text-on-surface-variant">dB</p>
+</div>
+<!-- Indicator Notch -->
+<div class="absolute top-4 w-1 h-4 bg-secondary rounded-full"></div>
+</div>
+<div class="flex w-full justify-between px-4">
+<button class="p-4 rounded-full bg-surface-container-high text-on-surface hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">volume_mute</span>
+</button>
+<button class="p-4 rounded-full bg-primary text-on-primary hover:brightness-110 transition-all active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">power_settings_new</span>
+</button>
+</div>
+</div>
+</section>
+<!-- EQ & Channel Gains Grid -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Graphic Equalizer -->
+<div class="glass-panel rounded-xl p-stack-md space-y-stack-md">
+<div class="flex justify-between items-center">
+<h3 class="text-title-sm font-display-lg text-secondary">Theater EQ</h3>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">history</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-secondary">save</span>
+</div>
+</div>
+<div class="flex items-end justify-between h-48 px-2 gap-2">
+<!-- EQ Sliders -->
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[60%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">32Hz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[45%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">64Hz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[75%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">125Hz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[30%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">500Hz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[55%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">2kHz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[65%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">8kHz</span>
+</div>
+<div class="flex flex-col items-center flex-1 h-full gap-2">
+<div class="flex-grow w-1 bg-primary-container relative rounded-full">
+<div class="absolute bottom-[40%] left-1/2 -translate-x-1/2 w-4 h-4 bg-secondary rounded-full tactile-glow shadow-[0_0_10px_rgba(233,195,73,0.3)]"></div>
+</div>
+<span class="text-[10px] font-label-caps text-on-surface-variant">16kHz</span>
+</div>
+</div>
+</div>
+<!-- Individual Channel Gains -->
+<div class="glass-panel rounded-xl p-stack-md space-y-stack-md">
+<h3 class="text-title-sm font-display-lg text-secondary">Channel Gains</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Front Left</span>
+<span class="text-secondary">+2.5dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="2.5"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Front Right</span>
+<span class="text-secondary">+2.5dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="2.5"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Center</span>
+<span class="text-secondary">+4.0dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="4.0"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Subwoofer</span>
+<span class="text-secondary">+6.5dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="6.5"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Surround L</span>
+<span class="text-secondary">0.0dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="0.0"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>Surround R</span>
+<span class="text-secondary">0.0dB</span>
+</div>
+<input class="w-full slider-thumb" max="12" min="-12" type="range" value="0.0"/>
+</div>
+</div>
+</div>
+</section>
+<!-- System Status Cards -->
+<section class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<div class="glass-panel p-4 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-secondary text-xl">thermostat</span>
+<p class="text-[10px] font-label-caps text-on-surface-variant">Amp Temp</p>
+<p class="text-title-sm font-bold text-on-surface">42°C</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-secondary text-xl">bolt</span>
+<p class="text-[10px] font-label-caps text-on-surface-variant">Power Draw</p>
+<p class="text-title-sm font-bold text-on-surface">1.2 kW</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-secondary text-xl">speed</span>
+<p class="text-[10px] font-label-caps text-on-surface-variant">Latency</p>
+<p class="text-title-sm font-bold text-on-surface">2ms</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center space-y-1">
+<span class="material-symbols-outlined text-secondary text-xl">update</span>
+<p class="text-[10px] font-label-caps text-on-surface-variant">Uptime</p>
+<p class="text-title-sm font-bold text-on-surface">14d 2h</p>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-20 bg-surface-container-lowest/80 dark:bg-surface-container-lowest/80 backdrop-blur-2xl border-t border-outline-variant/20 shadow-lg">
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 hover:text-secondary transition-all cursor-pointer">
+<span class="material-symbols-outlined">movie</span>
+<span class="text-label-caps font-label-caps">Library</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 hover:text-secondary transition-all cursor-pointer">
+<span class="material-symbols-outlined">wb_incandescent</span>
+<span class="text-label-caps font-label-caps">Scenes</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary bg-primary-container/20 rounded-xl px-3 py-1 scale-90 transition-transform">
+<span class="material-symbols-outlined">equalizer</span>
+<span class="text-label-caps font-label-caps">Audio</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 hover:text-secondary transition-all cursor-pointer">
+<span class="material-symbols-outlined">videocam</span>
+<span class="text-label-caps font-label-caps">System</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-70 hover:opacity-100 hover:text-secondary transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings_remote</span>
+<span class="text-label-caps font-label-caps">Remote</span>
+</div>
+</nav>
+</body></html>

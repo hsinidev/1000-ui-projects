@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GALA-DOCK | Fleet Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800&amp;family=Space+Grotesk:wght@600;700&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "primary-fixed": "#79ff5b",
+                        "on-secondary-container": "#bab8b7",
+                        "surface-dim": "#0c1609",
+                        "primary-container": "#39ff14",
+                        "error": "#ffb4ab",
+                        "surface": "#0c1609",
+                        "on-secondary": "#313030",
+                        "surface-variant": "#2d3828",
+                        "on-tertiary": "#2f3131",
+                        "error-container": "#93000a",
+                        "on-tertiary-container": "#606162",
+                        "surface-container-highest": "#2d3828",
+                        "primary": "#efffe3",
+                        "on-primary-fixed-variant": "#095300",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary": "#053900",
+                        "outline-variant": "#3c4b35",
+                        "tertiary-container": "#dddddd",
+                        "primary-fixed-dim": "#2ae500",
+                        "on-background": "#dae6d0",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "inverse-surface": "#dae6d0",
+                        "on-primary-container": "#107100",
+                        "secondary-fixed-dim": "#c9c6c5",
+                        "tertiary": "#f9fafa",
+                        "surface-bright": "#323c2d",
+                        "outline": "#85967c",
+                        "secondary": "#c9c6c5",
+                        "secondary-container": "#4a4949",
+                        "on-secondary-fixed-variant": "#474646",
+                        "inverse-on-surface": "#293324",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#106e00",
+                        "background": "#0c1609",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "surface-container-high": "#222d1e",
+                        "on-surface-variant": "#baccb0",
+                        "on-primary-fixed": "#022100",
+                        "surface-container-lowest": "#071105",
+                        "surface-container-low": "#141e11",
+                        "surface-tint": "#2ae500",
+                        "surface-container": "#182214",
+                        "on-surface": "#dae6d0",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-sm": "0.5rem",
+                        "stack-lg": "2rem",
+                        "unit": "4px",
+                        "container-padding-mobile": "1rem",
+                        "stack-md": "1rem",
+                        "gutter": "1rem",
+                        "container-padding-desktop": "2rem"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Montserrat"],
+                        "headline-lg-mobile": ["Montserrat"],
+                        "headline-lg": ["Montserrat"],
+                        "data-display": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "headline-lg-mobile": ["20px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "data-display": ["32px", {"lineHeight": "1", "letterSpacing": "-0.03em", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .carbon-texture {
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.05) 1px, transparent 0);
+            background-size: 4px 4px;
+        }
+        .glass-panel {
+            background: rgba(26, 26, 26, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(57, 255, 20, 0.2);
+        }
+        .neon-pulse {
+            box-shadow: 0 0 15px rgba(57, 255, 20, 0.5);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #0c1609; }
+        ::-webkit-scrollbar-thumb { background: #2d3828; border-radius: 3px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Shell -->
+<header class="bg-surface-container-highest border-b border-outline-variant shadow-[0_0_15px_rgba(57,255,20,0.1)] fixed top-0 w-full z-50 flex items-center justify-between px-gutter h-16">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary-container text-headline-xl">directions_boat</span>
+<h1 class="font-headline-xl text-headline-xl text-primary-container tracking-tighter">GALA-DOCK</h1>
+</div>
+<nav class="hidden md:flex gap-8">
+<button class="font-label-caps text-label-caps text-primary-container hover:text-primary-fixed-dim transition-colors flex flex-col items-center gap-1 scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">
+<span class="material-symbols-outlined">radar</span>
+                Fleet
+            </button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors flex flex-col items-center gap-1 opacity-70">
+<span class="material-symbols-outlined">inventory_2</span>
+                Assets
+            </button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors flex flex-col items-center gap-1 opacity-70">
+<span class="material-symbols-outlined">BatteryMedium</span>
+                Logs
+            </button>
+<button class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors flex flex-col items-center gap-1 opacity-70">
+<span class="material-symbols-outlined">notifications_active</span>
+                Alerts
+            </button>
+</nav>
+<div class="flex items-center gap-4">
+<div class="text-right hidden sm:block">
+<p class="font-label-caps text-label-caps text-primary-container">M/Y GALAXY</p>
+<p class="text-[10px] opacity-60">V-092 COMMANDER</p>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed-dim cursor-pointer active:scale-95 duration-75">settings_remote</span>
+</div>
+</header>
+<main class="flex-1 flex mt-16 overflow-hidden">
+<!-- Fleet Telemetry Sidebar -->
+<aside class="w-80 bg-surface-container-high border-r border-outline-variant flex flex-col h-full z-40 carbon-texture">
+<div class="p-4 border-b border-outline-variant bg-surface-container-highest/50">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-4">ACTIVE ASSETS (08)</h2>
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-primary-container/10 border border-primary-container/30 text-primary-container text-[10px] font-bold rounded">ONLINE: 08</span>
+<span class="px-2 py-1 bg-surface-variant text-on-surface-variant text-[10px] font-bold rounded">DOCK: 02</span>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-3">
+<!-- Asset Card 1 -->
+<div class="p-3 bg-surface-variant/40 border border-outline-variant rounded-lg hover:border-primary-container/50 transition-all cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-primary-container">TENDER ALPHA</h3>
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-2 py-0.5 rounded">IN-USE</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Battery</span>
+<span class="font-data-display text-lg text-on-surface">84%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Speed</span>
+<span class="font-data-display text-lg text-on-surface">22 KN</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm opacity-50">person</span>
+<span class="text-[11px] text-on-surface-variant">OPERATOR: MARCUS V.</span>
+</div>
+</div>
+<!-- Asset Card 2 -->
+<div class="p-3 bg-surface-variant/20 border border-outline-variant rounded-lg opacity-80">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-on-surface">JETSKI-01</h3>
+<span class="font-label-caps text-[10px] text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded uppercase">Available</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Battery</span>
+<span class="font-data-display text-lg text-on-surface">98%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Status</span>
+<span class="font-data-display text-lg text-on-surface">IDLE</span>
+</div>
+</div>
+</div>
+<!-- Asset Card 3 -->
+<div class="p-3 bg-surface-variant/40 border border-outline-variant rounded-lg border-l-4 border-l-primary-container">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-primary-container">TENDER BRAVO</h3>
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-2 py-0.5 rounded">IN-USE</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Battery</span>
+<span class="font-data-display text-lg text-on-surface">41%</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Speed</span>
+<span class="font-data-display text-lg text-on-surface">18 KN</span>
+</div>
+</div>
+</div>
+<!-- Asset Card 4 (Alert State) -->
+<div class="p-3 bg-error-container/20 border border-error/50 rounded-lg">
+<div class="flex justify-between items-start mb-2">
+<h3 class="font-headline-lg-mobile text-error">JETSKI-04</h3>
+<span class="font-label-caps text-[10px] bg-error text-on-error px-2 py-0.5 rounded uppercase">Geofence</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-on-surface-variant uppercase">Warning</span>
+<span class="text-[11px] text-error font-bold">OUTSIDE PRIMARY RADIUS</span>
+</div>
+</div>
+<!-- Remaining assets truncated for design -->
+<div class="p-3 bg-surface-variant/20 border border-outline-variant rounded-lg text-center py-4 text-on-surface-variant italic text-sm">
+                    + 4 additional assets docked
+                </div>
+</div>
+<!-- Recall Action Area -->
+<div class="p-4 bg-surface-container-highest border-t border-outline-variant">
+<button class="w-full py-4 bg-primary-container text-on-primary-container font-headline-lg text-headline-lg rounded-lg shadow-[0_0_30px_rgba(57,255,20,0.3)] hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+                    RECALL ALL
+                </button>
+</div>
+</aside>
+<!-- Tactical Map Area -->
+<section class="flex-1 relative bg-[#050505]">
+<!-- Satellite Map Placeholder -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60 grayscale" data-alt="A high-altitude satellite view of a deep blue Mediterranean bay at dusk, featuring hyper-detailed coastal outlines and dark water. The lighting is moody and cinematic, with high contrast between the deep ocean and the faint glow of shorelines. The image is overlayed with a digital neon green grid and scanning lines to create a tactical maritime command center aesthetic, consistent with a futuristic yacht management interface." data-location="Monaco Coast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFHBIibbKnHJOjnsWi5VIvG3I1AEtvf0lstk_JSNvmDcw0_wcAmAWlj6LFlQPgxbkmqfTPWV1GLGCzCecJpnB2XmLG2lR2C2Rx4KRMZLm78xR2cnVceD0gItj1MiPZAibiLBaePem7mk0xSdIA4SuPPpThKtZsS8UAPc_oZfmboWmWclA50eE1GYldFhhwJJ9KXF1IaZSPXGw_gxYs4OTBkoH3CVY8bLraDyZl4ssbM0Dp5zPRLmLs_i0tYPohuMXe88hq_D4M5-s"/>
+<!-- Map Overlays (Faux Interactive) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" fill="none" viewbox="0 0 1000 1000">
+<!-- Geofence Circle -->
+<circle class="opacity-30" cx="500" cy="500" r="300" stroke="#39ff14" stroke-dasharray="10 5" stroke-width="2"></circle>
+<circle class="opacity-5" cx="500" cy="500" fill="url(#grad1)" r="300"></circle>
+<defs>
+<radialgradient cx="50%" cy="50%" fx="50%" fy="50%" id="grad1" r="50%">
+<stop offset="0%" style="stop-color:#39ff14;stop-opacity:0.2"></stop>
+<stop offset="100%" style="stop-color:#39ff14;stop-opacity:0"></stop>
+</radialgradient>
+</defs>
+<!-- Motion Paths -->
+<path class="opacity-20" d="M500,500 L600,350 L750,400" stroke="#39ff14" stroke-width="1"></path>
+<path class="opacity-20" d="M500,500 L400,650 L200,600" stroke="#39ff14" stroke-width="1"></path>
+</svg>
+<!-- Asset Pins -->
+<div class="absolute top-[35%] left-[60%] -translate-x-1/2 -translate-y-1/2 group">
+<div class="w-8 h-8 rounded-full bg-primary-container/20 border-2 border-primary-container neon-pulse flex items-center justify-center cursor-pointer">
+<span class="material-symbols-outlined text-primary-container text-sm" style="font-variation-settings: 'FILL' 1;">directions_boat</span>
+</div>
+<div class="absolute -top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-surface-container-highest px-2 py-1 rounded border border-primary-container/50 text-[10px] font-bold text-primary-container">
+                        ALPHA | 22 KN
+                    </div>
+</div>
+<div class="absolute top-[65%] left-[20%] -translate-x-1/2 -translate-y-1/2">
+<div class="w-6 h-6 rounded-full bg-error/20 border-2 border-error shadow-[0_0_15px_rgba(255,180,171,0.5)] flex items-center justify-center animate-pulse cursor-pointer">
+<span class="material-symbols-outlined text-error text-xs">warning</span>
+</div>
+<div class="absolute -bottom-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-error-container/80 px-2 py-1 rounded border border-error text-[10px] font-bold text-white">
+                        JETSKI-04 | OUTSIDE ZONE
+                    </div>
+</div>
+<div class="absolute top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2">
+<div class="w-12 h-12 rounded-full border-4 border-white/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl">anchor</span>
+</div>
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-white font-bold text-sm tracking-widest uppercase">
+                        M/Y GALAXY
+                    </div>
+</div>
+</div>
+<!-- Map HUD Overlays -->
+<div class="absolute top-6 right-6 flex flex-col gap-4 z-20">
+<!-- Compass / Orientation -->
+<div class="glass-panel p-4 rounded-lg flex flex-col items-center">
+<span class="font-label-caps text-[10px] mb-2 text-on-surface-variant">BEARING</span>
+<div class="w-16 h-16 rounded-full border-2 border-primary-container/30 flex items-center justify-center relative">
+<div class="w-1 h-8 bg-primary-container absolute top-2 rounded-full"></div>
+<span class="font-data-display text-sm">342°</span>
+</div>
+</div>
+<!-- Weather / Conditions -->
+<div class="glass-panel p-4 rounded-lg space-y-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">air</span>
+<span class="font-data-display text-lg">12KT NW</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-container">water_drop</span>
+<span class="font-data-display text-lg">0.8M SE</span>
+</div>
+</div>
+</div>
+<!-- Bottom Left Map Controls -->
+<div class="absolute bottom-6 left-6 flex gap-2 z-20">
+<div class="glass-panel flex rounded-lg overflow-hidden border-outline-variant">
+<button class="p-3 hover:bg-primary-container/20 text-on-surface transition-colors border-r border-outline-variant">
+<span class="material-symbols-outlined">layers</span>
+</button>
+<button class="p-3 hover:bg-primary-container/20 text-on-surface transition-colors border-r border-outline-variant">
+<span class="material-symbols-outlined">zoom_in</span>
+</button>
+<button class="p-3 hover:bg-primary-container/20 text-on-surface transition-colors">
+<span class="material-symbols-outlined">zoom_out</span>
+</button>
+</div>
+<div class="glass-panel px-4 py-2 rounded-lg flex items-center gap-3">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary-container"></div>
+<span class="text-[10px] font-bold">GEOFENCE ACTIVE</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<span class="text-[10px] opacity-60">RADIUS: 5.0 NM</span>
+</div>
+</div>
+</section>
+</main>
+<!-- Bottom Mobile Nav (Hidden on Desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 pb-4 pt-2 bg-surface-container-highest backdrop-blur-xl border-t border-outline-variant z-50 rounded-t-xl shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<button class="flex flex-col items-center justify-center text-primary-container font-bold scale-110 drop-shadow-[0_0_8px_rgba(57,255,20,0.6)]">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-label-caps text-label-caps">Fleet</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-container opacity-70">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-caps text-label-caps">Assets</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-container opacity-70">
+<span class="material-symbols-outlined">BatteryMedium</span>
+<span class="font-label-caps text-label-caps">Logs</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary-container opacity-70">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-label-caps text-label-caps">Alerts</span>
+</button>
+<button class="flex flex-col items-center justify-center text-error font-bold">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency_home</span>
+<span class="font-label-caps text-label-caps">RECALL</span>
+</button>
+</nav>
+</body></html>

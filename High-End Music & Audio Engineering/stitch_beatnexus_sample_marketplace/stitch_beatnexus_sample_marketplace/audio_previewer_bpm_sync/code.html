@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BeatNexus | Audio Previewer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Epilogue:wght@400;500;700;800&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#474646",
+                        "secondary-container": "#448fff",
+                        "tertiary-container": "#929090",
+                        "surface-variant": "#333535",
+                        "surface-tint": "#ffb1c4",
+                        "inverse-surface": "#e2e2e2",
+                        "surface-bright": "#38393a",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#590028",
+                        "on-tertiary": "#313030",
+                        "on-surface": "#e2e2e2",
+                        "on-surface-variant": "#e5bcc5",
+                        "on-primary": "#65002e",
+                        "on-secondary": "#002f66",
+                        "tertiary": "#c8c6c5",
+                        "outline": "#ac878f",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed": "#d7e2ff",
+                        "on-error": "#690005",
+                        "surface-container-high": "#282a2b",
+                        "on-secondary-container": "#002859",
+                        "inverse-primary": "#ba005b",
+                        "on-primary-fixed": "#3f001a",
+                        "primary-container": "#ff4a8d",
+                        "surface-dim": "#121414",
+                        "primary-fixed": "#ffd9e1",
+                        "surface-container-highest": "#333535",
+                        "surface-container": "#1e2020",
+                        "surface": "#121414",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "outline-variant": "#5c3f46",
+                        "primary": "#ffb1c4",
+                        "surface-container-lowest": "#0d0e0f",
+                        "on-secondary-fixed": "#001b3f",
+                        "on-secondary-fixed-variant": "#004590",
+                        "secondary": "#abc7ff",
+                        "on-tertiary-container": "#2a2a29",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed-dim": "#ffb1c4",
+                        "on-background": "#e2e2e2",
+                        "inverse-on-surface": "#2f3131",
+                        "surface-container-low": "#1a1c1c",
+                        "secondary-fixed-dim": "#abc7ff",
+                        "on-error-container": "#ffdad6",
+                        "background": "#121414",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#8f0044"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "unit": "4px",
+                        "xxl": "80px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "48px",
+                        "md": "16px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Epilogue"],
+                        "mono-label": ["Space Grotesk"],
+                        "body-lg": ["Epilogue"],
+                        "body-md": ["Epilogue"],
+                        "mono-data": ["Space Grotesk"],
+                        "h1": ["Epilogue"],
+                        "h2": ["Epilogue"]
+                    },
+                    "fontSize": {
+                        "h3": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "mono-label": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "mono-data": ["12px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                        "h1": ["80px", {"lineHeight": "1.0", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "h2": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .waveform-container {
+            mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+        }
+        .neon-glow-primary {
+            box-shadow: 0px 0px 15px rgba(255, 177, 196, 0.6);
+        }
+        .neon-glow-secondary {
+            box-shadow: 0px 0px 15px rgba(171, 199, 255, 0.4);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden selection:bg-primary-container selection:text-white">
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-xl fixed top-0 w-full z-50 border-b border-outline-variant/30 shadow-[0_0_15px_rgba(255,177,196,0.2)]">
+<div class="flex justify-between items-center px-gutter py-4 w-full">
+<button class="active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h1 class="font-h2 text-h2 tracking-tighter text-primary italic uppercase">BeatNexus</h1>
+<button class="active:scale-95 transition-transform text-primary">
+<span class="material-symbols-outlined">shopping_cart</span>
+</button>
+</div>
+</header>
+<main class="flex-grow pt-xxl pb-xxl px-gutter max-w-4xl mx-auto w-full flex flex-col">
+<!-- Track Details Section -->
+<section class="mt-lg mb-xl relative">
+<div class="absolute -top-12 -left-8 w-64 h-64 bg-primary/10 rounded-full blur-[80px] pointer-events-none"></div>
+<div class="flex flex-col gap-sm relative z-10">
+<div class="flex items-center gap-xs">
+<span class="bg-surface-container px-sm py-1 font-mono-data text-mono-data border border-outline-variant/50 uppercase tracking-widest text-primary">Exclusive Release</span>
+</div>
+<h2 class="font-h1 text-h1 leading-[0.9] break-words">NEON<br/>PULSE</h2>
+<p class="font-body-lg text-on-surface-variant/80 italic">Producer: Nexus Elite</p>
+</div>
+</section>
+<!-- Main Visualizer & Scrubbing Canvas -->
+<section class="relative bg-surface-container-low rounded-xl border border-outline-variant/20 p-md overflow-hidden min-h-[400px] flex flex-col justify-between group">
+<!-- Light Leak Top Border -->
+<div class="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-right from-transparent via-primary/40 to-transparent"></div>
+<!-- Metadata Chips -->
+<div class="flex flex-wrap gap-sm z-10">
+<div class="bg-surface-container-highest px-md py-xs rounded-full border border-outline-variant/50 flex items-center gap-sm">
+<span class="font-mono-data text-mono-data text-secondary">BPM</span>
+<span class="font-mono-label text-mono-label text-on-surface">128.00</span>
+</div>
+<div class="bg-surface-container-highest px-md py-xs rounded-full border border-outline-variant/50 flex items-center gap-sm">
+<span class="font-mono-data text-mono-data text-secondary">KEY</span>
+<span class="font-mono-label text-mono-label text-on-surface">F# MINOR</span>
+</div>
+<div class="bg-surface-container-highest px-md py-xs rounded-full border border-outline-variant/50 flex items-center gap-sm ml-auto">
+<span class="material-symbols-outlined text-secondary text-[18px]" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span class="font-mono-label text-mono-label text-on-surface">CYBERTECH</span>
+</div>
+</div>
+<!-- Waveform Scrubbing Engine -->
+<div class="relative flex-grow flex items-center justify-center cursor-crosshair">
+<div class="w-full h-48 relative overflow-hidden waveform-container">
+<!-- Background Waveform (Inactive/Ghost) -->
+<div class="absolute inset-0 flex items-center justify-around gap-[2px]">
+<!-- Loop to create waveform bars -->
+<div class="w-[3px] bg-primary-container/20 h-12 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-24 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-16 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-32 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-12 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-28 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-40 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-18 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-24 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-36 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-44 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-20 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-32 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-14 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-26 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-48 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-12 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-34 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-22 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-10 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-30 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-16 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-42 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-24 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-38 rounded-full"></div>
+<div class="w-[3px] bg-primary-container/20 h-12 rounded-full"></div>
+</div>
+<!-- Active Waveform (Electric Blue) -->
+<div class="absolute inset-0 flex items-center justify-around gap-[2px] w-[60%] overflow-hidden">
+<div class="w-[3px] bg-secondary-container h-12 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-24 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-16 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-32 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-12 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-28 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-40 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-18 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-24 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-36 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-44 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-20 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-32 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-14 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+<div class="w-[3px] bg-secondary-container h-26 rounded-full shadow-[0_0_8px_rgba(68,143,255,0.6)]"></div>
+</div>
+<!-- Playhead -->
+<div class="absolute left-[60%] top-0 h-full w-[2px] bg-primary neon-glow-primary z-20">
+<div class="absolute -top-1 -left-1 w-2.5 h-2.5 bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Playback Status -->
+<div class="flex justify-between items-end z-10">
+<div class="font-mono-data text-mono-data text-on-surface-variant flex gap-md">
+<span>01:24</span>
+<span class="text-secondary">/ 03:45</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="font-mono-data text-mono-data text-secondary-container animate-pulse">SYNC ACTIVE</span>
+<div class="w-10 h-5 bg-secondary-container/20 rounded-full border border-secondary-container/40 p-0.5 flex items-center justify-end">
+<div class="w-4 h-4 bg-secondary-container rounded-full shadow-[0_0_8px_rgba(68,143,255,1)]"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Transport Controls -->
+<section class="mt-xl flex flex-col gap-lg">
+<div class="flex items-center justify-around">
+<button class="w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined text-[32px]">skip_previous</span>
+</button>
+<button class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-on-primary neon-glow-primary transition-all hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-[48px]" style="font-variation-settings: 'FILL' 1;">pause</span>
+</button>
+<button class="w-12 h-12 flex items-center justify-center text-on-surface-variant hover:text-primary transition-colors active:scale-90">
+<span class="material-symbols-outlined text-[32px]">skip_next</span>
+</button>
+</div>
+<!-- Quick Actions Bento Grid -->
+<div class="grid grid-cols-2 gap-md mt-sm">
+<div class="bg-surface-container-high p-md rounded-xl border border-outline-variant/30 flex flex-col justify-between h-32 hover:border-secondary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-secondary group-hover:scale-110 transition-transform">sync</span>
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">Sync to BPM</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant/60">Match host clock</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-md rounded-xl border border-outline-variant/30 flex flex-col justify-between h-32 hover:border-primary transition-colors cursor-pointer group">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">favorite</span>
+<div class="flex flex-col">
+<span class="font-mono-label text-mono-label text-on-surface">Save to Library</span>
+<span class="font-mono-data text-[10px] text-on-surface-variant/60">12.4k Likes</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Album Art Overlay (Mobile UX Focus) -->
+<div class="fixed bottom-32 right-gutter z-30 group">
+<div class="w-16 h-16 rounded-xl border border-outline-variant overflow-hidden rotate-3 shadow-2xl group-hover:rotate-0 transition-all duration-500">
+<img alt="Preview Track Cover" class="w-full h-full object-cover" data-alt="A futuristic digital 3D render of a music album cover with glowing cybernetic shapes and electric blue wiring. The scene is set in a dark studio atmosphere with neon pink atmospheric lighting and high-tech textures. The mood is high-energy, aggressive, and professional, perfectly reflecting the BeatNexus brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6EgDI-pnCuEPkFt2RuzmNfqRoYOg5nRDlOcG0Cuxie6UkSYXBzX7HlaSBiOsOshafkDiYY6buYQuaZ0LAMG3St62lhlOCrJNhLbgMznh-5Tss1tgwmFivrPIjYpqY4UKM4trXM5YVwNz7lUHpW30W2xQuxeaxh7dS1_iaizdodtagUEglU0ScdUxCH1TzB6DwpKyipDUYCDUDozGoDuVoabvonrS5iFoiUQIjr0LUvtIOGzbaPZkEH1wkuxcUlWcX2616ReWQMbo"/>
+</div>
+<div class="absolute inset-0 bg-primary/20 blur-xl -z-10 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-primary/20 shadow-[0_-4px_20px_rgba(0,0,0,0.5)] rounded-t-full">
+<a class="flex flex-col items-center justify-center text-on-tertiary-fixed-variant hover:text-secondary-container transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined">library_music</span>
+<span class="font-mono-label text-mono-label mt-1">Packs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary drop-shadow-[0_0_8px_rgba(255,177,196,0.8)] active:translate-y-[-2px] transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">graphic_eq</span>
+<span class="font-mono-label text-mono-label mt-1">Preview</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-fixed-variant hover:text-secondary-container transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined">cloud_download</span>
+<span class="font-mono-label text-mono-label mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-fixed-variant hover:text-secondary-container transition-all active:translate-y-[-2px]" href="#">
+<span class="material-symbols-outlined">redeem</span>
+<span class="font-mono-label text-mono-label mt-1">Free</span>
+</a>
+</nav>
+<!-- Glassmorphism Floating FAB -->
+<button class="fixed bottom-24 left-1/2 -translate-x-1/2 bg-white/10 backdrop-blur-xl border border-white/20 px-xl py-md rounded-full font-h3 text-h3 text-primary flex items-center gap-md shadow-2xl active:scale-95 transition-all hover:glow-sm z-40">
+<span class="material-symbols-outlined">shopping_bag</span>
+        $29.99
+    </button>
+</body></html>

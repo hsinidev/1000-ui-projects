@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAULT_COMMAND | Risk Assessment Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Scanline texture for the stealth aesthetic */
+        .scanline-overlay {
+            background: linear-gradient(to bottom, transparent 50%, rgba(185, 199, 228, 0.02) 50%);
+            background-size: 100% 4px;
+            pointer-events: none;
+        }
+        /* Recessed effect for interactive surfaces */
+        .recessed-surface {
+            box-shadow: inset 0 1px 1px 0 rgba(0, 0, 0, 0.5), inset 0 -1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#39393b",
+                        "background": "#131315",
+                        "secondary-fixed": "#d4e4f6",
+                        "tertiary-container": "#18191a",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "surface-tint": "#b9c7e4",
+                        "inverse-on-surface": "#303032",
+                        "on-tertiary-container": "#818282",
+                        "surface-container-highest": "#343536",
+                        "primary-fixed-dim": "#b9c7e4",
+                        "primary": "#b9c7e4",
+                        "tertiary": "#c6c6c6",
+                        "on-primary-container": "#74829d",
+                        "on-secondary-fixed-variant": "#394857",
+                        "on-primary": "#233148",
+                        "on-background": "#e4e2e4",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed": "#e3e2e2",
+                        "surface-dim": "#131315",
+                        "primary-container": "#0a192f",
+                        "on-error": "#690005",
+                        "surface": "#131315",
+                        "secondary-fixed-dim": "#b8c8da",
+                        "on-surface-variant": "#c5c6cd",
+                        "on-surface": "#e4e2e4",
+                        "primary-fixed": "#d6e3ff",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#8f9097",
+                        "secondary": "#b8c8da",
+                        "error-container": "#93000a",
+                        "surface-variant": "#343536",
+                        "surface-container": "#1f1f21",
+                        "surface-container-low": "#1b1b1d",
+                        "secondary-container": "#394857",
+                        "on-primary-fixed-variant": "#39475f",
+                        "surface-container-high": "#2a2a2c",
+                        "inverse-surface": "#e4e2e4",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#515f78",
+                        "on-primary-fixed": "#0d1c32",
+                        "on-secondary-container": "#a7b7c8",
+                        "outline-variant": "#44474d",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary": "#223240",
+                        "surface-container-lowest": "#0e0e10",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "on-secondary-fixed": "#0d1d2a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "unit": "4px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "40px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary selection:text-on-primary">
+<div class="flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<aside class="flex flex-col h-full py-gutter bg-surface-container border-r border-outline-variant h-screen w-64 left-0 sticky z-30">
+<div class="px-6 mb-10">
+<h1 class="font-headline-md text-headline-md text-primary">ASSET_RELOC</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">Terminal v2.4.0</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="group flex items-center px-6 py-3 transition-all duration-75 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3">lock</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</a>
+<a class="group flex items-center px-6 py-3 transition-all duration-75 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3">explore</span>
+<span class="font-label-caps text-label-caps">Tracking</span>
+</a>
+<!-- Active Tab: Risk -->
+<a class="group flex items-center px-6 py-3 transition-all duration-75 text-on-primary bg-primary rounded-none border-l-2 border-primary active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-caps text-label-caps">Risk</span>
+</a>
+<a class="group flex items-center px-6 py-3 transition-all duration-75 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">Admin</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4">
+<a class="group flex items-center px-6 py-3 transition-all duration-75 text-on-surface-variant hover:text-on-surface hover:bg-surface-bright active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined mr-3">logout</span>
+<span class="font-label-caps text-label-caps">Log Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col relative overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-margin-desktop py-4 w-full bg-surface border-b border-outline-variant top-0 sticky z-20">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">VAULT_COMMAND</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container-high px-4 py-2 rounded-none border border-outline-variant recessed-surface">
+<span class="material-symbols-outlined text-primary text-sm mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-data-mono text-xs w-48 text-on-surface-variant placeholder:text-on-tertiary-container" placeholder="QUERY SECURE CHANNELS..." type="text"/>
+</div>
+<div class="flex items-center gap-3">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:opacity-80">security</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:opacity-80">notifications</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-surface-container-high transition-colors duration-150 active:opacity-80">settings</button>
+<div class="h-8 w-8 rounded-none border border-primary bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">person</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 flex overflow-hidden relative">
+<!-- Risk Map Canvas -->
+<div class="flex-1 relative bg-surface-container-lowest">
+<!-- Placeholder for Map Visualization -->
+<div class="absolute inset-0 bg-[#0a0a0c]">
+<img class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A high-contrast, dark-mode satellite view of a metropolitan area at night. The city lights form a web of intricate geometric patterns against the deep black earth. Superimposed are glowing technical wireframes, grid lines, and circular risk markers in vibrant silver and muted blue. The aesthetic is cold, clinical, and sophisticated, resembling a top-secret tactical mission control map used for global asset tracking." data-location="Zurich" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBbDM_U5LPkCvqdV2MAx42kfIyDtjyPUEEYu9-qX1LMy49PySTYwxUt4gu_xyHwp09ThSyneQQjB0of9ta_ck1-1N8Vp6JGMXzuGwoJusynAJzzKKy9FmOd11J-1xPS0dIOLeJIEE3zUuiD49s2ECY-9tVS4PPUylveSoknj1bdagezZ1Z6pYp0HISP6QKG7R1f3HJe-tAuFds7AXqvJf2NVwuj2t-h6i9z3Ve7XWV559cCaoVlQlWZCTlRoKiEryw6mFofC_tsE4"/>
+</div>
+<!-- Scanline and Overlay UI -->
+<div class="scanline-overlay absolute inset-0"></div>
+<!-- Risk Markers (Tactical Overlays) -->
+<div class="absolute top-1/4 left-1/3 group cursor-pointer">
+<div class="relative">
+<div class="absolute -inset-4 bg-error/20 rounded-full animate-pulse"></div>
+<div class="relative h-4 w-4 bg-error border border-white shadow-[0_0_10px_rgba(255,180,171,0.8)]"></div>
+</div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-outline px-2 py-1 whitespace-nowrap">
+<span class="font-data-mono text-[10px] text-error">CRITICAL_BREACH: DT-09</span>
+</div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 group cursor-pointer">
+<div class="relative">
+<div class="absolute -inset-3 bg-primary/20 rounded-full"></div>
+<div class="relative h-3 w-3 bg-primary border border-white"></div>
+</div>
+<div class="absolute top-5 left-1/2 -translate-x-1/2 bg-surface-container-highest border border-outline px-2 py-1 whitespace-nowrap">
+<span class="font-data-mono text-[10px] text-primary">SECURE_TRANSIT: AX-42</span>
+</div>
+</div>
+<!-- Map Legend / Status Floating -->
+<div class="absolute bottom-gutter left-gutter p-4 bg-surface-container/90 border border-outline-variant backdrop-blur-md">
+<div class="flex items-center gap-4 mb-3 border-b border-outline-variant pb-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-error"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">KINETIC RISK</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary"></div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">ACTIVE ASSET</span>
+</div>
+</div>
+<div class="font-data-mono text-[11px] text-on-surface">
+                            LAT: 47.3769° N <br/>
+                            LON: 8.5417° E <br/>
+                            SIGNAL: ENCRYPTED_L5
+                        </div>
+</div>
+</div>
+<!-- Right Side Panel: District 4 Status -->
+<aside class="w-80 bg-surface-container-low border-l border-outline-variant p-gutter flex flex-col gap-gutter z-10">
+<section class="border border-outline-variant p-4 recessed-surface bg-surface-container">
+<h3 class="font-label-caps text-label-caps text-primary mb-4 flex items-center justify-between">
+                            DISTRICT 4 STATUS
+                            <span class="material-symbols-outlined text-sm">radar</span>
+</h3>
+<div class="space-y-4">
+<!-- Weather Widget -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">cloudy_snowing</span>
+<div>
+<div class="font-data-mono text-headline-md text-on-surface">-4°C</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant">PRECIPITATION: HIGH</div>
+</div>
+</div>
+<div class="text-right">
+<div class="font-data-mono text-xs text-on-surface">WIND: 42km/h</div>
+<div class="font-label-caps text-[10px] text-error">HAZARDOUS</div>
+</div>
+</div>
+<!-- Political Status -->
+<div class="border-t border-outline-variant pt-4">
+<div class="font-label-caps text-[10px] text-on-surface-variant mb-1">POLITICAL CLIMATE</div>
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+<span class="font-data-mono text-xs text-on-surface uppercase font-bold">Unstable / Martial Law</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-error w-4/5 h-full"></div>
+</div>
+<p class="mt-2 font-body-md text-[12px] text-on-tertiary-container leading-tight">
+                                    Civil unrest detected in Sector 7. Local authorities have initiated lockdown protocols. Curfew active.
+                                </p>
+</div>
+</div>
+</section>
+<!-- Encrypted Feed / Biometric Bypass -->
+<section class="flex-1 border border-outline-variant p-4 flex flex-col relative overflow-hidden bg-black">
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<img class="w-full h-full object-cover" data-alt="A macro close-up of a digital computer screen displaying scrolling lines of encrypted green and blue code. The image is stylized with chromatic aberration and digital noise, giving it a gritty, high-tech hacking aesthetic. Subtle reflections of a user's face are visible in the glass, suggesting an intense surveillance session. The mood is tense and secretive." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYA8mJW8Y1cyvo0YYSvoyc6U83Z3mQDxG8u8af4HDzXE2zPmjvXPr34kNAIgakHAi6JEoPpQlVOF46yFFNAzD5GW60ZBtWiYVQkjadlJoQXzgxonKjP7aco6pA1VXWJAhSNb3tqoF_syPGKXLx2ySPosBK5A3zOjQVciUZBF75YVo8FkESdeSSWmDuzojnAQZ-SPmInfEYTXTttSMdrpxInMIjsE8wPzas1abvPeNFvjhW_KhDXqYn6cBV7w5_7SB80104j_sHSxQ"/>
+</div>
+<div class="relative z-10 h-full flex flex-col">
+<div class="font-label-caps text-label-caps text-on-surface flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-xs animate-pulse">lock_open</span>
+                                ENCRYPTED FEED
+                            </div>
+<div class="flex-1 flex flex-col items-center justify-center gap-6 border border-dashed border-outline-variant bg-surface-container/40 p-4">
+<div class="relative">
+<span class="material-symbols-outlined text-6xl text-primary opacity-50" style="font-variation-settings: 'wght' 100;">fingerprint</span>
+<div class="absolute inset-0 bg-primary/10 animate-[ping_3s_infinite] rounded-full"></div>
+</div>
+<div class="text-center">
+<button class="bg-primary text-on-primary font-label-caps text-xs px-6 py-2 border border-white/20 hover:bg-surface-bright hover:text-primary transition-all duration-150">
+                                        BIOMETRIC BYPASS
+                                    </button>
+<p class="mt-2 font-data-mono text-[9px] text-on-tertiary-container">WAITING FOR CSO VALIDATION...</p>
+</div>
+</div>
+</div>
+</section>
+</aside>
+</div>
+<!-- Footer Toolbar -->
+<footer class="bg-surface-container-high border-t border-outline-variant px-margin-desktop py-4 flex items-center justify-between z-20">
+<div class="flex items-center gap-6 font-data-mono text-[11px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-accent-green animate-pulse bg-emerald-400"></span>
+                        SYSTEM_IDLE: 0.004ms
+                    </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-xs">vpn_lock</span>
+                        AES-256_ACTIVE
+                    </div>
+</div>
+<div class="flex items-center gap-4">
+<button class="px-6 py-2 border border-outline text-on-surface font-label-caps text-xs transition-all duration-150 hover:bg-surface-bright active:scale-95">
+                        REROUTE
+                    </button>
+<button class="px-6 py-2 bg-primary text-on-primary border border-white/20 font-label-caps text-xs transition-all duration-150 hover:opacity-90 active:scale-95 flex items-center gap-2">
+<span class="material-symbols-outlined text-xs" style="font-variation-settings: 'FILL' 1;">bolt</span>
+                        ESCALATE
+                    </button>
+</div>
+</footer>
+</main>
+</div>
+</body></html>

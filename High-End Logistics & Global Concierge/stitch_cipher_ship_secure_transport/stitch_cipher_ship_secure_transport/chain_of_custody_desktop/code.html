@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanning-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .shutter-primary {
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            color: #2d3134;
+            clip-path: polygon(0 0, 100% 0, 100% 70%, 90% 100%, 0 100%);
+        }
+        .vault-border {
+            border: 1px solid rgba(143, 145, 148, 0.2);
+            box-shadow: inset 1px 1px 0px 0px rgba(255, 255, 255, 0.05);
+        }
+        .laser-line {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #bdc2ff, transparent);
+            width: 100%;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #050f1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #44474a;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-dim": "#0a1420",
+                      "surface-container-lowest": "#050f1a",
+                      "tertiary-fixed-dim": "#c9c6c5",
+                      "primary-fixed-dim": "#c4c7ca",
+                      "on-error-container": "#ffdad6",
+                      "on-primary-container": "#626568",
+                      "on-tertiary-container": "#656464",
+                      "on-primary-fixed-variant": "#44474a",
+                      "primary-container": "#e0e2e6",
+                      "background": "#0a1420",
+                      "surface-tint": "#c4c7ca",
+                      "on-tertiary": "#313030",
+                      "on-secondary-fixed-variant": "#343d96",
+                      "on-secondary": "#1b247f",
+                      "primary-fixed": "#e0e2e6",
+                      "on-tertiary-fixed-variant": "#474646",
+                      "tertiary-container": "#e5e2e1",
+                      "surface-container-low": "#121c28",
+                      "outline": "#8f9194",
+                      "surface-container-high": "#212b37",
+                      "tertiary-fixed": "#e5e2e1",
+                      "on-error": "#690005",
+                      "surface-variant": "#2c3542",
+                      "secondary-container": "#343d96",
+                      "surface-bright": "#303a47",
+                      "error-container": "#93000a",
+                      "secondary-fixed-dim": "#bdc2ff",
+                      "secondary": "#bdc2ff",
+                      "surface": "#0a1420",
+                      "inverse-surface": "#d9e3f4",
+                      "on-primary-fixed": "#191c1f",
+                      "on-surface": "#d9e3f4",
+                      "inverse-primary": "#5c5f62",
+                      "on-primary": "#2d3134",
+                      "on-surface-variant": "#c5c6ca",
+                      "surface-container-highest": "#2c3542",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-secondary-container": "#a8afff",
+                      "tertiary": "#ffffff",
+                      "on-background": "#d9e3f4",
+                      "outline-variant": "#44474a",
+                      "primary": "#ffffff",
+                      "surface-container": "#16202d",
+                      "inverse-on-surface": "#27313e",
+                      "on-secondary-fixed": "#000767",
+                      "secondary-fixed": "#e0e0ff",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin": "40px",
+                      "gutter": "24px",
+                      "unit": "4px",
+                      "grid_opacity": "0.05"
+              },
+              "fontFamily": {
+                      "headline-vault": ["Geist"],
+                      "display-secure": ["Geist"],
+                      "body-mono": ["Geist"],
+                      "label-caps": ["Geist"],
+                      "data-point": ["Geist"]
+              },
+              "fontSize": {
+                      "headline-vault": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "display-secure": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                      "body-mono": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "label-caps": ["11px", {"lineHeight": "1.4", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                      "data-point": ["16px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-mono scanning-grid selection:bg-secondary selection:text-on-secondary">
+<!-- SideNavBar Shell -->
+<aside class="h-screen w-64 fixed left-0 top-0 border-r border-outline-variant bg-surface-dim flex flex-col h-full z-50">
+<div class="p-gutter">
+<h1 class="font-headline-vault text-headline-vault text-primary tracking-widest">CIPHER-SHIP</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant mt-1">ADMIN_v4.0.2</p>
+</div>
+<nav class="flex-1 px-4 mt-8">
+<div class="space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 font-label-caps text-label-caps transition-all duration-150 text-on-surface-variant hover:bg-surface-container-high hover:text-primary" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                    Dashboard
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-caps text-label-caps transition-all duration-150 text-primary font-bold border-l-2 border-secondary-container bg-surface-variant" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                    Shipments
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-caps text-label-caps transition-all duration-150 text-on-surface-variant hover:bg-surface-container-high hover:text-primary" href="#">
+<span class="material-symbols-outlined">psychology</span>
+                    Intelligence
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-caps text-label-caps transition-all duration-150 text-on-surface-variant hover:bg-surface-container-high hover:text-primary" href="#">
+<span class="material-symbols-outlined">hub</span>
+                    Communications
+                </a>
+</div>
+</nav>
+<div class="p- gutter">
+<button class="w-full py-4 bg-error-container text-on-error-container font-label-caps text-label-caps tracking-widest hover:brightness-110 transition-all shutter-primary !bg-error-container !text-white" style="clip-path: polygon(0 0, 100% 0, 100% 80%, 85% 100%, 0 100%);">
+                LOCK_DOWN
+            </button>
+</div>
+</aside>
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center px-gutter w-[calc(100%-16rem)] ml-64 h-16 border-b border-outline-variant bg-surface-container-low fixed top-0 z-40">
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="bg-surface-container text-body-mono text-on-surface border border-outline-variant pl-10 pr-4 py-1 w-64 focus:outline-none focus:border-secondary transition-colors" placeholder="QUERY_MANIFEST_ID..." type="text"/>
+</div>
+<span class="text-secondary font-bold font-body-mono text-body-mono">System Secure</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">notifications_active</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="flex items-center gap-3 pl-6 border-l border-outline-variant">
+<div class="text-right">
+<p class="text-label-caps font-label-caps text-primary leading-none">PROFILE_ACCESS</p>
+<p class="text-[9px] text-on-surface-variant">SEC_LVL_07</p>
+</div>
+<div class="w-8 h-8 bg-surface-variant vault-border flex items-center justify-center">
+<span class="material-symbols-outlined text-secondary">security</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-64 pt-16 min-h-screen p-gutter bg-background">
+<!-- Header Section -->
+<section class="mb-gutter flex justify-between items-end">
+<div>
+<h2 class="font-display-secure text-display-secure text-primary uppercase">Chain-of-Custody</h2>
+<div class="flex items-center gap-4 mt-2">
+<span class="px-3 py-1 bg-surface-container-highest border border-outline-variant text-label-caps font-label-caps text-secondary">MANIFEST: CS-7729-X</span>
+<span class="px-3 py-1 bg-surface-container-highest border border-outline-variant text-label-caps font-label-caps text-secondary">PRIORITY: OMEGA</span>
+</div>
+</div>
+<!-- Tamper-Proof Badge Component -->
+<div class="vault-border bg-surface-container-high p-4 flex items-center gap-4 relative overflow-hidden group">
+<div class="absolute inset-0 bg-secondary opacity-5 group-hover:opacity-10 transition-opacity"></div>
+<div class="w-12 h-12 flex items-center justify-center border-2 border-secondary animate-pulse">
+<span class="material-symbols-outlined text-secondary scale-150" data-weight="fill" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-secondary">AUTHENTICITY_STATUS</p>
+<h3 class="font-headline-vault text-headline-vault text-primary">TAMPER-PROOF</h3>
+<p class="text-[10px] text-on-surface-variant font-body-mono mt-1">ENCRYPTION_LAYER: AES-256_QUANTUM</p>
+</div>
+</div>
+</section>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Large Scale Map Integration -->
+<div class="col-span-8 bg-surface-container-low vault-border min-h-[500px] relative flex flex-col">
+<div class="bg-surface-variant p-2 border-b border-outline-variant flex justify-between items-center">
+<span class="text-label-caps font-label-caps text-primary ml-2">LIVE_TRANSIT_VECTOR</span>
+<span class="text-[10px] text-secondary font-body-mono tracking-widest px-2">REF_COORDS: 34.0522° N, 118.2437° W</span>
+</div>
+<div class="flex-1 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale brightness-50 contrast-125" data-alt="A dark, high-contrast digital map showing a complex network of shipping routes across a futuristic urban landscape. Glowing blue lines represent courier paths, with small pulsing points indicating handoff locations. The aesthetic is industrial and tactical, with a slight digital grid overlay and atmospheric lighting." data-location="Los Angeles" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAiCWAYq6H6BKXGKFohpboxLtcuAEpOmz7UMR4Z4SYNt5fA1kGOxGyoE3yVVeFekcSj19dzq4THPR3-Ky9q5w6RpP3mAObvsQSmOi_kQD-7hBv_ZqrTZgW3cYGcHYetzlTBgdwUTjdovfN2OCF8zd8qgp_EnSt6D0G6W06UaL1_T3X_fLULFPFRz-v0wrea8qXZsjTop0EqWGNz9LH0Y5d-Uow25FGaOct9YYWPgLtEAJE9U0arL_vVcK9iXItrFG_oRafT7bsUjj4"/>
+<!-- Scanning Overlay Effect -->
+<div class="absolute inset-0 pointer-events-none opacity-20">
+<div class="absolute inset-0 scanning-grid"></div>
+<div class="w-full h-[1px] bg-secondary absolute top-1/3 shadow-[0_0_15px_#bdc2ff]"></div>
+</div>
+<!-- Tactical Map Markers -->
+<div class="absolute top-1/4 left-1/3">
+<div class="w-4 h-4 border border-secondary rotate-45 flex items-center justify-center">
+<div class="w-1 h-1 bg-secondary"></div>
+</div>
+</div>
+</div>
+<!-- Transit Telemetry -->
+<div class="grid grid-cols-3 border-t border-outline-variant divide-x divide-outline-variant bg-surface-container-lowest">
+<div class="p-4">
+<p class="text-label-caps font-label-caps text-on-surface-variant">VELOCITY</p>
+<p class="font-headline-vault text-primary">78.2 KM/H</p>
+</div>
+<div class="p-4">
+<p class="text-label-caps font-label-caps text-on-surface-variant">EST_ARRIVAL</p>
+<p class="font-headline-vault text-primary">04:12:00</p>
+</div>
+<div class="p-4">
+<p class="text-label-caps font-label-caps text-on-surface-variant">TEMP_STABILITY</p>
+<p class="font-headline-vault text-secondary">99.8%</p>
+</div>
+</div>
+</div>
+<!-- Chain of Custody Timeline -->
+<div class="col-span-4 bg-surface-container-low vault-border flex flex-col">
+<div class="bg-surface-variant p-2 border-b border-outline-variant">
+<span class="text-label-caps font-label-caps text-primary ml-2">CUSTODY_CHRONOLOGY</span>
+</div>
+<div class="flex-1 overflow-y-auto p-4 space-y-4">
+<!-- Handoff Entry 1 -->
+<div class="relative pl-8 pb-4 group">
+<div class="absolute left-0 top-0 bottom-0 w-[1px] bg-outline-variant"></div>
+<div class="absolute left-[-4px] top-1 w-2 h-2 bg-secondary"></div>
+<div class="p-4 bg-surface-container border border-outline-variant relative">
+<div class="flex justify-between mb-2">
+<span class="text-label-caps font-label-caps text-secondary">HANDOFF_COMPLETED</span>
+<span class="text-[10px] text-on-surface-variant">14:02 UTC</span>
+</div>
+<h4 class="font-data-point text-data-point text-primary">SEC_HUB_OMEGA</h4>
+<div class="mt-3 grid grid-cols-2 gap-2 text-[10px] text-on-surface-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">fingerprint</span>
+                                    BIO_MATCH: 100%
+                                </div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">visibility</span>
+                                    RETINA_SCAN: PASS
+                                </div>
+</div>
+<!-- Hover Laser Effect -->
+<div class="absolute bottom-0 left-0 laser-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<!-- Handoff Entry 2 -->
+<div class="relative pl-8 pb-4 group">
+<div class="absolute left-0 top-0 bottom-0 w-[1px] bg-outline-variant"></div>
+<div class="absolute left-[-4px] top-1 w-2 h-2 bg-secondary"></div>
+<div class="p-4 bg-surface-container border border-outline-variant relative">
+<div class="flex justify-between mb-2">
+<span class="text-label-caps font-label-caps text-secondary">TRANSIT_INITIATED</span>
+<span class="text-[10px] text-on-surface-variant">12:45 UTC</span>
+</div>
+<h4 class="font-data-point text-data-point text-primary">LOG_NODE_DELTA</h4>
+<div class="mt-3 flex items-center gap-2 text-[10px] text-on-surface-variant">
+<span class="material-symbols-outlined text-[14px]">key</span>
+                                TOKEN_ID: XX-990-21
+                            </div>
+<div class="absolute bottom-0 left-0 laser-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<!-- Handoff Entry 3 (Active/Warning) -->
+<div class="relative pl-8 group">
+<div class="absolute left-[-4px] top-1 w-2 h-2 bg-error animate-pulse"></div>
+<div class="p-4 bg-surface-container-highest border border-error-container relative">
+<div class="flex justify-between mb-2">
+<span class="text-label-caps font-label-caps text-error">SCANNING_IN_PROGRESS</span>
+<span class="text-[10px] text-on-surface-variant">CURRENT</span>
+</div>
+<h4 class="font-data-point text-data-point text-primary">MOBILE_UNIT_7</h4>
+<div class="mt-4">
+<div class="w-full bg-surface-variant h-1 overflow-hidden">
+<div class="bg-secondary h-full w-[65%]" style="box-shadow: 0 0 10px #bdc2ff;"></div>
+</div>
+<p class="text-[9px] mt-2 font-body-mono text-on-surface-variant tracking-wider">UPDATING_TELEMETRY... 65%</p>
+</div>
+</div>
+</div>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest">
+<button class="w-full py-3 shutter-primary font-label-caps text-label-caps">GENERATE_AUDIT_LOG</button>
+</div>
+</div>
+<!-- Biometric & Environmental Logs -->
+<div class="col-span-12 grid grid-cols-4 gap-gutter">
+<div class="bg-surface-container-low vault-border p-4 relative overflow-hidden">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-caps font-label-caps text-on-surface-variant">COURIER_VITAL_01</span>
+<span class="w-2 h-2 rounded-full bg-secondary shadow-[0_0_8px_#bdc2ff]"></span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-[10px] text-on-surface-variant">BPM</p>
+<p class="font-headline-vault text-primary">72</p>
+</div>
+<div class="h-8 w-24 flex items-end gap-[2px]">
+<div class="bg-secondary opacity-30 h-1/2 w-1"></div>
+<div class="bg-secondary h-3/4 w-1"></div>
+<div class="bg-secondary h-2/3 w-1"></div>
+<div class="bg-secondary h-full w-1"></div>
+<div class="bg-secondary h-4/5 w-1"></div>
+<div class="bg-secondary h-1/2 w-1"></div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low vault-border p-4">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-caps font-label-caps text-on-surface-variant">INTERNAL_TEMP</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-[10px] text-on-surface-variant">CELSIUS</p>
+<p class="font-headline-vault text-primary">4.2°C</p>
+</div>
+<p class="text-[10px] text-secondary font-label-caps">STABLE</p>
+</div>
+</div>
+<div class="bg-surface-container-low vault-border p-4">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-caps font-label-caps text-on-surface-variant">LIGHT_EXPOSURE</span>
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-[10px] text-on-surface-variant">LUMENS</p>
+<p class="font-headline-vault text-primary">0.00</p>
+</div>
+<p class="text-[10px] text-secondary font-label-caps">SEAL_INTACT</p>
+</div>
+</div>
+<div class="bg-surface-container-low vault-border p-4 border-l-4 border-l-secondary">
+<div class="flex items-center justify-between mb-4">
+<span class="text-label-caps font-label-caps text-secondary">SECURITY_TOKEN</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<p class="text-[10px] text-on-surface-variant">TX_ID</p>
+<p class="font-headline-vault text-primary uppercase">Alpha-7</p>
+</div>
+<span class="material-symbols-outlined text-secondary">lock</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Action Bar (Contextual) -->
+<div class="fixed bottom-0 left-64 right-0 h-1 border-t border-outline-variant bg-surface-container-lowest z-50">
+<div class="h-full bg-secondary w-1/3 shadow-[0_-2px_10px_#bdc2ff]"></div>
+</div>
+</body></html>

@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ABYSS-SONAR CONTROL | CAMERA GRID</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error": "#ffb4ab",
+                    "primary": "#c3c6d7",
+                    "surface-dim": "#131313",
+                    "error-container": "#93000a",
+                    "on-error-container": "#ffdad6",
+                    "surface-container-high": "#2a2a2a",
+                    "secondary-container": "#feb700",
+                    "inverse-surface": "#e5e2e1",
+                    "surface-bright": "#3a3939",
+                    "on-tertiary": "#68000b",
+                    "tertiary-fixed-dim": "#ffb3ae",
+                    "inverse-primary": "#5a5e6d",
+                    "on-tertiary-container": "#e5383b",
+                    "on-secondary-container": "#6b4b00",
+                    "tertiary": "#ffb3ae",
+                    "on-tertiary-fixed": "#410004",
+                    "primary-fixed-dim": "#c3c6d7",
+                    "on-primary": "#2c303d",
+                    "background": "#131313",
+                    "surface-container": "#201f1f",
+                    "inverse-on-surface": "#313030",
+                    "secondary": "#ffdb9d",
+                    "on-primary-container": "#777b8a",
+                    "outline-variant": "#46464c",
+                    "surface": "#131313",
+                    "surface-variant": "#353534",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#271900",
+                    "primary-container": "#0a0e1a",
+                    "on-surface": "#e5e2e1",
+                    "on-tertiary-fixed-variant": "#930014",
+                    "outline": "#909096",
+                    "on-secondary": "#412d00",
+                    "on-background": "#e5e2e1",
+                    "on-primary-fixed": "#171b28",
+                    "secondary-fixed-dim": "#ffba20",
+                    "surface-container-highest": "#353534",
+                    "surface-container-low": "#1c1b1b",
+                    "on-surface-variant": "#c7c6cc",
+                    "primary-fixed": "#dfe2f3",
+                    "on-primary-fixed-variant": "#434654",
+                    "on-secondary-fixed-variant": "#5e4200",
+                    "surface-tint": "#c3c6d7",
+                    "surface-container-lowest": "#0e0e0e",
+                    "tertiary-fixed": "#ffdad7",
+                    "tertiary-container": "#280002",
+                    "secondary-fixed": "#ffdea8"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter": "16px",
+                    "margin-edge": "32px",
+                    "panel-gap": "24px"
+            },
+            "fontFamily": {
+                    "body-lg": ["JetBrains Mono"],
+                    "display-gauge": ["JetBrains Mono"],
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "label-caps": ["JetBrains Mono"],
+                    "body-md": ["JetBrains Mono"],
+                    "data-readout": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "display-gauge": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "data-readout": ["16px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        display: inline-block;
+        line-height: 1;
+      }
+      .glass-panel {
+        background: rgba(14, 14, 14, 0.85);
+        backdrop-filter: blur(12px);
+        border: 0.5px solid rgba(254, 183, 0, 0.2);
+      }
+      .camera-viewport {
+        position: relative;
+        overflow: hidden;
+        background: #050505;
+        border: 0.5px solid rgba(254, 183, 0, 0.15);
+      }
+      .camera-crosshair::before, .camera-crosshair::after {
+        content: '';
+        position: absolute;
+        background: rgba(254, 183, 0, 0.3);
+      }
+      .camera-crosshair::before { width: 1px; height: 40px; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      .camera-crosshair::after { height: 1px; width: 40px; left: 50%; top: 50%; transform: translate(-50%, -50%); }
+      
+      .amber-glow {
+        filter: drop-shadow(0 0 8px rgba(254, 183, 0, 0.6));
+      }
+      .emergency-glow {
+        filter: drop-shadow(0 0 12px rgba(255, 180, 171, 0.8));
+      }
+      .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+      .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+      .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(254, 183, 0, 0.2); }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary/30 custom-scrollbar overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 w-full bg-background/80 backdrop-blur-xl text-secondary z-50 border-b border-secondary/20 shadow-[0_0_15px_rgba(254,183,0,0.1)] h-20 flex justify-between items-center px-margin-edge">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-headline-lg">waves</span>
+<h1 class="font-headline-lg text-headline-lg font-bold uppercase tracking-widest text-secondary">ABYSS-SONAR CONTROL</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="hidden md:flex gap-6 items-center px-6">
+<span class="font-label-caps text-outline hover:text-secondary transition-colors cursor-pointer">SYSTEMS</span>
+<span class="font-label-caps text-secondary border-b-2 border-secondary pb-1">CAMERA GRID</span>
+<span class="font-label-caps text-outline hover:text-secondary transition-colors cursor-pointer">TELEMETRY</span>
+</div>
+<button class="bg-error-container/20 text-error border border-error/50 px-6 py-2 font-label-caps tracking-widest hover:bg-error/20 active:ring-2 active:ring-error animate-pulse transition-all">
+                EMERGENCY SURFACE
+            </button>
+</div>
+</header>
+<!-- Side Navigation Drawer -->
+<aside class="fixed left-0 top-20 h-full w-64 bg-surface-container-lowest/90 backdrop-blur-2xl border-r border-secondary/10 flex flex-col py-panel-gap z-40 hidden md:flex">
+<div class="px-6 mb-8">
+<h2 class="font-headline-md text-secondary tracking-tight">SYSTEMS OVERVIEW</h2>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant/30 transition-colors" href="#">
+<span class="material-symbols-outlined">vital_signs</span>
+<span class="font-label-caps">Life-Support</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant/30 transition-colors" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-label-caps">Sonar Mapping</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 bg-secondary/10 text-secondary border-l-4 border-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps">Camera Grid</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 text-on-surface-variant hover:bg-surface-variant/30 transition-colors" href="#">
+<span class="material-symbols-outlined">battery_charging_full</span>
+<span class="font-label-caps">Battery Reserve</span>
+</a>
+</nav>
+<!-- Peripheral Zone: Critical Gauges -->
+<div class="mt-auto px-6 pb-24 flex flex-col gap-8">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-caps text-secondary/60">
+<span>O2 LEVELS</span>
+<span>94%</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary amber-glow" style="width: 94%"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between font-label-caps text-secondary/60">
+<span>DEPTH</span>
+<span>4,200M</span>
+</div>
+<div class="h-32 bg-surface-variant/30 relative rounded-sm border border-secondary/10">
+<div class="absolute bottom-0 w-full bg-secondary/20 border-t border-secondary" style="height: 72%"></div>
+<div class="absolute bottom-[72%] w-full flex justify-end pr-1">
+<span class="material-symbols-outlined text-secondary scale-75 amber-glow">arrow_left</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="md:pl-64 pt-24 pb-20 md:pb-8 px-6 min-h-screen">
+<div class="max-w-[1400px] mx-auto">
+<!-- Header Controls Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-8 gap-6">
+<div>
+<h2 class="font-headline-lg text-on-surface mb-2">EXTERIOR LIGHTING &amp; OPTICS</h2>
+<p class="font-body-md text-outline">Synchronized multi-angle visual array with deep-sea illumination controls.</p>
+</div>
+<div class="flex gap-4 w-full md:w-auto">
+<div class="glass-panel px-6 py-4 flex items-center gap-8 flex-1 md:flex-none">
+<div class="flex flex-col">
+<span class="font-label-caps text-outline mb-1">GLOBAL INTENSITY</span>
+<span class="font-data-readout text-secondary amber-glow text-xl">60%</span>
+</div>
+<button class="bg-error/10 border border-error text-error px-6 py-3 font-label-caps tracking-tighter hover:bg-error/20 active:scale-95 transition-all emergency-glow flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">emergency_home</span>
+                            ALL LIGHTS ON
+                        </button>
+</div>
+</div>
+</div>
+<!-- 2x2 Camera Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-panel-gap mb-8">
+<!-- Camera 01: Forward -->
+<div class="camera-viewport aspect-video group">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" data-alt="A POV deep sea submersible camera view showing a dark, mysterious oceanic trench. The foreground is illuminated by high-intensity amber floodlights, revealing jagged rock formations and fine sediment. The water is deep midnight blue and pitch black beyond the light's reach. Subtle digital technical overlays and crosshairs are visible on the camera feed." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCEQYY3Mrg1hHy5HxhbuYSw5lSORddYmZZ9iLlUkV24DOMsWltELpaXIJvs5TCqyh3jgoWrm7jiX3lXhsGvoraxxlnFgTtOfsoc0ucF5hbyu7bNfvCzb8gNKyi4W4ugm0-6KDIOQATXA5NAUdcbY0ML3cmNlXlbeY1u08dT88djrnpV61xIamp6Vgrgq3P9uFJRuMI-8VcC5EUvm-pPItWPAZm5nldqY5RxZQccX-HDWHVUvguN_Qbmifqtmm9Vjz-V6Ynau-FDGMw"/>
+<div class="camera-crosshair w-full h-full absolute inset-0 pointer-events-none"></div>
+<!-- Overlays -->
+<div class="absolute top-4 left-4 flex flex-col gap-1">
+<span class="font-label-caps bg-secondary text-on-secondary px-2 py-0.5">CAM 01: FORWARD</span>
+<span class="font-data-readout text-secondary/80 text-xs">ISO 800 | 1/60 | F2.8</span>
+</div>
+<div class="absolute top-4 right-4 text-right">
+<span class="font-data-readout text-secondary amber-glow">REC ●</span>
+</div>
+<!-- Bottom Controls -->
+<div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end translate-y-2 group-hover:translate-y-0 transition-transform">
+<div class="flex gap-2">
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-secondary hover:bg-secondary/10">
+<span class="material-symbols-outlined text-[16px]">wb_sunny</span> HIGH-BEAM
+                            </button>
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-outline hover:text-secondary">
+<span class="material-symbols-outlined text-[16px]">visibility</span> INFRARED
+                            </button>
+</div>
+<div class="font-data-readout text-secondary text-sm">60% LUMENS</div>
+</div>
+</div>
+<!-- Camera 02: Port -->
+<div class="camera-viewport aspect-video group">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" data-alt="A wide-angle deep sea camera feed showing the side of a metallic submersible hull against the pitch-black abyss. Bubbles and micro-particles float in the dark water, illuminated by a soft amber glow from the ship's exterior lights. The style is cinematic and technical, emphasizing the isolation of deep-sea exploration in a dark, high-contrast environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-mU1w3d0-uL1N2h5ZiDILdDAfP1nirU2WhAtzTfu07oHVF2tBDgsXVOLvEYqgVVwJkFzu1kGNLY7zaReY8kTBFTvu2olPbVXkb7q7WL53hrsemQ-rlxzvjpp9Hp7Im0ONu4D9_sD65DLqh5URTsMMY8jNW6hLta2qM02V6fN5fJRaZq9RtayKlwLmLPCI8TjBTS9Uca9xSrGw4apo_ePwhCN7ovnZzYTLrDue6k6RXjGtlyC6J0Tili1sKeUBUwYQxq8h_swbaJI"/>
+<div class="camera-crosshair w-full h-full absolute inset-0 pointer-events-none"></div>
+<div class="absolute top-4 left-4 flex flex-col gap-1">
+<span class="font-label-caps bg-surface-container-highest text-secondary border border-secondary/30 px-2 py-0.5">CAM 02: PORT</span>
+<span class="font-data-readout text-secondary/80 text-xs">ISO 1600 | 1/30 | F1.4</span>
+</div>
+<div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end translate-y-2 group-hover:translate-y-0 transition-transform">
+<div class="flex gap-2">
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-outline hover:text-secondary">
+<span class="material-symbols-outlined text-[16px]">wb_sunny</span> HIGH-BEAM
+                            </button>
+<button class="bg-secondary/20 border border-secondary px-3 py-1.5 flex items-center gap-2 font-label-caps text-secondary amber-glow">
+<span class="material-symbols-outlined text-[16px]">visibility</span> INFRARED [ON]
+                            </button>
+</div>
+<div class="font-data-readout text-secondary text-sm">25% LUMENS</div>
+</div>
+</div>
+<!-- Camera 03: Starboard -->
+<div class="camera-viewport aspect-video group">
+<img class="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity" data-alt="A technical deep-sea camera view captured from a starboard port. Bioluminescent jellyfish drift through the dark, cold water, their glow contrasting against the dark hull and the ship's own amber lighting array. The composition is structured with digital HUD elements like grid lines, temperature readings, and light intensity percentages in a monospaced font." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBkT5fgHDao1QvG8LscghkWYE1U250J1AFcmc-pTz9YiC9oHU0sgwDJaZb3MQx0pCx_SnkTEKrGMeDBwauhD_tjt3ABmdgqSNRAFTo8j09hmovZWSK8tkiicJimHOR25G_4YGB2Q6hvH2qpBVdszANOnj8tPPt62Yk-KRX3f1aO_TvpRAUK__CMfobGSWE_3qW6oh3xOEOn6i4mFZ6DtHZXcyoXn3AnCM5JDMSlKKVhko-r7COMGoDSsL9Q-5igvRCYzreBmT1UHWQ"/>
+<div class="camera-crosshair w-full h-full absolute inset-0 pointer-events-none"></div>
+<div class="absolute top-4 left-4 flex flex-col gap-1">
+<span class="font-label-caps bg-surface-container-highest text-secondary border border-secondary/30 px-2 py-0.5">CAM 03: STARBOARD</span>
+<span class="font-data-readout text-secondary/80 text-xs">ISO 800 | 1/100 | F4.0</span>
+</div>
+<div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end translate-y-2 group-hover:translate-y-0 transition-transform">
+<div class="flex gap-2">
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-secondary hover:bg-secondary/10">
+<span class="material-symbols-outlined text-[16px]">wb_sunny</span> HIGH-BEAM
+                            </button>
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-outline hover:text-secondary">
+<span class="material-symbols-outlined text-[16px]">visibility</span> INFRARED
+                            </button>
+</div>
+<div class="font-data-readout text-secondary text-sm">60% LUMENS</div>
+</div>
+</div>
+<!-- Camera 04: Aft -->
+<div class="camera-viewport aspect-video group">
+<img class="w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity" data-alt="The aft view from a submersible's rear-facing camera. The powerful propellers are visible, churning the dark water into a swirl of bubbles that catch the beam of a rear-mounted amber light. The endless, dark void of the ocean stretches out behind the vessel. Digital data overlays show distance from the sea floor and engine RPM in a sharp, monospaced amber font." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDOWcINdJBlCYtSKCnPDaHvZka1SHQZgPaG-cMhsLexw-t4pDsBd4mE-8cfXykYqJAZbYd6X2puPVhqA48cIQjIcIKfiJ_eRObqtvL8IFLL9xPlEKVOjj_m844yWe2xoN7QduXwb2wM6GE9jWHKE5Cb_-gjfyefiReyKJE6Z937i7PTl3eFUFsWtGMR1CTCcLBeDvrPUal6-DB_9IUovg1OhRFaAOrkNftcWhQM9Jhz145YXdczy8uj-eQCLttod3AV6hPvvkjhTRw"/>
+<div class="camera-crosshair w-full h-full absolute inset-0 pointer-events-none"></div>
+<div class="absolute top-4 left-4 flex flex-col gap-1">
+<span class="font-label-caps bg-surface-container-highest text-secondary border border-secondary/30 px-2 py-0.5">CAM 04: AFT</span>
+<span class="font-data-readout text-secondary/80 text-xs">ISO 3200 | 1/15 | F1.2</span>
+</div>
+<div class="absolute bottom-0 w-full p-4 bg-gradient-to-t from-black/80 to-transparent flex justify-between items-end translate-y-2 group-hover:translate-y-0 transition-transform">
+<div class="flex gap-2">
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-outline hover:text-secondary">
+<span class="material-symbols-outlined text-[16px]">wb_sunny</span> HIGH-BEAM
+                            </button>
+<button class="glass-panel px-3 py-1.5 flex items-center gap-2 font-label-caps text-outline hover:text-secondary">
+<span class="material-symbols-outlined text-[16px]">visibility</span> INFRARED
+                            </button>
+</div>
+<div class="font-data-readout text-secondary text-sm">10% LUMENS</div>
+</div>
+<div class="absolute inset-0 bg-error/5 flex items-center justify-center opacity-40 animate-pulse pointer-events-none">
+<span class="font-label-caps text-error border border-error px-4 py-2 bg-error/10">LOW LIGHT WARNING</span>
+</div>
+</div>
+</div>
+<!-- Bottom Telemetry Readout -->
+<div class="glass-panel p-6 overflow-x-auto">
+<table class="w-full border-collapse">
+<thead>
+<tr class="border-b border-secondary/20">
+<th class="text-left py-4 px-4 font-label-caps text-outline">SYSTEM ID</th>
+<th class="text-left py-4 px-4 font-label-caps text-outline">STATUS</th>
+<th class="text-left py-4 px-4 font-label-caps text-outline">TEMP</th>
+<th class="text-left py-4 px-4 font-label-caps text-outline">LOAD</th>
+<th class="text-right py-4 px-4 font-label-caps text-outline">UPTIME</th>
+</tr>
+</thead>
+<tbody class="font-data-readout">
+<tr class="border-b border-secondary/5 hover:bg-secondary/5 transition-colors">
+<td class="py-4 px-4 text-secondary">L-ARRAY-01 (FWD)</td>
+<td class="py-4 px-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary amber-glow"></span> NOMINAL</span></td>
+<td class="py-4 px-4">4.2°C</td>
+<td class="py-4 px-4">68.2%</td>
+<td class="py-4 px-4 text-right">14:22:04</td>
+</tr>
+<tr class="border-b border-secondary/5 hover:bg-secondary/5 transition-colors">
+<td class="py-4 px-4 text-secondary">L-ARRAY-02 (PORT)</td>
+<td class="py-4 px-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary amber-glow"></span> NOMINAL</span></td>
+<td class="py-4 px-4">4.1°C</td>
+<td class="py-4 px-4">24.5%</td>
+<td class="py-4 px-4 text-right">14:22:04</td>
+</tr>
+<tr class="border-b border-secondary/5 hover:bg-secondary/5 transition-colors">
+<td class="py-4 px-4 text-secondary">L-ARRAY-03 (STBD)</td>
+<td class="py-4 px-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary amber-glow"></span> NOMINAL</span></td>
+<td class="py-4 px-4">4.3°C</td>
+<td class="py-4 px-4">61.9%</td>
+<td class="py-4 px-4 text-right">14:22:04</td>
+</tr>
+<tr class="hover:bg-secondary/5 transition-colors">
+<td class="py-4 px-4 text-secondary">L-ARRAY-04 (AFT)</td>
+<td class="py-4 px-4"><span class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-secondary animate-pulse amber-glow"></span> STANDBY</span></td>
+<td class="py-4 px-4">3.9°C</td>
+<td class="py-4 px-4">08.2%</td>
+<td class="py-4 px-4 text-right">14:22:04</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</main>
+<!-- Mobile Bottom Navigation Bar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full h-16 bg-surface-dim/95 backdrop-blur-md border-t border-secondary/20 flex justify-around items-center px-4 z-50 shadow-[0_-4px_20px_rgba(0,0,0,0.5)]">
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-secondary transition-transform active:scale-110" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-label-caps text-[10px]">Life-Support</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-secondary transition-transform active:scale-110" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-label-caps text-[10px]">Sonar</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_8px_rgba(254,183,0,0.6)] transition-transform active:scale-110" href="#">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-label-caps text-[10px]">Cameras</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-secondary transition-transform active:scale-110" href="#">
+<span class="material-symbols-outlined">electric_bolt</span>
+<span class="font-label-caps text-[10px]">Battery</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-secondary transition-transform active:scale-110" href="#">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-label-caps text-[10px]">Logs</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Desk | In-Flight Concierge</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&amp;family=Montserrat:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Style Guidance & Theme Config -->
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-surface": "#303030",
+                    "on-background": "#1b1c1c",
+                    "secondary-fixed-dim": "#e9c349",
+                    "secondary-container": "#fed65b",
+                    "on-primary-fixed": "#001c3a",
+                    "secondary": "#735c00",
+                    "tertiary": "#040607",
+                    "error-container": "#ffdad6",
+                    "tertiary-fixed": "#e1e3e4",
+                    "outline": "#74777f",
+                    "on-surface": "#1b1c1c",
+                    "on-secondary-fixed": "#241a00",
+                    "background": "#fbf9f8",
+                    "primary-container": "#001f3f",
+                    "on-error": "#ffffff",
+                    "secondary-fixed": "#ffe088",
+                    "on-secondary-container": "#745c00",
+                    "primary-fixed-dim": "#afc8f0",
+                    "on-tertiary-container": "#848688",
+                    "surface-container-lowest": "#ffffff",
+                    "on-tertiary-fixed-variant": "#454748",
+                    "on-primary": "#ffffff",
+                    "on-tertiary-fixed": "#191c1d",
+                    "inverse-on-surface": "#f2f0f0",
+                    "inverse-primary": "#afc8f0",
+                    "surface-dim": "#dbd9d9",
+                    "error": "#ba1a1a",
+                    "primary-fixed": "#d4e3ff",
+                    "surface-container-highest": "#e4e2e2",
+                    "tertiary-fixed-dim": "#c5c7c8",
+                    "surface-variant": "#e4e2e2",
+                    "surface": "#fbf9f8",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary": "#ffffff",
+                    "surface-container": "#efeded",
+                    "on-error-container": "#93000a",
+                    "surface-tint": "#476083",
+                    "on-primary-container": "#6f88ad",
+                    "surface-container-low": "#f5f3f3",
+                    "on-primary-fixed-variant": "#2f486a",
+                    "surface-bright": "#fbf9f8",
+                    "primary": "#000613",
+                    "outline-variant": "#c4c6cf",
+                    "surface-container-high": "#eae8e7",
+                    "on-surface-variant": "#43474e",
+                    "on-secondary-fixed-variant": "#574500",
+                    "tertiary-container": "#1c1f20"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "margin-edge": "48px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "stack-sm": "12px",
+                    "stack-xs": "4px",
+                    "stack-lg": "48px",
+                    "stack-xl": "80px",
+                    "stack-md": "24px"
+            },
+            "fontFamily": {
+                    "interactive-sm": ["Montserrat"],
+                    "headline-md": ["Playfair Display"],
+                    "headline-lg": ["Playfair Display"],
+                    "body-lg": ["Montserrat"],
+                    "label-caps": ["Montserrat"],
+                    "display-xl": ["Playfair Display"],
+                    "body-md": ["Montserrat"]
+            },
+            "fontSize": {
+                    "interactive-sm": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "headline-lg": ["40px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                    "display-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .glass {
+        background: rgba(255, 255, 255, 0.6);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+      }
+      .liquid-progress {
+        background: linear-gradient(90deg, #e9c349 0%, #fed65b 50%, #e9c349 100%);
+        background-size: 200% auto;
+      }
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-fixed selection:text-on-secondary-fixed overflow-x-hidden">
+<!-- SideNavBar (Authority Source: JSON) -->
+<aside class="fixed left-0 top-0 h-full w-64 z-40 bg-primary flex flex-col py-stack-lg shadow-xl border-r border-white/5">
+<div class="px-6 mb-stack-xl">
+<h1 class="font-headline-lg text-headline-lg font-semibold text-primary-fixed">Aero-Desk</h1>
+<p class="font-label-caps text-label-caps uppercase tracking-widest text-on-primary-container opacity-60">Elite Operations</p>
+</div>
+<nav class="flex-grow">
+<ul class="space-y-1">
+<li>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined">airplanemode_active</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Fleet</span>
+</a>
+</li>
+<li>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined">dashboard_customize</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Dashboard</span>
+</a>
+</li>
+<li>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined">calendar_month</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Scheduling</span>
+</a>
+</li>
+<li>
+<!-- Active Tab: Concierge -->
+<a class="bg-white/5 text-secondary-fixed-dim border-l-4 border-secondary-fixed-dim py-4 px-6 flex items-center gap-stack-sm transition-all duration-200" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">room_service</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Concierge</span>
+</a>
+</li>
+<li>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings_applications</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Admin</span>
+</a>
+</li>
+<li>
+<a class="text-on-primary-container py-4 px-6 flex items-center gap-stack-sm opacity-70 hover:bg-white/10 hover:text-white transition-all duration-200" href="#">
+<span class="material-symbols-outlined">groups</span>
+<span class="font-label-caps text-label-caps uppercase tracking-widest">Community</span>
+</a>
+</li>
+</ul>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full bg-secondary-fixed text-on-secondary-fixed font-interactive-sm text-interactive-sm py-4 rounded shadow-lg hover:bg-secondary-container transition-colors duration-300 uppercase tracking-widest">
+                New Charter
+            </button>
+</div>
+</aside>
+<!-- TopNavBar (Authority Source: JSON) -->
+<header class="fixed top-0 right-0 left-64 h-20 z-50 bg-surface/60 backdrop-blur-xl border-b border-white/10 flex justify-between items-center px-margin-edge shadow-[0_40px_40px_-15px_rgba(0,31,63,0.05)]">
+<div class="flex items-center gap-stack-md">
+<span class="font-headline-md text-headline-md font-medium text-primary">Concierge Portal</span>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="relative flex items-center bg-surface-container rounded-full px-4 py-2 border border-outline/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md font-body-md p-0 w-48" placeholder="Search services..." type="text"/>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:scale-95">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer active:scale-95">support_agent</button>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden border border-secondary-fixed">
+<img alt="Executive User Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a high-net-worth executive individual, looking refined and confident. The lighting is soft and editorial, set against a blurred background of a modern luxury lounge. The aesthetic is clean and high-key, aligning with the premium Sky-Sleek design system using a palette of soft whites and sharp navy accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBMjYuelVlx0am4L9V5nSreSu8Ahj5rg935miObbBbwXTgRVYdveTTYHqXZioDvzlNic-tySfiBUbFwDdETLzo9uwuhR8dIVNheEbBkhya7zKRm1B8HYmSwcsLlMd-XWyw-ZSB_eDvjbskDgJugc7hec1jwjbG7VuK-xIX0k-1VrSx6SBFsUZn608Z8bMcNhoamF3DPN2aR_xSiEzm6H_pDouNZXcHIUHFNVdpXzLCmfrKdk5TJkvBli0mYy7Aqxko5bwZjFD5bCGI"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-20 pb-stack-xl min-h-screen">
+<div class="max-w-container-max mx-auto px-margin-edge mt-stack-lg">
+<!-- Flight Progress (Liquid Bar) -->
+<section class="mb-stack-lg">
+<div class="glass p-stack-md rounded-xl shadow-lg border border-white/40">
+<div class="flex justify-between items-end mb-stack-sm">
+<div>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant opacity-60">Current Flight</p>
+<h2 class="font-headline-md text-headline-md text-primary">Paris (LBG) <span class="text-secondary-fixed-dim mx-2">→</span> New York (TEB)</h2>
+</div>
+<div class="text-right">
+<p class="font-interactive-sm text-interactive-sm text-primary mb-1">02h 45m remaining</p>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant">Arrival: 14:30 EST</p>
+</div>
+</div>
+<!-- Liquid Progress Bar -->
+<div class="relative h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="absolute top-0 left-0 h-full w-[65%] liquid-progress transition-all duration-1000 shadow-[0_0_15px_rgba(233,195,73,0.5)]"></div>
+<div class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+</div>
+<div class="flex justify-between mt-2 font-label-caps text-[10px] tracking-tighter text-on-surface-variant opacity-50 uppercase">
+<span>Departed 09:00</span>
+<span>Mid-Atlantic Crossing</span>
+<span>Estimated Arrival</span>
+</div>
+</div>
+</section>
+<!-- Bento Grid Content -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Digital Boarding Pass (Tall Glass Card) -->
+<div class="col-span-12 lg:col-span-4 glass rounded-xl overflow-hidden shadow-xl flex flex-col border border-white/50 relative">
+<div class="bg-primary p-stack-md">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-secondary-fixed uppercase">Priority Passenger</span>
+<span class="material-symbols-outlined text-secondary-fixed">qr_code_2</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-1">Boarding Pass</h3>
+<p class="font-body-md text-primary-fixed-dim text-sm">G650ER • Tail N700AD</p>
+</div>
+<div class="p-stack-md flex-grow space-y-stack-md bg-white/40 backdrop-blur-md">
+<div class="flex justify-between">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Seat</p>
+<p class="font-headline-md text-primary">01A</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Class</p>
+<p class="font-headline-md text-primary">First</p>
+</div>
+</div>
+<hr class="border-outline-variant/30"/>
+<div class="space-y-stack-sm">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-secondary text-sm">confirmation_number</span>
+<span class="text-body-md font-body-md text-on-surface">Ticket: 8299100234</span>
+</div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-secondary text-sm" style="font-variation-settings: 'FILL' 1;">luggage</span>
+<span class="text-body-md font-body-md text-on-surface">3 Checked • 2 Cabin</span>
+</div>
+</div>
+<div class="pt-stack-md flex justify-center">
+<div class="p-4 bg-white rounded-lg border border-outline-variant shadow-sm">
+<img alt="Digital QR Code" class="w-32 h-32 opacity-80 mix-blend-multiply" data-alt="A clean and professional digital QR code displayed on a high-resolution screen. The background of the screen has a subtle dark navy gradient with gold shimmering highlights. The overall atmosphere is futuristic and secure, representing luxury digital travel documentation in a Sky-Sleek aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbCVV7xWFrDPdiqoA0EgVhSnpaXBn31x9ZVISzVpJ6RToBKNauRstTYnavVhmAhl9neOgQImBitFKWgx4lwn0yWuaZfpW3BlbRzMvHJgNzQdXnnOPay2Gpnd3gCwXSBTY9OcGtuohe2C2LysTvIXA9mFIWd6i8Fzf4-QogWgK28bGNQQQFk_P55cLlmGoeN_2agqsPirTsF1ITbZRDWK7KiiJxOZ6ahtrOo0MI22IzpsrPfLhZeOAkJ7oidSpJnUgWM06YQPcgqek"/>
+</div>
+</div>
+</div>
+<div class="p-stack-md bg-surface-container-low/50 text-center">
+<button class="font-interactive-sm text-interactive-sm text-primary hover:text-secondary-fixed-dim transition-colors uppercase tracking-widest">Add to Apple Wallet</button>
+</div>
+</div>
+<!-- Catering Selection (Wide Glass Card) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<div class="glass p-stack-md rounded-xl shadow-xl border border-white/50">
+<div class="flex justify-between items-center mb-stack-md">
+<h3 class="font-headline-md text-headline-md text-primary">Curated Catering</h3>
+<button class="font-label-caps text-label-caps text-secondary-fixed-dim hover:underline uppercase">View Full Menu</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Menu Item 1 -->
+<div class="group cursor-pointer relative overflow-hidden rounded-lg aspect-video">
+<img alt="Signature Wagyu" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="Exquisitely plated Signature Wagyu steak served with gold-leaf garnish on a dark ceramic plate. The setting is a luxury private jet cabin with soft ambient gold lighting and a blurred view of clouds through a circular window. The photo captures a high-end gourmet dining experience with rich textures and deep navy shadows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnSYthXvEP4O4JCH9DGNRCUKVVIphvGtQoZDPAW2zSr6_iXU9GbXQopFcwP16H-HW3Y28_dTWZIlWSc0GYTaJW_-J5sbvStiC71a5Tq7QQEsPsv1pcP4uDT1XKMK9fcGX7cx5BiNsimDOuTQ7qVg6IVBJFVJmeHkZ59DAn8dSGijyOdPE0W7jndPoJC_1Ho8-JL4tp_gCu8EeEGV4nktBDF0zgmIYsTo5U76U5Jqah0zAJQ47PlR9TKMtTtFHvSveT6kIljJMtxMc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-stack-md">
+<span class="font-label-caps text-[10px] text-secondary-fixed uppercase mb-1 block">Chef's Special</span>
+<h4 class="font-headline-md text-white text-xl">Signature Wagyu</h4>
+<p class="font-body-md text-white/70 text-xs">Truffle-infused jus, asparagus</p>
+</div>
+<div class="absolute top-4 right-4 bg-secondary-fixed text-on-secondary-fixed px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest shadow-lg">Selected</div>
+</div>
+<!-- Menu Item 2 -->
+<div class="group cursor-pointer relative overflow-hidden rounded-lg aspect-video">
+<img alt="Dom Pérignon" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" data-alt="A chilled bottle of Dom Pérignon champagne resting in a metallic silver ice bucket on a polished wood table inside a private jet. Crystal flutes stand nearby, catching the morning sunlight streaming through the cabin windows. The scene is bright and airy with a luxury light-mode aesthetic and gold highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCMAR23_yjIHt3PYG6_8O2VvhtB9VCKfk5BOdZr5iNhCoHCLqppsBl3NlECzoyRRbaMckEzSk8jJ5g6e3FOYTbVdzSmj5eeVqqfydanwd5V7DV8CwGxZsEdBrXHmTPp7u7yFxMJZWIZ2OKhh4MbedbiIGx8ES0v5Nw-c5RE-TS-3TWfebGClitcQc9Wn3y_OAOK08PXfO3fXJ3qfb_eR_JIbX8Cmf2gs4x4WlDp1BBf5J5un-rkZ77pi3_xrfJtL4dlAi8rnSE6cvc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/20 to-transparent"></div>
+<div class="absolute bottom-0 left-0 p-stack-md">
+<span class="font-label-caps text-[10px] text-secondary-fixed uppercase mb-1 block">Cellar Selection</span>
+<h4 class="font-headline-md text-white text-xl">Dom Pérignon</h4>
+<p class="font-body-md text-white/70 text-xs">Vintage 2012, served at 10°C</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Transport Management -->
+<div class="glass p-stack-md rounded-xl shadow-xl border border-white/50">
+<div class="flex justify-between items-center mb-stack-md">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Ground Transport</h3>
+<p class="font-body-md text-on-surface-variant text-sm">Arranged for Teterboro (TEB) Arrival</p>
+</div>
+<span class="material-symbols-outlined text-primary text-4xl">local_taxi</span>
+</div>
+<div class="flex flex-col md:flex-row gap-gutter items-center">
+<div class="w-full md:w-1/3 rounded-lg overflow-hidden border border-outline-variant">
+<img alt="Mercedes-Benz S-Class" class="w-full h-40 object-cover" data-alt="A sleek black Mercedes-Benz S-Class parked on the tarmac next to a private jet at dusk. The car's polished surface reflects the runway lights. The lighting is sophisticated and moody, with deep navy and cool silver tones, emphasizing luxury and seamless travel transitions in a Sky-Sleek visual style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsGX6jvvxJ_38e99oUGo8iKW6HOOH-thmrr06KzWS1699rwY0HIj5-BcrE9GFXNMuc0niSe0d-F1oXcBGQEY-h7nbTRMBOUiqkotJl_l8pvCs33Lw-OR5TrB_70V8GJfaYIe4Zb-V5u-zz7o4qmD-9jlrIQxQPUIQlw21RFPV2D44F58KkOHjI5ABC-KuQrz6PR-yQr9XDgLJhnySbf3EtpN_OgJ1SLRfE5lqW0Ji673NZpuxTEXyupmYm37AnNp29Ew_79RalFIA"/>
+</div>
+<div class="flex-grow grid grid-cols-2 gap-stack-md">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Vehicle</p>
+<p class="font-body-lg text-primary font-semibold">Mercedes-Benz S-Class</p>
+<p class="font-body-md text-on-surface-variant text-sm">Color: Obsidian Black</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase text-[10px]">Chauffeur</p>
+<p class="font-body-lg text-primary font-semibold">Jameson Miller</p>
+<p class="font-body-md text-on-surface-variant text-sm">Star Rating: 5.0 (Vetted)</p>
+</div>
+<div class="col-span-2 flex gap-4 mt-stack-sm">
+<button class="bg-primary text-white font-interactive-sm text-interactive-sm px-6 py-2 rounded border-b-2 border-transparent hover:border-secondary-fixed transition-all">Change Vehicle</button>
+<button class="border border-primary text-primary font-interactive-sm text-interactive-sm px-6 py-2 rounded hover:bg-primary hover:text-white transition-all">Contact Driver</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer (Authority Source: JSON) -->
+<footer class="ml-64 bg-surface-container-lowest py-stack-lg border-t border-outline-variant">
+<div class="max-w-container-max mx-auto px-margin-edge flex flex-col md:flex-row justify-between items-center gap-stack-md">
+<div>
+<span class="font-headline-md text-headline-md text-primary">Aero-Desk</span>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2">© 2024 Aero-Desk. All Rights Reserved.</p>
+</div>
+<div class="flex gap-stack-md">
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Privacy Policy</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Terms of Service</a>
+<a class="font-body-md text-body-md text-on-surface-variant hover:text-secondary transition-colors" href="#">Operational Standards</a>
+</div>
+</div>
+</footer>
+</body></html>

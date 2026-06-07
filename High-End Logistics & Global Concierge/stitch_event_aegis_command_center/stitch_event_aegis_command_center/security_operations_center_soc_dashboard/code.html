@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>COMMAND_CORE v2.4 | SOC Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#353534",
+                        "on-primary-fixed-variant": "#622599",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary": "#303030",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-surface": "#e5e2e1",
+                        "outline": "#978d9d",
+                        "primary-fixed-dim": "#ddb7ff",
+                        "tertiary-container": "#313131",
+                        "outline-variant": "#4c4451",
+                        "on-primary-container": "#ba7ef4",
+                        "secondary-container": "#af8d11",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#e9c349",
+                        "surface": "#131313",
+                        "on-tertiary-container": "#9b9998",
+                        "background": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "secondary-fixed": "#ffe088",
+                        "inverse-primary": "#7b41b3",
+                        "on-primary": "#4a0080",
+                        "surface-variant": "#353534",
+                        "on-secondary-container": "#342800",
+                        "surface-bright": "#393939",
+                        "primary-fixed": "#f0dbff",
+                        "surface-container": "#201f1f",
+                        "primary": "#ddb7ff",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed-variant": "#574500",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "secondary-fixed-dim": "#e9c349",
+                        "on-primary-fixed": "#2c0050",
+                        "on-secondary": "#3c2f00",
+                        "surface-dim": "#131313",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#ddb7ff",
+                        "error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "panel-padding": "24px",
+                        "gutter": "16px",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Montserrat"],
+                        "data-mono": ["Montserrat"],
+                        "body-base": ["Montserrat"],
+                        "label-caps": ["Montserrat"],
+                        "display-lg": ["Montserrat"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(75, 0, 130, 0.3);
+        }
+        .glow-gold {
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+            border-color: #D4AF37;
+        }
+        .glow-purple {
+            box-shadow: 0 0 10px rgba(75, 0, 130, 0.4);
+        }
+        .tactile-button {
+            background: linear-gradient(to bottom, #2a2a2a, #131313);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .tactile-button:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 0 10px rgba(75, 0, 130, 0.6);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #4b0082; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-hidden h-screen flex flex-col">
+<!-- TopNavBar Implementation -->
+<header class="flex justify-between items-center w-full px-margin py-unit h-16 z-50 fixed top-0 border-b border-primary/30 bg-surface/70 backdrop-blur-xl shadow-[0_0_15px_rgba(75,0,130,0.3)]">
+<div class="flex items-center gap-margin">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary italic uppercase">COMMAND_CORE v2.4</span>
+<div class="hidden md:flex items-center gap-6">
+<div class="px-4 py-1 border-l border-primary/30">
+<span class="font-label-caps text-label-caps text-secondary block">THREAT_LEVEL</span>
+<span class="font-data-mono text-data-mono text-error">CRITICAL_BRAVO</span>
+</div>
+<div class="px-4 py-1 border-l border-primary/30">
+<span class="font-label-caps text-label-caps text-on-surface-variant block">ACTIVE_SESSIONS</span>
+<span class="font-data-mono text-data-mono text-primary">0,142_OPS</span>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-highest/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">sensors</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">wifi_tethering</span>
+</button>
+<button class="p-2 hover:bg-surface-container-highest/50 transition-colors duration-200 active:scale-95 transition-transform">
+<span class="material-symbols-outlined text-primary">shield_with_heart</span>
+</button>
+</div>
+<div class="flex items-center gap-3 pl-4 border-l border-primary/30">
+<span class="font-label-caps text-label-caps text-on-surface text-right hidden sm:block">CHIEF_OPERATOR<br/><span class="text-on-surface-variant opacity-70">LVL_5_AUTH</span></span>
+<img alt="Chief Operator Avatar" class="w-10 h-10 border border-primary/50 bg-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaS9kOyU1LpiXD7yWJQ41PmXIBDm0x4UGksKVPXUmaO9jXwIloqsfFs-2i7IENA_MddhwCgwmpNuN1NPcCT2Dzx8Z6FtEgwLRE7zPu-3MjixETIIw9ZFdHbfKJdRLdgOqf0PN_Ky6gquLkE90a1oTMHfO0bjvx39FBiFHTOQKX8kwJey9nozSDDmlBzXMTU1ZkPCFYGLUk_m9iffwBOnoygp7Ny31hyEjG8ymWhUtkfPz7RRbA4cTIcQwb42U-lm4s_i8_xiQ4T0o"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Implementation -->
+<nav class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-margin z-40 bg-surface-container-low/80 backdrop-blur-2xl w-64 border-r border-primary/30 shadow-2xl">
+<div class="flex flex-col gap-1 flex-grow">
+<div class="flex items-center gap-4 bg-primary-container/20 text-primary border-l-4 border-primary px-panel-padding py-3 shadow-[inset_0_0_10px_rgba(75,0,130,0.4)] cursor-pointer">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer active:bg-primary-container/40">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-label-caps text-label-caps">LOGISTICS</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer active:bg-primary-container/40">
+<span class="material-symbols-outlined">policy</span>
+<span class="font-label-caps text-label-caps">SECURITY</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer active:bg-primary-container/40">
+<span class="material-symbols-outlined">group</span>
+<span class="font-label-caps text-label-caps">PERSONNEL</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer active:bg-primary-container/40">
+<span class="material-symbols-outlined">database</span>
+<span class="font-label-caps text-label-caps">ARCHIVES</span>
+</div>
+</div>
+<div class="px-panel-padding mb-6">
+<button class="w-full py-3 tactile-button border border-error/50 text-error font-label-caps text-label-caps shadow-[0_0_15px_rgba(147,0,10,0.2)] active:scale-95 transition-transform">
+                INITIATE_LOCKDOWN
+            </button>
+</div>
+<div class="border-t border-primary/10 pt-4">
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-caps text-label-caps">SETTINGS</span>
+</div>
+<div class="flex items-center gap-4 text-on-surface-variant px-panel-padding py-3 opacity-70 hover:bg-surface-container-high hover:text-on-surface transition-all cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">LOGOUT</span>
+</div>
+</div>
+</nav>
+<!-- Main Staging Area -->
+<main class="ml-64 mt-16 p-gutter flex h-[calc(100vh-64px)] gap-gutter overflow-hidden bg-[radial-gradient(circle_at_center,_#1a1125_0%,_#131313_100%)]">
+<!-- Left Pane: Staff Dispatch -->
+<aside class="w-80 flex flex-col gap-gutter shrink-0 h-full">
+<div class="glass-panel flex-grow flex flex-col p-panel-padding overflow-hidden">
+<div class="flex justify-between items-center mb-4 border-b border-primary/50 pb-2">
+<span class="font-headline-md text-headline-md text-primary">STAFF_DISPATCH</span>
+<span class="material-symbols-outlined text-secondary">hail</span>
+</div>
+<div class="flex-grow overflow-y-auto space-y-unit">
+<!-- Dispatch Item 1 -->
+<div class="p-3 bg-surface-container-high/50 border border-primary/10 hover:border-primary/40 transition-all flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">UNIT_ALPHA_01</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant">SECTOR_G | PATROL</p>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-caps text-[10px] text-secondary">PTT_OPEN</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">VOICE</button>
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">DATA</button>
+</div>
+</div>
+<!-- Dispatch Item 2 -->
+<div class="p-3 bg-surface-container-high/50 border border-primary/10 hover:border-primary/40 transition-all flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">UNIT_BRAVO_04</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant">SECTOR_A | STATIC</p>
+</div>
+<div class="flex gap-2 opacity-30">
+<span class="w-2 h-2 rounded-full bg-on-surface-variant"></span>
+<span class="font-label-caps text-[10px]">PTT_IDLE</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">VOICE</button>
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">DATA</button>
+</div>
+</div>
+<!-- Dispatch Item 3 -->
+<div class="p-3 bg-surface-container-high/50 border border-primary/10 hover:border-primary/40 transition-all flex flex-col gap-2">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">UNIT_EPSILON_09</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant">PERIMETER | MOBILE</p>
+</div>
+<div class="flex gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="font-label-caps text-[10px] text-secondary">PTT_OPEN</span>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">VOICE</button>
+<button class="flex-1 py-1 tactile-button border border-primary/30 font-label-caps text-[10px] text-primary">DATA</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Stats Panel -->
+<div class="glass-panel h-48 p-panel-padding glow-gold">
+<span class="font-label-caps text-label-caps text-secondary block mb-2 uppercase">System_Load_Critical</span>
+<div class="space-y-3">
+<div class="flex justify-between text-[10px] font-data-mono">
+<span>CPU_CYCLES</span>
+<span>88.4%</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 border border-secondary/20">
+<div class="bg-secondary h-full w-[88%] shadow-[0_0_8px_#D4AF37]"></div>
+</div>
+<div class="flex justify-between text-[10px] font-data-mono">
+<span>NET_THROUGHPUT</span>
+<span>1.4 GB/S</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-2 border border-primary/20">
+<div class="bg-primary h-full w-[62%] shadow-[0_0_8px_#4B0082]"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Center Pane: Venue Floor Plan -->
+<section class="flex-grow flex flex-col gap-gutter h-full">
+<div class="glass-panel flex-grow relative overflow-hidden group">
+<!-- Floor Plan SVG/Image Simulation -->
+<div class="absolute inset-0 opacity-40 mix-blend-overlay">
+<div class="w-full h-full border-[20px] border-primary/5"></div>
+<div class="absolute top-1/4 left-1/4 w-1/2 h-1/2 border border-primary/20"></div>
+</div>
+<div class="absolute inset-0 p-panel-padding">
+<div class="flex justify-between items-start pointer-events-none">
+<div>
+<h2 class="font-headline-md text-headline-md text-on-surface">ARENA_LEVEL_01</h2>
+<p class="font-data-mono text-data-mono text-primary">COORDS: 42.3601° N, 71.0589° W</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 tactile-button border border-primary/30 pointer-events-auto">
+<span class="material-symbols-outlined text-primary">zoom_in</span>
+</button>
+<button class="p-2 tactile-button border border-primary/30 pointer-events-auto">
+<span class="material-symbols-outlined text-primary">zoom_out</span>
+</button>
+</div>
+</div>
+<!-- Staff Node Markers -->
+<div class="absolute top-[30%] left-[40%] group/node cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full animate-ping absolute opacity-50"></div>
+<div class="w-4 h-4 bg-primary rounded-full relative border border-white/40 shadow-[0_0_15px_#ddb7ff]"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-high border border-primary/50 p-2 whitespace-nowrap opacity-0 group-hover/node:opacity-100 transition-opacity">
+<p class="font-label-caps text-[10px] text-primary">AGENT_SMITH</p>
+<p class="font-data-mono text-[8px] text-on-surface-variant">HEART_RATE: 72 BPM</p>
+</div>
+</div>
+<div class="absolute top-[60%] left-[25%] group/node cursor-pointer">
+<div class="w-4 h-4 bg-secondary rounded-full animate-pulse absolute opacity-50"></div>
+<div class="w-4 h-4 bg-secondary rounded-full relative border border-white/40 shadow-[0_0_15px_#e9c349]"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-high border border-secondary/50 p-2 whitespace-nowrap opacity-0 group-hover/node:opacity-100 transition-opacity">
+<p class="font-label-caps text-[10px] text-secondary">AGENT_DAVIS</p>
+<p class="font-data-mono text-[8px] text-on-surface-variant">HEART_RATE: 94 BPM</p>
+</div>
+</div>
+<div class="absolute bottom-[20%] right-[30%] group/node cursor-pointer">
+<div class="w-4 h-4 bg-primary rounded-full relative border border-white/40 shadow-[0_0_15px_#ddb7ff]"></div>
+<div class="absolute top-6 left-1/2 -translate-x-1/2 bg-surface-container-high border border-primary/50 p-2 whitespace-nowrap opacity-0 group-hover/node:opacity-100 transition-opacity">
+<p class="font-label-caps text-[10px] text-primary">AGENT_WALKER</p>
+<p class="font-data-mono text-[8px] text-on-surface-variant">HEART_RATE: 68 BPM</p>
+</div>
+</div>
+</div>
+<!-- Map Background Image -->
+<img alt="Map Background" class="w-full h-full object-cover opacity-20 pointer-events-none" data-alt="A highly detailed architectural blueprint floor plan of a massive stadium or arena, rendered in a futuristic cyberpunk style. The lines are glowing neon purple and gold against a dark, textured charcoal background. Sophisticated digital HUD elements like coordinate grids, topographical height maps, and scanning patterns are overlaid across the structure to imply a high-tech security command interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQPxGyI6MdRC53UhXyax9KxW6v8yw1ZL_S-lhSbD-kUU2M1C866WLKHQvaAqBuHYSZAc17Kw335UtNuMdMZOJ0OEhfJ6eennDWvp2D6l4PxVlbbXUXNg6ashyI4vbwgMuGNOUkL2NpNpQhR4qmRlvZLGNwewc1dwa641S-2hDiGdoWwLHPSBJj8j0o7w6N8BH2x7-G6iZy6Wsp65v9WzN7tEbSKODXQbWy1VGyHaLWtqvCNuy5hesOH8KuX14lYdgN7hH77NsxmY8"/>
+</div>
+<!-- Bottom Data Panel -->
+<div class="h-32 flex gap-gutter">
+<div class="glass-panel flex-1 p-4 border-l-4 border-primary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Camera_Feed_07</span>
+<div class="mt-2 h-16 bg-surface-container-highest relative overflow-hidden">
+<img alt="Security Feed" class="w-full h-full object-cover grayscale opacity-50" data-alt="A grainy, high-contrast black and white security camera feed of a modern, empty industrial hallway. The perspective is from a high-angle corner position. A digital overlay shows a timestamp, camera identification numbers in a monospace font, and a faint green night-vision scanning line moving vertically across the screen. The atmosphere is cold, silent, and strictly monitored." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAp2PeTdF9yz_B5ilN8gv7GzeTLr2YbSorZffdTtGSGyzq1_Xu5s6ND1lJfXV7O_etuE-BfbaS1eHVm0mX3tY-BPrOGOCtvVMOfnVVKWkccT1ihgcx7OS__vODKmvG8JSGIu1ZkRRNWcCpAE1oRCQfOxKH0tHmdpSjpBlAjMNBh8Yajc5pItlBz2jPxsdeAdJG1DXAqJcHipusl7U-55BOONrbD509ahMTlCUzJRZm58CCDU_7LrVu4vEzXFiWG9-rMnAWe5LG1GZc"/>
+<div class="absolute inset-0 border border-primary/20 pointer-events-none"></div>
+<div class="absolute top-1 left-1 flex gap-1">
+<div class="w-1.5 h-1.5 bg-error rounded-full animate-pulse"></div>
+<span class="text-[8px] font-data-mono text-error">REC</span>
+</div>
+</div>
+</div>
+<div class="glass-panel flex-1 p-4 border-l-4 border-secondary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Camera_Feed_12</span>
+<div class="mt-2 h-16 bg-surface-container-highest relative overflow-hidden">
+<img alt="Security Feed" class="w-full h-full object-cover grayscale opacity-50" data-alt="A CCTV security camera viewpoint looking down at a crowded entrance foyer of a contemporary tech facility. The image is monochrome with high contrast, emphasizing shadows and structural lines. Motion tracking boxes in thin glowing purple lines surround several figures in the crowd, with identification data labels appearing in small monospace text beside them." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBc5jJ6rFJKuX1zBVLM-SJ3y9j9g0FJbF-cCyoPQe72a3vUHPVUVPc-yQ3RrHDNhco_P8pDBcjyQfc82qGnkSkE4V2qzn-Y86-7o75Iyb7fwVLVCTe7XNxJ0d8rOsfB0l8GmvvArK3ysRbKrwa4j7zOI-tNCqoxUIYHENwyWBLjsByhIylrFkM9zjAQ3FDWBHOqEqwJ1L8-4Q94NsgfMF3TVsEa_nyhD1ORwWaf13QLtYw4_C-mZpVbZrTUh6RlCqnE3_ByUrPNayw"/>
+<div class="absolute inset-0 border border-primary/20 pointer-events-none"></div>
+</div>
+</div>
+<div class="glass-panel flex-1 p-4 border-l-4 border-primary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block uppercase">Camera_Feed_09</span>
+<div class="mt-2 h-16 bg-surface-container-highest relative overflow-hidden">
+<img alt="Security Feed" class="w-full h-full object-cover grayscale opacity-50" data-alt="A wide-angle security surveillance shot of an underground parking garage with concrete pillars and rows of vehicles. The lighting is dim and atmospheric, rendered in a clinical grey-scale palette. A faint digital reticle is centered on the frame, and scrolling data streams in the margins indicate license plate recognition and heat signature detection in progress." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAya2N_mrZHUp4p30ncROrZasuPeWPybC8qEw-kIDyndyeE-tflexDyv6LylYEBopkhvRV4HLTEgAe-s8ESK3BstPP250d9Wrmt-5eUvi-Mn8tTbuFM_cbJ5Ve-1oqxU2mEP5XCzjYQ3YwsBNn8sLMn1K6DTf-KSrdr_O31iOPU9WvfRZyuLbwboqpboQsbWDoKHUhoTFbO_9I3PCUlVAzyDQBOogH0OCbAHTL0UZbCXpCXceWxbAXBj-ZU6qgTsWzo-DeqvtIA6WM"/>
+<div class="absolute inset-0 border border-primary/20 pointer-events-none"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: Incident Log Feed -->
+<aside class="w-96 h-full flex flex-col gap-gutter shrink-0">
+<div class="glass-panel flex-grow flex flex-col p-panel-padding overflow-hidden">
+<div class="flex justify-between items-center mb-4 border-b border-secondary/50 pb-2">
+<span class="font-headline-md text-headline-md text-secondary">INCIDENT_LOG</span>
+<span class="material-symbols-outlined text-secondary" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="flex-grow overflow-y-auto space-y-4 pr-2">
+<!-- Log Item: Urgent -->
+<div class="border-l-2 border-error pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-error">[ 21:42:04 ]</span>
+<span class="text-on-surface-variant">SEC_ZONE_04</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">UNAUTHORIZED_ACCESS_ATTEMPT</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Biometric mismatch at Gate E-12. Unit Alpha-01 dispatched for intercept.</p>
+</div>
+<!-- Log Item: Normal -->
+<div class="border-l-2 border-primary/40 pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-primary">[ 21:38:12 ]</span>
+<span class="text-on-surface-variant">LOG_CENTER</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">ROUTINE_PERIMETER_CLEAR</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">All automated sensors in Sector G reporting nominal operation status.</p>
+</div>
+<!-- Log Item: Warning -->
+<div class="border-l-2 border-secondary pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-secondary">[ 21:35:55 ]</span>
+<span class="text-on-surface-variant">PWR_STATION</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">VOLTAGE_FLUCTUATION_DETECTED</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Redundancy systems active. Engineering team notified for manual check.</p>
+</div>
+<!-- Log Item: Info -->
+<div class="border-l-2 border-primary/40 pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-primary">[ 21:30:10 ]</span>
+<span class="text-on-surface-variant">ADMIN_CORE</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">SHIFT_ROTATION_COMPLETE</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Operators updated. Handover protocols successfully executed in Sector 7.</p>
+</div>
+<!-- Log Item: Urgent -->
+<div class="border-l-2 border-error pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-error">[ 21:28:44 ]</span>
+<span class="text-on-surface-variant">FIRE_SYS_A</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">THERMAL_ANOMALY_ALARM</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Extreme heat detected in Server Room 2. Suppression units on standby.</p>
+</div>
+<!-- Log Item: Normal -->
+<div class="border-l-2 border-primary/40 pl-3 py-1 space-y-1">
+<div class="flex justify-between font-data-mono text-[10px]">
+<span class="text-primary">[ 21:22:15 ]</span>
+<span class="text-on-surface-variant">COMM_ARRAY</span>
+</div>
+<p class="font-label-caps text-label-caps text-on-surface">SATELLITE_UPLINK_STABLE</p>
+<p class="text-[11px] text-on-surface-variant leading-tight">Data sync with orbital relay achieved. Latency within acceptable bounds.</p>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-primary/20">
+<div class="flex gap-2">
+<input class="flex-grow bg-surface-container-lowest border border-primary/30 text-[10px] font-data-mono px-3 py-2 text-primary focus:outline-none focus:border-secondary transition-all placeholder:text-on-surface-variant/30" placeholder="CMD_INPUT_PROMPT" type="text"/>
+<button class="px-4 py-2 tactile-button border border-primary/30">
+<span class="material-symbols-outlined text-primary text-sm">send</span>
+</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Global Floating Action Buttons - Suppressed per Relevance Rules -->
+</body></html>

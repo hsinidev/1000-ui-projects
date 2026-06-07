@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic Canvas - Plugin Rack</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "on-secondary-container": "#b7b5b4",
+                        "surface-bright": "#3a3939",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#00e38c",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e5e2e1",
+                        "primary-fixed": "#55ffa8",
+                        "tertiary": "#fafeff",
+                        "on-secondary": "#313030",
+                        "background": "#131313",
+                        "surface-dim": "#131313",
+                        "on-primary-fixed": "#002110",
+                        "on-surface-variant": "#bacbbc",
+                        "secondary-container": "#474746",
+                        "on-tertiary-container": "#646363",
+                        "surface": "#131313",
+                        "tertiary-fixed": "#e4e2e1",
+                        "secondary-fixed": "#e5e2e1",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed-dim": "#00e38c",
+                        "tertiary-container": "#e3e0e0",
+                        "outline": "#849587",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#303030",
+                        "on-primary": "#00391f",
+                        "outline-variant": "#3b4a3f",
+                        "inverse-on-surface": "#313030",
+                        "surface-container-low": "#1c1b1b",
+                        "on-error": "#690005",
+                        "on-primary-fixed-variant": "#00522f",
+                        "surface-variant": "#353534",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-container": "#201f1f",
+                        "surface-container-highest": "#353534",
+                        "inverse-primary": "#006d40",
+                        "on-error-container": "#ffdad6",
+                        "secondary": "#c8c6c5",
+                        "inverse-surface": "#e5e2e1",
+                        "on-background": "#e5e2e1",
+                        "on-primary-container": "#007244",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "primary-container": "#3dffa3",
+                        "primary": "#fafff8"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "1px",
+                        "track-height": "48px",
+                        "sm": "8px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "xs": "4px",
+                        "xl": "32px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Inter"],
+                        "technical-readout": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "mono-label": ["Space Grotesk"],
+                        "headline-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["18px", {"lineHeight": "24px", "fontWeight": "600"}],
+                        "technical-readout": ["10px", {"lineHeight": "12px", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                        "mono-label": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .knob-track {
+            background: conic-gradient(from 180deg, #00e38c 0deg, #00e38c var(--value), #1c1b1b var(--value), #1c1b1b 360deg);
+        }
+        .v-meter-segment {
+            box-shadow: 0 0 4px rgba(0, 227, 140, 0.2);
+        }
+        .tactile-shadow {
+            box-shadow: inset 0 1px 1px rgba(255,255,255,0.1), 0 4px 6px rgba(0,0,0,0.4);
+        }
+        .inner-well {
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.8);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-surface flex justify-between items-center w-full px-md h-track-height border-b border-outline-variant shadow-sm">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer">menu</span>
+<h1 class="font-technical-readout text-headline-md font-bold tracking-tighter text-primary-fixed-dim">SONIC CANVAS</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="hidden md:flex gap-md">
+<span class="font-mono-label text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors">FILE</span>
+<span class="font-mono-label text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors">EDIT</span>
+<span class="font-mono-label text-on-surface-variant hover:text-primary-fixed cursor-pointer transition-colors">TRACK</span>
+</div>
+<div class="font-technical-readout text-technical-readout text-primary-fixed-dim bg-surface-container-highest px-sm py-xs rounded border border-outline-variant">
+                00:01:24:12
+            </div>
+</div>
+</header>
+<main class="pt-track-height pb-track-height flex h-screen overflow-hidden">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-surface-container shadow-xl py-md px-sm border-r border-outline-variant">
+<div class="flex items-center gap-sm mb-lg px-sm">
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center border border-outline">
+<span class="material-symbols-outlined text-sm">engineering</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface leading-none">Lead Engineer</p>
+<p class="font-technical-readout text-on-surface-variant uppercase">Studio A - London</p>
+</div>
+</div>
+<nav class="space-y-xs">
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">folder_open</span>
+<span class="font-mono-label">Project Browser</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">library_music</span>
+<span class="font-mono-label">Sound Library</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">cloud_done</span>
+<span class="font-mono-label">Cloud Sync</span>
+</div>
+<div class="flex items-center gap-md p-sm bg-secondary-container text-primary-fixed-dim border-l-4 border-primary-fixed-dim rounded-r-lg cursor-pointer">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-mono-label">Rack</span>
+</div>
+<div class="flex items-center gap-md p-sm text-on-surface-variant hover:bg-surface-container-highest rounded-lg transition-all cursor-pointer">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-mono-label">Settings</span>
+</div>
+</nav>
+</aside>
+<!-- Main Rack Content -->
+<section class="flex-1 overflow-y-auto bg-surface-container-low p-md flex flex-col items-center">
+<div class="w-full max-w-4xl space-y-md">
+<!-- Plugin Header -->
+<div class="flex justify-between items-end border-b border-outline-variant pb-sm">
+<div>
+<h2 class="font-headline-lg text-on-surface">Inserts: <span class="text-primary-fixed-dim">Vocal Bus</span></h2>
+<p class="font-technical-readout text-on-surface-variant">ACTIVE CHAINS: 3 DEVICES</p>
+</div>
+<div class="flex gap-sm">
+<button class="bg-surface-container-high hover:bg-surface-container-highest text-on-surface border border-outline-variant px-md py-xs rounded font-mono-label transition-colors">BYPASS ALL</button>
+</div>
+</div>
+<!-- Plugin Device 1: Pro-Q 3 Equivalent -->
+<div class="bg-surface-container border-l-4 border-primary-fixed-dim rounded shadow-lg overflow-hidden border border-outline-variant">
+<div class="bg-surface-container-highest px-md py-xs flex justify-between items-center border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-sm text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">power_settings_new</span>
+<span class="font-mono-label font-bold text-on-surface">EQUALIZER: PRO-Q 3</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface cursor-pointer text-sm">more_vert</span>
+</div>
+<div class="p-lg flex gap-xl items-center">
+<!-- EQ Graphic Representation -->
+<div class="flex-1 h-32 inner-well bg-black relative rounded-lg border border-outline-variant overflow-hidden">
+<img class="w-full h-full object-cover opacity-80" data-alt="A professional digital audio equalizer interface showing complex frequency response curves glowing in neon mint against a dark charcoal technical grid background. The scene is illuminated by soft internal lights of the software, conveying precision and high-fidelity sound processing. The aesthetic is clean, industrial, and optimized for low-light studio environments." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBLClTnHjSyJLMrielaebi03C7PmvYq_J6ViBUxHWjez9aNkFcPYeFBAX-AyCyFS1YHqjQPpjHzcYx7QkftTa4DbYkGRx4q2OL0L7ISqi6oY_HCFalV-vSb9xqv4kj8aJOQTKiqorF2c5iuWZ0wU5L6M1Wi07O2D4UTDtdqZaj5u_6VSUFaPChG-yCBJaqOUmUbLj88ibgIasWF6oCbR0nZF3nXQfl0Q-pBLuIX2U9mF2WMMiAG2looqbYXBUDJG4ayrlDaEJ3gGc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
+</div>
+<!-- Controls -->
+<div class="flex gap-lg">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant p-1 relative flex items-center justify-center tactile-shadow bg-surface-variant">
+<div class="w-full h-full rounded-full knob-track" style="--value: 240deg;"></div>
+<div class="absolute w-6 h-6 rounded-full bg-surface-container border border-outline flex items-center justify-center">
+<div class="w-px h-2 bg-primary-fixed-dim -translate-y-1"></div>
+</div>
+</div>
+<span class="font-technical-readout text-on-surface-variant">GAIN</span>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<div class="w-10 h-10 rounded-full border-2 border-outline-variant p-1 relative flex items-center justify-center tactile-shadow bg-surface-variant">
+<div class="w-full h-full rounded-full knob-track" style="--value: 120deg;"></div>
+<div class="absolute w-6 h-6 rounded-full bg-surface-container border border-outline flex items-center justify-center">
+<div class="w-px h-2 bg-primary-fixed-dim -translate-y-1"></div>
+</div>
+</div>
+<span class="font-technical-readout text-on-surface-variant">Q</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Plugin Device 2: 1176 Comp Equivalent -->
+<div class="bg-surface-container border-l-4 border-primary-fixed-dim rounded shadow-lg overflow-hidden border border-outline-variant">
+<div class="bg-surface-container-highest px-md py-xs flex justify-between items-center border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-sm text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">power_settings_new</span>
+<span class="font-mono-label font-bold text-on-surface">DYNAMICS: 1176 COMP</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface cursor-pointer text-sm">more_vert</span>
+</div>
+<div class="p-lg flex justify-between items-center">
+<div class="flex gap-xl">
+<div class="flex flex-col items-center gap-xs">
+<div class="w-14 h-14 rounded-full border-2 border-outline p-1 relative flex items-center justify-center tactile-shadow bg-surface-container-high">
+<div class="w-full h-full rounded-full knob-track" style="--value: 300deg;"></div>
+<div class="absolute w-10 h-10 rounded-full bg-surface-container border border-outline flex items-center justify-center">
+<div class="w-0.5 h-3 bg-primary-fixed-dim -translate-y-2"></div>
+</div>
+</div>
+<span class="font-technical-readout text-on-surface">INPUT</span>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<div class="w-14 h-14 rounded-full border-2 border-outline p-1 relative flex items-center justify-center tactile-shadow bg-surface-container-high">
+<div class="w-full h-full rounded-full knob-track" style="--value: 180deg;"></div>
+<div class="absolute w-10 h-10 rounded-full bg-surface-container border border-outline flex items-center justify-center">
+<div class="w-0.5 h-3 bg-primary-fixed-dim -translate-y-2"></div>
+</div>
+</div>
+<span class="font-technical-readout text-on-surface">OUTPUT</span>
+</div>
+</div>
+<!-- VU Meter Area -->
+<div class="flex gap-lg items-end">
+<div class="flex flex-col gap-sm">
+<div class="w-48 h-8 inner-well bg-black/80 rounded border border-outline-variant flex items-center px-sm gap-px">
+<div class="flex-1 h-2 flex gap-[2px]">
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-40"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-40"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-20"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-20"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-20"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-10"></div>
+<div class="w-1 bg-primary-fixed-dim v-meter-segment opacity-10"></div>
+<div class="w-1 bg-white v-meter-segment opacity-5"></div>
+</div>
+<span class="font-technical-readout text-[8px] text-on-surface-variant">GR -3dB</span>
+</div>
+<div class="flex justify-between font-technical-readout text-[8px] text-on-surface-variant px-xs">
+<span>-48</span><span>-24</span><span>-12</span><span>-6</span><span>0</span>
+</div>
+</div>
+<div class="flex flex-col items-center gap-xs">
+<div class="w-6 h-10 bg-surface-container-highest border border-outline-variant rounded relative flex items-center justify-center tactile-shadow">
+<div class="w-4 h-4 bg-primary-fixed-dim rounded-sm shadow-[0_0_8px_rgba(0,227,140,0.6)]"></div>
+</div>
+<span class="font-technical-readout text-on-surface-variant">LIMIT</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty Insert Slot -->
+<button class="w-full h-12 border-2 border-dashed border-outline-variant rounded flex items-center justify-center gap-sm text-on-surface-variant hover:text-primary-fixed-dim hover:border-primary-fixed-dim hover:bg-surface-container transition-all group">
+<span class="material-symbols-outlined group-hover:scale-110 transition-transform">add_circle</span>
+<span class="font-mono-label">ADD PLUGIN</span>
+</button>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-track-height px-lg bg-surface-container-low border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary-fixed cursor-pointer transition-colors group">
+<span class="material-symbols-outlined">view_timeline</span>
+<span class="font-mono-label group-hover:scale-98 transition-transform">Timeline</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary-fixed cursor-pointer transition-colors group">
+<span class="material-symbols-outlined">tune</span>
+<span class="font-mono-label group-hover:scale-98 transition-transform">Mixer</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-fixed-dim font-bold border-t-2 border-primary-fixed-dim pt-1 group">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">settings_input_component</span>
+<span class="font-mono-label group-hover:scale-98 transition-transform">Rack</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant pt-1 hover:text-primary-fixed cursor-pointer transition-colors group">
+<span class="material-symbols-outlined">ios_share</span>
+<span class="font-mono-label group-hover:scale-98 transition-transform">Export</span>
+</div>
+</nav>
+</body></html>

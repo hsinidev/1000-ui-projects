@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cipher-Ship Admin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+        
+        body {
+            background-color: #0a1420;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .vault-bevel {
+            box-shadow: inset 1px 1px 0px 0px rgba(255, 255, 255, 0.1);
+        }
+
+        .scanning-line {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .scanning-line::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: #bdc2ff;
+            box-shadow: 0 0 8px #bdc2ff;
+            opacity: 0.3;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .shutter-btn:hover {
+            background: linear-gradient(to right, #ffffff 50%, transparent 50%);
+            background-size: 200% 100%;
+            background-position: right bottom;
+            transition: all 0.3s ease-out;
+        }
+        
+        .breathing-glow {
+            box-shadow: 0 0 8px #343d96;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#0a1420",
+                        "surface-container-lowest": "#050f1a",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "primary-fixed-dim": "#c4c7ca",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#626568",
+                        "on-tertiary-container": "#656464",
+                        "on-primary-fixed-variant": "#44474a",
+                        "primary-container": "#e0e2e6",
+                        "background": "#0a1420",
+                        "surface-tint": "#c4c7ca",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed-variant": "#343d96",
+                        "on-secondary": "#1b247f",
+                        "primary-fixed": "#e0e2e6",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "tertiary-container": "#e5e2e1",
+                        "surface-container-low": "#121c28",
+                        "outline": "#8f9194",
+                        "surface-container-high": "#212b37",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#690005",
+                        "surface-variant": "#2c3542",
+                        "secondary-container": "#343d96",
+                        "surface-bright": "#303a47",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#bdc2ff",
+                        "secondary": "#bdc2ff",
+                        "surface": "#0a1420",
+                        "inverse-surface": "#d9e3f4",
+                        "on-primary-fixed": "#191c1f",
+                        "on-surface": "#d9e3f4",
+                        "inverse-primary": "#5c5f62",
+                        "on-primary": "#2d3134",
+                        "on-surface-variant": "#c5c6ca",
+                        "surface-container-highest": "#2c3542",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-secondary-container": "#a8afff",
+                        "tertiary": "#ffffff",
+                        "on-background": "#d9e3f4",
+                        "outline-variant": "#44474a",
+                        "primary": "#ffffff",
+                        "surface-container": "#16202d",
+                        "inverse-on-surface": "#27313e",
+                        "on-secondary-fixed": "#000767",
+                        "secondary-fixed": "#e0e0ff",
+                        "error": "#ffb4ab"
+                    },
+                    "fontFamily": {
+                        "headline-vault": ["Geist"],
+                        "display-secure": ["Geist"],
+                        "body-mono": ["Geist"],
+                        "label-caps": ["Geist"],
+                        "data-point": ["Geist"]
+                    },
+                    "fontSize": {
+                        "headline-vault": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                        "display-secure": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-mono": ["14px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1.4", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "data-point": ["16px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-mono selection:bg-secondary selection:text-on-secondary">
+<!-- SideNavBar -->
+<nav class="flex flex-col h-full border-r border-outline-variant bg-surface-dim h-screen w-64 fixed left-0 top-0 z-50">
+<div class="p-gutter border-b border-outline-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary flex items-center justify-center" style="clip-path: polygon(0 0, 100% 0, 100% 70%, 70% 100%, 0 100%);">
+<span class="material-symbols-outlined text-surface-dim text-sm" data-icon="lock">lock</span>
+</div>
+<div>
+<h1 class="font-headline-vault text-headline-vault text-primary tracking-widest">CIPHER-SHIP</h1>
+<p class="font-label-caps text-label-caps text-outline">ADMIN_v4.0.2</p>
+</div>
+</div>
+</div>
+<div class="flex-grow py-4">
+<div class="space-y-1">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-4 px-gutter py-3 text-primary font-bold border-l-2 border-secondary-container bg-surface-variant transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<!-- Shipments -->
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Shipments</span>
+</a>
+<!-- Intelligence -->
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="font-label-caps text-label-caps">Intelligence</span>
+</a>
+<!-- Communications -->
+<a class="flex items-center gap-4 px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-150" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">Communications</span>
+</a>
+</div>
+</div>
+<div class="p-gutter mt-auto">
+<button class="w-full bg-primary text-on-primary py-3 font-label-caps text-label-caps tracking-widest hover:bg-secondary-fixed transition-colors" style="clip-path: polygon(0 0, 100% 0, 100% 75%, 85% 100%, 0 100%);">
+                LOCK_DOWN
+            </button>
+</div>
+</nav>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-gutter w-[calc(100%-16rem)] ml-64 h-16 bg-surface-container-low border-b border-outline-variant fixed top-0 z-40">
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="bg-surface-container-lowest border border-outline-variant pl-10 pr-4 py-1 font-body-mono text-sm focus:ring-1 focus:ring-primary focus:border-primary w-64 transition-all" placeholder="TERMINAL_QUERY..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary breathing-glow"></div>
+<span class="font-label-caps text-label-caps text-secondary font-bold">System Secure</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-all rounded">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary hover:bg-surface-variant transition-all rounded">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-px bg-outline-variant mx-2"></div>
+<div class="flex items-center gap-3 cursor-pointer group">
+<span class="font-label-caps text-label-caps text-secondary font-bold group-hover:text-primary transition-colors">PROFILE_ACCESS</span>
+<img alt="Security Officer Avatar" class="w-10 h-10 border border-outline-variant grayscale group-hover:grayscale-0 transition-all" data-alt="A professional portrait of a security officer in a dark, high-tech environment. The lighting is low and moody, with sharp highlights on his face. He wears a dark tactical uniform. The overall aesthetic is industrial, disciplined, and technologically advanced, matching the dark indigo and silver UI theme." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCy5Vt8GVQYABwHAJHXUTfJTATJu0bA-DaNMSWvAAodP2XApD49EJ_zMHWjv6kNpBAr63ZaCDeFL52OoAdnOLxnRo-nrY-hIVVMW-ELzjgeQTqtqJ6-kdMjteeKwVDuF-gm5vAuz7N0l6eDo4-e5e7cb1x63z5aa8XjvMKXkT2TY23GuYKUdPVwzkdQ6xm2o1ytdCZm5PUe4ejUYbWGSgdfFvb3NzVeAFD-87pM25IUioyu_0gWkdjUW_R--gru9Tr14GE109FA_ek"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas -->
+<main class="ml-64 pt-16 p-gutter min-h-screen">
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Hero Stats Bento -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container border border-outline-variant p-6 vault-bevel relative scanning-line">
+<div class="flex justify-between items-start mb-8">
+<div>
+<span class="font-label-caps text-label-caps text-outline">FLEET_OVERVIEW_ID: 8829-X</span>
+<h2 class="font-headline-vault text-headline-vault text-primary mt-1">REAL-TIME SHIPMENT MONITOR</h2>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-label-caps text-secondary">ENCRYPTION: AES-256</span>
+<p class="text-xs text-outline mt-1 font-body-mono">Uptime: 99.998%</p>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-low border border-outline-variant p-4">
+<p class="font-label-caps text-label-caps text-outline mb-2">ACTIVE_CARGO</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-secure text-display-secure text-primary">1,402</span>
+<span class="text-secondary text-sm font-bold">+12%</span>
+</div>
+<div class="w-full bg-surface-variant h-1 mt-4">
+<div class="bg-secondary h-full" style="width: 75%"></div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4">
+<p class="font-label-caps text-label-caps text-outline mb-2">DELIVERY_SUCCESS</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-secure text-display-secure text-primary">99.4%</span>
+<span class="text-secondary text-sm font-bold">STABLE</span>
+</div>
+<div class="w-full bg-surface-variant h-1 mt-4">
+<div class="bg-secondary h-full" style="width: 99%"></div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4">
+<p class="font-label-caps text-label-caps text-outline mb-2">TRANSIT_ANOMALIES</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-secure text-display-secure text-error">03</span>
+<span class="text-error text-sm font-bold">ALERT</span>
+</div>
+<div class="w-full bg-surface-variant h-1 mt-4">
+<div class="bg-error h-full" style="width: 15%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Courier Status Cards -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container border border-outline-variant p-6 vault-bevel overflow-hidden relative">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">COURIER_LIVENESS</h3>
+<span class="material-symbols-outlined text-outline text-sm" data-icon="refresh">refresh</span>
+</div>
+<div class="space-y-4">
+<!-- Courier Row 1 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant hover:border-secondary transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">UNIT_DELTA_7</p>
+<p class="text-[10px] text-outline">LOC: SECTOR_4G</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary breathing-glow"></div>
+<span class="text-[10px] text-secondary">ACTIVE</span>
+</div>
+<span class="text-[9px] text-outline mt-1 font-body-mono">PULSE: 72 BPM</span>
+</div>
+</div>
+<!-- Courier Row 2 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border border-outline-variant hover:border-secondary transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-variant flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<div>
+<p class="text-sm font-bold text-primary">UNIT_OMEGA_2</p>
+<p class="text-[10px] text-outline">LOC: HUB_PRIME</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-secondary breathing-glow"></div>
+<span class="text-[10px] text-secondary">ACTIVE</span>
+</div>
+<span class="text-[9px] text-outline mt-1 font-body-mono">PULSE: 68 BPM</span>
+</div>
+</div>
+<!-- Courier Row 3 -->
+<div class="flex items-center justify-between p-3 bg-surface-container-low border-error-container hover:border-error transition-colors group">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-error-container/20 flex items-center justify-center border border-error-container">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="text-sm font-bold text-error">UNIT_SIGMA_9</p>
+<p class="text-[10px] text-outline">LOC: UNKNOWN</p>
+</div>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1.5">
+<div class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></div>
+<span class="text-[10px] text-error font-bold">OFFLINE</span>
+</div>
+<span class="text-[9px] text-outline mt-1 font-body-mono">LOST: 00:04:12</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant text-center">
+<button class="text-[10px] font-bold text-outline hover:text-primary transition-colors tracking-widest">VIEW_ALL_PERSONNEL</button>
+</div>
+</div>
+<!-- Visualizer: Shipment Flow -->
+<div class="col-span-12 lg:col-span-9 bg-surface-container border border-outline-variant p-6 vault-bevel">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-label-caps text-label-caps text-primary">DISTRIBUTION_MANIFEST_GRAPH</h3>
+<div class="flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-secondary"></span>
+<span class="text-[10px] text-outline">INBOUND</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-primary"></span>
+<span class="text-[10px] text-outline">OUTBOUND</span>
+</div>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-2 px-2">
+<!-- Mock Histogram -->
+<div class="w-full bg-surface-container-low relative h-full flex items-end gap-1 p-2">
+<div class="flex-grow bg-secondary/30 h-[40%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[65%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[55%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[90%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[45%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[70%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[85%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[60%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[75%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[40%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[95%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[50%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[30%] hover:bg-secondary transition-all"></div>
+<div class="flex-grow bg-secondary/30 h-[65%] hover:bg-secondary transition-all"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] text-outline font-body-mono px-2">
+<span>00:00</span>
+<span>04:00</span>
+<span>08:00</span>
+<span>12:00</span>
+<span>16:00</span>
+<span>20:00</span>
+<span>23:59</span>
+</div>
+</div>
+<!-- Encrypted System Log -->
+<div class="col-span-12 lg:col-span-3 bg-surface-container-lowest border border-outline-variant p-6 vault-bevel font-body-mono overflow-hidden">
+<div class="flex items-center gap-2 mb-4">
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="terminal">terminal</span>
+<h3 class="font-label-caps text-label-caps text-primary">ENCRYPTED_LOGS</h3>
+</div>
+<div class="space-y-2 text-[11px]">
+<div class="border-l-2 border-secondary pl-2 py-1 bg-surface-container/30">
+<span class="text-secondary">[14:22:01]</span>
+<span class="text-on-surface-variant"> AUTH_SUCCESS: USER_772</span>
+</div>
+<div class="border-l-2 border-outline-variant pl-2 py-1">
+<span class="text-outline">[14:22:09]</span>
+<span class="text-on-surface-variant"> FETCH_MANIFEST: SECTOR_G</span>
+</div>
+<div class="border-l-2 border-error pl-2 py-1 bg-error-container/10">
+<span class="text-error">[14:23:45]</span>
+<span class="text-on-surface-variant"> SIG_LOST: UNIT_SIGMA_9</span>
+</div>
+<div class="border-l-2 border-outline-variant pl-2 py-1">
+<span class="text-outline">[14:24:12]</span>
+<span class="text-on-surface-variant"> RE-ROUTING_D4...</span>
+</div>
+<div class="border-l-2 border-secondary pl-2 py-1 bg-surface-container/30">
+<span class="text-secondary">[14:25:00]</span>
+<span class="text-on-surface-variant"> PKT_ENCRYPTED: KEY_v9</span>
+</div>
+<div class="border-l-2 border-outline-variant pl-2 py-1">
+<span class="text-outline">[14:25:30]</span>
+<span class="text-on-surface-variant"> HEARTBEAT_SYNC: ALL_NODES</span>
+</div>
+<div class="border-l-2 border-outline-variant pl-2 py-1">
+<span class="text-outline">[14:26:01]</span>
+<span class="text-on-surface-variant"> SYSTEM_IDLE_TASKS_COMPLETE</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2">
+<span class="text-secondary animate-pulse">_</span>
+<span class="text-[10px] text-outline italic">LOG_AWAITING_COMMAND</span>
+</div>
+</div>
+<!-- Shipments Detailed Table -->
+<div class="col-span-12 bg-surface-container border border-outline-variant vault-bevel overflow-hidden">
+<div class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest">ACTIVE_CARGO_MANIFEST</h3>
+<div class="flex gap-2">
+<button class="px-4 py-1.5 bg-surface-container-high border border-outline-variant text-[10px] font-bold text-outline hover:text-primary hover:border-primary transition-all">EXPORT_JSON</button>
+<button class="px-4 py-1.5 bg-secondary text-on-secondary text-[10px] font-bold hover:bg-primary transition-all">NEW_SHIPMENT</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left font-body-mono text-[12px]">
+<thead class="bg-surface-container-low text-outline font-label-caps text-label-caps">
+<tr>
+<th class="px-6 py-4 border-b border-outline-variant">SERIAL_ID</th>
+<th class="px-6 py-4 border-b border-outline-variant">DESTINATION</th>
+<th class="px-6 py-4 border-b border-outline-variant">STATUS</th>
+<th class="px-6 py-4 border-b border-outline-variant">ETA_MARK</th>
+<th class="px-6 py-4 border-b border-outline-variant">THREAT_LVL</th>
+<th class="px-6 py-4 border-b border-outline-variant text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-high/50 transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-primary font-bold">#CS-9902-X</td>
+<td class="px-6 py-4">NEO-BERLIN_HUB_A</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-secondary/10 border border-secondary/30 text-secondary text-[10px]">IN_TRANSIT</span>
+</td>
+<td class="px-6 py-4">04:12:00</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<div class="w-2 h-1 bg-secondary"></div>
+<div class="w-2 h-1 bg-surface-variant"></div>
+<div class="w-2 h-1 bg-surface-variant"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="visibility">visibility</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-primary font-bold">#CS-9905-Y</td>
+<td class="px-6 py-4">SADR_CITY_PORT</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-surface-variant/30 border border-outline-variant text-outline text-[10px]">PENDING</span>
+</td>
+<td class="px-6 py-4">08:45:00</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<div class="w-2 h-1 bg-secondary"></div>
+<div class="w-2 h-1 bg-secondary"></div>
+<div class="w-2 h-1 bg-surface-variant"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="visibility">visibility</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-primary font-bold">#CS-8812-Z</td>
+<td class="px-6 py-4">TOKYO_RESTRICTED</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-error/10 border border-error/30 text-error text-[10px]">REDIRECTED</span>
+</td>
+<td class="px-6 py-4">N/A</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<div class="w-2 h-1 bg-error"></div>
+<div class="w-2 h-1 bg-error"></div>
+<div class="w-2 h-1 bg-error"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="visibility">visibility</span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-high/50 transition-colors cursor-pointer group">
+<td class="px-6 py-4 text-primary font-bold">#CS-7710-A</td>
+<td class="px-6 py-4">LONDON_METRO_01</td>
+<td class="px-6 py-4">
+<span class="px-2 py-0.5 bg-secondary/10 border border-secondary/30 text-secondary text-[10px]">IN_TRANSIT</span>
+</td>
+<td class="px-6 py-4">01:30:00</td>
+<td class="px-6 py-4">
+<div class="flex gap-1">
+<div class="w-2 h-1 bg-secondary"></div>
+<div class="w-2 h-1 bg-surface-variant"></div>
+<div class="w-2 h-1 bg-surface-variant"></div>
+</div>
+</td>
+<td class="px-6 py-4 text-right">
+<span class="material-symbols-outlined text-outline group-hover:text-primary transition-colors" data-icon="visibility">visibility</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer Security Banner -->
+<footer class="ml-64 bg-surface-container-lowest border-t border-outline-variant p-4 flex justify-between items-center text-[10px] text-outline font-body-mono">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>DATA_SECURE</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>NODES_ONLINE: 14/14</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span>REGION: GLOBAL_CLUSTER</span>
+</div>
+</div>
+<div class="tracking-widest">
+            © 2024 CIPHER-SHIP SYSTEMS | END-TO-END QUANTUM ENCRYPTION ACTIVE
+        </div>
+</footer>
+</body></html>

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .recessed-panel {
+            box-shadow: inset 2px 2px 4px rgba(0, 0, 0, 0.5), inset -1px -1px 1px rgba(255, 255, 255, 0.05);
+        }
+        .active-glow {
+            box-shadow: 0 0 0 2px #76d6d5;
+        }
+        .alarm-glow {
+            box-shadow: 0 0 0 2px #ffb4ab;
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        body {
+            background-color: #101414;
+            color: #dfe3e2;
+            overflow: hidden;
+        }
+        .beveled-border {
+            border-top: 2px solid #76d6d5;
+            border-left: 2px solid #76d6d5;
+            border-bottom: 1px solid #1c2020;
+            border-right: 1px solid #1c2020;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-primary-container": "#e3fffe",
+                "tertiary-fixed-dim": "#c6c6c7",
+                "inverse-primary": "#006a6a",
+                "on-tertiary": "#2f3131",
+                "on-surface-variant": "#bdc9c8",
+                "secondary-fixed": "#dbe4e9",
+                "on-secondary-fixed": "#141d21",
+                "surface-bright": "#353a3a",
+                "surface-tint": "#76d6d5",
+                "primary-fixed-dim": "#76d6d5",
+                "on-error": "#690005",
+                "inverse-surface": "#dfe3e2",
+                "inverse-on-surface": "#2c3131",
+                "primary-container": "#008080",
+                "on-surface": "#dfe3e2",
+                "primary": "#76d6d5",
+                "surface-container": "#1c2020",
+                "on-primary-fixed": "#002020",
+                "surface-dim": "#101414",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed": "#e2e2e2",
+                "secondary": "#bec8cd",
+                "on-secondary": "#293236",
+                "surface-container-low": "#181c1c",
+                "secondary-container": "#414a4f",
+                "on-primary": "#003737",
+                "error-container": "#93000a",
+                "on-background": "#dfe3e2",
+                "tertiary": "#c6c6c7",
+                "secondary-fixed-dim": "#bec8cd",
+                "error": "#ffb4ab",
+                "on-secondary-fixed-variant": "#3f484c",
+                "on-tertiary-container": "#f9f9f9",
+                "tertiary-container": "#717373",
+                "on-tertiary-fixed": "#1a1c1c",
+                "background": "#101414",
+                "on-secondary-container": "#b0babf",
+                "on-primary-fixed-variant": "#004f4f",
+                "primary-fixed": "#93f2f2",
+                "outline": "#879392",
+                "on-tertiary-fixed-variant": "#454747",
+                "surface": "#101414",
+                "surface-container-highest": "#313635",
+                "surface-variant": "#313635",
+                "surface-container-lowest": "#0a0f0f",
+                "surface-container-high": "#262b2b",
+                "outline-variant": "#3e4949"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin-mobile": "16px",
+                "panel-gap": "2px",
+                "margin-desktop": "32px",
+                "gutter": "16px",
+                "unit": "4px"
+              },
+              "fontFamily": {
+                "label-caps": ["JetBrains Mono"],
+                "display-lg": ["Space Grotesk"],
+                "body-md": ["JetBrains Mono"],
+                "headline-md": ["Space Grotesk"],
+                "data-lg": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0px", "fontWeight": "400"}],
+                "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                "data-lg": ["20px", {"lineHeight": "1.4", "letterSpacing": "0px", "fontWeight": "700"}]
+              }
+            }
+          }
+        }
+    </script>
+</head>
+<body class="flex flex-col h-screen">
+<!-- TopAppBar -->
+<header class="bg-surface-container text-primary flex justify-between items-center px-margin-mobile w-full py-unit border-b-2 border-outline-variant flat no shadows z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="signal_cellular_alt">signal_cellular_alt</span>
+<h1 class="font-display-lg text-headline-md tracking-tighter text-primary">HYDRO-TWIN</h1>
+</div>
+<div class="flex items-center gap-8">
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-primary transition-colors hover:text-primary" href="#">DASHBOARD</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant transition-colors hover:text-primary" href="#">FLEET</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant transition-colors hover:text-primary" href="#">ARCHIVE</a>
+</nav>
+<div class="flex items-center gap-3 bg-surface-container-high px-3 py-1 beveled-border">
+<span class="font-label-caps text-label-caps text-on-surface-variant">SECURE_CHANNEL: 09</span>
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- NavigationDrawer -->
+<aside class="bg-surface-container dark:bg-surface-container-high h-full w-80 border-r-2 border-outline-variant flex flex-col p-gutter z-40">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-primary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-on-primary-container" data-icon="person">person</span>
+</div>
+<div>
+<h2 class="font-label-caps text-label-caps text-primary">COMMANDER</h2>
+<p class="font-body-md text-body-md text-on-surface-variant text-[10px]">Vessel ID: HT-99</p>
+<span class="font-label-caps text-[9px] text-primary px-1 border border-primary">ONLINE</span>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<div class="flex items-center gap-3 p-3 bg-secondary-container text-primary font-bold border-l-4 border-primary transition-all duration-200 ease-in-out cursor-pointer">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-body-md text-body-md">Bridge Logs</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 ease-in-out cursor-pointer hover:border-l-4 hover:border-primary-container">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-body-md text-body-md">Crew Manifest</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 ease-in-out cursor-pointer hover:border-l-4 hover:border-primary-container">
+<span class="material-symbols-outlined" data-icon="lock_open">lock_open</span>
+<span class="font-body-md text-body-md">Security Override</span>
+</div>
+<div class="flex items-center gap-3 p-3 text-on-surface-variant hover:bg-surface-variant transition-all duration-200 ease-in-out cursor-pointer hover:border-l-4 hover:border-primary-container">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-body-md text-body-md">System Diagnostics</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4">
+<div class="bg-surface-container-lowest p-3 border border-outline-variant">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">SYSTEM_LATENCY</p>
+<div class="flex gap-1 h-2">
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary opacity-30"></div>
+<div class="flex-1 bg-primary opacity-10"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 bg-background grid grid-cols-12 gap-panel-gap p-panel-gap overflow-y-auto">
+<!-- Left Sidebar: Hull & Telemetry -->
+<div class="col-span-3 flex flex-col gap-panel-gap">
+<!-- Hull Panel -->
+<section class="beveled-border bg-surface-container-low p-4 flex flex-col">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-label-caps text-primary">HULL_INTEGRITY</h3>
+<span class="font-data-lg text-data-lg text-primary">98.2%</span>
+</div>
+<div class="recessed-panel bg-surface-container-lowest h-32 relative mb-4">
+<img class="w-full h-full object-cover opacity-60" data-alt="A detailed technical blueprint and wireframe of a futuristic yacht hull. The rendering uses glowing cyan lines against a deep gunmetal grey background to create an industrial nautical aesthetic. Fine monospaced labels and measurement markers surround the vessel, illuminated by a soft digital glow. The mood is precise and technical, fitting for a bridge command center display." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3BSFRijCvlSReYd7rJdOXRCiJvzaH4kc5RYS7IeJBC_E61pBVdgGkUBV6KsxG1fsiKOoLPk4-PAEBk-ZmbyC5itFvW6JG6Gkh3AH3hFt11sQhwacmvBjBn13J1Hr2WQ--T-wVDtXvfod9_KTorkJ8k8FIz-hXUyhawzIjaaCrTGPC0g_Vw9SGt_yk5cNCdZGtbKOugZfOCxlkWnA6_Rh1N74SOmZyU50kIizBslX74yMKhvonhsmnLsHpTswLGC_hsYLlWyrSjY8"/>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-surface-container px-2 py-1">
+<p class="font-label-caps text-[9px] text-on-surface-variant">TEMP_FWD</p>
+<p class="font-data-lg text-body-md text-primary">14°C</p>
+</div>
+<div class="bg-surface-container px-2 py-1">
+<p class="font-label-caps text-[9px] text-on-surface-variant">TEMP_AFT</p>
+<p class="font-data-lg text-body-md text-primary">16°C</p>
+</div>
+</div>
+</section>
+<!-- Engine Stats -->
+<section class="beveled-border bg-surface-container-low p-4 flex-1">
+<h3 class="font-label-caps text-label-caps text-primary mb-4">ENGINE_PROPULSION</h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">PORT_ENGINE_RPM</span>
+<span class="font-data-lg text-body-md text-primary">2,450</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant flex">
+<div class="bg-primary w-[65%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-label-caps text-[10px] text-on-surface-variant">STBD_ENGINE_RPM</span>
+<span class="font-data-lg text-body-md text-primary">2,448</span>
+</div>
+<div class="h-4 bg-surface-container-lowest border border-outline-variant flex">
+<div class="bg-primary w-[64%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mt-8">
+<div class="flex flex-col items-center justify-center border border-outline-variant py-4">
+<div class="w-4 h-4 rounded-full bg-[#00FFC2] shadow-[0_0_8px_#00FFC2] mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">CLUTCH_ENGAGED</span>
+</div>
+<div class="flex flex-col items-center justify-center border border-outline-variant py-4">
+<div class="w-4 h-4 rounded-full bg-[#00FFC2] shadow-[0_0_8px_#00FFC2] mb-2"></div>
+<span class="font-label-caps text-[9px] text-on-surface-variant">SYNC_ACTIVE</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Central 3D Wireframe Visualization -->
+<div class="col-span-6 flex flex-col gap-panel-gap">
+<section class="beveled-border bg-surface-container-lowest flex-1 relative overflow-hidden flex flex-col">
+<div class="absolute top-4 left-4 z-10 flex gap-2">
+<button class="bg-primary-container text-on-primary-container px-3 py-1 font-label-caps text-[10px] border-2 border-primary active-glow">3D_VIEW</button>
+<button class="bg-surface-container text-on-surface-variant px-3 py-1 font-label-caps text-[10px] border border-outline-variant">THERMAL</button>
+<button class="bg-surface-container text-on-surface-variant px-3 py-1 font-label-caps text-[10px] border border-outline-variant">STRESS</button>
+</div>
+<div class="flex-1 flex items-center justify-center p-8">
+<img class="max-w-full max-h-full object-contain" data-alt="A sophisticated 3D wireframe visualization of a high-tech superyacht suspended in a digital void. The vessel is rendered in vibrant cyan geometric lines against a deep, dark charcoal background, evoking a nautical-industrial aesthetic. Floating data points and monospaced telemetry text surround the model, while subtle lens flare effects and a slight digital grid create a high-stakes bridge command atmosphere. The lighting is sharp and focused, highlighting the precision of naval engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDqktRQYI9udD1muZwy7s2Dqb-CLSioDqfH-9jorFS5Ld74d2n4W18ijnl0HNJbIQeavcWRrlNOqzwD4f9Twqkc9bkbn01D2vhd_uUaGUIDuL1WKpkpvEvY6yON0GvBjoRUhWzA3mhJF6o7jokbuhuRI0DXzkxtFdLjLApJJf-_RvZsXA-lXVoE7lwtWMgkdGANB4IVPDvcal0CgfRaeFa8Fcr7usJZsdosjlAjU6lTplUSyNQb0ad9s1nYBOdaZ3YMNfqaW4RpTHw"/>
+</div>
+<div class="bg-surface-container-high p-4 flex justify-between items-center border-t border-outline-variant">
+<div class="flex gap-8">
+<div>
+<p class="font-label-caps text-[9px] text-on-surface-variant">COURSE_OVER_GROUND</p>
+<p class="font-data-lg text-headline-md text-primary">284° <span class="text-sm opacity-50">NW</span></p>
+</div>
+<div>
+<p class="font-label-caps text-[9px] text-on-surface-variant">SPEED_OVER_GROUND</p>
+<p class="font-data-lg text-headline-md text-primary">34.2 <span class="text-sm opacity-50">KN</span></p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-[9px] text-on-surface-variant">COORDINATES</p>
+<p class="font-data-lg text-body-md text-primary">25°04'N 77°20'W</p>
+</div>
+</div>
+</section>
+<!-- Energy Panel (Horizontal) -->
+<section class="beveled-border bg-surface-container-low p-4 h-48 flex flex-col">
+<h3 class="font-label-caps text-label-caps text-primary mb-2">ENERGY_DISTRIBUTION</h3>
+<div class="flex-1 flex gap-6">
+<div class="flex-1 flex flex-col justify-between">
+<div class="flex justify-between items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">BATTERY_CAPACITY</span>
+<span class="font-data-lg text-data-lg text-primary">84%</span>
+</div>
+<div class="h-12 flex gap-1 items-end">
+<div class="flex-1 bg-primary h-full"></div>
+<div class="flex-1 bg-primary h-full"></div>
+<div class="flex-1 bg-primary h-[90%]"></div>
+<div class="flex-1 bg-primary h-[85%]"></div>
+<div class="flex-1 bg-primary h-[80%]"></div>
+<div class="flex-1 bg-primary h-[75%]"></div>
+<div class="flex-1 bg-primary h-[70%]"></div>
+<div class="flex-1 bg-surface-variant h-[65%]"></div>
+<div class="flex-1 bg-surface-variant h-[60%]"></div>
+<div class="flex-1 bg-surface-variant h-[55%]"></div>
+</div>
+</div>
+<div class="w-48 flex flex-col gap-2">
+<div class="flex justify-between border-b border-outline-variant pb-1">
+<span class="font-label-caps text-[9px] text-on-surface-variant">SOLAR_INPUT</span>
+<span class="font-body-md text-body-md text-primary">12.4kW</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant pb-1">
+<span class="font-label-caps text-[9px] text-on-surface-variant">LOAD_MAIN</span>
+<span class="font-body-md text-body-md text-error">42.1kW</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-[9px] text-on-surface-variant">RESERVE</span>
+<span class="font-body-md text-body-md text-primary">4h 12m</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Right Sidebar: Alerts & Tracking -->
+<div class="col-span-3 flex flex-col gap-panel-gap">
+<!-- Alerts Panel -->
+<section class="beveled-border bg-surface-container-low p-4 flex flex-col h-[60%]">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-label-caps text-error">CRITICAL_ALERTS</h3>
+<span class="font-label-caps text-[10px] bg-error text-on-error px-2">02 ACTIVE</span>
+</div>
+<div class="flex-1 space-y-2 overflow-y-auto pr-2">
+<div class="bg-error-container p-3 border-l-4 border-error alarm-glow">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[10px] text-white">FUEL_PRESSURE_LOW</span>
+<span class="font-label-caps text-[9px] text-white/70">14:02:11</span>
+</div>
+<p class="font-body-md text-[11px] text-on-error-container">Check supply line to main engine group B. Sensor E-12.</p>
+</div>
+<div class="bg-surface-container p-3 border-l-4 border-secondary">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[10px] text-secondary">GYRO_STABILIZER_CAL</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">13:58:04</span>
+</div>
+<p class="font-body-md text-[11px] text-on-surface-variant">Routine calibration initiated by autonomous pilot system.</p>
+</div>
+<div class="bg-surface-container p-3 border-l-4 border-primary opacity-50">
+<div class="flex justify-between items-start mb-1">
+<span class="font-label-caps text-[10px] text-primary">DOCKING_COMPLETE</span>
+<span class="font-label-caps text-[9px] text-on-surface-variant">12:15:32</span>
+</div>
+<p class="font-body-md text-[11px] text-on-surface-variant">Portside tethering engaged. Transfer power established.</p>
+</div>
+</div>
+<button class="w-full mt-4 bg-surface-variant border border-outline text-on-surface-variant font-label-caps py-2 hover:bg-on-error hover:text-white transition-colors">ACKNOWLEDGE ALL</button>
+</section>
+<!-- Small Map Tracking -->
+<section class="beveled-border bg-surface-container-low p-4 flex-1">
+<h3 class="font-label-caps text-label-caps text-primary mb-2">TRACKING_RADAR</h3>
+<div class="recessed-panel bg-black h-full flex flex-col">
+<div class="flex-1 relative overflow-hidden bg-[#051111]">
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-48 h-48 rounded-full border border-primary/20 flex items-center justify-center">
+<div class="w-32 h-32 rounded-full border border-primary/40 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full border border-primary/60"></div>
+</div>
+</div>
+<!-- Radar sweep -->
+<div class="absolute w-24 h-24 origin-bottom-right bottom-1/2 right-1/2 bg-gradient-to-tr from-transparent to-primary/30 rounded-tl-full"></div>
+<!-- Blips -->
+<div class="absolute top-1/4 right-1/3 w-2 h-2 bg-primary rounded-full alarm-glow"></div>
+<div class="absolute bottom-1/3 left-1/4 w-1 h-1 bg-secondary rounded-full opacity-50"></div>
+</div>
+<div class="absolute bottom-2 left-2 font-label-caps text-[8px] text-primary">RNG: 50NM</div>
+</div>
+<div class="bg-surface-container p-2 flex justify-between">
+<span class="font-label-caps text-[9px] text-on-surface-variant">AIS_TARGETS: 03</span>
+<span class="font-label-caps text-[9px] text-primary">SCANNING...</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 w-full flex justify-around items-stretch h-16 bg-surface-container-lowest border-t-2 border-primary z-50">
+<div class="flex flex-col items-center justify-center text-primary border-t-4 border-primary bg-surface-container-high px-2 pt-1 pb-2 flex-1 scale-95 transition-transform duration-100 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 px-2 py-2 flex-1 hover:bg-secondary-container hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="Layers">layers</span>
+<span class="font-label-caps text-label-caps">HULL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 px-2 py-2 flex-1 hover:bg-secondary-container hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="engine">earth_engine</span>
+<span class="font-label-caps text-label-caps">ENGINE</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 px-2 py-2 flex-1 hover:bg-secondary-container hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="ev_station">ev_station</span>
+<span class="font-label-caps text-label-caps">ENERGY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-70 px-2 py-2 flex-1 hover:bg-secondary-container hover:text-primary transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">TRACKING</span>
+</div>
+</footer>
+</body></html>
