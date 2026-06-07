@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TERMINAL_CORE - Market Screener &amp; Analytics</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;900&amp;family=JetBrains+Mono:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-tint": "#44dfa3",
+            "secondary-container": "#c5020b",
+            "surface": "#101418",
+            "on-secondary-container": "#ffd2cc",
+            "on-primary-fixed": "#002114",
+            "on-tertiary-fixed": "#001550",
+            "tertiary": "#b6c4ff",
+            "surface-container-highest": "#31353a",
+            "surface-container-low": "#181c20",
+            "tertiary-fixed": "#dce1ff",
+            "on-primary-fixed-variant": "#005237",
+            "on-surface-variant": "#bbcac0",
+            "surface-bright": "#363a3e",
+            "on-secondary-fixed": "#410001",
+            "error": "#ffb4ab",
+            "on-secondary": "#690003",
+            "secondary-fixed": "#ffdad5",
+            "secondary": "#ffb4aa",
+            "surface-container": "#1c2024",
+            "on-primary": "#003825",
+            "inverse-primary": "#006c4a",
+            "surface-container-high": "#262a2f",
+            "outline-variant": "#3c4a42",
+            "inverse-on-surface": "#2d3135",
+            "primary-fixed": "#67fcbe",
+            "outline": "#85948b",
+            "error-container": "#93000a",
+            "secondary-fixed-dim": "#ffb4aa",
+            "on-tertiary-fixed-variant": "#003ab3",
+            "on-error": "#690005",
+            "on-secondary-fixed-variant": "#930005",
+            "surface-variant": "#31353a",
+            "on-tertiary": "#002780",
+            "on-error-container": "#ffdad6",
+            "on-background": "#e0e2e8",
+            "primary-container": "#00c087",
+            "on-primary-container": "#004730",
+            "primary": "#44dfa3",
+            "on-surface": "#e0e2e8",
+            "surface-dim": "#101418",
+            "background": "#101418",
+            "surface-container-lowest": "#0b0f13",
+            "on-tertiary-container": "#00329d",
+            "tertiary-container": "#8ca4ff",
+            "inverse-surface": "#e0e2e8",
+            "tertiary-fixed-dim": "#b6c4ff",
+            "primary-fixed-dim": "#44dfa3"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "margin-md": "16px",
+            "gutter": "1px",
+            "margin-sm": "8px",
+            "unit": "4px",
+            "panel-padding": "12px"
+          },
+          "fontFamily": {
+            "price-md": ["JetBrains Mono"],
+            "caption": ["Work Sans"],
+            "ticker-lg": ["JetBrains Mono"],
+            "ui-label": ["Work Sans"],
+            "data-table": ["JetBrains Mono"],
+            "ui-body": ["Work Sans"]
+          },
+          "fontSize": {
+            "price-md": ["16px", {"lineHeight": "20px", "fontWeight": "500"}],
+            "caption": ["11px", {"lineHeight": "14px", "fontWeight": "400"}],
+            "ticker-lg": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "ui-label": ["12px", {"lineHeight": "16px", "fontWeight": "600"}],
+            "data-table": ["13px", {"lineHeight": "16px", "fontWeight": "400"}],
+            "ui-body": ["13px", {"lineHeight": "18px", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: #101418; }
+    ::-webkit-scrollbar-thumb { background: #31353a; }
+    ::-webkit-scrollbar-thumb:hover { background: #44dfa3; }
+    .glass-panel { backdrop-filter: blur(12px); background: rgba(20, 25, 31, 0.8); }
+    .sentiment-bar { height: 4px; border-radius: 2px; }
+  </style>
+</head>
+<body class="bg-background text-on-background font-ui-body antialiased">
+<nav class="bg-slate-950 border-b border-slate-800 border-opacity-50 flex justify-between items-center w-full px-2 h-10 fixed top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="text-emerald-500 font-black tracking-tighter text-xl">TERMINAL_CORE</span>
+<div class="hidden md:flex gap-4">
+<a class="font-['Work_Sans'] text-xs font-medium uppercase tracking-wider text-slate-500 hover:bg-slate-900 hover:text-emerald-400 transition-colors duration-150 ease-in-out" href="#">Markets</a>
+<a class="font-['Work_Sans'] text-xs font-medium uppercase tracking-wider text-slate-500 hover:bg-slate-900 hover:text-emerald-400 transition-colors duration-150 ease-in-out" href="#">Trade</a>
+<a class="font-['Work_Sans'] text-xs font-medium uppercase tracking-wider text-slate-500 hover:bg-slate-900 hover:text-emerald-400 transition-colors duration-150 ease-in-out" href="#">Portfolio</a>
+<a class="font-['Work_Sans'] text-xs font-medium uppercase tracking-wider text-slate-500 hover:bg-slate-900 hover:text-emerald-400 transition-colors duration-150 ease-in-out" href="#">History</a>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-slate-500 text-lg cursor-pointer">notifications</span>
+<span class="material-symbols-outlined text-slate-500 text-lg cursor-pointer">settings</span>
+<span class="material-symbols-outlined text-slate-500 text-lg cursor-pointer">power_settings_new</span>
+</div>
+</nav>
+<div class="flex pt-10 h-screen">
+<aside class="bg-slate-900 border-r border-slate-800 flex flex-col h-screen pt-10 pb-4 fixed left-0 w-16 hover:w-64 transition-all duration-300 z-40 group">
+<div class="flex items-center px-4 mb-8 overflow-hidden whitespace-nowrap">
+<div class="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-emerald-500 text-sm">person</span>
+</div>
+<div class="ml-3 opacity-0 group-hover:opacity-100 transition-opacity">
+<div class="font-['Work_Sans'] text-[11px] font-semibold text-emerald-500">TRADER_01</div>
+<div class="text-[9px] text-slate-500">Verified</div>
+</div>
+</div>
+<div class="flex-grow flex flex-col">
+<div class="flex items-center h-12 px-5 cursor-pointer text-slate-500 hover:bg-slate-800 hover:text-slate-200 transition-all">
+<span class="material-symbols-outlined">star</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-['Work_Sans'] text-[11px] font-semibold">Watchlist</span>
+</div>
+<div class="flex items-center h-12 px-5 cursor-pointer text-slate-500 hover:bg-slate-800 hover:text-slate-200 transition-all">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-['Work_Sans'] text-[11px] font-semibold">Alerts</span>
+</div>
+<div class="flex items-center h-12 px-5 cursor-pointer text-slate-500 hover:bg-slate-800 hover:text-slate-200 transition-all">
+<span class="material-symbols-outlined">filter_alt</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-['Work_Sans'] text-[11px] font-semibold">Screener</span>
+</div>
+<div class="flex items-center h-12 px-5 cursor-pointer text-emerald-500 bg-emerald-500/10 border-r-2 border-emerald-500 transition-all">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-['Work_Sans'] text-[11px] font-semibold">Analytics</span>
+</div>
+<div class="flex items-center h-12 px-5 cursor-pointer text-slate-500 hover:bg-slate-800 hover:text-slate-200 transition-all">
+<span class="material-symbols-outlined">newspaper</span>
+<span class="ml-6 opacity-0 group-hover:opacity-100 font-['Work_Sans'] text-[11px] font-semibold">News</span>
+</div>
+</div>
+<button class="mx-3 py-2 bg-emerald-600 text-white rounded-sm font-['Work_Sans'] text-[10px] font-bold opacity-0 group-hover:opacity-100 transition-opacity">DEPOSIT</button>
+</aside>
+<main class="flex-grow ml-16 flex flex-col bg-surface-container-lowest">
+<header class="bg-surface-container border-b border-outline-variant/30 px-panel-padding h-12 flex items-center justify-between sticky top-10 z-30">
+<div class="flex items-center gap-6">
+<h1 class="font-ticker-lg text-primary text-[18px]">MARKET_SCREENER</h1>
+<div class="flex items-center gap-2 bg-surface-container-lowest border border-outline-variant/50 px-2 py-1 rounded">
+<span class="material-symbols-outlined text-outline text-[16px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-caption text-on-surface placeholder:text-outline w-48" placeholder="Search Assets..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-high border border-outline-variant/50 px-3 py-1 flex items-center gap-2 text-ui-label text-on-surface hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[14px]">filter_list</span>
+            FILTERS
+          </button>
+<button class="bg-surface-container-high border border-outline-variant/50 px-3 py-1 flex items-center gap-2 text-ui-label text-on-surface hover:border-primary transition-colors">
+<span class="material-symbols-outlined text-[14px]">save</span>
+            PRESETS
+          </button>
+<div class="h-6 w-[1px] bg-outline-variant mx-2"></div>
+<button class="bg-primary-container text-on-primary-container px-4 py-1 font-ui-label text-[11px] rounded-sm font-bold uppercase tracking-widest">Execute All</button>
+</div>
+</header>
+<div class="flex-grow p-4 space-y-4 overflow-y-auto">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4 h-32">
+<div class="bg-surface-container-low border border-outline-variant/30 p-panel-padding flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-ui-label text-outline uppercase tracking-wider">Top Gainer (24h)</span>
+<span class="text-primary font-data-table">+14.2%</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="font-ticker-lg text-on-surface">SOL-USDT</div>
+<div class="font-price-md text-primary">145.22</div>
+</div>
+<div class="w-16 h-8">
+<div class="h-full w-full flex items-end gap-[2px]">
+<div class="bg-primary/20 w-full h-[40%]"></div>
+<div class="bg-primary/40 w-full h-[60%]"></div>
+<div class="bg-primary/60 w-full h-[50%]"></div>
+<div class="bg-primary/80 w-full h-[90%]"></div>
+<div class="bg-primary w-full h-[100%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 p-panel-padding flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-ui-label text-outline uppercase tracking-wider">Most Volatile</span>
+<span class="text-secondary font-data-table">V-Index: 92</span>
+</div>
+<div class="flex items-end justify-between">
+<div>
+<div class="font-ticker-lg text-on-surface">PEPE-USDT</div>
+<div class="font-price-md text-secondary">0.00000122</div>
+</div>
+<div class="w-16 h-8">
+<div class="h-full w-full flex items-end gap-[2px]">
+<div class="bg-secondary/20 w-full h-[100%]"></div>
+<div class="bg-secondary/40 w-full h-[20%]"></div>
+<div class="bg-secondary/60 w-full h-[80%]"></div>
+<div class="bg-secondary/80 w-full h-[30%]"></div>
+<div class="bg-secondary w-full h-[70%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30 p-panel-padding flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="text-ui-label text-outline uppercase tracking-wider">Market Sentiment</span>
+<span class="text-primary font-data-table">Bullish</span>
+</div>
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-caption text-outline">
+<span>Fear: 20</span>
+<span>Greed: 80</span>
+</div>
+<div class="w-full h-2 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 20%;"></div>
+<div class="h-full bg-primary" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant/30">
+<div class="grid grid-cols-12 border-b border-outline-variant/30 bg-surface-container-high px-4 py-2">
+<div class="col-span-2 text-ui-label text-outline font-bold">ASSET</div>
+<div class="col-span-2 text-ui-label text-outline font-bold">PRICE</div>
+<div class="col-span-1 text-ui-label text-outline font-bold">CHANGE %</div>
+<div class="col-span-1 text-ui-label text-outline font-bold">VOLUME (24H)</div>
+<div class="col-span-1 text-ui-label text-outline font-bold">VOLATILITY</div>
+<div class="col-span-3 text-ui-label text-outline font-bold px-4">SENTIMENT SCORE</div>
+<div class="col-span-2 text-ui-label text-outline font-bold text-right">ACTION</div>
+</div>
+<div class="divide-y divide-outline-variant/10">
+<div class="grid grid-cols-12 px-4 py-3 items-center hover:bg-surface-container-high transition-colors">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px]">BTC</div>
+<span class="font-ticker-lg text-on-surface text-[14px]">BTC-USDT</span>
+</div>
+<div class="col-span-2 font-data-table text-on-surface">63,450.22</div>
+<div class="col-span-1 font-data-table text-primary">+2.15%</div>
+<div class="col-span-1 font-data-table text-on-surface-variant text-[11px]">34.2B</div>
+<div class="col-span-1">
+<div class="px-2 py-0.5 bg-surface-container-highest text-caption text-on-surface-variant inline-block rounded-sm">LOW</div>
+</div>
+<div class="col-span-3 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-grow h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 72%;"></div>
+</div>
+<span class="font-data-table text-primary text-[11px]">72.0</span>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary font-ui-label text-[11px] rounded-sm hover:brightness-110">TRADE</button>
+</div>
+</div>
+<div class="grid grid-cols-12 px-4 py-3 items-center hover:bg-surface-container-high transition-colors">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px]">ETH</div>
+<span class="font-ticker-lg text-on-surface text-[14px]">ETH-USDT</span>
+</div>
+<div class="col-span-2 font-data-table text-on-surface">3,245.10</div>
+<div class="col-span-1 font-data-table text-secondary">-0.82%</div>
+<div class="col-span-1 font-data-table text-on-surface-variant text-[11px]">18.4B</div>
+<div class="col-span-1">
+<div class="px-2 py-0.5 bg-surface-container-highest text-caption text-on-surface-variant inline-block rounded-sm">MED</div>
+</div>
+<div class="col-span-3 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-grow h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 45%;"></div>
+</div>
+<span class="font-data-table text-on-surface-variant text-[11px]">45.0</span>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary font-ui-label text-[11px] rounded-sm hover:brightness-110">TRADE</button>
+</div>
+</div>
+<div class="grid grid-cols-12 px-4 py-3 items-center hover:bg-surface-container-high transition-colors">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px]">SOL</div>
+<span class="font-ticker-lg text-on-surface text-[14px]">SOL-USDT</span>
+</div>
+<div class="col-span-2 font-data-table text-on-surface">145.22</div>
+<div class="col-span-1 font-data-table text-primary">+14.21%</div>
+<div class="col-span-1 font-data-table text-on-surface-variant text-[11px]">5.1B</div>
+<div class="col-span-1">
+<div class="px-2 py-0.5 bg-secondary/10 text-secondary text-caption inline-block rounded-sm border border-secondary/20">HIGH</div>
+</div>
+<div class="col-span-3 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-grow h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 88%;"></div>
+</div>
+<span class="font-data-table text-primary text-[11px]">88.5</span>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary font-ui-label text-[11px] rounded-sm hover:brightness-110">TRADE</button>
+</div>
+</div>
+<div class="grid grid-cols-12 px-4 py-3 items-center hover:bg-surface-container-high transition-colors">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px]">ADA</div>
+<span class="font-ticker-lg text-on-surface text-[14px]">ADA-USDT</span>
+</div>
+<div class="col-span-2 font-data-table text-on-surface">0.4522</div>
+<div class="col-span-1 font-data-table text-secondary">-4.12%</div>
+<div class="col-span-1 font-data-table text-on-surface-variant text-[11px]">0.8B</div>
+<div class="col-span-1">
+<div class="px-2 py-0.5 bg-surface-container-highest text-caption text-on-surface-variant inline-block rounded-sm">MED</div>
+</div>
+<div class="col-span-3 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-grow h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-secondary" style="width: 28%;"></div>
+</div>
+<span class="font-data-table text-secondary text-[11px]">28.2</span>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary font-ui-label text-[11px] rounded-sm hover:brightness-110">TRADE</button>
+</div>
+</div>
+<div class="grid grid-cols-12 px-4 py-3 items-center hover:bg-surface-container-high transition-colors">
+<div class="col-span-2 flex items-center gap-3">
+<div class="w-6 h-6 rounded-full bg-surface-container-highest flex items-center justify-center font-bold text-[10px]">DOT</div>
+<span class="font-ticker-lg text-on-surface text-[14px]">DOT-USDT</span>
+</div>
+<div class="col-span-2 font-data-table text-on-surface">7.221</div>
+<div class="col-span-1 font-data-table text-primary">+0.44%</div>
+<div class="col-span-1 font-data-table text-on-surface-variant text-[11px]">0.4B</div>
+<div class="col-span-1">
+<div class="px-2 py-0.5 bg-surface-container-highest text-caption text-on-surface-variant inline-block rounded-sm">LOW</div>
+</div>
+<div class="col-span-3 px-4">
+<div class="flex items-center gap-3">
+<div class="flex-grow h-1.5 bg-surface-container-highest rounded-full overflow-hidden flex">
+<div class="h-full bg-primary" style="width: 52%;"></div>
+</div>
+<span class="font-data-table text-on-surface-variant text-[11px]">52.1</span>
+</div>
+</div>
+<div class="col-span-2 text-right">
+<button class="px-3 py-1 bg-primary text-on-primary font-ui-label text-[11px] rounded-sm hover:brightness-110">TRADE</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<div class="fixed bottom-6 z-50 flex items-center space-x-1 left-1/2 -translate-x-1/2 glass-panel border border-slate-700 w-auto px-6 py-2 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-4 border-r border-slate-700 pr-4 mr-4">
+<div class="flex flex-col">
+<span class="text-[9px] text-outline font-bold uppercase">Quick Entry</span>
+<span class="font-data-table text-emerald-500 text-[12px]">SOL: 145.22</span>
+</div>
+</div>
+<button class="flex items-center gap-2 text-slate-300 px-4 py-1 hover:bg-slate-700 font-mono text-[10px] font-bold transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+        Quick Buy
+      </button>
+<button class="flex items-center gap-2 text-slate-300 px-4 py-1 hover:bg-slate-700 font-mono text-[10px] font-bold transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">remove_shopping_cart</span>
+        Quick Sell
+      </button>
+<button class="flex items-center gap-2 text-slate-300 px-4 py-1 hover:bg-slate-700 font-mono text-[10px] font-bold transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">close_fullscreen</span>
+        Cancel All
+      </button>
+<button class="flex items-center gap-2 bg-emerald-600 text-white px-4 py-1 font-mono text-[10px] font-bold transition-all active:translate-y-0.5">
+<span class="material-symbols-outlined text-[16px]">emergency_home</span>
+        Panic
+      </button>
+</div>
+</div>
+<div class="fixed right-6 bottom-24 flex flex-col gap-4">
+<div class="bg-surface-container-high border border-outline-variant/30 p-panel-padding glass-panel w-64 shadow-2xl">
+<div class="flex justify-between items-center mb-3">
+<span class="text-ui-label text-primary font-bold uppercase tracking-widest">Market Mood</span>
+<span class="material-symbols-outlined text-outline text-[16px]">info</span>
+</div>
+<div class="space-y-3">
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-caption">
+<span class="text-on-surface">Retail</span>
+<span class="text-primary font-medium">Extremely Bullish</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 92%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-caption">
+<span class="text-on-surface">Institutional</span>
+<span class="text-on-surface-variant font-medium">Neutral</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-primary" style="width: 50%;"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between text-caption">
+<span class="text-on-surface">Social Media</span>
+<span class="text-secondary font-medium">Fearful</span>
+</div>
+<div class="h-1 bg-surface-container-highest w-full rounded-full overflow-hidden">
+<div class="h-full bg-secondary" style="width: 24%;"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</body></html>

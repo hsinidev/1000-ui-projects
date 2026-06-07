@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FinAcademy | Smart Contract Lab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(198, 198, 198, 0.1);
+        }
+        .silver-edge {
+            border: 1px solid rgba(198, 198, 198, 0.2);
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .code-glow {
+            text-shadow: 0 0 10px rgba(179, 197, 255, 0.3);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#464747",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "on-error": "#690005",
+                        "primary-container": "#002366",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#484949",
+                        "outline": "#8e909c",
+                        "background": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "surface": "#131313",
+                        "error": "#ffb4ab",
+                        "outline-variant": "#444650",
+                        "surface-container-lowest": "#0e0e0e",
+                        "secondary": "#c6c6c6",
+                        "on-tertiary-fixed": "#001f28",
+                        "on-surface-variant": "#c5c6d2",
+                        "surface-container-highest": "#353534",
+                        "on-primary": "#0d2c6e",
+                        "surface-container-highest": "#353534",
+                        "on-primary": "#0d2c6e",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-on-surface": "#313030",
+                        "error-container": "#93000a",
+                        "surface-tint": "#b3c5ff",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#002d39",
+                        "on-tertiary-container": "#009cc0",
+                        "on-secondary-container": "#b8b8b8",
+                        "tertiary": "#4cd6ff",
+                        "primary-fixed": "#dbe1ff",
+                        "on-primary-fixed": "#00174a",
+                        "secondary-fixed": "#e3e2e2",
+                        "surface-bright": "#3a3939",
+                        "on-secondary": "#2f3131",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-primary": "#435b9f",
+                        "primary-fixed-dim": "#b3c5ff",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "on-primary-fixed-variant": "#2a4386",
+                        "tertiary-fixed-dim": "#4cd6ff",
+                        "on-tertiary": "#003543",
+                        "tertiary-fixed": "#b7eaff",
+                        "surface-container": "#201f1f",
+                        "primary": "#b3c5ff",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#758dd5",
+                        "on-error-container": "#ffdad6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "h2": ["Inter"],
+                        "body-md": ["Inter"],
+                        "code-data": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "h3": ["Inter"],
+                        "h1": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "code-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-[#0B0B0B] text-on-surface font-body-md overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 flex flex-col h-full w-64 border-r border-white/5 bg-[#0B0B0B]/90 backdrop-blur-md z-50">
+<div class="p-6">
+<h1 class="text-xl font-black tracking-tighter text-white">FinAcademy</h1>
+<p class="text-[10px] font-label-caps text-primary tracking-[0.2em] mt-1">INSTITUTIONAL GRADE</p>
+</div>
+<nav class="flex-1 px-4 space-y-2 mt-4">
+<div class="group flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mr-3">dashboard</span>
+<span class="font-inter text-sm tracking-wide">Dashboard</span>
+</div>
+<div class="flex items-center px-4 py-3 bg-blue-600/20 text-blue-400 border-r-2 border-blue-600 transition-all cursor-pointer">
+<span class="material-symbols-outlined mr-3">terminal</span>
+<span class="font-inter text-sm tracking-wide">Contract Lab</span>
+</div>
+<div class="group flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mr-3">monitoring</span>
+<span class="font-inter text-sm tracking-wide">Financial Models</span>
+</div>
+<div class="group flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mr-3">menu_book</span>
+<span class="font-inter text-sm tracking-wide">Compliance Library</span>
+</div>
+<div class="group flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mr-3">groups</span>
+<span class="font-inter text-sm tracking-wide">Investor Hub</span>
+</div>
+<div class="group flex items-center px-4 py-3 text-gray-400 hover:text-white hover:bg-white/5 transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined mr-3">quiz</span>
+<span class="font-inter text-sm tracking-wide">FAQ</span>
+</div>
+</nav>
+<div class="p-4 border-t border-white/5">
+<button class="w-full bg-primary-container text-primary py-3 rounded-lg font-label-caps text-[11px] hover:brightness-110 active:scale-95 transition-all">
+                NEW DEPLOYMENT
+            </button>
+</div>
+<div class="px-4 py-6 space-y-2">
+<div class="flex items-center px-4 py-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3 text-sm">settings</span>
+<span class="text-xs">Settings</span>
+</div>
+<div class="flex items-center px-4 py-2 text-gray-400 hover:text-white transition-colors cursor-pointer">
+<span class="material-symbols-outlined mr-3 text-sm">contact_support</span>
+<span class="text-xs">Support</span>
+</div>
+</div>
+</aside>
+<!-- Top AppBar -->
+<header class="fixed top-0 right-0 left-64 z-40 h-16 bg-[#0B0B0B]/80 backdrop-blur-lg border-b border-white/5 flex items-center justify-between px-8">
+<div class="flex items-center space-x-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-lg">search</span>
+<input class="bg-black border border-white/10 rounded-lg pl-10 pr-4 py-1.5 text-sm w-80 focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all" placeholder="Search contracts, audits..." type="text"/>
+</div>
+</div>
+<div class="flex items-center space-x-6">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer transition-colors">notifications</span>
+<span class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer transition-colors">account_balance_wallet</span>
+<span class="material-symbols-outlined text-gray-400 hover:text-white cursor-pointer transition-colors">settings</span>
+</div>
+<div class="h-8 w-px bg-white/10"></div>
+<div class="flex items-center space-x-3">
+<div class="text-right">
+<p class="text-xs font-bold text-white leading-tight">Professional User</p>
+<p class="text-[10px] text-primary uppercase tracking-tighter">Tier 1 Member</p>
+</div>
+<img alt="User Profile" class="w-10 h-10 rounded-full border border-white/20 object-cover" data-alt="A high-contrast, professional studio portrait of a corporate executive in a sharp dark suit against a deep navy background. The lighting is dramatic and low-key, highlighting the facial structure and conveying a sense of authority and precision. The overall aesthetic is sleek and institutional, mirroring the premium fintech interface colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQ_onNKXIPr_VWlYZY-Jyo9inpj2sEUDPq3rz0z4qHwgWaKUMdlmaNFlKvDe4__-Y-Kw-HzxYtDcrJ1WAbskIjxP7KPRTIlinLFnq_heVTgRL34sDpa0ZpeFrwXtqcageJ7kIrWP7bj8cq6JjFqIVW0jjVbFkKT1fLrejI2XQF7Dkjmr5cyr_TAggLsavrJDI6iSV4WYC3Ly8R_N1SWNrWBD7jpSeswlrrzupe7YLWHSLJ45l0rt2gIJJKSyyGCK0U502akwKneQs"/>
+</div>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="ml-64 pt-16 h-screen flex">
+<!-- Code Editor Section -->
+<section class="flex-1 flex flex-col bg-[#000000] border-r border-white/5">
+<!-- Editor Tabs -->
+<div class="flex items-center h-10 bg-[#0b0b0b] px-4 border-b border-white/5">
+<div class="flex items-center space-x-px h-full">
+<div class="px-4 h-full flex items-center bg-white/5 border-t border-primary text-xs text-white">
+<span class="material-symbols-outlined text-sm mr-2 text-primary">description</span>
+                        VaultFactory.sol
+                    </div>
+<div class="px-4 h-full flex items-center text-xs text-gray-500 hover:bg-white/5 cursor-pointer">
+                        IERC20.sol
+                    </div>
+</div>
+</div>
+<!-- Editor Content -->
+<div class="flex-1 overflow-auto p-6 font-mono text-[13px] leading-relaxed no-scrollbar bg-[#000000]">
+<div class="flex">
+<div class="w-10 text-gray-600 text-right pr-4 select-none">
+                        1<br/>2<br/>3<br/>4<br/>5<br/>6<br/>7<br/>8<br/>9<br/>10<br/>11<br/>12<br/>13<br/>14<br/>15<br/>16<br/>17<br/>18<br/>19<br/>20
+                    </div>
+<div class="flex-1 text-gray-300">
+<span class="text-blue-500">// SPDX-License-Identifier: MIT</span><br/>
+<span class="text-purple-400">pragma solidity</span> ^0.8.20;<br/><br/>
+<span class="text-purple-400">import</span> <span class="text-yellow-200">"@openzeppelin/contracts/token/ERC20/IERC20.sol"</span>;<br/><br/>
+<span class="text-purple-400">contract</span> <span class="text-blue-400">VaultFactory</span> {<br/>
+                            <span class="text-blue-500">mapping</span>(address =&gt; uint256) <span class="text-purple-400">public</span> balances;<br/>
+                            address <span class="text-purple-400">public immutable</span> owner;<br/><br/>
+                            <span class="text-purple-400">event</span> <span class="text-blue-400">Deposit</span>(address <span class="text-purple-400">indexed</span> user, uint256 amount);<br/><br/>
+                            <span class="text-purple-400">constructor</span>() {<br/>
+                                owner = msg.sender;<br/>
+                            }<br/><br/>
+                            <span class="text-purple-400">function</span> <span class="text-blue-400">deposit</span>(uint256 _amount) <span class="text-purple-400">external</span> {<br/>
+                                <span class="text-purple-400">require</span>(_amount &gt; 0, <span class="text-yellow-200">"Amount must be positive"</span>);<br/>
+                                balances[msg.sender] += _amount;<br/>
+                                <span class="text-purple-400">emit</span> <span class="text-blue-400">Deposit</span>(msg.sender, _amount);<br/>
+                            }<br/>
+                        }
+                    </div>
+</div>
+</div>
+<!-- Terminal Output -->
+<div class="h-48 border-t border-white/5 bg-[#080808] p-4 font-code-data text-xs text-secondary-fixed-dim">
+<div class="flex items-center mb-3">
+<span class="material-symbols-outlined text-sm mr-2 text-primary">terminal</span>
+<span class="uppercase tracking-widest text-[10px] font-bold">Execution Output</span>
+</div>
+<div class="space-y-1 opacity-70 overflow-auto h-32 no-scrollbar">
+<p class="text-green-500">[SYSTEM] Compiling VaultFactory.sol...</p>
+<p>[SYSTEM] Success: Compiled with 0 warnings.</p>
+<p>[SYSTEM] Optimization enabled: 200 runs.</p>
+<p class="text-primary">[DEBUG] Factory interface generated at 0x71C...3E4</p>
+<p class="text-gray-500">&gt; Waiting for user signature...</p>
+</div>
+</div>
+</section>
+<!-- Right Sidebar (Analysis & Stats) -->
+<aside class="w-80 flex flex-col p-6 space-y-6 overflow-y-auto no-scrollbar bg-[#0B0B0B]">
+<!-- Gas Estimator -->
+<div class="glass-panel p-5 rounded-xl silver-edge">
+<div class="flex justify-between items-start mb-4">
+<span class="text-[10px] font-label-caps text-secondary-fixed-dim">GAS ESTIMATOR</span>
+<span class="material-symbols-outlined text-primary text-lg">speed</span>
+</div>
+<div class="flex flex-col">
+<span class="text-3xl font-black text-white tracking-tighter">24.5 <span class="text-sm font-medium text-gray-500">Gwei</span></span>
+<div class="mt-4 h-1 w-full bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3 shadow-[0_0_12px_rgba(179,197,255,0.6)]"></div>
+</div>
+<p class="text-[10px] text-gray-500 mt-2 uppercase tracking-widest font-bold">Network: Ethereum Mainnet</p>
+</div>
+</div>
+<!-- Audit Checklist -->
+<div class="space-y-3">
+<span class="text-[10px] font-label-caps text-secondary-fixed-dim px-1">AUDIT CHECKLIST</span>
+<div class="glass-panel p-4 rounded-xl border-l-4 border-l-green-500 silver-edge hover:translate-x-1 transition-transform cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-white">Reentrancy Protection</span>
+<span class="material-symbols-outlined text-green-500 text-sm" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-4 border-l-primary silver-edge hover:translate-x-1 transition-transform cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-white">Access Control</span>
+<span class="material-symbols-outlined text-primary text-sm">pending</span>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl border-l-4 border-l-error silver-edge hover:translate-x-1 transition-transform cursor-pointer">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-white">Integer Overflow</span>
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+</div>
+</div>
+</div>
+<!-- Deployment Status -->
+<div class="flex-1 flex flex-col">
+<span class="text-[10px] font-label-caps text-secondary-fixed-dim px-1 mb-3">DEPLOYMENT STATUS</span>
+<div class="glass-panel rounded-xl silver-edge p-5 relative overflow-hidden flex-1">
+<div class="absolute top-0 right-0 p-3">
+<div class="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="flex flex-col h-full">
+<div class="mb-4">
+<p class="text-xs text-gray-400 mb-1">Current Active Phase</p>
+<h3 class="text-white font-bold text-lg">Verification Layer</h3>
+</div>
+<div class="space-y-4">
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-primary/10 border border-primary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-sm">settings_ethernet</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-white">Node Propagation</p>
+<p class="text-[9px] text-gray-500 uppercase">94% Complete</p>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="w-8 h-8 rounded-full bg-white/5 border border-white/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-gray-600 text-sm">shield</span>
+</div>
+<div>
+<p class="text-[11px] font-bold text-gray-500">ABI Registry</p>
+<p class="text-[9px] text-gray-700 uppercase">Waiting...</p>
+</div>
+</div>
+</div>
+<div class="mt-auto pt-6">
+<img class="w-full h-24 object-cover rounded-lg silver-edge opacity-60 grayscale hover:grayscale-0 transition-all cursor-crosshair" data-alt="An intricate, abstract 3D visualization of a blockchain network. Glowing cyan and royal blue lines connect crystalline geometric nodes in a vast, dark digital void. Shimmering light particles represent data packets flowing through the network. The style is highly technical and sophisticated, utilizing a dark palette with vivid electric blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA6OtxAzrCw8J587AthRW0wWBXGOOa61ZNJqaB6B6rhnPbszBeg70a1f8NF_svOO1V3rH7GkvoYMc1dV-YqyMKPNPCGfWtBgYWlZGrF8yanUqyDdXXO3PilxDvIgxbZusOItUEa9U608S9aF-kj2Q_SMFpGbEJcM1PfVrnfruiXgVYfHW_F5lPVe2MiCAuNszC9ebDj2BgXvR0ZVGQpw2BPaP6-mSXvM0eXsuNGmvFYb7if5xqqYmlHqyqUkYqFtpOnHZcY8un_pPo"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Action -->
+<button class="w-full bg-white text-black py-4 rounded-xl font-bold text-xs tracking-widest hover:bg-primary hover:text-white transition-all transform active:scale-[0.98]">
+                EXECUTE MAINNET DEPLOY
+            </button>
+</aside>
+</main>
+</body></html>

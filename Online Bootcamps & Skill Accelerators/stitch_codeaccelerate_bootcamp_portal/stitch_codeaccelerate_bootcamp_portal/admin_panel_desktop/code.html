@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CODE_ACCELERATE.sh | Admin Terminal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #08132a;
+            background-image: radial-gradient(#233554 0.5px, transparent 0.5px);
+            background-size: 32px 32px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(95, 251, 214, 0.1);
+        }
+        .neon-glow-active {
+            box-shadow: 0 0 15px rgba(95, 251, 214, 0.3);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #101b33;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2a344d;
+        }
+        .scanning-line {
+            height: 1px;
+            background: #5ffbd6;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            animation: scan 2s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateY(100%); opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "background": "#08132a",
+                        "on-primary-container": "#00725e",
+                        "tertiary-fixed-dim": "#b5c7ed",
+                        "surface-container-low": "#101b33",
+                        "surface-container": "#151f37",
+                        "inverse-surface": "#d9e2ff",
+                        "on-error": "#690005",
+                        "tertiary-fixed": "#d7e3ff",
+                        "surface-tint": "#38debb",
+                        "surface-dim": "#08132a",
+                        "primary-fixed-dim": "#38debb",
+                        "on-primary-fixed-variant": "#005142",
+                        "primary-fixed": "#5ffbd6",
+                        "surface-container-high": "#1f2942",
+                        "on-tertiary-container": "#536586",
+                        "tertiary": "#ffffff",
+                        "on-surface-variant": "#bacac3",
+                        "surface": "#08132a",
+                        "on-secondary": "#233148",
+                        "surface-bright": "#2f3952",
+                        "secondary": "#b9c7e4",
+                        "outline": "#85948e",
+                        "on-tertiary-fixed": "#061b39",
+                        "surface-container-lowest": "#030d25",
+                        "secondary-container": "#3c4962",
+                        "on-error-container": "#ffdad6",
+                        "error": "#ffb4ab",
+                        "on-surface": "#d9e2ff",
+                        "on-tertiary-fixed-variant": "#354767",
+                        "secondary-fixed": "#d6e3ff",
+                        "inverse-on-surface": "#263049",
+                        "surface-container-highest": "#2a344d",
+                        "secondary-fixed-dim": "#b9c7e4",
+                        "inverse-primary": "#006b58",
+                        "on-background": "#d9e2ff",
+                        "error-container": "#93000a",
+                        "surface-variant": "#2a344d",
+                        "on-secondary-fixed-variant": "#39475f",
+                        "tertiary-container": "#d7e3ff",
+                        "on-tertiary": "#1e304f",
+                        "outline-variant": "#3c4a45",
+                        "on-primary-fixed": "#002019",
+                        "primary": "#ffffff",
+                        "on-secondary-container": "#abb9d6",
+                        "primary-container": "#5ffbd6",
+                        "on-secondary-fixed": "#0d1c32",
+                        "on-primary": "#00382d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1280px",
+                        "gutter": "24px",
+                        "margin": "40px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Space Grotesk"],
+                        "code-sm": ["monospace"],
+                        "h3": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "code-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="text-on-surface font-body-md overflow-x-hidden">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-16 bg-surface/90 backdrop-blur-md border-b border-surface-variant shadow-[0_0_15px_rgba(95,251,214,0.1)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed text-h3" data-icon="terminal">terminal</span>
+<span class="font-h3 text-h3 font-bold tracking-tighter text-primary-fixed">CODE_ACCELERATE.sh</span>
+<div class="hidden md:flex ml-8 gap-6 h-full items-center">
+<a class="text-primary-fixed font-bold border-b-2 border-primary-fixed h-full flex items-center pt-0.5" href="#">Dashboard</a>
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors h-full flex items-center pt-0.5" href="#">Cohorts</a>
+<a class="text-on-surface-variant hover:text-primary-fixed-dim transition-colors h-full flex items-center pt-0.5" href="#">Curriculum</a>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex flex-col items-end mr-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">SYS_ADMIN</span>
+<span class="font-code-sm text-code-sm text-primary-fixed">Instructor Root</span>
+</div>
+<img alt="User Avatar" class="w-10 h-10 border border-primary-fixed" data-alt="A professional close-up of a software engineering instructor in a dark, high-tech office environment. The lighting is dominated by cool blue and neon mint glows from surrounding monitors, reflecting on their focused expression. The aesthetic is clean, technical, and high-contrast, matching a sophisticated dark-mode UI design with sharp edges and premium textures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnJgyIPdgc-vdbb2_9rejy0hWDo9DKF5TJi5QVdW7rVk4w8_CPuA0zjTmOHp5hZTcDdsN5yismFGUkl3FH-2AhXAK9JddJH7GJyOtvHyHlSuzPbRqkPrAC7ErFsTPdUxP1_OpejjrcxioAoh-cX0KGMRF0VKQxP-ePfRSyr_I5UR6165uOAxNBS04i7PElF6F16R2svPnPA5rYZp_VO2cKVGQWYlt4y27XstiX46kKIxoUAgzJv8BFSOgpR212ly732VQxZuXlcR0"/>
+</div>
+</header>
+<main class="mt-20 px-6 max-w-container-max mx-auto pb-32">
+<!-- Dashboard Header -->
+<div class="flex flex-col md:flex-row md:items-end justify-between mb-8 border-b border-surface-variant pb-6">
+<div>
+<span class="font-label-caps text-label-caps text-primary-fixed mb-2 block">/SYSTEM/ANALYSIS_V4.02</span>
+<h1 class="font-h1 text-h1 text-on-surface">Instructor Command Center</h1>
+</div>
+<div class="flex gap-4 mt-4 md:mt-0">
+<button class="bg-primary-fixed text-on-primary px-6 py-2 font-label-caps text-label-caps uppercase transition-all hover:translate-x-1 hover:-translate-y-1 hover:shadow-[-4px_4px_0_#00382d]">Generate Report</button>
+<button class="border border-primary-fixed text-primary-fixed px-6 py-2 font-label-caps text-label-caps uppercase hover:bg-primary-fixed/5 transition-all">New Cohort</button>
+</div>
+</div>
+<!-- Metric Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+<div class="bg-surface-container border border-surface-variant p-5 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-fixed"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">ACTIVE_STUDENTS</p>
+<h3 class="font-h2 text-h2 text-primary-fixed">1,248</h3>
+<div class="flex items-center gap-1 text-primary-fixed-dim text-code-sm mt-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="trending_up">trending_up</span>
+<span>12% INCREASE WEEK/WEEK</span>
+</div>
+</div>
+<div class="bg-surface-container border border-surface-variant p-5 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-fixed opacity-50"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">COMPLETION_RATE</p>
+<h3 class="font-h2 text-h2 text-primary-fixed">84.2%</h3>
+<div class="w-full bg-surface-container-highest h-1 mt-3">
+<div class="bg-primary-fixed h-full w-[84%] animate-pulse"></div>
+</div>
+</div>
+<div class="bg-surface-container border border-surface-variant p-5 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-fixed opacity-50"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">AVG_JOB_TIME</p>
+<h3 class="font-h2 text-h2 text-primary-fixed">42 DAYS</h3>
+<p class="text-on-surface-variant text-code-sm mt-2">TARGET: <span class="text-primary-fixed">45 DAYS</span></p>
+</div>
+<div class="bg-surface-container border border-surface-variant p-5 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-error"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1">OPEN_TICKETS</p>
+<h3 class="font-h2 text-h2 text-error">27</h3>
+<p class="text-error text-code-sm mt-2 font-bold underline">REQUIRES ACTION</p>
+</div>
+</div>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Cohort Progress Visualization -->
+<div class="col-span-12 lg:col-span-8 bg-surface-container border border-surface-variant p-0 overflow-hidden flex flex-col">
+<div class="flex justify-between items-center p-4 border-b border-surface-variant bg-surface-container-high">
+<span class="font-label-caps text-label-caps text-primary-fixed">COHORT_FLOW_VISUALIZER</span>
+<div class="flex gap-2">
+<span class="w-3 h-3 bg-[#ff5f57] rounded-full"></span>
+<span class="w-3 h-3 bg-[#febc2e] rounded-full"></span>
+<span class="w-3 h-3 bg-[#28c840] rounded-full"></span>
+</div>
+</div>
+<div class="p-6 flex-1 min-h-[400px] flex flex-col">
+<div class="flex justify-between mb-8">
+<div>
+<h4 class="font-h3 text-h3 text-on-surface mb-1">Active Learning Velocity</h4>
+<p class="text-on-surface-variant text-body-md">Real-time aggregate of commit frequency vs lesson completion.</p>
+</div>
+<select class="bg-surface border border-surface-variant text-primary-fixed font-code-sm px-3 py-1 outline-none">
+<option>COHORT_ALPHA_2024</option>
+<option>COHORT_BETA_2024</option>
+</select>
+</div>
+<div class="flex-1 flex items-end gap-2 pb-4">
+<!-- Mock Chart Columns -->
+<div class="flex-1 bg-surface-container-highest relative group h-[40%]">
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed/20 h-full"></div>
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed h-2"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">MON</div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[65%]">
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed/20 h-full"></div>
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed h-2"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">TUE</div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[85%]">
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed/20 h-full"></div>
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed h-2"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">WED</div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[55%]">
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed/20 h-full"></div>
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed h-2"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">THU</div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[95%] border border-primary-fixed/50">
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed/40 h-full"></div>
+<div class="absolute bottom-0 left-0 w-full bg-primary-fixed h-2"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-primary-fixed">FRI (NOW)</div>
+<div class="scanning-line"></div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[20%] opacity-50">
+<div class="absolute bottom-0 left-0 w-full bg-surface-variant h-full"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">SAT</div>
+</div>
+<div class="flex-1 bg-surface-container-highest relative group h-[15%] opacity-50">
+<div class="absolute bottom-0 left-0 w-full bg-surface-variant h-full"></div>
+<div class="absolute -top-6 left-0 w-full text-center text-code-sm text-on-surface-variant opacity-0 group-hover:opacity-100">SUN</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Moderation Terminal -->
+<div class="col-span-12 lg:col-span-4 bg-surface-container-lowest border border-surface-variant flex flex-col max-h-[514px]">
+<div class="p-4 border-b border-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-error" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps text-on-surface">MODERATION_TERMINAL</span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-4 space-y-4 font-code-sm text-code-sm">
+<div class="border-l-2 border-surface-variant pl-3 py-1 hover:border-primary-fixed transition-colors">
+<p class="text-on-surface-variant">[14:22:01] <span class="text-secondary">@user_3392</span> flagged for language.</p>
+<p class="text-on-surface mt-1 italic">"This compiler is a piece of trash..."</p>
+<div class="mt-2 flex gap-3">
+<button class="text-error uppercase font-bold hover:underline">Dismiss</button>
+<button class="text-primary-fixed uppercase font-bold hover:underline">Warn User</button>
+</div>
+</div>
+<div class="border-l-2 border-error pl-3 py-1 bg-error/5">
+<p class="text-on-surface-variant">[14:18:45] <span class="text-secondary">@mentor_sarah</span> unassigned from group D.</p>
+<p class="text-error mt-1 uppercase font-bold">CRITICAL: Group D currently unmonitored.</p>
+<div class="mt-2 flex gap-3">
+<button class="bg-error text-on-error px-3 py-1 text-[10px] uppercase font-bold">Auto-Assign</button>
+</div>
+</div>
+<div class="border-l-2 border-surface-variant pl-3 py-1">
+<p class="text-on-surface-variant">[13:55:12] SYSTEM: Backup successful.</p>
+</div>
+<div class="border-l-2 border-primary-fixed pl-3 py-1 bg-primary-fixed/5">
+<p class="text-on-surface-variant">[13:42:10] <span class="text-secondary">@intern_mark</span> submitted Portfolio V2.</p>
+<p class="text-primary-fixed mt-1">Ready for Technical Review.</p>
+<div class="mt-2 flex gap-3">
+<button class="text-primary-fixed uppercase font-bold hover:underline">Review</button>
+</div>
+</div>
+<div class="border-l-2 border-surface-variant pl-3 py-1">
+<p class="text-on-surface-variant">[13:10:05] SYSTEM: Deployment to staging-v4 complete.</p>
+</div>
+</div>
+<div class="p-4 border-t border-surface-variant bg-surface-container flex gap-2">
+<span class="text-primary-fixed">&gt;</span>
+<input class="bg-transparent border-none outline-none text-primary-fixed w-full placeholder:text-surface-variant" placeholder="Enter root command..." type="text"/>
+</div>
+</div>
+<!-- Job Board Management -->
+<div class="col-span-12 bg-surface-container border border-surface-variant overflow-hidden">
+<div class="p-6 border-b border-surface-variant flex flex-col md:flex-row md:items-center justify-between gap-4">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">Partner Job Pipelines</h3>
+<p class="text-on-surface-variant text-body-md">Manage active listings and student placement status.</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center bg-surface border border-surface-variant px-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-on-surface text-code-sm" placeholder="Filter roles..." type="text"/>
+</div>
+<button class="bg-surface-bright text-on-surface px-4 py-2 font-label-caps text-label-caps border border-surface-variant hover:bg-surface-container-highest">Sync Lever/Greenhouse</button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high font-label-caps text-label-caps text-on-surface-variant">
+<tr>
+<th class="p-4 font-bold border-b border-surface-variant">Company</th>
+<th class="p-4 font-bold border-b border-surface-variant">Position</th>
+<th class="p-4 font-bold border-b border-surface-variant">Applied</th>
+<th class="p-4 font-bold border-b border-surface-variant">Interviewing</th>
+<th class="p-4 font-bold border-b border-surface-variant">Hires</th>
+<th class="p-4 font-bold border-b border-surface-variant text-right">Action</th>
+</tr>
+</thead>
+<tbody class="text-code-sm text-on-surface">
+<tr class="hover:bg-primary-fixed/5 transition-colors group">
+<td class="p-4 border-b border-surface-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center font-bold">N</div>
+<span>NEURALINK_V2</span>
+</div>
+</td>
+<td class="p-4 border-b border-surface-variant text-primary-fixed">Sr. Kernel Dev</td>
+<td class="p-4 border-b border-surface-variant">42</td>
+<td class="p-4 border-b border-surface-variant">12</td>
+<td class="p-4 border-b border-surface-variant">3</td>
+<td class="p-4 border-b border-surface-variant text-right">
+<button class="text-primary-fixed hover:underline font-bold uppercase">View Pipeline</button>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 transition-colors group">
+<td class="p-4 border-b border-surface-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center font-bold">C</div>
+<span>CYBERDYNE_SYSTEMS</span>
+</div>
+</td>
+<td class="p-4 border-b border-surface-variant text-primary-fixed">AI Alignment Spec</td>
+<td class="p-4 border-b border-surface-variant">108</td>
+<td class="p-4 border-b border-surface-variant">15</td>
+<td class="p-4 border-b border-surface-variant">1</td>
+<td class="p-4 border-b border-surface-variant text-right">
+<button class="text-primary-fixed hover:underline font-bold uppercase">View Pipeline</button>
+</td>
+</tr>
+<tr class="hover:bg-primary-fixed/5 transition-colors group">
+<td class="p-4 border-b border-surface-variant">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-surface-container-highest flex items-center justify-center font-bold">S</div>
+<span>SPACE_X_TERRA</span>
+</div>
+</td>
+<td class="p-4 border-b border-surface-variant text-primary-fixed">Rust Engineer</td>
+<td class="p-4 border-b border-surface-variant">56</td>
+<td class="p-4 border-b border-surface-variant">22</td>
+<td class="p-4 border-b border-surface-variant">8</td>
+<td class="p-4 border-b border-surface-variant text-right">
+<button class="text-primary-fixed hover:underline font-bold uppercase">View Pipeline</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</main>
+<!-- Navigation Shell Placeholder for Desktop -->
+<!-- On Desktop, TopAppBar handles nav. On mobile, we switch to BottomNavBar as per instructions. -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-4 bg-surface-container border-t border-surface-variant">
+<a class="flex flex-col items-center justify-center text-primary-fixed border-t-2 border-primary-fixed pt-1 scale-105 duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="font-label-caps text-label-caps">Roadmap</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="folder_special">folder_special</span>
+<span class="font-label-caps text-label-caps">Portfolio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="work_outline">work_outline</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Lectures</span>
+</a>
+</nav>
+<!-- Backdrop pattern -->
+<div class="fixed inset-0 pointer-events-none opacity-5 -z-10 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')]"></div>
+</body></html>

@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ZenWorker | HR Analytics Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#f8f9ff",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#dfe3e7",
+                    "on-primary-fixed-variant": "#3f465c",
+                    "on-tertiary-container": "#808488",
+                    "tertiary": "#000000",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-container-low": "#eff4ff",
+                    "on-surface": "#0b1c30",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#adc6ff",
+                    "inverse-on-surface": "#eaf1ff",
+                    "on-surface-variant": "#45464d",
+                    "inverse-surface": "#213145",
+                    "surface-tint": "#565e74",
+                    "on-secondary-fixed-variant": "#004395",
+                    "on-tertiary-fixed-variant": "#43474b",
+                    "primary-fixed": "#dae2fd",
+                    "secondary-fixed": "#d8e2ff",
+                    "outline-variant": "#c6c6cd",
+                    "error": "#ba1a1a",
+                    "secondary-container": "#2170e4",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#171c1f",
+                    "error-container": "#ffdad6",
+                    "primary": "#000000",
+                    "primary-container": "#131b2e",
+                    "outline": "#76777d",
+                    "primary-fixed-dim": "#bec6e0",
+                    "inverse-primary": "#bec6e0",
+                    "on-secondary-fixed": "#001a42",
+                    "surface-container-highest": "#d3e4fe",
+                    "tertiary-fixed-dim": "#c3c7cb",
+                    "surface-container-high": "#dce9ff",
+                    "surface-container": "#e5eeff",
+                    "secondary": "#0058be",
+                    "surface-dim": "#cbdbf5",
+                    "tertiary-container": "#171c1f",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#131b2e",
+                    "surface-bright": "#f8f9ff",
+                    "on-background": "#0b1c30",
+                    "surface-variant": "#d3e4fe",
+                    "on-secondary": "#ffffff",
+                    "on-primary-container": "#7c839b",
+                    "on-secondary-container": "#fefcff",
+                    "surface": "#f8f9ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter": "24px",
+                    "max-width": "1440px",
+                    "margin-mobile": "16px",
+                    "margin-desktop": "40px",
+                    "unit": "8px"
+            },
+            "fontFamily": {
+                    "data-display": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "body-sm": ["Inter"],
+                    "h1": ["Inter"],
+                    "h2": ["Inter"],
+                    "body-md": ["Inter"],
+                    "h3": ["Inter"]
+            },
+            "fontSize": {
+                    "data-display": ["32px", {"lineHeight": "1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["36px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(15, 23, 42, 0.05);
+        }
+        .pulse-dot {
+            box-shadow: 0 0 0 0 rgba(0, 88, 190, 0.4);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 88, 190, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 88, 190, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 88, 190, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-white/70 backdrop-blur-xl dark:bg-slate-900/70 shadow-sm border-b border-white/20 dark:border-slate-800/50 flex justify-between items-center w-full px-6 py-3 h-16 fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<span class="font-inter text-xl font-bold tracking-tight text-slate-900 dark:text-slate-50">ZenWorker</span>
+<div class="hidden md:flex items-center bg-surface-container-low px-4 py-2 rounded-xl gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-64 text-on-surface-variant placeholder-on-tertiary-container" placeholder="Search analytics..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-slate-100/50 transition-all text-slate-500">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+</button>
+<button class="p-2 rounded-full hover:bg-slate-100/50 transition-all text-slate-500 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-secondary rounded-full"></span>
+</button>
+<div class="h-8 w-[1px] bg-outline-variant/30 mx-2"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-on-surface">Alex Rivera</p>
+<p class="text-xs text-on-surface-variant">HR Director</p>
+</div>
+<img alt="User profile" class="w-10 h-10 rounded-full border-2 border-secondary/20" data-alt="A professional headshot of a corporate executive with a friendly expression. The person has dark hair and is wearing a sleek navy blue blazer. The background is a brightly lit, high-end office environment with soft glass reflections and a minimalist, light-mode aesthetic that feels professional and calm." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaAS7RNuwoNTi0BPqMDW9OLU8JFdZlNJrJLtEAk_7bdCYxT2qRK3AqCd0QZW4Cx63kSvgiQIfpF5CrZP-wkty6azuCQCuoYYDYd2PNrHrjmacIcSjnngQB9-sE7ANsqLZvXO-Po2NyTcYF5H3WhqjyhQSduU6BJyEZgixides5b_8G6l0nQS_fpuUUaezaXDCOuItJmmi_3XSowHdqJvqccxODqJtZmfw8WbyouJt1MHbR1MOTRhhl1-EuCO7WyA5A24atmqkEHA"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-6 w-64 bg-slate-50/50 backdrop-blur-lg dark:bg-slate-950/50 border-r border-slate-200 dark:border-slate-800 shadow-xl transition-all duration-200 ease-in-out z-40">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-8 h-8 bg-primary-container rounded-lg flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-sm" data-icon="analytics" data-weight="fill" style="font-variation-settings: 'FILL' 1;">analytics</span>
+</div>
+<div>
+<p class="text-lg font-black text-slate-900 dark:text-slate-50">ZenWorker</p>
+<p class="text-[10px] uppercase tracking-widest text-on-tertiary-container font-bold">Corporate Wellness</p>
+</div>
+</div>
+<div class="flex-1 space-y-1 px-4">
+<a class="flex items-center gap-3 bg-white/80 dark:bg-slate-900/80 text-blue-600 dark:text-blue-400 border-r-4 border-blue-600 shadow-sm rounded-l-none rounded-r-lg mr-2 px-4 py-3 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-inter text-sm font-semibold">Analytics</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 px-4 py-3 hover:bg-blue-50/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-inter text-sm leading-relaxed">Resources</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 px-4 py-3 hover:bg-blue-50/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="font-inter text-sm leading-relaxed">Hotline</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 px-4 py-3 hover:bg-blue-50/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-inter text-sm leading-relaxed">Webinars</span>
+</a>
+</div>
+<div class="px-4 mt-auto space-y-1 border-t border-slate-200 dark:border-slate-800 pt-4">
+<button class="w-full flex items-center justify-center gap-2 bg-secondary text-white py-3 rounded-xl font-semibold text-sm hover:opacity-90 active:scale-95 transition-all mb-4">
+                Get Support
+            </button>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 px-4 py-3 hover:bg-blue-50/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-inter text-sm leading-relaxed">Settings</span>
+</a>
+<a class="flex items-center gap-3 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-slate-200 px-4 py-3 hover:bg-blue-50/50 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-inter text-sm leading-relaxed">Logout</span>
+</a>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 pt-24 px-gutter pb-gutter max-w-max-width mx-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+<div>
+<h1 class="font-h1 text-h1 text-on-surface mb-2">Analytics Dashboard</h1>
+<p class="font-body-md text-on-surface-variant">Real-time health and engagement insights for your organization.</p>
+</div>
+<div class="flex items-center gap-3">
+<div class="glass-card px-4 py-2 rounded-lg flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary pulse-dot"></span>
+<span class="text-xs font-label-caps text-secondary uppercase">Live Data: Oct 2023</span>
+</div>
+<button class="flex items-center gap-2 bg-primary-container text-white px-6 py-3 rounded-xl font-semibold text-sm hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="download">download</span>
+                    Export Report
+                </button>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Key Metric: Wellness Score -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-2xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-on-tertiary-container uppercase mb-1">Overall Wellness Score</p>
+<h2 class="font-data-display text-data-display text-on-surface">84.2</h2>
+</div>
+<div class="p-3 bg-secondary-container/10 rounded-xl">
+<span class="material-symbols-outlined text-secondary" data-icon="favorite" data-weight="fill" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</div>
+</div>
+<div class="mt-8">
+<div class="flex justify-between items-end mb-2">
+<span class="text-xs font-medium text-on-surface-variant">+4.2% from last month</span>
+<span class="text-xs font-semibold text-secondary">Target: 90.0</span>
+</div>
+<div class="w-full h-3 bg-surface-container-high rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[84%] rounded-full"></div>
+</div>
+</div>
+</div>
+<!-- Key Metric: Employee Engagement -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-2xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-on-tertiary-container uppercase mb-1">Active Participation</p>
+<h2 class="font-data-display text-data-display text-on-surface">76%</h2>
+</div>
+<div class="p-3 bg-primary-container/10 rounded-xl">
+<span class="material-symbols-outlined text-primary-container" data-icon="groups" data-weight="fill" style="font-variation-settings: 'FILL' 1;">groups</span>
+</div>
+</div>
+<div class="flex items-center gap-4 mt-8">
+<div class="flex -space-x-3">
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Close up portrait of a young female professional in a modern office. The lighting is soft and natural, emphasizing a high-end corporate lifestyle aesthetic with light blues and neutral tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB93TadiIV4Jp3TH1Oe7TY8Duzxi2A2CDp1YWyoRCzo1iabWuebEpP97UXGEazXTm4v9KjrZ6jgPZa7q14M9UMjb6MP4p8NdRGCWodUhE8rKNXzm0XkDRrV4An73Y5ECK7uYEbozU7BSsWQvtikMdbhUvSv0kF4SlJSBQRVJUuQEe3ypLWsLMSClkro3V1LF7GfMX6X-JVSrLOkRiObHbGYzyWFG5MgM46gVebgBCtAz71EHC9RzCGDkEhotqB9_UTroQGUkuHjdQ"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Portrait of a diverse male employee smiling in a corporate setting. The background shows abstract office shapes with glassmorphic blurs and a light mode color palette of whites and soft indigos." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7H8JaNjEFFro10uA0nF1V3jqoL7nYsmlukhPDYINXSNNHkDMRzhpGS07waS0s8YQDEQJchgCIXAT8xZ6o3xI_ZvnOl7Sm9ZKgL0wRTpd5l5a56uxa9YUE_kH7RAqWe2vA47cIt6QrTH8-S6NhfDIonq5LiduPQMqVRmTLWmcGDVrImxsMXajkuLNuboWaM0cyF4uawR0I-Zt4rpWz_cAd7jPqmSGRNRoPK25_KTljUKEd5cUXHewbnOSjeIDRV3EzG4zZH3sidg"/>
+<img class="w-8 h-8 rounded-full border-2 border-white" data-alt="Professional corporate headshot of a middle-aged man in a clean white shirt. The mood is calm and efficient, set against a backdrop of a modern minimalist tech office with blue light accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2HW-Q1e4aNzwpY_b2sehxo9_PqMiELv3hqiDsGk8t6XIw4UxT7lJUSODMCoz2TIUB_03DZh4r49lHH7zDIw94Ew_jlhMbl-G6UvL7bZQY3PgW3vEaoE-x5-8K5PLgAVvvhr5-dPAI4NyjVx9w8Jpw6B2KrVRsYyT7eQwJrOBBdbWy4P_qCr6A8b5BPBnkIsfUN6Vl6YRWGXWcTWM52h-jT0BpfwrtZzSTg9u37vska5V0pTq5eaY-KtEda1ounkA3-Pva7OL5fQ"/>
+<div class="w-8 h-8 rounded-full border-2 border-white bg-slate-200 flex items-center justify-center text-[10px] font-bold text-slate-600">+1.2k</div>
+</div>
+<span class="text-xs text-on-surface-variant">248 new sessions today</span>
+</div>
+</div>
+<!-- Key Metric: Resources Accessed -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-2xl flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-label-caps text-on-tertiary-container uppercase mb-1">Content Engagement</p>
+<h2 class="font-data-display text-data-display text-on-surface">3.2k</h2>
+</div>
+<div class="p-3 bg-tertiary-container/10 rounded-xl">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="library_add_check" data-weight="fill" style="font-variation-settings: 'FILL' 1;">library_add_check</span>
+</div>
+</div>
+<p class="text-sm text-on-surface-variant mt-8">Most popular: <span class="font-semibold text-on-surface">"Burnout Prevention 101"</span></p>
+</div>
+<!-- Detailed Chart: Wellness Trends -->
+<div class="col-span-12 lg:col-span-8 glass-card p-8 rounded-2xl">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-h3 text-h3 text-on-surface">Wellness Score Trends</h3>
+<p class="text-body-sm text-on-surface-variant">Historical performance across all departments</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 text-xs font-semibold rounded-lg bg-surface-container-highest text-secondary">6 Months</button>
+<button class="px-3 py-1 text-xs font-semibold rounded-lg hover:bg-slate-100 transition-all">1 Year</button>
+</div>
+</div>
+<div class="h-64 flex items-end justify-between gap-2">
+<!-- Simple Bar Chart Mockup -->
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[40%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary/10 h-full rounded-t-lg"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">62</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[55%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary/20 h-full rounded-t-lg"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">68</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[45%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary/15 h-full rounded-t-lg"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">65</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[70%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary/30 h-full rounded-t-lg"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">78</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[85%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary/50 h-full rounded-t-lg"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">84</span>
+</div>
+<div class="flex-1 bg-surface-container-low rounded-t-lg relative group h-[80%] hover:bg-secondary/20 transition-all cursor-pointer">
+<div class="absolute inset-x-0 bottom-0 bg-secondary h-full rounded-t-lg shadow-[0_-4px_12px_rgba(0,88,190,0.3)]"></div>
+<span class="absolute -top-8 left-1/2 -translate-x-1/2 text-xs font-bold hidden group-hover:block">82</span>
+</div>
+</div>
+<div class="flex justify-between mt-4 px-2">
+<span class="text-xs font-label-caps text-on-tertiary-container uppercase">May</span>
+<span class="text-xs font-label-caps text-on-tertiary-container uppercase">Jun</span>
+<span class="text-xs font-label-caps text-on-tertiary-container uppercase">Jul</span>
+<span class="text-xs font-label-caps text-on-tertiary-container uppercase">Aug</span>
+<span class="text-xs font-label-caps text-on-tertiary-container uppercase">Sep</span>
+<span class="text-xs font-label-caps text-secondary uppercase font-bold">Oct</span>
+</div>
+</div>
+<!-- Participation by Department -->
+<div class="col-span-12 lg:col-span-4 glass-card p-8 rounded-2xl">
+<h3 class="font-h3 text-h3 text-on-surface mb-6">Departmental Hubs</h3>
+<div class="space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span class="font-medium">Engineering</span>
+<span class="text-on-surface-variant font-bold">92%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[92%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span class="font-medium">Marketing &amp; Sales</span>
+<span class="text-on-surface-variant font-bold">68%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[68%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span class="font-medium">Customer Support</span>
+<span class="text-on-surface-variant font-bold">81%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[81%]"></div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center text-sm">
+<span class="font-medium">Operations</span>
+<span class="text-on-surface-variant font-bold">54%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-low rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[54%]"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 text-secondary text-sm font-bold flex items-center justify-center gap-2 hover:underline">
+                    View all departments
+                    <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Recent Activity Log -->
+<div class="col-span-12 lg:col-span-8 glass-card p-8 rounded-2xl">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h3 text-h3 text-on-surface">Recent Activity</h3>
+<button class="text-secondary font-semibold text-sm">Clear logs</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="border-b border-outline-variant/30 text-on-tertiary-container font-label-caps uppercase text-[10px] tracking-widest">
+<th class="pb-4">Employee</th>
+<th class="pb-4">Action</th>
+<th class="pb-4">Category</th>
+<th class="pb-4">Time</th>
+<th class="pb-4 text-right">Impact</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<tr class="group hover:bg-blue-50/30 transition-all">
+<td class="py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 bg-cover bg-center" data-alt="Close up avatar of a professional male employee with a warm smile. The image uses a clean, bright background with soft corporate lighting and deep navy accents to match the ZenWorker brand." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBqRxXYyhNMW0Exi_QWqrFuPu3z26fSMojIpN5pq9gwzue8kYl3f0fWktrXsPDDdyKpvpcp13oLXroHV3ByZuWYQ44X3vlFAg2UI99NkpttYzk-LTpgyEhuwcQCUeA2rcNkTv5xrNBsbMEo5FMecjmGlX6vUBJdX4Ce8rDuYQQcCw0-Z0tK4OfD8APTpMOlk9LxVo8u2iLS096qrBdRfGW3dzQFy-kyr49aJshW2WAZsEo_8hkGCD0x5OhdDS_oxVi5zXTwtkNOlA')"></div>
+<span class="text-sm font-semibold">David Chen</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">Completed "Mindful Morning"</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-[10px] font-bold uppercase">Meditation</span>
+</td>
+<td class="py-4 text-sm text-on-tertiary-container italic">2m ago</td>
+<td class="py-4 text-right font-bold text-secondary text-sm">+15 pts</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-all">
+<td class="py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 bg-cover bg-center" data-alt="Portrait of a female corporate professional in a modern workspace. The lighting is high-key and optimistic, following a light-mode aesthetic with crisp whites and subtle electric blue reflections in her surroundings." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA0r3wY9iLbM_e3fFAiB6W-arDiELHoQSy22PQAqO-B3fM06MQbI7qasXHaCB9ozCVxeLmbS7MmLO4wkfthkWUgyl7kJQwgeYix4jUsx0E5lrdIvQDp1gJ-l28RQDQlvjDBTyy4inNdnpxbjlEbAKHkngB4z4P0HItzEc_hSSGqXsEQPqwH3aoyxDX9kiB246NP4EDvgGcQZ7gseDqOHNeCsik9ihgY6t_66GpYCXaDmkWHzTUuoUHCW2rPx_qfdYoGiyYVonKfUw')"></div>
+<span class="text-sm font-semibold">Sarah Jenkins</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">Accessed "Crisis Hotline"</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-[10px] font-bold uppercase">Emergency</span>
+</td>
+<td class="py-4 text-sm text-on-tertiary-container italic">14m ago</td>
+<td class="py-4 text-right font-bold text-error text-sm">Critical</td>
+</tr>
+<tr class="group hover:bg-blue-50/30 transition-all">
+<td class="py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-slate-200 flex-shrink-0 bg-cover bg-center" data-alt="Headshot of a male employee in a professional navy blazer. The scene is set in a blurred modern office with glass walls, reflecting a clean and empathetic corporate atmosphere." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuACET80y5HbGPJPsMHVLic0MV4S-h9U_noP3GHhQ8yo3B3ng5DUBtZoq-ppof08PrwaoYSSSRoJ86oZYMBTBqlEXMIR-lrKfK_IZuX8vHAAG5oJ4rQdyFEZOE152jS4V5Uwn8oCc0zvj7c71ekihZQt_762x77vX7m5BEFikP3_VbpSpruIuQTu4lly1MsgS5mTdJKAqmYeOCPbRo2QlkY5JC08mqyyqhevfZKPOAW-KUWRPiMf51JJxEnQd7aPyxSU9_SeoikRow')"></div>
+<span class="text-sm font-semibold">Michael Roe</span>
+</div>
+</td>
+<td class="py-4 text-sm text-on-surface-variant">Attended "Work-Life Balance" Webinar</td>
+<td class="py-4">
+<span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-[10px] font-bold uppercase">Learning</span>
+</td>
+<td class="py-4 text-sm text-on-tertiary-container italic">1h ago</td>
+<td class="py-4 text-right font-bold text-secondary text-sm">+40 pts</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Spotlight Card -->
+<div class="col-span-12 lg:col-span-4 glass-card p-0 rounded-2xl overflow-hidden flex flex-col">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A diverse group of corporate professionals collaborating in a bright, modern office filled with natural light. The setting is high-tech yet human-centric, featuring sleek furniture, glass partitions with subtle data overlays, and a palette of soft grays and vibrant electric blues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALuSHcGVlPijoaMCCDEix7aEg8hOH987o1q7F9VdfzOuDyrtuNIFqyPy0pvm6BxH8ZvZvYtnrUkZ7t5YElS2CBZqZfo3jRBY2xUU0GCkYg5dvzWX9r7jbzwFPPfzSj6XOdcKXRUyzjFN9NeVRarYvP6MQXG81hz7gntAOEKOLN_MaZrc-M6W4pCA67WvL_rgvHQvn9jUzLENmvxdb75lV8b_3CmWU94tAa2aDuR1cWDht7X_nT0qgMpBs0qoyDvqLglw_qtYcTLQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end p-6">
+<span class="px-3 py-1 bg-secondary text-white text-[10px] font-bold uppercase tracking-widest rounded-lg">Manager's Insight</span>
+</div>
+</div>
+<div class="p-8 flex-1 flex flex-col justify-between">
+<div>
+<h4 class="font-h3 text-xl font-bold mb-4">Burnout Alert: Engineering</h4>
+<p class="text-body-sm text-on-surface-variant mb-6">Engagement metrics show a 12% decline in the Engineering department over the last 48 hours. Consider scheduling a "Team Recharge" session.</p>
+</div>
+<button class="w-full py-4 border-2 border-primary-container text-primary-container font-bold rounded-xl hover:bg-primary-container hover:text-white transition-all">
+                        Schedule Session
+                    </button>
+</div>
+</div>
+</div>
+<!-- Footer Info -->
+<footer class="mt-16 pt-8 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center gap-6">
+<p class="text-xs text-on-tertiary-container">© 2023 ZenWorker Wellness Platform. All employee data is anonymized and encrypted.</p>
+<div class="flex gap-6">
+<a class="text-xs font-semibold text-on-surface-variant hover:text-secondary" href="#">Privacy Policy</a>
+<a class="text-xs font-semibold text-on-surface-variant hover:text-secondary" href="#">Data Security</a>
+<a class="text-xs font-semibold text-on-surface-variant hover:text-secondary" href="#">API Access</a>
+</div>
+</footer>
+</main>
+</body></html>

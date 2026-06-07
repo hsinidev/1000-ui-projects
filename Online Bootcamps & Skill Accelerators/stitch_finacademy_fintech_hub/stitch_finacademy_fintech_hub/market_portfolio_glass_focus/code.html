@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FinAcademy | Market Updates &amp; Portfolio Simulator</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Space+Grotesk:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Increased glassmorphism intensity */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .silver-edge {
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        body {
+            background-color: #0B0B0B; /* Deep Matte Black */
+            color: #e5e2e1;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#e5e2e1",
+                      "surface-container": "#201f1f",
+                      "on-tertiary-fixed-variant": "#004e60",
+                      "on-error": "#690005",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-secondary-container": "#b8b8b8",
+                      "outline-variant": "#444650",
+                      "surface-tint": "#b3c5ff",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed-variant": "#2a4386",
+                      "outline": "#8e909c",
+                      "primary-fixed": "#dbe1ff",
+                      "background": "#0B0B0B",
+                      "on-secondary-fixed-variant": "#464747",
+                      "inverse-primary": "#435b9f",
+                      "on-secondary": "#2f3131",
+                      "on-primary-container": "#758dd5",
+                      "on-surface": "#e5e2e1",
+                      "on-surface-variant": "#c5c6d2",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-container-low": "#1c1b1b",
+                      "primary-container": "#002366",
+                      "secondary-container": "#484949",
+                      "tertiary-container": "#002d39",
+                      "surface-container-high": "#2a2a2a",
+                      "on-tertiary-fixed": "#001f28",
+                      "tertiary-fixed": "#b7eaff",
+                      "secondary": "#c6c6c6",
+                      "primary-fixed-dim": "#b3c5ff",
+                      "inverse-surface": "#e5e2e1",
+                      "error-container": "#93000a",
+                      "surface-bright": "#3a3939",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "surface-variant": "#353534",
+                      "tertiary": "#4cd6ff",
+                      "on-tertiary": "#003543",
+                      "secondary-fixed": "#e3e2e2",
+                      "primary": "#b3c5ff", /* Royal Blue highlight */
+                      "on-tertiary-container": "#009cc0",
+                      "surface": "#131313",
+                      "on-primary-fixed": "#00174a",
+                      "on-primary": "#0d2c6e",
+                      "on-error-container": "#ffdad6",
+                      "tertiary-fixed-dim": "#4cd6ff",
+                      "surface-dim": "#131313",
+                      "inverse-on-surface": "#313030",
+                      "surface-container-highest": "#353534"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "margin-mobile": "16px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "unit": "8px",
+                      "container-max": "1440px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Inter"],
+                      "h3": ["Inter"],
+                      "code-data": ["Space Grotesk"],
+                      "h2": ["Inter"],
+                      "h1": ["Inter"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "600"}],
+                      "code-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="font-body-md text-on-surface min-h-screen bg-background">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin-mobile z-50 h-16 bg-background/50 backdrop-blur-2xl border-b border-white/15 docked full-width top-0 sticky">
+<div class="flex items-center gap-4">
+<img alt="User Profile Avatar" class="w-8 h-8 rounded-full border border-primary/50" data-alt="A professional close-up portrait of a technology expert in a dimly lit, high-tech environment. The individual is wearing a sleek dark suit, with subtle blue and silver ambient lighting reflecting off their glasses. The aesthetic is clean and modern, evoking a sense of expertise in blockchain and financial technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDKXFWeqlvCJ5Hxh11Mv3_qyEmqjR2ra2d8BLWvlhyNgPAku3XEZC983Ku7OyIPXuHQZxAFD01d3OfDLMua87SuswQsxbwsCuQ4f8TpNzYWbuKzZ3qPgLyu7vZ8JXvTLkr8gSY8nJmLnvikxYm9S3QnpbUP-Lnisfx9p7xdJieiTDGMHtg_hS3jo1Blhs1i0FFVbPEq42Jeau8Jhl6tQUqlCXxixIraDKXgOQvaTqSpRIJsQMLzOndAM7i9X7x8A-43kW8x2KFm9GM"/>
+<h1 class="font-h2 text-h2 font-bold text-primary">FinAcademy</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-label-caps text-label-caps text-primary hover:text-primary transition-all" href="#">MARKET</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all" href="#">SIMULATOR</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all" href="#">PROJECTS</a>
+</nav>
+<button class="material-symbols-outlined text-primary transition-all duration-200 active:scale-95" data-icon="account_balance_wallet">account_balance_wallet</button>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop py-12 flex flex-col gap-12">
+<!-- Hero Section: Portfolio Overview -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8 glass-panel p-unit*4 md:p-8 rounded-xl silver-edge flex flex-col justify-between min-h-[320px]">
+<div>
+<span class="font-label-caps text-label-caps text-primary mb-2 block">SIMULATED PORTFOLIO VALUE</span>
+<h2 class="font-h1 text-h1 text-on-surface flex items-baseline gap-4">
+                        $248,102.50
+                        <span class="text-tertiary font-h3 text-h3">+12.4%</span>
+</h2>
+<p class="text-on-surface-variant mt-4 max-w-xl">Projected valuation based on current blockchain protocol deployments and simulated market adoption rates across 4 active student clusters.</p>
+</div>
+<div class="flex flex-wrap gap-4 mt-8">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-8 py-3 rounded-lg hover:brightness-110 transition-all shadow-lg shadow-primary/20">DEPLOY NEW CONTRACT</button>
+<button class="border border-white/20 text-on-surface font-label-caps text-label-caps px-8 py-3 rounded-lg hover:bg-white/5 transition-all">VIEW AUDIT LOGS</button>
+</div>
+</div>
+<!-- Quick Market Pulse -->
+<div class="lg:col-span-4 glass-panel p-8 rounded-xl silver-edge flex flex-col gap-6">
+<h3 class="font-h3 text-h3 text-on-surface">Market Pulse</h3>
+<div class="flex flex-col gap-4">
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" data-icon="currency_bitcoin">currency_bitcoin</span>
+<span class="font-code-data text-code-data">BTC/USD</span>
+</div>
+<div class="text-right">
+<div class="font-code-data text-code-data">$64,210.30</div>
+<div class="text-tertiary text-xs">+1.2%</div>
+</div>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-white/10">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="token">token</span>
+<span class="font-code-data text-code-data">ETH/USD</span>
+</div>
+<div class="text-right">
+<div class="font-code-data text-code-data">$3,452.12</div>
+<div class="text-error text-xs">-0.4%</div>
+</div>
+</div>
+<div class="flex justify-between items-center py-2">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+<span class="font-code-data text-code-data">SOL/USD</span>
+</div>
+<div class="text-right">
+<div class="font-code-data text-code-data">$145.88</div>
+<div class="text-tertiary text-xs">+5.8%</div>
+</div>
+</div>
+</div>
+<button class="w-full text-center py-3 font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-all mt-auto">FULL MARKET FEED <span class="material-symbols-outlined align-middle ml-1" style="font-size: 16px;">arrow_forward</span></button>
+</div>
+</section>
+<!-- Bento Grid: Project Status & Live Feed -->
+<section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Real-time Update Feed -->
+<div class="lg:col-span-1 glass-panel rounded-xl silver-edge flex flex-col h-[500px]">
+<div class="p-6 border-b border-white/10 flex justify-between items-center">
+<h3 class="font-h3 text-h3">Live Events</h3>
+<span class="bg-tertiary-container text-tertiary px-2 py-1 rounded text-[10px] font-bold uppercase tracking-widest animate-pulse">Live</span>
+</div>
+<div class="flex-1 overflow-y-auto p-6 flex flex-col gap-6">
+<div class="flex gap-4">
+<div class="min-w-[40px] h-[40px] rounded-full bg-primary/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" data-icon="gavel">gavel</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Governance Proposal #428</p>
+<p class="text-xs text-on-surface-variant mt-1">Quorum reached for Layer 2 scaling implementation on FinAcademy Testnet.</p>
+<span class="text-[10px] font-code-data text-outline mt-2 block">2 MINS AGO</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="min-w-[40px] h-[40px] rounded-full bg-tertiary/20 flex items-center justify-center border border-tertiary/30">
+<span class="material-symbols-outlined text-tertiary" data-icon="rocket_launch">rocket_launch</span>
+</div>
+<div>
+<p class="text-sm font-semibold">New Deployment</p>
+<p class="text-xs text-on-surface-variant mt-1">Smart Contract 'LiquidityVault.sol' successfully deployed to Mainnet Simulator.</p>
+<span class="text-[10px] font-code-data text-outline mt-2 block">14 MINS AGO</span>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="min-w-[40px] h-[40px] rounded-full bg-error/20 flex items-center justify-center border border-error/30">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="text-sm font-semibold">Network Congestion</p>
+<p class="text-xs text-on-surface-variant mt-1">Simulated Gas Prices increased by 45% due to high volume in Project Beta.</p>
+<span class="text-[10px] font-code-data text-outline mt-2 block">38 MINS AGO</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Project Simulator Visualization -->
+<div class="lg:col-span-2 glass-panel rounded-xl silver-edge p-8 overflow-hidden relative group">
+<div class="relative z-10">
+<h3 class="font-h3 text-h3 mb-6">Deployment ROI Simulator</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+<div class="flex flex-col gap-6">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">NODE CLUSTERS</label>
+<div class="flex items-center gap-4">
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<span class="font-code-data text-primary">12</span>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">TVL TARGET (SIM)</label>
+<div class="flex items-center gap-4">
+<input class="w-full h-1 bg-surface-variant rounded-lg appearance-none cursor-pointer accent-primary" type="range"/>
+<span class="font-code-data text-primary">85%</span>
+</div>
+</div>
+<div class="mt-4 p-4 bg-primary-container/30 rounded-lg border border-primary/20">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-semibold">PROJECTED APY</span>
+<span class="text-tertiary font-bold">18.4%</span>
+</div>
+<div class="w-full bg-surface-variant h-1.5 rounded-full overflow-hidden">
+<div class="bg-tertiary h-full w-[70%]"></div>
+</div>
+</div>
+</div>
+<div class="h-full min-h-[200px] bg-black/60 rounded-lg border border-white/10 flex items-center justify-center">
+<!-- Chart Placeholder with styling -->
+<div class="w-full h-full p-4 flex items-end gap-2">
+<div class="w-1/6 bg-primary/30 border-t-2 border-primary h-[30%]"></div>
+<div class="w-1/6 bg-primary/30 border-t-2 border-primary h-[45%]"></div>
+<div class="w-1/6 bg-primary/40 border-t-2 border-primary h-[60%]"></div>
+<div class="w-1/6 bg-tertiary/30 border-t-2 border-tertiary h-[75%]"></div>
+<div class="w-1/6 bg-tertiary/40 border-t-2 border-tertiary h-[90%]"></div>
+<div class="w-1/6 bg-tertiary/50 border-t-2 border-tertiary h-[85%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Background visual texture -->
+<div class="absolute -bottom-20 -right-20 w-80 h-80 bg-primary/20 blur-[100px] rounded-full group-hover:bg-primary/30 transition-all duration-700"></div>
+</div>
+<!-- Student Project Cards -->
+<div class="lg:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-6 rounded-xl silver-edge hover:translate-y-[-4px] transition-all hover:shadow-xl hover:shadow-primary/5">
+<div class="flex justify-between items-start mb-4">
+<span class="font-code-data text-xs text-outline">ID: #0092</span>
+<span class="bg-tertiary/30 text-tertiary text-[10px] px-2 py-0.5 rounded-full font-bold">ACTIVE</span>
+</div>
+<h4 class="font-h3 text-xl mb-1">DeFi Oracle</h4>
+<p class="text-xs text-on-surface-variant mb-6">Price feed reliability protocol for emerging tokens.</p>
+<div class="flex justify-between items-center">
+<div class="text-xs font-code-data">ROI: <span class="text-tertiary font-bold">+12.2%</span></div>
+<span class="material-symbols-outlined text-primary" data-icon="query_stats">query_stats</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl silver-edge hover:translate-y-[-4px] transition-all hover:shadow-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="font-code-data text-xs text-outline">ID: #0114</span>
+<span class="bg-primary/30 text-primary text-[10px] px-2 py-0.5 rounded-full font-bold">STAGING</span>
+</div>
+<h4 class="font-h3 text-xl mb-1">NFT Lending</h4>
+<p class="text-xs text-on-surface-variant mb-6">Collateralized lending market for blue-chip assets.</p>
+<div class="flex justify-between items-center">
+<div class="text-xs font-code-data">ROI: <span class="text-on-surface">0.0%</span></div>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="hourglass_empty">hourglass_empty</span>
+</div>
+</div>
+<div class="glass-panel p-6 rounded-xl silver-edge hover:translate-y-[-4px] transition-all hover:shadow-xl">
+<div class="flex justify-between items-start mb-4">
+<span class="font-code-data text-xs text-outline">ID: #0081</span>
+<span class="bg-error/30 text-error text-[10px] px-2 py-0.5 rounded-full font-bold">HALTED</span>
+</div>
+<h4 class="font-h3 text-xl mb-1">Yield Aggregator</h4>
+<p class="text-xs text-on-surface-variant mb-6">Automated yield farming optimizer (v2 migration).</p>
+<div class="flex justify-between items-center">
+<div class="text-xs font-code-data">ROI: <span class="text-error font-bold">-4.8%</span></div>
+<span class="material-symbols-outlined text-error" data-icon="cancel">cancel</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- NavigationDrawer (Mobile/Desktop Contextual) -->
+<aside class="fixed inset-y-0 left-0 z-50 bg-background/95 backdrop-blur-3xl border-r border-white/15 shadow-2xl rounded-r-xl h-full w-80 -translate-x-full lg:hidden" id="mobile-nav">
+<div class="p-8 flex flex-col h-full">
+<div class="mb-12 flex items-start gap-4">
+<img alt="Professional User Portrait" class="w-12 h-12 rounded-lg silver-edge" data-alt="A cinematic, high-resolution portrait of a digital architect in a futuristic workspace. The environment is filled with holographic interfaces displaying complex financial charts and blockchain node maps. The lighting is dominated by cool blues and crisp silvers, reflecting a high-authority, professional fintech setting with a deep matte black background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzdCSIrZU1o-t-VdNR9Y2VhlyicWsM5Q3-8uvs4L3DnLjtOPbTU91gxaNgxMPhmMpnjKmhJcfjQHoD-WGVe6ezZYT6YrV14OmV0_Rx8dVMk05XbEeDt2_XovBx8RggLNXKDu_06eELa7Z_snFNME8Q2DJb_IozhbkLtwcP2eb_Rq6lUPQU48CUmb85WvQ4XFYExujaU85fw7vXkyVdV3eJ7_esrxqw1Q09CX5nwCEdTWi5GpaR04X7V3ZJJqlM3x6hV0h6MJA9Ubk"/>
+<div>
+<h4 class="font-body-md text-on-surface font-bold">Blockchain Architect</h4>
+<p class="text-xs text-on-surface-variant">FinAcademy Pro <span class="text-primary font-bold ml-1">Verified</span></p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 bg-primary-container text-on-primary-container rounded-lg font-body-md transition-all ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="code_blocks">code_blocks</span>
+                    Contract Lab
+                </a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="calculate">calculate</span>
+                    Finance Models
+                </a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+                    Compliance
+                </a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+                    Networking
+                </a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-variant rounded-lg transition-all ease-in-out duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+                    Market Feed
+                </a>
+</nav>
+</div>
+</aside>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-background/50 backdrop-blur-2xl border-t border-white/15 md:hidden">
+<a class="flex flex-col items-center justify-center bg-primary-container/30 text-primary rounded-full p-2 scale-110 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-[10px] mt-1">Lab</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:text-primary transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[10px] mt-1">Models</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:text-primary transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="library_books">library_books</span>
+<span class="font-label-caps text-[10px] mt-1">Library</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:text-primary transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="connect_without_contact">connect_without_contact</span>
+<span class="font-label-caps text-[10px] mt-1">Network</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:text-primary transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-[10px] mt-1">Market</span>
+</a>
+</nav>
+<!-- FAB -->
+<button class="fixed bottom-24 right-margin-mobile md:bottom-12 md:right-margin-desktop bg-primary text-on-primary w-14 h-14 rounded-full flex items-center justify-center shadow-2xl border border-white/20 z-40 active:scale-95 transition-all shadow-primary/30">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">add</span>
+</button>
+</body></html>

@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CoupleBond - Shared Journaling</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=Noto+Serif:wght@600;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-fixed": "#e3e2e1",
+                    "primary-container": "#800020",
+                    "tertiary-container": "#3c3d3d",
+                    "on-secondary-fixed-variant": "#464746",
+                    "surface": "#fff8f5",
+                    "on-background": "#1e1b18",
+                    "surface-container-low": "#fbf2ed",
+                    "on-surface-variant": "#584141",
+                    "tertiary-fixed-dim": "#c7c6c5",
+                    "outline": "#8c7071",
+                    "inverse-surface": "#34302c",
+                    "inverse-on-surface": "#f8efea",
+                    "surface-dim": "#e1d8d4",
+                    "on-secondary": "#ffffff",
+                    "secondary-fixed-dim": "#c7c6c4",
+                    "outline-variant": "#e0bfbf",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#262727",
+                    "error": "#ba1a1a",
+                    "on-tertiary": "#ffffff",
+                    "on-primary": "#ffffff",
+                    "surface-variant": "#e9e1dc",
+                    "surface-container-lowest": "#ffffff",
+                    "surface-bright": "#fff8f5",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-error": "#ffffff",
+                    "surface-container": "#f5ece7",
+                    "surface-container-high": "#efe6e2",
+                    "primary-fixed": "#ffdada",
+                    "on-primary-fixed": "#40000b",
+                    "background": "#fff8f5",
+                    "secondary": "#5e5e5d",
+                    "on-secondary-fixed": "#1b1c1b",
+                    "inverse-primary": "#ffb3b5",
+                    "on-primary-container": "#ff828a",
+                    "primary-fixed-dim": "#ffb3b5",
+                    "on-tertiary-fixed-variant": "#464746",
+                    "surface-container-highest": "#e9e1dc",
+                    "on-tertiary-container": "#a8a8a7",
+                    "secondary-container": "#e0dfdd",
+                    "surface-tint": "#af2b3e",
+                    "on-primary-fixed-variant": "#8e0f28",
+                    "secondary-fixed": "#e3e2e0",
+                    "on-secondary-container": "#626361",
+                    "primary": "#570013",
+                    "on-surface": "#1e1b18"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "md": "24px",
+                    "split-gap": "0px",
+                    "xs": "4px",
+                    "sm": "12px",
+                    "base": "8px",
+                    "lg": "48px",
+                    "xl": "80px"
+            },
+            "fontFamily": {
+                    "body-lg": ["Inter"],
+                    "h3": ["Noto Serif"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Inter"],
+                    "h1": ["Noto Serif"],
+                    "h2": ["Noto Serif"]
+            },
+            "fontSize": {
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .split-screen-height {
+            min-height: calc(100vh - 64px - 64px);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #800020;
+            border-radius: 10px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-6 py-4 bg-[#f5f5f5] dark:bg-stone-900 border-b border-stone-300 dark:border-stone-800">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#800020] dark:text-red-400 cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors p-2 rounded-full" data-icon="menu">menu</span>
+<h1 class="text-2xl font-bold tracking-widest text-[#800020] dark:text-red-500 font-serif uppercase">CoupleBond</h1>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#800020] dark:text-red-400 cursor-pointer hover:bg-stone-200 dark:hover:bg-stone-800 transition-colors p-2 rounded-full" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<main class="pt-16 pb-16 min-h-screen">
+<!-- Hero Content / Prompt Header -->
+<div class="px-md py-lg text-center bg-surface">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-[0.2em] mb-sm block">Daily Connection</span>
+<h2 class="font-h1 text-h1 text-primary mb-sm">Today's Reflection</h2>
+<p class="font-body-lg text-body-lg text-secondary max-w-2xl mx-auto">"What is one thing your partner did this week that made you feel truly seen and understood?"</p>
+</div>
+<!-- Split Journaling Section -->
+<div class="flex flex-col md:flex-row split-screen-height border-t border-stone-200">
+<!-- Partner A Side -->
+<section class="flex-1 bg-surface-container-low p-md md:p-xl border-b md:border-b-0 md:border-r border-stone-200 relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1.5 h-full bg-primary-container opacity-20"></div>
+<div class="max-w-xl mx-auto h-full flex flex-col">
+<div class="flex items-center gap-3 mb-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a mid-adult man with a warm, empathetic expression. The lighting is soft and directional, highlighting facial features against a neutral, warm grey background. The style is minimalist and clean, reflecting a clinical yet compassionate atmosphere suitable for a premium wellness application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_Y8b3Ky9K74GsWOshjG5Nyknep3zj9-Nvh_zZddaK5A6hAhbwIVrvZSjOdy3ltPxRtP5vTECcEtF8a5U2xzRTly36t8Gi-Imb8ED5sjL5C9QcugVBer2d29OFINFn8nb78ggdnUy_5xopIDlQcc_btIQTuiSHGtdfXJJ-tsvrB8okfVBPHj_D36m4T8yRk_XSqp5Rh2LLYcK3fwhitcQgY4_pBuyYsQ-dl_2BEq-ynUJNnhnJNxM1tKysDlFp8Hx0-Js_iZWsNLNQ"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">PARTNER ONE</p>
+<p class="font-h3 text-h3 text-on-surface">Alex's Space</p>
+</div>
+</div>
+<textarea class="flex-1 w-full bg-transparent border-none focus:ring-0 font-body-lg text-body-lg text-on-surface placeholder-stone-400 resize-none custom-scrollbar" placeholder="Start typing your reflection here..."></textarea>
+<div class="mt-md flex items-center justify-between">
+<span class="text-label-caps font-label-caps text-stone-400 uppercase">Last saved 2m ago</span>
+<div class="flex gap-2">
+<button class="p-2 text-primary hover:bg-primary-container/10 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="mood">mood</span>
+</button>
+<button class="p-2 text-primary hover:bg-primary-container/10 transition-colors rounded-full">
+<span class="material-symbols-outlined" data-icon="attach_file">attach_file</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Partner B Side -->
+<section class="flex-1 bg-surface-container p-md md:p-xl relative overflow-hidden">
+<div class="max-w-xl mx-auto h-full flex flex-col">
+<div class="flex items-center gap-3 mb-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline-variant">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a mid-adult woman with a thoughtful, serene expression. The lighting is bright and airy, creating a modern light-mode aesthetic against a warm cream background. The portrait conveys maturity and emotional depth, maintaining the editorial and sophisticated feel of the brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByt-Rbz1rmOIBcE36iyLFQMBVToSgLPMNonj-mP4wXsGGvk9aT-QCq_vCJNEr25Qim3tWq1EnzfbRb3ZJXs9opEwOxa05LDrHINVA4sR31WGJCauiFLrQ0GYz7OLU3GLKwq7JSM4CPwCh8xsaC4Y14NKw0CpSQxDiUrontB8l9NhGuiC8T68a2cJUEJ40-URhYb1e57ivrrkSNxzJoun42NUTmd-SqcF44MRQKi8EnSX7m0pTt0gcloGniXThqlvmXIp1RL5LGUmPP"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">PARTNER TWO</p>
+<p class="font-h3 text-h3 text-on-surface">Sam's Space</p>
+</div>
+</div>
+<div class="flex-1 flex flex-col items-center justify-center text-center space-y-4 px-lg">
+<span class="material-symbols-outlined text-stone-300 text-6xl" data-icon="lock">lock</span>
+<p class="font-body-md text-secondary italic">Sam hasn't started today's entry yet. Your entry will remain private until both partners choose to share.</p>
+<div class="w-full h-1 bg-stone-200 rounded-full overflow-hidden">
+<div class="w-0 h-full bg-primary-container"></div>
+</div>
+</div>
+<div class="mt-md flex items-center justify-between opacity-50">
+<span class="text-label-caps font-label-caps text-stone-400 uppercase">Waiting for partner</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Center Action / Merge Feature -->
+<div class="fixed bottom-24 left-1/2 -translate-x-1/2 z-40 w-full max-w-xs md:max-w-sm px-4">
+<button class="w-full bg-primary-container text-on-primary py-4 px-8 rounded-full shadow-lg hover:brightness-110 transition-all transform active:scale-95 flex items-center justify-center gap-3 group">
+<span class="material-symbols-outlined group-hover:rotate-12 transition-transform" data-icon="unfold_more" data-weight="fill">unfold_more</span>
+<span class="font-label-caps text-label-caps tracking-widest uppercase">Merge &amp; Reveal Journals</span>
+</button>
+</div>
+<!-- Shared Progress Bento Section -->
+<section class="bg-white py-xl px-md border-t border-stone-200">
+<div class="max-w-6xl mx-auto">
+<div class="flex flex-col md:flex-row justify-between items-end mb-lg gap-4">
+<div class="max-w-md">
+<h3 class="font-h2 text-h2 text-primary mb-xs">Relationship Pulse</h3>
+<p class="font-body-md text-secondary">A snapshot of your collective emotional journey over the past 30 days.</p>
+</div>
+<button class="text-primary font-label-caps text-label-caps border-b-2 border-primary-container pb-1 uppercase">View All History</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<!-- Split Card 1: Consistency -->
+<div class="md:col-span-2 p-md bg-stone-50 border border-stone-200 rounded-lg flex items-center gap-6">
+<div class="flex-shrink-0 w-16 h-16 rounded-full bg-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-white text-3xl" data-icon="calendar_today">calendar_today</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-1">Consistency</p>
+<p class="font-h3 text-h3">12 Day Streak</p>
+<p class="text-body-md text-secondary">You're in the top 5% of active couples this month.</p>
+</div>
+</div>
+<!-- Split Card 2: Shared Themes -->
+<div class="md:col-span-2 p-md bg-stone-50 border border-stone-200 rounded-lg flex flex-col justify-between">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-4">Common Keywords</p>
+<div class="flex flex-wrap gap-2">
+<span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium text-primary">Gratitude</span>
+<span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium text-primary">Future Planning</span>
+<span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium text-primary">Listening</span>
+<span class="px-3 py-1 bg-white border border-stone-200 rounded-full text-xs font-medium text-primary">Small Wins</span>
+</div>
+</div>
+<!-- Sentiment Card -->
+<div class="md:col-span-4 p-md bg-primary-container text-white rounded-lg overflow-hidden relative">
+<div class="relative z-10">
+<p class="font-label-caps text-label-caps uppercase opacity-80 mb-2">Our Monthly Alignment</p>
+<div class="flex items-end gap-2 mb-4">
+<span class="text-4xl font-bold">92%</span>
+<span class="text-sm pb-1 opacity-80">Harmony Score</span>
+</div>
+<p class="font-body-md max-w-xl">Your journaling themes show a strong alignment in "Emotional Support" and "Conflict Resolution" categories this week. Great progress!</p>
+</div>
+<div class="absolute right-0 top-0 h-full w-1/3 bg-white/5 skew-x-[-15deg] translate-x-12"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16 bg-stone-100/80 dark:bg-stone-900/80 backdrop-blur-md border-t border-stone-200 dark:border-stone-800">
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 pt-2 hover:text-[#800020] dark:hover:text-red-300 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-serif text-[11px] font-medium uppercase tracking-wider">Consult</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 pt-2 hover:text-[#800020] dark:hover:text-red-300 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="event_note">event_note</span>
+<span class="font-serif text-[11px] font-medium uppercase tracking-wider">Workshops</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#800020] dark:text-red-400 border-t-2 border-[#800020] pt-2 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-serif text-[11px] font-medium uppercase tracking-wider">Journal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-stone-400 dark:text-stone-500 pt-2 hover:text-[#800020] dark:hover:text-red-300 transition-opacity" href="#">
+<span class="material-symbols-outlined" data-icon="quiz">quiz</span>
+<span class="font-serif text-[11px] font-medium uppercase tracking-wider">FAQ</span>
+</a>
+</nav>
+</body></html>

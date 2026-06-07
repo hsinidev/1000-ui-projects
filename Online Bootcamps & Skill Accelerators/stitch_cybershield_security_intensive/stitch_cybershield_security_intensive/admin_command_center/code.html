@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CYBERSHIELD // ADMIN_PANEL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-overlay {
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+        .glow-red { box-shadow: 0 0 8px #FF0000; }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #0D0D0D; }
+        ::-webkit-scrollbar-thumb { background: #2E2E2E; border-radius: 2px; }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface-container-lowest": "#0e0e0e",
+                "on-secondary-fixed": "#1b1c1c",
+                "inverse-surface": "#e5e2e1",
+                "surface-variant": "#353534",
+                "background": "#131313",
+                "on-tertiary-fixed-variant": "#474746",
+                "surface-bright": "#3a3939",
+                "error": "#ffb4ab",
+                "surface-container-high": "#2a2a2a",
+                "outline": "#b18780",
+                "on-primary": "#690100",
+                "on-error-container": "#ffdad6",
+                "inverse-primary": "#c00100",
+                "on-tertiary-container": "#2a2a2a",
+                "inverse-on-surface": "#313030",
+                "surface-container-highest": "#353534",
+                "primary": "#ffb4a8",
+                "on-secondary-fixed-variant": "#474747",
+                "on-surface": "#e5e2e1",
+                "surface-container-low": "#1c1b1b",
+                "on-secondary-container": "#b6b5b4",
+                "surface-tint": "#ffb4a8",
+                "tertiary-container": "#929090",
+                "outline-variant": "#603e39",
+                "on-tertiary-fixed": "#1c1b1b",
+                "on-primary-container": "#5c0000",
+                "error-container": "#93000a",
+                "primary-fixed": "#ffdad4",
+                "secondary-fixed": "#e4e2e1",
+                "tertiary-fixed": "#e5e2e1",
+                "on-background": "#e5e2e1",
+                "primary-fixed-dim": "#ffb4a8",
+                "surface-container": "#201f1f",
+                "on-primary-fixed": "#410000",
+                "tertiary-fixed-dim": "#c8c6c5",
+                "tertiary": "#c8c6c5",
+                "surface-dim": "#131313",
+                "on-primary-fixed-variant": "#930100",
+                "secondary-fixed-dim": "#c8c6c6",
+                "on-error": "#690005",
+                "secondary": "#c8c6c6",
+                "on-tertiary": "#313030",
+                "on-secondary": "#303030",
+                "surface": "#131313",
+                "on-surface-variant": "#ebbbb4",
+                "secondary-container": "#474747",
+                "primary-container": "#ff5540"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin": "24px",
+                "stack-xs": "4px",
+                "stack-lg": "32px",
+                "stack-md": "16px",
+                "gutter": "16px",
+                "stack-sm": "8px",
+                "container-max": "1440px",
+                "unit": "4px"
+            },
+            "fontFamily": {
+                "label-caps": ["Space Grotesk"],
+                "body-md": ["Inter"],
+                "terminal-data": ["Space Grotesk"],
+                "headline-xl": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                "terminal-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.02em", "fontWeight": "400"}],
+                "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}]
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-[#0D0D0D] text-on-surface font-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-4 h-14 bg-[#0D0D0D] border-b border-[#2E2E2E] fixed top-0 z-50">
+<div class="flex items-center gap-8">
+<h1 class="text-xl font-black text-[#FF0000] tracking-tighter font-headline-xl">CYBERSHIELD</h1>
+<nav class="hidden md:flex gap-6">
+<a class="font-label-caps uppercase text-[#FF0000] border-b-2 border-[#FF0000] shadow-[0_0_8px_#FF0000] px-1 h-14 flex items-center" href="#">LABS</a>
+<a class="font-label-caps uppercase text-zinc-500 hover:text-[#FF0000] transition-colors duration-200 h-14 flex items-center" href="#">EVENTS</a>
+<a class="font-label-caps uppercase text-zinc-500 hover:text-[#FF0000] transition-colors duration-200 h-14 flex items-center" href="#">CERTIFICATIONS</a>
+<a class="font-label-caps uppercase text-zinc-500 hover:text-[#FF0000] transition-colors duration-200 h-14 flex items-center" href="#">THREAT MAP</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex items-center bg-[#1A1A1A] border border-[#2E2E2E] px-3 py-1 gap-2">
+<span class="material-symbols-outlined text-[#FF0000] text-sm">terminal</span>
+<span class="font-terminal-data text-[10px] text-[#FF0000]">SYSTEM_STATUS: NOMINAL</span>
+</div>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-[#FF0000] transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-[#FF0000] transition-colors">
+<span class="material-symbols-outlined">terminal</span>
+</button>
+</div>
+</div>
+</header>
+<div class="flex pt-14 h-screen">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-full w-64 bg-[#1A1A1A] border-r border-[#2E2E2E] py-4 space-y-2 shrink-0 overflow-y-auto">
+<div class="px-6 py-4 border-b border-[#2E2E2E] mb-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-[#2E2E2E] border border-[#FF0000] flex items-center justify-center overflow-hidden">
+<img alt="OPERATOR_01" class="w-full h-full object-cover opacity-80" data-alt="A gritty close-up portrait of a cybersecurity operative in a dark room, illuminated only by the harsh red glow of multiple computer screens displaying complex code. The atmosphere is intense and clinical, using a palette of deep blacks and electric reds to convey a high-stakes digital defense environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYT3aYdM-jhHsEKXGSBMBUlQr_ceT9nze81dui5q3TmIN4Xv5oCy0wI04C9tV2zjiPREoWfyZk-xIuwwjaTiNBZsglaAQjUtzIA8kHK9klduHf9j8z8K4wIlCJWi4n3-1ijsdPHdCE3K-jPi89UjqkigpcAnf3WiMhnilPOOs-Gp1-QHD-mBcIbDQgc8GueGfBHMLgdPwwvd8rjqCeWvox6VocqAh5zP0iJlSgSwr0XmhRgQGPuhu0eJPes_N1XJH5zz0A-TNcIp4"/>
+</div>
+<div>
+<p class="font-terminal-data text-[12px] font-bold text-white uppercase">OPERATOR_01</p>
+<p class="font-terminal-data text-[10px] text-[#FF0000] uppercase tracking-tighter">RANK: ELITE DEFENDER</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-[#2E2E2E] text-[#FF0000] border-l-4 border-[#FF0000] font-bold shadow-[0_0_10px_rgba(255,0,0,0.3)] font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span> Admin Panel
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">terminal</span> Virtual Labs
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">flag</span> CTF Events
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">workspace_premium</span> Cert Prep
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">public</span> Threat Map
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">query_stats</span> Placement
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-zinc-400 opacity-70 hover:bg-[#2E2E2E] hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">forum</span> Collaboration
+                </a>
+</nav>
+<button class="mx-4 my-4 py-3 bg-[#0D0D0D] border border-[#FF0000] text-[#FF0000] font-label-caps text-[10px] tracking-[0.2em] hover:bg-[#FF0000] hover:text-white transition-colors duration-100 uppercase">
+                DEPLO_LAB
+            </button>
+<div class="px-2 mt-auto border-t border-[#2E2E2E] pt-4">
+<a class="flex items-center gap-3 px-4 py-2 text-zinc-500 hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">settings</span> Settings
+                </a>
+<a class="flex items-center gap-3 px-4 py-2 text-zinc-500 hover:text-[#FF0000] transition-all font-terminal-data uppercase text-[10px]" href="#">
+<span class="material-symbols-outlined">power_settings_new</span> Log Out
+                </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto p-gutter relative">
+<div class="scanline-overlay fixed inset-0 z-0 opacity-10 pointer-events-none"></div>
+<div class="relative z-10 max-w-[1440px] mx-auto space-y-gutter">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end border-b border-[#2E2E2E] pb-4">
+<div>
+<h2 class="font-headline-md text-white uppercase">COMMAND_CENTER / DASHBOARD</h2>
+<p class="font-terminal-data text-[10px] text-zinc-500">REFRESH_RATE: 500MS // LATENCY: 12MS // AUTH: PRIVILEGED</p>
+</div>
+<button class="bg-[#1A1A1A] border border-[#FF0000] text-[#FF0000] px-6 py-2 font-label-caps text-[12px] uppercase shadow-[0_0_15px_rgba(255,0,0,0.2)] active:scale-95 transition-all">
+                        SYSTEM_OVERRIDE
+                    </button>
+</div>
+<!-- Metrics Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Student Engagement -->
+<div class="col-span-12 lg:col-span-8 bg-[#1A1A1A] border border-[#2E2E2E] p-4 relative overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<span class="font-label-caps text-[10px] text-zinc-400">ENGAGEMENT_METRICS_24H</span>
+<span class="material-symbols-outlined text-zinc-600 text-sm">more_vert</span>
+</div>
+<div class="h-48 flex items-end gap-2 px-2 border-b border-zinc-800">
+<!-- Mock Terminal Chart Bars -->
+<div class="flex-1 bg-[#FF0000] opacity-20 h-1/2"></div>
+<div class="flex-1 bg-[#FF0000] opacity-40 h-2/3"></div>
+<div class="flex-1 bg-[#FF0000] opacity-60 h-3/4"></div>
+<div class="flex-1 bg-[#FF0000] opacity-30 h-1/3"></div>
+<div class="flex-1 bg-[#FF0000] opacity-80 h-4/5"></div>
+<div class="flex-1 bg-[#FF0000] opacity-50 h-2/3"></div>
+<div class="flex-1 bg-[#FF0000] opacity-90 h-[95%] shadow-[0_0_10px_#FF0000]"></div>
+<div class="flex-1 bg-[#FF0000] opacity-40 h-1/2"></div>
+<div class="flex-1 bg-[#FF0000] opacity-20 h-1/4"></div>
+<div class="flex-1 bg-[#FF0000] opacity-60 h-3/4"></div>
+</div>
+<div class="mt-4 grid grid-cols-4 gap-4">
+<div>
+<p class="font-terminal-data text-[10px] text-zinc-500">ACTIVE_USERS</p>
+<p class="font-headline-md text-white">1,204</p>
+</div>
+<div>
+<p class="font-terminal-data text-[10px] text-zinc-500">AVG_LAB_TIME</p>
+<p class="font-headline-md text-white">42:15</p>
+</div>
+<div>
+<p class="font-terminal-data text-[10px] text-zinc-500">SUBMISSIONS</p>
+<p class="font-headline-md text-white">8.2K</p>
+</div>
+<div>
+<p class="font-terminal-data text-[10px] text-zinc-500">PASS_RATE</p>
+<p class="font-headline-md text-[#FF0000]">88%</p>
+</div>
+</div>
+</div>
+<!-- Server Status -->
+<div class="col-span-12 lg:col-span-4 bg-[#1A1A1A] border border-[#2E2E2E] p-4">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-[10px] text-zinc-400">LAB_SERVER_NODES</span>
+<div class="w-2 h-2 rounded-full bg-[#FF0000] shadow-[0_0_5px_#FF0000]"></div>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 bg-[#0D0D0D] border border-zinc-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#FF0000] text-sm">dns</span>
+<span class="font-terminal-data text-[12px] text-white">NODE_ALPHA_01</span>
+</div>
+<span class="bg-[#FF0000] text-black font-label-caps text-[8px] px-2 py-0.5 uppercase">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-[#0D0D0D] border border-zinc-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-zinc-600 text-sm">dns</span>
+<span class="font-terminal-data text-[12px] text-white">NODE_BETA_04</span>
+</div>
+<span class="bg-zinc-800 text-zinc-500 font-label-caps text-[8px] px-2 py-0.5 uppercase">IDLE</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-[#0D0D0D] border border-zinc-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-[#FF0000] text-sm">dns</span>
+<span class="font-terminal-data text-[12px] text-white">NODE_GAMMA_09</span>
+</div>
+<span class="bg-[#FF0000] text-black font-label-caps text-[8px] px-2 py-0.5 uppercase">ACTIVE</span>
+</div>
+<div class="flex items-center justify-between p-2 bg-[#0D0D0D] border border-zinc-800">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-zinc-600 text-sm">dns</span>
+<span class="font-terminal-data text-[12px] text-white">NODE_DELTA_02</span>
+</div>
+<span class="bg-zinc-800 text-zinc-500 font-label-caps text-[8px] px-2 py-0.5 uppercase">IDLE</span>
+</div>
+</div>
+</div>
+<!-- CTF Event Management -->
+<div class="col-span-12 lg:col-span-4 bg-[#1A1A1A] border border-[#2E2E2E] p-0 flex flex-col">
+<div class="p-4 border-b border-[#2E2E2E]">
+<span class="font-label-caps text-[10px] text-zinc-400">ACTIVE_CTF_EVENTS</span>
+</div>
+<div class="p-4 flex-1">
+<div class="relative w-full aspect-video border border-zinc-800 bg-[#0D0D0D] flex items-center justify-center overflow-hidden mb-4">
+<img alt="CTF Visual" class="w-full h-full object-cover opacity-40" data-alt="A futuristic server room visualization showing high-speed data transmission as glowing red pulses of light moving through glass fiber cables. The aesthetic is industrial and high-tech, featuring a dark environment with sharp highlights and a focus on physical network infrastructure in a digital age." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdQwPLmbWnw5fnmIstdQozfrE8nrLXpcT4dWVYH54WmRtELT5lMI8frtJq01FPCIwDRpY7eVOSGG_htK9LJycA6i4Xc9YcVHbsGsVbo4wEAAjNlMzxvOPL28VXjDuQT9yVc3UsE2HPxhQV2fNjoFPj3unl2VbJNL-03peoqyAiBZ2-SbXJfb-1zkpVf9RajUu1Qmc76Q9M66rL_5JjJgnUy6hEENk0tjTxXozAFY69ShbWx-gAJ7XO4InlrWeH42YyBURwMGxzpV0"/>
+<div class="absolute inset-0 flex flex-col items-center justify-center bg-black/40">
+<p class="font-headline-md text-white text-center">OPERATION_RED_FALL</p>
+<p class="font-terminal-data text-[12px] text-[#FF0000]">LIVE: 14:22:09</p>
+</div>
+</div>
+<div class="space-y-2">
+<button class="w-full py-2 bg-[#2E2E2E] hover:bg-[#FF0000] text-white transition-colors font-label-caps text-[10px] uppercase">MANAGE_EVENT</button>
+<button class="w-full py-2 bg-transparent border border-zinc-700 hover:border-[#FF0000] text-zinc-400 transition-colors font-label-caps text-[10px] uppercase">VIEW_LEADERBOARD</button>
+</div>
+</div>
+</div>
+<!-- Operator Activity Feed -->
+<div class="col-span-12 lg:col-span-8 bg-[#1A1A1A] border border-[#2E2E2E] flex flex-col">
+<div class="p-4 border-b border-[#2E2E2E] flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-zinc-400">OPERATOR_ACTIVITY_LOG</span>
+<span class="font-terminal-data text-[8px] text-zinc-600">FILTER: [ALL_CHANNELS]</span>
+</div>
+<div class="flex-1 overflow-hidden">
+<div class="divide-y divide-[#2E2E2E]">
+<div class="p-3 hover:bg-[#2E2E2E] transition-colors group flex items-center gap-4">
+<span class="font-terminal-data text-[10px] text-zinc-600">14:52:11</span>
+<div class="w-2 h-2 rounded-full bg-[#FF0000]"></div>
+<span class="font-terminal-data text-[12px] text-zinc-300 flex-1"><span class="text-white font-bold">OPERATOR_X</span> DEPLOYED_VIRTUAL_MACHINE: [KALI_LINUX_2024]</span>
+<span class="material-symbols-outlined text-zinc-700 group-hover:text-[#FF0000] text-sm">open_in_new</span>
+</div>
+<div class="p-3 hover:bg-[#2E2E2E] transition-colors group flex items-center gap-4">
+<span class="font-terminal-data text-[10px] text-zinc-600">14:50:04</span>
+<div class="w-2 h-2 rounded-full bg-zinc-600"></div>
+<span class="font-terminal-data text-[12px] text-zinc-300 flex-1"><span class="text-white font-bold">OPERATOR_J</span> ACCESS_GRANTED: [CERT_STORAGE_B]</span>
+<span class="material-symbols-outlined text-zinc-700 group-hover:text-[#FF0000] text-sm">open_in_new</span>
+</div>
+<div class="p-3 hover:bg-[#2E2E2E] transition-colors group flex items-center gap-4">
+<span class="font-terminal-data text-[10px] text-zinc-600">14:48:55</span>
+<div class="w-2 h-2 rounded-full bg-[#FF0000]"></div>
+<span class="font-terminal-data text-[12px] text-zinc-300 flex-1"><span class="text-white font-bold">ROOT</span> MODIFIED_SYSTEM_CONFIG: [FIREWALL_RULES]</span>
+<span class="material-symbols-outlined text-zinc-700 group-hover:text-[#FF0000] text-sm">open_in_new</span>
+</div>
+<div class="p-3 hover:bg-[#2E2E2E] transition-colors group flex items-center gap-4">
+<span class="font-terminal-data text-[10px] text-zinc-600">14:45:21</span>
+<div class="w-2 h-2 rounded-full bg-zinc-600"></div>
+<span class="font-terminal-data text-[12px] text-zinc-300 flex-1"><span class="text-white font-bold">OPERATOR_01</span> LOGGED_IN: [TERM_04]</span>
+<span class="material-symbols-outlined text-zinc-700 group-hover:text-[#FF0000] text-sm">open_in_new</span>
+</div>
+<div class="p-3 hover:bg-[#2E2E2E] transition-colors group flex items-center gap-4">
+<span class="font-terminal-data text-[10px] text-zinc-600">14:42:00</span>
+<div class="w-2 h-2 rounded-full bg-[#FF0000]"></div>
+<span class="font-terminal-data text-[12px] text-zinc-300 flex-1"><span class="text-white font-bold">SYSTEM</span> ALERT: [UNUSUAL_TRAFFIC_DETECTED_NODE_ALPHA]</span>
+<span class="material-symbols-outlined text-zinc-700 group-hover:text-[#FF0000] text-sm">open_in_new</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Global System Status Ticker -->
+<div class="bg-[#0D0D0D] border border-[#2E2E2E] h-8 flex items-center overflow-hidden whitespace-nowrap">
+<div class="flex gap-8 animate-pulse">
+<span class="font-terminal-data text-[10px] text-[#FF0000] uppercase">UPLINK_STABLE</span>
+<span class="font-terminal-data text-[10px] text-zinc-500">PACKET_LOSS: 0.00%</span>
+<span class="font-terminal-data text-[10px] text-zinc-500">0x4F 0x6E 0x20 0x54 0x61 0x72 0x67 0x65 0x74</span>
+<span class="font-terminal-data text-[10px] text-[#FF0000] uppercase">ENCRYPTION: AES-256-GCM</span>
+<span class="font-terminal-data text-[10px] text-zinc-500">CPU_TEMP: 42.5C</span>
+<span class="font-terminal-data text-[10px] text-zinc-500">THREAT_LEVEL: ELEVATED</span>
+<span class="font-terminal-data text-[10px] text-[#FF0000] uppercase">UPTIME: 429:12:05</span>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Footer -->
+<footer class="flex justify-between items-center px-6 py-2 w-full bg-[#0D0D0D] border-t border-[#2E2E2E] fixed bottom-0 z-50">
+<span class="font-mono text-[8px] uppercase text-zinc-600">© 2024 CYBERSHIELD // SECURE_OPERATIONS_CENTER</span>
+<div class="flex gap-6">
+<a class="font-mono text-[8px] uppercase text-zinc-700 hover:text-[#FF0000]" href="#">Kernel Logs</a>
+<a class="font-mono text-[8px] uppercase text-zinc-700 hover:text-[#FF0000]" href="#">Privacy Protocol</a>
+<a class="font-mono text-[8px] uppercase text-zinc-700 hover:text-[#FF0000]" href="#">Override</a>
+<a class="font-mono text-[8px] uppercase text-zinc-700 hover:text-[#FF0000]" href="#">Support</a>
+</div>
+</footer>
+</body></html>

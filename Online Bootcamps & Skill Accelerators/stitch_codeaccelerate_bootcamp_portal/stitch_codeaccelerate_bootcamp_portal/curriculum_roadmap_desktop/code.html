@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CODE_ACCELERATE.sh - Roadmap Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #08132a;
+            background-image: radial-gradient(#233554 0.5px, transparent 0.5px);
+            background-size: 32px 32px;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(95, 251, 214, 0.2);
+        }
+        .neon-glow-strong {
+            box-shadow: 0 0 20px rgba(95, 251, 214, 0.4);
+        }
+        .scanline {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #5ffbd6, transparent);
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #08132a;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #233554;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "background": "#08132a",
+                      "on-primary-container": "#00725e",
+                      "tertiary-fixed-dim": "#b5c7ed",
+                      "surface-container-low": "#101b33",
+                      "surface-container": "#151f37",
+                      "inverse-surface": "#d9e2ff",
+                      "on-error": "#690005",
+                      "tertiary-fixed": "#d7e3ff",
+                      "surface-tint": "#38debb",
+                      "surface-dim": "#08132a",
+                      "primary-fixed-dim": "#38debb",
+                      "on-primary-fixed-variant": "#005142",
+                      "primary-fixed": "#5ffbd6",
+                      "surface-container-high": "#1f2942",
+                      "on-tertiary-container": "#536586",
+                      "tertiary": "#ffffff",
+                      "on-surface-variant": "#bacac3",
+                      "surface": "#08132a",
+                      "on-secondary": "#233148",
+                      "surface-bright": "#2f3952",
+                      "secondary": "#b9c7e4",
+                      "outline": "#85948e",
+                      "on-tertiary-fixed": "#061b39",
+                      "surface-container-lowest": "#030d25",
+                      "secondary-container": "#3c4962",
+                      "on-error-container": "#ffdad6",
+                      "error": "#ffb4ab",
+                      "on-surface": "#d9e2ff",
+                      "on-tertiary-fixed-variant": "#354767",
+                      "secondary-fixed": "#d6e3ff",
+                      "inverse-on-surface": "#263049",
+                      "surface-container-highest": "#2a344d",
+                      "secondary-fixed-dim": "#b9c7e4",
+                      "inverse-primary": "#006b58",
+                      "on-background": "#d9e2ff",
+                      "error-container": "#93000a",
+                      "surface-variant": "#2a344d",
+                      "on-secondary-fixed-variant": "#39475f",
+                      "tertiary-container": "#d7e3ff",
+                      "on-tertiary": "#1e304f",
+                      "outline-variant": "#3c4a45",
+                      "on-primary-fixed": "#002019",
+                      "primary": "#ffffff",
+                      "on-secondary-container": "#abb9d6",
+                      "primary-container": "#5ffbd6",
+                      "on-secondary-fixed": "#0d1c32",
+                      "on-primary": "#00382d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "margin": "40px"
+              },
+              "fontFamily": {
+                      "h2": ["Space Grotesk"],
+                      "code-sm": ["monospace"],
+                      "h3": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Space Grotesk"],
+                      "h1": ["Space Grotesk"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "h2": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "code-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "h3": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+</head>
+<body class="bg-background text-on-surface custom-scrollbar selection:bg-primary-fixed/30 selection:text-primary-fixed">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-gutter h-16 bg-surface/90 backdrop-blur-md border-b border-surface-variant dark:border-surface-variant shadow-[0_0_15px_rgba(95,251,214,0.1)]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="terminal">terminal</span>
+<h1 class="font-h3 text-h3 font-bold tracking-tighter text-primary-fixed dark:text-primary-fixed">CODE_ACCELERATE.sh</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="font-label-caps text-label-caps text-primary-fixed dark:text-primary-fixed font-bold hover:text-primary-fixed-dim transition-colors" href="#">Roadmap</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Portfolio</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Jobs</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant dark:text-on-surface-variant hover:text-primary-fixed-dim transition-colors" href="#">Lectures</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="hidden sm:flex flex-col items-end mr-2">
+<span class="font-code-sm text-[10px] text-primary-fixed uppercase tracking-widest">Dev Status</span>
+<span class="font-code-sm text-code-sm text-on-surface">Senior Architect</span>
+</div>
+<div class="w-10 h-10 border border-primary-fixed p-0.5">
+<img alt="User" class="w-full h-full object-cover bg-surface-container-highest" data-alt="A professional headshot profile avatar of a software engineer with a futuristic glitch overlay. The character is lit by neon green and blue lights, reflecting a high-tech terminal environment. The background is a dark, out-of-focus server room with faint blue blinking lights. The aesthetic is sharp, digital, and premium." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCDlebPFKps7uJukSDwLQsTYFcLoW-OROXnnyRtXv4wgwnxX1RzdhGiAz6UCtRNVn15mglszlZY7AugTLAzLzX6Ma-4DVrDwzCOvP3l5vV_TepTTd67XU0p099DxvBymnAY9bz4lp3EMjgaWgIpsrdekEJT8WZqf5HfRRl3LAfdj3Z_mF68X0oB1R2fzuugiQETgU6HKSb7L4CuVtcsquEBciwqOu4fWeeuOUr5oQJpj-r3YmHrH1CeCCeJ25ZQT7EYrd9eKCUSxbc"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-20 md:pb-8 px-gutter max-w-container-max mx-auto flex flex-col md:flex-row gap-8">
+<!-- Sidebar: Progress Tracking -->
+<aside class="w-full md:w-80 flex flex-col gap-6 order-2 md:order-1">
+<div class="bg-surface-container border border-surface-variant p-6 relative overflow-hidden">
+<div class="scanline absolute top-0 left-0 w-full opacity-50"></div>
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-6 uppercase">Code-to-Career Status</h2>
+<!-- XP Card -->
+<div class="flex items-end justify-between mb-2">
+<span class="font-h3 text-h3 text-primary-fixed">14,250 <span class="text-label-caps text-on-surface-variant">XP</span></span>
+<span class="font-code-sm text-code-sm text-primary-fixed">Level 42</span>
+</div>
+<div class="w-full h-1 bg-surface-variant mb-8 overflow-hidden">
+<div class="h-full bg-primary-fixed w-3/4 animate-pulse neon-glow"></div>
+</div>
+<!-- Stats Grid -->
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="bg-surface-container-low border border-outline-variant p-4">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">STREAK</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-xl" data-icon="local_fire_department">local_fire_department</span>
+<span class="font-h3 text-h3 leading-none">12</span>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">BADGES</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed text-xl" data-icon="military_tech">military_tech</span>
+<span class="font-h3 text-h3 leading-none">08</span>
+</div>
+</div>
+</div>
+<!-- Skill Tree Minimal -->
+<div class="space-y-4">
+<h3 class="font-label-caps text-[10px] text-on-surface-variant uppercase">Core Competencies</h3>
+<div class="flex flex-wrap gap-2">
+<span class="px-2 py-1 border border-primary-fixed font-code-sm text-code-sm text-primary-fixed">[ TypeScript ]</span>
+<span class="px-2 py-1 border border-primary-fixed font-code-sm text-code-sm text-primary-fixed">[ React ]</span>
+<span class="px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-on-surface-variant opacity-50">[ PostgreSQL ]</span>
+<span class="px-2 py-1 border border-outline-variant font-code-sm text-code-sm text-on-surface-variant opacity-50">[ DevOps ]</span>
+</div>
+</div>
+</div>
+<!-- Terminal Quote -->
+<div class="bg-surface-container-lowest border border-surface-variant p-6 font-code-sm text-code-sm text-on-surface-variant">
+<span class="text-primary-fixed mr-2">$</span> echo "Precision beats speed when speed is sloppy."
+                <div class="mt-4 text-[11px] opacity-40">SYSTEM_RECOVERY_LOADED_99%</div>
+</div>
+</aside>
+<!-- Main Area: Timeline -->
+<section class="flex-1 order-1 md:order-2">
+<div class="flex flex-col gap-8">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
+<div>
+<span class="font-label-caps text-label-caps text-primary-fixed">CURRENT MISSION</span>
+<h2 class="font-h2 text-h2 text-on-surface mt-1 uppercase tracking-tight">Curriculum Roadmap</h2>
+</div>
+<div class="flex gap-4">
+<button class="px-6 py-2 border border-primary-fixed text-primary-fixed font-label-caps text-label-caps hover:bg-primary-fixed/10 transition-all">
+                            SYNC PROGRESS
+                        </button>
+</div>
+</div>
+<!-- Timeline Container -->
+<div class="relative pl-8 md:pl-12 border-l border-surface-variant space-y-12 py-4">
+<!-- Module 1: Foundations -->
+<div class="relative">
+<!-- Connector Dot -->
+<div class="absolute -left-[41px] md:-left-[57px] top-4 w-4 h-4 bg-primary-fixed neon-glow border-4 border-background"></div>
+<div class="bg-surface-container border border-surface-variant p-6 group hover:border-primary-fixed transition-all">
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2 block">MODULE 01</span>
+<h3 class="font-h3 text-h3 text-on-surface mb-2">Computational Foundations</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Master the underlying architecture of modern computing. Logic gates, binary operations, and the memory stack.</p>
+<div class="flex gap-4 items-center">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">JD</div>
+<div class="w-8 h-8 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">MK</div>
+<div class="w-8 h-8 rounded-full border border-background bg-surface-container-highest flex items-center justify-center text-[10px] font-bold">+12</div>
+</div>
+<span class="font-code-sm text-[12px] text-on-surface-variant">Completed by 84% of Seniors</span>
+</div>
+</div>
+<div class="w-full md:w-64 flex flex-col justify-between items-end">
+<span class="font-code-sm text-primary-fixed mb-4">COMPLETED</span>
+<button class="w-full py-3 bg-surface-variant text-on-surface font-label-caps text-label-caps cursor-not-allowed opacity-50 uppercase tracking-widest">
+                                        REVIEW CONTENT
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Module 2: Logic & DSLs -->
+<div class="relative">
+<!-- Connector Dot -->
+<div class="absolute -left-[41px] md:-left-[57px] top-4 w-4 h-4 bg-primary-fixed neon-glow border-4 border-background"></div>
+<div class="bg-surface-container border border-primary-fixed p-6 neon-glow relative overflow-hidden">
+<div class="absolute top-0 right-0 px-3 py-1 bg-primary-fixed text-on-primary font-label-caps text-[10px]">ACTIVE SESSION</div>
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-primary-fixed mb-2 block">MODULE 02</span>
+<h3 class="font-h3 text-h3 text-on-surface mb-2">Logic Control &amp; Advanced DSLs</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-6">Deep dive into functional paradigms and domain-specific languages. Learn to write code that writes code.</p>
+<!-- Micro-Coding Challenge -->
+<div class="bg-background/50 border border-outline-variant p-4">
+<div class="flex items-center gap-3 mb-3">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="code_blocks">code_blocks</span>
+<span class="font-code-sm text-code-sm text-on-surface">Micro-Challenge: Recursion Optimization</span>
+</div>
+<div class="bg-surface-container-highest p-4 rounded-sm font-code-sm text-code-sm text-on-surface-variant mb-4">
+<span class="text-primary-fixed">const</span> optimize = (fn) =&gt; { ... }
+                                        </div>
+<button class="flex items-center gap-2 text-primary-fixed font-label-caps text-label-caps hover:underline">
+                                            LAUNCH EDITOR <span class="material-symbols-outlined text-sm" data-icon="open_in_new">open_in_new</span>
+</button>
+</div>
+</div>
+<div class="w-full md:w-64 flex flex-col justify-end">
+<button class="w-full py-3 bg-primary-fixed text-on-primary font-label-caps text-label-caps uppercase tracking-widest font-bold hover:brightness-110 transition-all shadow-[0_0_15px_rgba(95,251,214,0.3)]">
+                                        CONTINUE MODULE
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Module 3: React & Ecosystem -->
+<div class="relative opacity-60">
+<!-- Connector Dot -->
+<div class="absolute -left-[41px] md:-left-[57px] top-4 w-4 h-4 bg-surface-variant border-4 border-background"></div>
+<div class="bg-surface-container border border-surface-variant p-6 grayscale">
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2 block">MODULE 03</span>
+<h3 class="font-h3 text-h3 text-on-surface mb-2">High-Performance Interfaces</h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4">Advanced React patterns, state orchestration, and rendering engine internals. Beyond standard hooks.</p>
+</div>
+<div class="w-full md:w-64 flex flex-col justify-between items-end">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+<span class="font-code-sm text-code-sm">Prerequisite Missing</span>
+</div>
+<button class="w-full py-3 bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps cursor-not-allowed uppercase tracking-widest">
+                                        LOCKED
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Module 4: Backend -->
+<div class="relative opacity-40">
+<!-- Connector Dot -->
+<div class="absolute -left-[41px] md:-left-[57px] top-4 w-4 h-4 bg-surface-variant border-4 border-background"></div>
+<div class="bg-surface-container border border-surface-variant p-6 grayscale">
+<div class="flex flex-col md:flex-row justify-between gap-6">
+<div class="flex-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant mb-2 block">MODULE 04</span>
+<h3 class="font-h3 text-h3 text-on-surface mb-2">Distributed Systems Architecture</h3>
+<p class="font-body-md text-body-md text-on-surface-variant">Horizontal scaling, message queues, and consensus algorithms for modern cloud-native applications.</p>
+</div>
+<div class="w-full md:w-64 flex flex-col justify-end">
+<button class="w-full py-3 bg-surface-container-high text-on-surface-variant font-label-caps text-label-caps cursor-not-allowed uppercase tracking-widest">
+                                        LOCKED
+                                    </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-4 bg-surface-container border-t border-surface-variant">
+<a class="flex flex-col items-center justify-center text-primary-fixed dark:text-primary-fixed border-t-2 border-primary-fixed pt-1 scale-105 duration-150 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="font-label-caps text-label-caps">Roadmap</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="folder_special">folder_special</span>
+<span class="font-label-caps text-label-caps">Portfolio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="work_outline">work_outline</span>
+<span class="font-label-caps text-label-caps">Jobs</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant opacity-60 hover:bg-surface-bright transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Lectures</span>
+</a>
+</nav>
+<!-- FAB: Only for Home/Main Screen Context -->
+<button class="fixed bottom-24 right-6 md:bottom-10 md:right-10 w-14 h-14 bg-primary-fixed text-on-primary rounded-none flex items-center justify-center neon-glow-strong hover:scale-110 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="rocket_launch" style="font-variation-settings: 'FILL' 1;">rocket_launch</span>
+</button>
+<!-- Grid Background Decoration (Asymmetric) -->
+<div class="fixed top-0 right-0 w-1/3 h-screen pointer-events-none z-[-1] opacity-5">
+<div class="w-full h-full border-l border-b border-primary-fixed"></div>
+</div>
+</body></html>
