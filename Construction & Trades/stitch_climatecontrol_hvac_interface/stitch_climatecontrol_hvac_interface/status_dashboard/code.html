@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClimateControl | System Status Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#ffffff",
+                    "surface-dim": "#cfdaf2",
+                    "outline": "#707785",
+                    "on-tertiary-fixed": "#161c22",
+                    "surface-tint": "#0060ab",
+                    "on-primary-fixed-variant": "#004883",
+                    "on-secondary-container": "#556477",
+                    "inverse-surface": "#263143",
+                    "on-secondary-fixed": "#0d1c2d",
+                    "on-error-container": "#93000a",
+                    "on-secondary": "#ffffff",
+                    "surface": "#f9f9ff",
+                    "surface-container-high": "#dee8ff",
+                    "on-secondary-fixed-variant": "#39485a",
+                    "inverse-primary": "#a3c9ff",
+                    "primary-fixed-dim": "#a3c9ff",
+                    "on-tertiary": "#ffffff",
+                    "on-primary-container": "#fdfcff",
+                    "on-background": "#111c2d",
+                    "primary-fixed": "#d3e3ff",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#d2e1f7",
+                    "tertiary-container": "#6f757c",
+                    "surface-container": "#e7eeff",
+                    "primary": "#005da7",
+                    "secondary-fixed": "#d4e4fa",
+                    "outline-variant": "#c0c7d5",
+                    "on-primary-fixed": "#001c39",
+                    "on-tertiary-fixed-variant": "#41474e",
+                    "background": "#f9f9ff",
+                    "surface-container-highest": "#d8e3fb",
+                    "tertiary": "#565d63",
+                    "on-primary": "#ffffff",
+                    "inverse-on-surface": "#ecf1ff",
+                    "secondary": "#516072",
+                    "on-surface-variant": "#404753",
+                    "error-container": "#ffdad6",
+                    "primary-container": "#0076d1",
+                    "surface-bright": "#f9f9ff",
+                    "on-surface": "#111c2d",
+                    "error": "#ba1a1a",
+                    "surface-container-low": "#f0f3ff",
+                    "tertiary-fixed": "#dde3eb",
+                    "secondary-fixed-dim": "#b9c8de",
+                    "on-tertiary-container": "#fcfcff",
+                    "tertiary-fixed-dim": "#c1c7cf",
+                    "surface-variant": "#d8e3fb"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base-unit": "8px",
+                    "container-max": "1440px",
+                    "margin": "32px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "data-mono": ["Inter"],
+                    "label-sm": ["Inter"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-base": ["Inter"]
+            },
+            "fontSize": {
+                    "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+      .frost-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+      }
+      .frost-border {
+        border-top: 1px solid rgba(255, 255, 255, 0.8);
+        border-left: 1px solid rgba(255, 255, 255, 0.8);
+      }
+      .led-glow-blue {
+        box-shadow: 0 0 12px rgba(0, 118, 209, 0.5);
+        background: radial-gradient(circle at center, #a3c9ff 0%, #0076d1 100%);
+      }
+      .led-glow-green {
+        box-shadow: 0 0 12px rgba(34, 197, 94, 0.5);
+        background: radial-gradient(circle at center, #86efac 0%, #22c55e 100%);
+      }
+      .custom-gradient-bg {
+        background: linear-gradient(135deg, #f0f3ff 0%, #e2e8f0 50%, #d8e3fb 100%);
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-base custom-gradient-bg">
+<!-- TopAppBar Navigation Shell -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 h-16 bg-white/70 backdrop-blur-xl shadow-sm backdrop-saturate-150 border-b border-white/50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="thermostat">thermostat</span>
+<span class="text-lg font-bold tracking-tighter text-slate-900">ClimateControl</span>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-blue-600 font-inter tracking-tight font-semibold flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-sm" data-icon="dashboard">dashboard</span>Status
+            </a>
+<a class="text-slate-500 font-inter tracking-tight font-semibold hover:bg-blue-50/50 transition-colors px-3 py-1 rounded-lg" href="#">Systems</a>
+<a class="text-slate-500 font-inter tracking-tight font-semibold hover:bg-blue-50/50 transition-colors px-3 py-1 rounded-lg" href="#">Air</a>
+<a class="text-slate-500 font-inter tracking-tight font-semibold hover:bg-blue-50/50 transition-colors px-3 py-1 rounded-lg" href="#">Smart</a>
+</nav>
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img alt="Engineer Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a female HVAC systems engineer with a confident expression, set against a clean, modern architectural background with soft blue tones. The lighting is bright and high-key, maintaining a professional and crisp light-mode aesthetic that aligns with a high-end technological brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDljwDWlPcEQAZfYfLnvBiBNTUt4wRykSKfIBG3dxFTq_PeMMwfdU2GYM3Jma9LsXDFpJD5MkyAh3l6eBlKmt1UxiQIhTEMpZaqRDTsguYs1J_kBTE_6nMbkAfQeo__bRaNFs795EHBikFzJ6qnDIk_AAykiDX9CRUkoH9Jgn2JW9Ly_IjzfYumX-ZRDSBAlm9O9kzERmBxa39gNqojrox7LxZHTodNTT5wq9nH4_6lo48mvedesdOdKbXDXyBGhaFxPYvHKkcMKU"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-6 max-w-[1440px] mx-auto">
+<!-- Header & Quick Actions -->
+<section class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+<div>
+<h1 class="text-headline-md font-headline-md text-on-background">System Performance Overview</h1>
+<p class="text-on-surface-variant text-body-base opacity-80">Central Plant - Terminal A Building</p>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-3 rounded-xl font-semibold shadow-lg shadow-primary/20 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98] transition-all frost-border">
+<span class="material-symbols-outlined" data-icon="engineering">engineering</span>
+                Book a Tech
+            </button>
+</section>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Real-time Status Summary Cards -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<!-- Temperature Card -->
+<div class="frost-card p-6 rounded-2xl frost-border relative overflow-hidden group">
+<div class="flex justify-between items-start relative z-10">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-1 uppercase">Ambient Temperature</p>
+<h2 class="text-display-lg font-display-lg text-primary">22.4<span class="text-2xl font-normal opacity-60">°C</span></h2>
+</div>
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-50 text-primary">
+<span class="material-symbols-outlined" data-icon="device_thermostat">device_thermostat</span>
+</div>
+</div>
+<div class="mt-4 flex items-center gap-2 text-label-sm font-data-mono text-green-600 relative z-10">
+<span class="w-2 h-2 rounded-full led-glow-green"></span>
+                        Optimal Range
+                    </div>
+<div class="absolute -right-4 -bottom-4 opacity-5 group-hover:scale-110 transition-transform duration-700">
+<span class="material-symbols-outlined text-[120px]" data-icon="cool_to_dry">cool_to_dry</span>
+</div>
+</div>
+<!-- Humidity Card -->
+<div class="frost-card p-6 rounded-2xl frost-border">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-1 uppercase">Relative Humidity</p>
+<h2 class="text-display-lg font-display-lg text-secondary">48<span class="text-2xl font-normal opacity-60">%</span></h2>
+</div>
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-slate-50 text-secondary">
+<span class="material-symbols-outlined" data-icon="humidity_percentage">humidity_percentage</span>
+</div>
+</div>
+<div class="mt-4 w-full bg-slate-200 h-1.5 rounded-full overflow-hidden">
+<div class="bg-primary h-full rounded-full" style="width: 48%"></div>
+</div>
+</div>
+<!-- Air Quality Card -->
+<div class="frost-card p-6 rounded-2xl frost-border">
+<div class="flex justify-between items-start">
+<div>
+<p class="text-label-sm font-label-sm text-on-surface-variant mb-1 uppercase">Air Quality Index</p>
+<h2 class="text-display-lg font-display-lg text-primary">12<span class="text-2xl font-normal opacity-60"> AQI</span></h2>
+</div>
+<div class="w-10 h-10 rounded-full flex items-center justify-center bg-blue-50 text-primary">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+</div>
+</div>
+<p class="mt-4 text-label-sm text-on-surface-variant">Exceptional particulate filtration active.</p>
+</div>
+</div>
+<!-- Main Interactive Chart Card -->
+<div class="md:col-span-8">
+<div class="frost-card p-8 rounded-3xl frost-border h-full flex flex-col">
+<div class="flex justify-between items-center mb-10">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">System Efficiency</h3>
+<p class="text-label-sm text-on-surface-variant">Real-time load balancing and power consumption</p>
+</div>
+<div class="flex bg-white/50 p-1 rounded-xl border border-white/40">
+<button class="px-4 py-1.5 rounded-lg text-label-sm font-semibold bg-white shadow-sm text-primary">Real-time</button>
+<button class="px-4 py-1.5 rounded-lg text-label-sm font-semibold text-on-surface-variant hover:bg-white/40">History</button>
+</div>
+</div>
+<!-- Line Chart Simulation -->
+<div class="flex-grow flex items-end justify-between gap-1 min-h-[300px] relative pb-8">
+<!-- Grid Lines -->
+<div class="absolute inset-0 flex flex-col justify-between pointer-events-none opacity-10">
+<div class="border-b border-slate-900 w-full"></div>
+<div class="border-b border-slate-900 w-full"></div>
+<div class="border-b border-slate-900 w-full"></div>
+<div class="border-b border-slate-900 w-full"></div>
+</div>
+<!-- Stylized SVG Chart Path -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none" preserveaspectratio="none" viewbox="0 0 1000 300">
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#0076d1" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#0076d1" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path d="M0,250 Q100,220 200,240 T400,180 T600,200 T800,120 T1000,150 L1000,300 L0,300 Z" fill="url(#chartGradient)"></path>
+<path d="M0,250 Q100,220 200,240 T400,180 T600,200 T800,120 T1000,150" fill="none" stroke="#0076d1" stroke-width="2.5"></path>
+<!-- Active Point Glow -->
+<circle cx="800" cy="120" fill="#0076d1" r="6"></circle>
+<circle cx="800" cy="120" fill="#0076d1" fill-opacity="0.2" r="12"></circle>
+</svg>
+<!-- Chart X-Axis Labels -->
+<div class="absolute bottom-0 w-full flex justify-between text-[10px] font-data-mono text-on-surface-variant uppercase tracking-widest px-1">
+<span>08:00 AM</span>
+<span>10:00 AM</span>
+<span>12:00 PM</span>
+<span>02:00 PM</span>
+<span>04:00 PM</span>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-slate-200/50 flex flex-wrap gap-8">
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-semibold">Active Load</p>
+<p class="text-data-mono font-data-mono">82% Capacity</p>
+</div>
+</div>
+<div class="flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<div>
+<p class="text-[10px] text-on-surface-variant uppercase font-semibold">Eco Savings</p>
+<p class="text-data-mono font-data-mono">14.2 kWh</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Maintenance Status Detail -->
+<div class="md:col-span-12">
+<div class="frost-card p-6 rounded-2xl frost-border flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-xl bg-green-50 flex items-center justify-center">
+<span class="material-symbols-outlined text-green-600" data-icon="verified">verified</span>
+</div>
+<div>
+<h4 class="font-semibold text-on-surface">Compressor Reliability Status</h4>
+<p class="text-label-sm text-on-surface-variant">Last checked 2 hours ago. All components performing within spec.</p>
+</div>
+</div>
+<div class="flex gap-4 w-full md:w-auto">
+<div class="flex-grow md:flex-none px-4 py-2 bg-white/40 rounded-lg border border-white/60">
+<p class="text-[10px] uppercase font-bold text-on-surface-variant">Next Inspection</p>
+<p class="text-data-mono">Oct 24, 2023</p>
+</div>
+<button class="flex-grow md:flex-none bg-white text-primary px-6 py-2 rounded-lg text-label-sm font-bold border border-primary/20 hover:bg-primary hover:text-white transition-all">
+                            View Log
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-3 pb-6 bg-white/80 backdrop-blur-2xl shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-2xl border-t border-white/50 md:hidden">
+<a class="flex flex-col items-center justify-center text-blue-600 bg-blue-50/50 rounded-xl px-3 py-1 scale-95 duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest">Status</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="hvac">hvac</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest">Systems</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="air_purifier_gen">air_purifier_gen</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest">Air</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest">Smart</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest">Service</span>
+</a>
+</nav>
+</body></html>

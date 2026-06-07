@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ClimateControl | Smart Building Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#cfdaf2",
+                        "outline": "#707785",
+                        "on-tertiary-fixed": "#161c22",
+                        "surface-tint": "#0060ab",
+                        "on-primary-fixed-variant": "#004883",
+                        "on-secondary-container": "#556477",
+                        "inverse-surface": "#263143",
+                        "on-secondary-fixed": "#0d1c2d",
+                        "on-error-container": "#93000a",
+                        "on-secondary": "#ffffff",
+                        "surface": "#f9f9ff",
+                        "surface-container-high": "#dee8ff",
+                        "on-secondary-fixed-variant": "#39485a",
+                        "inverse-primary": "#a3c9ff",
+                        "primary-fixed-dim": "#a3c9ff",
+                        "on-tertiary": "#ffffff",
+                        "on-primary-container": "#fdfcff",
+                        "on-background": "#111c2d",
+                        "primary-fixed": "#d3e3ff",
+                        "on-error": "#ffffff",
+                        "secondary-container": "#d2e1f7",
+                        "tertiary-container": "#6f757c",
+                        "surface-container": "#e7eeff",
+                        "primary": "#005da7",
+                        "secondary-fixed": "#d4e4fa",
+                        "outline-variant": "#c0c7d5",
+                        "on-primary-fixed": "#001c39",
+                        "on-tertiary-fixed-variant": "#41474e",
+                        "background": "#f9f9ff",
+                        "surface-container-highest": "#d8e3fb",
+                        "tertiary": "#565d63",
+                        "on-primary": "#ffffff",
+                        "inverse-on-surface": "#ecf1ff",
+                        "secondary": "#516072",
+                        "on-surface-variant": "#404753",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#0076d1",
+                        "surface-bright": "#f9f9ff",
+                        "on-surface": "#111c2d",
+                        "error": "#ba1a1a",
+                        "surface-container-low": "#f0f3ff",
+                        "tertiary-fixed": "#dde3eb",
+                        "secondary-fixed-dim": "#b9c8de",
+                        "on-tertiary-container": "#fcfcff",
+                        "tertiary-fixed-dim": "#c1c7cf",
+                        "surface-variant": "#d8e3fb"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base-unit": "8px",
+                        "container-max": "1440px",
+                        "margin": "32px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .frost-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+        }
+        .frost-border-l-t {
+            border-left: 1px solid rgba(255, 255, 255, 0.8);
+            border-top: 1px solid rgba(255, 255, 255, 0.8);
+        }
+        .led-glow-blue {
+            box-shadow: 0 0 12px rgba(0, 96, 171, 0.6);
+        }
+        .led-glow-amber {
+            box-shadow: 0 0 12px rgba(255, 191, 0, 0.6);
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: #d8e3fb;
+            height: 4px;
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 18px;
+            width: 18px;
+            border-radius: 50%;
+            background: #516072;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-base text-on-surface min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-6 h-16 bg-white/70 backdrop-blur-xl border-b border-white/50 shadow-sm backdrop-saturate-150">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-600" data-icon="thermostat">thermostat</span>
+<h1 class="text-lg font-bold tracking-tighter text-slate-900">ClimateControl</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-slate-500 hover:bg-blue-50/50 transition-colors px-3 py-1 rounded-lg text-sm font-medium" href="#">Dashboard</a>
+<a class="text-blue-600 font-semibold text-sm" href="#">Smart Integration</a>
+<a class="text-slate-500 hover:bg-blue-50/50 transition-colors px-3 py-1 rounded-lg text-sm font-medium" href="#">History</a>
+</nav>
+<div class="h-8 w-8 rounded-full bg-slate-200 border border-white overflow-hidden">
+<img alt="Engineer Profile" class="w-full h-full object-cover" data-alt="A professional portrait of a female HVAC engineer in a high-tech facility. She is wearing a modern uniform and smiling confidently. The background shows a clean, brightly lit industrial environment with glass panels and soft blue ambient lighting, maintaining a premium light-mode aesthetic and professional atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-HNsS1N1S3P_XqheC9mPdTPimIEOYijCbl2MWM8HSzfdgveyfmw_BocDVi1djXHzgr-iFZIEOsafttOry5GLY00_BZ2iBIn2gr0if9oNWYkBu78SXh7Lw29ketryqArbVPwsqrv-IIFtXcKK9iW2fam01mBADo7xpnVGUTgHaNsrcKyg6P7o-VLOds5gAGuxx5fyQpDBOiokTp2FUaknHJ9v6sheoiu-aI1XAPfiP-_yps89gOzj3flQa2Su9Tb1PGQVrTQSiajE"/>
+</div>
+</div>
+</header>
+<main class="pt-24 px-6 max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-10">
+<h2 class="font-display-lg text-display-lg text-on-background mb-2">Smart Building Hub</h2>
+<p class="text-on-surface-variant max-w-2xl">High-precision automation controls for facility-wide energy optimization and occupancy-driven climate regulation.</p>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Energy Optimization Card -->
+<div class="md:col-span-8 frost-card rounded-2xl p-8 frost-border-l-t">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-blue-600" data-icon="energy_savings_leaf">energy_savings_leaf</span>
+                            Energy Optimization
+                        </h3>
+<p class="text-label-sm text-on-surface-variant">Active Load Balancing Algorithm v4.2</p>
+</div>
+<div class="flex gap-2">
+<span class="h-3 w-3 rounded-full bg-blue-500 led-glow-blue"></span>
+<span class="text-data-mono text-data-mono text-primary">OPTIMIZING</span>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+<div class="space-y-6">
+<div class="p-4 rounded-xl bg-surface-container-low border border-white/40">
+<label class="text-label-sm text-on-secondary-fixed-variant uppercase tracking-wider block mb-4">Peak Demand Limiter</label>
+<input class="w-full" max="100" min="0" type="range" value="72"/>
+<div class="flex justify-between mt-2 text-data-mono text-on-surface-variant">
+<span>0 kW</span>
+<span class="text-primary">720 kW</span>
+<span>1000 kW</span>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-surface-container-low border border-white/40">
+<label class="text-label-sm text-on-secondary-fixed-variant uppercase tracking-wider block mb-4">Thermal Storage Discharge</label>
+<input class="w-full" max="100" min="0" type="range" value="45"/>
+<div class="flex justify-between mt-2 text-data-mono text-on-surface-variant">
+<span>Manual</span>
+<span class="text-primary">Auto (45%)</span>
+<span>Max</span>
+</div>
+</div>
+</div>
+<div class="relative h-48 rounded-xl overflow-hidden bg-slate-100 border border-white/50">
+<img alt="Energy Usage Graph" class="w-full h-full object-cover" data-alt="A clean, minimalist data visualization chart showing smooth, flowing line weights of light blue and slate grey. The chart represents building energy consumption over a 24-hour period. The background is a crisp, off-white glassmorphic surface with a subtle grid. The overall lighting is bright and technical, evoking a sense of calm efficiency." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5RaChF4lZdMD4Cnot0YXgDOGOn7xWva3UUSMXxK4nvZ1X4WiCosnci0r2kb8itrvUl2Injs0fAE_busvura9DScLQJCtkfuYWsceJq-SnkZW9MVKDCY5XhtJMh7vBFmc8xczqddoyzBY17k9ZIqlu_8wbiMGtlurGhcrlDiKVycLYvRck5ljEXQdBKbQqrerXRp0PO1I7lhqzTbnIwHpMpgLBMZZMuoxarhw_8uTLBudT5BgXvNavDKivKQQ-spd_pjuqC9NREdI"/>
+<div class="absolute inset-0 bg-gradient-to-t from-white/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="text-label-sm font-bold text-on-surface">Live Consumption Feed</p>
+<p class="text-data-mono text-xs text-on-surface-variant">Real-time telemetry from Main Substation</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Occupancy Stats Card -->
+<div class="md:col-span-4 frost-card rounded-2xl p-8 frost-border-l-t flex flex-col justify-between">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-6">Occupancy</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-center p-3 bg-white/40 rounded-lg border border-white/60">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                                North Wing
+                            </span>
+<span class="font-data-mono text-primary">84%</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/40 rounded-lg border border-white/60">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="groups">groups</span>
+                                South Wing
+                            </span>
+<span class="font-data-mono text-primary">31%</span>
+</div>
+<div class="flex justify-between items-center p-3 bg-white/40 rounded-lg border border-white/60">
+<span class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-sm" data-icon="meeting_room">meeting_room</span>
+                                Conference C
+                            </span>
+<span class="font-data-mono text-error">FULL</span>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-6 border-t border-slate-200/50">
+<button class="w-full py-3 bg-primary text-white rounded-xl font-medium shadow-lg shadow-blue-200 flex items-center justify-center gap-2 hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-sm" data-icon="sensors">sensors</span>
+                        Recalibrate Sensors
+                    </button>
+</div>
+</div>
+<!-- Global Scheduling Bento Item -->
+<div class="md:col-span-6 frost-card rounded-2xl p-8 frost-border-l-t">
+<h3 class="font-headline-md text-headline-md mb-6">Master Schedule</h3>
+<div class="space-y-4">
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-blue-600" data-icon="wb_sunny">wb_sunny</span>
+</div>
+<div>
+<p class="font-semibold">Business Hours</p>
+<p class="text-xs text-on-surface-variant">08:00 — 18:00</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-4">
+<div class="h-10 w-10 rounded-full bg-white flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-slate-400" data-icon="dark_mode">dark_mode</span>
+</div>
+<div>
+<p class="font-semibold">Economy Mode</p>
+<p class="text-xs text-on-surface-variant">18:00 — 08:00</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-slate-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Automation Profiles -->
+<div class="md:col-span-6 frost-card rounded-2xl p-8 frost-border-l-t">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-headline-md text-headline-md">Automation Profiles</h3>
+<button class="text-primary font-medium text-sm hover:underline">Manage All</button>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 rounded-2xl bg-primary-container/10 border-2 border-primary/20 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-primary mb-2 text-3xl" data-icon="ac_unit">ac_unit</span>
+<p class="font-bold text-on-surface">Frost Guard</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Critical Protection</p>
+</div>
+<div class="p-4 rounded-2xl bg-white/40 border border-white/60 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-slate-400 mb-2 text-3xl" data-icon="eco">eco</span>
+<p class="font-bold text-on-surface">LEED Gold</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Efficiency First</p>
+</div>
+<div class="p-4 rounded-2xl bg-white/40 border border-white/60 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-slate-400 mb-2 text-3xl" data-icon="bolt">bolt</span>
+<p class="font-bold text-on-surface">Peak Saver</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Cost Reduction</p>
+</div>
+<div class="p-4 rounded-2xl bg-white/40 border border-white/60 flex flex-col items-center text-center">
+<span class="material-symbols-outlined text-slate-400 mb-2 text-3xl" data-icon="air">air</span>
+<p class="font-bold text-on-surface">Purification</p>
+<p class="text-[10px] text-on-surface-variant uppercase">AQI Focused</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Toast/Status Update -->
+<div class="fixed top-20 right-6 z-40 max-w-sm">
+<div class="frost-card rounded-xl p-4 frost-border-l-t flex items-start gap-4 shadow-xl border-l-4 border-l-amber-400">
+<div class="p-2 bg-amber-50 rounded-lg">
+<span class="material-symbols-outlined text-amber-500" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="font-bold text-sm text-on-surface">Load Variance Detected</p>
+<p class="text-xs text-on-surface-variant">Chiller 3 power consumption is 15% above expected baseline for current occupancy.</p>
+<div class="mt-2 flex gap-2">
+<button class="text-xs font-bold text-primary hover:bg-primary/5 px-2 py-1 rounded">Investigate</button>
+<button class="text-xs font-bold text-on-surface-variant hover:bg-slate-100 px-2 py-1 rounded">Dismiss</button>
+</div>
+</div>
+</div>
+</div>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pt-3 pb-6 bg-white/80 backdrop-blur-2xl rounded-t-2xl border-t border-white/50 shadow-[0_-4px_20px_rgba(0,0,0,0.05)]">
+<div class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest mt-1">Status</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="hvac">hvac</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest mt-1">Systems</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="air_purifier_gen">air_purifier_gen</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest mt-1">Air</span>
+</div>
+<div class="flex flex-col items-center justify-center text-blue-600 bg-blue-50/50 rounded-xl px-3 py-1">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest mt-1">Smart</span>
+</div>
+<div class="flex flex-col items-center justify-center text-slate-400 hover:text-blue-500 transition-colors">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="text-[10px] font-medium font-inter uppercase tracking-widest mt-1">Service</span>
+</div>
+</nav>
+</body></html>
