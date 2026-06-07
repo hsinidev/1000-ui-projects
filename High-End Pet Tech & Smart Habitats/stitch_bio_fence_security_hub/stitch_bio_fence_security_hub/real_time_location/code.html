@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIO-FENCE | Real-time Location</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Geist:wght@100;300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .gps-pulse {
+            position: relative;
+        }
+        .gps-pulse::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            background: #ffb693;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.5;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-error": "#690005",
+                "outline-variant": "#5a4136",
+                "secondary": "#c1c8ca",
+                "primary-container": "#ff6b00",
+                "secondary-fixed": "#dde4e6",
+                "surface-tint": "#ffb693",
+                "on-tertiary-fixed-variant": "#3f4758",
+                "surface-dim": "#0d141b",
+                "primary-fixed": "#ffdbcc",
+                "on-secondary-container": "#b2babc",
+                "outline": "#a98a7d",
+                "on-primary-fixed": "#351000",
+                "primary-fixed-dim": "#ffb693",
+                "surface-container-highest": "#2e353e",
+                "on-secondary": "#2b3234",
+                "secondary-container": "#434a4c",
+                "on-error-container": "#ffdad6",
+                "primary": "#ffb693",
+                "tertiary-fixed-dim": "#bfc6db",
+                "error": "#ffb4ab",
+                "surface-container-high": "#242b33",
+                "surface-variant": "#2e353e",
+                "surface": "#0d141b",
+                "on-primary": "#561f00",
+                "on-background": "#dce3ee",
+                "on-tertiary": "#293041",
+                "tertiary-container": "#9199ad",
+                "inverse-primary": "#a04100",
+                "on-secondary-fixed": "#161d1f",
+                "surface-container-lowest": "#080f16",
+                "inverse-on-surface": "#2a3139",
+                "tertiary-fixed": "#dbe2f8",
+                "surface-container-low": "#151c24",
+                "on-primary-fixed-variant": "#7a3000",
+                "background": "#0d141b",
+                "surface-bright": "#333a42",
+                "on-secondary-fixed-variant": "#41484a",
+                "error-container": "#93000a",
+                "inverse-surface": "#dce3ee",
+                "tertiary": "#bfc6db",
+                "on-tertiary-container": "#2a3142",
+                "secondary-fixed-dim": "#c1c8ca",
+                "on-primary-container": "#572000",
+                "on-tertiary-fixed": "#141c2b",
+                "on-surface": "#dce3ee",
+                "on-surface-variant": "#e2bfb0",
+                "surface-container": "#192028"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "margin": "32px",
+                "container-max": "1440px",
+                "card-padding": "24px",
+                "gutter": "24px",
+                "unit": "4px"
+              },
+              "fontFamily": {
+                "headline-md": ["Space Grotesk"],
+                "label-xs": ["Geist"],
+                "data-mono": ["Geist"],
+                "title-sm": ["Space Grotesk"],
+                "display-lg": ["Space Grotesk"],
+                "body-md": ["Geist"]
+              },
+              "fontSize": {
+                "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "label-xs": ["12px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                "title-sm": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            }
+          }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary/30 selection:text-primary overflow-hidden">
+<!-- Top Navigation -->
+<nav class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin py-4 border-b-2 border-outline-variant bg-surface/90 backdrop-blur-md">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<span class="text-headline-md font-headline-md tracking-tighter text-primary">BIO-FENCE</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Boundary</a>
+<a class="text-primary font-bold hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Location</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Activity</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Emergency</a>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+</div>
+</nav>
+<!-- Main Content: GPS Canvas -->
+<main class="relative h-screen w-full pt-[80px] pb-[100px]">
+<!-- Map Interface -->
+<div class="absolute inset-0 bg-[#0a1221] overflow-hidden">
+<img class="w-full h-full object-cover opacity-40 grayscale" data-alt="A sophisticated dark mode vector map of a dense urban residential neighborhood. The map features high-contrast lines for streets in graphite and midnight blue tones. Glowing safety orange vector lines define a circular security perimeter. The aesthetic is clinical and technical, resembling a high-security drone surveillance interface with deep shadows and sharp, precise geometric overlays." data-location="San Francisco, CA" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWh3WNVy1-40qVfuH-E8XsfUT_bjdA9Kfqqup2MZkyKjfAI9CwEQlyup6J_BAk6MvYAJKuUHLNGJZCGSpGDAm0cm6BO0T-BAqUuRr2tOphoKwFsIteeVCZSd0teP3WGik_KF745-oUzRc7q2cCL_WpJI85FPXi8hJqjsz6ex8OXUwqV4QUJHoerD3NFMeXZnvKmO54mWtl5MGGp1Cx30H0GW1l8_xEdGKw2-duwKiEyC5XJEZPbfKsdR0wgnv7EcZrn44m795woQCg"/>
+<!-- Fence Boundary Visualization -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border-4 border-primary/20 rounded-full flex items-center justify-center">
+<div class="w-[580px] h-[580px] border border-primary/40 rounded-full border-dashed"></div>
+</div>
+<!-- Glowing GPS Pulse Marker -->
+<div class="absolute top-[42%] left-[48%] -translate-x-1/2 -translate-y-1/2">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-20 h-20 bg-primary/20 rounded-full animate-ping"></div>
+<div class="absolute w-12 h-12 bg-primary/40 rounded-full animate-pulse"></div>
+<div class="relative z-10 w-8 h-8 bg-primary rounded-full border-2 border-on-primary shadow-[0_0_15px_#ffb693] flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary text-[18px]" style="font-variation-settings: 'FILL' 1;">pets</span>
+</div>
+</div>
+</div>
+<!-- Overlay: Technical Readouts (Asymmetric Layout) -->
+<div class="absolute top-margin left-margin z-20 space-y-4 pt-20">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md p-card-padding border border-outline-variant rounded-xl max-w-[240px]">
+<p class="text-label-xs font-label-xs text-primary mb-2 uppercase tracking-widest">Target ID</p>
+<p class="text-title-sm font-title-sm text-on-background">APOLLO_772</p>
+<div class="mt-4 pt-4 border-t border-outline-variant/30">
+<p class="text-label-xs font-label-xs text-secondary/60 mb-1">COORDINATES</p>
+<p class="text-data-mono font-data-mono text-on-background tracking-tight">37.7749° N</p>
+<p class="text-data-mono font-data-mono text-on-background tracking-tight">122.4194° W</p>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-md p-4 border border-outline-variant rounded-lg inline-flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-[20px]" data-icon="straighten">straighten</span>
+<div class="flex flex-col">
+<span class="text-label-xs font-label-xs text-secondary/60">DISTANCE FROM HUB</span>
+<span class="text-data-mono font-data-mono text-on-background">142.5 METERS</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Status Dashboard -->
+<section class="absolute bottom-margin left-1/2 -translate-x-1/2 w-[calc(100%-64px)] max-w-container-max z-30">
+<div class="bg-surface-container-high/90 backdrop-blur-xl border-l-4 border-primary p-card-padding rounded-xl shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+<!-- Status Badge -->
+<div class="flex items-center gap-4 w-full md:w-auto">
+<div class="w-12 h-12 rounded-full bg-primary-container/20 flex items-center justify-center border border-primary/30">
+<span class="material-symbols-outlined text-primary" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div>
+<h2 class="text-title-sm font-title-sm text-on-background">In Safe Zone</h2>
+<p class="text-body-md font-body-md text-secondary/80">Last update: 2s ago</p>
+</div>
+</div>
+<!-- Telemetry Chips -->
+<div class="flex flex-wrap gap-4 items-center justify-center md:justify-start">
+<div class="bg-surface-container-highest px-4 py-3 rounded-lg border border-outline-variant flex items-center gap-3 min-w-[140px]">
+<span class="material-symbols-outlined text-secondary" data-icon="signal_wifi_4_bar">signal_wifi_4_bar</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-label-xs text-secondary/50 uppercase">Network</span>
+<span class="text-data-mono font-data-mono text-on-background">EXCELLENT</span>
+</div>
+</div>
+<div class="bg-surface-container-highest px-4 py-3 rounded-lg border border-outline-variant flex items-center gap-3 min-w-[140px]">
+<span class="material-symbols-outlined text-primary" data-icon="battery_charging_80">battery_charging_80</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-label-xs text-secondary/50 uppercase">Battery</span>
+<span class="text-data-mono font-data-mono text-on-background">84%</span>
+</div>
+</div>
+<div class="bg-surface-container-highest px-4 py-3 rounded-lg border border-outline-variant flex items-center gap-3 min-w-[140px]">
+<span class="material-symbols-outlined text-secondary" data-icon="speed">speed</span>
+<div class="flex flex-col">
+<span class="text-[10px] font-label-xs text-secondary/50 uppercase">Velocity</span>
+<span class="text-data-mono font-data-mono text-on-background">0.4 M/S</span>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="bg-primary text-on-primary px-8 py-3 rounded-lg font-title-sm hover:scale-95 active:scale-90 transition-transform flex items-center gap-2 group">
+<span>FENCE SETTINGS</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="settings">settings</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Bottom Navigation Shell (Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface-container-lowest/80 dark:bg-surface-container-lowest/80 border-t border-outline-variant backdrop-blur-xl shadow-[0_-4px_20px_rgba(255,182,147,0.1)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="polyline">polyline</span>
+<span class="text-label-xs font-label-xs">Boundary</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 ring-1 ring-primary/50 scale-90 duration-150 ease-in-out" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="location_searching">location_searching</span>
+<span class="text-label-xs font-label-xs">Location</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="monitoring">monitoring</span>
+<span class="text-label-xs font-label-xs">Activity</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="emergency_home">emergency_home</span>
+<span class="text-label-xs font-label-xs">Emergency</span>
+</a>
+</footer>
+</body></html>

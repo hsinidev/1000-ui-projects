@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAULT-SECURE // Performance Benchmarks</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "outline": "#908f9d",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-bright": "#393939",
+                        "on-surface-variant": "#c6c5d4",
+                        "background": "#131313",
+                        "surface-dim": "#131313",
+                        "on-secondary-fixed": "#000767",
+                        "secondary-fixed-dim": "#bdc2ff",
+                        "surface": "#131313",
+                        "inverse-primary": "#4955b3",
+                        "surface-variant": "#353535",
+                        "on-surface": "#e2e2e2",
+                        "on-primary-fixed-variant": "#303c9a",
+                        "outline-variant": "#454652",
+                        "on-secondary": "#1b247f",
+                        "tertiary-container": "#3f403f",
+                        "error-container": "#93000a",
+                        "on-tertiary-container": "#acabaa",
+                        "surface-container-low": "#1b1b1b",
+                        "secondary-container": "#343d96",
+                        "secondary": "#bdc2ff",
+                        "tertiary": "#c7c6c4",
+                        "primary-container": "#283593",
+                        "error": "#ffb4ab",
+                        "surface-container": "#1f1f1f",
+                        "on-tertiary-fixed": "#1b1c1b",
+                        "inverse-on-surface": "#303030",
+                        "on-secondary-fixed-variant": "#343d96",
+                        "on-secondary-container": "#a8afff",
+                        "tertiary-fixed-dim": "#c7c6c4",
+                        "on-primary-container": "#9aa5ff",
+                        "tertiary-fixed": "#e3e2e0",
+                        "on-primary-fixed": "#000c62",
+                        "surface-tint": "#bcc2ff",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-highest": "#353535",
+                        "on-background": "#e2e2e2",
+                        "on-tertiary": "#303130",
+                        "primary-fixed": "#dfe0ff",
+                        "inverse-surface": "#e2e2e2",
+                        "on-tertiary-fixed-variant": "#464746",
+                        "primary": "#bcc2ff",
+                        "on-primary": "#152383",
+                        "secondary-fixed": "#e0e0ff",
+                        "primary-fixed-dim": "#bcc2ff",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xl": "80px",
+                        "sm": "12px",
+                        "border-thick": "2px",
+                        "xs": "4px",
+                        "border-heavy": "3px",
+                        "md": "24px",
+                        "lg": "48px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Inter"],
+                        "display-lg": ["Inter"],
+                        "data-spec": ["monospace"],
+                        "headline-md": ["Inter"],
+                        "body-base": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-spec": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .brushed-metal {
+            background: linear-gradient(135deg, rgba(225, 225, 225, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+        }
+        .led-indicator {
+            box-shadow: inset 0 0 4px rgba(188, 194, 255, 0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-background dark:bg-background border-b-border-heavy border-tertiary dark:border-tertiary flex justify-between items-center px-md py-sm w-full">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-display-lg text-headline-md tracking-widest text-primary uppercase">VAULT-SECURE</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md">
+<span class="font-label-caps text-label-caps text-primary cursor-pointer hover:bg-primary-container hover:text-on-primary-container px-sm py-xs transition-colors duration-50">DASHBOARD</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant cursor-pointer hover:bg-primary-container hover:text-on-primary-container px-sm py-xs transition-colors duration-50">NETWORK</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant cursor-pointer hover:bg-primary-container hover:text-on-primary-container px-sm py-xs transition-colors duration-50">LOGS</span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<div class="flex h-[calc(100vh-64px)] overflow-hidden">
+<!-- NavigationDrawer (Persistent Side Nav) -->
+<aside class="hidden lg:flex flex-col h-full py-md px-sm bg-surface-container dark:bg-surface-container border-r-border-heavy border-tertiary h-full w-80">
+<div class="flex flex-col gap-xs mb-lg">
+<div class="flex items-center gap-sm px-sm py-md">
+<div class="w-12 h-12 bg-surface-container-high border-border-thick border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="shield_person">shield_person</span>
+</div>
+<div>
+<h2 class="font-headline-md text-primary text-sm uppercase">VAULT_USER_01</h2>
+<p class="font-data-spec text-on-surface-variant text-xs">Tier: Enterprise</p>
+<p class="font-data-spec text-primary text-[10px] uppercase">Status: Secure</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-xs">
+<div class="transition-all duration-50 flex items-center gap-sm px-sm py-base text-primary font-bold border-l-border-heavy border-primary bg-surface-container-high cursor-pointer">
+<span class="material-symbols-outlined" data-icon="sync_alt">sync_alt</span>
+<span class="font-data-spec text-data-spec uppercase">Active Transfers</span>
+</div>
+<div class="transition-all duration-50 flex items-center gap-sm px-sm py-base text-on-surface-variant hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+<span class="font-data-spec text-data-spec uppercase">Hardware Firmware</span>
+</div>
+<div class="transition-all duration-50 flex items-center gap-sm px-sm py-base text-on-surface-variant hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-data-spec text-data-spec uppercase">Security Logs</span>
+</div>
+<div class="mt-lg transition-all duration-50 flex items-center gap-sm px-sm py-base text-on-surface-variant hover:bg-surface-container-highest cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-data-spec text-data-spec uppercase">Logout</span>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto p-md lg:p-lg bg-surface-dim">
+<!-- Bento Grid Header Stats -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-md mb-lg">
+<div class="bg-surface-container border-border-thick border-tertiary p-md brushed-metal relative overflow-hidden">
+<div class="absolute top-2 right-2 w-2 h-2 bg-primary led-indicator"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">GLOBAL THRU-PUT</p>
+<p class="font-display-lg text-primary text-3xl">4.8 <span class="text-lg">GB/s</span></p>
+</div>
+<div class="bg-surface-container border-border-thick border-tertiary p-md brushed-metal">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">IOPS (READ)</p>
+<p class="font-display-lg text-secondary text-3xl">982K</p>
+</div>
+<div class="bg-surface-container border-border-thick border-tertiary p-md brushed-metal">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">IOPS (WRITE)</p>
+<p class="font-display-lg text-on-primary-container text-3xl">740K</p>
+</div>
+<div class="bg-surface-container border-border-thick border-tertiary p-md brushed-metal">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-base">UPTIME STATUS</p>
+<p class="font-data-spec text-primary text-3xl">99.999%</p>
+</div>
+</div>
+<!-- Side-by-Side Charts Section -->
+<div class="grid grid-cols-1 xl:grid-cols-2 gap-lg mb-lg">
+<!-- CFexpress Performance -->
+<div class="bg-surface-container border-border-heavy border-tertiary flex flex-col">
+<div class="p-md border-b-border-thick border-tertiary flex justify-between items-center bg-surface-container-high">
+<h3 class="font-headline-md text-headline-md text-primary uppercase text-sm tracking-widest">CFEXPRESS TYPE B // BUS_01</h3>
+<span class="font-data-spec text-xs text-on-surface-variant">HW_ID: CFX-8829-X</span>
+</div>
+<div class="p-lg flex-1 flex flex-col gap-lg">
+<div class="flex items-end justify-between gap-xs h-48 border-b border-outline-variant pb-base">
+<!-- Visual Chart Mockup using Dividers -->
+<div class="w-full h-24 bg-primary-container relative">
+<div class="absolute inset-0 bg-primary opacity-20 border-t-2 border-primary"></div>
+<div class="absolute -top-6 left-0 font-data-spec text-[10px] text-primary">READ: 1700 MB/s</div>
+</div>
+<div class="w-full h-16 bg-secondary-container relative">
+<div class="absolute inset-0 bg-secondary opacity-20 border-t-2 border-secondary"></div>
+<div class="absolute -top-6 left-0 font-data-spec text-[10px] text-secondary">WRITE: 1450 MB/s</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md font-data-spec text-xs">
+<div class="p-sm bg-surface-container-low border border-outline-variant">
+<span class="text-on-surface-variant block mb-1">TEMP_SENSOR:</span>
+<span class="text-primary">38°C [STABLE]</span>
+</div>
+<div class="p-sm bg-surface-container-low border border-outline-variant">
+<span class="text-on-surface-variant block mb-1">LIFE_REMAINING:</span>
+<span class="text-primary">94.2% [HEALTHY]</span>
+</div>
+</div>
+</div>
+</div>
+<!-- NVMe Performance -->
+<div class="bg-surface-container border-border-heavy border-tertiary flex flex-col">
+<div class="p-md border-b-border-thick border-tertiary flex justify-between items-center bg-surface-container-high">
+<h3 class="font-headline-md text-headline-md text-primary uppercase text-sm tracking-widest">NVME GEN4 // VOL_ROOT</h3>
+<span class="font-data-spec text-xs text-on-surface-variant">HW_ID: NVM-990P-S</span>
+</div>
+<div class="p-lg flex-1 flex flex-col gap-lg">
+<div class="flex items-end justify-between gap-xs h-48 border-b border-outline-variant pb-base">
+<div class="w-full h-40 bg-primary-container relative">
+<div class="absolute inset-0 bg-primary opacity-20 border-t-2 border-primary"></div>
+<div class="absolute -top-6 left-0 font-data-spec text-[10px] text-primary">READ: 7100 MB/s</div>
+</div>
+<div class="w-full h-32 bg-secondary-container relative">
+<div class="absolute inset-0 bg-secondary opacity-20 border-t-2 border-secondary"></div>
+<div class="absolute -top-6 left-0 font-data-spec text-[10px] text-secondary">WRITE: 6800 MB/s</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md font-data-spec text-xs">
+<div class="p-sm bg-surface-container-low border border-outline-variant">
+<span class="text-on-surface-variant block mb-1">TEMP_SENSOR:</span>
+<span class="text-primary">42°C [OPTIMAL]</span>
+</div>
+<div class="p-sm bg-surface-container-low border border-outline-variant">
+<span class="text-on-surface-variant block mb-1">ECC_CHECKS:</span>
+<span class="text-primary">0 ERRORS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Transfer Gauges & Progress -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg">
+<div class="lg:col-span-2 bg-surface-container border-border-heavy border-tertiary p-md">
+<div class="flex items-center justify-between mb-lg">
+<h3 class="font-headline-md text-sm uppercase text-primary">Live Data Pipeline</h3>
+<div class="flex gap-xs">
+<div class="w-3 h-3 bg-primary led-indicator"></div>
+<div class="w-3 h-3 bg-surface-container-highest"></div>
+<div class="w-3 h-3 bg-surface-container-highest"></div>
+</div>
+</div>
+<div class="space-y-lg">
+<div class="space-y-xs">
+<div class="flex justify-between font-data-spec text-xs mb-1">
+<span>INGEST_STREAM_A_001.raw</span>
+<span class="text-primary">78% - 1.2 GB/s</span>
+</div>
+<div class="w-full h-4 bg-surface-container-low border border-outline-variant">
+<div class="h-full bg-primary" style="width: 78%"></div>
+</div>
+</div>
+<div class="space-y-xs">
+<div class="flex justify-between font-data-spec text-xs mb-1">
+<span>ARCHIVE_VOL_Z_INDEX.db</span>
+<span class="text-secondary">42% - 850 MB/s</span>
+</div>
+<div class="w-full h-4 bg-surface-container-low border border-outline-variant">
+<div class="h-full bg-secondary" style="width: 42%"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Hardware Firmware Status (Mini-List) -->
+<div class="bg-surface-container border-border-heavy border-tertiary">
+<div class="p-md bg-surface-container-high border-b-border-thick border-tertiary">
+<h3 class="font-label-caps text-label-caps text-primary">FIRMWARE REVISION</h3>
+</div>
+<div class="p-md space-y-md">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="memory">memory</span>
+<div class="flex-1">
+<p class="font-data-spec text-xs text-on-surface">STORAGE_CONTROLLER</p>
+<p class="font-data-spec text-[10px] text-on-surface-variant">v2.4.11-STABLE</p>
+</div>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="developer_board">developer_board</span>
+<div class="flex-1">
+<p class="font-data-spec text-xs text-on-surface">CRYPT_ACCEL_CHIP</p>
+<p class="font-data-spec text-[10px] text-on-surface-variant">v1.0.04-FIXED</p>
+</div>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-secondary text-xl" data-icon="update">update</span>
+<div class="flex-1">
+<p class="font-data-spec text-xs text-on-surface">INTERFACE_BRIDGE</p>
+<p class="font-data-spec text-[10px] text-secondary">UPDATE_AVAILABLE (v3.0)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Visualization Image Section -->
+<div class="mt-lg border-border-heavy border-tertiary relative h-80 overflow-hidden">
+<img class="w-full h-full object-cover grayscale opacity-60" data-alt="A highly technical visualization of a high-speed data hardware interface with glowing circuit patterns and blue led indicators. The style is industrial brutalism with hard lines and high contrast metallic surfaces. Deep black shadows are contrasted with bright neon blue and silver accents, creating a professional and secure atmosphere. The composition is wide-angled and cinematic, suggesting high performance and absolute reliability." src="https://lh3.googleusercontent.com/aida/ADBb0uhZ-eNM4rs4KZ06nUjRHqj6pcXsLxChx-Zn84627TzL_HN133kVwKcECKy83pv0NKeeBbRy0K2X1yXu09sKkPmxinblF_87FBuejWIs2NxOo08t1UCb5gWcR_HQaux1kNwedBy2MDh_LEMVY9Ij10Pp66VUr5HOoBZQixdllKX-I1z59AsSQUC-vVmyXn5qKNeHtkkH3B1O1TZeolKJzToF3BkLxl2G5rsZd09xffMUbx2sqK8m1P4ApzE"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-md left-md">
+<p class="font-label-caps text-label-caps text-primary bg-background/80 px-sm py-xs border border-primary inline-block">TERMINAL_OUTPUT_01: SYNC_COMPLETE</p>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-stretch h-16 bg-surface-container-lowest dark:bg-surface-container-lowest border-t-border-heavy border-tertiary dark:border-tertiary">
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary p-xs h-full cursor-pointer active:invert">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-label-caps text-label-caps uppercase">Speed</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs h-full cursor-pointer active:invert hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="settings_backup_restore">settings_backup_restore</span>
+<span class="font-label-caps text-label-caps uppercase">Recovery</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs h-full cursor-pointer active:invert hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps uppercase">Matrix</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs h-full cursor-pointer active:invert hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="calculate">calculate</span>
+<span class="font-label-caps text-label-caps uppercase">Calc</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-xs h-full cursor-pointer active:invert hover:bg-surface-container-highest">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-label-caps text-label-caps uppercase">Store</span>
+</div>
+</nav>
+</body></html>

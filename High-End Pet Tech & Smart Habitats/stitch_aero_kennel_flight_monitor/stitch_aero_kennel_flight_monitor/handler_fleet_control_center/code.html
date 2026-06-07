@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Kennel Terminal | Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;900&amp;family=Space+Grotesk:wght@500;600&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-high": "#e6e8ea",
+                      "on-surface-variant": "#44464e",
+                      "on-secondary-fixed-variant": "#574500",
+                      "surface-bright": "#f7f9fb",
+                      "primary": "#00081e",
+                      "outline-variant": "#c5c6cf",
+                      "tertiary-container": "#1b2128",
+                      "on-primary-container": "#7687b2",
+                      "surface-tint": "#4c5e86",
+                      "on-primary-fixed-variant": "#34466d",
+                      "surface-container-low": "#f2f4f6",
+                      "surface-container": "#eceef0",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e0e3e5",
+                      "primary-fixed": "#d9e2ff",
+                      "error": "#ba1a1a",
+                      "on-tertiary": "#ffffff",
+                      "on-secondary": "#ffffff",
+                      "surface-variant": "#e0e3e5",
+                      "surface": "#f7f9fb",
+                      "tertiary-fixed-dim": "#c1c7d0",
+                      "on-tertiary-fixed": "#161c23",
+                      "surface-container-lowest": "#ffffff",
+                      "on-tertiary-fixed-variant": "#42474f",
+                      "on-primary": "#ffffff",
+                      "primary-fixed-dim": "#b4c6f4",
+                      "on-tertiary-container": "#838891",
+                      "surface-dim": "#d8dadc",
+                      "inverse-primary": "#b4c6f4",
+                      "inverse-on-surface": "#eff1f3",
+                      "secondary-fixed": "#ffe088",
+                      "primary-container": "#0a1f44",
+                      "on-error": "#ffffff",
+                      "outline": "#75777f",
+                      "on-surface": "#191c1e",
+                      "on-secondary-fixed": "#241a00",
+                      "background": "#f7f9fb",
+                      "on-secondary-container": "#745c00",
+                      "secondary": "#735c00",
+                      "on-primary-fixed": "#041a3f",
+                      "tertiary-fixed": "#dee3ed",
+                      "error-container": "#ffdad6",
+                      "tertiary": "#050910",
+                      "on-background": "#191c1e",
+                      "inverse-surface": "#2d3133",
+                      "secondary-fixed-dim": "#e9c349",
+                      "secondary-container": "#fed65b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "gutter": "24px",
+                      "margin": "48px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "h3": ["Montserrat"],
+                      "h2": ["Montserrat"],
+                      "label-caps": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "data-readout": ["Space Grotesk"],
+                      "h1": ["Montserrat"],
+                      "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                      "h3": ["24px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "h2": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "data-readout": ["20px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                      "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 24px rgba(10, 31, 68, 0.08);
+        }
+        .premium-border {
+            border-top: 1px solid #735c00;
+        }
+        .inner-glow:hover {
+            box-shadow: inset 0 0 10px rgba(255, 224, 136, 0.3);
+        }
+        .pulse-alert {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(186, 26, 26, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(186, 26, 26, 0); }
+        }
+    </style>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen overflow-x-hidden">
+<!-- SideNavBar -->
+<aside class="flex flex-col h-screen fixed left-0 top-0 py-8 bg-primary dark:bg-tertiary-container docked left-0 h-full w-72 bg-gradient-to-br from-primary to-[#162E5A] border-r border-white/10 shadow-xl shadow-[rgba(10,31,68,0.08)] z-50">
+<div class="px-8 mb-12">
+<h1 class="font-h2 text-h2 font-bold text-secondary dark:text-secondary-fixed tracking-tight">Aero-Kennel</h1>
+<p class="font-label-caps text-label-caps text-on-primary-container mt-1">Elite Logistics Tier</p>
+</div>
+<nav class="flex-1 space-y-1">
+<!-- Active Tab: Live Monitor -->
+<a class="flex items-center gap-4 py-3 px-6 bg-white/5 border-l-4 border-secondary text-secondary font-bold transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">Live Monitor</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="local_shipping">local_shipping</span>
+<span class="font-label-caps text-label-caps">Fleet Management</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="flight_takeoff">flight_takeoff</span>
+<span class="font-label-caps text-label-caps">Journey History</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-caps text-label-caps">Community Feed</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span class="font-label-caps text-label-caps">Help Center</span>
+</a>
+</nav>
+<div class="px-6 mb-8">
+<button class="w-full bg-gradient-to-r from-primary-container to-primary border border-secondary text-secondary py-4 rounded-lg font-bold font-label-caps text-label-caps flex items-center justify-center gap-2 active:scale-95 transition-transform duration-150 inner-glow">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+                New Transport
+            </button>
+</div>
+<div class="mt-auto space-y-1">
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="pumping_station">charging_station</span>
+<span class="font-label-caps text-label-caps">System Status</span>
+</a>
+<a class="flex items-center gap-4 py-3 px-6 text-on-primary-container hover:text-white transition-colors hover:bg-white/10 hover:text-secondary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">Settings</span>
+</a>
+<div class="px-6 py-6 border-t border-white/5 flex items-center gap-3">
+<img alt="Handler Profile Picture" class="w-10 h-10 rounded-full border border-secondary" data-alt="A professional logistics specialist portrait with clean lighting against a minimalist architectural background, reflecting an elite aerospace handler persona. The image follows a high-key light mode aesthetic with deep navy blue accents in the attire, maintaining a pristine and engineering-focused mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAL5aqFV-1DzRh6tRfpgEUnAy55H9RzbubhvZ-wgmskWVz7jrBzzXNn_rIC8eX6dF6Hgpqmql5aM2Wz7Vw7k1ZTF3INESStufDrY116grtlOfXYapM5_UdxZe6LPb8IIm0SKbti9wdSI2OtiFlFOa76FtFAXKM08UK0z1vvBF1vVn3G6TG5Ja_sDgmJpU3v7TFVAU6gmwdeJcSkEEMv0sck82nLZ_-Q38uy00R0ED6NWzdZYG2640lfgu1P4A2_iz_ZdFqYAdi412NG"/>
+<div class="overflow-hidden">
+<p class="text-white font-bold text-sm truncate">Marcus Sterling</p>
+<p class="text-on-primary-container text-xs">Senior Handler</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-20 px-gutter ml-72 w-[calc(100%-18rem)] fixed top-0 bg-surface/80 dark:bg-surface-container/80 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm z-40">
+<div class="flex items-center gap-4">
+<h2 class="font-h3 text-h3 font-black text-primary dark:text-primary-fixed">Aero-Kennel Terminal</h2>
+<span class="bg-secondary/10 text-secondary px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase">Admin Mode</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative w-80">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="w-full bg-surface-container-low border border-outline-variant rounded-full py-2 pl-10 pr-4 text-sm focus:outline-none focus:ring-2 focus:ring-secondary/50 transition-all" placeholder="Search aircraft, animal ID, or client..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-2 rounded-full hover:bg-surface-container-low">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-20 pb-margin px-gutter min-h-screen">
+<div class="mt-8 flex flex-col gap-8">
+<!-- Dashboard Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Map View (Primary Section) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden premium-border relative min-h-[500px]">
+<div class="absolute top-4 left-4 z-10 flex gap-2">
+<div class="bg-primary px-4 py-2 rounded-lg flex items-center gap-2 shadow-lg">
+<span class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+<span class="text-white font-label-caps text-[10px]">Real-Time Fleet Telemetry</span>
+</div>
+</div>
+<img class="w-full h-full object-cover" data-alt="A sophisticated digital global map display with glowing aerospace route lines and real-time aircraft positions highlighted by elegant gold iconography. The visualization uses a deep navy blue background with crystalline light effects, mirroring the high-tech cockpit interface of an elite logistics command center. The aesthetic is engineered and precise with soft bokeh lighting in the distance." data-location="North Atlantic Ocean" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD4LsBBfbilvHZ-jRcRLQIMtAcejWKzf1CyT1-N1b5Bk2VoqsI659AuQYP7ldFIxej3P95lfk0tTSfz4TiQV4aEexvqn0naNujWSFIcpulmiHSa_5YtsKctYQwbjZ5jbGSkaRD6MpdzZBd5kP3v9i62aiYanX3AYPv4g_PanviKv_veYs4pCn_ChTrljYDDJ41A3jA91Kq3DM6b28HIiQikkq1-gnRquoe6rhbI9vIbdZOyO-IbWrIrbU8TctMiO58csBK1SRJfBYcU"/>
+<!-- Overlay Telemetry Details -->
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="glass-panel p-4 rounded-lg flex gap-8">
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-1">ACTIVE CRAFT</p>
+<p class="font-data-readout text-data-readout text-primary">14</p>
+</div>
+<div class="border-l border-outline-variant/30 pl-8">
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-1">IN TRANSIT</p>
+<p class="font-data-readout text-data-readout text-primary">09</p>
+</div>
+<div class="border-l border-outline-variant/30 pl-8">
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-1">FUEL OPTIMIZATION</p>
+<p class="font-data-readout text-data-readout text-secondary">98.2%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Alerts Panel -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-6">
+<div class="glass-panel p-6 rounded-xl premium-border flex-1">
+<h3 class="font-h3 text-h3 text-primary mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="notifications_paused">notifications_paused</span>
+                            Critical Alerts
+                        </h3>
+<div class="space-y-4">
+<!-- Alert Card -->
+<div class="bg-error-container/30 border border-error/20 p-4 rounded-lg pulse-alert">
+<div class="flex justify-between mb-2">
+<span class="bg-error text-white font-label-caps text-[10px] px-2 py-0.5 rounded">CRITICAL</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">02:14 PM</span>
+</div>
+<p class="font-bold text-primary text-sm">Cabin 4-B: Temp Rising</p>
+<p class="text-xs text-on-surface-variant mb-3">Animal: 'Luna' (Siberian Husky) - Craft AK-402</p>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-white text-[10px] font-bold py-2 rounded uppercase inner-glow transition-all">Adjust Temp</button>
+<button class="flex-1 border border-primary text-primary text-[10px] font-bold py-2 rounded uppercase hover:bg-primary/5 transition-all">Audio Link</button>
+</div>
+</div>
+<!-- Warning Card -->
+<div class="bg-secondary-container/20 border border-secondary/20 p-4 rounded-lg">
+<div class="flex justify-between mb-2">
+<span class="bg-secondary text-white font-label-caps text-[10px] px-2 py-0.5 rounded">ALERT</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">02:08 PM</span>
+</div>
+<p class="font-bold text-primary text-sm">Cabin 7-A: Humidity Drop</p>
+<p class="text-xs text-on-surface-variant">Animal: 'Cooper' (Golden Retriever) - Craft AK-119</p>
+</div>
+</div>
+</div>
+<!-- Environmental Summary -->
+<div class="glass-panel p-6 rounded-xl premium-border">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-4">AVG. FLEET ENVIRONMENT</p>
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface-variant">TEMPERATURE</span>
+<span class="font-data-readout text-data-readout text-primary">68.4°F</span>
+<div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden mt-1">
+<div class="h-full bg-green-500 w-[70%]"></div>
+</div>
+</div>
+<div class="flex flex-col gap-1">
+<span class="text-[10px] text-on-surface-variant">HUMIDITY</span>
+<span class="font-data-readout text-data-readout text-primary">42%</span>
+<div class="h-1 bg-surface-container-high w-full rounded-full overflow-hidden mt-1">
+<div class="h-full bg-secondary w-[45%]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Animal Transport List -->
+<section class="glass-panel rounded-xl overflow-hidden premium-border">
+<div class="px-8 py-6 border-b border-outline-variant/30 flex justify-between items-center">
+<h3 class="font-h3 text-h3 text-primary">Active Transport Logs</h3>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 text-[10px] font-label-caps border border-outline-variant px-4 py-2 rounded hover:bg-surface-container-low transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="filter_list">filter_list</span>
+                            FILTER
+                        </button>
+<button class="flex items-center gap-2 text-[10px] font-label-caps bg-primary text-white px-4 py-2 rounded inner-glow transition-all">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+                            EXPORT LOGS
+                        </button>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-on-surface-variant">
+<th class="px-8 py-4 font-label-caps text-[10px]">ANIMAL PROFILE</th>
+<th class="px-8 py-4 font-label-caps text-[10px]">CRAFT ID</th>
+<th class="px-8 py-4 font-label-caps text-[10px]">DESTINATION</th>
+<th class="px-8 py-4 font-label-caps text-[10px]">VITALS</th>
+<th class="px-8 py-4 font-label-caps text-[10px]">STATUS</th>
+<th class="px-8 py-4 font-label-caps text-[10px] text-right">CONTROLS</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- Entry 1 -->
+<tr class="hover:bg-white/40 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-secondary/20">
+<img alt="Pet Profile" class="w-full h-full object-cover" data-alt="A portrait of a healthy Beagle dog sitting calmly, photographed with professional studio lighting that emphasizes its clean, shiny coat. The background is a soft, minimalist neutral tone that aligns with a high-end pet logistics aesthetic. The lighting is bright and airy, communicating wellness and premium care in a modern light-mode interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM7GL7dGKYPzquGWkcWqDOOUnvWbxnjy4fKRidRdy0uhpNl7jqPKSAdsJ1s6ivPHoFM09yojwwucve-n3WQ3ciA1aJF_TUK38-kiL2Un1N3AsnNEnr9E7LReM2XV8UTSwG71Fm6pMWTVZ4jtNumRJ8e3npd-7A9MdiF_fKHl9U6cMiEkqlnjD4-9n7c-dnAobWs2RTCCche77eVYTT1nChusiT5RZ3riYY5r-8Fb5YKVDYeHHm8BpefI6a1VY05_nULQ8wYXNa9SSK"/>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Luna</p>
+<p class="text-[10px] text-on-surface-variant">Beagle • ID: #98221</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-data-readout text-primary">AK-102</td>
+<td class="px-8 py-5">
+<p class="text-sm">Dubai (DWC)</p>
+<p class="text-[10px] text-on-surface-variant">ETA: 4h 20m</p>
+</td>
+<td class="px-8 py-5">
+<div class="flex gap-3">
+<div class="text-center">
+<p class="text-[8px] font-label-caps text-on-surface-variant">HR</p>
+<p class="text-xs font-bold text-primary">72</p>
+</div>
+<div class="text-center">
+<p class="text-[8px] font-label-caps text-on-surface-variant">TEMP</p>
+<p class="text-xs font-bold text-green-600">101.5</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="bg-green-100 text-green-700 text-[10px] font-bold px-3 py-1 rounded-full">OPTIMIZED</span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="monitoring">monitoring</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors ml-4" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<!-- Entry 2 -->
+<tr class="hover:bg-white/40 transition-colors">
+<td class="px-8 py-5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full bg-slate-200 overflow-hidden border border-secondary/20">
+<img alt="Pet Profile" class="w-full h-full object-cover" data-alt="A macro portrait of a Bulldog with a focused expression, showcasing detailed textures of its fur and features. The lighting is crisp and modern, set against a soft architectural backdrop of a clean, high-tech hangar. The aesthetic is sophisticated and engineered, perfectly fitting the Aero-Kennel elite transport brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzuzCMnoB6XKWqKGSfuJwYkaIQ0hU0gRJ1wmrdPEVTbZjuZsZo_boDtQa6m7UcneZm7SiLsDK3qH58ZPITfTQ0EigRa7VQ7usiUc7KR7C1jjzUq7InTwE24J-ijYnp9MZaDNJ_CLwKWMpPpqa1SHV3tMKTCUohv8cmHJ8ymQ6bd1BVlAfmskM8kCqkovx8pb3Vwm_Txofqynj8CUYeNyHt1C_d1u8DCNAUKdGhwC090pVHIIoHrcb0h07p35vp9LVSsShs09xiUsoJ"/>
+</div>
+<div>
+<p class="font-bold text-primary text-sm">Cooper</p>
+<p class="text-[10px] text-on-surface-variant">Bulldog • ID: #98225</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5 text-sm font-data-readout text-primary">AK-119</td>
+<td class="px-8 py-5">
+<p class="text-sm">London (LHR)</p>
+<p class="text-[10px] text-on-surface-variant">ETA: 1h 45m</p>
+</td>
+<td class="px-8 py-5">
+<div class="flex gap-3">
+<div class="text-center">
+<p class="text-[8px] font-label-caps text-on-surface-variant">HR</p>
+<p class="text-xs font-bold text-primary">84</p>
+</div>
+<div class="text-center">
+<p class="text-[8px] font-label-caps text-on-surface-variant">TEMP</p>
+<p class="text-xs font-bold text-secondary">103.1</p>
+</div>
+</div>
+</td>
+<td class="px-8 py-5">
+<span class="bg-secondary-container/40 text-secondary-fixed-dim text-[10px] font-bold px-3 py-1 rounded-full">ALERT</span>
+</td>
+<td class="px-8 py-5 text-right">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="monitoring">monitoring</button>
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors ml-4" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer -->
+<footer class="flex flex-col md:flex-row justify-between items-center py-margin px-gutter ml-72 w-[calc(100%-18rem)] bg-surface-container-lowest dark:bg-tertiary-container border-t border-outline-variant/20 flat no shadows">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<span class="font-h3 text-h3 text-primary dark:text-primary-fixed">Aero-Kennel</span>
+<p class="font-body-md text-body-md font-label-caps text-label-caps text-on-surface-variant dark:text-on-tertiary-container">© 2024 Aero-Kennel Logistics. Aerospace Precision Pet Care.</p>
+</div>
+<div class="flex gap-6 mt-4 md:mt-0">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary hover:underline transition-all active:opacity-80" href="#">Safety Protocols</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary hover:underline transition-all active:opacity-80" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary hover:underline transition-all active:opacity-80" href="#">Fleet Telemetry API</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-secondary hover:underline transition-all active:opacity-80" href="#">Contact Engineering</a>
+</div>
+</footer>
+</body></html>

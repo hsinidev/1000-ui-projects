@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Device Security Status | CYBER-SHIELD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Typography in Config maps to these fonts -->
+<style>
+        @font-face {
+            font-family: 'metropolis';
+            src: url('https://fonts.cdnfonts.com/css/metropolis');
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(132, 150, 126, 0.2);
+        }
+        .inner-glow-top {
+            box-shadow: inset 0px 1px 2px rgba(255, 255, 255, 0.1);
+        }
+        .neon-pulse {
+            box-shadow: 0 0 0 0 rgba(0, 230, 57, 0.4);
+            animation: pulse-green 2s infinite;
+        }
+        @keyframes pulse-green {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 57, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 230, 57, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 57, 0); }
+        }
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00e639, transparent);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            50% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-primary-fixed-variant": "#00530e",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#002203",
+                        "surface-bright": "#393939",
+                        "secondary": "#c6c6c7",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "outline": "#84967e",
+                        "surface-variant": "#353534",
+                        "error": "#ffb4ab",
+                        "tertiary": "#fcf8f8",
+                        "on-tertiary": "#313030",
+                        "primary": "#ebffe2",
+                        "inverse-on-surface": "#313030",
+                        "inverse-primary": "#006e16",
+                        "background": "#131313",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary-fixed-dim": "#00e639",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "outline-variant": "#3b4b37",
+                        "on-primary-container": "#007117",
+                        "on-primary": "#003907",
+                        "primary-fixed": "#72ff70",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "on-secondary": "#2f3131",
+                        "surface": "#131313",
+                        "surface-container-highest": "#353534",
+                        "tertiary-container": "#dfdcdb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-container": "#626060",
+                        "on-surface": "#e5e2e1",
+                        "secondary-container": "#454747",
+                        "primary-container": "#00ff41",
+                        "surface-dim": "#131313",
+                        "on-surface-variant": "#b9ccb2",
+                        "surface-tint": "#00e639",
+                        "on-tertiary-fixed": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "section-gap": "80px",
+                        "gutter": "24px",
+                        "margin-edge": "40px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["metropolis"],
+                        "caption-sm": ["inter"],
+                        "label-mono": ["jetbrainsMono"],
+                        "body-lg": ["inter"],
+                        "display-xl": ["metropolis"],
+                        "headline-lg": ["metropolis"],
+                        "body-md": ["inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "caption-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "label-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full bg-background/70 backdrop-blur-xl border-b border-outline-variant/30 px-gutter py-4 flex justify-between items-center z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="shield">shield</span>
+<h1 class="font-display-xl text-headline-md tracking-widest text-primary-fixed">CYBER-SHIELD</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-label-mono text-caption-sm uppercase text-on-surface-variant/60 hover:text-primary-fixed-dim transition-colors" href="#">Health</a>
+<a class="font-label-mono text-caption-sm uppercase text-primary-fixed border-b-2 border-primary-fixed pt-1" href="#">Devices</a>
+<a class="font-label-mono text-caption-sm uppercase text-on-surface-variant/60 hover:text-primary-fixed-dim transition-colors" href="#">Monitor</a>
+<a class="font-label-mono text-caption-sm uppercase text-on-surface-variant/60 hover:text-primary-fixed-dim transition-colors" href="#">Response</a>
+</nav>
+<img alt="HNWI user profile" class="w-10 h-10 rounded-full border border-outline/30 object-cover" data-alt="A high-end, professional portrait of a distinguished individual in a sharp, dark suit against a minimalist charcoal gray backdrop. The lighting is dramatic, high-contrast, and reminiscent of a luxury brand editorial. The composition is clean and centered, conveying an image of executive authority and sophisticated digital sovereignty." src="https://lh3.googleusercontent.com/aida-public/AB6AXuApMyHfLzNWVakw6HuM2HKkcVCLDDwEvRAdtTK8SeXc45JOtcjZbL4GpVMxiYfV0hbfFgv90SNlxzvKtxCquJmf8vL2b-_ZPWpeuTJNNXwZjc7XKfLulFg6PbwAL00UmOOqQ9EhbHu2-3dQT7HWG7DzHTUDVAsb-egm7NGFbt1eABqTjPVnUwThDHQ8DpNOFPB-SDvk6AqLJCx3yHArZUv6p23FtvPe6h57KWrFxL4T8Go7xxj9KqLu1Ltx-9s0ZHpW8NLbdUvuCQ75"/>
+</div>
+</header>
+<!-- Main Content -->
+<main class="pt-32 px-gutter max-w-container-max mx-auto">
+<!-- Hero Protection Banner -->
+<section class="mb-section-gap">
+<div class="glass-card inner-glow-top rounded-xl p-margin-edge flex flex-col md:flex-row items-center justify-between gap-gutter relative overflow-hidden">
+<div class="scanning-line"></div>
+<div class="relative z-10 space-y-4 max-w-2xl text-center md:text-left">
+<div class="flex items-center gap-3 justify-center md:justify-start">
+<span class="w-3 h-3 bg-primary-fixed-dim rounded-full neon-pulse"></span>
+<span class="font-label-mono text-caption-sm text-primary-fixed-dim uppercase tracking-widest">Active Surveillance Active</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg">Your perimeter is currently <span class="text-primary-fixed">100% Secure</span></h2>
+<p class="font-body-md text-on-surface-variant max-w-lg">Advanced quantum encryption and firmware integrity checks are running on 4 managed devices. Protect any new hardware instantly.</p>
+</div>
+<div class="relative z-10">
+<button class="bg-primary-fixed text-on-primary-fixed px-8 py-4 rounded-lg font-label-mono text-caption-sm uppercase font-bold tracking-widest hover:shadow-[0_0_15px_rgba(0,230,57,0.4)] transition-all flex items-center gap-3 group">
+<span class="material-symbols-outlined" data-icon="add_moderator">add_moderator</span>
+                        Protect My Device
+                        <span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Managed Devices Bento Grid -->
+<section class="mb-section-gap">
+<div class="flex justify-between items-end mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md">Managed Devices</h3>
+<p class="font-body-md text-on-surface-variant">Real-time status of your authorized hardware ecosystem.</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant/30 rounded-lg text-on-surface hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+<button class="p-2 border border-outline-variant/30 rounded-lg text-on-surface hover:bg-surface-container transition-all">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Device Card 1: MacBook Pro -->
+<div class="glass-card inner-glow-top rounded-xl p-6 relative group overflow-hidden">
+<div class="scanning-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant/30 text-primary-fixed">
+<span class="material-symbols-outlined text-4xl" data-icon="laptop_mac">laptop_mac</span>
+</div>
+<span class="font-label-mono text-[10px] bg-primary-fixed/10 text-primary-fixed px-2 py-1 rounded border border-primary-fixed/20">ENCRYPTED</span>
+</div>
+<div class="mb-8">
+<h4 class="font-headline-md text-headline-md mb-1">MacBook Pro 16"</h4>
+<p class="font-label-mono text-caption-sm text-on-surface-variant">ID: CS-M3-8829</p>
+</div>
+<div class="space-y-3 mb-8">
+<div class="flex justify-between text-caption-sm">
+<span class="text-on-surface-variant">Firmware Integrity</span>
+<span class="text-primary-fixed">Verified</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full">
+<div class="bg-primary-fixed h-1 rounded-full w-[98%] shadow-[0_0_8px_rgba(0,230,57,0.5)]"></div>
+</div>
+<div class="flex justify-between text-caption-sm pt-2">
+<span class="text-on-surface-variant">Last Scan</span>
+<span class="text-on-surface">2 mins ago</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="font-label-mono text-[11px] uppercase border border-outline-variant/30 py-2 rounded hover:bg-surface-container transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="system_update">system_update</span> Update
+                        </button>
+<button class="font-label-mono text-[11px] uppercase border border-outline-variant/30 py-2 rounded hover:border-error hover:text-error transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span> Lock
+                        </button>
+</div>
+</div>
+<!-- Device Card 2: iPhone 15 Pro -->
+<div class="glass-card inner-glow-top rounded-xl p-6 relative group overflow-hidden">
+<div class="scanning-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant/30 text-primary-fixed">
+<span class="material-symbols-outlined text-4xl" data-icon="smartphone">smartphone</span>
+</div>
+<span class="font-label-mono text-[10px] bg-primary-fixed/10 text-primary-fixed px-2 py-1 rounded border border-primary-fixed/20">LIVE-TRACKING</span>
+</div>
+<div class="mb-8">
+<h4 class="font-headline-md text-headline-md mb-1">iPhone 15 Pro</h4>
+<p class="font-label-mono text-caption-sm text-on-surface-variant">ID: CS-PH-1029</p>
+</div>
+<div class="space-y-3 mb-8">
+<div class="flex justify-between text-caption-sm">
+<span class="text-on-surface-variant">Zero-Day Shield</span>
+<span class="text-primary-fixed">Active</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-primary-fixed h-1 rounded-full w-[100%] shadow-[0_0_8px_rgba(0,230,57,0.5)]"></div>
+</div>
+<div class="flex justify-between text-caption-sm pt-2">
+<span class="text-on-surface-variant">Location</span>
+<span class="text-on-surface">London, UK</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="font-label-mono text-[11px] uppercase border border-outline-variant/30 py-2 rounded hover:border-error hover:text-error transition-all flex items-center justify-center gap-1 col-span-2">
+<span class="material-symbols-outlined text-sm" data-icon="delete_forever">delete_forever</span> Remote Wipe
+                        </button>
+</div>
+</div>
+<!-- Device Card 3: Vault Server -->
+<div class="glass-card inner-glow-top rounded-xl p-6 relative group overflow-hidden">
+<div class="scanning-line opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<div class="flex justify-between items-start mb-6">
+<div class="p-3 bg-surface-container rounded-lg border border-outline-variant/30 text-primary-fixed">
+<span class="material-symbols-outlined text-4xl" data-icon="dns">dns</span>
+</div>
+<span class="font-label-mono text-[10px] bg-error-container text-error px-2 py-1 rounded border border-error/20">UPDATE REQ</span>
+</div>
+<div class="mb-8">
+<h4 class="font-headline-md text-headline-md mb-1">Home Data Vault</h4>
+<p class="font-label-mono text-caption-sm text-on-surface-variant">ID: CS-SRV-004</p>
+</div>
+<div class="space-y-3 mb-8">
+<div class="flex justify-between text-caption-sm">
+<span class="text-on-surface-variant">Patch Level</span>
+<span class="text-error">Outdated</span>
+</div>
+<div class="w-full bg-surface-container-high h-1 rounded-full overflow-hidden">
+<div class="bg-error h-1 rounded-full w-[75%]"></div>
+</div>
+<div class="flex justify-between text-caption-sm pt-2">
+<span class="text-on-surface-variant">Threat Level</span>
+<span class="text-on-surface">Minimal</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<button class="font-label-mono text-[11px] uppercase bg-on-surface text-background py-2 rounded hover:bg-white transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="upgrade">upgrade</span> Patch Now
+                        </button>
+<button class="font-label-mono text-[11px] uppercase border border-outline-variant/30 py-2 rounded hover:bg-surface-container transition-all flex items-center justify-center gap-1">
+<span class="material-symbols-outlined text-sm" data-icon="info">info</span> Details
+                        </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Global Security Status -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<div class="glass-card inner-glow-top rounded-xl p-8">
+<h4 class="font-headline-md text-headline-md mb-6 flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="history">history</span>
+                    Recent Activity Logs
+                </h4>
+<div class="space-y-6">
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="login">login</span>
+<div>
+<p class="font-body-md font-bold">Authorized Login</p>
+<p class="text-caption-sm text-on-surface-variant">MacBook Pro 16" • IP: 192.168.1.45</p>
+</div>
+</div>
+<span class="font-label-mono text-caption-sm text-on-surface-variant">14:22</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="verified">verified</span>
+<div>
+<p class="font-body-md font-bold">Full Scan Completed</p>
+<p class="text-caption-sm text-on-surface-variant">iPhone 15 Pro • 0 Threats Found</p>
+</div>
+</div>
+<span class="font-label-mono text-caption-sm text-on-surface-variant">12:05</span>
+</div>
+<div class="flex items-center justify-between border-b border-outline-variant/20 pb-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error" data-icon="block">block</span>
+<div>
+<p class="font-body-md font-bold text-error">Intrusion Blocked</p>
+<p class="text-caption-sm text-on-surface-variant">Home Data Vault • Attempt from RU</p>
+</div>
+</div>
+<span class="font-label-mono text-caption-sm text-on-surface-variant">09:30</span>
+</div>
+</div>
+</div>
+<div class="glass-card inner-glow-top rounded-xl p-8 relative overflow-hidden flex flex-col justify-between">
+<div class="absolute top-0 right-0 w-64 h-64 bg-primary-fixed-dim/5 blur-[100px] rounded-full -mr-20 -mt-20"></div>
+<div>
+<h4 class="font-headline-md text-headline-md mb-2">Network Topology</h4>
+<p class="font-body-md text-on-surface-variant mb-8">Visualization of your encrypted mesh network.</p>
+</div>
+<div class="flex-grow flex items-center justify-center py-12">
+<img class="max-w-full h-auto rounded-lg grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-700" data-alt="A sophisticated digital network topology diagram displayed on a dark glass screen. The lines are razor-thin, glowing neon green, connecting various geometric nodes representing secure devices. The background is a deep, void-like black with a subtle matrix-style texture. The overall mood is hyper-technical, secure, and visually stunning, embodying military-grade encryption visualization." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgVohLb55A_JJGbpmxYqusVkzWsZnQZGDx9ApQ3Hty3PtPt_HP7MTYSUE55bI8kc6zUQD3L0lplD7kdUqHbMrt7Cwjjmp1J6gWBeLW8ZP8fI0funW5NIwBQLIthui_u_WdLzDbYfSqQ_2tCpIzs7RJFxcGBmUGxPlOMPMnGdr2kjWwsMhryaX4QnDnPtfm8ZnUwgo2_VEdJohwfHyIwaE_jMG3HRvo0fxArpmBzF3VZcwK_A3-cGRl_Nm4Jj3adNKWJYsGtiPiV0fT"/>
+</div>
+<div class="flex justify-between items-center bg-surface-container-high/40 p-4 rounded-lg">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="vpn_lock">vpn_lock</span>
+<span class="font-label-mono text-caption-sm uppercase">Secure Mesh Active</span>
+</div>
+<span class="font-label-mono text-caption-sm text-primary-fixed">LATENCY: 12ms</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/80 backdrop-blur-2xl border-t border-outline-variant/20 flex justify-around items-center px-4 pb-6 h-20">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-surface-container-high/40 transition-all group">
+<span class="material-symbols-outlined scale-110 duration-300" data-icon="speed">speed</span>
+<span class="font-label-mono text-[10px] uppercase mt-1">Health</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary-fixed border-t-2 border-primary-fixed pt-2 scale-110">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-mono text-[10px] uppercase mt-1">Devices</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-surface-container-high/40 transition-all group">
+<span class="material-symbols-outlined scale-110 duration-300" data-icon="visibility">visibility</span>
+<span class="font-label-mono text-[10px] uppercase mt-1">Monitor</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-surface-container-high/40 transition-all group">
+<span class="material-symbols-outlined scale-110 duration-300" data-icon="emergency">emergency</span>
+<span class="font-label-mono text-[10px] uppercase mt-1">Response</span>
+</button>
+</nav>
+<!-- FAB (Suppressed for this sub-page context as per guidelines, but included if needed for global context) -->
+<!-- Suppressed on "Details/Transactional" style screens per instructions -->
+</body></html>

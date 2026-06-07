@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CIPHER-VAULT | Security Specifications</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Serif:wght@600;700&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>.material-symbols-outlined {
+    font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24
+    }
+.brushed-metal {
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuCpsMWczlm8lnA8TE4X-x0spXR-iZyyWMXSbUxcEisZeMm1TKmigwHRKT48Y86ntSGI-_r2w9Pv1NpmYxT9G5tAY5VyMESrcXPaTQcxXgrv8xU0RK7PEFd1VRLDcD1HNSXeX-hjlaJgO1CUBKgKwhL85MN6nQnF98DEUGVQ-YcnRerhs9_6NF6r5q4bjdU0KK_Pciut_mgbKWg1Wk5L3R6-iDSVp098g2RcksfnFIIR7RegEVB76xaiYQG2zsFCcW0S4o_-_PX3bY0t);
+    background-repeat: repeat
+    }
+.inset-panel {
+    box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.8)
+    }</style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2b",
+                        "surface-container-highest": "#353436",
+                        "on-tertiary": "#313030",
+                        "secondary-fixed-dim": "#c7c6c4",
+                        "error": "#ffb4ab",
+                        "primary": "#c2c5e0",
+                        "on-secondary": "#303130",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-primary-fixed-variant": "#42465c",
+                        "on-secondary-container": "#b5b5b3",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1c1b1d",
+                        "tertiary": "#c9c6c5",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed": "#dee1fc",
+                        "on-primary": "#2b2f44",
+                        "inverse-primary": "#595d74",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed": "#e3e2e0",
+                        "on-primary-fixed": "#161a2e",
+                        "secondary": "#c7c6c4",
+                        "secondary-container": "#464746",
+                        "on-tertiary-container": "#888686",
+                        "primary-container": "#1a1e32",
+                        "surface-tint": "#c2c5e0",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "background": "#131315",
+                        "primary-fixed-dim": "#c2c5e0",
+                        "tertiary-container": "#1f1f1f",
+                        "outline": "#919097",
+                        "inverse-on-surface": "#313032",
+                        "surface-bright": "#39393b",
+                        "on-primary-container": "#82859e",
+                        "surface-container": "#201f21",
+                        "on-secondary-fixed-variant": "#464746",
+                        "outline-variant": "#46464d",
+                        "surface-dim": "#131315",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "on-background": "#e5e1e3",
+                        "surface": "#131315",
+                        "on-surface": "#e5e1e3",
+                        "inverse-surface": "#e5e1e3",
+                        "on-surface-variant": "#c7c5cd",
+                        "on-secondary-fixed": "#1b1c1b",
+                        "surface-variant": "#353436"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "lg": "40px",
+                        "xl": "64px",
+                        "base": "8px",
+                        "border-thick": "3px",
+                        "sm": "12px",
+                        "xs": "4px",
+                        "border-standard": "2px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["IBM Plex Serif"],
+                        "headline-md": ["IBM Plex Serif"],
+                        "title-sm": ["IBM Plex Serif"],
+                        "body-base": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "data-mono": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-base pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-surface-container-lowest dark:bg-surface-container-lowest flex justify-between items-center w-full px-md h-16 border-b-border-thick border-on-surface dark:border-on-surface shadow-[inset_0_-2px_0_0_rgba(0,0,0,0.5)] sticky top-0 z-50">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="lock">lock</span>
+<span class="font-display-lg text-title-sm tracking-widest uppercase text-secondary dark:text-secondary">CIPHER-VAULT</span>
+</div>
+<button class="hover:bg-surface-container-high transition-colors p-2">
+<span class="material-symbols-outlined text-primary" data-icon="visibility_off">visibility_off</span>
+</button>
+</header>
+<main class="flex-grow p-md max-w-7xl mx-auto w-full brushed-metal">
+<!-- Header Section -->
+<div class="mb-lg border-l-border-thick border-primary pl-md">
+<h1 class="font-display-lg text-display-lg uppercase tracking-tight text-on-surface">Security Specifications</h1>
+<p class="font-data-mono text-data-mono text-secondary-fixed-dim">MODULE_REF: SEC_SPEC_770-V8</p>
+</div>
+<!-- Technical Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Left Column: Vault Schematic -->
+<div class="md:col-span-7 flex flex-col gap-md">
+<div class="bg-surface-container-low border-border-thick border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)] relative group overflow-hidden">
+<!-- Card Header -->
+<div class="bg-tertiary-fixed text-on-tertiary px-md py-xs font-label-caps flex justify-between items-center border-b-border-standard border-on-surface">
+<span>3D_STRUCTURAL_SCHEMATIC</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="view_in_ar">view_in_ar</span>
+</div>
+<!-- Schematic Body -->
+<div class="p-md bg-surface-container-lowest h-[400px] flex items-center justify-center relative">
+<img alt="Vault Blueprint" class="opacity-40 grayscale contrast-125 w-full h-full object-cover" data-alt="A highly technical architectural schematic of a heavy-duty vault door mechanism, rendered in a brutalist industrial style with clean white lines on a deep indigo background. The image features complex gears, reinforced steel plating details, and digital measuring markers. The atmosphere is elite and secure, with a professional blue-tinted lighting aesthetic consistent with high-security facilities." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCK-IBudl5bifvSm-8fsmKhQvRsZ5lypixIAx_VXar_Cq6bS_uQNojLVlCOC-vpTmQEnejoh-QKPyG0CaFZG3a64DPou_SIYqEYD_ZGqRjm1sHNUt8Z98dOsjcVCiyBhv3ImRLUcGRcGqElrE0LcZEo4Av9k_Wmv4tSdTTN53bh61hUAn5n1zRWc8cZrMqMh9yLEBo0b0Shhyr6Boo00FH3ZzVLQoO_yjMPg5cbLoKWnNNpbOvUkxGd436ALwVsZByI7YtVgGjn4weg"/><div class="absolute bottom-12 left-md right-md bg-black/60 border border-primary/30 p-2 font-data-mono text-[10px] text-primary/80 overflow-hidden h-16 pointer-events-none">
+<div class="animate-pulse">
+    &gt; ENCRYPTION_LAYER_4_ACTIVE...<br/>
+    &gt; STRUCTURAL_SCAN_IN_PROGRESS...<br/>
+    &gt; INTEGRITY_CHECK: 88%<br/>
+    &gt; MONITORING_FEED_STABLE
+  </div>
+</div>
+<!-- Technical Overlays -->
+<div class="absolute inset-0 p-md flex flex-col justify-between pointer-events-none">
+<div class="flex justify-between font-data-mono text-primary text-[10px]">
+<span>X: 144.22</span>
+<span>Y: 088.11</span>
+<span>Z: 211.00</span>
+</div>
+<div class="border-border-standard border-primary/20 w-full h-px"></div>
+<div class="flex justify-between font-data-mono text-primary text-[10px]">
+<span>STATUS: NOMINAL</span>
+<span>TEMP_AMB: 72°F</span>
+</div>
+</div>
+<!-- Scanning Animation Placeholder -->
+<div class="absolute top-0 left-0 w-full h-2 bg-primary/40 shadow-[0_0_20px_rgba(194,197,224,0.8)] animate-[bounce_3s_infinite]"></div>
+<div class="absolute inset-0 pointer-events-none bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%] opacity-20"></div></div>
+</div>
+<!-- Simulation Control -->
+<div class="flex flex-col sm:flex-row gap-base">
+<button class="flex-grow bg-error-container text-on-error-container font-label-caps py-md px-lg border-border-thick border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)] hover:bg-error hover:text-on-error transition-all flex items-center justify-center gap-md active:translate-y-1 active:shadow-none">
+<span class="material-symbols-outlined" data-icon="gpp_maybe">gpp_maybe</span>
+    INITIATE SYSTEM-CHECK SIMULATION
+  </button>
+<div class="flex items-center gap-sm bg-surface-container-high border-border-thick border-on-surface p-sm shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-surface-container-lowest peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-primary after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+<span class="font-label-caps text-[10px] text-secondary leading-tight">SAFETY<br/>OFF</span>
+</div>
+</div>
+</div>
+<!-- Right Column: Stats & Meters -->
+<div class="md:col-span-5 flex flex-col gap-md">
+<!-- Ballistic Rating Module -->
+<div class="bg-surface-container-low border-border-thick border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+<div class="bg-tertiary-fixed text-on-tertiary px-md py-xs font-label-caps border-b-border-standard border-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="shield">shield</span>
+                        BALLISTIC_SPECIFICATION
+                    </div>
+<div class="p-md space-y-md">
+<div class="flex justify-between items-end">
+<div>
+<p class="font-data-mono text-label-caps text-secondary">RATING_LEVEL</p>
+<h3 class="font-headline-md text-headline-md text-primary">UL 752 Level 8</h3>
+</div>
+<div class="text-right">
+<p class="font-data-mono text-label-caps text-secondary">RESISTANCE</p>
+<p class="font-body-base font-bold text-on-surface">7.62mm Rifle</p>
+</div>
+</div>
+<!-- Meter -->
+<div class="space-y-xs">
+<div class="flex justify-between font-data-mono text-[10px] text-secondary">
+<span>L1</span><span>L2</span><span>L3</span><span>L4</span><span>L5</span><span>L6</span><span>L7</span><span class="text-primary font-bold">L8</span>
+</div>
+<div class="h-6 bg-surface-container-lowest border-border-standard border-on-surface flex gap-0.5 p-0.5">
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary shadow-[0_0_10px_rgba(194,197,224,0.6)]"></div>
+<div class="flex-1 bg-surface-container-high opacity-20"></div>
+<div class="flex-1 bg-surface-container-high opacity-20"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Thermal Resistance Module -->
+<div class="bg-surface-container-low border-border-thick border-on-surface shadow-[4px_4px_0_0_rgba(0,0,0,1)]">
+<div class="bg-tertiary-fixed text-on-tertiary px-md py-xs font-label-caps border-b-border-standard border-on-surface flex items-center gap-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="thermostat">thermostat</span>
+                        THERMAL_ENDURANCE
+                    </div>
+<div class="p-md flex flex-col gap-lg">
+<div class="flex items-center gap-lg">
+<div class="flex-1 text-center border-r-border-standard border-outline-variant">
+<span class="font-data-mono text-label-caps text-secondary block mb-xs">DURATION</span>
+<span class="font-headline-md text-display-lg text-on-surface block leading-none">120</span>
+<span class="font-label-caps text-primary">MINUTES</span>
+</div>
+<div class="flex-1 text-center">
+<span class="font-data-mono text-label-caps text-secondary block mb-xs">MAX_TEMP</span>
+<span class="font-headline-md text-display-lg text-on-surface block leading-none">1500°</span>
+<span class="font-label-caps text-primary">FAHRENHEIT</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest p-sm border-border-standard border-on-surface-variant flex items-center gap-md">
+<div class="h-4 w-4 bg-error shadow-[0_0_8px_rgba(255,180,171,0.8)] shrink-0"></div>
+<p class="font-body-base text-body-base text-secondary">Structural integrity verified against sustained plasma-torch and high-intensity incendiary exposure.</p>
+</div>
+</div>
+</div>
+<!-- Detailed Specs List -->
+<div class="grid grid-cols-2 gap-base">
+<div class="bg-surface-container-low border-border-standard border-on-surface p-sm flex flex-col">
+<span class="font-data-mono text-[10px] text-secondary">ALLOY_TYPE</span>
+<span class="font-label-caps text-on-surface">TITAN-X HEAVY</span>
+</div>
+<div class="bg-surface-container-low border-border-standard border-on-surface p-sm flex flex-col">
+<span class="font-data-mono text-[10px] text-secondary">TENSILE_PSI</span>
+<span class="font-label-caps text-on-surface">450,000</span>
+</div>
+<div class="bg-surface-container-low border-border-standard border-on-surface p-sm flex flex-col">
+<span class="font-data-mono text-[10px] text-secondary">DENSITY_INDEX</span>
+<span class="font-label-caps text-on-surface">0.988_NOM</span>
+</div>
+<div class="bg-surface-container-low border-border-standard border-on-surface p-sm flex flex-col">
+<span class="font-data-mono text-[10px] text-secondary">CORE_REINFORCE</span>
+<span class="font-label-caps text-on-surface">TUNGSTEN_CARBIDE</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- NavigationDrawer (Contextual Mobile Only - Hidden on Web via logic but included as per requirements) -->
+<nav class="md:hidden">
+<!-- BottomNavBar -->
+<div class="fixed bottom-0 w-full z-50 bg-surface-container-low dark:bg-surface-container-low flex justify-around items-center px-base py-sm h-20 border-t-border-thick border-on-surface dark:border-on-surface shadow-[0_-4px_0_0_rgba(0,0,0,0.8)]">
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary border-border-standard border-on-primary-fixed shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] rounded-none px-4 py-1 scale-95 translate-y-0.5">
+<span class="material-symbols-outlined" data-icon="shield">shield</span>
+<span class="font-label-caps text-label-caps">Security</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary-fixed-dim grayscale opacity-80">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-label-caps text-label-caps">Life Support</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary-fixed-dim grayscale opacity-80">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Inventory</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary-fixed-dim grayscale opacity-80">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="font-label-caps text-label-caps">Emergency</span>
+</div>
+</div>
+</nav>
+<!-- Side Navigation for Web Layout -->
+<aside class="hidden md:flex fixed left-0 top-16 bottom-0 w-80 h-full border-r-border-thick border-on-surface bg-surface-container-lowest flex flex-col gap-md p-md shadow-[10px_0_30px_rgba(0,0,0,0.9)] z-40">
+<div class="flex items-center gap-md mb-md">
+<div class="w-12 h-12 bg-primary border-border-standard border-on-surface flex items-center justify-center overflow-hidden">
+<img alt="Authorized User" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfqQjOXaw8_DuEmQZ7CJAToiIGGPo189PoTDr-0N5Tysq7p1T8IDzyZWrzh7Pq6barDS0GU55LV7OuRBUH6Qbdl15hS_AbTGkM3tUMs1jZOUZlUobQJhgsMJ5XcNYsw6sYpThwk3hG_qaNsheUwrlSlKDNoDrLzuJMzCjj5c_8oUmChMMr2i0iYdzLeRtord26VB3tGpESJyqP9UCwjuGKYkgQetTjY0VAk1DIn_-UyflNDVDVHVLvYrUadyoMhrX-3BXoOe4JE_IW"/>
+</div>
+<div>
+<p class="font-display-lg text-headline-md leading-none text-primary uppercase">COMMANDER</p>
+<p class="font-data-mono text-[10px] text-secondary">VAULT_SECURED_08 | LEVEL_4_AUTH</p>
+</div>
+</div>
+<div class="divide-y-border-standard divide-on-surface-variant flex flex-col">
+<a class="py-md text-secondary-fixed-dim pl-4 hover:bg-surface-container-high hover:text-on-surface transition-all flex items-center gap-md" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-data-mono text-data-mono">Vault Logs</span>
+</a>
+<a class="py-md bg-surface-container-highest text-primary border-l-border-thick border-primary pl-4 transition-all flex items-center gap-md" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-data-mono text-data-mono">Network Shield</span>
+</a>
+<a class="py-md text-secondary-fixed-dim pl-4 hover:bg-surface-container-high hover:text-on-surface transition-all flex items-center gap-md" href="#">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-data-mono text-data-mono">Environmental</span>
+</a>
+<a class="py-md text-secondary-fixed-dim pl-4 hover:bg-surface-container-high hover:text-on-surface transition-all flex items-center gap-md" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-data-mono text-data-mono">Protocol 0</span>
+</a>
+</div>
+</aside>
+<!-- Adjust main content padding for web side nav -->
+<style>
+        @media (min-width: 768px) {
+            main { margin-left: 320px; }
+        }
+    </style>
+</body></html>

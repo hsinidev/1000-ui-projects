@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bio-Paws | Biological Age Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .double-helix-bg {
+            background-image: radial-gradient(circle at 2px 2px, rgba(59, 102, 99, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-container": "#8690ee",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#bdc2ff",
+                      "tertiary-fixed-dim": "#94d3c1",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#dadada",
+                      "on-tertiary": "#ffffff",
+                      "surface-tint": "#4c56af",
+                      "background": "#f9f9f9",
+                      "primary-container": "#1a237e",
+                      "on-primary-fixed-variant": "#343d96",
+                      "on-tertiary-container": "#65a393",
+                      "surface-container-low": "#f3f3f4",
+                      "outline": "#767683",
+                      "tertiary-container": "#00372d",
+                      "on-tertiary-fixed-variant": "#065043",
+                      "primary-fixed": "#e0e0ff",
+                      "on-secondary-fixed-variant": "#224e4b",
+                      "on-secondary": "#ffffff",
+                      "on-error": "#ffffff",
+                      "tertiary-fixed": "#afefdd",
+                      "surface-container-high": "#e8e8e8",
+                      "secondary": "#3b6663",
+                      "secondary-fixed-dim": "#a2cfcb",
+                      "error-container": "#ffdad6",
+                      "surface-bright": "#f9f9f9",
+                      "secondary-container": "#bbe8e4",
+                      "surface-variant": "#e2e2e2",
+                      "on-surface-variant": "#454652",
+                      "inverse-primary": "#bdc2ff",
+                      "on-primary": "#ffffff",
+                      "on-surface": "#1a1c1c",
+                      "inverse-surface": "#2f3131",
+                      "on-primary-fixed": "#000767",
+                      "surface": "#f9f9f9",
+                      "outline-variant": "#c6c5d4",
+                      "on-background": "#1a1c1c",
+                      "on-secondary-container": "#3f6a67",
+                      "tertiary": "#002019",
+                      "on-tertiary-fixed": "#00201a",
+                      "surface-container-highest": "#e2e2e2",
+                      "error": "#ba1a1a",
+                      "secondary-fixed": "#beebe7",
+                      "inverse-on-surface": "#f0f1f1",
+                      "on-secondary-fixed": "#00201e",
+                      "surface-container": "#eeeeee",
+                      "primary": "#000666"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-max": "1280px",
+                      "gutter": "24px",
+                      "xs": "4px",
+                      "md": "24px",
+                      "lg": "48px",
+                      "xl": "80px",
+                      "base": "8px",
+                      "sm": "12px"
+              },
+              "fontFamily": {
+                      "h1": ["Montserrat"],
+                      "label-caps": ["Inter"],
+                      "h2": ["Montserrat"],
+                      "h3": ["Montserrat"],
+                      "body-lg": ["Inter"],
+                      "body-md": ["Inter"],
+                      "data-mono": ["Inter"]
+              },
+              "fontSize": {
+                      "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                      "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-secondary-container">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/80 dark:bg-surface-dim/80 backdrop-blur-md border-b border-outline-variant/20">
+<div class="flex justify-between items-center w-full px-md h-16 max-w-container-max mx-auto">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">genetics</span>
+<h1 class="font-h2 text-h2 font-bold text-primary tracking-tight">Bio-Paws</h1>
+</div>
+<button class="w-10 h-10 rounded-full bg-secondary-container/10 flex items-center justify-center hover:bg-secondary-container/20 transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">notifications</span>
+</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-md max-w-lg mx-auto double-helix-bg min-h-screen">
+<!-- Hero Section: Bio-Age Comparison -->
+<section class="mb-lg">
+<div class="flex justify-between items-end mb-sm">
+<div>
+<h2 class="font-h3 text-h3 text-on-surface">Luna's Vitality</h2>
+<p class="text-on-surface-variant font-body-md">Siberian Husky · Female</p>
+</div>
+<div class="bg-secondary-container px-3 py-1 rounded-full">
+<span class="text-on-secondary-container font-label-caps text-label-caps">OPTIMIZED</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md mt-md">
+<!-- Bio Age Card -->
+<div class="bg-surface border border-outline-variant/30 p-md rounded-xl relative overflow-hidden">
+<div class="absolute top-0 right-0 w-16 h-16 opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-secondary text-5xl">biotech</span>
+</div>
+<p class="font-label-caps text-label-caps text-secondary mb-xs uppercase">Biological Age</p>
+<div class="flex items-baseline gap-xs">
+<span class="font-h1 text-h1 text-primary">3.2</span>
+<span class="font-body-md text-on-surface-variant">years</span>
+</div>
+<p class="text-secondary font-data-mono text-xs mt-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">trending_down</span>
+                        -0.4yr vs last kit
+                    </p>
+</div>
+<!-- Chronological Age Card -->
+<div class="bg-surface-container-low border border-outline-variant/20 p-md rounded-xl">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-xs uppercase">Chronological</p>
+<div class="flex items-baseline gap-xs">
+<span class="font-h1 text-h1 text-on-surface/40">5.0</span>
+<span class="font-body-md text-on-surface-variant">years</span>
+</div>
+<p class="text-on-surface-variant font-data-mono text-xs mt-xs">Born Mar 2019</p>
+</div>
+</div>
+</section>
+<!-- Longevity Trend Visualization -->
+<section class="mb-lg bg-surface border border-outline-variant/30 rounded-xl p-md">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-h3 text-h3 text-primary">Longevity Trend</h3>
+<span class="material-symbols-outlined text-on-surface-variant">query_stats</span>
+</div>
+<div class="h-40 w-full relative flex items-end justify-between gap-1 px-2">
+<!-- Simple SVG Graph Representation -->
+<div class="absolute inset-0 flex items-center justify-center opacity-10 pointer-events-none">
+<span class="material-symbols-outlined text-[120px]">insights</span>
+</div>
+<!-- Chart Bars (Visual Representation) -->
+<div class="w-full h-full flex items-end justify-around gap-2">
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[80%] relative group">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity bg-primary text-white text-[10px] px-1 rounded">3.8</div>
+</div>
+<div class="flex-1 bg-surface-container-highest rounded-t-sm h-[75%]"></div>
+<div class="flex-1 bg-secondary-container/60 rounded-t-sm h-[60%] border-t-2 border-secondary"></div>
+<div class="flex-1 bg-secondary-container rounded-t-sm h-[52%] border-t-2 border-secondary"></div>
+<div class="flex-1 bg-primary-container rounded-t-sm h-[45%] border-t-2 border-primary"></div>
+</div>
+</div>
+<div class="flex justify-between mt-sm">
+<span class="font-label-caps text-[10px] text-on-surface-variant">KIT #01</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">KIT #05 (CURRENT)</span>
+</div>
+<div class="mt-md pt-md border-t border-outline-variant/20 grid grid-cols-2 gap-sm">
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-secondary"></div>
+<p class="text-xs text-on-surface-variant">Metabolic Score: <span class="text-on-surface font-bold">92%</span></p>
+</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<p class="text-xs text-on-surface-variant">Telomere Length: <span class="text-on-surface font-bold">Long</span></p>
+</div>
+</div>
+</section>
+<!-- Longevity Plan Progress -->
+<section class="mb-lg">
+<h3 class="font-h3 text-h3 text-primary mb-md">Longevity Plan</h3>
+<div class="space-y-sm">
+<!-- Task 1 -->
+<div class="bg-surface border border-outline-variant/30 rounded-lg p-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">medication</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-semibold text-on-surface">Daily NAD+ Booster</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-1">
+<div class="bg-secondary h-1.5 rounded-full" style="width: 85%"></div>
+</div>
+</div>
+<span class="font-data-mono text-sm text-secondary">85%</span>
+</div>
+<!-- Task 2 -->
+<div class="bg-surface border border-outline-variant/30 rounded-lg p-sm flex items-center gap-md">
+<div class="w-12 h-12 rounded-lg bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+</div>
+<div class="flex-1">
+<p class="font-body-md font-semibold text-on-surface">Vigorous Activity</p>
+<div class="w-full bg-surface-container-highest h-1.5 rounded-full mt-1">
+<div class="bg-secondary h-1.5 rounded-full" style="width: 40%"></div>
+</div>
+</div>
+<span class="font-data-mono text-sm text-on-surface-variant">40%</span>
+</div>
+</div>
+</section>
+<!-- Cellular Health Markers (Bento style) -->
+<section class="mb-lg">
+<div class="flex justify-between items-center mb-md">
+<h3 class="font-h3 text-h3 text-primary">Cellular Insights</h3>
+<button class="text-primary font-label-caps text-label-caps flex items-center gap-1 uppercase">
+                    Full Lab Report <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+</div>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-primary text-white p-md rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-3xl">psychology</span>
+<div>
+<p class="font-label-caps text-[10px] opacity-70 uppercase">Cognitive Age</p>
+<p class="text-h3 font-bold">2.8 Years</p>
+</div>
+</div>
+<div class="bg-secondary-container text-on-secondary-container p-md rounded-xl flex flex-col justify-between aspect-square">
+<span class="material-symbols-outlined text-3xl" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<div>
+<p class="font-label-caps text-[10px] opacity-70 uppercase">Heart Health</p>
+<p class="text-h3 font-bold">Excellent</p>
+</div>
+</div>
+<div class="col-span-2 bg-surface border border-outline-variant/30 p-md rounded-xl">
+<div class="flex items-center gap-md">
+<img class="w-20 h-20 rounded-lg object-cover" data-alt="Close up photography of microscopic blue cellular structures representing healthy canine DNA strands in a clinical laboratory setting. The image uses a clean, bright, light-mode aesthetic with soft high-key lighting. The color palette emphasizes scientific deep blues and sterile white surfaces, projecting an authoritative and advanced medical feeling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMoa7u94WlHEMk9ZEfxjzfBtI_Mxl3o4psbdDH5QBCLk-Dv9hl9grxwpPmOrnW5C3zsofM-XG-uivX7JuzlzoAn3Dn2i7S-UWZOrqD4PGHZWz95o-32ltBaAm85VR46frZ1KGoQLumF1MYYu3bV1Ia6tsSYCJgs46CQCC5uaXxmMCWnqTvA23QWGuf_EGmyhp7xq_8SK2SWwFQCUi7YigA8O836lqKYfKRP41hm71R7cHPNddFTlTix15PbQj0GRAziqKjvc_GLNo"/>
+<div>
+<p class="font-semibold text-on-surface">Epigenetic Clock Analysis</p>
+<p class="text-sm text-on-surface-variant mt-1">Methylation patterns indicate a 15% slower aging rate compared to breed average.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Milestones -->
+<section class="mb-xl">
+<h3 class="font-h3 text-h3 text-primary mb-md">Longevity Milestones</h3>
+<div class="relative pl-6 border-l-2 border-outline-variant/20 ml-3 space-y-lg">
+<div class="relative">
+<div class="absolute -left-[27px] top-0 w-3 h-3 rounded-full bg-secondary ring-4 ring-background"></div>
+<p class="font-label-caps text-label-caps text-secondary mb-1 uppercase">Next Week</p>
+<p class="font-semibold text-on-surface">Kit #06 Shipping</p>
+<p class="text-sm text-on-surface-variant">Quarterly calibration of bio-markers.</p>
+</div>
+<div class="relative opacity-50">
+<div class="absolute -left-[27px] top-0 w-3 h-3 rounded-full bg-outline ring-4 ring-background"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-1 uppercase">Aug 2024</p>
+<p class="font-semibold text-on-surface">Age Reversal Goal: 2.5yr</p>
+<p class="text-sm text-on-surface-variant">Projected result of high-protein diet shift.</p>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center px-sm py-xs pb-safe bg-surface dark:bg-surface-dim border-t border-outline-variant/20 z-50 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps mt-1">DNA Risk</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-secondary-container dark:text-secondary-fixed-dim bg-secondary-container/30 dark:bg-tertiary-container/40 rounded-full px-4 py-1" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">hourglass_empty</span>
+<span class="font-label-caps text-label-caps mt-1">Longevity</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">medication</span>
+<span class="font-label-caps text-label-caps mt-1">Supplements</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-surface-variant hover:text-secondary transition-colors" href="#">
+<span class="material-symbols-outlined">science</span>
+<span class="font-label-caps text-label-caps mt-1">Research</span>
+</a>
+</nav>
+<!-- NavigationDrawer (Hidden by default, for demonstration) -->
+<div class="hidden fixed inset-y-0 left-0 z-[60] flex flex-col p-md h-full w-80 rounded-r-xl bg-surface dark:bg-surface-dim shadow-lg shadow-primary-container/10" id="drawer">
+<div class="flex items-center gap-md mb-lg">
+<img alt="Luna the Husky" class="w-16 h-16 rounded-full object-cover border-2 border-secondary" data-alt="A portrait of a beautiful Siberian Husky with striking blue eyes and gray-and-white fur. The dog is looking directly at the camera with a gentle expression. The background is a soft-focus laboratory or modern home setting with bright, airy lighting that fits a high-end health and wellness brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAs-wxFDU-IPBmfBiC1habaWZVH4KMeP-OrZjup9wFvsuCE_81_mENOFgEK2ynBeVGwgDntWXrnQKgs3N8GEwo7odaLukCMSOpdP9DOesw3voHPnOmRKuW95N0gvJmGu8q7Fcvq9gQHrZTZZ8wRWdwBq8ykIUxS-8JzYMI-wu7ekIQllVZcnJ0tGAddm7-QypeNGhF9Q0GgDxYdE4PrYL5PD-2dl8XMJtWEUOqJ2wXE8YrTVOAZbKaWmBtOvKeDlOrBdMyc9k3t0kc"/>
+<div>
+<h4 class="font-h3 text-h3 text-primary">Luna the Husky</h4>
+<p class="text-sm text-on-surface-variant font-medium">Bio-Age: 3.2 Years</p>
+<p class="text-[10px] text-secondary font-label-caps uppercase mt-1">Next Kit: Arriving Friday</p>
+</div>
+</div>
+<div class="space-y-sm">
+<div class="bg-secondary-container text-on-secondary-container font-semibold rounded-lg flex items-center gap-md p-md">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">pets</span>
+<span>Pet Profile</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant/50 transition-all duration-300 rounded-lg flex items-center gap-md p-md">
+<span class="material-symbols-outlined">local_shipping</span>
+<span>Shipping Updates</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant/50 transition-all duration-300 rounded-lg flex items-center gap-md p-md">
+<span class="material-symbols-outlined">lightbulb</span>
+<span>Daily Tips</span>
+</div>
+<div class="text-on-surface-variant hover:bg-surface-variant/50 transition-all duration-300 rounded-lg flex items-center gap-md p-md">
+<span class="material-symbols-outlined">biotech</span>
+<span>Lab Results</span>
+</div>
+<div class="mt-auto pt-lg">
+<div class="text-on-surface-variant hover:bg-surface-variant/50 transition-all duration-300 rounded-lg flex items-center gap-md p-md">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</div>
+</div>
+</div>
+</div>
+</body></html>

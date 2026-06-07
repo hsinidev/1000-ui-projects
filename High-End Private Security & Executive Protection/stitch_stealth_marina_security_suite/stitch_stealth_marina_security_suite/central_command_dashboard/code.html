@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS MARITIME | Central Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #111316;
+            color: #e2e2e6;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(26, 28, 31, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .milled-border {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            border-right: 1px solid rgba(0, 0, 0, 0.3);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+        }
+        .radar-grid {
+            background-image: radial-gradient(circle, rgba(71, 234, 237, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(71, 234, 237, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#333538",
+                    "secondary": "#bec8cd",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary-container": "#005354",
+                    "surface-dim": "#111316",
+                    "tertiary-container": "#b9b9b9",
+                    "inverse-on-surface": "#2f3034",
+                    "surface-container-low": "#1a1c1f",
+                    "secondary-container": "#414a4f",
+                    "on-secondary": "#293236",
+                    "primary-fixed": "#5af8fb",
+                    "outline": "#859493",
+                    "surface-variant": "#333538",
+                    "outline-variant": "#3b4949",
+                    "on-primary-fixed-variant": "#004f51",
+                    "surface-container-high": "#282a2d",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-error": "#690005",
+                    "on-tertiary-container": "#484a4a",
+                    "on-error-container": "#ffdad6",
+                    "background": "#111316",
+                    "surface-container-lowest": "#0c0e11",
+                    "on-primary": "#003738",
+                    "error-container": "#93000a",
+                    "primary-container": "#00ced1",
+                    "on-surface": "#e2e2e6",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-secondary-fixed": "#141d21",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed-variant": "#3f484c",
+                    "surface-bright": "#37393d",
+                    "on-primary-fixed": "#002020",
+                    "tertiary": "#d5d5d5",
+                    "surface": "#111316",
+                    "surface-tint": "#2ddbde",
+                    "inverse-surface": "#e2e2e6",
+                    "on-background": "#e2e2e6",
+                    "surface-container": "#1e2023",
+                    "primary-fixed-dim": "#2ddbde",
+                    "on-secondary-container": "#b0babf",
+                    "secondary-fixed": "#dbe4e9",
+                    "on-surface-variant": "#bac9c9",
+                    "inverse-primary": "#00696b",
+                    "on-tertiary": "#2f3131",
+                    "primary": "#47eaed",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed-dim": "#bec8cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "margin": "40px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Space Grotesk"],
+                    "data-point": ["JetBrains Mono"],
+                    "body-md": ["Geist"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-xl": ["Space Grotesk"],
+                    "body-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-point": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background selection:bg-primary selection:text-on-primary">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center w-full px-margin h-16 sticky top-0 z-50 border-b border-outline-variant bg-surface-dim">
+<div class="flex items-center gap-8">
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">AEGIS MARITIME</span>
+<div class="hidden md:flex gap-6 items-center">
+<span class="font-label-caps text-label-caps text-primary font-bold border-b-2 border-primary py-4">BRIDGE CONTROL</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:bg-surface-container-highest transition-colors px-2 py-1">FLEET VIEW</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant font-medium hover:bg-surface-container-highest transition-colors px-2 py-1">COMMS HUB</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary p-2">settings</button>
+<div class="flex items-center gap-2 pl-4 border-l border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface-variant">ADM. COMMANDER</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="flex flex-col h-full fixed left-0 top-0 pt-16 w-64 z-40 border-r border-outline-variant bg-surface-container-low hidden lg:flex">
+<div class="p-6">
+<div class="flex items-center gap-3 mb-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-headline-lg text-[20px] text-on-surface">AURORA V</span>
+</div>
+<span class="font-label-caps text-[10px] text-secondary">Operational Status: Active</span>
+</div>
+<nav class="flex-grow">
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-6 py-3 text-primary border-l-2 border-primary bg-secondary-container/20 font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">dashboard</span>
+                    Bridge Control
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">layers</span>
+                    Deck Layout
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">security</span>
+                    Security Nodes
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">radar</span>
+                    Sensor Array
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+                    System Logs
+                </a>
+<a class="flex items-center gap-3 px-6 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">visibility</span>
+                    Tactical Overlay
+                </a>
+</div>
+</nav>
+<div class="p-6 space-y-4">
+<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-label-caps font-bold milled-border hover:bg-primary-container transition-all active:scale-95">
+                DEPLOY SCRAMBLE
+            </button>
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-caps text-[10px]" href="#">
+<span class="material-symbols-outlined text-[16px]">build</span> Diagnostic
+                </a>
+<a class="flex items-center gap-2 text-on-surface-variant hover:text-primary font-label-caps text-[10px]" href="#">
+<span class="material-symbols-outlined text-[16px]">vm_group</span> Encryption
+                </a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 min-h-screen p-margin pb-20">
+<div class="max-w-container-max mx-auto space-y-gutter">
+<!-- Hero Tactical Summary -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<div class="lg:col-span-8 glass-panel milled-border p-6 relative overflow-hidden">
+<div class="absolute inset-0 radar-grid opacity-20 pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface uppercase tracking-tighter">CENTRAL COMMAND</h1>
+<p class="font-data-point text-primary mt-2">GEO-POS: N 25.1972° E 55.2744° | DEPTH: 14.2M</p>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-secondary block">SYSTEM INTEGRITY</span>
+<span class="font-headline-lg text-primary">99.98%</span>
+</div>
+</div>
+<!-- Interactive Deck Summary -->
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container p-4 border-l-2 border-primary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DECK 01 (BRIDGE)</span>
+<div class="flex items-center justify-between">
+<span class="font-data-point text-on-surface">SECURE</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+</div>
+<div class="bg-surface-container p-4 border-l-2 border-primary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DECK 02 (GUEST)</span>
+<div class="flex items-center justify-between">
+<span class="font-data-point text-on-surface">SECURE</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+</div>
+<div class="bg-surface-container p-4 border-l-2 border-error">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DECK 03 (CREW)</span>
+<div class="flex items-center justify-between">
+<span class="font-data-point text-error">1 ALERT</span>
+<span class="material-symbols-outlined text-error text-[18px]">warning</span>
+</div>
+</div>
+<div class="bg-surface-container p-4 border-l-2 border-primary">
+<span class="font-label-caps text-[10px] text-on-surface-variant block mb-1">DECK 04 (ENGINE)</span>
+<div class="flex items-center justify-between">
+<span class="font-data-point text-on-surface">SECURE</span>
+<span class="material-symbols-outlined text-primary text-[18px]">verified</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Personnel -->
+<div class="lg:col-span-4 glass-panel milled-border p-6 flex flex-col">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">group</span> ACTIVE PERSONNEL
+                    </h2>
+<div class="flex-grow space-y-4">
+<div class="flex items-center gap-4 p-2 hover:bg-surface-container-highest transition-colors">
+<div class="w-10 h-10 bg-secondary-container rounded-sm flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-caps text-on-surface">CAPT. R. VANCE</p>
+<p class="font-data-point text-[10px] text-secondary">BRIDGE COMMAND</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-4 p-2 hover:bg-surface-container-highest transition-colors">
+<div class="w-10 h-10 bg-secondary-container rounded-sm flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary">engineering</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-caps text-on-surface">ENG. T. CHEN</p>
+<p class="font-data-point text-[10px] text-secondary">ENGINE ROOM</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+<div class="flex items-center gap-4 p-2 hover:bg-surface-container-highest transition-colors">
+<div class="w-10 h-10 bg-secondary-container rounded-sm flex items-center justify-center border border-outline-variant">
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+<div class="flex-grow">
+<p class="font-label-caps text-on-surface">SEC. M. ROSSI</p>
+<p class="font-data-point text-[10px] text-secondary">DECK 03 PATROL</p>
+</div>
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+</div>
+</div>
+<button class="w-full mt-4 py-2 border border-outline-variant font-label-caps text-[10px] hover:bg-surface-container-highest transition-colors">VIEW FULL MANIFEST</button>
+</div>
+</section>
+<!-- Fleet-wide Alert Feed & System Controls -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Alert Feed -->
+<div class="lg:col-span-8 space-y-4">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">notifications_active</span> LIVE MISSION FEED
+                    </h2>
+<div class="space-y-3">
+<!-- Alert Item -->
+<div class="bg-surface-container-low border-l-4 border-error p-4 flex gap-4 items-start">
+<span class="font-data-point text-error text-[12px] shrink-0">14:02:11</span>
+<div>
+<p class="font-body-md text-on-surface font-bold">UNAUTHORIZED ACCESS ATTEMPT - DECK 03 STERN</p>
+<p class="font-body-md text-secondary text-[14px]">Biometric scan failed at Node 3-A. Security team dispatched.</p>
+</div>
+<button class="ml-auto bg-error-container text-on-error-container px-4 py-1 font-label-caps text-[10px] milled-border">ACKNOWLEDGE</button>
+</div>
+<!-- Normal Event -->
+<div class="bg-surface-container-low border-l-4 border-primary p-4 flex gap-4 items-start">
+<span class="font-data-point text-primary text-[12px] shrink-0">13:58:45</span>
+<div>
+<p class="font-body-md text-on-surface">HULL INTEGRITY SCAN COMPLETE</p>
+<p class="font-body-md text-secondary text-[14px]">External structural analysis shows zero deviations from baseline.</p>
+</div>
+</div>
+<!-- Tech Update -->
+<div class="bg-surface-container-low border-l-4 border-secondary p-4 flex gap-4 items-start">
+<span class="font-data-point text-secondary text-[12px] shrink-0">13:45:22</span>
+<div>
+<p class="font-body-md text-on-surface">UPLINK SYNCHRONIZATION</p>
+<p class="font-body-md text-secondary text-[14px]">Primary satellite handover successful. Latency: 22ms.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Override Controls -->
+<div class="lg:col-span-4 space-y-4">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]">emergency_home</span> COMMAND OVERRIDES
+                    </h2>
+<div class="glass-panel milled-border p-6 space-y-6">
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-on-surface">LOCKDOWN MODE</p>
+<p class="font-data-point text-[10px] text-secondary">SEALS ALL WATERTIGHT DOORS</p>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest rounded-full p-1 cursor-pointer">
+<div class="w-4 h-4 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-on-surface">EXTERNAL COMMS</p>
+<p class="font-data-point text-[10px] text-secondary">RADIO SILENCE PROTOCOL</p>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full p-1 flex justify-end cursor-pointer">
+<div class="w-4 h-4 bg-on-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between items-center">
+<div>
+<p class="font-label-caps text-on-surface">STEALTH NAVIGATION</p>
+<p class="font-data-point text-[10px] text-secondary">MINIMIZE RADAR CROSS-SECTION</p>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest rounded-full p-1 cursor-pointer">
+<div class="w-4 h-4 bg-secondary rounded-full"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<button class="w-full py-4 border-2 border-error text-error hover:bg-error/10 transition-colors font-headline-lg text-[18px] uppercase tracking-widest font-bold">
+                                SOS BROADCAST
+                            </button>
+</div>
+</div>
+</div>
+</section>
+<!-- Visual Data Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel milled-border h-48 relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="A cinematic, high-resolution tactical radar screen display showing a ship navigating through dark deep blue water with glowing teal wave patterns and topographic lines. The lighting is low-key, emphasizing the neon teal data points and digital interfaces typical of a high-end maritime command center. The visual style is crisp and technological, with a focus on precision and military-grade security aesthetics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC8monNP2SpQEKP6IV2sQzlRZx2kRbQSaDq0Lagd1oGBGFa7pu4UwxxTyNMAhCU1ucyfo9jhfK9qpTuHRrzyNHLzWPjz1EWEL_c7XkTV_HpO05URfA5SGefD_4pTkYQ9gLXWKMYETd_m4lFYGhFYBMjlh0EHPzDIMh7JvMrgHfeBW5-9tOX3WtLvYZRF4vNnx3E8g3azpc2HoUEvZneEROfbw1f9wTCGgTlT5hPG-Oif_Jbyhr09xChX0pGinNAYcess21FDI5IBfY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-label-caps text-primary">RADAR ARRAY</p>
+<p class="font-data-point text-[10px] text-on-surface">ACTIVE SCAN: 50NM RANGE</p>
+</div>
+</div>
+<div class="glass-panel milled-border h-48 relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="A night-time view from the bridge of a modern luxury yacht, looking out onto a dark sea with distant city lights blurred in the background. The interior is characterized by glowing digital cockpit displays and instrument panels emitting a soft teal and white light onto the brushed metal surfaces. The mood is silent, focused, and professional, capturing the elite nautical industrial vibe of a mission-critical command center." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBJfQBm5NIVcRlSa0gEcfPR9sqxjkHk24QVboKhgW8ri_tr_gXSF4GSgPkFxOHXSfpU_2d2wE2N-L1sckUPHsAyjaKkDI4jaHKJDiXEWxO0hCrJ8-Tn0zJopeEHm_-ayxWyUUDvWeTCLLdzlKlK9S_3OOmfouT7qOOu8UZ7EVbEdbwtx3VAvqtNK5QX8nr0tYf7irza3H8hT-umHxh8ixDMcPjptQdYZlOGDUDxPzhoQMtnjSvKikbHdNyCGSr0pyqyb_0b6iP0pqc"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-label-caps text-primary">OPTICAL FEED</p>
+<p class="font-data-point text-[10px] text-on-surface">BRIDGE PORT VIEW: 4K INFRARED</p>
+</div>
+</div>
+<div class="glass-panel milled-border h-48 relative overflow-hidden group">
+<img class="w-full h-full object-cover opacity-50 group-hover:scale-105 transition-transform duration-700" data-alt="Close-up of high-tech server racks in a darkened room, illuminated by rows of tiny glowing teal and orange LED status lights. The metallic surfaces of the hardware reflect the ambient digital glow, creating a sense of immense processing power and secure data storage. The aesthetic is purely industrial and technical, following the dark gunmetal and tactical teal color palette of the maritime command system." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFjr5RmD4GaRF_KYyFioC3qQ_bcmmNJrnulB_cOiSx-lgn28pEzT0z7wEST_xSF6UJY_TfKfbFQ-xRcevL8E-xQl9au4LqAHzvzhmPbopq_AS4U5VvSqxujrw3pjHgWtmMIBP_cFcwdGJhDudT1fKoV76lUIRdDXDw6B-mRIcPufXBYKPIseoyGt-NHgIcWaKmZ1HG5ip2UGAX8n6aw3Ncl3IesATnF0O48hVDqSbo79Ss3GOgN9KSc9LlfkEys06ua_KjHKFqjh4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-label-caps text-primary">CORE SERVER</p>
+<p class="font-data-point text-[10px] text-on-surface">ENCRYPTION: AES-256 ACTIVE</p>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer Status Bar -->
+<footer class="fixed bottom-0 left-0 w-full px-margin py-1 flex justify-between items-center z-50 border-t border-outline-variant bg-surface-container-lowest">
+<span class="font-data-point text-[10px] text-on-surface-variant uppercase tracking-widest">© 2024 AEGIS MARITIME SYSTEMS | ENCRYPTED LINK</span>
+<div class="flex gap-6 items-center">
+<span class="font-data-point text-[10px] text-tertiary uppercase tracking-widest">N 25.1972° E 55.2744°</span>
+<span class="font-data-point text-[10px] text-tertiary uppercase tracking-widest">SYSTEM HEALTH: 99.8%</span>
+<span class="font-data-point text-[10px] text-primary uppercase tracking-widest flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span> UPLINK: SECURE
+            </span>
+</div>
+</footer>
+<!-- FAB for Emergency Actions (suppressed on dash, but here for reference) -->
+<!-- <button class="fixed bottom-12 right-12 w-16 h-16 bg-error rounded-full shadow-2xl flex items-center justify-center text-on-error z-[60]">
+        <span class="material-symbols-outlined text-[32px]">emergency</span>
+    </button> -->
+</body></html>

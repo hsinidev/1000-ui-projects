@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS MARITIME | Security Crew Management</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #111316;
+            color: #e2e2e6;
+            overflow-x: hidden;
+        }
+        .glass-panel {
+            background: rgba(26, 28, 31, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .milled-border {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(71, 234, 237, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-container-lowest": "#0c0e11",
+                      "secondary": "#bec8cd",
+                      "on-primary-container": "#005354",
+                      "outline-variant": "#3b4949",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#414a4f",
+                      "inverse-primary": "#00696b",
+                      "secondary-fixed": "#dbe4e9",
+                      "on-surface": "#e2e2e6",
+                      "on-tertiary-container": "#484a4a",
+                      "background": "#111316",
+                      "surface": "#111316",
+                      "on-tertiary": "#2f3131",
+                      "inverse-surface": "#e2e2e6",
+                      "surface-container-low": "#1a1c1f",
+                      "surface-container-high": "#282a2d",
+                      "on-primary-fixed-variant": "#004f51",
+                      "surface-container-highest": "#333538",
+                      "inverse-on-surface": "#2f3034",
+                      "primary-fixed-dim": "#2ddbde",
+                      "tertiary-container": "#b9b9b9",
+                      "outline": "#859493",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-primary-fixed": "#002020",
+                      "secondary-fixed-dim": "#bec8cd",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "surface-tint": "#2ddbde",
+                      "error-container": "#93000a",
+                      "surface-dim": "#111316",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#293236",
+                      "primary-container": "#00ced1",
+                      "surface-container": "#1e2023",
+                      "on-surface-variant": "#bac9c9",
+                      "on-secondary-container": "#b0babf",
+                      "surface-variant": "#333538",
+                      "on-primary": "#003738",
+                      "surface-bright": "#37393d",
+                      "primary-fixed": "#5af8fb",
+                      "on-secondary-fixed-variant": "#3f484c",
+                      "on-error": "#690005",
+                      "on-background": "#e2e2e6",
+                      "on-secondary-fixed": "#141d21",
+                      "tertiary": "#d5d5d5",
+                      "primary": "#47eaed",
+                      "on-tertiary-fixed": "#1a1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin": "40px",
+                      "unit": "4px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Geist"],
+                      "body-md": ["Geist"],
+                      "headline-lg": ["Space Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-point": ["JetBrains Mono"],
+                      "headline-xl": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "data-point": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-on-surface selection:bg-primary/30 selection:text-primary">
+<!-- Top Navigation -->
+<header class="fixed top-0 w-full bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-margin h-20 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="radar">radar</span>
+<h1 class="font-headline-xl text-headline-xl uppercase tracking-widest text-primary">AEGIS MARITIME</h1>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<nav class="flex gap-8">
+<a class="text-primary font-label-caps text-label-caps tracking-widest border-b-2 border-primary pb-1" href="#">TACTICAL</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps tracking-widest" href="#">LOGISTICS</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-label-caps text-label-caps tracking-widest" href="#">INVENTORY</a>
+</nav>
+<button class="bg-primary/10 text-primary border border-primary/20 px-6 py-2 font-label-caps text-label-caps hover:bg-primary/20 transition-all active:scale-95">
+                LOCK-DOWN
+            </button>
+</div>
+</header>
+<!-- Side Navigation -->
+<aside class="fixed left-0 top-0 h-full w-80 bg-surface-container-low/95 backdrop-blur-md border-r border-outline-variant z-[60] pt-24 hidden lg:flex flex-col">
+<div class="px-8 mb-8">
+<div class="flex items-center gap-4 mb-2">
+<div class="w-12 h-12 rounded-full border-2 border-primary overflow-hidden">
+<img alt="Vessel Master" class="w-full h-full object-cover" data-alt="A professional portrait of a vessel security master in his late 40s wearing a high-tech tactical navy uniform. The background is a blurred high-tech command center with soft teal glowing screens. The lighting is dramatic, side-lit, emphasizing authority and professional expertise in a maritime setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAM6VwcCq6CcudaH3H0Kxnas18IBMhDY8OAbd9ZVgeHeWykRw8k6uGYEazcuNEEdgoErGULh0vT229NoOyzW5tchfu3WRM_GGtMbEEU7jWyXURfU1pj2z-0JfUtLHR_yDqK_E9s4NTt4l_0tridzmhO6ytbPjb60s8TfD63cgpQtlzpTThjScf8QItRGtIt8cKMpoZJgC7oKunKiNd91LC2UUIvE2sVTp4xjIDD4RX5gdbLmtjf84dC0aC9QOR0eSKYpRO8kVPhy1w"/>
+</div>
+<div>
+<p class="font-headline-lg text-primary text-lg leading-tight">MY-ATHENA</p>
+<p class="text-error font-label-caps text-[10px] uppercase">SEA-STATE: SEVERE</p>
+</div>
+</div>
+<p class="font-data-point text-outline text-[10px] tracking-tighter">LAT: 25.7617 N | LON: 80.1918 W</p>
+</div>
+<nav class="flex-grow flex flex-col gap-1 px-4">
+<a class="flex items-center gap-4 px-4 py-4 text-primary font-bold bg-primary-container/20 border-l-2 border-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-body-md text-body-md uppercase tracking-wider">DECK 01</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-4 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+<span class="font-body-md text-body-md uppercase tracking-wider">DECK 02</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-4 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span class="font-body-md text-body-md uppercase tracking-wider">OWNER SUITE</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-4 text-on-surface-variant hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings_suggest">settings_suggest</span>
+<span class="font-body-md text-body-md uppercase tracking-wider">ENGINE ROOM</span>
+</a>
+</nav>
+<div class="p-8 border-t border-outline-variant/30">
+<div class="p-4 glass-panel milled-border rounded-lg">
+<p class="font-label-caps text-[10px] text-outline mb-2">NETWORK UPTIME</p>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[98%]"></div>
+</div>
+<p class="font-data-point text-primary text-right mt-1">99.8% SECURE</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:pl-80 pt-20 min-h-screen">
+<div class="px-margin py-10 space-y-gutter pb-32">
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Tactical Map View -->
+<div class="col-span-12 xl:col-span-8 glass-panel milled-border p-4 h-[500px] relative overflow-hidden group">
+<div class="absolute inset-0 scanline opacity-20 pointer-events-none"></div>
+<div class="absolute top-6 left-6 z-10 flex flex-col gap-2">
+<div class="bg-surface-container-lowest/80 px-4 py-2 border border-outline-variant flex items-center gap-3">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-caps text-label-caps">LIVE FEED: MAIN DECK AFT</span>
+</div>
+<div class="bg-surface-container-lowest/80 px-4 py-1 border border-outline-variant">
+<span class="font-data-point text-[10px] text-outline uppercase tracking-widest">COORD: 25.7N 80.1W | HEADING: 142°</span>
+</div>
+</div>
+<!-- Map/Blueprint Mockup -->
+<div class="w-full h-full bg-[#1e2023] relative rounded overflow-hidden">
+<img alt="Tactical Yacht Map" class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A top-down architectural blueprint rendering of a luxury superyacht deck illuminated by glowing teal neon grid lines. The background is deep gunmetal gray. Several tactical circular markers with monospaced text labels glow softly across the deck plan, suggesting real-time GPS locations of crew members in a sophisticated security software interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBe-Cqx5csYAE3O_v3rKBPOr5wDVuysN18pdtEF9sChL3GGH7qR5YPuMHdm0F8DMadK-h4VeZveXVejX1xKnzUZ9_Q50UX7dmEyljXXIfM-aVwona6lKzw9chs5VDBsDUQG38J-LmGKXPg93sDTabps8nHcvY5d84_zabgRMxCOobKjOHLderi-N50Pc29zWkjNQatThk3WiwdS7E9az3j9fUZPVhLc3T4XBilzNwjrXSikiftZjRukpF9QM7MK_weXx5IgremOsRg"/>
+<!-- Crew Hotspots -->
+<div class="absolute top-[30%] left-[45%] group/pin">
+<div class="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center border border-primary animate-ping absolute inset-0"></div>
+<div class="w-8 h-8 rounded-full bg-primary/40 flex items-center justify-center border border-primary relative z-10">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="person">person</span>
+</div>
+<div class="absolute left-10 top-0 bg-surface-container-highest px-3 py-1 border border-primary/50 whitespace-nowrap hidden group-hover/pin:block">
+<p class="font-label-caps text-[10px] text-primary">AGENT-01: ON WATCH</p>
+</div>
+</div>
+<div class="absolute top-[60%] left-[20%] group/pin">
+<div class="w-6 h-6 rounded-full bg-error/20 flex items-center justify-center border border-error relative z-10">
+<span class="material-symbols-outlined text-error text-xs" data-icon="emergency">emergency</span>
+</div>
+<div class="absolute left-8 top-0 bg-surface-container-highest px-3 py-1 border border-error/50 whitespace-nowrap">
+<p class="font-label-caps text-[10px] text-error">ALARM: DECK-2 PT ACCESS</p>
+</div>
+</div>
+<div class="absolute bottom-[20%] right-[30%]">
+<div class="w-6 h-6 rounded-full bg-on-surface-variant/20 flex items-center justify-center border border-on-surface-variant relative z-10">
+<span class="material-symbols-outlined text-on-surface-variant text-xs" data-icon="person">person</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Alert Dispatch Panel -->
+<div class="col-span-12 xl:col-span-4 flex flex-col gap-gutter">
+<div class="glass-panel milled-border flex-grow flex flex-col p-6 overflow-hidden">
+<div class="flex justify-between items-center mb-6">
+<h2 class="font-headline-lg text-xl uppercase tracking-tighter text-primary">ALERT DISPATCH</h2>
+<span class="material-symbols-outlined text-primary" data-icon="send">send</span>
+</div>
+<div class="flex-grow space-y-4 overflow-y-auto pr-2 custom-scrollbar">
+<div class="p-3 border-l-2 border-primary bg-primary/5 rounded-r">
+<p class="text-[10px] font-label-caps text-primary mb-1">SYSTEM [14:02:11]</p>
+<p class="text-body-md text-sm">Main deck perimeter sweep complete. All nodes active.</p>
+</div>
+<div class="p-3 border-l-2 border-outline-variant bg-surface-container-highest/30 rounded-r">
+<p class="text-[10px] font-label-caps text-on-surface-variant mb-1">AGENT-03 [14:05:45]</p>
+<p class="text-body-md text-sm">Shift change. Relieving Agent-01 at Helipad watch.</p>
+</div>
+<div class="p-3 border-l-2 border-error bg-error/10 rounded-r">
+<p class="text-[10px] font-label-caps text-error mb-1">SECURITY ALERT [14:12:02]</p>
+<p class="text-body-md text-sm font-semibold">Unidentified vessel approaching STB side. 2.4 nautical miles.</p>
+</div>
+</div>
+<div class="mt-6 pt-6 border-t border-outline-variant/30">
+<div class="relative">
+<input class="w-full bg-surface-container-lowest border-none border-b border-outline focus:ring-0 focus:border-primary text-sm font-label-caps py-3 pl-0 transition-all" placeholder="BROADCAST SECURE CHANNEL..." type="text"/>
+<button class="absolute right-0 top-1/2 -translate-y-1/2 text-primary hover:scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="keyboard_return">keyboard_return</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Crew Roster (Bento Grid Style) -->
+<div class="col-span-12">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-headline-lg text-2xl tracking-tight uppercase">CREW STATUS ROSTER</h2>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 bg-surface-container-high px-4 py-2 border border-outline-variant hover:bg-primary/10 hover:border-primary/30 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+<span class="font-label-caps text-[10px]">ALL PERSONNEL</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter">
+<!-- Crew Card 1 -->
+<div class="glass-panel milled-border p-5 group hover:bg-surface-container-high transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Agent-01" class="w-full h-full object-cover" data-alt="A tactical close-up portrait of a security guard in a dark navy polo with a tactical communications headset. The setting is a dim high-tech interior with subtle blue accent lighting. The style is industrial, clean, and high-contrast, matching a professional security command interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6p7n4YfJtNLnKd37q5Cu3uAHpR2boqEptovKFc4E1sIziPcybpWgdKRePglmodD57AXkihvidk3n1Sy62n0cE5j493BcI3XN_v3myLrScoEMLhEOTffFNCkH6etb5nnhGqXNTACI9D_D-gmZPRPODTideCSTEhCCPNhd5B9-2az-buuhDVnyCGOxkqL6DKFgGYh16mMULAoeM82FFnnPFC9cXIYlHPAvEb88Nuid1B_PbTfWvyLKg3-LCD8lyz7LDvse3WubH9JI"/>
+</div>
+<div class="bg-primary/10 border border-primary/30 px-2 py-0.5 rounded-sm">
+<span class="font-label-caps text-[9px] text-primary">ON WATCH</span>
+</div>
+</div>
+<h3 class="font-headline-lg text-lg uppercase tracking-wider mb-1">C. VANCE</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">LEAD TACTICAL UNIT</p>
+<div class="flex justify-between items-center text-[10px] font-data-point text-outline">
+<span>HR: 72 BPM</span>
+<span>LOC: HELIPAD</span>
+</div>
+</div>
+<!-- Crew Card 2 -->
+<div class="glass-panel milled-border p-5 group hover:bg-surface-container-high transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Agent-02" class="w-full h-full object-cover" data-alt="A portrait of a security operative in a tactical black uniform looking directly into the camera with a neutral expression. High-contrast lighting with deep shadows, emphasizing the grit and professionalism of elite maritime security. Background features industrial steel panels." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPs9rAMzAIgQyFePDjbFMMhJpg6TlPY3h4piCLUnnQdZwtdYdOFyTtiU6Lnc8tbd20pWIauD3IVuXp3H7j0OjW7bVOwjAaFTLeLDUo8c5bMgBgv7Fe5L63QtFDA_MZWDlr5r31O4RT7Lv1lqSvFIEdGOnqxuMxd2YBGbUn5mP2MXWNIL51mRLTMgY-YuETMOnMOZPdEVAhIf7rWkyNm5DwiUWdUGakb1a3oOEr3y2u5HgzfqQEJ9JRzfK_XP0vzOLlzUv0hMHQ5Wc"/>
+</div>
+<div class="bg-surface-container-highest border border-outline-variant px-2 py-0.5 rounded-sm">
+<span class="font-label-caps text-[9px] text-on-surface-variant">OFF DUTY</span>
+</div>
+</div>
+<h3 class="font-headline-lg text-lg uppercase tracking-wider mb-1">M. KOWALSKI</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">SYSTEM TECH</p>
+<div class="flex justify-between items-center text-[10px] font-data-point text-outline">
+<span>HR: 65 BPM</span>
+<span>LOC: CREW QTR</span>
+</div>
+</div>
+<!-- Crew Card 3 -->
+<div class="glass-panel milled-border p-5 group border-primary/40 bg-primary/5 transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Agent-03" class="w-full h-full object-cover" data-alt="A headshot of a female security professional in tactical gear, wearing an earbud communicator. Her gaze is sharp and focused. Lighting is stark and technical, highlighting the gunmetal and teal color scheme of the maritime security environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPBw2ekvKOp4eVITR_hsop-GjDaILDCsAuxwEqyeQSzyoTItC8528Eo69RxWij-szAuiGibJOWFCKqQkVEa53G0Dg8FoG7tWdnpCxeZvf1JpVxb3rJqxgc_ma6NIlO7u1ePb4WLugVDp61GLF2PBLH4HY7t-UOm6vQS8MAW5YbbEQgWnIqKPqLDW88P9wXeMdWVBgXEq3n27GTAw9IdmuaHgZtjtDtTc0cgTJfpAcSnnbRYj_Uem8IdV_87HwA6G44nJyZPDCfSkk"/>
+</div>
+<div class="bg-error/20 border border-error/40 px-2 py-0.5 rounded-sm">
+<span class="font-label-caps text-[9px] text-error">DEPLOYMENT</span>
+</div>
+</div>
+<h3 class="font-headline-lg text-lg uppercase tracking-wider mb-1">S. CHEN</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">RAPID RESPONSE</p>
+<div class="flex justify-between items-center text-[10px] font-data-point text-outline">
+<span>HR: 110 BPM</span>
+<span class="text-error">LOC: STB-ACCESS</span>
+</div>
+</div>
+<!-- Crew Card 4 -->
+<div class="glass-panel milled-border p-5 group hover:bg-surface-container-high transition-all">
+<div class="flex justify-between items-start mb-4">
+<div class="w-12 h-12 rounded bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Agent-04" class="w-full h-full object-cover" data-alt="Portrait of an older security specialist with grey hair, wearing a high-performance tactical jacket. Background is a technical grid pattern in deep charcoal. Soft cinematic lighting highlights the textures of the uniform and the weathered, professional face of the operative." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTVMttoDqTRtLzYNRBr-CSEa-VVOeZU6uVJQ3MyoGoQnXUPofiCuvOf6gJiMdpK42hAGo1xz7QM4MI2hbIHrS0mE6vdRGG03JLYwwfyjcCQS6JF93gB1jbvrmA0McAn7FgC6lv7WLlbwVEVXJ7AnN-WQZK_QuAbLrXTE6qFu3rICMWA_F466aZfIqKy-175fH1LMr2Uuk-YAXsNjRJzPvCH337KSO3-hobBDQ92O3fjBkNlyiCjn4oYWDONPeqaFz5dNt-cymVy2g"/>
+</div>
+<div class="bg-primary/10 border border-primary/30 px-2 py-0.5 rounded-sm">
+<span class="font-label-caps text-[9px] text-primary">ON WATCH</span>
+</div>
+</div>
+<h3 class="font-headline-lg text-lg uppercase tracking-wider mb-1">B. THORNE</h3>
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-4">BRIDGE SECURITY</p>
+<div class="flex justify-between items-center text-[10px] font-data-point text-outline">
+<span>HR: 78 BPM</span>
+<span>LOC: BRIDGE</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/50 flex justify-around items-center h-16 px-gutter pb-safe">
+<div class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-full py-1 px-4">
+<span class="material-symbols-outlined" data-icon="track_changes">track_changes</span>
+<span class="font-label-caps text-[8px] uppercase">RADAR</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+<span class="font-label-caps text-[8px] uppercase">SONAR</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-[8px] uppercase">HEATMAP</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-[8px] uppercase">ALERTS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-[8px] uppercase">SYSTEM</span>
+</div>
+</nav>
+<!-- Global Tactical Overlay elements -->
+<div class="fixed top-24 right-8 pointer-events-none z-40 hidden xl:block">
+<div class="flex flex-col items-end gap-1">
+<div class="w-32 h-[1px] bg-primary/30"></div>
+<p class="font-data-point text-[8px] text-primary tracking-widest">ENCRYPTION: AES-256 ACTIVE</p>
+<p class="font-data-point text-[8px] text-primary tracking-widest">SIGNAL STRENGTH: 94%</p>
+</div>
+</div>
+</body></html>

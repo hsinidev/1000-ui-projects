@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIO-FENCE | Tactical Admin Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Geist:wght@100;300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-orange {
+            box-shadow: 0 0 15px rgba(255, 182, 147, 0.2);
+        }
+        .glow-orange-strong {
+            box-shadow: 0 0 25px rgba(255, 107, 0, 0.4);
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d141b;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2e353e;
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#2e353e",
+                        "secondary-container": "#434a4c",
+                        "error-container": "#93000a",
+                        "surface-bright": "#333a42",
+                        "secondary-fixed-dim": "#c1c8ca",
+                        "secondary": "#c1c8ca",
+                        "surface": "#0d141b",
+                        "on-primary-fixed": "#351000",
+                        "inverse-surface": "#dce3ee",
+                        "on-primary": "#561f00",
+                        "inverse-primary": "#a04100",
+                        "on-surface": "#dce3ee",
+                        "on-surface-variant": "#e2bfb0",
+                        "surface-container-highest": "#2e353e",
+                        "on-tertiary-fixed": "#141c2b",
+                        "on-background": "#dce3ee",
+                        "tertiary": "#bfc6db",
+                        "on-secondary-container": "#b2babc",
+                        "outline-variant": "#5a4136",
+                        "surface-container": "#192028",
+                        "primary": "#ffb693",
+                        "on-secondary-fixed": "#161d1f",
+                        "inverse-on-surface": "#2a3139",
+                        "error": "#ffb4ab",
+                        "secondary-fixed": "#dde4e6",
+                        "tertiary-fixed-dim": "#bfc6db",
+                        "surface-container-lowest": "#080f16",
+                        "surface-dim": "#0d141b",
+                        "primary-fixed-dim": "#ffb693",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#572000",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "on-tertiary-container": "#2a3142",
+                        "primary-container": "#ff6b00",
+                        "background": "#0d141b",
+                        "surface-tint": "#ffb693",
+                        "on-tertiary": "#293041",
+                        "on-secondary-fixed-variant": "#41484a",
+                        "on-secondary": "#2b3234",
+                        "on-tertiary-fixed-variant": "#3f4758",
+                        "primary-fixed": "#ffdbcc",
+                        "surface-container-low": "#151c24",
+                        "outline": "#a98a7d",
+                        "tertiary-container": "#9199ad",
+                        "surface-container-high": "#242b33",
+                        "tertiary-fixed": "#dbe2f8",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "32px",
+                        "unit": "4px",
+                        "gutter": "24px",
+                        "container-max": "1440px",
+                        "card-padding": "24px"
+                    },
+                    "fontFamily": {
+                        "title-sm": ["Space Grotesk"],
+                        "label-xs": ["Geist"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Geist"],
+                        "data-mono": ["Geist"],
+                        "display-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "title-sm": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                        "label-xs": ["12px", {"lineHeight": "1.0", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary-container overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex items-center justify-between px-margin py-4 border-b-2 border-outline-variant bg-surface/90 backdrop-blur-md">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="security">security</span>
+<h1 class="text-headline-md font-headline-md tracking-tighter text-primary dark:text-primary">BIO-FENCE</h1>
+<div class="ml-8 hidden md:flex items-center gap-6">
+<nav class="flex gap-6">
+<a class="text-primary dark:text-primary font-bold hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Fleet Overview</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Geofencing</a>
+<a class="text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high transition-colors px-3 py-1 rounded" href="#">Analytics</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex flex-col items-end">
+<span class="font-data-mono text-label-xs text-secondary uppercase">System Status</span>
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+                    SECURE / NOMINAL
+                </span>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+<div class="w-10 h-10 rounded-full border border-outline bg-surface-container flex items-center justify-center overflow-hidden">
+<img alt="Admin Profile" class="w-full h-full object-cover" data-alt="A professional headshot of a high-security operations officer with a focused expression. The lighting is dramatic and moody with deep shadows and cool blue highlights, matching a dark mode tech aesthetic. He is wearing a dark, tactical-style zip-up sweater. The background is a blurred high-tech command center environment with faint orange telemetry lights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDIOkzOWPwVwldpT0eDrZ4IhWS4B-1dMQpPUr65snWgz0Q9F9e2SCrvsI0VRXWFhgML_xGXkF9FI7n2mHC0pZTsHHaCd5ZxKXoYB85m4iiMVIe3G-XiLJ1IovVVjmRUuXkdboHcKi4mfP3BzoijVP1PO7NvoHDL3ziL4qJTmR_hBm3id5q6qiH11gEdU0Ww4OqO3oT2A5N8aeaF_gS6oZKFFftn_Dt6OsUH7zu0wrMimtK2Q3oQZceOj_cAKCsYOyzdxjfw83mLzF1r"/>
+</div>
+</div>
+</header>
+<!-- Main Dashboard Layout -->
+<main class="pt-24 pb-0 h-screen flex overflow-hidden">
+<!-- Left Sidebar: Tactical Overview & Fleet Logs -->
+<aside class="w-[400px] bg-surface-container-low border-r border-outline-variant flex flex-col h-full shrink-0">
+<!-- Alert Header -->
+<div class="p-6 border-b border-outline-variant bg-surface-container">
+<h2 class="text-title-sm font-title-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="warning">warning</span>
+                    TACTICAL OVERVIEW
+                </h2>
+</div>
+<!-- Active Breaches / High Priority -->
+<div class="p-4 space-y-4 overflow-y-auto flex-grow">
+<div class="bg-surface-container-highest border-l-4 border-primary p-4 rounded-r-lg glow-orange">
+<div class="flex justify-between items-start mb-2">
+<span class="bg-primary text-on-primary-container text-[10px] font-bold px-2 py-0.5 rounded uppercase tracking-widest">Breach Alert</span>
+<span class="font-data-mono text-xs text-secondary">14:22:08</span>
+</div>
+<div class="flex items-center gap-3 mb-3">
+<div class="w-12 h-12 rounded bg-surface-container overflow-hidden border border-outline-variant">
+<img alt="Pet Profile" class="w-full h-full object-cover" data-alt="Close up tactical style portrait of a Golden Retriever dog wearing a high-tech illuminated orange collar. The environment is a dark wooded area at twilight, with the glowing orange collar casting a subtle light on the dog's fur. The style is sharp, detailed, and high-contrast to match the security terminal aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBVnngSKEMWP4FWkJ2RtWPJwFFeUojkC81A5r47v_Fli1252q-mj1OuHLMGWbP-lhcIcACaNrDII7zkJGHt6gYDt7bRbws-mN0rAg5QHgiG9YKNdEgKnjDqMFyd4veUcW86hJ2E1cmzQLhzjzeqTevTChclRcuwzkS0gha-TprH7yFf3dU-UEcKtQN0iGTm1HY53rg3UUU3WjYYB9-D7N7VZvDOTTU13NLhZJjolnfY_5pF4ghjxocp1ZfXJo7VARt4GhYJTD2hdNi"/>
+</div>
+<div>
+<p class="font-title-sm text-primary">UNIT-742 (MAVERICK)</p>
+<p class="font-data-mono text-label-xs text-secondary-container">COORD: 40.7128° N, 74.0060° W</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-primary text-on-primary font-label-xs py-3 rounded active:scale-95 transition-transform uppercase tracking-tighter">Issue Warning</button>
+<button class="flex-1 border border-outline text-on-surface font-label-xs py-3 rounded active:scale-95 transition-transform uppercase tracking-tighter">Locate Unit</button>
+</div>
+</div>
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant">
+<div class="flex justify-between items-center mb-3">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="monitoring">monitoring</span>
+<span class="font-title-sm text-sm text-on-surface">FLEET STATUS</span>
+</div>
+<span class="font-data-mono text-[10px] text-primary">98% ONLINE</span>
+</div>
+<div class="space-y-3">
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/30">
+<span class="font-data-mono text-xs text-on-surface-variant">Active Collars</span>
+<span class="font-data-mono text-xs font-bold text-on-surface">1,284</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/30">
+<span class="font-data-mono text-xs text-on-surface-variant">Batt. Critical (&lt;15%)</span>
+<span class="font-data-mono text-xs font-bold text-error">12</span>
+</div>
+<div class="flex items-center justify-between py-2 border-b border-outline-variant/30">
+<span class="font-data-mono text-xs text-on-surface-variant">Signal Interference</span>
+<span class="font-data-mono text-xs font-bold text-on-surface">3</span>
+</div>
+</div>
+</div>
+<!-- Real-time Log -->
+<div class="mt-4">
+<h3 class="text-label-xs text-secondary uppercase tracking-[0.2em] mb-4">Real-Time Telemetry</h3>
+<div class="space-y-1 font-data-mono text-[11px]">
+<div class="flex gap-3 text-secondary py-1 border-b border-outline-variant/10">
+<span class="text-primary opacity-70">14:45:01</span>
+<span>[INFO] UNIT-299 BOUNDARY RE-ENTRY SUCCESSFUL</span>
+</div>
+<div class="flex gap-3 text-secondary py-1 border-b border-outline-variant/10">
+<span class="text-primary opacity-70">14:44:52</span>
+<span>[WARN] UNIT-811 BATTERY DEPLETED (8%)</span>
+</div>
+<div class="flex gap-3 text-secondary py-1 border-b border-outline-variant/10">
+<span class="text-primary opacity-70">14:44:18</span>
+<span>[PING] COMMAND CENTER HEARTBEAT ACKNOWLEDGED</span>
+</div>
+<div class="flex gap-3 text-secondary py-1 border-b border-outline-variant/10">
+<span class="text-primary opacity-70">14:43:55</span>
+<span>[DATA] SYNCING 124 OFFLINE GPS DATA PACKETS</span>
+</div>
+<div class="flex gap-3 text-secondary py-1 border-b border-outline-variant/10">
+<span class="text-primary opacity-70">14:43:02</span>
+<span class="text-error font-bold">[BREACH] UNIT-742 OUTSIDE PERIMETER DELTA</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Action Response Panel -->
+<div class="p-6 border-t border-outline-variant bg-surface-container-low">
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded border border-outline-variant hover:bg-surface-bright transition-colors group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors" data-icon="emergency_home">emergency_home</span>
+<span class="text-[10px] font-data-mono mt-2 uppercase">Mass Recall</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded border border-outline-variant hover:bg-surface-bright transition-colors group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors" data-icon="lock">lock</span>
+<span class="text-[10px] font-data-mono mt-2 uppercase">Lock Gates</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container-high rounded border border-outline-variant hover:bg-surface-bright transition-colors group">
+<span class="material-symbols-outlined text-secondary group-hover:text-primary transition-colors" data-icon="campaign">campaign</span>
+<span class="text-[10px] font-data-mono mt-2 uppercase">Audio Alert</span>
+</button>
+<button class="flex flex-col items-center justify-center p-4 bg-error-container/20 border border-error/30 rounded hover:bg-error-container/40 transition-colors group">
+<span class="material-symbols-outlined text-error" data-icon="gpp_maybe">gpp_maybe</span>
+<span class="text-[10px] font-data-mono mt-2 uppercase text-error">Kill Switch</span>
+</button>
+</div>
+</div>
+</aside>
+<!-- Center: GIS Map Integration -->
+<section class="flex-grow relative bg-surface-dim">
+<!-- Map Interface (Placeholder UI) -->
+<div class="absolute inset-0 z-0 bg-surface-dim opacity-50">
+<img class="w-full h-full object-cover" data-alt="A sophisticated dark-mode satellite map visualization of a large rural estate and surrounding forest. Overlaid are glowing orange vector lines representing digital invisible boundaries. The map features high-contrast white tracking dots with faint motion trails and semi-transparent data overlays. The aesthetic is purely technical and high-security, like a military drone interface." data-location="Northern California" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1teVJM1hZwdiJvYfvz6TpDYwMITcjFSzyGKnCJlGzbAcuYGIebNdyild5u8-OM_DRJ4x1RbD_t0stmRO1Qi0NVhTmUmq40BRhuTqL29qiH9cZbROoLfhDrjc6HDipd3yEZpAymzPN9vL9v2p206xVSjs2DTUjHqhjVeRuW8I-rWhf0dLcQyzCR_I6abHJHHqgXXKNXLOyHsbWjHe1ybFy4U11YLHZulyVZBQDVnD2anmMfFch4vdj3ddOU75C5elyPy-UfV845-Ex"/>
+</div>
+<!-- Map UI Overlays -->
+<div class="absolute inset-0 z-10 pointer-events-none p-gutter">
+<!-- Floating Map Tools -->
+<div class="flex justify-between items-start">
+<div class="pointer-events-auto flex flex-col gap-2">
+<div class="bg-surface/80 backdrop-blur-xl border border-outline-variant p-2 rounded-lg flex flex-col gap-1 shadow-2xl">
+<button class="p-2 hover:bg-surface-container rounded transition-colors text-primary" title="Zoom In"><span class="material-symbols-outlined" data-icon="add">add</span></button>
+<div class="h-px bg-outline-variant mx-2"></div>
+<button class="p-2 hover:bg-surface-container rounded transition-colors text-primary" title="Zoom Out"><span class="material-symbols-outlined" data-icon="remove">remove</span></button>
+</div>
+<div class="bg-surface/80 backdrop-blur-xl border border-outline-variant p-2 rounded-lg flex flex-col gap-1 shadow-2xl">
+<button class="p-2 hover:bg-surface-container rounded transition-colors text-secondary" title="Satellite View"><span class="material-symbols-outlined" data-icon="layers">layers</span></button>
+<button class="p-2 hover:bg-surface-container rounded transition-colors text-secondary" title="Fence Edit"><span class="material-symbols-outlined" data-icon="polyline">polyline</span></button>
+</div>
+</div>
+<!-- Search & Filters -->
+<div class="pointer-events-auto flex gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-sm" data-icon="search">search</span>
+<input class="bg-surface/80 backdrop-blur-xl border border-outline-variant text-on-surface text-label-xs font-data-mono pl-10 pr-4 py-2 rounded-full w-64 focus:ring-1 focus:ring-primary focus:border-primary outline-none uppercase" placeholder="SEARCH UNIT OR SECTOR..." type="text"/>
+</div>
+<div class="bg-surface/80 backdrop-blur-xl border border-outline-variant flex rounded-full overflow-hidden p-1">
+<button class="px-4 py-1 text-[10px] font-bold bg-primary text-on-primary rounded-full uppercase tracking-widest">Live</button>
+<button class="px-4 py-1 text-[10px] font-bold text-secondary hover:text-primary transition-colors uppercase tracking-widest">History</button>
+</div>
+</div>
+</div>
+<!-- Active Tracking Indicators -->
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center justify-center">
+<!-- Example Unit Pulse -->
+<div class="relative">
+<div class="absolute -inset-4 bg-primary/20 rounded-full animate-ping"></div>
+<div class="w-8 h-8 bg-white border-4 border-primary rounded-full shadow-[0_0_20px_rgba(255,182,147,0.8)] flex items-center justify-center relative z-10">
+<span class="text-[8px] font-black text-background">742</span>
+</div>
+<div class="absolute top-10 left-1/2 -translate-x-1/2 bg-surface-container border border-primary p-2 rounded whitespace-nowrap glow-orange">
+<p class="text-[10px] font-bold text-primary">UNIT-742 : MAVERICK</p>
+<p class="text-[9px] font-data-mono text-secondary">MOVING: 12.4 km/h</p>
+</div>
+</div>
+</div>
+<!-- Fence Boundary Visual -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40">
+<path class="animate-[pulse_4s_infinite]" d="M 200,200 L 800,250 L 1200,600 L 900,900 L 300,850 Z" fill="rgba(255,182,147,0.05)" stroke="#ffb693" stroke-dasharray="10 5" stroke-width="4"></path>
+</svg>
+<!-- Bottom Status Bar (Map Specific) -->
+<div class="absolute bottom-10 right-10 flex gap-4 pointer-events-auto">
+<div class="bg-surface/90 backdrop-blur-md border border-outline-variant p-4 rounded-xl flex items-center gap-4">
+<div class="flex flex-col">
+<span class="text-[10px] text-secondary font-data-mono uppercase">Fence Perimeter</span>
+<span class="text-title-sm font-title-sm text-on-surface">14.2 MILES</span>
+</div>
+<div class="w-px h-8 bg-outline-variant"></div>
+<div class="flex flex-col">
+<span class="text-[10px] text-secondary font-data-mono uppercase">Active Nodes</span>
+<span class="text-title-sm font-title-sm text-on-surface">32/32</span>
+</div>
+<div class="w-px h-8 bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="location_searching">location_searching</span>
+<span class="text-label-xs font-bold text-primary">GPS LOCKED</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Metrics & Health -->
+<aside class="w-[320px] bg-surface-container-low border-l border-outline-variant flex flex-col h-full shrink-0 overflow-y-auto">
+<div class="p-6 space-y-8">
+<!-- System Health -->
+<div>
+<h3 class="text-label-xs text-secondary uppercase tracking-[0.2em] mb-4">Core Infrastructure</h3>
+<div class="space-y-4">
+<div class="bg-surface-container p-3 rounded border border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface">HUB-DELTA-01</span>
+<span class="text-[10px] font-data-mono text-primary">99.9% UP</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[99%]"></div>
+</div>
+</div>
+<div class="bg-surface-container p-3 rounded border border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface">CLOUD SYNC</span>
+<span class="text-[10px] font-data-mono text-primary">CONNECTED</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[100%]"></div>
+</div>
+</div>
+<div class="bg-surface-container p-3 rounded border border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="text-xs font-bold text-on-surface">LOCAL MESH</span>
+<span class="text-[10px] font-data-mono text-error">RE-ROUTING</span>
+</div>
+<div class="h-1 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-error w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Activity Heatmap Mini -->
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-label-xs text-secondary uppercase tracking-[0.2em]">Activity Heatmap</h3>
+<span class="material-symbols-outlined text-secondary text-sm" data-icon="open_in_new">open_in_new</span>
+</div>
+<div class="grid grid-cols-7 gap-1">
+<!-- Simulated small heatmap grid -->
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<div class="aspect-square bg-primary/40 rounded-sm"></div>
+<div class="aspect-square bg-primary/60 rounded-sm"></div>
+<div class="aspect-square bg-primary/80 rounded-sm"></div>
+<div class="aspect-square bg-primary/40 rounded-sm"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<!-- row 2 -->
+<div class="aspect-square bg-primary/20 rounded-sm"></div>
+<div class="aspect-square bg-primary/80 rounded-sm"></div>
+<div class="aspect-square bg-primary rounded-sm shadow-[0_0_8px_rgba(255,182,147,0.5)]"></div>
+<div class="aspect-square bg-primary rounded-sm shadow-[0_0_8px_rgba(255,182,147,0.5)]"></div>
+<div class="aspect-square bg-primary/60 rounded-sm"></div>
+<div class="aspect-square bg-primary/20 rounded-sm"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<!-- row 3 -->
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<div class="aspect-square bg-primary/40 rounded-sm"></div>
+<div class="aspect-square bg-primary/80 rounded-sm"></div>
+<div class="aspect-square bg-primary/60 rounded-sm"></div>
+<div class="aspect-square bg-primary/20 rounded-sm"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+<div class="aspect-square bg-surface-container-highest rounded-sm opacity-20"></div>
+</div>
+<p class="text-[10px] text-secondary-container mt-2 text-center uppercase font-data-mono">Peak activity: Sector 4B</p>
+</div>
+<!-- Recent Events List -->
+<div>
+<h3 class="text-label-xs text-secondary uppercase tracking-[0.2em] mb-4">Event History</h3>
+<div class="space-y-4">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-primary text-lg mt-1" data-icon="polyline">polyline</span>
+<div>
+<p class="text-xs font-bold text-on-surface">Boundary Adjusted</p>
+<p class="text-[10px] text-secondary font-data-mono">Admin: Root_User12</p>
+<p class="text-[9px] text-secondary-container font-data-mono">2 hours ago</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-secondary text-lg mt-1" data-icon="update">update</span>
+<div>
+<p class="text-xs font-bold text-on-surface">Firmware V2.4.1 Pushed</p>
+<p class="text-[10px] text-secondary font-data-mono">Target: Region_Alpha</p>
+<p class="text-[9px] text-secondary-container font-data-mono">5 hours ago</p>
+</div>
+</div>
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-error text-lg mt-1" data-icon="error">error</span>
+<div>
+<p class="text-xs font-bold text-error">Unscheduled Reboot</p>
+<p class="text-[10px] text-secondary font-data-mono">Unit: Hub_Beta_09</p>
+<p class="text-[9px] text-secondary-container font-data-mono">10 hours ago</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Meta -->
+<div class="mt-auto p-6 bg-surface-container-highest/20 border-t border-outline-variant">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[10px] text-secondary font-data-mono">BIO-FENCE OS v4.12.0</span>
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+</div>
+<div class="text-[9px] text-secondary-container font-data-mono leading-tight">
+                    ENCRYPTION: AES-256-GCM<br/>
+                    LAST SYNC: 14:45:02 UTC
+                </div>
+</div>
+</aside>
+</main>
+<!-- Bottom Nav Bar (Mobile Only - Hidden on Desktop Dashboard) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface-container-lowest/80 border-t border-outline-variant backdrop-blur-xl shadow-[0_-4px_20px_rgba(255,182,147,0.1)] rounded-t-xl">
+<button class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 ring-1 ring-primary/50">
+<span class="material-symbols-outlined" data-icon="polyline">polyline</span>
+<span class="text-label-xs font-label-xs">Boundary</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="location_searching">location_searching</span>
+<span class="text-label-xs font-label-xs">Location</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="text-label-xs font-label-xs">Activity</span>
+</button>
+<button class="flex flex-col items-center justify-center text-secondary font-label-xs py-2 hover:text-primary transition-all">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+<span class="text-label-xs font-label-xs">Emergency</span>
+</button>
+</nav>
+</body></html>

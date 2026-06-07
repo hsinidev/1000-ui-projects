@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS MARITIME | Perimeter Heatmaps</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Geist:wght@100..900&amp;family=JetBrains+Mono:wght@100..800&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .milled-edge {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .radar-grid {
+            background-image: radial-gradient(circle, rgba(71, 234, 237, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .thermal-gradient {
+            background: radial-gradient(circle at center, rgba(255, 87, 34, 0.6) 0%, rgba(255, 193, 7, 0.2) 50%, transparent 70%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-container-lowest": "#0c0e11",
+                      "secondary": "#bec8cd",
+                      "on-primary-container": "#005354",
+                      "outline-variant": "#3b4949",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#414a4f",
+                      "inverse-primary": "#00696b",
+                      "secondary-fixed": "#dbe4e9",
+                      "on-surface": "#e2e2e6",
+                      "on-tertiary-container": "#484a4a",
+                      "background": "#111316",
+                      "surface": "#111316",
+                      "on-tertiary": "#2f3131",
+                      "inverse-surface": "#e2e2e6",
+                      "surface-container-low": "#1a1c1f",
+                      "surface-container-high": "#282a2d",
+                      "on-primary-fixed-variant": "#004f51",
+                      "surface-container-highest": "#333538",
+                      "inverse-on-surface": "#2f3034",
+                      "primary-fixed-dim": "#2ddbde",
+                      "tertiary-container": "#b9b9b9",
+                      "outline": "#859493",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-primary-fixed": "#002020",
+                      "secondary-fixed-dim": "#bec8cd",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "surface-tint": "#2ddbde",
+                      "error-container": "#93000a",
+                      "surface-dim": "#111316",
+                      "error": "#ffb4ab",
+                      "on-secondary": "#293236",
+                      "primary-container": "#00ced1",
+                      "surface-container": "#1e2023",
+                      "on-surface-variant": "#bac9c9",
+                      "on-secondary-container": "#b0babf",
+                      "surface-variant": "#333538",
+                      "on-primary": "#003738",
+                      "surface-bright": "#37393d",
+                      "primary-fixed": "#5af8fb",
+                      "on-secondary-fixed-variant": "#3f484c",
+                      "on-error": "#690005",
+                      "on-background": "#e2e2e6",
+                      "on-secondary-fixed": "#141d21",
+                      "tertiary": "#d5d5d5",
+                      "primary": "#47eaed",
+                      "on-tertiary-fixed": "#1a1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "container-max": "1440px",
+                      "margin": "40px",
+                      "unit": "4px",
+                      "gutter": "24px"
+              },
+              "fontFamily": {
+                      "body-lg": ["Geist"],
+                      "body-md": ["Geist"],
+                      "headline-lg": ["Space Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "data-point": ["JetBrains Mono"],
+                      "headline-xl": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "data-point": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary/30 min-h-screen overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 fixed top-0 w-full z-50 flex justify-between items-center px-margin h-20 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="radar">radar</span>
+<h1 class="font-headline-xl text-headline-xl uppercase tracking-widest text-primary">AEGIS MARITIME</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8 items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer">BRIDGE</span>
+<span class="font-label-caps text-label-caps text-primary cursor-default">HEATMAP</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors cursor-pointer">LOGS</span>
+</div>
+<button class="bg-error-container text-on-error-container px-6 py-2 rounded-lg font-label-caps text-label-caps border-t-2 border-error hover:shadow-[0_0_15px_rgba(255,180,171,0.3)] active:scale-95 transition-all">LOCK-DOWN</button>
+</div>
+</header>
+<!-- NavigationDrawer (Contextual Side Nav) -->
+<aside class="fixed left-0 top-0 h-full z-[60] bg-surface-container-low/95 backdrop-blur-md border-r border-outline-variant h-full w-80 hidden lg:flex flex-col">
+<div class="p-8 pt-24 border-b border-outline-variant/30">
+<div class="flex items-start gap-4 mb-4">
+<div class="w-12 h-12 bg-surface-container-highest rounded-lg overflow-hidden border border-outline">
+<img alt="Vessel Master" class="w-full h-full object-cover" data-alt="A professional portrait of a seasoned yacht captain in a modern dark uniform, looking focused and authoritative. The lighting is low-key with sharp highlights, matching the nautical-industrial aesthetic. The background is a blurred command center with teal and amber indicators." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCxhW4wKzGJg96xM7JNhRqGRhCxt4vlGZmtr7R4pO3f7VX4bcfy4DHgIGZEmRXWm7Hrab0JmHH5_jXRxjgt5BeEd4YTFeyWKRe4A1bTBXAL-NJioGO8ihvLVoauMG7H-Uv-etrTxpcEMc-idq5cFoPbthRvTCCvFYR9MPqOZiXUo6Wx1ZnmC-BHZ_DkuAG_02vhyFbHCvTE639xUfMiu0tTTUr5xcWzZBg1aaq7_UcCWqpphtQEeR07RHGKFry-u3CmraGBgDhT0D0"/>
+</div>
+<div>
+<h2 class="font-headline-lg text-primary text-xl">MY-ATHENA</h2>
+<p class="font-label-caps text-[10px] text-error">SEA-STATE: SEVERE</p>
+</div>
+</div>
+<div class="font-data-point text-data-point text-on-surface-variant opacity-70">
+                LAT: 25.7617 N <br/>
+                LONG: 80.1918 W
+            </div>
+</div>
+<nav class="flex-1 py-6">
+<div class="px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="layers">layers</span>
+<span class="font-body-md text-body-md">DECK 01</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="layers">layers</span>
+<span class="font-body-md text-body-md">DECK 02</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-4 text-primary font-bold bg-primary-container/20 border-l-2 border-primary transition-all cursor-pointer group">
+<span class="material-symbols-outlined" data-icon="lock_person">lock_person</span>
+<span class="font-body-md text-body-md">OWNER SUITE</span>
+</div>
+<div class="px-4 py-3 flex items-center gap-4 text-on-surface-variant hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined group-hover:text-primary" data-icon="settings_suggest">settings_suggest</span>
+<span class="font-body-md text-body-md">ENGINE ROOM</span>
+</div>
+</nav>
+</aside>
+<!-- Main Canvas -->
+<main class="pt-28 pb-20 lg:pl-80 px-4 md:px-margin min-h-screen">
+<div class="max-w-container-max mx-auto space-y-gutter">
+<!-- Dashboard Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-4 pb-4 border-b border-outline-variant/30">
+<div class="space-y-1">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary">LIVE PERIMETER SCAN</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-surface">HEATMAP ANALYTICS</h2>
+</div>
+<div class="flex gap-4">
+<div class="glass-panel px-4 py-2 rounded border border-outline-variant/30 text-right">
+<div class="font-label-caps text-[10px] text-on-surface-variant">ACTIVE SIGNATURES</div>
+<div class="font-data-point text-xl text-primary">04 <span class="text-xs text-on-surface-variant opacity-50">/ SCAN</span></div>
+</div>
+<div class="glass-panel px-4 py-2 rounded border border-outline-variant/30 text-right">
+<div class="font-label-caps text-[10px] text-on-surface-variant">HULL INTEGRITY</div>
+<div class="font-data-point text-xl text-primary">100%</div>
+</div>
+</div>
+</div>
+<!-- Tactical Grid Layout -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Main Map View (Bento Col 1-8) -->
+<div class="lg:col-span-8 glass-panel milled-edge rounded-xl relative overflow-hidden min-h-[500px] flex items-center justify-center p-8">
+<div class="absolute inset-0 radar-grid opacity-30 pointer-events-none"></div>
+<!-- Decorative Map Elements -->
+<div class="absolute top-4 left-4 font-data-point text-[10px] text-primary/40 uppercase">Sector: Foredeck-Bravo</div>
+<div class="absolute bottom-4 right-4 font-data-point text-[10px] text-primary/40 uppercase">Scanning freq: 4.2ghz</div>
+<!-- Yacht Floorplan (Asymmetric Layout) -->
+<div class="relative w-full h-full flex flex-col items-center justify-center gap-12">
+<!-- Deck 03 (Top Deck) -->
+<div class="relative w-4/5 h-24 bg-surface-container-highest/40 border border-outline-variant/50 rounded-full flex items-center justify-center">
+<span class="font-label-caps text-xs text-on-surface-variant">SUN DECK - CLEAR</span>
+</div>
+<!-- Deck 02 (Owner's Suite Focus) -->
+<div class="relative w-full h-48 bg-surface-container-highest border border-primary/40 rounded-full flex overflow-hidden shadow-[0_0_50px_rgba(71,234,237,0.1)]">
+<!-- Heat Signature 01 -->
+<div class="absolute left-1/4 top-1/2 -translate-y-1/2 w-40 h-40 thermal-gradient animate-pulse"></div>
+<div class="flex-1 border-r border-outline-variant/30 p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-xs text-primary">MASTER SUITE</span>
+<span class="px-2 py-0.5 rounded border border-error bg-error/10 font-label-caps text-[10px] text-error">ACTIVE SIGNATURE</span>
+</div>
+<button class="w-full py-2 bg-error text-on-error font-label-caps text-xs rounded border border-error active:scale-95 transition-all shadow-[0_4px_10px_rgba(255,180,171,0.2)]">EXECUTE LOCK-DOWN</button>
+</div>
+<div class="w-1/3 p-4 bg-surface-container-low/50 flex flex-col justify-center items-center gap-2">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="lock">lock</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase tracking-widest">SECURE PERIMETER</span>
+</div>
+</div>
+<!-- Deck 01 (Main Deck) -->
+<div class="relative w-11/12 h-32 bg-surface-container-highest/40 border border-outline-variant/50 rounded-full flex items-center justify-between px-12">
+<div class="text-center">
+<div class="font-label-caps text-xs text-on-surface-variant">MAIN SALON</div>
+<div class="text-[10px] text-primary/60 font-data-point uppercase">Locked</div>
+</div>
+<div class="text-center opacity-40">
+<div class="font-label-caps text-xs text-on-surface-variant">GALLEY</div>
+<div class="text-[10px] text-primary/60 font-data-point uppercase">Vacant</div>
+</div>
+<div class="text-center">
+<div class="font-label-caps text-xs text-on-surface-variant">COCKPIT</div>
+<div class="text-[10px] text-primary/60 font-data-point uppercase">Monitoring</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Side Info Panels (Bento Col 9-12) -->
+<div class="lg:col-span-4 space-y-gutter">
+<!-- Critical Alert Card -->
+<div class="glass-panel milled-edge rounded-xl p-6 border-l-4 border-error">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<h3 class="font-headline-lg text-lg text-on-surface">CRITICAL ALERT</h3>
+</div>
+<span class="font-data-point text-xs text-error">03:42:11</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-6">Thermal variance detected in Master Suite B-Section. Signature profile: Humanoid. Movement: Erratic.</p>
+<div class="space-y-3">
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-label-caps text-xs">SMOKE SENSOR</span>
+<span class="font-label-caps text-xs text-primary">NORMAL</span>
+</div>
+<div class="flex justify-between items-center py-2 border-b border-outline-variant/20">
+<span class="font-label-caps text-xs">MOTION ARRAY</span>
+<span class="font-label-caps text-xs text-error">TRIGGERED</span>
+</div>
+<div class="flex justify-between items-center py-2">
+<span class="font-label-caps text-xs">AUDIO UPLINK</span>
+<span class="font-label-caps text-xs text-primary">ENCRYPTED</span>
+</div>
+</div>
+</div>
+<!-- Sensor Nodes Grid -->
+<div class="glass-panel milled-edge rounded-xl p-6">
+<h3 class="font-label-caps text-sm text-on-surface-variant mb-6 uppercase tracking-widest">Sensor Node Status</h3>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-3 bg-surface-container-highest rounded border border-outline-variant/30">
+<div class="font-data-point text-xl text-primary">98.4°F</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">S-01 HULL</div>
+</div>
+<div class="p-3 bg-surface-container-highest rounded border border-outline-variant/30">
+<div class="font-data-point text-xl text-primary">102.1°F</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">S-02 ENGINE</div>
+</div>
+<div class="p-3 bg-surface-container-highest rounded border border-outline-variant/30">
+<div class="font-data-point text-xl text-error">114.8°F</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">S-03 OWNER</div>
+</div>
+<div class="p-3 bg-surface-container-highest rounded border border-outline-variant/30">
+<div class="font-data-point text-xl text-primary">72.0°F</div>
+<div class="font-label-caps text-[10px] text-on-surface-variant uppercase">S-04 BRIDGE</div>
+</div>
+</div>
+</div>
+<!-- System Log Preview -->
+<div class="glass-panel milled-edge rounded-xl p-6 h-64 overflow-hidden relative">
+<h3 class="font-label-caps text-sm text-on-surface-variant mb-4 uppercase tracking-widest">Real-time Telemetry</h3>
+<div class="space-y-2 font-data-point text-[10px] text-on-surface-variant/60 leading-none">
+<p><span class="text-primary">[08:42:15]</span> RADAR_PING: SUCCESSFUL_RETRIEVAL</p>
+<p><span class="text-primary">[08:42:12]</span> SYS_CHECK: PERIMETER_ENFORCED</p>
+<p><span class="text-error">[08:42:09]</span> ALRT_THERM: NODE_124_SPIKE_DET</p>
+<p><span class="text-primary">[08:42:05]</span> LOG_INFO: SECURE_PROTOCOL_ALPHA_7</p>
+<p><span class="text-primary">[08:42:01]</span> SYS_SYNC: SAT_LINK_CONNECTED</p>
+<p><span class="text-primary">[08:41:55]</span> RADAR_PING: SUCCESSFUL_RETRIEVAL</p>
+<p><span class="text-primary">[08:41:52]</span> SYS_CHECK: PERIMETER_ENFORCED</p>
+</div>
+<div class="absolute bottom-0 left-0 w-full h-12 bg-gradient-to-t from-surface-container-low to-transparent"></div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-gutter pb-safe bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/50">
+<div class="flex flex-col items-center justify-center text-primary bg-primary/10 rounded-full py-1 px-4">
+<span class="material-symbols-outlined" data-icon="track_changes">track_changes</span>
+<span class="font-label-caps text-[10px]">RADAR</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="waves">waves</span>
+<span class="font-label-caps text-[10px]">SONAR</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-[10px]">HEATMAP</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications_active">notifications_active</span>
+<span class="font-label-caps text-[10px]">ALERTS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-[10px]">SYSTEM</span>
+</div>
+</nav>
+</body></html>

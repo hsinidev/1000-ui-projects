@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bio-Scan Access Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=Metropolis:wght@600;700;800&amp;family=Geist:wght@500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-bright": "#f9f9f9",
+                      "surface-container-highest": "#e2e2e2",
+                      "on-surface-variant": "#434654",
+                      "surface-tint": "#0c56d0",
+                      "on-primary": "#ffffff",
+                      "surface-container-lowest": "#ffffff",
+                      "on-secondary-container": "#53686b",
+                      "tertiary": "#7b2600",
+                      "surface-container-low": "#f3f3f4",
+                      "outline": "#737685",
+                      "inverse-on-surface": "#f0f1f1",
+                      "tertiary-fixed": "#ffdbcf",
+                      "tertiary-container": "#a33500",
+                      "secondary-container": "#d0e7ea",
+                      "on-tertiary-fixed": "#380d00",
+                      "error": "#ba1a1a",
+                      "primary": "#003d9b",
+                      "on-primary-container": "#c4d2ff",
+                      "on-secondary": "#ffffff",
+                      "background": "#f9f9f9",
+                      "on-primary-fixed-variant": "#0040a2",
+                      "secondary-fixed": "#d0e7ea",
+                      "inverse-surface": "#2f3131",
+                      "outline-variant": "#c3c6d6",
+                      "inverse-primary": "#b2c5ff",
+                      "surface-container": "#eeeeee",
+                      "primary-container": "#0052cc",
+                      "on-error": "#ffffff",
+                      "error-container": "#ffdad6",
+                      "on-surface": "#1a1c1c",
+                      "secondary": "#4d6265",
+                      "surface-container-high": "#e8e8e8",
+                      "on-primary-fixed": "#001848",
+                      "primary-fixed": "#dae2ff",
+                      "on-secondary-fixed": "#091f21",
+                      "surface": "#f9f9f9",
+                      "on-secondary-fixed-variant": "#364a4d",
+                      "tertiary-fixed-dim": "#ffb59b",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1a1c1c",
+                      "on-error-container": "#93000a",
+                      "primary-fixed-dim": "#b2c5ff",
+                      "on-tertiary-fixed-variant": "#812800",
+                      "on-tertiary-container": "#ffc6b2",
+                      "secondary-fixed-dim": "#b4cbce",
+                      "surface-dim": "#dadada",
+                      "surface-variant": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-margin": "40px",
+                      "stack-sm": "12px",
+                      "gutter": "24px",
+                      "section-gap": "64px",
+                      "base": "8px",
+                      "stack-md": "24px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Metropolis"],
+                      "body-lg": ["Inter"],
+                      "display-xl": ["Metropolis"],
+                      "label-caps": ["Geist"],
+                      "headline-md": ["Metropolis"],
+                      "body-md": ["Inter"],
+                      "numeric-data": ["Geist"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "numeric-data": ["20px", {"lineHeight": "1", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(224, 247, 250, 0.7);
+            backdrop-filter: blur(20px);
+            border-top: 1px solid rgba(255, 255, 255, 0.4);
+            border-left: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0px 4px 20px 0px rgba(0, 82, 204, 0.08);
+        }
+        .status-pulse-secure {
+            box-shadow: 0 0 8px #0052cc;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-low/70 backdrop-blur-md border-b border-white/20 shadow-sm">
+<div class="flex justify-between items-center w-full px-container-margin py-base">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="fingerprint">fingerprint</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Bio-Scan</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Security Level: Alpha</span>
+<span class="material-symbols-outlined text-primary" data-icon="sensors_kronecker">sensors_krx</span>
+</div>
+</div>
+</header>
+<!-- Main Content -->
+<main class="flex-grow pt-[80px] pb-[100px] px-container-margin">
+<div class="max-w-7xl mx-auto py-section-gap">
+<!-- Header Section -->
+<div class="flex justify-between items-end mb-stack-md">
+<div class="space-y-base">
+<h2 class="font-headline-lg text-headline-lg text-on-surface">Access Logs</h2>
+<p class="font-body-md text-on-surface-variant max-w-xl">
+                        Real-time audit trail of all biometric verification attempts across the facility perimeter and restricted zones.
+                    </p>
+</div>
+<div class="flex gap-stack-sm">
+<button class="bg-primary text-on-primary px-gutter py-base rounded-lg font-label-caps text-label-caps flex items-center gap-base hover:scale-95 transition-transform">
+<span class="material-symbols-outlined text-[18px]" data-icon="download">download</span>
+                        EXPORT CSV
+                    </button>
+<button class="bg-secondary-container text-primary px-gutter py-base rounded-lg font-label-caps text-label-caps flex items-center gap-base hover:bg-secondary-container/80 transition-colors">
+<span class="material-symbols-outlined text-[18px]" data-icon="filter_list">filter_list</span>
+                        FILTER
+                    </button>
+</div>
+</div>
+<!-- Log Table Container -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-primary/5">
+<th class="px-gutter py-stack-md font-label-caps text-label-caps text-primary border-b border-white/20">Biometric Type</th>
+<th class="px-gutter py-stack-md font-label-caps text-label-caps text-primary border-b border-white/20">User Profile</th>
+<th class="px-gutter py-stack-md font-label-caps text-label-caps text-primary border-b border-white/20">Clearance</th>
+<th class="px-gutter py-stack-md font-label-caps text-label-caps text-primary border-b border-white/20">Timestamp</th>
+<th class="px-gutter py-stack-md font-label-caps text-label-caps text-primary border-b border-white/20 text-right">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/10">
+<!-- Entry 1 -->
+<tr class="hover:bg-white/30 transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Retina Scan</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="A professional studio portrait of a high-ranking security executive with a confident expression. The lighting is bright and clean, reflecting a high-end medical-tech environment. The background is a soft, out-of-focus white and blue gradient. The person is wearing a minimalist dark navy corporate uniform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAnpeFwbowOOsK8F3snMDcLs9gz45-1FvX9kDBah6aDNLKmJqTQ8NTE-lonGicQuSvmRLT6E32ckA9cbwBGGbrl88n-1UuOUoBPQKsDIXZ-KYdL5_H_OOw7upuImxP4KsZkSIhyH4N1RH2fGxPspYettSFx8kHMtBcOT_FWVW25ab7seF4mg59aCpooEMEAAa4bWwEWWTV_1opilznVITGL8GCLnfUk5b0_pISojd4_9m_WJ5N8LUcuv0XCk8PZ3G8zsxCt3ZVJbA"/>
+</div>
+<span class="font-body-md text-on-surface">Dr. Alistair Vance</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="px-base py-1 bg-primary/10 text-primary rounded-full font-label-caps text-[10px]">LEVEL 5 - RESTRICTED</span>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="font-numeric-data text-on-surface-variant">14:22:05 · Oct 24</span>
+</td>
+<td class="px-gutter py-stack-md text-right">
+<span class="inline-flex items-center gap-base px-gutter py-1 bg-primary text-on-primary rounded-full font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-white status-pulse-secure"></span>
+                                    APPROVED
+                                </span>
+</td>
+</tr>
+<!-- Entry 2 -->
+<tr class="hover:bg-white/30 transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="pan_tool">pan_tool</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Palm Print</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="A close-up portrait of a female scientist in a sterile laboratory setting. She has a focused and calm demeanor. The lighting is crisp and cool-toned, dominated by surgical whites and medical blues. Her professional attire is sleek and minimalist. The image conveys a sense of high-level intelligence and security." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFQ2qkMC4pMIJuNN6miHs9qUPe8PZG1fPp5Li-RgnmJyXi-z_RboJAEoqhyduIoSdqV4xHMrm01qWwOFd2Fy4PmFhR1bUUuhZNH01SKutrywKx0yAi6E0k2RmODl1ILPjfKwIEGgfpWXPuWqVB0t06_X0mDeakewKl6MKRmrS1WmmGP7UHHXGPGmz2cvs2oIF9rivUBfoz24c4iwC1orirWN1TP-la1Ltr_vbNSdi6xRpk5W2UYo4KI8vmkHneI6DAP264hksP014"/>
+</div>
+<span class="font-body-md text-on-surface">Sarah Jenkins</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="px-base py-1 bg-secondary-container text-on-secondary-container rounded-full font-label-caps text-[10px]">LEVEL 3 - STAFF</span>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="font-numeric-data text-on-surface-variant">14:18:12 · Oct 24</span>
+</td>
+<td class="px-gutter py-stack-md text-right">
+<span class="inline-flex items-center gap-base px-gutter py-1 bg-error text-on-error rounded-full font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                    DENIED
+                                </span>
+</td>
+</tr>
+<!-- Entry 3 -->
+<tr class="hover:bg-white/30 transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Facial ID</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User" class="w-full h-full object-cover" data-alt="A portrait of a young professional woman in a bright, modern architectural space. She is smiling subtly, embodying a trusted and verified user of a high-security system. The atmosphere is clinical yet welcoming, with soft daylight and clean lines. The color palette is composed of high-key whites and subtle sapphire accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBiB1eUBIx6Y-svPrshIOER-Fhgx-udaAzIe6UMMM4eaTAWwbHfebMa8YB1jaOYThfn-Y9utmVvaPJRSXtZOJV7JHxwZkreuCoOtlKg-aWTUaawY1YfzeUivYVqtgrpPd-ZrkhhxOYCIL6yH-bFuv5QSiLvwum5ykwradbln0aWYRBPkXK0HYpR8g0rNXuZlhV4ad20jVkvVI9aFarbA1W8H0_xI73yg_L4TWoewEpQ-mYC-fAGZaBoGPCJdGaesWDp-celBIdWA-g"/>
+</div>
+<span class="font-body-md text-on-surface">Elena Rodriguez</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="px-base py-1 bg-primary/10 text-primary rounded-full font-label-caps text-[10px]">LEVEL 4 - SECURITY</span>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="font-numeric-data text-on-surface-variant">14:05:44 · Oct 24</span>
+</td>
+<td class="px-gutter py-stack-md text-right">
+<span class="inline-flex items-center gap-base px-gutter py-1 bg-primary text-on-primary rounded-full font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-white status-pulse-secure"></span>
+                                    APPROVED
+                                </span>
+</td>
+</tr>
+<!-- Entry 4 -->
+<tr class="hover:bg-white/30 transition-colors">
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+</div>
+<span class="font-body-md font-medium text-on-surface">Retina Scan</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<div class="flex items-center gap-stack-sm">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<span class="font-body-md text-on-surface italic">Unknown User</span>
+</div>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="px-base py-1 bg-error-container text-on-error-container rounded-full font-label-caps text-[10px]">UNAUTHORIZED</span>
+</td>
+<td class="px-gutter py-stack-md">
+<span class="font-numeric-data text-on-surface-variant">13:58:22 · Oct 24</span>
+</td>
+<td class="px-gutter py-stack-md text-right">
+<span class="inline-flex items-center gap-base px-gutter py-1 bg-error text-on-error rounded-full font-label-caps text-label-caps">
+<span class="w-1.5 h-1.5 rounded-full bg-white"></span>
+                                    DENIED
+                                </span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-gutter bg-primary/5 flex justify-between items-center border-t border-white/20">
+<span class="font-label-caps text-[10px] text-on-surface-variant">DISPLAYING 1-10 OF 1,429 EVENTS</span>
+<div class="flex gap-stack-sm">
+<button class="w-8 h-8 rounded flex items-center justify-center bg-white/50 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-primary text-on-primary">1</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-white/50 text-outline hover:text-primary transition-colors">2</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-white/50 text-outline hover:text-primary transition-colors">3</button>
+<button class="w-8 h-8 rounded flex items-center justify-center bg-white/50 text-outline hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-low/80 backdrop-blur-xl border-t border-white/20 shadow-lg">
+<div class="flex justify-around items-center w-full py-stack-sm px-gutter">
+<!-- Dashboard -->
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps mt-1">Dashboard</span>
+</a>
+<!-- Access Logs (ACTIVE) -->
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-6 py-2 scale-95 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-caps text-label-caps mt-1">Access Logs</span>
+</a>
+<!-- Users -->
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-caps text-label-caps mt-1">Users</span>
+</a>
+<!-- Diagnostics -->
+<a class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps mt-1">Diagnostics</span>
+</a>
+</div>
+</nav>
+</body></html>

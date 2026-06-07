@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Geist:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #121414;
+            background-image: 
+                linear-gradient(rgba(38, 38, 38, 0.5) 1px, transparent 1px),
+                linear-gradient(90px, rgba(38, 38, 38, 0.5) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #e3e2e2;
+        }
+        .machined-edge {
+            box-shadow: inset 1px 1px 0px 0px rgba(255, 255, 255, 0.1);
+        }
+        .scanning-line {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(255, 85, 64, 0.1), transparent);
+            pointer-events: none;
+        }
+        .technical-crosshair::before {
+            content: "+";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-family: 'JetBrains Mono';
+            color: #ff5540;
+            font-size: 12px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "background": "#121414",
+                        "primary-fixed-dim": "#ffb4a8",
+                        "on-tertiary-container": "#2a2a2a",
+                        "primary-container": "#ff5540",
+                        "on-error": "#690005",
+                        "surface-tint": "#ffb4a8",
+                        "inverse-primary": "#c00100",
+                        "on-primary": "#690100",
+                        "primary-fixed": "#ffdad4",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-primary-fixed": "#410000",
+                        "secondary": "#c6c6c6",
+                        "secondary-container": "#454747",
+                        "tertiary": "#c8c6c5",
+                        "error-container": "#93000a",
+                        "on-secondary-container": "#b5b5b5",
+                        "surface-container-low": "#1b1c1c",
+                        "primary": "#ffb4a8",
+                        "on-secondary": "#2f3131",
+                        "on-primary-fixed-variant": "#930100",
+                        "surface-container-lowest": "#0d0e0f",
+                        "error": "#ffb4ab",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "surface-container-high": "#292a2a",
+                        "surface-container-highest": "#343535",
+                        "on-tertiary": "#313030",
+                        "surface-variant": "#343535",
+                        "inverse-surface": "#e3e2e2",
+                        "on-surface-variant": "#ebbbb4",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-background": "#e3e2e2",
+                        "surface": "#121414",
+                        "on-surface": "#e3e2e2",
+                        "surface-dim": "#121414",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-container": "#1f2020",
+                        "on-secondary-fixed-variant": "#454747",
+                        "outline-variant": "#603e39",
+                        "inverse-on-surface": "#303031",
+                        "surface-bright": "#383939",
+                        "on-primary-container": "#5c0000",
+                        "tertiary-container": "#929090",
+                        "outline": "#b18780"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "grid-line-weight": "1px",
+                        "gutter": "24px",
+                        "margin": "40px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "headline-md": ["Geist"],
+                        "headline-xl": ["Geist"],
+                        "data-display": ["JetBrains Mono"],
+                        "label-technical": ["JetBrains Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-display": ["20px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "700"}],
+                        "label-technical": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="flex flex-col min-h-screen">
+<!-- Top Navigation Bar -->
+<header class="bg-surface-container-highest dark:bg-surface-container-highest border-b border-outline-variant dark:border-outline-variant docked full-width top-0 z-50">
+<div class="flex justify-between items-center w-full px-4 py-4 max-w-container-max mx-auto">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary">menu</span>
+<h1 class="text-headline-md font-headline-md font-bold tracking-tighter text-primary dark:text-primary uppercase">GUARDIAN ARMORY</h1>
+</div>
+<span class="material-symbols-outlined text-primary">security</span>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow pt-4 pb-24 px-4 max-w-md mx-auto w-full">
+<!-- Section Header -->
+<div class="mb-6">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-technical text-label-technical text-primary uppercase tracking-widest">SYSTEM OVERRIDE</span>
+<span class="font-label-technical text-label-technical text-secondary opacity-50">REF: B-SPEC-2024</span>
+</div>
+<h2 class="font-headline-xl text-[32px] leading-tight font-bold text-on-background uppercase italic">Ballistic Specs</h2>
+</div>
+<!-- Protection Level Selector -->
+<div class="grid grid-cols-3 gap-3 mb-8">
+<!-- B4 Item -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container border border-outline-variant machined-edge relative hover:bg-surface-container-highest transition-all group">
+<span class="font-label-technical text-label-technical text-secondary mb-1">LEVEL</span>
+<span class="font-data-display text-data-display text-on-surface">B4</span>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-outline-variant group-hover:bg-primary transition-colors"></div>
+</button>
+<!-- B6 Item (Active State) -->
+<button class="flex flex-col items-center justify-center p-4 bg-primary-container border border-primary machined-edge relative shadow-[0_0_20px_rgba(255,85,64,0.3)]">
+<span class="font-label-technical text-label-technical text-on-primary-container mb-1">LEVEL</span>
+<span class="font-data-display text-data-display text-on-primary-container">B6</span>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-white"></div>
+<div class="absolute -top-1 -right-1">
+<span class="material-symbols-outlined text-white text-[16px]" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+</button>
+<!-- B7 Item -->
+<button class="flex flex-col items-center justify-center p-4 bg-surface-container border border-outline-variant machined-edge relative hover:bg-surface-container-highest transition-all group">
+<span class="font-label-technical text-label-technical text-secondary mb-1">LEVEL</span>
+<span class="font-data-display text-data-display text-on-surface">B7</span>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-outline-variant group-hover:bg-primary transition-colors"></div>
+</button>
+</div>
+<!-- Technical Drawing Card -->
+<div class="bg-surface-container-low border border-outline-variant mb-6 relative overflow-hidden">
+<div class="bg-gradient-to-r from-surface-container-highest to-surface-container px-4 py-2 flex justify-between items-center border-b border-outline-variant">
+<span class="font-label-technical text-label-technical text-primary font-bold">STRUCTURAL ANALYSIS</span>
+<span class="font-label-technical text-label-technical text-secondary">SN: 882-ALPHA</span>
+</div>
+<div class="p-4 relative">
+<!-- Visual Technical Blueprint -->
+<div class="h-48 w-full bg-surface-container-lowest border border-outline-variant/30 relative flex items-center justify-center mb-4">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle, #ff5540 1px, transparent 1px); background-size: 10px 10px;"></div>
+<img alt="Technical Armor Profile" class="h-32 w-auto object-contain mix-blend-screen opacity-80" data-alt="A highly detailed 3D wireframe render of a tactical armored vehicle's chassis, showing reinforced ballistic plating in a dark, matte black environment. The technical drawing style features glowing racing red vector lines and digital HUD overlays highlighting stress points. The lighting is low-key, moody, and professional, emphasizing the rugged engineering and high-end security aesthetic of the Guardian Armory brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZk0GCdemXskmpKPp5VMlXE72KJc5aUkY9RI5vDzBtYcYDBWspOosRo1cJvTzGhVSOcgR6fh3YpyuT4-Ge0IPP20ztAO7pAEjLnNpqgPQU36JEQBSuGs9Zkn05MYHMYfXpqzkn0to4pq5rqaTHPXjjUmkp9vRiIHW_7PZErxC4ZmcS_cO6XelOEswREd45uHEcxQVFyFReoliNSH8hVaKw5ynpj009SDCtVgAEG6dq8JKl7FSD49O8ajeaIfRPqUrH5uCOLFcFa4tk"/>
+<!-- HUD Overlays -->
+<div class="absolute top-4 left-4 font-label-technical text-[10px] text-primary">SCANNING... [88%]</div>
+<div class="absolute bottom-4 right-4 font-label-technical text-[10px] text-primary">ARMOR_CORE_STABLE</div>
+</div>
+<!-- Precise Data Readouts -->
+<div class="grid grid-cols-2 gap-4">
+<div class="border-l-2 border-primary pl-3 py-1">
+<p class="font-label-technical text-label-technical text-secondary uppercase text-[10px]">Curb Weight Increase</p>
+<p class="font-data-display text-data-display text-on-surface">+850 KG</p>
+</div>
+<div class="border-l-2 border-primary pl-3 py-1">
+<p class="font-label-technical text-label-technical text-secondary uppercase text-[10px]">Blast Resilience</p>
+<p class="font-data-display text-data-display text-on-surface">15 KG TNT</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Safety vs. Weight Data Chart -->
+<div class="bg-surface-container border border-outline-variant relative">
+<div class="bg-gradient-to-r from-surface-container-highest to-surface-container px-4 py-2 flex justify-between items-center border-b border-outline-variant">
+<span class="font-label-technical text-label-technical text-primary font-bold">EFFICIENCY METRICS</span>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<div class="w-2 h-2 rounded-full bg-outline"></div>
+</div>
+</div>
+<div class="p-6">
+<!-- Simple Bar Chart Trade-off -->
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-technical text-label-technical text-secondary uppercase">Ballistic Protection Index</span>
+<span class="font-label-technical text-label-technical text-primary">94%</span>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full border border-outline-variant">
+<div class="h-full bg-primary" style="width: 94%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-technical text-label-technical text-secondary uppercase">Weight Penalty</span>
+<span class="font-label-technical text-label-technical text-primary">62%</span>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full border border-outline-variant">
+<div class="h-full bg-primary" style="width: 62%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-technical text-label-technical text-secondary uppercase">Handling Degradation</span>
+<span class="font-label-technical text-label-technical text-primary">28%</span>
+</div>
+<div class="h-2 bg-surface-container-lowest w-full border border-outline-variant">
+<div class="h-full bg-primary" style="width: 28%"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 flex justify-center">
+<p class="font-label-technical text-label-technical text-secondary text-center text-[11px] max-w-[200px]">
+                        OPTIMAL BALANCE REACHED FOR MISSION-CRITICAL ENVIRONMENTS.
+                    </p>
+</div>
+</div>
+</div>
+<!-- CTA Button -->
+<div class="mt-8">
+<button class="w-full bg-primary-container text-on-primary-container font-headline-md font-bold py-4 px-6 machined-edge scanning-line flex items-center justify-center gap-2 hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined">verified_user</span>
+                CONFIRM SPECIFICATION
+            </button>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="bg-surface-container-low dark:bg-surface-container-low border-t border-outline-variant dark:border-outline-variant fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-safe h-16">
+<div class="flex flex-col items-center justify-center text-on-secondary-container p-2 opacity-70 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">garage</span>
+<span class="text-label-technical font-label-technical uppercase text-[10px]">Fleet</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container p-2 opacity-70 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">monitor_heart</span>
+<span class="text-label-technical font-label-technical uppercase text-[10px]">Health</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container p-2 opacity-70 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">shield</span>
+<span class="text-label-technical font-label-technical uppercase text-[10px]">Home</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container p-2 opacity-70 hover:bg-surface-container-high transition-all">
+<span class="material-symbols-outlined">encrypted</span>
+<span class="text-label-technical font-label-technical uppercase text-[10px]">Comms</span>
+</div>
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-none px-4 py-1 border-t-2 border-primary brightness-125">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="text-label-technical font-label-technical uppercase text-[10px]">Security</span>
+</div>
+</nav>
+<!-- System Coordinates Overlay (Innovative Component) -->
+<div class="fixed bottom-20 left-4 pointer-events-none opacity-40">
+<div class="font-label-technical text-[9px] text-primary flex flex-col gap-1">
+<span>Uptime: 144:12:08</span>
+<span>Lat: 40.7128° N</span>
+<span>Long: 74.0060° W</span>
+</div>
+</div>
+</body></html>

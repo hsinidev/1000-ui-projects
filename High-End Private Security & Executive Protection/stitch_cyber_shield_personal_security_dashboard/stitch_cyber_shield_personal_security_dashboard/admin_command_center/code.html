@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Shield | Admin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#007117",
+                    "inverse-on-surface": "#313030",
+                    "surface-bright": "#393939",
+                    "outline": "#84967e",
+                    "tertiary-container": "#dfdcdb",
+                    "outline-variant": "#3b4b37",
+                    "surface-container": "#201f1f",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-surface": "#e5e2e1",
+                    "on-background": "#e5e2e1",
+                    "surface": "#131313",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#131313",
+                    "surface-variant": "#353534",
+                    "inverse-surface": "#e5e2e1",
+                    "on-surface-variant": "#b9ccb2",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "error": "#ffb4ab",
+                    "surface-container-high": "#2a2a2a",
+                    "surface-container-highest": "#353534",
+                    "on-tertiary": "#313030",
+                    "surface-container-low": "#1c1b1b",
+                    "on-secondary-container": "#b4b5b5",
+                    "error-container": "#93000a",
+                    "primary": "#ebffe2",
+                    "on-secondary": "#2f3131",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary-fixed-variant": "#00530e",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "secondary-container": "#454747",
+                    "secondary": "#c6c6c7",
+                    "on-primary-fixed": "#002203",
+                    "tertiary-fixed": "#e5e2e1",
+                    "primary-fixed": "#72ff70",
+                    "on-primary": "#003907",
+                    "inverse-primary": "#006e16",
+                    "tertiary": "#fcf8f8",
+                    "primary-fixed-dim": "#00e639",
+                    "tertiary-fixed-dim": "#c9c6c5",
+                    "background": "#131313",
+                    "surface-tint": "#00e639",
+                    "on-error": "#690005",
+                    "primary-container": "#00ff41",
+                    "on-tertiary-container": "#626060"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "margin-edge": "40px",
+                    "gutter": "24px",
+                    "container-max": "1440px",
+                    "section-gap": "80px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Inter", "sans-serif"],
+                    "display-xl": ["Inter", "sans-serif"],
+                    "label-mono": ["JetBrains Mono", "monospace"],
+                    "body-md": ["Inter", "sans-serif"],
+                    "body-lg": ["Inter", "sans-serif"],
+                    "headline-md": ["Inter", "sans-serif"],
+                    "caption-sm": ["Inter", "sans-serif"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "caption-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(132, 150, 126, 0.2);
+        }
+        .status-pulse {
+            box-shadow: 0 0 0 0 rgba(0, 230, 57, 0.7);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 57, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(0, 230, 57, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(0, 230, 57, 0); }
+        }
+        .emergency-glow {
+            box-shadow: 0 0 20px rgba(255, 180, 171, 0.2);
+        }
+        .neon-border-hover:hover {
+            border-color: #00e639;
+            box-shadow: 0 0 12px rgba(0, 230, 57, 0.4);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased overflow-x-hidden">
+<!-- Side Navigation Shell -->
+<aside class="h-screen w-72 fixed left-0 top-0 border-r border-outline-variant backdrop-blur-3xl bg-surface/70 z-50 flex flex-col py-unit-margin-edge">
+<div class="px-6 mb-10">
+<span class="font-headline-lg text-headline-lg font-bold text-primary uppercase tracking-widest block">Cyber-Shield</span>
+<span class="text-on-surface-variant font-label-mono text-xs uppercase tracking-tighter">Operational Status: Active</span>
+</div>
+<nav class="flex-grow space-y-1">
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all duration-300 hover:text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="health_and_safety">health_and_safety</span>
+<span class="font-label-mono">Health</span>
+</a>
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all duration-300 hover:text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="devices">devices</span>
+<span class="font-label-mono">Devices</span>
+</a>
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all duration-300 hover:text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-mono">Monitor</span>
+</a>
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all duration-300 hover:text-primary" href="#">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+<span class="font-label-mono">Response</span>
+</a>
+<a class="text-primary font-bold border-l-2 border-primary bg-primary/10 py-3 px-6 flex items-center gap-4" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-mono">Admin</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/30 pt-6">
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-mono">Settings</span>
+</a>
+<a class="text-on-surface-variant font-medium py-3 px-6 flex items-center gap-4 hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-label-mono">Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Shell -->
+<main class="ml-72 min-h-screen">
+<!-- Top App Bar -->
+<header class="fixed top-0 right-0 left-72 h-20 border-b border-outline-variant backdrop-blur-md bg-surface/80 z-40 flex items-center justify-between px-gutter">
+<div class="flex items-center gap-4">
+<div class="h-2 w-2 rounded-full bg-primary-fixed status-pulse"></div>
+<h1 class="font-label-mono text-on-surface tracking-widest uppercase">Admin Terminal // Secure Node 01</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="notifications">notifications</span>
+<span class="absolute -top-1 -right-1 h-2 w-2 bg-error rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="security">security</span>
+<div class="flex items-center gap-3 pl-4 border-l border-outline-variant">
+<div class="text-right">
+<p class="text-xs font-label-mono font-bold text-on-surface">DR. VANCE</p>
+<p class="text-[10px] font-label-mono text-on-surface-variant">LEVEL 5 ACCESS</p>
+</div>
+<div class="h-10 w-10 rounded-full border border-primary overflow-hidden">
+<img alt="User Profile" data-alt="A close-up portrait of a middle-aged male executive with sharp features and grey-streaked hair, wearing a high-collared black technical jacket. The lighting is cold and clinical, with a soft neon green rim light reflecting off his shoulder. The background is a dark, out-of-focus digital server room. The overall mood is authoritative, intelligent, and intensely focused, embodying a high-net-worth security architect aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDFEmLZh_xyuYFGg6gDkdU-hyVpHX77Bha2chz9iqkXFp7yQ775hk3-npQ0n5EVY07aiy9IKMcUiTwINfS0bV3HueAwN3-2iWy_gjg9v99TlO_I3Qe_1anl-PKbksK0CiZfopc2K1S5E7QLmM233ZXhUoCiLhOcPbKVloeX-v4IE4abbUvO5AQYJZ2Ai9DLhPcdoZF6lZAeerCvSe5sR-k1VGeCs2lUwLm9HIzW-prA1v8ePiaw2uQdKipLoQ_FlXOQosJgGx9-IfFg"/>
+</div>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="pt-28 pb-12 px-gutter space-y-gutter">
+<!-- Bento Grid Dashboard Section -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Global System Health -->
+<div class="col-span-12 lg:col-span-5 glass-card p-6 rounded-xl flex flex-col justify-between">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h2 class="font-label-mono text-xs uppercase tracking-widest text-on-surface-variant mb-1">Global System Health</h2>
+<p class="font-headline-md text-primary tracking-tight">Optimal Baseline</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim text-3xl" data-icon="verified_user" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-xs font-label-mono text-on-surface-variant">Network Throughput</span>
+<span class="text-xs font-label-mono text-primary">1.2 GB/s</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed w-[84%]"></div>
+</div>
+<div class="grid grid-cols-3 gap-2 mt-4">
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase">CPU</p>
+<p class="text-sm font-label-mono text-on-surface">24%</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase">MEM</p>
+<p class="text-sm font-label-mono text-on-surface">41%</p>
+</div>
+<div class="bg-surface-container-low p-3 rounded-lg border border-outline-variant/30">
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase">LAT</p>
+<p class="text-sm font-label-mono text-on-surface">12ms</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Member Sessions -->
+<div class="col-span-12 lg:col-span-4 glass-card p-6 rounded-xl">
+<h2 class="font-label-mono text-xs uppercase tracking-widest text-on-surface-variant mb-6">Active Member Sessions</h2>
+<div class="space-y-5">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-[10px] font-label-mono">JD</div>
+<div>
+<p class="text-xs font-label-mono font-bold text-on-surface">JULIAN DANE</p>
+<p class="text-[10px] font-label-mono text-on-surface-variant">PARIS, FR • MOBILE</p>
+</div>
+</div>
+<span class="text-[10px] font-label-mono text-primary">ENCRYPTED</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-[10px] font-label-mono">AK</div>
+<div>
+<p class="text-xs font-label-mono font-bold text-on-surface">AMARA KHAN</p>
+<p class="text-[10px] font-label-mono text-on-surface-variant">LONDON, UK • DESKTOP</p>
+</div>
+</div>
+<span class="text-[10px] font-label-mono text-primary">ENCRYPTED</span>
+</div>
+<div class="flex items-center justify-between opacity-50">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded-full bg-surface-container border border-outline-variant flex items-center justify-center text-[10px] font-label-mono">SR</div>
+<div>
+<p class="text-xs font-label-mono font-bold text-on-surface">SEBASTIAN R.</p>
+<p class="text-[10px] font-label-mono text-on-surface-variant">NEW YORK, US • TABLET</p>
+</div>
+</div>
+<span class="text-[10px] font-label-mono text-on-surface-variant">IDLE</span>
+</div>
+</div>
+<button class="w-full mt-6 py-2 border border-outline text-[10px] font-label-mono uppercase tracking-widest hover:border-primary transition-all">View All Sessions</button>
+</div>
+<!-- System Override (Emergency Button) -->
+<div class="col-span-12 lg:col-span-3 bg-error-container/10 border border-error/30 p-6 rounded-xl flex flex-col items-center justify-center text-center gap-4 emergency-glow">
+<span class="material-symbols-outlined text-error text-5xl mb-2" data-icon="report">report</span>
+<div>
+<h3 class="font-label-mono text-sm font-bold text-error uppercase">System Override</h3>
+<p class="text-[10px] font-label-mono text-error/70 mt-1 uppercase">Protocol Alpha-Zero</p>
+</div>
+<button class="bg-error text-on-error font-label-mono text-xs font-bold py-4 px-8 rounded uppercase tracking-[0.2em] w-full active:scale-95 transition-transform">Initiate Purge</button>
+<p class="text-[10px] font-label-mono text-on-surface-variant opacity-50 italic">Requires Level 5 Biometric Auth</p>
+</div>
+<!-- Encryption Key Rotation Status -->
+<div class="col-span-12 glass-card p-6 rounded-xl flex items-center justify-between border-l-4 border-l-primary-fixed">
+<div class="flex items-center gap-6">
+<div class="relative h-16 w-16 flex items-center justify-center">
+<svg class="absolute inset-0 transform -rotate-90" viewbox="0 0 100 100">
+<circle class="text-outline-variant" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-primary-fixed-dim" cx="50" cy="50" fill="none" r="45" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="70" stroke-width="4"></circle>
+</svg>
+<span class="material-symbols-outlined text-primary" data-icon="key">key</span>
+</div>
+<div>
+<h3 class="font-label-mono text-sm font-bold text-on-surface uppercase tracking-widest">Key Rotation Status</h3>
+<p class="text-xs font-label-mono text-on-surface-variant">Quantum-Resistant Rotation in progress: 74% Complete</p>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase">Next Rotation</p>
+<p class="text-sm font-label-mono text-primary">04:12:44</p>
+</div>
+<button class="px-6 border border-primary text-primary font-label-mono text-[10px] uppercase tracking-widest neon-border-hover">Force Manual Sync</button>
+</div>
+</div>
+<!-- User Management Table -->
+<div class="col-span-12 glass-card rounded-xl overflow-hidden">
+<div class="px-6 py-5 border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-low">
+<h3 class="font-label-mono text-sm font-bold text-on-surface uppercase tracking-[0.1em]">User Management &amp; Access Control</h3>
+<div class="flex gap-2">
+<div class="relative">
+<input class="bg-surface border border-outline-variant rounded px-10 py-1.5 text-xs font-label-mono focus:ring-1 focus:ring-primary outline-none" placeholder="Filter users..." type="text"/>
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm" data-icon="search">search</span>
+</div>
+<button class="bg-primary text-on-primary font-label-mono text-[10px] font-bold px-4 rounded uppercase">Add Member</button>
+</div>
+</div>
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 text-[10px] font-label-mono text-on-surface-variant uppercase tracking-widest">
+<th class="px-6 py-4 font-normal">Identified Member</th>
+<th class="px-6 py-4 font-normal">Security Role</th>
+<th class="px-6 py-4 font-normal">Access Tier</th>
+<th class="px-6 py-4 font-normal">Last Verification</th>
+<th class="px-6 py-4 font-normal">Status</th>
+<th class="px-6 py-4 font-normal text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-xs font-label-mono text-on-surface">
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-highest transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded border border-outline-variant bg-surface overflow-hidden">
+<img alt="User" data-alt="A portrait of a senior executive in a high-contrast environment. The subject is wearing a bespoke dark charcoal suit. The background is a minimalist, dimly lit architectural space with sharp vertical lines. Lighting is focused and dramatic, highlighting the subject's thoughtful expression. The overall style is sophisticated, powerful, and impeccably modern, aligning with elite digital security branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgAfPppHB3fB6WjzRO7HLls9cnp7Epw1QYgEysLHd8Hz_BGIeLANw7E2AV3GxJ1TwOPZ3BQzuXc8SiaBwt_RONFetHhbxq_8sgzWGQcMjJNGr9pl6vyuzKTae-i5wzeBDkrHSAajQWyrMXYwHNCD3IaGSKIcOIZ9Q-JvlfrjNtNz4b-usTXaeC543yHZbuklIKpI4vsvO9MilSYjZSnaiVGBMLclDcC1O0uHZs8e0CHiNhs3Lk7bjgP8e0PBHEsMzL60qcmuo7_FAy"/>
+</div>
+<div>
+<p class="font-bold">ELARA VANCE</p>
+<p class="text-[10px] text-on-surface-variant">e.vance@vault.corp</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">Global Administrator</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded bg-primary-fixed/20 text-primary-fixed text-[9px] font-bold border border-primary-fixed/40">TIER 5</span>
+</td>
+<td class="px-6 py-5">12 min ago</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="h-1.5 w-1.5 rounded-full bg-primary-fixed"></span>
+<span>ACTIVE</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-highest transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded border border-outline-variant bg-surface overflow-hidden">
+<img alt="User" data-alt="A professional headshot of a woman with an intense and intelligent gaze. She is positioned against a clean, futuristic glass surface that has subtle reflected light patterns. Her attire is a high-tech minimalist blazer in deep navy. The lighting is crisp and cool, casting precise shadows that define her features. The aesthetic is sharp, technical, and conveys a sense of high-level expertise and digital authority." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZnwme6jnW7HkAFTT-gB0TvLDQMT3rb30shBaNEvh0INeKex-QXEIdpT80_Eg0QazApIcBcBx8vgP6M5Tm7AlpVmnJKlfwpm99bGakHKNCrTyz-NIc7dDXaYrGHmJ80bYiDpJiFVwdz1R2km24yZs-wPIbZGVseE1gob7aGIXmU0eIo0BQXr3qXJTmAY9yhzHbejnmX1a1z3cgfCmM45WfCkASPCFv6fNWlBQg80PxSqQAcaHG3R1LJlzHNdZRtIBKBljeXIAE6wR4"/>
+</div>
+<div>
+<p class="font-bold">MARCUS THORNE</p>
+<p class="text-[10px] text-on-surface-variant">m.thorne@secure.io</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">Security Auditor</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded bg-on-surface-variant/20 text-on-surface-variant text-[9px] font-bold border border-outline">TIER 3</span>
+</td>
+<td class="px-6 py-5">2 hours ago</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="h-1.5 w-1.5 rounded-full bg-on-surface-variant"></span>
+<span>OFFLINE</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+<tr class="border-b border-outline-variant/10 hover:bg-surface-container-highest transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="h-8 w-8 rounded border border-outline-variant bg-surface overflow-hidden">
+<img alt="User" data-alt="A portrait of a tech professional in a dark, high-contrast studio setting. The lighting is dramatic, using a single softbox to create a cinematic look. The subject is wearing a modern black turtleneck, looking slightly away from the camera with an expression of deep concentration. Subtle blue and green light accents in the shadows suggest a nearby digital interface. The overall mood is mysterious, elite, and technically proficient." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpJVWEqRSnvdZ0fIXU7pqrgZfo43_QTRq0Kcnyzv_jl_SLCEXGnwmDRbK1hD-fsEvIl-GNsZvcldKPNCwiJM4YtuE_82Xa69cjI-aqDFh-ipVemKvT-y3ULM-rjD4AZkg6d92MCyAUhYLFvaIc0GQC_I_crRy4o8ud93GiznI2vEeXKBLZV1SONHwhbM41JfiSsUw5G1BCHD5TQwMEkT8FZ3yEJTnxc2miJ7gUa5CMnXmCl3gmwc67qhji-EXSLg9kGJaa2JfUviYK"/>
+</div>
+<div>
+<p class="font-bold">HELENA ROSS</p>
+<p class="text-[10px] text-on-surface-variant">h.ross@nexus.net</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">Asset Guardian</td>
+<td class="px-6 py-5">
+<span class="px-2 py-0.5 rounded bg-primary-fixed/20 text-primary-fixed text-[9px] font-bold border border-primary-fixed/40">TIER 4</span>
+</td>
+<td class="px-6 py-5">Just now</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<span class="h-1.5 w-1.5 rounded-full bg-primary-fixed"></span>
+<span>ACTIVE</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="more_vert">more_vert</span>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="p-4 bg-surface-container-lowest flex justify-between items-center">
+<span class="text-[10px] font-label-mono text-on-surface-variant uppercase">Showing 3 of 124 Registered Nodes</span>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="chevron_left">chevron_left</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary" data-icon="chevron_right">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Operational Log Footer Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-card p-4 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="history">history</span>
+<div>
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase tracking-tighter">Last Backup Sync</p>
+<p class="text-xs font-label-mono text-on-surface">May 24, 2024 - 03:00:00 UTC</p>
+</div>
+</div>
+<span class="text-[10px] font-label-mono text-primary bg-primary/10 px-2 py-1 rounded">VERIFIED</span>
+</div>
+<div class="glass-card p-4 rounded-lg flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="lan">lan</span>
+<div>
+<p class="text-[10px] font-label-mono text-on-surface-variant uppercase tracking-tighter">Current Uplink</p>
+<p class="text-xs font-label-mono text-on-surface">Satellite-Mesh-Node-77-Alpha</p>
+</div>
+</div>
+<span class="text-[10px] font-label-mono text-primary bg-primary/10 px-2 py-1 rounded">SECURE</span>
+</div>
+</div>
+</div>
+</main>
+<!-- FAB Overlay (Suppressed on Admin Detail as per rules, but included if needed for Dashboard Global) -->
+<!-- Admin usually has fixed dashboard controls, no floating action needed for high-security focused tasks -->
+</body></html>

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SYSTEM OPERATOR - Admin Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;700;800&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#0d1320",
+                        "secondary-fixed-dim": "#c2c6db",
+                        "on-surface-variant": "#e2bfb0",
+                        "on-surface": "#dce2f5",
+                        "primary-fixed": "#ffdbcc",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#a98a7d",
+                        "secondary": "#c2c6db",
+                        "error-container": "#93000a",
+                        "surface-variant": "#2f3543",
+                        "surface-container": "#19202d",
+                        "surface-container-low": "#151c29",
+                        "secondary-container": "#414658",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "surface-container-high": "#242a38",
+                        "inverse-surface": "#dce2f5",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#a04100",
+                        "on-primary-fixed": "#351000",
+                        "on-secondary-container": "#b0b4c9",
+                        "outline-variant": "#5a4136",
+                        "on-tertiary": "#2c303d",
+                        "on-secondary": "#2b3040",
+                        "surface-container-lowest": "#080e1b",
+                        "tertiary-fixed-dim": "#c3c6d6",
+                        "on-secondary-fixed": "#161b2b",
+                        "surface-bright": "#333947",
+                        "background": "#0d1320",
+                        "secondary-fixed": "#dee1f7",
+                        "tertiary-container": "#9598a7",
+                        "on-tertiary-fixed-variant": "#434654",
+                        "surface-tint": "#ffb693",
+                        "inverse-on-surface": "#2a303e",
+                        "on-tertiary-container": "#2d313d",
+                        "surface-container-highest": "#2f3543",
+                        "primary-fixed-dim": "#ffb693",
+                        "primary": "#ffb693",
+                        "tertiary": "#c3c6d6",
+                        "on-primary-container": "#572000",
+                        "on-secondary-fixed-variant": "#414658",
+                        "on-primary": "#561f00",
+                        "on-background": "#dce2f5",
+                        "on-tertiary-fixed": "#171b27",
+                        "tertiary-fixed": "#dfe2f2",
+                        "surface-dim": "#0d1320",
+                        "primary-container": "#ff6b00",
+                        "on-error": "#690005"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "margin": "24px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "xl": "40px",
+                        "sm": "8px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Hanken Grotesk"],
+                        "data-mono": ["JetBrains Mono"],
+                        "h1-technical": ["Hanken Grotesk"],
+                        "timestamp-sm": ["JetBrains Mono"],
+                        "body-standard": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h1-technical": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "timestamp-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "body-standard": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-orange {
+            box-shadow: 0 0 15px rgba(255, 107, 0, 0.3);
+        }
+        .pulse-alert {
+            animation: pulse-border 2s infinite;
+        }
+        @keyframes pulse-border {
+            0% { border-color: rgba(255, 107, 0, 0.4); }
+            50% { border-color: rgba(255, 107, 0, 1); }
+            100% { border-color: rgba(255, 107, 0, 0.4); }
+        }
+        input[type="range"] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 4px;
+            background: #2f3543;
+            border-radius: 2px;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 0;
+            background: #ff6b00;
+            margin-top: -6px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-surface text-on-surface font-body-standard overflow-hidden">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 z-50 h-16 w-full flex justify-between items-center px-margin ml-64 bg-surface-container-high border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="font-h1-technical text-h1-technical font-bold text-primary uppercase tracking-tight">SYSTEM OPERATOR</span>
+<div class="ml-xl bg-surface-container-lowest px-md py-xs rounded border border-outline-variant flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[18px]">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-data-mono font-data-mono text-sm w-64 placeholder:text-outline" placeholder="GLOBAL COMMAND SEARCH..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<span class="font-data-mono text-primary text-xs font-bold bg-primary/10 px-sm py-xs border border-primary/20">SYSTEM: ONLINE</span>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-xs transition-colors rounded">notifications</button>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-xs transition-colors rounded">account_circle</button>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container border-r border-outline-variant flex flex-col py-lg z-[60]">
+<div class="px-lg mb-xl">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-primary" data-weight="fill">security</span>
+<h1 class="font-h1-technical text-primary font-bold">COMMAND CENTER</h1>
+</div>
+<p class="font-timestamp-sm text-outline tracking-widest uppercase">VIGILANCE v2.4</p>
+</div>
+<nav class="flex-1 px-sm space-y-unit">
+<a class="flex items-center gap-md px-md py-sm rounded transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-variant" href="#">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-body-standard">Live Feeds</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-variant" href="#">
+<span class="material-symbols-outlined">notifications_active</span>
+<span class="font-body-standard">Alerts</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-variant" href="#">
+<span class="material-symbols-outlined">thermostat</span>
+<span class="font-body-standard">Climate</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-variant" href="#">
+<span class="material-symbols-outlined">article</span>
+<span class="font-body-standard">Logs</span>
+</a>
+<!-- Active Tab -->
+<a class="flex items-center gap-md px-md py-sm transition-all bg-primary text-on-primary font-bold border-l-4 border-on-primary-fixed-variant" href="#">
+<span class="material-symbols-outlined" data-weight="fill">settings</span>
+<span class="font-body-standard">Admin Panel</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm rounded transition-all text-on-surface-variant hover:text-on-surface hover:bg-surface-variant" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-standard">Support</span>
+</a>
+</nav>
+<div class="px-md mt-auto">
+<button class="w-full bg-primary-container text-on-primary-container font-bold py-md flex items-center justify-center gap-sm active:scale-95 transition-transform">
+<span class="material-symbols-outlined">add_box</span>
+                NEW INCIDENT
+            </button>
+<div class="mt-lg pt-lg border-t border-outline-variant flex items-center gap-sm">
+<div class="w-10 h-10 bg-surface-variant rounded flex items-center justify-center overflow-hidden border border-outline">
+<img alt="Operator Profile" data-alt="A professional headshot of a security systems operator in a dark, tech-focused environment. The lighting is low-key with subtle blue highlights from computer monitors reflecting on his face, creating a mood of intense focus and mission-critical authority. The image is crisp and detailed, aligning with an industrial high-security aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCnkm3iZaczTZ9Y0aKhVaOC_uK84KYu8OtNz286PCxTbjVZKry15rf1L6Ec0pUBbV7IawVxeT3gCgl9vOwsUw3mkXAxmmp-_mgOMN6w4wmLwGHFWUtkfYzYDas9XK3SNQDSDstIoEeG9s-lBUsZUMaqHqa65CHL0QsUiQsowbK9JVJDAvHUmxW7FihSlxtIeU3jUo4SvICqvkNHF-pyBI4Omu3VaxNLbwEa-MD7TovChA-0yHflxPV3irE_Pk4jnbbc67iseH0zukE"/>
+</div>
+<div>
+<p class="font-data-mono text-xs font-bold text-on-surface">OP-772_JENSEN</p>
+<p class="font-timestamp-sm text-outline">Tier 3 Admin</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 mt-16 p-lg h-[calc(100vh-64px)] overflow-y-auto bg-background">
+<div class="grid grid-cols-12 gap-gutter max-w-7xl mx-auto">
+<!-- Page Header -->
+<div class="col-span-12 mb-md border-l-4 border-primary pl-md py-xs">
+<h2 class="font-h1-technical text-h1-technical text-on-surface uppercase tracking-tight">System Administration</h2>
+<p class="font-data-mono text-outline uppercase text-xs">Node: STABLE-HQ-ALPHA // Latency: 14ms</p>
+</div>
+<!-- Bento Grid: Hardware Management -->
+<section class="col-span-12 lg:col-span-8 bg-surface-container border border-outline-variant rounded p-lg">
+<div class="flex justify-between items-center mb-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">router</span>
+<h3 class="font-data-mono font-bold text-on-surface uppercase">Hardware Infrastructure</h3>
+</div>
+<button class="font-timestamp-sm text-primary border border-primary/30 px-md py-xs hover:bg-primary/10 transition-colors">REFRESH ALL NODES</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="border-b border-outline-variant">
+<th class="pb-md font-data-mono text-xs text-outline font-medium uppercase">Node ID</th>
+<th class="pb-md font-data-mono text-xs text-outline font-medium uppercase">Component</th>
+<th class="pb-md font-data-mono text-xs text-outline font-medium uppercase">Status</th>
+<th class="pb-md font-data-mono text-xs text-outline font-medium uppercase">Thermals</th>
+<th class="pb-md font-data-mono text-xs text-outline font-medium uppercase">Last Check</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-sm">
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<td class="py-md font-bold">CAM-001</td>
+<td class="py-md text-on-surface-variant">Optical 4K Ir-Cut</td>
+<td class="py-md"><span class="bg-green-900/30 text-green-400 px-sm py-xs border border-green-500/30 text-[10px] font-bold">NOMINAL</span></td>
+<td class="py-md">42°C</td>
+<td class="py-md text-outline">14:22:01</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<td class="py-md font-bold">CAM-002</td>
+<td class="py-md text-on-surface-variant">Optical 4K Ir-Cut</td>
+<td class="py-md"><span class="bg-green-900/30 text-green-400 px-sm py-xs border border-green-500/30 text-[10px] font-bold">NOMINAL</span></td>
+<td class="py-md">44°C</td>
+<td class="py-md text-outline">14:21:55</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<td class="py-md font-bold text-error">SNS-042</td>
+<td class="py-md text-on-surface-variant">Vibration Sensor</td>
+<td class="py-md"><span class="bg-red-900/30 text-red-400 px-sm py-xs border border-red-500/30 text-[10px] font-bold">INTERMITTENT</span></td>
+<td class="py-md text-error">58°C</td>
+<td class="py-md text-outline">14:18:40</td>
+</tr>
+<tr class="border-b border-outline-variant/30 hover:bg-surface-variant/30 transition-colors">
+<td class="py-md font-bold">SNS-043</td>
+<td class="py-md text-on-surface-variant">Humidity/Temp</td>
+<td class="py-md"><span class="bg-green-900/30 text-green-400 px-sm py-xs border border-green-500/30 text-[10px] font-bold">NOMINAL</span></td>
+<td class="py-md">22°C</td>
+<td class="py-md text-outline">14:22:05</td>
+</tr>
+<tr class="hover:bg-surface-variant/30 transition-colors">
+<td class="py-md font-bold">HUB-ALPHA</td>
+<td class="py-md text-on-surface-variant">Neural Compute Unit</td>
+<td class="py-md"><span class="bg-primary/20 text-primary px-sm py-xs border border-primary/30 text-[10px] font-bold">SYNCING</span></td>
+<td class="py-md">65°C</td>
+<td class="py-md text-outline">14:22:12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- AI Sensitivity Settings -->
+<section class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="bg-surface-container border border-outline-variant rounded p-lg">
+<div class="flex items-center gap-sm mb-lg">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<h3 class="font-data-mono font-bold text-on-surface uppercase">AI Thresholds</h3>
+</div>
+<!-- Colic Detection Slider -->
+<div class="mb-xl">
+<div class="flex justify-between mb-sm">
+<label class="font-data-mono text-sm text-on-surface-variant">COLIC BEHAVIOR</label>
+<span class="font-data-mono text-sm text-primary font-bold">82%</span>
+</div>
+<input class="w-full h-1 bg-surface-variant appearance-none cursor-pointer" max="100" min="0" type="range" value="82"/>
+<p class="font-timestamp-sm text-outline mt-sm">Sets confidence floor for restlessness and pawing detection.</p>
+</div>
+<!-- Casting Detection Slider -->
+<div class="mb-xl">
+<div class="flex justify-between mb-sm">
+<label class="font-data-mono text-sm text-on-surface-variant">CASTING RISK</label>
+<span class="font-data-mono text-sm text-primary font-bold">65%</span>
+</div>
+<input class="w-full h-1 bg-surface-variant appearance-none cursor-pointer" max="100" min="0" type="range" value="65"/>
+<p class="font-timestamp-sm text-outline mt-sm">Sensititivy for proximity-to-wall during recumbency.</p>
+</div>
+<div class="pt-md border-t border-outline-variant">
+<div class="flex items-center justify-between">
+<span class="font-data-mono text-xs text-on-surface uppercase">Adaptive Learning</span>
+<div class="w-12 h-6 bg-primary-container rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-on-primary-container rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Status Summary Mini-Tile -->
+<div class="bg-surface-container-high border-2 border-primary/50 pulse-alert rounded p-md">
+<div class="flex items-center gap-md">
+<div class="w-10 h-10 bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">warning</span>
+</div>
+<div>
+<h4 class="font-data-mono font-bold text-primary text-xs uppercase">Optimization Required</h4>
+<p class="font-timestamp-sm text-on-surface-variant">Node SNS-042 reporting signal drift.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- User Access Logs -->
+<section class="col-span-12 bg-surface-container border border-outline-variant rounded p-lg">
+<div class="flex justify-between items-center mb-lg">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary">history</span>
+<h3 class="font-data-mono font-bold text-on-surface uppercase">Security &amp; Access Logs</h3>
+</div>
+<div class="flex gap-md">
+<select class="bg-surface-container-lowest border border-outline-variant text-data-mono text-xs px-md py-xs text-outline focus:border-primary outline-none">
+<option>ALL EVENTS</option>
+<option>LOGINS</option>
+<option>SETTING CHANGES</option>
+</select>
+<button class="bg-secondary-container text-on-secondary-container px-md py-xs font-data-mono text-xs hover:bg-secondary-container/80 transition-all uppercase">Export .CSV</button>
+</div>
+</div>
+<div class="space-y-unit">
+<!-- Log Entry -->
+<div class="flex items-center gap-lg py-sm px-md border-b border-outline-variant/20 font-data-mono text-xs hover:bg-surface-variant/20">
+<span class="text-outline w-32">14:22:10 UTC</span>
+<span class="text-on-surface font-bold w-40">OP-772_JENSEN</span>
+<span class="text-on-surface-variant flex-1">CALIBRATION: Adjusted COLIC_SENSITIVITY from 75% to 82%</span>
+<span class="text-outline uppercase">IP: 192.168.1.104</span>
+</div>
+<!-- Log Entry -->
+<div class="flex items-center gap-lg py-sm px-md border-b border-outline-variant/20 font-data-mono text-xs hover:bg-surface-variant/20">
+<span class="text-outline w-32">14:15:02 UTC</span>
+<span class="text-primary font-bold w-40">SYSTEM_AUTO</span>
+<span class="text-on-surface-variant flex-1">MAINTENANCE: Initiated diagnostic sweep of HUB-ALPHA</span>
+<span class="text-outline uppercase">SOURCE: KERNEL</span>
+</div>
+<!-- Log Entry -->
+<div class="flex items-center gap-lg py-sm px-md border-b border-outline-variant/20 font-data-mono text-xs hover:bg-surface-variant/20">
+<span class="text-outline w-32">14:02:44 UTC</span>
+<span class="text-on-surface font-bold w-40">ADMIN_ROOT</span>
+<span class="text-on-surface-variant flex-1">LOGIN: Remote session established via VPN-VIGIL_01</span>
+<span class="text-outline uppercase">IP: 10.0.8.22</span>
+</div>
+<!-- Log Entry -->
+<div class="flex items-center gap-lg py-sm px-md border-b border-outline-variant/20 font-data-mono text-xs hover:bg-surface-variant/20 text-error">
+<span class="text-error/70 w-32">13:58:12 UTC</span>
+<span class="font-bold w-40">SNS-042</span>
+<span class="flex-1">ALARM: Hardware signal interruption detected. Packet loss &gt; 15%.</span>
+<span class="uppercase">ID: ERROR_0x04F</span>
+</div>
+<!-- Log Entry -->
+<div class="flex items-center gap-lg py-sm px-md border-b border-outline-variant/20 font-data-mono text-xs hover:bg-surface-variant/20">
+<span class="text-outline w-32">13:45:00 UTC</span>
+<span class="text-on-surface font-bold w-40">OP-812_GARCIA</span>
+<span class="text-on-surface-variant flex-1">LOGOUT: Session ended normally.</span>
+<span class="text-outline uppercase">IP: 192.168.1.105</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

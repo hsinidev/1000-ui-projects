@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Feline-Flow Admin Interface</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+            color: #191c1d;
+            margin: 0;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soft-lift {
+            box-shadow: 12px 12px 24px #e0e3e8, -12px -12px 24px #ffffff;
+        }
+        .soft-recess {
+            box-shadow: inset 4px 4px 8px #e0e3e8, inset -4px -4px 8px #ffffff;
+        }
+        .glass-panel {
+            background: rgba(248, 249, 250, 0.8);
+            backdrop-filter: blur(10px);
+        }
+        .pulse-lavender {
+            animation: pulse-animation 2s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0px rgba(230, 230, 250, 0.7); }
+            100% { box-shadow: 0 0 0 10px rgba(230, 230, 250, 0); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-primary-fixed-variant": "#444655",
+                      "surface-container": "#edeeef",
+                      "primary-container": "#e6e6fa",
+                      "surface-dim": "#d9dadb",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "on-error-container": "#93000a",
+                      "surface-container-highest": "#e1e3e4",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "secondary-container": "#e0dfdf",
+                      "surface-bright": "#f8f9fa",
+                      "on-surface-variant": "#46464c",
+                      "primary-fixed-dim": "#c5c5d8",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "secondary-fixed": "#e3e2e2",
+                      "on-tertiary-container": "#666868",
+                      "on-primary": "#ffffff",
+                      "inverse-surface": "#2e3132",
+                      "tertiary-container": "#e8e8e8",
+                      "surface-container-low": "#f3f4f5",
+                      "on-tertiary": "#ffffff",
+                      "primary-fixed": "#e1e1f5",
+                      "surface-container-high": "#e7e8e9",
+                      "surface-variant": "#e1e3e4",
+                      "on-error": "#ffffff",
+                      "background": "#f8f9fa",
+                      "on-primary-fixed": "#191b29",
+                      "inverse-on-surface": "#f0f1f2",
+                      "surface": "#f8f9fa",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-secondary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-surface": "#191c1d",
+                      "on-secondary-fixed-variant": "#464747",
+                      "error-container": "#ffdad6",
+                      "outline-variant": "#c7c5cc",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "tertiary": "#5d5f5f",
+                      "secondary": "#5d5e5f",
+                      "primary": "#5c5d6e",
+                      "surface-tint": "#5c5d6e",
+                      "surface-container-lowest": "#ffffff",
+                      "inverse-primary": "#c5c5d8",
+                      "outline": "#77767d",
+                      "on-secondary-container": "#626363",
+                      "on-primary-container": "#656677",
+                      "on-background": "#191c1d"
+              },
+              "borderRadius": {
+                      "DEFAULT": "1rem",
+                      "lg": "2rem",
+                      "xl": "3rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "40px",
+                      "section-gap": "64px",
+                      "gutter": "24px",
+                      "unit": "8px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "body-base": ["Inter"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "300"}],
+                      "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.01em", "fontWeight": "500"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.015em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding h-16 w-full bg-surface shadow-[6px_6px_12px_#e0e3e8,-6px_-6px_12px_#ffffff]">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="pets">pets</span>
+<h1 class="font-headline-md text-headline-md font-medium tracking-tight text-primary">Feline-Flow</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-4 py-1.5 rounded-full bg-surface-container-low soft-recess">
+<span class="w-2 h-2 rounded-full bg-[#E6E6FA] pulse-lavender"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">System: Optimal</span>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-container transition-colors active:scale-95 duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="fiber_manual_record">fiber_manual_record</span>
+</button>
+</div>
+</header>
+<div class="flex pt-16 h-screen">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex flex-col w-72 bg-surface h-full p-6 border-r border-transparent">
+<nav class="space-y-4">
+<a class="flex items-center gap-4 px-6 py-4 rounded-xl bg-primary-container text-on-primary-container shadow-[4px_4px_8px_#e0e3e8,-4px_-4px_8px_#ffffff] transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-label-caps">Analytics</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-label-caps">Supplies</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-4 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-caps text-label-caps">Schedule</span>
+</a>
+</nav>
+<div class="mt-section-gap space-y-4">
+<p class="px-6 font-label-caps text-label-caps text-outline text-[10px] uppercase tracking-widest">Global Admin</p>
+<a class="flex items-center gap-4 px-6 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings_remote">settings_remote</span>
+<span class="font-label-caps text-label-caps">Device Management</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-label-caps text-label-caps">User Support</span>
+</a>
+<a class="flex items-center gap-4 px-6 py-3 rounded-xl text-on-surface-variant hover:bg-surface-container-low transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="system_update">system_update</span>
+<span class="font-label-caps text-label-caps">Firmware Updates</span>
+</a>
+</div>
+<div class="mt-auto p-6 rounded-lg bg-surface-container-low soft-recess">
+<div class="flex items-center gap-3">
+<img alt="Admin" class="w-10 h-10 rounded-full border-2 border-white" data-alt="Close up portrait of a professional medical administrator in a clean modern environment. The lighting is bright and high-key, emphasizing a clinical serenity. The individual has a calm, confident expression, wearing a minimalist grey uniform. The background is a soft-focus laboratory or medical office with lavender and silk white accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCab_hknrpXa_OmHZQ4cgppUoeXF9WMkQHagAlYu-O9uHxETFzJV1B6h-PlzI88Ynew_BjrVkXzAdjsJq_bUhQp5MSAFzlBgHzP8VUTMhJWGQmZgZQ5NjnvQfjbqS4-3X9FMEHe5acCe0nDoYCpkLRKKlLLHNM20i5IFoA9eKrI-P8oftTEuIwFJT5LfPPpc8as7G7EnCs8aqxSaMm5bBMoGBr4wPOSkv_GAwkKCTmQeAII-rFViZaAkO8OCwSSinMkSNCqktLFTD3o"/>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">Dr. Aris Thorne</p>
+<p class="text-[10px] text-outline">Senior Overseer</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto p-container-padding pb-32">
+<div class="max-w-7xl mx-auto space-y-section-gap">
+<!-- Bento Grid Header -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="col-span-1 md:col-span-2 p-8 rounded-lg bg-surface soft-lift flex flex-col justify-between">
+<div>
+<h2 class="font-display-lg text-display-lg text-primary">Global Status</h2>
+<p class="font-body-base text-body-base text-on-surface-variant mt-2 max-w-md">Real-time telemetry from across the Feline-Flow ecosystem. Environmental stability maintained at 98.4%.</p>
+</div>
+<div class="flex gap-8 mt-8">
+<div>
+<p class="font-label-caps text-label-caps text-outline uppercase">Active Units</p>
+<p class="font-headline-md text-headline-md text-primary">1,284</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline uppercase">Data Flow</p>
+<p class="font-headline-md text-headline-md text-primary">42.8 GB/s</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline uppercase">Uptime</p>
+<p class="font-headline-md text-headline-md text-primary">99.99%</p>
+</div>
+</div>
+</div>
+<div class="p-8 rounded-lg bg-primary-container soft-lift flex flex-col items-center justify-center text-center space-y-4">
+<span class="material-symbols-outlined text-[48px] text-primary" data-icon="verified_user">verified_user</span>
+<h3 class="font-headline-md text-headline-md text-on-primary-container">Security Audit</h3>
+<p class="font-body-base text-body-base text-on-primary-container opacity-80">All firmware signatures verified. No anomalies detected in current cycle.</p>
+<button class="px-8 py-3 rounded-full bg-surface text-primary font-label-caps text-label-caps soft-lift active:scale-95 transition-all">Generate Report</button>
+</div>
+</div>
+<!-- Device Management Table Section -->
+<section class="space-y-gutter">
+<div class="flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Connected Devices</h3>
+<p class="font-body-base text-body-base text-outline">Managing 12,402 global habitat nodes.</p>
+</div>
+<div class="flex gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline" data-icon="search">search</span>
+<input class="pl-12 pr-6 py-3 rounded-full bg-surface-container-low soft-recess border-none focus:ring-2 focus:ring-primary-container w-64 text-body-base" placeholder="Search serial numbers..." type="text"/>
+</div>
+<button class="p-3 rounded-full bg-surface-container soft-lift active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+</button>
+</div>
+</div>
+<div class="overflow-hidden rounded-lg bg-surface soft-lift">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low">
+<th class="px-8 py-5 font-label-caps text-label-caps text-outline uppercase tracking-wider">Device ID</th>
+<th class="px-8 py-5 font-label-caps text-label-caps text-outline uppercase tracking-wider">Status</th>
+<th class="px-8 py-5 font-label-caps text-label-caps text-outline uppercase tracking-wider">Battery Health</th>
+<th class="px-8 py-5 font-label-caps text-label-caps text-outline uppercase tracking-wider">Last Sync</th>
+<th class="px-8 py-5 font-label-caps text-label-caps text-outline uppercase tracking-wider">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high">
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-8 py-6 font-body-base text-primary font-medium">FF-9021-X</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="w-2 h-2 rounded-full bg-[#E6E6FA] pulse-lavender"></span>
+<span class="font-label-caps text-label-caps">Online</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="w-32 h-2 bg-surface-container-low rounded-full overflow-hidden soft-recess">
+<div class="h-full bg-primary" style="width: 88%"></div>
+</div>
+<span class="text-[10px] text-outline mt-1 block">88% Capacity</span>
+</td>
+<td class="px-8 py-6 font-label-caps text-label-caps text-on-surface-variant">2 mins ago</td>
+<td class="px-8 py-6">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-8 py-6 font-body-base text-primary font-medium">FF-4412-K</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="w-2 h-2 rounded-full bg-outline"></span>
+<span class="font-label-caps text-label-caps text-outline">Offline</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="w-32 h-2 bg-surface-container-low rounded-full overflow-hidden soft-recess">
+<div class="h-full bg-error" style="border-radius: 999px; width: 12%"></div>
+</div>
+<span class="text-[10px] text-error mt-1 block">12% - Critical</span>
+</td>
+<td class="px-8 py-6 font-label-caps text-label-caps text-on-surface-variant">14 hours ago</td>
+<td class="px-8 py-6">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-lowest transition-colors">
+<td class="px-8 py-6 font-body-base text-primary font-medium">FF-7723-M</td>
+<td class="px-8 py-6">
+<div class="flex items-center gap-2 text-on-surface">
+<span class="w-2 h-2 rounded-full bg-[#E6E6FA] pulse-lavender"></span>
+<span class="font-label-caps text-label-caps">Online</span>
+</div>
+</td>
+<td class="px-8 py-6">
+<div class="w-32 h-2 bg-surface-container-low rounded-full overflow-hidden soft-recess">
+<div class="h-full bg-primary" style="width: 94%"></div>
+</div>
+<span class="text-[10px] text-outline mt-1 block">94% Capacity</span>
+</td>
+<td class="px-8 py-6 font-label-caps text-label-caps text-on-surface-variant">Just now</td>
+<td class="px-8 py-6">
+<button class="material-symbols-outlined text-outline hover:text-primary transition-colors" data-icon="more_vert">more_vert</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- System Alerts & User Management Split -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<!-- System Alerts -->
+<div class="space-y-gutter">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">System Alerts</h3>
+<button class="text-primary font-label-caps text-label-caps hover:underline">Clear All</button>
+</div>
+<div class="space-y-4">
+<div class="p-6 rounded-lg bg-error-container/20 border-l-4 border-error soft-lift flex gap-4">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-error-container">Critical Battery: Unit FF-4412-K</p>
+<p class="text-sm text-outline mt-1">Device has entered power-save mode. Immediate maintenance recommended.</p>
+</div>
+</div>
+<div class="p-6 rounded-lg bg-surface soft-lift flex gap-4">
+<span class="material-symbols-outlined text-primary" data-icon="info">info</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary">Firmware Update v2.4.1</p>
+<p class="text-sm text-outline mt-1">Global rollout complete for 85% of units. Optimizing air filtration logic.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- User Management -->
+<div class="space-y-gutter">
+<div class="flex justify-between items-center">
+<h3 class="font-headline-md text-headline-md text-primary">User Support</h3>
+<button class="px-6 py-2 rounded-full bg-primary text-white font-label-caps text-label-caps soft-lift active:scale-95 transition-all">Tickets (12)</button>
+</div>
+<div class="rounded-lg bg-surface soft-lift p-4 space-y-4">
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low soft-recess">
+<img alt="User" class="w-10 h-10 rounded-full" data-alt="A profile photo of a smiling female pet owner in a bright, modern living room. She is holding a small cat. The scene is filled with soft natural light and subtle lavender and silk white design elements, creating a sense of serene domestic technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcqeSW16IgaeyqL9r8_gaQhc8FI3FfIxgI69h9zLhFn9NEHPqPxofsbf0wvVhvIn4ZzytMW8qgIoRlqQ_BUmID6jvCj08WGGV_IyLwpjfBD0-MCQT5LoZB-d6T2BXmUl03fT8kJo5_MwyayIXj04dpy0P0l5LYv-qbcIisfHL9XS7PfnGKLLK-hMfsZBHh_hDW5k964Bdgb6WyrHvxtpizJMV7UVOcTIXBsrilA55E-Mkglm7mdvqGeUR4ApneeZN6TUz-RtZWJdRA"/>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface">Sarah J. <span class="text-outline font-normal">• Ticket #882</span></p>
+<p class="text-sm text-on-surface-variant italic truncate">"My habitat sensor is reporting 0% humidity..."</p>
+</div>
+<button class="px-4 py-2 rounded-full bg-surface text-primary border border-primary/20 font-label-caps text-label-caps text-[10px] hover:bg-primary-container transition-colors">Respond</button>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-lg bg-surface-container-low soft-recess">
+<img alt="User" class="w-10 h-10 rounded-full" data-alt="A profile photo of a male pet enthusiast in a clean, minimalist kitchen environment with smart home devices in the background. High-key lighting, soft lavender accents, and a medical-grade, professional vibe." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA1BtK3EVhKI4XbKsaKkV4hiZy1priUotgZrRJUQUglalbeVzBDnNIQE_YcwiMeuj0pjJGcI8dbzHOQvdi_06-aZk1-Q_whc59HqgbCVJGS83w30OqOSsgVaRrQwcpbHYZi4OANiyvuHm8EHQNWGGpA0-2Hh8ziDkr5WRUQNvmPE3zeN-_5XdOmvWt9fBFUX_WWSjjTvGURwuqNLZatpEtk6GUKk_9vamHNCze6ZDdjwKCzp3-jjybSPDgMtZhKFrL2x1uTgT3Xlqd8"/>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface">Marcus T. <span class="text-outline font-normal">• Ticket #881</span></p>
+<p class="text-sm text-on-surface-variant italic truncate">"Scheduling request for firmware roll-back."</p>
+</div>
+<button class="px-4 py-2 rounded-full bg-surface text-primary border border-primary/20 font-label-caps text-label-caps text-[10px] hover:bg-primary-container transition-colors">Respond</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile BottomNavBar (Hidden on desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-4 py-3 bg-surface shadow-[0_-12px_24px_#e0e3e8] z-50 rounded-t-lg">
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-xl px-4 py-2 shadow-[4px_4px_8px_#e0e3e8,-4px_-4px_8px_#ffffff]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px]">Dash</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-low transition-all active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[10px]">Data</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-low transition-all active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-caps text-[10px]">Supply</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant px-4 py-2 hover:bg-surface-container-low transition-all active:scale-90 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-caps text-[10px]">Sched</span>
+</a>
+</nav>
+</body></html>

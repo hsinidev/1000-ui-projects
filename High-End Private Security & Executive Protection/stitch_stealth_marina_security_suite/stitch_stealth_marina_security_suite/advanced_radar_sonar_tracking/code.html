@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AEGIS MARITIME | Tactical Command</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=JetBrains+Mono:wght@300..800&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #111316;
+            color: #e2e2e6;
+            overflow: hidden; /* Nautical station fixed-view feel */
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            background: rgba(26, 28, 31, 0.7);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(71, 234, 237, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .radar-sweep {
+            background: conic-gradient(from 0deg, transparent 80%, rgba(71, 234, 237, 0.2) 100%);
+        }
+        .milled-border {
+            border: 1px solid #3b4949;
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#333538",
+                    "secondary": "#bec8cd",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-primary-container": "#005354",
+                    "surface-dim": "#111316",
+                    "tertiary-container": "#b9b9b9",
+                    "inverse-on-surface": "#2f3034",
+                    "surface-container-low": "#1a1c1f",
+                    "secondary-container": "#414a4f",
+                    "on-secondary": "#293236",
+                    "primary-fixed": "#5af8fb",
+                    "outline": "#859493",
+                    "surface-variant": "#333538",
+                    "outline-variant": "#3b4949",
+                    "on-primary-fixed-variant": "#004f51",
+                    "surface-container-high": "#282a2d",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-error": "#690005",
+                    "on-tertiary-container": "#484a4a",
+                    "on-error-container": "#ffdad6",
+                    "background": "#111316",
+                    "surface-container-lowest": "#0c0e11",
+                    "on-primary": "#003738",
+                    "error-container": "#93000a",
+                    "primary-container": "#00ced1",
+                    "on-surface": "#e2e2e6",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-secondary-fixed": "#141d21",
+                    "error": "#ffb4ab",
+                    "on-secondary-fixed-variant": "#3f484c",
+                    "surface-bright": "#37393d",
+                    "on-primary-fixed": "#002020",
+                    "tertiary": "#d5d5d5",
+                    "surface": "#111316",
+                    "surface-tint": "#2ddbde",
+                    "inverse-surface": "#e2e2e6",
+                    "on-background": "#e2e2e6",
+                    "surface-container": "#1e2023",
+                    "primary-fixed-dim": "#2ddbde",
+                    "on-secondary-container": "#b0babf",
+                    "secondary-fixed": "#dbe4e9",
+                    "on-surface-variant": "#bac9c9",
+                    "inverse-primary": "#00696b",
+                    "on-tertiary": "#2f3131",
+                    "primary": "#47eaed",
+                    "tertiary-fixed": "#e2e2e2",
+                    "secondary-fixed-dim": "#bec8cd"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-max": "1440px",
+                    "margin": "40px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Space Grotesk"],
+                    "data-point": ["JetBrains Mono"],
+                    "body-md": ["Geist"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-xl": ["Space Grotesk"],
+                    "body-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "data-point": ["14px", {"lineHeight": "1.2", "letterSpacing": "0", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar Shell -->
+<header class="flex justify-between items-center w-full px-margin h-16 sticky top-0 z-50 border-b border-outline-variant bg-surface-dim">
+<div class="flex items-center gap-6">
+<span class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">AEGIS MARITIME</span>
+<div class="hidden md:flex gap-4 ml-8">
+<span class="material-symbols-outlined text-primary">search</span>
+<input class="bg-transparent border-none focus:ring-0 font-label-caps text-label-caps text-on-surface-variant w-64 placeholder:text-outline" placeholder="SCAN VECTOR OR VESSEL ID..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center gap-2 px-4 py-2 bg-error-container text-on-error-container font-label-caps text-label-caps rounded-sm hover:opacity-90 transition-opacity">
+<span class="material-symbols-outlined text-[18px]">lock</span>
+                LOCK-DOWN
+            </button>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-highest transition-colors rounded-sm text-on-surface-variant"><span class="material-symbols-outlined">notifications</span></button>
+<button class="p-2 hover:bg-surface-container-highest transition-colors rounded-sm text-on-surface-variant"><span class="material-symbols-outlined">settings</span></button>
+<button class="p-2 hover:bg-surface-container-highest transition-colors rounded-sm text-on-surface-variant"><span class="material-symbols-outlined">account_circle</span></button>
+</div>
+</div>
+</header>
+<!-- Sidebar Shell -->
+<aside class="flex flex-col h-full fixed left-0 top-0 pt-16 w-64 z-40 border-r border-outline-variant bg-surface-container-low">
+<div class="p-6 border-b border-outline-variant mb-4">
+<h2 class="font-headline-lg text-[20px] text-on-surface">AURORA V</h2>
+<p class="font-label-caps text-[10px] text-primary mt-1">Operational Status: Active</p>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<!-- Active Item -->
+<a class="flex items-center gap-3 px-4 py-3 text-primary border-l-2 border-primary bg-secondary-container/20 font-label-caps text-label-caps scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span>Sensor Array</span>
+</a>
+<!-- Inactive Items -->
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Bridge Control</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span>Deck Layout</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">security</span>
+<span>Security Nodes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">history</span>
+<span>System Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:text-primary hover:bg-surface-container-high font-label-caps text-label-caps transition-colors" href="#">
+<span class="material-symbols-outlined">visibility</span>
+<span>Tactical Overlay</span>
+</a>
+</nav>
+<div class="p-4 space-y-4">
+<button class="w-full py-3 bg-primary text-on-primary font-label-caps text-[11px] font-bold tracking-widest border-t-2 border-primary-fixed">DEPLOY SCRAMBLE</button>
+<div class="flex justify-between px-2 text-on-surface-variant font-label-caps text-[10px]">
+<div class="flex items-center gap-1 hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">build</span> Diagnostic
+                </div>
+<div class="flex items-center gap-1 hover:text-primary cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[16px]">vm_group</span> Encryption
+                </div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-64 p-gutter h-[calc(100vh-64px-32px)] overflow-hidden">
+<div class="grid grid-cols-12 grid-rows-12 gap-4 h-full">
+<!-- Central Radar Sweep Panel -->
+<section class="col-span-12 lg:col-span-8 row-span-8 milled-border bg-surface-container relative overflow-hidden">
+<div class="absolute inset-0 scanline opacity-20 pointer-events-none"></div>
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary">LIVE SONAR FEED | RANGE: 25NM</span>
+</div>
+<div class="font-data-point text-data-point text-on-surface-variant uppercase">Lat: 25.1972° | Lon: 55.2744°</div>
+</div>
+<div class="relative w-full h-full flex items-center justify-center p-8">
+<!-- Radar Rings -->
+<div class="absolute border border-primary/20 rounded-full w-[80%] aspect-square"></div>
+<div class="absolute border border-primary/15 rounded-full w-[60%] aspect-square"></div>
+<div class="absolute border border-primary/10 rounded-full w-[40%] aspect-square"></div>
+<div class="absolute border border-primary/5 rounded-full w-[20%] aspect-square"></div>
+<!-- Crosshair -->
+<div class="absolute h-full w-[0.5px] bg-primary/20"></div>
+<div class="absolute w-full h-[0.5px] bg-primary/20"></div>
+<!-- Radar Sweep -->
+<div class="absolute inset-0 radar-sweep opacity-30"></div>
+<!-- Target Markers -->
+<div class="absolute top-[20%] left-[30%] group">
+<div class="w-4 h-4 border-2 border-primary rotate-45 flex items-center justify-center cursor-pointer">
+<div class="w-1 h-1 bg-primary"></div>
+</div>
+<div class="absolute top-6 left-6 bg-surface-container-high/90 border border-outline-variant p-2 w-32 glass-panel">
+<p class="font-label-caps text-[9px] text-primary">ID: AEGIS-772</p>
+<p class="font-label-caps text-[9px] text-on-surface">DIST: 4.2 NM</p>
+</div>
+</div>
+<div class="absolute bottom-[35%] right-[25%]">
+<div class="w-4 h-4 border-2 border-error rotate-45 flex items-center justify-center animate-pulse">
+<span class="material-symbols-outlined text-error text-[12px]">warning</span>
+</div>
+<div class="absolute -top-12 -left-20 bg-surface-container-high/90 border border-error/50 p-2 w-40 glass-panel">
+<p class="font-label-caps text-[9px] text-error font-bold">WARNING: UNIDENTIFIED</p>
+<p class="font-label-caps text-[9px] text-on-surface">SPEED: 32 KTS</p>
+</div>
+</div>
+<!-- Background Detail Map -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-10 mix-blend-overlay pointer-events-none" data-alt="A highly detailed satellite mapping of a coastal region with dark indigo water and gunmetal gray landmasses. The visual style is technical and clinical, with faint grid lines and latitude-longitude markers overlaid in a thin cyan teal color. The atmosphere is professional and mission-critical, resembling a high-end naval tactical display with clean, precise cartography." data-location="Dubai Coast" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClaHs3mxduz6NsspAhRvVl5dZeVbLUBGl3niZ0FRMMvb_yUn27UXgjEhoNUnhsFCCtMoOLMYhvg8PzQpHxZfiXZPe5VRSiu0vbq27L4HTUrQfILjXH7f0JoPFxPMsuUEBM4lFjK0m7go-ZoE3Rt6HhoKoZQ2yrXcx5S4BSuRB7HdRHZC7qEEodt52LWmkUfrPZLfDnX6bM_4Rw9YeXmowkgVApXktPGojYbNjl5LZOph5IFMQBOe2XxbsiWM_y4d5GxZGHnVPpxcU"/>
+</div>
+</section>
+<!-- Target Identification Manifest -->
+<section class="col-span-12 lg:col-span-4 row-span-8 milled-border bg-surface-container-low flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-surface-container">
+<h3 class="font-label-caps text-label-caps text-on-surface">TARGET MANIFEST</h3>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<table class="w-full text-left font-data-point text-[11px]">
+<thead class="sticky top-0 bg-surface-container-low/95 border-b border-outline-variant">
+<tr>
+<th class="p-3 text-primary">VECTOR</th>
+<th class="p-3 text-secondary">BEARING</th>
+<th class="p-3 text-secondary">STATUS</th>
+<th class="p-3 text-secondary">THREAT</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-high transition-colors group">
+<td class="p-3 font-bold text-on-surface">TG-8812</td>
+<td class="p-3 text-on-surface-variant">290° NW</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-primary text-primary text-[9px]">SECURE</span></td>
+<td class="p-3 text-on-surface-variant">LOW</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-3 font-bold text-on-surface">TG-0091</td>
+<td class="p-3 text-on-surface-variant">015° N</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-primary text-primary text-[9px]">SECURE</span></td>
+<td class="p-3 text-on-surface-variant">LOW</td>
+</tr>
+<tr class="bg-error-container/10 hover:bg-error-container/20 transition-colors">
+<td class="p-3 font-bold text-error">TG-X99</td>
+<td class="p-3 text-error">182° S</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-error text-error text-[9px]">ALERT</span></td>
+<td class="p-3 text-error">CRITICAL</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="p-3 font-bold text-on-surface">TG-7721</td>
+<td class="p-3 text-on-surface-variant">044° NE</td>
+<td class="p-3"><span class="px-2 py-0.5 border border-outline text-on-surface-variant text-[9px]">NEUTRAL</span></td>
+<td class="p-3 text-on-surface-variant">MED</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest">
+<button class="w-full py-2 bg-secondary-container text-on-secondary-container font-label-caps text-[10px] hover:bg-primary hover:text-on-primary transition-all uppercase tracking-wider">Expand Full Manifest</button>
+</div>
+</section>
+<!-- Environmental Telemetry (Sea-State) -->
+<section class="col-span-12 lg:col-span-6 row-span-4 milled-border bg-surface-container flex flex-col p-4 relative overflow-hidden">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="font-label-caps text-label-caps text-primary">ENVIRONMENTAL TELEMETRY</h3>
+<p class="font-data-point text-[10px] text-on-surface-variant mt-1">SATELLITE DOWNLINK: STABLE</p>
+</div>
+<span class="material-symbols-outlined text-primary/40">waves</span>
+</div>
+<div class="grid grid-cols-3 gap-4 flex-1">
+<div class="glass-panel p-3 border border-outline-variant/30 flex flex-col justify-center">
+<span class="font-label-caps text-[9px] text-secondary">SEA STATE</span>
+<span class="font-headline-lg text-[24px] text-on-surface">LEVEL 3</span>
+<div class="w-full bg-outline-variant h-[2px] mt-2">
+<div class="bg-primary h-full w-[40%] shadow-[0_0_8px_rgba(71,234,237,0.5)]"></div>
+</div>
+</div>
+<div class="glass-panel p-3 border border-outline-variant/30 flex flex-col justify-center">
+<span class="font-label-caps text-[9px] text-secondary">WIND SPEED</span>
+<span class="font-headline-lg text-[24px] text-on-surface">18 KTS</span>
+<span class="font-data-point text-[10px] text-primary">VECTOR: 220° SW</span>
+</div>
+<div class="glass-panel p-3 border border-outline-variant/30 flex flex-col justify-center">
+<span class="font-label-caps text-[9px] text-secondary">VISIBILITY</span>
+<span class="font-headline-lg text-[24px] text-on-surface">9.2 NM</span>
+<span class="font-data-point text-[10px] text-on-surface-variant">CAVOK: YES</span>
+</div>
+</div>
+<div class="absolute bottom-4 right-4 opacity-10">
+<span class="material-symbols-outlined text-[64px]" style="font-variation-settings: 'FILL' 1;">cloud</span>
+</div>
+</section>
+<!-- Tactical Overlays / Health -->
+<section class="col-span-12 lg:col-span-6 row-span-4 milled-border bg-surface-container-low p-4 grid grid-cols-2 gap-4">
+<div class="flex flex-col space-y-4">
+<h3 class="font-label-caps text-label-caps text-primary">VESSEL DIAGNOSTICS</h3>
+<div class="space-y-3">
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-data-point text-on-surface-variant">
+<span>REACTOR CORE</span>
+<span>94%</span>
+</div>
+<div class="h-1 bg-outline-variant w-full rounded-full">
+<div class="h-full bg-primary w-[94%]"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-data-point text-on-surface-variant">
+<span>HULL INTEGRITY</span>
+<span>100%</span>
+</div>
+<div class="h-1 bg-outline-variant w-full rounded-full">
+<div class="h-full bg-primary w-full"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[10px] font-data-point text-on-surface-variant">
+<span>COMMS ARRAY</span>
+<span>CONNECTED</span>
+</div>
+<div class="h-1 bg-outline-variant w-full rounded-full">
+<div class="h-full bg-primary w-[65%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="relative bg-surface-container p-2 milled-border flex items-center justify-center">
+<div class="absolute inset-0 opacity-5 mix-blend-overlay">
+<img class="w-full h-full object-contain" data-alt="A technical blueprint schematic of a futuristic luxury yacht or naval vessel, rendered in high-contrast cyan lines against a deep charcoal background. The image shows the hull structure and internal deck layouts from a profile view, featuring multiple compartments and sensor nodes highlighted with small glowing dots. The aesthetic is industrial and precise, emphasizing engineering perfection." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbv1uP_E8MCBsyq0i-hhofDk9UIHsj6k5u4CVfvPJjVh2ZIUVdQKmANtDqJnGsLR7tHe78MiEr8iiYCPFm07CAKIyBsBqPNTy9ycLtaESgAGAiskM6tgrFn_xiKQaun_BHlKA_OPXXjTDmFVx4o4kQkwMgWPmTbmVF8QmV0lQ4bvfRn3X_Vlh2g-xdUGWpO4Uw5dyRD1Yz7gBEttrB_3jsC8bhG9hkzEc0K3YXEQT4TCE8L9sNeC8M7xCpt_Fft0CkckD5PnpWOJ8"/>
+</div>
+<div class="z-10 text-center">
+<span class="font-label-caps text-[10px] text-on-surface-variant">SYSTEMS STATUS</span>
+<div class="font-headline-lg text-[20px] text-primary tracking-widest mt-1">OPTIMAL</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Footer Shell -->
+<footer class="fixed bottom-0 left-0 w-full px-margin py-1 flex justify-between items-center z-50 border-t border-outline-variant bg-surface-container-lowest">
+<span class="font-data-point text-[10px] text-on-surface-variant uppercase tracking-widest">© 2024 AEGIS MARITIME SYSTEMS | ENCRYPTED LINK</span>
+<div class="flex gap-6">
+<span class="font-data-point text-[10px] text-secondary uppercase tracking-widest">N 25.1972° E 55.2744°</span>
+<span class="font-data-point text-[10px] text-tertiary uppercase tracking-widest">SYSTEM HEALTH: 99.8%</span>
+<span class="font-data-point text-[10px] text-secondary uppercase tracking-widest">UPLINK: SECURE</span>
+</div>
+</footer>
+</body></html>

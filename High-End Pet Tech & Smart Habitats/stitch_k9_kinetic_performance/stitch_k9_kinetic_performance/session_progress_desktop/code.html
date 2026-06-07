@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>K9 KINETIC | SESSION TELEMETRY</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Anybody:ital,wght@0,700;0,800;1,700;1,800&amp;family=Inter:wght@400;700&amp;family=JetBrains+Mono:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            background-image: radial-gradient(circle at 2px 2px, rgba(255, 180, 168, 0.05) 1px, transparent 0);
+            background-size: 24px 24px;
+        }
+        .carbon-texture {
+            background: linear-gradient(45deg, #1a1a1a 25%, #131313 25%, #131313 50%, #1a1a1a 50%, #1a1a1a 75%, #131313 75%, #131313 100%);
+            background-size: 4px 4px;
+        }
+        .racing-cut {
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+        }
+        .tachometer-ring {
+            background: conic-gradient(from 180deg, #ff5540 0deg, #ff5540 240deg, #353535 240deg);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#353535",
+                      "outline": "#b18780",
+                      "primary-fixed": "#ffdad4",
+                      "on-secondary": "#2f3131",
+                      "surface-container-low": "#1c1b1b",
+                      "secondary-container": "#454747",
+                      "inverse-on-surface": "#313030",
+                      "tertiary-container": "#929090",
+                      "surface-dim": "#131313",
+                      "on-primary-container": "#5c0000",
+                      "tertiary-fixed-dim": "#c8c6c6",
+                      "secondary": "#c6c6c7",
+                      "surface-container-highest": "#353535",
+                      "on-surface": "#e5e2e1",
+                      "primary-container": "#ff5540",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary": "#690100",
+                      "error-container": "#93000a",
+                      "on-tertiary-container": "#2a2a2a",
+                      "on-error-container": "#ffdad6",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "surface-container-high": "#2a2a2a",
+                      "on-primary-fixed-variant": "#930100",
+                      "outline-variant": "#603e39",
+                      "on-background": "#e5e2e1",
+                      "inverse-surface": "#e5e2e1",
+                      "surface-tint": "#ffb4a8",
+                      "surface": "#131313",
+                      "tertiary": "#c8c6c6",
+                      "surface-bright": "#393939",
+                      "on-primary-fixed": "#410000",
+                      "on-secondary-fixed-variant": "#454747",
+                      "error": "#ffb4ab",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-tertiary-fixed": "#1b1c1c",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "tertiary-fixed": "#e4e2e1",
+                      "primary": "#ffb4a8",
+                      "on-tertiary": "#303030",
+                      "inverse-primary": "#c00100",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-surface-variant": "#ebbbb4",
+                      "on-secondary-container": "#b4b5b5",
+                      "primary-fixed-dim": "#ffb4a8",
+                      "surface-container": "#20201f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin": "24px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "container-max": "1280px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Anybody"],
+                      "headline-xl": ["Anybody"],
+                      "body-lg": ["Inter"],
+                      "label-caps": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="bg-surface border-b border-outline-variant w-full top-0 sticky z-50">
+<div class="flex justify-between items-center px-margin py-4 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-headline-lg" data-icon="speed">speed</span>
+<h1 class="font-headline-lg text-headline-lg uppercase italic font-black italic tracking-tighter text-primary">K9 KINETIC</h1>
+</div>
+<!-- Desktop Nav Cluster -->
+<nav class="hidden md:flex items-center gap-8">
+<a class="flex flex-col items-center justify-center text-primary font-bold font-label-caps text-label-caps uppercase italic hover:opacity-80 active:scale-95 transition-all" href="#">
+                    Progress
+                </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 font-label-caps text-label-caps uppercase italic hover:opacity-80 active:scale-95 transition-all" href="#">
+                    Recovery
+                </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 font-label-caps text-label-caps uppercase italic hover:opacity-80 active:scale-95 transition-all" href="#">
+                    Capture
+                </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 font-label-caps text-label-caps uppercase italic hover:opacity-80 active:scale-95 transition-all" href="#">
+                    Muscle
+                </a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 font-label-caps text-label-caps uppercase italic hover:opacity-80 active:scale-95 transition-all" href="#">
+                    Booking
+                </a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface hover:opacity-80 transition-opacity" data-icon="account_circle">account_circle</button>
+</div>
+</div>
+</header>
+<main class="max-w-container-max mx-auto px-margin py-8">
+<!-- Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Left Column: Live Gauges & Quick Stats -->
+<div class="col-span-12 lg:col-span-3 space-y-8">
+<div class="carbon-texture border border-outline-variant p-6 racing-cut">
+<h2 class="font-label-caps text-label-caps text-tertiary mb-6 uppercase">Real-Time Output</h2>
+<div class="flex flex-col items-center space-y-6">
+<!-- Tachometer Style Gauge -->
+<div class="relative w-48 h-48 rounded-full border-8 border-surface-container flex items-center justify-center tachometer-ring">
+<div class="absolute inset-2 bg-background rounded-full flex flex-col items-center justify-center">
+<span class="font-headline-xl text-primary italic">24.8</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">KM/H</span>
+</div>
+</div>
+<div class="w-full space-y-4">
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">HEART RATE</span>
+<span class="font-label-caps text-label-caps text-primary">164 BPM</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">RESISTANCE</span>
+<span class="font-label-caps text-label-caps text-primary">LEVEL 8</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant pb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">CADENCE</span>
+<span class="font-label-caps text-label-caps text-primary">82 RPM</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Session Meta -->
+<div class="bg-surface-container border border-outline-variant p-6">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Session Parameters</h3>
+<div class="space-y-4">
+<div class="bg-surface-container-low p-4 border-l-4 border-primary">
+<p class="font-label-caps text-label-caps text-tertiary">CURRENT DOG</p>
+<p class="font-headline-lg text-on-surface italic uppercase">Apollo-01</p>
+</div>
+<div class="bg-surface-container-low p-4 border-l-4 border-outline">
+<p class="font-label-caps text-label-caps text-tertiary">PROGRAM</p>
+<p class="font-headline-lg text-on-surface italic uppercase">Hypertrophy B</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Middle Column: Main Analytics -->
+<div class="col-span-12 lg:col-span-6 space-y-8">
+<!-- Large Comparison Chart -->
+<div class="carbon-texture border border-outline-variant p-8 relative overflow-hidden">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-lg text-on-surface uppercase italic">Performance Delta</h2>
+<p class="font-label-caps text-label-caps text-primary">PROGRESS VS. HISTORICAL AVERAGE</p>
+</div>
+<div class="flex gap-2">
+<span class="bg-primary px-3 py-1 font-label-caps text-label-caps text-on-primary italic">SESSION</span>
+<span class="bg-surface-variant px-3 py-1 font-label-caps text-label-caps text-on-surface italic">BASELINE</span>
+</div>
+</div>
+<!-- SVG Chart Mockup -->
+<div class="h-64 w-full relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 1000 200">
+<!-- Grid Lines -->
+<line stroke="#353535" stroke-width="1" x1="0" x2="1000" y1="50" y2="50"></line>
+<line stroke="#353535" stroke-width="1" x1="0" x2="1000" y1="100" y2="100"></line>
+<line stroke="#353535" stroke-width="1" x1="0" x2="1000" y1="150" y2="150"></line>
+<!-- Baseline Path -->
+<path d="M0,120 Q250,110 500,130 T1000,100" fill="none" stroke="#353535" stroke-dasharray="8,4" stroke-width="4"></path>
+<!-- Performance Path -->
+<path d="M0,150 Q250,80 500,100 T1000,40" fill="none" stroke="#ff5540" stroke-width="4"></path>
+<!-- Highlight Point -->
+<circle cx="1000" cy="40" fill="#ff5540" r="6"></circle>
+</svg>
+<!-- HUD Overlay Text -->
+<div class="absolute top-0 right-0 p-4 text-right">
+<span class="font-label-caps text-[48px] text-primary italic leading-none">+14.2%</span>
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Efficiency Peak</p>
+</div>
+</div>
+</div>
+<!-- Secondary Graphs -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="bg-surface-container border border-outline-variant p-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Torque Recovery</h4>
+<div class="h-24 w-full bg-surface-container-lowest flex items-end gap-1 px-2 pb-2">
+<div class="w-full bg-primary-container h-1/2"></div>
+<div class="w-full bg-primary-container h-2/3"></div>
+<div class="w-full bg-primary-container h-3/4"></div>
+<div class="w-full bg-primary-container h-1/2"></div>
+<div class="w-full bg-primary-container h-5/6"></div>
+<div class="w-full bg-primary-container h-full"></div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-4">
+<h4 class="font-label-caps text-label-caps text-on-surface-variant mb-4 uppercase">Gait Stability</h4>
+<div class="h-24 w-full bg-surface-container-lowest flex items-center justify-center relative overflow-hidden">
+<div class="absolute inset-0 border border-primary opacity-20 scale-90"></div>
+<div class="w-16 h-16 rounded-full border-2 border-primary border-dashed animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary">OPTIMAL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Video & Feed -->
+<div class="col-span-12 lg:col-span-3 space-y-8">
+<!-- Video Review Panel -->
+<div class="carbon-texture border border-outline-variant racing-cut overflow-hidden">
+<div class="relative aspect-video group">
+<img class="w-full h-full object-cover grayscale opacity-80" data-alt="A powerful German Shepherd dog running at high intensity on a professional canine treadmill in a dark, tech-focused training facility. High-speed shutter effects capture the motion of the dog's muscles. The lighting is dramatic and cinematic, with strong red accents from the equipment's digital displays reflecting on the dog's coat and the carbon fiber walls of the training room." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDk0SjrCgR06h21-rv9_RUrW2e8iVgcJnygf7x7z-PVq27ndV_g1nVYa5P1n6UB9El5pogSOCwy6ioHJ2Zqpjzj0qQ4G0HzTfH8MSMmXjAJ80FA_E1R6QJFGuW6CL7d7A_9StRWmTH-6YhkB_FoZdWZ4MfK8tKRSm_FkDo6G99Joq7i7CDUbLpWCkJWNP4-NOpmykFkvab7x-oj8jxbHnp3QimDWxWRZLTQVu0IROUoUlqcjMu3dIofMQvZhDvVLAY494pzPvwlyGA"/>
+<div class="absolute inset-0 bg-black/40 flex items-center justify-center">
+<button class="w-16 h-16 bg-primary flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-on-primary text-3xl" data-icon="play_arrow" data-weight="fill">play_arrow</span>
+</button>
+</div>
+<div class="absolute top-2 left-2 bg-error px-2 py-0.5 font-label-caps text-[10px] text-on-error flex items-center gap-1">
+<span class="w-2 h-2 rounded-full bg-on-error animate-pulse"></span> REC 00:14:22
+                        </div>
+</div>
+<div class="p-4 bg-surface-container">
+<div class="flex justify-between items-center mb-2">
+<span class="font-label-caps text-label-caps text-on-surface-variant">LENS: REAR QUARTER</span>
+<span class="font-label-caps text-label-caps text-primary">60 FPS</span>
+</div>
+<div class="grid grid-cols-4 gap-1">
+<div class="h-1 bg-primary"></div>
+<div class="h-1 bg-primary"></div>
+<div class="h-1 bg-surface-variant"></div>
+<div class="h-1 bg-surface-variant"></div>
+</div>
+</div>
+</div>
+<!-- Session Journal -->
+<div class="bg-surface-container border border-outline-variant p-4">
+<h3 class="font-label-caps text-label-caps text-tertiary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span> EVENT LOG
+                    </h3>
+<div class="space-y-4 max-h-64 overflow-y-auto pr-2 custom-scrollbar">
+<div class="border-l border-primary pl-3 py-1">
+<p class="text-[10px] font-label-caps text-primary">14:02:11</p>
+<p class="text-sm font-body-md text-on-surface">Target velocity reached (24km/h)</p>
+</div>
+<div class="border-l border-outline-variant pl-3 py-1">
+<p class="text-[10px] font-label-caps text-on-surface-variant">13:58:45</p>
+<p class="text-sm font-body-md text-on-surface">Resistance adjusted to L8</p>
+</div>
+<div class="border-l border-outline-variant pl-3 py-1">
+<p class="text-[10px] font-label-caps text-on-surface-variant">13:55:00</p>
+<p class="text-sm font-body-md text-on-surface">Warm-up phase completed</p>
+</div>
+</div>
+</div>
+<!-- Primary Action -->
+<button class="w-full bg-primary text-on-primary font-headline-lg py-4 racing-cut hover:bg-primary-container transition-colors uppercase italic active:scale-95">
+                    End Session
+                </button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Visible only on mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-end pb-4 pt-2 px-2 bg-surface-container border-t border-outline-variant shadow-lg">
+<a class="flex flex-col items-center justify-center text-primary font-bold" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-label-caps text-[10px] uppercase italic">Progress</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-[10px] uppercase italic">Recovery</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="add_a_photo">add_a_photo</span>
+<span class="font-label-caps text-[10px] uppercase italic">Capture</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="straighten">straighten</span>
+<span class="font-label-caps text-[10px] uppercase italic">Muscle</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_month">calendar_month</span>
+<span class="font-label-caps text-[10px] uppercase italic">Booking</span>
+</a>
+</nav>
+<!-- Subtle Scanline Effect -->
+<div class="fixed inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.25)_50%),linear-gradient(90deg,rgba(255,0,0,0.06),rgba(0,255,0,0.02),rgba(0,0,255,0.06))] bg-[length:100%_2px,3px_100%]"></div>
+</body></html>

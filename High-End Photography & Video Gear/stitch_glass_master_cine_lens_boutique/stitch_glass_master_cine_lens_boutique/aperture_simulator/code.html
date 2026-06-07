@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GLASS-MASTER | APERTURE SIMULATOR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container-lowest": "#0e0e0e",
+                        "tertiary-fixed-dim": "#00dddd",
+                        "primary": "#c8c6c5",
+                        "outline-variant": "#444748",
+                        "on-background": "#e5e2e1",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "secondary": "#c6c6c6",
+                        "on-tertiary-container": "#009292",
+                        "tertiary-fixed": "#00fbfb",
+                        "background": "#141313",
+                        "on-error-container": "#ffdad6",
+                        "inverse-on-surface": "#313030",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "surface-container-low": "#1c1b1b",
+                        "error-container": "#93000a",
+                        "on-primary-fixed-variant": "#474746",
+                        "surface-tint": "#c8c6c5",
+                        "surface-bright": "#3a3939",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#004f4f",
+                        "secondary-container": "#484949",
+                        "surface-variant": "#353434",
+                        "tertiary-container": "#001e1e",
+                        "on-tertiary": "#003737",
+                        "error": "#ffb4ab",
+                        "on-primary-container": "#848282",
+                        "outline": "#8e9192",
+                        "tertiary": "#00dddd",
+                        "on-secondary-container": "#b8b8b8",
+                        "surface-container-high": "#2b2a2a",
+                        "on-error": "#690005",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-tertiary-fixed": "#002020",
+                        "on-secondary": "#2f3131",
+                        "on-primary": "#313030",
+                        "on-surface": "#e5e2e1",
+                        "on-surface-variant": "#c4c7c7",
+                        "surface-container-highest": "#353434",
+                        "surface-container": "#201f1f",
+                        "surface": "#141313",
+                        "on-primary-fixed": "#1c1b1b",
+                        "inverse-primary": "#5f5e5e",
+                        "primary-container": "#1a1a1a",
+                        "surface-dim": "#141313",
+                        "primary-fixed": "#e5e2e1"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "margin-edge": "40px",
+                        "precision-unit": "4px",
+                        "stack-lg": "32px",
+                        "gutter": "24px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-main": ["Inter"],
+                        "spec-data": ["Inter"],
+                        "label-mono": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "spec-data": ["14px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "label-mono": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "500"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(20, 19, 19, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid #c8c6c5;
+        }
+        .silver-stroke { border: 1px solid #c8c6c5; }
+        .cyan-glow { box-shadow: 0 0 15px rgba(0, 221, 221, 0.3); }
+        .iris-blade { transform-origin: center; transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+        input[type=range]::-webkit-slider-runnable-track { background: #444748; height: 2px; }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            background: #00dddd;
+            margin-top: -7px;
+            border-radius: 0;
+            box-shadow: 0 0 10px #00dddd;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-main selection:bg-tertiary selection:text-on-tertiary overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-edge h-20 bg-surface/80 dark:bg-surface/80 backdrop-blur-xl border-b border-outline">
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-tertiary text-h2" style="font-variation-settings: 'FILL' 1;">lens_blur</span>
+<h1 class="font-h2 text-h2 tracking-widest text-primary dark:text-primary">GLASS-MASTER</h1>
+</div>
+<div class="hidden md:flex items-center gap-gutter font-label-mono text-label-mono">
+<a class="text-tertiary font-bold border-b-2 border-tertiary transition-all" href="#">Aperture Tool</a>
+<a class="text-on-surface-variant font-medium hover:text-tertiary transition-colors duration-300" href="#">Lens Series</a>
+<a class="text-on-surface-variant font-medium hover:text-tertiary transition-colors duration-300" href="#">Technical Specs</a>
+</div>
+<button class="bg-transparent border border-primary px-6 py-2 font-label-mono text-label-mono text-tertiary hover:bg-tertiary hover:text-on-tertiary transition-all duration-300">
+            PL-MOUNT ACTIVE
+        </button>
+</header>
+<!-- NavigationDrawer -->
+<aside class="fixed left-0 top-0 h-full z-40 flex flex-col pt-24 hidden lg:flex bg-surface-container-highest/90 dark:bg-surface-container-highest/90 backdrop-blur-2xl w-80 border-r border-outline">
+<div class="px-6 mb-stack-lg">
+<p class="font-label-mono text-label-mono text-primary uppercase opacity-60">Optical Authority</p>
+</div>
+<nav class="flex flex-col">
+<a class="text-on-surface hover:bg-surface-variant/50 px-6 py-4 flex items-center gap-4 hover:text-tertiary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">camera_roll</span>
+<span class="font-label-mono text-label-mono uppercase">Lens Series</span>
+</a>
+<a class="text-on-surface hover:bg-surface-variant/50 px-6 py-4 flex items-center gap-4 hover:text-tertiary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">blur_on</span>
+<span class="font-label-mono text-label-mono uppercase">Bokeh Gallery</span>
+</a>
+<a class="text-on-surface hover:bg-surface-variant/50 px-6 py-4 flex items-center gap-4 hover:text-tertiary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">settings_input_component</span>
+<span class="font-label-mono text-label-mono uppercase">Technical Specs</span>
+</a>
+<a class="text-on-surface hover:bg-surface-variant/50 px-6 py-4 flex items-center gap-4 hover:text-tertiary transition-all duration-200" href="#">
+<span class="material-symbols-outlined">distance</span>
+<span class="font-label-mono text-label-mono uppercase">Rental Partners</span>
+</a>
+<a class="bg-tertiary text-on-tertiary rounded-none border-l-4 border-primary px-6 py-4 flex items-center gap-4 translate-x-2 transition-transform" href="#">
+<span class="material-symbols-outlined">adjust</span>
+<span class="font-label-mono text-label-mono uppercase">Aperture Tool</span>
+</a>
+</nav>
+</aside>
+<main class="lg:ml-80 pt-24 min-h-screen px-margin-edge pb-stack-lg">
+<!-- Hero Section / Title -->
+<div class="mb-stack-lg border-l-2 border-tertiary pl-gutter py-2">
+<h2 class="font-h1 text-h1 text-on-background">APERTURE SIMULATOR</h2>
+<p class="font-body-main text-body-main text-on-surface-variant max-w-2xl">Precision calibration of the 14-blade iris mechanism. Observe diffraction patterns and bokeh geometry across the T-stop range.</p>
+</div>
+<!-- Simulator Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Module 1: The Iris Visualizer -->
+<div class="col-span-12 lg:col-span-8 aspect-square lg:aspect-video glass-panel relative flex items-center justify-center overflow-hidden">
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(circle at 2px 2px, #c8c6c5 1px, transparent 0); background-size: 24px 24px;"></div>
+<!-- Simulated Iris -->
+<div class="relative w-64 h-64 md:w-96 md:h-96 rounded-full border border-primary/20 flex items-center justify-center">
+<div class="absolute inset-0 rounded-full border-4 border-primary opacity-20 scale-110"></div>
+<!-- Central Iris Hole -->
+<div class="w-32 h-32 md:w-48 md:h-48 bg-background rounded-full relative overflow-hidden flex items-center justify-center">
+<svg class="w-full h-full text-tertiary/20" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="48" stroke="currentColor" stroke-dasharray="2 2" stroke-width="0.5"></circle>
+<!-- Blades Representation (Visual Only) -->
+<polygon class="opacity-40" fill="none" points="50,2 65,30 95,35 75,55 80,85 50,70 20,85 25,55 5,35 35,30" stroke="#00dddd" stroke-width="0.5"></polygon>
+</svg>
+<!-- Interactive Aperture Diameter -->
+<div class="absolute w-24 h-24 md:w-36 md:h-36 border border-tertiary cyan-glow rounded-full"></div>
+</div>
+<!-- Optical Labeling -->
+<div class="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-6 font-label-mono text-[10px] text-tertiary tracking-[0.2em]">IRIS DIAMETER: 38.2mm</div>
+</div>
+<!-- Simulation Info Overlay -->
+<div class="absolute bottom-6 left-6 flex gap-gutter">
+<div class="flex flex-col">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Status</span>
+<span class="flex items-center gap-2 text-tertiary font-spec-data text-spec-data">
+<span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span> CALIBRATED
+                        </span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-mono text-[10px] text-on-surface-variant uppercase">Blade Count</span>
+<span class="text-on-surface font-spec-data text-spec-data">14 ELEMENTS</span>
+</div>
+</div>
+</div>
+<!-- Module 2: Control Panel -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<div class="glass-panel p-6 flex flex-col justify-between h-full">
+<div>
+<h3 class="font-h2 text-[20px] mb-stack-md text-primary tracking-wide">PARAMETER CONTROL</h3>
+<div class="space-y-stack-lg">
+<!-- Aperture Slider -->
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">T-Stop Value</label>
+<span class="font-h2 text-tertiary">T1.5</span>
+</div>
+<input class="w-full h-1 bg-outline-variant appearance-none cursor-pointer" max="22" min="1.5" step="0.1" type="range" value="1.5"/>
+<div class="flex justify-between font-label-mono text-[10px] text-on-surface-variant">
+<span>T1.5</span>
+<span>T2.8</span>
+<span>T5.6</span>
+<span>T11</span>
+<span>T22</span>
+</div>
+</div>
+<!-- Blade Geometry Toggle -->
+<div class="space-y-4">
+<label class="font-label-mono text-label-mono uppercase text-on-surface-variant">Iris Profile</label>
+<div class="grid grid-cols-2 gap-2">
+<button class="silver-stroke p-3 font-label-mono text-label-mono text-tertiary bg-tertiary/10 border-tertiary">CIRCULAR</button>
+<button class="silver-stroke p-3 font-label-mono text-label-mono text-on-surface-variant hover:text-tertiary transition-all">POLYGONAL</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-lg border-t border-outline/30">
+<button class="w-full bg-transparent border border-tertiary py-4 font-label-mono text-label-mono text-tertiary hover:bg-tertiary hover:text-on-tertiary transition-all uppercase tracking-widest">
+                            Export Optical Map
+                        </button>
+</div>
+</div>
+</div>
+<!-- Module 3: Bokeh Preview -->
+<div class="col-span-12 md:col-span-6 lg:col-span-4 glass-panel overflow-hidden group">
+<div class="p-4 border-b border-outline/30 flex justify-between items-center">
+<span class="font-label-mono text-label-mono text-on-surface-variant uppercase">Bokeh Representation</span>
+<span class="material-symbols-outlined text-tertiary text-sm">visibility</span>
+</div>
+<div class="relative h-64 bg-surface-container-lowest">
+<img alt="Cinematic background" class="w-full h-full object-cover blur-xl opacity-40" data-alt="A highly stylized cinematic bokeh background with soft, glowing orbs of light in deep charcoal and laser-cyan tones. The lighting is moody and low-key, simulating a high-end cinema lens wide open at T1.5. Geometric 14-blade iris shapes are subtly visible in the out-of-focus highlights, creating a technical and premium optical aesthetic consistent with Glass-Master branding." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjVB-mjP1E77c5M6EUG8nwvzapkwBcZohhEtzIInFpJDKSOB1WGsWG5YGXHM-O7OziBTcVvJnUBDcz-cRdcrmHTXFAup04xaCJNWHjpucqCsGZhjKnNMVEsOpqKNKy2IDUdsH1Ik877pEipOZF00sSYh8A1A5MKc09eBDVJXctKMibEoyxG5ps8yWE7byJwD1LqlQPywyu0i_l2SC5y_1hp_JacL1ni9EHlgZUk0hN9U66Bd8nqm2qM89uQh_fYnJdftRezewVOQH9"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-32 h-32 border border-tertiary/40 rounded-full flex items-center justify-center">
+<div class="w-24 h-24 border border-tertiary/60 rounded-full flex items-center justify-center">
+<div class="w-16 h-16 border border-tertiary rounded-full cyan-glow"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Module 4: Technical Specs Grid -->
+<div class="col-span-12 md:col-span-6 lg:col-span-8 glass-panel p-6">
+<div class="flex justify-between items-center mb-6">
+<h3 class="font-h2 text-[20px] text-primary uppercase">Optical Metrics</h3>
+<span class="font-label-mono text-[10px] text-tertiary">REAL-TIME DATA STREAM</span>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<div class="space-y-2">
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Light Transmission</p>
+<p class="font-spec-data text-h2 text-on-surface">98.4%</p>
+</div>
+<div class="space-y-2">
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Diffraction Limit</p>
+<p class="font-spec-data text-h2 text-on-surface">f/16.2</p>
+</div>
+<div class="space-y-2">
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Exit Pupil Pos.</p>
+<p class="font-spec-data text-h2 text-on-surface">142mm</p>
+</div>
+<div class="space-y-2">
+<p class="font-label-mono text-[10px] text-on-surface-variant uppercase">Curvature</p>
+<p class="font-spec-data text-h2 text-on-surface">Spherical</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="w-full py-stack-lg px-margin-edge flex flex-col md:flex-row justify-between items-center gap-gutter bg-surface dark:bg-surface border-t border-outline">
+<div class="flex flex-col gap-2">
+<h2 class="font-h2 text-h2 text-primary">GLASS-MASTER</h2>
+<p class="font-label-mono text-label-mono text-on-surface-variant">©2024 GLASS-MASTER OPTICS. PRECISION ENGINEERED.</p>
+</div>
+<div class="flex flex-wrap justify-center gap-gutter font-label-mono text-label-mono">
+<a class="text-on-surface-variant hover:text-primary underline underline-offset-4 transition-all" href="#">Privacy Protocol</a>
+<a class="text-on-surface-variant hover:text-primary underline underline-offset-4 transition-all" href="#">Maintenance</a>
+<a class="text-on-surface-variant hover:text-primary underline underline-offset-4 transition-all" href="#">Dealer Portal</a>
+<a class="text-on-surface-variant hover:text-primary underline underline-offset-4 transition-all" href="#">Global Support</a>
+</div>
+</footer>
+<!-- Focus-Pull Background Gradient -->
+<div class="fixed inset-0 pointer-events-none -z-10 bg-[radial-gradient(circle_at_50%_-20%,#313030,transparent)] opacity-50"></div>
+</body></html>

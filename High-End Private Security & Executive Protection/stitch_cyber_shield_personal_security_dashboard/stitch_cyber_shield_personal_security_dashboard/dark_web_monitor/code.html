@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cyber-Shield | Data Leak Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;family=Metropolis:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e5e2e1",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-primary-fixed-variant": "#00530e",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#002203",
+                        "surface-bright": "#393939",
+                        "secondary": "#c6c6c7",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "outline": "#84967e",
+                        "surface-variant": "#353534",
+                        "error": "#ffb4ab",
+                        "tertiary": "#fcf8f8",
+                        "on-tertiary": "#313030",
+                        "primary": "#ebffe2",
+                        "inverse-on-surface": "#313030",
+                        "inverse-primary": "#006e16",
+                        "background": "#131313",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary-fixed-dim": "#00e639",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "outline-variant": "#3b4b37",
+                        "on-primary-container": "#007117",
+                        "on-primary": "#003907",
+                        "primary-fixed": "#72ff70",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container": "#201f1f",
+                        "error-container": "#93000a",
+                        "on-secondary": "#2f3131",
+                        "surface": "#131313",
+                        "surface-container-highest": "#353534",
+                        "tertiary-container": "#dfdcdb",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary-container": "#626060",
+                        "on-surface": "#e5e2e1",
+                        "secondary-container": "#454747",
+                        "primary-fixed-dim": "#00e639",
+                        "primary-fixed": "#72ff70",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-tertiary-fixed": "#1c1b1b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "section-gap": "80px",
+                        "gutter": "24px",
+                        "margin-edge": "40px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Metropolis", "sans-serif"],
+                        "caption-sm": ["Inter", "sans-serif"],
+                        "label-mono": ["JetBrains Mono", "monospace"],
+                        "body-lg": ["Inter", "sans-serif"],
+                        "display-xl": ["Metropolis", "sans-serif"],
+                        "headline-lg": ["Metropolis", "sans-serif"],
+                        "body-md": ["Inter", "sans-serif"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "caption-sm": ["12px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                        "label-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+        }
+        .glass-card {
+            background: rgba(18, 18, 18, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(132, 150, 126, 0.2);
+        }
+        .inner-glow-top {
+            box-shadow: inset 0px 1px 2px rgba(255, 255, 255, 0.1);
+        }
+        .neon-glow {
+            box-shadow: 0px 0px 12px rgba(0, 230, 57, 0.15);
+        }
+        .neon-glow-active {
+            box-shadow: 0px 0px 12px rgba(0, 230, 57, 0.4);
+        }
+        .scan-line {
+            background: linear-gradient(90deg, transparent, #00e639, transparent);
+            height: 2px;
+            width: 100%;
+        }
+        .pulse {
+            animation: pulse-animation 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse-animation {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.1); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full bg-background/70 backdrop-blur-xl border-b border-outline-variant/30 flex justify-between items-center px-gutter py-4 z-50 inner-glow-top">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed text-headline-md" data-icon="shield">shield</span>
+<h1 class="font-display-xl text-headline-md tracking-widest text-primary-fixed">CYBER-SHIELD</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 mr-8">
+<a class="font-label-mono text-caption-sm uppercase text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300" href="#">Vault</a>
+<a class="font-label-mono text-caption-sm uppercase text-primary-fixed" href="#">Monitor</a>
+<a class="font-label-mono text-caption-sm uppercase text-on-surface-variant hover:text-primary-fixed-dim transition-colors duration-300" href="#">Network</a>
+</div>
+<div class="h-10 w-10 rounded-full border border-outline-variant overflow-hidden">
+<img alt="HNWI user profile" data-alt="Close up studio portrait of a sophisticated high-net-worth male user in a sharp charcoal suit with a neutral expression. The lighting is low-key with subtle green ambient highlights on the side of his face, matching the military-grade cyber-security aesthetic. The background is a deep, textured black void suggesting privacy and exclusivity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUTjiqho-ZemgEeyB7Gx5vmBJNmY_pCWmA6p6IKLu1VzZS4Sb4f_7XuWUYHnz-fG685lAqBuHTQ-2YYf0oFtv9SF-zIncHkz5a0Rk85l9mwEdV9cXaP_witpIhib1trmvjIHW-DReqJUi0wsRgRIY-BLQegYvDyIoYmoEDYMqQSrMhfoEwS_dQmsCAgVHXJdN0JIUlN6Ij30OgxBuBrTwyKEiJREHlAU5byd74NqxCJ7X7QWYfKUBSAeeAN9o01qispchsOzE6f-M5"/>
+</div>
+</div>
+</header>
+<main class="pt-24 pb-32 px-gutter max-w-container-max mx-auto">
+<!-- Deep Web Scanning Hero -->
+<section class="mb-section-gap">
+<div class="glass-card rounded-xl p-8 relative overflow-hidden flex flex-col md:flex-row items-center gap-12 inner-glow-top">
+<div class="relative w-64 h-64 flex items-center justify-center">
+<!-- Circular Radar Visualization -->
+<div class="absolute inset-0 border border-primary-fixed-dim/20 rounded-full"></div>
+<div class="absolute inset-4 border border-primary-fixed-dim/10 rounded-full"></div>
+<div class="absolute inset-12 border border-primary-fixed-dim/5 rounded-full"></div>
+<div class="absolute w-1 h-32 bg-gradient-to-t from-primary-fixed-dim to-transparent origin-bottom -translate-y-16 rotate-45"></div>
+<div class="text-primary-fixed-dim flex flex-col items-center">
+<span class="material-symbols-outlined text-4xl pulse" data-icon="travel_explore">travel_explore</span>
+<span class="font-label-mono text-caption-sm mt-2">ACTIVE SCAN</span>
+</div>
+</div>
+<div class="flex-1 space-y-6">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary-fixed mb-2">Deep Web Reconnaissance</h2>
+<p class="text-on-surface-variant max-w-2xl">Continuous 24/7 scanning of illicit forums, paste sites, and encrypted chat channels. Our proprietary algorithms identify compromised personal data before it can be weaponized against your digital sovereign identity.</p>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant/30">
+<p class="font-label-mono text-caption-sm text-on-surface-variant uppercase mb-1">Index Coverage</p>
+<p class="font-headline-md text-headline-md">4.2 PB</p>
+</div>
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant/30">
+<p class="font-label-mono text-caption-sm text-on-surface-variant uppercase mb-1">Last Scan</p>
+<p class="font-headline-md text-headline-md">3m Ago</p>
+</div>
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant/30">
+<p class="font-label-mono text-caption-sm text-on-surface-variant uppercase mb-1">Threat Level</p>
+<p class="font-headline-md text-headline-md text-error">Elevated</p>
+</div>
+<div class="bg-surface-container p-4 rounded-lg border border-outline-variant/30">
+<p class="font-label-mono text-caption-sm text-on-surface-variant uppercase mb-1">Nodes Active</p>
+<p class="font-headline-md text-headline-md text-primary-fixed-dim">1,024</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Monitored Identities Section -->
+<section class="mb-section-gap">
+<div class="flex justify-between items-end mb-8">
+<div>
+<p class="font-label-mono text-primary-fixed-dim uppercase text-caption-sm tracking-widest mb-2">Asset Inventory</p>
+<h3 class="font-headline-lg text-headline-lg">Monitored Identities</h3>
+</div>
+<button class="border border-on-surface/30 px-6 py-2 rounded font-label-mono text-caption-sm uppercase hover:bg-on-surface/5 transition-all">Add Identity</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Identity Card: Email -->
+<div class="glass-card p-6 rounded-xl border-l-2 border-primary-fixed-dim">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="alternate_email">alternate_email</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary-fixed-dim rounded-full pulse"></div>
+<span class="font-label-mono text-caption-sm text-primary-fixed-dim">SECURE</span>
+</div>
+</div>
+<p class="font-label-mono text-on-surface-variant text-caption-sm uppercase mb-1">Primary Email</p>
+<p class="font-body-lg text-body-lg mb-4">j.s*******@sovereign.io</p>
+<div class="flex items-center gap-2 text-on-surface-variant/60 text-caption-sm">
+<span class="material-symbols-outlined text-sm" data-icon="history">history</span>
+<span>Monitored since Oct 2022</span>
+</div>
+</div>
+<!-- Identity Card: SSN -->
+<div class="glass-card p-6 rounded-xl border-l-2 border-error">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-error" data-icon="badge">badge</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-error rounded-full"></div>
+<span class="font-label-mono text-caption-sm text-error uppercase">Action Required</span>
+</div>
+</div>
+<p class="font-label-mono text-on-surface-variant text-caption-sm uppercase mb-1">Government ID</p>
+<p class="font-body-lg text-body-lg mb-4">SSN: ***-**-4492</p>
+<div class="flex items-center gap-2 text-error/80 text-caption-sm">
+<span class="material-symbols-outlined text-sm" data-icon="warning">warning</span>
+<span>Potential leak detected</span>
+</div>
+</div>
+<!-- Identity Card: Credit Cards -->
+<div class="glass-card p-6 rounded-xl border-l-2 border-primary-fixed-dim">
+<div class="flex justify-between items-start mb-4">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="credit_card">credit_card</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-primary-fixed-dim rounded-full pulse"></div>
+<span class="font-label-mono text-caption-sm text-primary-fixed-dim">SECURE</span>
+</div>
+</div>
+<p class="font-label-mono text-on-surface-variant text-caption-sm uppercase mb-1">Vault Cards (4)</p>
+<p class="font-body-lg text-body-lg mb-4">Visa Infinite •••• 9901</p>
+<div class="flex items-center gap-2 text-on-surface-variant/60 text-caption-sm">
+<span class="material-symbols-outlined text-sm" data-icon="lock">lock</span>
+<span>Encrypted monitoring active</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Alert Log -->
+<section>
+<div class="mb-8">
+<h3 class="font-headline-lg text-headline-lg mb-2">Exposure Incident Logs</h3>
+<p class="text-on-surface-variant">Review and remediate historical and active exposures found across data broker archives.</p>
+</div>
+<div class="glass-card rounded-xl overflow-hidden inner-glow-top">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead class="bg-surface-container-high/50 border-b border-outline-variant/30">
+<tr>
+<th class="px-6 py-4 font-label-mono text-caption-sm uppercase text-on-surface-variant">Incident</th>
+<th class="px-6 py-4 font-label-mono text-caption-sm uppercase text-on-surface-variant">Risk Level</th>
+<th class="px-6 py-4 font-label-mono text-caption-sm uppercase text-on-surface-variant">Date Found</th>
+<th class="px-6 py-4 font-label-mono text-caption-sm uppercase text-on-surface-variant">Data Exposed</th>
+<th class="px-6 py-4 text-right px-6 font-label-mono text-caption-sm uppercase text-on-surface-variant">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/20">
+<!-- High Risk Leak -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-error-container/20 rounded flex items-center justify-center text-error">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</div>
+<div>
+<p class="font-body-md font-bold">LexisNexis Broker Cache</p>
+<p class="text-caption-sm text-on-surface-variant">Dark Web Market "Genesis"</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-error/10 text-error text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-error/20 rounded">Critical</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant font-label-mono text-caption-sm">14 OCT 2023</td>
+<td class="px-6 py-5 text-on-surface-variant">SSN, DOB, Address</td>
+<td class="px-6 py-5 text-right">
+<button class="bg-transparent border border-primary-fixed-dim text-white px-5 py-2 rounded text-caption-sm font-label-mono uppercase hover:bg-primary-fixed-dim hover:text-on-primary transition-all neon-glow">Remediate</button>
+</td>
+</tr>
+<!-- Medium Risk Leak -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-secondary-container/20 rounded flex items-center justify-center text-secondary-fixed">
+<span class="material-symbols-outlined" data-icon="cloud_off">cloud_off</span>
+</div>
+<div>
+<p class="font-body-md font-bold">CloudStorage-X Breach</p>
+<p class="text-caption-sm text-on-surface-variant">Public Paste Repository</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-secondary-container text-secondary-fixed text-[10px] font-bold uppercase tracking-wider px-2 py-1 rounded">Moderate</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant font-label-mono text-caption-sm">02 SEP 2023</td>
+<td class="px-6 py-5 text-on-surface-variant">Email, Password Hash</td>
+<td class="px-6 py-5 text-right">
+<button class="bg-transparent border border-on-surface/30 text-on-surface px-5 py-2 rounded text-caption-sm font-label-mono uppercase hover:bg-on-surface/5">Dismiss</button>
+</td>
+</tr>
+<!-- Low Risk / Resolved -->
+<tr class="hover:bg-surface-container-high/30 transition-colors">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-primary-container/10 rounded flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="task_alt">task_alt</span>
+</div>
+<div>
+<p class="font-body-md font-bold text-on-surface-variant/50 line-through">Hotel Group Incident</p>
+<p class="text-caption-sm text-on-surface-variant/40">Credential Stuffing Attempt</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="bg-primary-fixed-dim/10 text-primary-fixed-dim text-[10px] font-bold uppercase tracking-wider px-2 py-1 border border-primary-fixed-dim/20 rounded">Resolved</span>
+</td>
+<td class="px-6 py-5 text-on-surface-variant/40 font-label-mono text-caption-sm">22 AUG 2023</td>
+<td class="px-6 py-5 text-on-surface-variant/40">Partial Card (4)</td>
+<td class="px-6 py-5 text-right">
+<span class="text-on-surface-variant/40 font-label-mono text-caption-sm uppercase">Secured</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 bg-surface-container-lowest/80 backdrop-blur-2xl border-t border-outline-variant/20 rounded-t-xl shadow-[0px_-4px_20px_rgba(0,230,57,0.05)] md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all hover:bg-surface-container-high/40" href="#">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-label-mono text-caption-sm uppercase">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all hover:bg-surface-container-high/40" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-mono text-caption-sm uppercase">Devices</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary-fixed border-t-2 border-primary-fixed pt-2 scale-110 duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="font-label-mono text-caption-sm uppercase">Monitor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all hover:bg-surface-container-high/40" href="#">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+<span class="font-label-mono text-caption-sm uppercase">Response</span>
+</a>
+</nav>
+<!-- FAB for Critical Remediate -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary-fixed-dim text-on-primary rounded-full shadow-2xl flex items-center justify-center neon-glow-active hover:scale-105 transition-transform md:bottom-8">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+</button>
+<!-- Security HUD Overlay elements (Decorative) -->
+<div class="fixed top-24 left-4 pointer-events-none hidden lg:block opacity-20">
+<div class="font-label-mono text-[10px] space-y-1">
+<p>LAT: 37.7749 N</p>
+<p>LONG: 122.4194 W</p>
+<p class="text-primary-fixed-dim">NODE: US-WEST-04</p>
+<p>STATUS: OPTIMAL</p>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bio-Scan Integration Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f9f9f9",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-surface-variant": "#434654",
+                    "surface-tint": "#0c56d0",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#53686b",
+                    "tertiary": "#7b2600",
+                    "surface-container-low": "#f3f3f4",
+                    "outline": "#737685",
+                    "inverse-on-surface": "#f0f1f1",
+                    "tertiary-fixed": "#ffdbcf",
+                    "tertiary-container": "#a33500",
+                    "secondary-container": "#d0e7ea",
+                    "on-tertiary-fixed": "#380d00",
+                    "error": "#ba1a1a",
+                    "primary": "#003d9b",
+                    "on-primary-container": "#c4d2ff",
+                    "on-secondary": "#ffffff",
+                    "background": "#f9f9f9",
+                    "on-primary-fixed-variant": "#0040a2",
+                    "secondary-fixed": "#d0e7ea",
+                    "inverse-surface": "#2f3131",
+                    "outline-variant": "#c3c6d6",
+                    "inverse-primary": "#b2c5ff",
+                    "surface-container": "#eeeeee",
+                    "primary-container": "#0052cc",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#1a1c1c",
+                    "secondary": "#4d6265",
+                    "surface-container-high": "#e8e8e8",
+                    "on-primary-fixed": "#001848",
+                    "primary-fixed": "#dae2ff",
+                    "on-secondary-fixed": "#091f21",
+                    "surface": "#f9f9f9",
+                    "on-secondary-fixed-variant": "#364a4d",
+                    "tertiary-fixed-dim": "#ffb59b",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#1a1c1c",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#b2c5ff",
+                    "on-tertiary-fixed-variant": "#812800",
+                    "on-tertiary-container": "#ffc6b2",
+                    "secondary-fixed-dim": "#b4cbce",
+                    "surface-dim": "#dadada",
+                    "surface-variant": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "container-margin": "40px",
+                    "stack-sm": "12px",
+                    "gutter": "24px",
+                    "section-gap": "64px",
+                    "base": "8px",
+                    "stack-md": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["metropolis", "sans-serif"],
+                    "body-lg": ["inter", "sans-serif"],
+                    "display-xl": ["metropolis", "sans-serif"],
+                    "label-caps": ["geist", "monospace"],
+                    "headline-md": ["metropolis", "sans-serif"],
+                    "body-md": ["inter", "sans-serif"],
+                    "numeric-data": ["geist", "monospace"]
+            },
+            "fontSize": {
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "numeric-data": ["20px", {"lineHeight": "1", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-cyan {
+            background: linear-gradient(135deg, rgba(224, 247, 250, 0.7) 0%, rgba(224, 247, 250, 0.4) 100%);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(0, 82, 204, 0.08);
+        }
+        .inner-glow {
+            box-shadow: inset 0px 1px 1px 0px rgba(255, 255, 255, 0.8);
+        }
+        .liquid-shimmer {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 60%);
+            animation: shimmer 8s infinite linear;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes shimmer {
+            0% { transform: translate(-10%, -10%) rotate(0deg); }
+            50% { transform: translate(10%, 10%) rotate(180deg); }
+            100% { transform: translate(-10%, -10%) rotate(360deg); }
+        }
+        .liquid-fill {
+            background: linear-gradient(180deg, transparent 0%, #E0F7FA 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: #0052CC;
+            opacity: 0.15;
+            border-radius: 45%;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-surface-bright text-on-surface font-body-md min-h-screen flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 w-full z-50 bg-surface-container-low/70 backdrop-blur-md border-b border-white/20 shadow-[0px_4px_20px_0px_rgba(0,82,204,0.08)]">
+<div class="flex justify-between items-center w-full px-container-margin py-base">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="fingerprint">fingerprint</span>
+<h1 class="font-headline-md text-headline-md font-bold text-primary">Bio-Scan</h1>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<nav class="flex gap-stack-md">
+<a class="text-primary font-bold font-label-caps text-label-caps tracking-widest px-base py-2 transition-colors" href="#">DASHBOARD</a>
+<a class="text-on-surface-variant hover:bg-primary-container/10 font-label-caps text-label-caps tracking-widest px-base py-2 transition-colors rounded" href="#">ACCESS LOGS</a>
+<a class="text-on-surface-variant hover:bg-primary-container/10 font-label-caps text-label-caps tracking-widest px-base py-2 transition-colors rounded" href="#">USERS</a>
+</nav>
+<div class="flex items-center gap-stack-sm ml-4">
+<span class="material-symbols-outlined text-primary p-2 hover:bg-primary-container/10 rounded-full cursor-pointer" data-icon="sensors_kronecker">sensors_krx</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="A professional headshot of a female security administrator with a clean, clinical background. The lighting is soft and high-key, emphasizing a sterile and technologically advanced environment. The image uses a minimalist color palette of whites and soft blues to align with the Bio-Scan brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB-tEBPUvGC1Lje1r4gsQWmy3ZELowxh9JAmn8tTd2343DO-0JCuOo0mJOZATh4EfIoqHEOmJzX17ER82-4t03dW5M-aFShA8C7XoMmrYD_VuGtOpTf-iMb0pi2hyFujTGFBNC3FizOIW-E2EC0RQ7rkKfIXRPS1xWBKafshM3cMlyx-YDRMuE1w5OpvSYhHnhpB8otjaYvHXCJH4lnUHbjW9KgbdSAQWJVq108O14FRVPFia5cwQGN-TQByzMHoLYev4Pir84uThk"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-grow pt-32 pb-32 px-container-margin max-w-7xl mx-auto w-full">
+<!-- Section: Remote Approval Central Hub -->
+<section class="mb-section-gap">
+<div class="flex flex-col gap-stack-sm mb-stack-md">
+<span class="text-primary font-label-caps text-label-caps tracking-[0.2em]">REMOTE APPROVAL</span>
+<h2 class="font-display-xl text-display-xl text-primary">Integration Dashboard</h2>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Primary Security Bypass Notification (Glassmorphism Card) -->
+<div class="md:col-span-8 glass-cyan rounded-xl p-stack-md inner-glow relative overflow-hidden group"><div class="liquid-shimmer"></div>
+<div class="absolute top-0 right-0 p-stack-md">
+<div class="flex items-center gap-2 bg-primary text-on-primary px-3 py-1 rounded-full text-xs font-bold tracking-tight">
+<span class="w-2 h-2 rounded-full bg-white animate-pulse"></span>
+                            ACTIVE THREAT SCAN
+                        </div>
+</div>
+<div class="flex flex-col h-full justify-between">
+<div>
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<div class="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="security_update_good">security_update_good</span>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary">Real-time Security Bypass</h3>
+<p class="text-on-secondary-container font-body-md">Authorization pending for Level 5 high-security containment wing.</p>
+</div>
+</div>
+<div class="bg-white/40 p-stack-sm rounded-lg border border-white/60 mb-stack-md">
+<div class="flex justify-between items-center text-label-caps font-label-caps text-on-secondary-container mb-2">
+<span>ENCRYPTION STRENGTH</span>
+<span class="text-primary">99.8% SECURE</span>
+</div>
+<div class="w-full h-1.5 bg-secondary-container rounded-full overflow-hidden">
+<div class="w-[99.8%] h-full bg-primary"></div>
+</div>
+</div>
+</div>
+<div class="flex gap-stack-sm">
+<button class="flex-1 bg-primary text-on-primary py-4 rounded-lg font-headline-md hover:bg-primary-container hover:shadow-xl hover:shadow-primary/30 active:scale-95 transition-all relative z-10">
+                                APPROVE ACCESS
+                            </button>
+<button class="flex-1 bg-white/40 text-primary border border-primary/10 py-4 rounded-lg font-headline-md hover:bg-white/60 hover:border-primary/30 active:scale-95 transition-all relative z-10">
+                                DENY REQUEST
+                            </button>
+</div>
+</div>
+</div>
+<!-- Global Quick Actions -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<button class="group relative bg-primary text-on-primary p-gutter rounded-xl overflow-hidden shadow-xl shadow-primary/10 transition-transform active:scale-95">
+<div class="flex flex-col items-center text-center gap-stack-sm relative z-10">
+<span class="material-symbols-outlined text-4xl" data-icon="lock_reset" style="font-variation-settings: 'FILL' 1;">lock_reset</span>
+<span class="font-headline-md text-headline-md uppercase tracking-widest">Global Lock</span>
+<p class="text-on-primary-container text-sm opacity-80">Immediate termination of all biometric entry points</p>
+</div>
+<div class="absolute inset-0 bg-white/10 scale-x-0 group-hover:scale-x-100 transition-transform origin-left"></div>
+</button>
+<button class="group relative bg-white border-2 border-primary/20 text-primary p-gutter rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all active:scale-95">
+<div class="flex flex-col items-center text-center gap-stack-sm relative z-10">
+<span class="material-symbols-outlined text-4xl" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-headline-md text-headline-md uppercase tracking-widest">Override</span>
+<p class="text-on-secondary-container text-sm">Bypass primary protocol for emergency protocols</p>
+</div>
+<div class="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</button>
+</div>
+<!-- Liquid Data Throughput Widget -->
+<div class="md:col-span-4 rounded-xl p-gutter border border-surface-container-highest shadow-sm flex flex-col gap-gutter glass-cyan">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-primary">Data Throughput</h4>
+<span class="material-symbols-outlined text-secondary" data-icon="analytics">analytics</span>
+</div>
+<div class="flex-grow flex items-center justify-center">
+<!-- Custom Liquid Widget Container -->
+<div class="w-40 h-40 rounded-full border-4 border-secondary-container p-1 relative overflow-hidden">
+<div class="w-full h-full rounded-full liquid-fill flex flex-col items-center justify-center relative z-10">
+<span class="font-numeric-data text-display-xl text-primary">88.4</span>
+<span class="font-label-caps text-label-caps text-on-secondary-container">GB/S</span>
+</div>
+<!-- Liquid Element -->
+<div class="liquid-wave -bottom-4 animate-bounce"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-stack-sm pt-stack-sm border-t border-surface-container-highest">
+<div class="flex flex-col">
+<span class="text-label-caps font-label-caps text-on-secondary-container">LATENCY</span>
+<span class="font-numeric-data text-primary">4.2ms</span>
+</div>
+<div class="flex flex-col items-end text-right">
+<span class="text-label-caps font-label-caps text-on-secondary-container">LOAD</span>
+<span class="font-numeric-data text-primary">OPTIMAL</span>
+</div>
+</div>
+</div>
+<!-- Recent Activity/Diagnostics -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-xl border border-surface-container-highest shadow-sm overflow-hidden flex flex-col">
+<div class="px-gutter py-stack-md border-b border-surface-container-highest bg-surface-bright flex justify-between items-center">
+<h4 class="font-headline-md text-primary">System Diagnostics</h4>
+<div class="flex gap-2">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+<div class="w-2 h-2 rounded-full bg-secondary-container"></div>
+</div>
+</div>
+<div class="divide-y divide-surface-container-highest overflow-y-auto max-h-[300px]">
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="fingerprint">fingerprint</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Fingerprint Cluster B Verified</p>
+<p class="text-xs text-on-secondary-container uppercase tracking-tighter">Server Zone 04 • 12:44:01</p>
+</div>
+</div>
+<span class="text-primary font-numeric-data">0.02s</span>
+</div>
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="visibility">visibility</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Retina Scan Successful</p>
+<p class="text-xs text-on-secondary-container uppercase tracking-tighter">Main Vault • 12:42:15</p>
+</div>
+</div>
+<span class="text-primary font-numeric-data">0.14s</span>
+</div>
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-bright transition-colors">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center">
+<span class="material-symbols-outlined text-error text-xl" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="font-body-md text-error">Unrecognized Pattern Detected</p>
+<p class="text-xs text-on-error-container uppercase tracking-tighter">External Gate • 12:40:02</p>
+</div>
+</div>
+<span class="text-error font-numeric-data">REJECTED</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Biometric Pulse Visualization Area -->
+<section class="mb-section-gap flex flex-col items-center justify-center py-section-gap relative">
+<div class="absolute inset-0 bg-gradient-to-b from-transparent via-secondary-container/10 to-transparent pointer-events-none"></div>
+<div class="flex flex-col items-center gap-stack-md relative z-10 text-center">
+<div class="relative flex items-center justify-center">
+<div class="absolute w-64 h-64 rounded-full border border-primary/10 animate-ping"></div>
+<div class="absolute w-48 h-48 rounded-full border border-primary/20 animate-pulse"></div>
+<div class="w-32 h-32 rounded-full glass-cyan flex items-center justify-center shadow-2xl shadow-primary/20">
+<span class="material-symbols-outlined text-primary text-6xl" data-icon="biometric_setup">android_fingerprint</span>
+</div>
+</div>
+<h3 class="font-headline-lg text-headline-lg text-primary mt-gutter">Secure Biometric Sync</h3>
+<p class="text-on-secondary-container max-w-md">Bio-Scan is currently monitoring 14 active points across the facility. All systems reporting nominal parameters.</p>
+<div class="flex gap-stack-md mt-stack-md">
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary"></span>
+<span class="text-label-caps font-label-caps text-on-surface">CONNECTED</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-label-caps font-label-caps text-on-surface">ENCRYPTED</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 w-full z-50 bg-surface-container-low/80 backdrop-blur-xl border-t border-white/20 shadow-[0px_-4px_20px_0px_rgba(0,82,204,0.08)] rounded-t-xl md:hidden">
+<div class="flex justify-around items-center w-full py-stack-sm px-gutter">
+<div class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-full px-6 py-2 transition-transform active:scale-90 duration-150">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px] mt-0.5">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-label-caps text-[10px] mt-0.5">LOGS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-caps text-[10px] mt-0.5">USERS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-secondary-container hover:text-primary transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[10px] mt-0.5">DIAGS</span>
+</div>
+</div>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed right-gutter bottom-24 md:bottom-gutter z-50 w-14 h-14 rounded-full bg-primary text-on-primary shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-3xl" data-icon="add_moderator" style="font-variation-settings: 'FILL' 1;">add_moderator</span>
+</button>
+</body></html>
