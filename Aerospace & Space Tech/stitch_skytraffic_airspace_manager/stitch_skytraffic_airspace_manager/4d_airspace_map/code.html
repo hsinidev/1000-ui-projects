@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkyTraffic | 4D Airspace HUD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#191c1e",
+                        "surface-tint": "#c0c1ff",
+                        "on-tertiary-fixed": "#001f28",
+                        "outline": "#908fa0",
+                        "on-primary-container": "#0d0096",
+                        "error-container": "#93000a",
+                        "on-surface": "#e0e3e5",
+                        "secondary": "#bec6e0",
+                        "inverse-surface": "#e0e3e5",
+                        "on-surface-variant": "#c7c4d7",
+                        "tertiary-fixed": "#b7eaff",
+                        "secondary-fixed-dim": "#bec6e0",
+                        "on-tertiary": "#003543",
+                        "on-secondary-container": "#adb4ce",
+                        "on-primary": "#1000a9",
+                        "on-primary-fixed": "#07006c",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#e1e0ff",
+                        "surface-container-high": "#272a2c",
+                        "background": "#101415",
+                        "tertiary": "#4cd6ff",
+                        "on-primary-fixed-variant": "#2f2ebe",
+                        "inverse-on-surface": "#2d3133",
+                        "primary": "#c0c1ff",
+                        "surface-container": "#1d2022",
+                        "primary-container": "#8083ff",
+                        "outline-variant": "#464554",
+                        "surface-container-lowest": "#0b0f10",
+                        "tertiary-container": "#009dc1",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c0c1ff",
+                        "surface-variant": "#323537",
+                        "inverse-primary": "#494bd6",
+                        "surface-container-highest": "#323537",
+                        "secondary-container": "#3f465c",
+                        "on-secondary-fixed-variant": "#3f465c",
+                        "on-background": "#e0e3e5",
+                        "on-secondary": "#283044",
+                        "surface-dim": "#101415",
+                        "secondary-fixed": "#dae2fd",
+                        "on-tertiary-fixed-variant": "#004e60",
+                        "surface": "#101415",
+                        "surface-bright": "#363a3b",
+                        "on-tertiary-container": "#002e3a",
+                        "tertiary-fixed-dim": "#4cd6ff",
+                        "on-secondary-fixed": "#131b2e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "xl": "40px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "lg": "24px",
+                        "md": "16px",
+                        "gutter": "20px",
+                        "margin-edge": "32px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-base": ["Inter"],
+                        "display-lg": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            background-color: #101415;
+            color: #e0e3e5;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+        }
+        .glass-panel {
+            background: rgba(16, 20, 21, 0.4);
+            backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .inner-glow {
+            box-shadow: inset 0 0 12px rgba(192, 193, 255, 0.1);
+        }
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .map-gradient-overlay {
+            background: radial-gradient(circle at center, transparent 0%, rgba(16, 20, 21, 0.8) 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="h-screen w-screen relative overflow-hidden flex flex-col">
+<!-- Background Map Layer -->
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover brightness-[0.3] contrast-[1.2]" data-alt="A highly detailed 4D digital satellite map of a futuristic Tokyo metropolitan area at dusk. The city is illuminated with glowing blue and purple grid lines, while hundreds of tiny, bright moving light trails represent drone flight paths. The aesthetic is ultra-modern and technical, featuring a deep navy color palette with neon cyan highlights, conveying a professional aerospace coordination environment." data-location="Tokyo Metropolitan Area" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGklpPNYlLeK1IW4JtvW8i-ejNywbSBfx0z5gtSm2sbo8RDLd_MlEo4PXj5s_YkR-4jI-wzOQuHPfMX5uDSY-HVegN9uMMm3gsOhjlnUhmLUz-vSLe1CyhzXvBbYx4srSewvmbfqYoSfn23CUvnDCFpS-VPtFdxeq8p3KkbT1rwLNCcEWoHIEj6PzG1z3tvUdai7N7zqKvOhhRWbRYUAXTuVNqkc-0yi7yX8ukOhQP2UjQ43drXoQTHWxja1guJD_CP7FQjbg42T_z"/>
+<div class="absolute inset-0 map-gradient-overlay pointer-events-none"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-slate-950/40 backdrop-blur-2xl border-b border-white/10 flex justify-between items-center px-6 py-4 shadow-[0_4px_20px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-indigo-500/30 bg-indigo-500/10 flex items-center justify-center overflow-hidden">
+<img alt="Pilot Profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a drone pilot wearing a sleek, dark technical headset with a small green status light. The lighting is dramatic and moody, reflecting a high-tech control room environment with hints of indigo and slate. The pilot's expression is focused and calm, representing the expertise of SkyTraffic operators." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBOcre3wWqP30NZAvnP0enNqOElzrBizXSIIKpluGUy5ipJTgEoOK4W_UrTXFaRa4GAvoVb0wllpx7xGImOPYKPBlSXz3thVZjAZ8IMWB4tnipEB5oVRdMAWGfJyhIjlgHma7eV7wblsLSufSikO4io7dU9GwuhWwuk8j-rqNiGre3Lfvm-J6yb8LKnsAkSGcuAJKxxpvi2ZK2sfqjPSwhc_2grKnzDaTSM7dYWSXdFdu-I_pO__-Tlx3f2CsbucUjKMYrqspWUYfN2"/>
+</div>
+<div class="flex flex-col">
+<h1 class="text-xl font-black text-white tracking-widest uppercase font-['Space_Grotesk']">SkyTraffic</h1>
+<span class="text-[10px] text-indigo-400 font-data-mono uppercase tracking-widest">Active Sector: Sector-7G</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="text-indigo-400 font-['Space_Grotesk'] font-bold tracking-tight text-sm uppercase" href="#">Airspace</a>
+<a class="text-slate-400 font-['Space_Grotesk'] font-medium tracking-tight text-sm uppercase hover:text-white transition-colors" href="#">Plans</a>
+<a class="text-slate-400 font-['Space_Grotesk'] font-medium tracking-tight text-sm uppercase hover:text-white transition-colors" href="#">Alerts</a>
+</nav>
+<button class="material-symbols-outlined text-indigo-500 active:scale-95 transition-transform">notifications_active</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 relative z-10 p-gutter mt-20 mb-24 overflow-hidden flex pointer-events-none">
+<!-- Left Data Overlay: Active Telemetry -->
+<div class="w-80 flex flex-col gap-lg pointer-events-auto">
+<div class="glass-panel inner-glow rounded-xl p-md flex flex-col gap-sm">
+<div class="flex justify-between items-center border-b border-white/5 pb-sm">
+<span class="font-label-caps text-label-caps text-on-surface-variant">UAS TELEMETRY</span>
+<span class="material-symbols-outlined text-sm text-tertiary status-pulse">radar</span>
+</div>
+<!-- Telemetry Card 1 -->
+<div class="bg-indigo-500/5 border border-indigo-500/20 rounded-lg p-sm flex flex-col gap-xs hover:bg-indigo-500/10 transition-colors cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-data-mono text-data-mono text-primary">DRN-9921-X</span>
+<span class="px-2 py-0.5 bg-green-500/20 text-green-400 text-[9px] font-bold rounded uppercase tracking-tighter">Cruising</span>
+</div>
+<div class="grid grid-cols-2 gap-sm mt-xs">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 uppercase">Velocity</span>
+<span class="font-data-mono text-white">42.5 km/h</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 uppercase">Altitude</span>
+<span class="font-data-mono text-white">124m AGL</span>
+</div>
+</div>
+<div class="w-full bg-slate-800 h-1 rounded-full mt-sm overflow-hidden">
+<div class="bg-indigo-500 h-full w-[84%]"></div>
+</div>
+<div class="flex justify-between text-[9px] text-indigo-300/60 uppercase font-bold mt-1">
+<span>Battery Life</span>
+<span>84%</span>
+</div>
+</div>
+<!-- Telemetry Card 2 -->
+<div class="bg-white/5 border border-white/10 rounded-lg p-sm flex flex-col gap-xs hover:bg-white/10 transition-colors cursor-pointer opacity-70">
+<div class="flex justify-between items-start">
+<span class="font-data-mono text-data-mono text-slate-300">DRN-4412-A</span>
+<span class="px-2 py-0.5 bg-yellow-500/20 text-yellow-400 text-[9px] font-bold rounded uppercase tracking-tighter">Ascending</span>
+</div>
+<div class="grid grid-cols-2 gap-sm mt-xs">
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 uppercase">Velocity</span>
+<span class="font-data-mono text-white">12.1 km/h</span>
+</div>
+<div class="flex flex-col">
+<span class="text-[10px] text-slate-500 uppercase">Altitude</span>
+<span class="font-data-mono text-white">45m AGL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Weather HUD Component -->
+<div class="glass-panel inner-glow rounded-xl p-md mt-auto">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-tertiary text-2xl">thunderstorm</span>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-on-surface-variant">METAR DATA</span>
+<span class="font-data-mono text-lg text-white">12 knots NW</span>
+</div>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between text-xs">
+<span class="text-slate-400">Visibility</span>
+<span class="text-white">8.4 km</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-slate-400">Precipitation</span>
+<span class="text-white">12%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Slider: Altitude Control -->
+<div class="ml-auto h-full flex flex-col items-center gap-md pointer-events-auto">
+<div class="glass-panel inner-glow rounded-full w-12 flex-1 flex flex-col items-center py-lg relative">
+<span class="text-[9px] font-bold text-slate-500 uppercase tracking-tighter mb-4">500m</span>
+<div class="flex-1 w-[2px] bg-slate-800 rounded-full relative">
+<!-- Range Indicator -->
+<div class="absolute top-1/4 bottom-1/2 left-0 right-0 bg-indigo-500 shadow-[0_0_10px_rgba(99,102,241,0.5)]"></div>
+<!-- Handle -->
+<div class="absolute top-1/3 -left-4 w-10 h-10 bg-indigo-500 rounded-full border-4 border-slate-900 shadow-xl flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-white text-sm">unfold_more</span>
+</div>
+</div>
+<span class="text-[9px] font-bold text-indigo-400 uppercase tracking-tighter mt-4">Surface</span>
+</div>
+<button class="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-indigo-400 hover:bg-indigo-500/20 active:scale-95 transition-all">
+<span class="material-symbols-outlined">layers</span>
+</button>
+<button class="w-12 h-12 glass-panel rounded-xl flex items-center justify-center text-slate-400 hover:bg-white/10 active:scale-95 transition-all">
+<span class="material-symbols-outlined">center_focus_weak</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-slate-950/60 backdrop-blur-3xl border-t border-indigo-500/30 flex justify-around items-center px-4 pb-6 pt-3 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] rounded-t-2xl">
+<!-- Airspace (Active) -->
+<a class="flex flex-col items-center justify-center bg-indigo-500/20 text-indigo-300 rounded-xl px-4 py-1 border border-indigo-500/40 shadow-[0_0_10px_rgba(99,102,241,0.3)] active:scale-90 duration-200 transition-all" href="#">
+<span class="material-symbols-outlined">explore</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-0.5">Airspace</span>
+</a>
+<!-- Plans -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-0.5">Plans</span>
+</a>
+<!-- Alerts -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">warning</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-0.5">Alerts</span>
+</a>
+<!-- Fleet -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 hover:opacity-100 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-0.5">Fleet</span>
+</a>
+</nav>
+<!-- Floating Action UI (Targeting HUD Elements) -->
+<div class="fixed bottom-32 left-1/2 -translate-x-1/2 pointer-events-none flex flex-col items-center">
+<div class="glass-panel inner-glow rounded-full px-6 py-2 border-indigo-500/20 flex items-center gap-lg pointer-events-auto">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_8px_rgba(34,197,94,0.6)]"></div>
+<span class="font-data-mono text-[11px] text-white">SYSTEM NOMINAL</span>
+</div>
+<div class="w-[1px] h-4 bg-white/10"></div>
+<div class="flex items-center gap-sm">
+<span class="text-slate-400 text-[10px] uppercase font-bold">LAT</span>
+<span class="font-data-mono text-[11px] text-white">35.6895° N</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-slate-400 text-[10px] uppercase font-bold">LON</span>
+<span class="font-data-mono text-[11px] text-white">139.6917° E</span>
+</div>
+</div>
+</div>
+</body></html>

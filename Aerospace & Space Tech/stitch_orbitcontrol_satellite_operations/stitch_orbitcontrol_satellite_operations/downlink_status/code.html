@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ORBIT_CONTROL_SYS - DOWNLINK_STATUS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#2d382a",
+                        "on-primary": "#003907",
+                        "surface-dim": "#0c160a",
+                        "secondary-fixed": "#e3e2e2",
+                        "tertiary-fixed-dim": "#c3c6cf",
+                        "surface-container-low": "#141e12",
+                        "primary-container": "#00ff41",
+                        "tertiary-container": "#d9dce5",
+                        "primary-fixed": "#72ff70",
+                        "secondary": "#c6c6c6",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "surface-container-high": "#222d20",
+                        "surface-tint": "#00e639",
+                        "surface-bright": "#313c2e",
+                        "on-primary-fixed-variant": "#00530e",
+                        "on-tertiary": "#2d3137",
+                        "error": "#ffb4ab",
+                        "inverse-on-surface": "#283326",
+                        "surface-container": "#182216",
+                        "on-tertiary-container": "#5d6168",
+                        "outline": "#84967e",
+                        "primary": "#ebffe2",
+                        "on-tertiary-fixed": "#181c22",
+                        "on-secondary-fixed-variant": "#464747",
+                        "on-secondary-container": "#b8b8b8",
+                        "on-tertiary-fixed-variant": "#43474e",
+                        "background": "#0c160a",
+                        "primary-fixed-dim": "#00e639",
+                        "surface-container-lowest": "#071106",
+                        "inverse-surface": "#dae6d2",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "tertiary": "#f8f8ff",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#dae6d2",
+                        "inverse-primary": "#006e16",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#dfe2eb",
+                        "surface": "#0c160a",
+                        "surface-container-highest": "#2d382a",
+                        "secondary-container": "#484949",
+                        "on-error": "#690005",
+                        "on-secondary": "#2f3131",
+                        "on-surface": "#dae6d2",
+                        "on-primary-container": "#007117",
+                        "outline-variant": "#3b4b37",
+                        "on-surface-variant": "#b9ccb2",
+                        "on-primary-fixed": "#002203"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "100%",
+                        "margin": "24px",
+                        "density-high": "8px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "density-medium": "16px"
+                    },
+                    "fontFamily": {
+                        "body-standard": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "data-mono": ["monospace"],
+                        "display-lg": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-standard": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "data-mono": ["16px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(12, 22, 10, 0.7);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(132, 150, 126, 0.2);
+        }
+        .laser-glow {
+            box-shadow: 0 0 12px rgba(0, 230, 57, 0.3);
+        }
+        .warning-stripe {
+            background: repeating-linear-gradient(45deg, #93000a, #93000a 10px, #0c160a 10px, #0c160a 20px);
+        }
+        .vector-grid {
+            background-image: linear-gradient(rgba(132, 150, 126, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(132, 150, 126, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-standard overflow-x-hidden min-h-screen vector-grid pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-md dark:bg-background/80 border-b border-outline/20 flex justify-between items-center px-margin h-16 w-full">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="language">language</span>
+<h1 class="font-headline-md text-headline-md uppercase tracking-widest text-primary-fixed-dim">ORBIT_CONTROL_SYS</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<span class="text-label-caps font-label-caps text-secondary uppercase tracking-widest">System_Active</span>
+<span class="text-label-caps font-label-caps text-primary-fixed-dim uppercase tracking-widest">UTC 14:22:09</span>
+</div>
+<button class="bg-primary-container text-on-primary-container px-4 py-1 font-label-caps text-label-caps tracking-widest laser-glow active:scale-95 transition-transform">
+                INIT_BURST
+            </button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-24 px-margin max-w-screen-2xl mx-auto grid grid-cols-12 gap-gutter">
+<!-- World Map Ground Stations (Large Card) -->
+<section class="col-span-12 lg:col-span-8 h-[450px] relative glass-panel rounded-lg overflow-hidden border border-outline/20">
+<div class="absolute top-4 left-4 z-10 flex flex-col gap-1">
+<span class="text-label-caps font-label-caps text-primary-fixed-dim">GS_LOCATOR_SYSTEM</span>
+<span class="text-[10px] text-on-surface-variant/60 font-data-mono">GLOBAL_ARRAY_V4.2</span>
+</div>
+<div class="absolute top-4 right-4 z-10">
+<div class="flex items-center gap-2 bg-background/60 px-3 py-1 rounded border border-outline/20">
+<span class="w-2 h-2 bg-primary-fixed-dim rounded-full animate-pulse"></span>
+<span class="text-label-caps font-label-caps text-primary-fixed-dim uppercase">Live_Downlink_Active</span>
+</div>
+</div>
+<div class="w-full h-full grayscale brightness-50 opacity-40">
+<img class="w-full h-full object-cover" data-alt="A highly detailed global map display in a dark mode digital interface, showing continents as minimalist outlines with glowing green node points and vector connecting lines representing satellite trajectories. The lighting is low-key with high-contrast green neon highlights, following a technical glass-cockpit aesthetic for a mission control center." data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBlJKB7YT1yn5mF1S_y_P3hJlfxHt5SX7VmRi6-K9yzf05e7rCVqHavLrxtygR5Mq2qwSgSSFRVhePyQ7RooqMpIOxLRrTNdGAcj9U-1DMCijVaC-u50S90vXaLYB3ZPyvxv8sa_MVIf5OHQPy23oA9KGO5h944U2kwUfSSU_Ccsbq3croy42nmfSfKkmqexPyalSjk5BLAFkGDRmPjx0gCdnwZzLOv2wSWlEEI9aTY1o2BUUeJ0Tf3GRhjuZQdbFPxkA057zKwMA"/>
+</div>
+<!-- Map Overlays (Markers) -->
+<div class="absolute top-1/2 left-1/3 w-4 h-4 bg-primary-fixed-dim border-2 border-background rounded-sm laser-glow cursor-pointer"></div>
+<div class="absolute top-[60%] left-[45%] w-4 h-4 bg-primary-fixed-dim border-2 border-background rounded-sm laser-glow cursor-pointer"></div>
+<div class="absolute top-[40%] right-[20%] w-4 h-4 bg-error border-2 border-background rounded-sm cursor-pointer"></div>
+<!-- Terminal Overlay -->
+<div class="absolute bottom-4 left-4 right-4 glass-panel border border-outline/10 p-3 h-24 flex gap-4 overflow-hidden">
+<div class="w-1/3 border-r border-outline/20">
+<p class="text-label-caps font-label-caps text-secondary mb-1">CURRENT_PASS</p>
+<p class="text-headline-md font-headline-md text-primary-fixed-dim">SV-091_NORAD</p>
+</div>
+<div class="w-1/3 border-r border-outline/20">
+<p class="text-label-caps font-label-caps text-secondary mb-1">AOS_COUNTDOWN</p>
+<p class="text-headline-md font-headline-md text-primary-fixed-dim font-data-mono">00:04:12</p>
+</div>
+<div class="w-1/3">
+<p class="text-label-caps font-label-caps text-secondary mb-1">SIGNAL_STRENGTH</p>
+<div class="flex items-end gap-1 h-6 pt-2">
+<div class="w-2 bg-primary-fixed-dim h-full"></div>
+<div class="w-2 bg-primary-fixed-dim h-4/5"></div>
+<div class="w-2 bg-primary-fixed-dim h-3/5"></div>
+<div class="w-2 bg-primary-fixed-dim/30 h-2/5"></div>
+<div class="w-2 bg-primary-fixed-dim/30 h-1/5"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Downlink Metrics (Bento Right) -->
+<div class="col-span-12 lg:col-span-4 grid grid-rows-2 gap-gutter">
+<!-- Transfer Rate Chart -->
+<section class="glass-panel rounded-lg border border-outline/20 p-4 flex flex-col">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h3 class="text-label-caps font-label-caps text-primary-fixed-dim uppercase">Data_Transfer_Rate</h3>
+<p class="text-data-mono font-data-mono text-headline-md">1.28 <span class="text-body-standard text-secondary">Gbps</span></p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="show_chart">show_chart</span>
+</div>
+<div class="flex-grow flex items-end gap-1 min-h-[80px]">
+<div class="flex-grow bg-primary-fixed-dim/10 h-12 relative overflow-hidden">
+<div class="absolute inset-0 border-b-2 border-primary-fixed-dim shadow-[0_0_8px_rgba(0,230,57,0.4)]" style="clip-path: polygon(0 80%, 10% 60%, 20% 90%, 30% 20%, 40% 40%, 50% 10%, 60% 70%, 70% 30%, 80% 50%, 90% 15%, 100% 40%, 100% 100%, 0 100%);"></div>
+</div>
+</div>
+<div class="mt-4 flex justify-between text-[10px] text-on-surface-variant font-data-mono">
+<span>T-60M</span>
+<span>T-30M</span>
+<span>CURRENT</span>
+</div>
+</section>
+<!-- Storage Metrics -->
+<section class="glass-panel rounded-lg border border-outline/20 p-4">
+<div class="flex justify-between items-start mb-4">
+<h3 class="text-label-caps font-label-caps text-primary-fixed-dim uppercase">Buffer_Capacity</h3>
+<span class="material-symbols-outlined text-secondary" data-icon="database">database</span>
+</div>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-label-caps font-label-caps text-secondary">PRIMARY_SSD_ARRAY</span>
+<span class="text-label-caps font-label-caps text-primary-fixed-dim">74%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant/50 border border-outline/20">
+<div class="h-full bg-primary-fixed-dim" style="width: 74%;"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="text-label-caps font-label-caps text-secondary">L2_CACHE_RESERVE</span>
+<span class="text-label-caps font-label-caps text-primary-fixed-dim">12%</span>
+</div>
+<div class="h-2 w-full bg-surface-variant/50 border border-outline/20">
+<div class="h-full bg-primary-fixed-dim" style="width: 12%;"></div>
+</div>
+</div>
+<div class="flex justify-between pt-2 border-t border-outline/10">
+<span class="text-label-caps font-label-caps text-secondary">TOTAL_AVAIL</span>
+<span class="text-label-caps font-label-caps text-on-surface">14.2 TB</span>
+</div>
+</div>
+</section>
+</div>
+<!-- Active Pass Queue (Full Width Bottom) -->
+<section class="col-span-12 glass-panel rounded-lg border border-outline/20 overflow-hidden">
+<div class="bg-surface-variant/20 px-4 py-2 border-b border-outline/20 flex justify-between items-center">
+<h3 class="text-label-caps font-label-caps text-primary-fixed-dim uppercase tracking-widest">Active_Pass_Queue</h3>
+<div class="flex gap-4">
+<span class="text-label-caps font-label-caps text-secondary-fixed-dim">QUEUED: 12</span>
+<span class="text-label-caps font-label-caps text-secondary-fixed-dim">COMPLETED: 84</span>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="text-label-caps font-label-caps text-secondary/60 border-b border-outline/10">
+<th class="px-4 py-3">SATELLITE_ID</th>
+<th class="px-4 py-3">GROUND_STATION</th>
+<th class="px-4 py-3">START_TIME (UTC)</th>
+<th class="px-4 py-3">DURATION</th>
+<th class="px-4 py-3">LINK_TYPE</th>
+<th class="px-4 py-3 text-right">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-body-standard divide-y divide-outline/5">
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="px-4 py-4 text-primary-fixed-dim">ORB-ALPHA-07</td>
+<td class="px-4 py-4">SVALBARD_ARRAY</td>
+<td class="px-4 py-4 text-on-surface">14:35:10</td>
+<td class="px-4 py-4 text-on-surface">12m 40s</td>
+<td class="px-4 py-4">X-BAND</td>
+<td class="px-4 py-4 text-right">
+<span class="bg-primary-container/10 text-primary-fixed-dim px-2 py-0.5 border border-primary-fixed-dim/30">IN_RANGE</span>
+</td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="px-4 py-4 text-primary-fixed-dim">ORB-GAMMA-12</td>
+<td class="px-4 py-4">TROMSO_CORE</td>
+<td class="px-4 py-4 text-on-surface">14:52:00</td>
+<td class="px-4 py-4 text-on-surface">08m 12s</td>
+<td class="px-4 py-4">KA-BAND</td>
+<td class="px-4 py-4 text-right">
+<span class="bg-secondary-container/10 text-secondary px-2 py-0.5 border border-secondary/30">PENDING</span>
+</td>
+</tr>
+<tr class="hover:bg-primary-container/5 transition-colors">
+<td class="px-4 py-4 text-primary-fixed-dim">SV-091_NORAD</td>
+<td class="px-4 py-4">WHITE_SANDS</td>
+<td class="px-4 py-4 text-on-surface">15:10:45</td>
+<td class="px-4 py-4 text-on-surface">15m 00s</td>
+<td class="px-4 py-4">OPTICAL</td>
+<td class="px-4 py-4 text-right">
+<span class="bg-secondary-container/10 text-secondary px-2 py-0.5 border border-secondary/30">PENDING</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- System Logs (Mobile/Tablet Hidden on Grid) -->
+<section class="col-span-12 md:col-span-6 glass-panel rounded-lg border border-outline/20 p-4 h-48 overflow-hidden">
+<h3 class="text-label-caps font-label-caps text-primary-fixed-dim mb-3">SYSTEM_LOGS</h3>
+<div class="space-y-2 text-[12px] font-data-mono text-on-surface-variant/80">
+<p><span class="text-primary-fixed-dim">[14:21:44]</span> HANDSHAKE_SUCCESS: SV-091_NORAD AT WHITE_SANDS</p>
+<p><span class="text-primary-fixed-dim">[14:21:02]</span> BUFFER_FLUSH_COMPLETE: GS_ARRAY_NORTH</p>
+<p><span class="text-error">[14:19:55]</span> WARNING: PACKET_LOSS_DETECTION ON KA-BAND_LINK_4</p>
+<p><span class="text-primary-fixed-dim">[14:18:20]</span> UPLINK_CMD: BEACON_INTERVAL_RESET_07</p>
+</div>
+</section>
+<!-- Emergency Protocols (Mobile/Tablet Hidden on Grid) -->
+<section class="col-span-12 md:col-span-6 glass-panel rounded-lg border border-outline/20 overflow-hidden relative h-48">
+<div class="warning-stripe h-2 w-full"></div>
+<div class="p-4">
+<h3 class="text-label-caps font-label-caps text-error mb-3">EMERGENCY_PROT</h3>
+<p class="text-body-standard text-on-surface mb-4">ACTIVE: PRIORITY_OVERRIDE_01</p>
+<div class="grid grid-cols-2 gap-4">
+<button class="border border-error text-error py-2 font-label-caps text-label-caps hover:bg-error/10 transition-colors">KILL_LINK</button>
+<button class="border border-outline/40 text-on-surface py-2 font-label-caps text-label-caps hover:bg-surface-variant/30 transition-colors">SAFE_MODE</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-2 pb-safe bg-surface-container-lowest/90 backdrop-blur-xl dark:bg-surface-container-lowest/90 border-t border-outline/30 z-50">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 active:scale-90 transition-transform hover:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps">ORBITAL</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 active:scale-90 transition-transform hover:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">HEALTH</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 active:scale-90 transition-transform hover:text-primary-fixed">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-label-caps text-label-caps">MANEUVER</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-primary-container bg-primary-container/20 rounded-lg py-1 px-3 shadow-[0_0_8px_rgba(0,230,57,0.4)] active:scale-90 transition-transform">
+<span class="material-symbols-outlined" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-label-caps">DOWNLINK</span>
+</button>
+</nav>
+<!-- Floating Action Button (FAB) - Suppressed on Details Screen but kept for Dashboard logic -->
+<!-- Determined FAB not needed for this focused status monitor -->
+</body></html>

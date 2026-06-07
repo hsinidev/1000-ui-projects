@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AV-X COMMAND | Flight Planning</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Inter:wght@200;400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "background": "#131313",
+            "surface-variant": "#353534",
+            "surface-container-lowest": "#0e0e0e",
+            "on-secondary-fixed": "#1a1c1c",
+            "inverse-surface": "#e5e2e1",
+            "on-tertiary-container": "#7e5900",
+            "inverse-on-surface": "#313030",
+            "outline": "#849495",
+            "on-primary": "#00363a",
+            "on-error-container": "#ffdad6",
+            "inverse-primary": "#00696f",
+            "surface-container-high": "#2a2a2a",
+            "surface-bright": "#3a3939",
+            "error": "#ffb4ab",
+            "on-tertiary-fixed-variant": "#5e4200",
+            "on-secondary-container": "#b4b5b5",
+            "surface-container-low": "#1c1b1b",
+            "on-surface": "#e5e2e1",
+            "on-secondary-fixed-variant": "#454747",
+            "surface-container-highest": "#353534",
+            "primary": "#e1fdff",
+            "tertiary-container": "#ffd58c",
+            "outline-variant": "#3a494b",
+            "on-tertiary-fixed": "#271900",
+            "surface-tint": "#00dbe7",
+            "primary-fixed": "#74f5ff",
+            "error-container": "#93000a",
+            "on-primary-container": "#006a71",
+            "primary-fixed-dim": "#00dbe7",
+            "on-background": "#e5e2e1",
+            "tertiary-fixed": "#ffdea8",
+            "secondary-fixed": "#e2e2e2",
+            "surface-dim": "#131313",
+            "tertiary-fixed-dim": "#ffba20",
+            "tertiary": "#fff6ed",
+            "surface-container": "#201f1f",
+            "on-primary-fixed": "#002022",
+            "secondary-container": "#454747",
+            "primary-container": "#00f2ff",
+            "surface": "#131313",
+            "on-surface-variant": "#b9cacb",
+            "on-tertiary": "#412d00",
+            "on-secondary": "#2f3131",
+            "secondary": "#c6c6c7",
+            "on-error": "#690005",
+            "secondary-fixed-dim": "#c6c6c7",
+            "on-primary-fixed-variant": "#004f54"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "fontFamily": {
+            "headline-lg": ["Space Grotesk"],
+            "label-caps": ["Inter"],
+            "body-sm": ["Inter"],
+            "headline-md": ["Space Grotesk"],
+            "data-display": ["Space Grotesk"]
+          },
+          "fontSize": {
+            "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+            "label-caps": ["11px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+            "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "200"}],
+            "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "300"}],
+            "data-display": ["18px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "400"}]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+      font-size: 20px;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 2px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #131313; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #3a494b; }
+    .glow-cyan { text-shadow: 0 0 8px rgba(0, 242, 255, 0.5); }
+    .border-glow { box-shadow: 0 0 2px #00F2FF; }
+  </script>
+</head>
+<body class="bg-background text-on-background font-body-sm overflow-hidden h-screen flex flex-col">
+
+  <!-- TopNavBar Implementation -->
+  <header class="bg-black text-cyan-400 font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-light docked full-width top-0 border-b border-cyan-900/50 flex justify-between items-center w-full px-2 h-12 z-50">
+    <div class="flex items-center gap-4">
+      <span class="text-lg font-bold tracking-widest text-cyan-400">AV-X COMMAND</span>
+      <nav class="flex h-full">
+        <a href="#" class="px-4 h-12 flex items-center text-slate-400 border-b border-transparent hover:bg-cyan-950/30 hover:text-white transition-colors duration-100">HUD</a>
+        <a href="#" class="px-4 h-12 flex items-center text-cyan-400 border-b border-cyan-400 bg-cyan-950/20 shadow-[0_0_2px_#00F2FF]">NAV</a>
+        <a href="#" class="px-4 h-12 flex items-center text-slate-400 border-b border-transparent hover:bg-cyan-950/30 hover:text-white transition-colors duration-100">SYS</a>
+        <a href="#" class="px-4 h-12 flex items-center text-slate-400 border-b border-transparent hover:bg-cyan-950/30 hover:text-white transition-colors duration-100">FLT</a>
+        <a href="#" class="px-4 h-12 flex items-center text-slate-400 border-b border-transparent hover:bg-cyan-950/30 hover:text-white transition-colors duration-100">ADM</a>
+      </nav>
+    </div>
+    
+    <div class="flex items-center gap-2">
+      <div class="relative group">
+        <span class="material-symbols-outlined text-cyan-400 p-2 cursor-pointer hover:bg-cyan-950/30">notifications_active</span>
+      </div>
+      <div class="flex items-center gap-2 px-2 border-l border-cyan-900/50 h-6">
+        <span class="material-symbols-outlined text-cyan-400 cursor-pointer">account_circle</span>
+        <span class="text-[10px] tracking-widest">PILOT ID-8821</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex flex-1 overflow-hidden">
+    
+    <!-- SideNavBar Implementation -->
+    <aside class="bg-black text-cyan-400 font-['Space_Grotesk'] text-[10px] tracking-widest uppercase docked h-full left-0 border-r border-cyan-900/50 flex flex-col w-20 py-4 items-center gap-6 z-40">
+      <div class="flex flex-col gap-1 items-center mb-4">
+        <div class="w-10 h-10 border border-cyan-900/50 flex items-center justify-center">
+          <span class="material-symbols-outlined text-cyan-500">radar</span>
+        </div>
+        <span class="text-[8px] text-cyan-800">STR-1</span>
+      </div>
+
+      <nav class="flex flex-col w-full gap-2">
+        <button class="flex flex-col items-center py-3 w-full text-slate-500 border-l-2 border-transparent hover:bg-cyan-900/20 hover:text-cyan-300">
+          <span class="material-symbols-outlined mb-1">monitor_heart</span>
+          <span class="scale-75">DIAG</span>
+        </button>
+        <button class="flex flex-col items-center py-3 w-full text-slate-500 border-l-2 border-transparent hover:bg-cyan-900/20 hover:text-cyan-300">
+          <span class="material-symbols-outlined mb-1">menu_book</span>
+          <span class="scale-75">LIB</span>
+        </button>
+        <button class="flex flex-col items-center py-3 w-full border-l-2 border-cyan-400 bg-cyan-950/10 text-cyan-400 ring-inset ring-1 ring-cyan-400/50">
+          <span class="material-symbols-outlined mb-1">dataset</span>
+          <span class="scale-75">FLEET</span>
+        </button>
+        <button class="flex flex-col items-center py-3 w-full text-slate-500 border-l-2 border-transparent hover:bg-cyan-900/20 hover:text-cyan-300">
+          <span class="material-symbols-outlined mb-1">forum</span>
+          <span class="scale-75">BRIEF</span>
+        </button>
+        <button class="flex flex-col items-center py-3 w-full text-slate-500 border-l-2 border-transparent hover:bg-cyan-900/20 hover:text-cyan-300">
+          <span class="material-symbols-outlined mb-1">help_center</span>
+          <span class="scale-75">FAQ</span>
+        </button>
+        <button class="flex flex-col items-center py-3 w-full text-slate-500 border-l-2 border-transparent hover:bg-cyan-900/20 hover:text-cyan-300">
+          <span class="material-symbols-outlined mb-1">settings_input_component</span>
+          <span class="scale-75">TELEM</span>
+        </button>
+      </nav>
+
+      <div class="mt-auto flex flex-col w-full gap-4 pb-4">
+        <button class="flex flex-col items-center w-full text-error opacity-60 hover:opacity-100 transition-opacity">
+          <span class="material-symbols-outlined">emergency_home</span>
+          <span class="text-[8px] mt-1">EMER</span>
+        </button>
+        <button class="flex flex-col items-center w-full text-slate-500 hover:text-white transition-colors">
+          <span class="material-symbols-outlined">lock</span>
+          <span class="text-[8px] mt-1">LOCK</span>
+        </button>
+      </div>
+    </aside>
+
+    <!-- Main Content Area: Map + Sidebar Cluster -->
+    <main class="flex-1 flex overflow-hidden bg-background relative">
+      
+      <!-- Background Grid Overlay -->
+      <div class="absolute inset-0 pointer-events-none opacity-5" style="background-image: linear-gradient(#00f2ff 1px, transparent 1px), linear-gradient(90deg, #00f2ff 1px, transparent 1px); background-size: 40px 40px;"></div>
+
+      <!-- Left Section: Flight Planning Sidebar -->
+      <section class="w-[400px] border-r border-cyan-900/30 flex flex-col bg-surface-container-lowest/80 backdrop-blur-sm z-30 overflow-y-auto custom-scrollbar">
+        
+        <!-- Flight Summary -->
+        <div class="p-6 border-b border-cyan-900/30">
+          <div class="flex justify-between items-start mb-6">
+            <div>
+              <h1 class="font-headline-md text-cyan-400 uppercase tracking-widest glow-cyan">FLIGHT PLAN: SP-772</h1>
+              <p class="font-label-caps text-slate-500 mt-1">MISSION PARAMETERS: HIGH ALTITUDE INTERCEPT</p>
+            </div>
+            <span class="bg-cyan-950 text-cyan-400 border border-cyan-400/50 px-2 py-1 text-[10px] font-bold animate-pulse">ACTIVE</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-4">
+            <div class="border border-cyan-900/30 p-3 bg-black/40">
+              <span class="font-label-caps text-slate-500 block mb-1">DEPARTURE</span>
+              <span class="font-data-display text-primary uppercase">KLAX - 08L</span>
+            </div>
+            <div class="border border-cyan-900/30 p-3 bg-black/40">
+              <span class="font-label-caps text-slate-500 block mb-1">ARRIVAL</span>
+              <span class="font-data-display text-primary uppercase">KJFK - 04R</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Waypoint List -->
+        <div class="p-6 flex-1">
+          <div class="flex items-center justify-between mb-4">
+            <h2 class="font-label-caps text-cyan-400 border-l-2 border-cyan-400 pl-2">WAYPOINT SEQUENCING</h2>
+            <button class="text-cyan-400 hover:text-white flex items-center gap-1 text-[10px] font-bold">
+              <span class="material-symbols-outlined !text-[14px]">add_circle</span>
+              ADD POINT
+            </button>
+          </div>
+
+          <div class="space-y-1">
+            <!-- Waypoint Row -->
+            <div class="group flex items-center gap-3 p-3 border-l border-cyan-900/30 hover:bg-cyan-950/10 hover:border-cyan-400 transition-all cursor-pointer">
+              <div class="w-8 h-8 border border-cyan-900/30 flex items-center justify-center font-bold text-xs text-slate-500 group-hover:text-cyan-400">01</div>
+              <div class="flex-1">
+                <div class="flex justify-between items-baseline">
+                  <span class="font-data-display text-sm text-on-surface">VADRR</span>
+                  <span class="font-label-caps text-[9px] text-slate-500">HDG 042° / 122NM</span>
+                </div>
+                <div class="flex gap-4 mt-1">
+                  <span class="text-[10px] font-mono text-cyan-800">ALT: <span class="text-cyan-500">32,000FT</span></span>
+                  <span class="text-[10px] font-mono text-cyan-800">SPD: <span class="text-cyan-500">M 0.82</span></span>
+                </div>
+              </div>
+              <span class="material-symbols-outlined text-slate-700 opacity-0 group-hover:opacity-100">drag_indicator</span>
+            </div>
+
+            <!-- Active Waypoint -->
+            <div class="group flex items-center gap-3 p-3 border-l-2 border-cyan-400 bg-cyan-950/20 shadow-[inset_0_0_8px_rgba(0,242,255,0.05)] cursor-pointer">
+              <div class="w-8 h-8 border border-cyan-400 flex items-center justify-center font-bold text-xs text-cyan-400">02</div>
+              <div class="flex-1">
+                <div class="flex justify-between items-baseline">
+                  <span class="font-data-display text-sm text-primary">BOLDR</span>
+                  <span class="font-label-caps text-[9px] text-cyan-400">HDG 045° / 84NM</span>
+                </div>
+                <div class="flex gap-4 mt-1">
+                  <span class="text-[10px] font-mono text-cyan-500">ALT: <span class="text-primary">34,000FT</span></span>
+                  <span class="text-[10px] font-mono text-cyan-500">SPD: <span class="text-primary">M 0.85</span></span>
+                </div>
+              </div>
+              <div class="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_#00F2FF]"></div>
+            </div>
+
+            <div class="group flex items-center gap-3 p-3 border-l border-cyan-900/30 hover:bg-cyan-950/10 hover:border-cyan-400 transition-all cursor-pointer">
+              <div class="w-8 h-8 border border-cyan-900/30 flex items-center justify-center font-bold text-xs text-slate-500">03</div>
+              <div class="flex-1">
+                <div class="flex justify-between items-baseline">
+                  <span class="font-data-display text-sm text-on-surface">ZAVIS</span>
+                  <span class="font-label-caps text-[9px] text-slate-500">HDG 048° / 205NM</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fuel & Telemetry Calculations -->
+        <div class="p-6 bg-surface-container-low/50 border-t border-cyan-900/30">
+          <h2 class="font-label-caps text-slate-500 mb-4">SYSTEMS FORECAST</h2>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between text-[10px] font-bold mb-1">
+                <span class="text-slate-400">FUEL CONSUMPTION (REMAINING)</span>
+                <span class="text-cyan-400">62%</span>
+              </div>
+              <div class="w-full h-1 bg-surface-container-high relative">
+                <div class="absolute top-0 left-0 h-full bg-cyan-400 shadow-[0_0_4px_#00F2FF]" style="width: 62%;"></div>
+              </div>
+            </div>
+            
+            <div class="grid grid-cols-2 gap-2">
+              <div class="border border-cyan-900/20 p-2">
+                <span class="block text-[8px] text-slate-600 uppercase">Est. Landing Fuel</span>
+                <span class="font-data-display text-primary text-sm">4,200 LBS</span>
+              </div>
+              <div class="border border-cyan-900/20 p-2">
+                <span class="block text-[8px] text-slate-600 uppercase">Payload Weight</span>
+                <span class="font-data-display text-primary text-sm">18,400 LBS</span>
+              </div>
+            </div>
+
+            <button class="w-full py-3 border border-cyan-400/50 text-cyan-400 font-label-caps text-xs tracking-[0.2em] hover:bg-cyan-400 hover:text-black transition-all">
+              COMMIT FLIGHT DATA
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Right Section: Tactical Map Area -->
+      <section class="flex-1 relative overflow-hidden bg-black">
+        
+        <!-- The Main Map Image -->
+        <div class="absolute inset-0">
+          <img src="https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&q=80&w=2000" 
+               class="w-full h-full object-cover opacity-40 grayscale contrast-125"
+               data-alt="A highly detailed satellite view of a geographic terrain at night, featuring a dark monochromatic aesthetic with deep shadows and sharp contrast. The landscape is overlaid with a digital neon cyan grid system, tactical flight path vectors, and glowing telemetry markers. Thin technical linework and crosshair graphics frame the composition, creating a professional mission control or advanced glass cockpit interface mood." />
+          
+          <!-- Tactical Overlay Canvas (Simulated with SVGs/Divs) -->
+          <svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 200,400 L 400,300 L 700,200 L 900,450" fill="none" stroke="#00f2ff" stroke-width="2" stroke-dasharray="8 4" opacity="0.6" />
+            <circle cx="200" cy="400" r="4" fill="#00f2ff" />
+            <circle cx="400" cy="300" r="4" fill="#00f2ff" />
+            <circle cx="700" cy="200" r="6" fill="#00f2ff" class="animate-pulse" />
+            <circle cx="700" cy="200" r="12" fill="none" stroke="#00f2ff" stroke-width="1" opacity="0.5" />
+            <circle cx="900" cy="450" r="4" fill="#00f2ff" />
+          </svg>
+        </div>
+
+        <!-- Floating HUD Elements -->
+        
+        <!-- Top Left: Coordinates -->
+        <div class="absolute top-8 left-8 border-l border-t border-cyan-400/30 p-4 bg-black/40 backdrop-blur-sm">
+          <div class="flex gap-4">
+            <div>
+              <span class="block text-[8px] text-cyan-700 font-bold uppercase">Lat</span>
+              <span class="font-mono text-cyan-400 text-sm">34.0522° N</span>
+            </div>
+            <div>
+              <span class="block text-[8px] text-cyan-700 font-bold uppercase">Lon</span>
+              <span class="font-mono text-cyan-400 text-sm">118.2437° W</span>
+            </div>
+            <div>
+              <span class="block text-[8px] text-cyan-700 font-bold uppercase">Hdgn</span>
+              <span class="font-mono text-cyan-400 text-sm">042°</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Right: Weather/Sat Status -->
+        <div class="absolute top-8 right-8 flex flex-col gap-4 items-end">
+          <div class="border border-cyan-900/30 bg-black/60 p-4 w-48 backdrop-blur-md">
+            <div class="flex items-center justify-between mb-2">
+              <span class="font-label-caps text-[10px] text-slate-500">SATCOM LNK</span>
+              <div class="flex gap-1">
+                <div class="w-1 h-3 bg-cyan-400"></div>
+                <div class="w-1 h-3 bg-cyan-400"></div>
+                <div class="w-1 h-3 bg-cyan-400"></div>
+                <div class="w-1 h-3 bg-cyan-900"></div>
+              </div>
+            </div>
+            <div class="text-[10px] text-cyan-600 font-mono">ENCRYPTED // CHANNEL 8A</div>
+          </div>
+
+          <div class="border border-cyan-900/30 bg-black/60 p-4 w-48 backdrop-blur-md">
+            <h3 class="font-label-caps text-[10px] text-slate-500 mb-2">LOCAL METAR</h3>
+            <div class="flex justify-between items-baseline">
+              <span class="text-lg font-data-display text-primary">240/12KT</span>
+              <span class="text-[10px] text-cyan-500">CAVOK</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Center: Horizontal Situational Indicator (Partial) -->
+        <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2">
+          <div class="flex items-end gap-1 mb-2">
+            <div class="w-[1px] h-4 bg-cyan-900"></div>
+            <div class="w-[1px] h-6 bg-cyan-900"></div>
+            <div class="w-[1px] h-4 bg-cyan-900"></div>
+            <div class="w-[1px] h-10 bg-cyan-400"></div>
+            <div class="w-[1px] h-4 bg-cyan-900"></div>
+            <div class="w-[1px] h-6 bg-cyan-900"></div>
+            <div class="w-[1px] h-4 bg-cyan-900"></div>
+          </div>
+          <div class="px-6 py-2 border-x border-t border-cyan-400/50 bg-black/60 backdrop-blur-sm">
+            <span class="font-data-display text-2xl text-cyan-400 tracking-widest glow-cyan">345°</span>
+            <span class="text-[10px] text-slate-500 ml-2 font-bold uppercase tracking-widest">COURSE TO BOLDR</span>
+          </div>
+        </div>
+
+        <!-- Bottom Left: Legend/Tools -->
+        <div class="absolute bottom-8 left-8 flex gap-2">
+          <button class="w-10 h-10 border border-cyan-400/30 bg-black/60 flex items-center justify-center text-cyan-400 hover:border-cyan-400 hover:bg-cyan-950/20">
+            <span class="material-symbols-outlined">zoom_in</span>
+          </button>
+          <button class="w-10 h-10 border border-cyan-400/30 bg-black/60 flex items-center justify-center text-cyan-400 hover:border-cyan-400 hover:bg-cyan-950/20">
+            <span class="material-symbols-outlined">zoom_out</span>
+          </button>
+          <button class="w-10 h-10 border border-cyan-400/30 bg-black/60 flex items-center justify-center text-cyan-400 hover:border-cyan-400 hover:bg-cyan-950/20">
+            <span class="material-symbols-outlined">layers</span>
+          </button>
+          <button class="px-4 h-10 border border-cyan-400/30 bg-black/60 flex items-center gap-2 text-cyan-400 font-label-caps text-[10px] hover:border-cyan-400 hover:bg-cyan-950/20">
+            <span class="material-symbols-outlined !text-[16px]">location_on</span>
+            CENTER MAP
+          </button>
+        </div>
+
+        <!-- Corner HUD Pips -->
+        <div class="absolute top-0 left-0 w-8 h-8 border-l-2 border-t-2 border-cyan-400/50 m-4"></div>
+        <div class="absolute top-0 right-0 w-8 h-8 border-r-2 border-t-2 border-cyan-400/50 m-4"></div>
+        <div class="absolute bottom-0 left-0 w-8 h-8 border-l-2 border-b-2 border-cyan-400/50 m-4"></div>
+        <div class="absolute bottom-0 right-0 w-8 h-8 border-r-2 border-b-2 border-cyan-400/50 m-4"></div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Footer Stats Bar -->
+  <footer class="h-8 bg-black border-t border-cyan-900/50 flex items-center justify-between px-6 z-50">
+    <div class="flex items-center gap-6">
+      <div class="flex items-center gap-2">
+        <div class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
+        <span class="text-[9px] font-mono text-emerald-500">GPS LOCK: PRECISION 0.8m</span>
+      </div>
+      <div class="flex items-center gap-2 border-l border-cyan-900/50 pl-6">
+        <span class="text-[9px] font-mono text-slate-500 uppercase tracking-widest">SYSTEM UPTIME: <span class="text-cyan-400">08:12:44</span></span>
+      </div>
+    </div>
+    <div class="flex items-center gap-4">
+      <span class="text-[9px] font-mono text-cyan-800 uppercase">SERVER CLUSTER: NA-WEST-4</span>
+      <span class="text-[10px] font-mono text-cyan-400 font-bold">ALPHA-V.88.2</span>
+    </div>
+  </footer>
+
+</body>
+</html></style></head><body></body></html>

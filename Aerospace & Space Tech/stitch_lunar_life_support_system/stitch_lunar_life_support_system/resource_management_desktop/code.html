@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUNAR_OS // RESOURCE_MANAGEMENT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Space+Grotesk:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error": "#690005",
+                        "secondary-container": "#46464b",
+                        "on-surface": "#e4e2e4",
+                        "on-secondary": "#2f3034",
+                        "surface-container-highest": "#353437",
+                        "surface": "#131315",
+                        "outline-variant": "#5d3f3b",
+                        "on-surface-variant": "#e7bdb7",
+                        "on-primary-container": "#5c0002",
+                        "on-primary-fixed": "#410001",
+                        "inverse-primary": "#c0000a",
+                        "on-background": "#e4e2e4",
+                        "on-secondary-fixed": "#1a1b1f",
+                        "tertiary": "#c8c6c8",
+                        "on-error-container": "#ffdad6",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e4e2e4",
+                        "outline": "#ad8883",
+                        "on-tertiary-container": "#29292b",
+                        "on-tertiary-fixed": "#1b1b1d",
+                        "primary": "#ffb4aa",
+                        "on-tertiary": "#303032",
+                        "on-primary-fixed-variant": "#930005",
+                        "surface-bright": "#39393b",
+                        "surface-container": "#1f1f21",
+                        "inverse-on-surface": "#303032",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#474649",
+                        "background": "#131315",
+                        "surface-container-lowest": "#0e0e10",
+                        "inverse-surface": "#e4e2e4",
+                        "primary-fixed-dim": "#ffb4aa",
+                        "on-secondary-fixed-variant": "#46464b",
+                        "on-secondary-container": "#b5b4ba",
+                        "tertiary-container": "#919092",
+                        "primary-fixed": "#ffdad5",
+                        "tertiary-fixed-dim": "#c8c6c8",
+                        "surface-container-low": "#1b1b1d",
+                        "primary-container": "#ff5545",
+                        "surface-variant": "#353437",
+                        "surface-dim": "#131315",
+                        "secondary-fixed": "#e3e2e7",
+                        "on-primary": "#690003",
+                        "surface-tint": "#ffb4aa",
+                        "secondary-fixed-dim": "#c6c6cb",
+                        "secondary": "#c6c6cb",
+                        "surface-container-high": "#2a2a2c"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "margin": "32px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "display-hero": ["Space Grotesk"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "data-readout": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "display-hero": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "data-readout": ["24px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131315; }
+        ::-webkit-scrollbar-thumb { background: #5d3f3b; }
+        .pulse-critical { animation: pulse 1s infinite alternate; }
+        @keyframes pulse {
+            from { opacity: 1; border-color: #ffb4ab; }
+            to { opacity: 0.5; border-color: #93000a; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary overflow-hidden">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-screen w-64 flex flex-col bg-surface-container-low border-r border-outline-variant z-50">
+<div class="p-6">
+<h1 class="font-display-hero text-headline-lg text-on-surface leading-none">BASE_STATION_ALPHA</h1>
+<p class="font-label-caps text-on-surface-variant mt-2">SECTOR_7_LUNAR_SOUTH</p>
+</div>
+<nav class="flex-1 mt-4">
+<div class="bg-secondary-container text-on-secondary-container border-r-2 border-primary flex items-center px-4 py-3 scale-[0.99] cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="database">database</span>
+<span class="font-label-caps">Resources</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="security">security</span>
+<span class="font-label-caps">Integrity</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="rocket_launch">rocket_launch</span>
+<span class="font-label-caps">EVA</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="public">public</span>
+<span class="font-label-caps">Earth Comms</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-caps">Admin</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="help">help</span>
+<span class="font-label-caps">FAQ</span>
+</div>
+</nav>
+<footer class="border-t border-outline-variant p-2">
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="terminal">terminal</span>
+<span class="font-label-caps">System Logs</span>
+</div>
+<div class="text-on-surface-variant flex items-center px-4 py-3 hover:bg-surface-container-high transition-colors duration-100 cursor-pointer">
+<span class="material-symbols-outlined mr-3" data-icon="analytics">analytics</span>
+<span class="font-label-caps">Diagnostics</span>
+</div>
+<div class="mt-4 px-4 pb-4 flex items-center">
+<div class="w-8 h-8 rounded-full bg-outline-variant flex items-center justify-center mr-3">
+<span class="material-symbols-outlined text-[18px]" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-label-caps text-on-surface leading-none">CDR. SHEPARD</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Mission Commander</p>
+</div>
+</div>
+</footer>
+</aside>
+<!-- Main Content Shell -->
+<div class="ml-64 flex flex-col h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center h-16 px-gutter w-full bg-surface border-b border-outline-variant z-40">
+<div class="flex items-center space-x-4">
+<span class="font-display-hero text-headline-lg text-primary tracking-tighter">LUNAR_OS // MONITOR_v2.4</span>
+<span class="h-4 w-px bg-outline-variant"></span>
+<span class="font-label-caps text-primary border-b-2 border-primary py-4 mt-1">Resource Management</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="font-data-readout text-data-readout text-primary">
+<span class="font-label-caps text-[10px] opacity-70 block">MISSION_CLOCK</span>
+                    412:14:55:02
+                </div>
+<div class="flex items-center gap-4 text-primary">
+<button class="hover:bg-surface-container-high p-2 transition-colors duration-150 relative">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-error rounded-full border border-surface"></span>
+</button>
+<button class="hover:bg-surface-container-high p-2 transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="wifi_tethering">wifi_tethering</span>
+</button>
+<button class="hover:bg-surface-container-high p-2 transition-colors duration-150">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 p-6 overflow-y-auto bg-background">
+<div class="grid grid-cols-12 gap-4">
+<!-- CRITICAL ALERTS -->
+<div class="col-span-12 mb-2">
+<div class="bg-error-container/20 border-l-4 border-error p-4 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-error pulse-critical" data-icon="warning">warning</span>
+<div>
+<p class="font-label-caps text-error">CRITICAL ALERT: SECTOR_4 O2 SCRUBBER EFFICIENCY REDUCED</p>
+<p class="text-[12px] text-on-error-container">Oxygen recovery dropped below 84%. Backup scrubbers initialized in Habitat B.</p>
+</div>
+</div>
+<button class="px-4 py-1 border border-error text-error font-label-caps hover:bg-error hover:text-on-error transition-colors">ACKNOWLEDGE</button>
+</div>
+</div>
+<!-- MAIN GAUGES -->
+<!-- Power Gauge -->
+<div class="col-span-4 bg-surface-container p-4 border border-outline-variant flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-on-surface-variant">POWER_GRID_STABILITY</span>
+<span class="font-data-readout text-primary">98.4%</span>
+</div>
+<div class="flex-1 flex flex-col justify-center items-center py-4">
+<!-- Custom Radial Gauge Visualization -->
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-surface-container-highest" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary" cx="50%" cy="50%" fill="transparent" r="45%" stroke="currentColor" stroke-dasharray="283" stroke-dashoffset="15" stroke-width="8"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-data-readout text-headline-lg">12.4</span>
+<span class="font-label-caps text-[10px]">MW / HR</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 mt-4 pt-4 border-t border-outline-variant">
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">SOLAR_INPUT</p>
+<p class="font-data-readout text-[18px]">15.1 MW</p>
+</div>
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">DRAIN_RATE</p>
+<p class="font-data-readout text-[18px] text-error">-2.7 MW</p>
+</div>
+</div>
+</div>
+<!-- Oxygen Gauge -->
+<div class="col-span-4 bg-surface-container p-4 border border-outline-variant flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-on-surface-variant">O2_ATMOSPHERE_SATURATION</span>
+<span class="font-data-readout text-primary">21.0%</span>
+</div>
+<div class="flex-1 flex flex-col justify-center space-y-4">
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>PRIMARY_STORAGE</span>
+<span>88%</span>
+</div>
+<div class="h-4 bg-surface-container-highest flex gap-1 p-[2px]">
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary"></div>
+<div class="flex-1 bg-primary/20"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>RESERVE_TANKS</span>
+<span>100%</span>
+</div>
+<div class="h-4 bg-surface-container-highest flex gap-1 p-[2px]">
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+<div class="flex-1 bg-secondary"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between font-label-caps text-[10px]">
+<span>CO2_SCRUBBERS</span>
+<span class="text-error">CRITICAL</span>
+</div>
+<div class="h-4 bg-surface-container-highest flex gap-1 p-[2px]">
+<div class="flex-1 bg-error pulse-critical"></div>
+<div class="flex-1 bg-error/20"></div>
+<div class="flex-1 bg-error/20"></div>
+<div class="flex-1 bg-error/20"></div>
+<div class="flex-1 bg-error/20"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant">
+<p class="text-[10px] font-label-caps text-on-surface-variant">ESTIMATED_REMAINING (STP)</p>
+<p class="font-data-readout">4,284 HOURS</p>
+</div>
+</div>
+<!-- Water Gauge -->
+<div class="col-span-4 bg-surface-container p-4 border border-outline-variant flex flex-col">
+<div class="flex justify-between items-start mb-6">
+<span class="font-label-caps text-on-surface-variant">WATER_RECLAMATION</span>
+<span class="font-data-readout text-primary">92.1%</span>
+</div>
+<div class="flex-1">
+<div class="relative h-full w-full bg-surface-container-low border border-outline-variant overflow-hidden">
+<!-- Water level visualization -->
+<div class="absolute bottom-0 left-0 w-full bg-primary/20 h-[92%] transition-all duration-1000"></div>
+<div class="absolute top-0 left-0 w-full h-full flex flex-col">
+<div class="flex-1 border-b border-outline-variant/30 flex items-end px-2 pb-1 font-label-caps text-[8px] text-on-surface-variant">100k L</div>
+<div class="flex-1 border-b border-outline-variant/30 flex items-end px-2 pb-1 font-label-caps text-[8px] text-on-surface-variant">75k L</div>
+<div class="flex-1 border-b border-outline-variant/30 flex items-end px-2 pb-1 font-label-caps text-[8px] text-on-surface-variant">50k L</div>
+<div class="flex-1 border-b border-outline-variant/30 flex items-end px-2 pb-1 font-label-caps text-[8px] text-on-surface-variant">25k L</div>
+<div class="flex-1 flex items-end px-2 pb-1 font-label-caps text-[8px] text-on-surface-variant">0 L</div>
+</div>
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<p class="font-data-readout text-headline-lg">92,104<span class="text-sm ml-1">L</span></p>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-outline-variant flex justify-between">
+<div>
+<p class="text-[10px] font-label-caps text-on-surface-variant">DAILY_LOSS</p>
+<p class="font-data-readout text-[18px]">14.2 L</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-label-caps text-on-surface-variant">RECYCLING_STATUS</p>
+<p class="font-data-readout text-[18px] text-secondary">OPTIMAL</p>
+</div>
+</div>
+</div>
+<!-- GRID MANAGEMENT & CONTROLS -->
+<div class="col-span-8 grid grid-cols-2 gap-4">
+<div class="bg-surface-container p-4 border border-outline-variant">
+<h2 class="font-label-caps text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="settings_input_component">settings_input_component</span>
+                            Grid Management
+                        </h2>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-2 bg-surface-container-low border border-outline-variant">
+<div>
+<p class="font-label-caps text-[10px]">HABITAT_CORE</p>
+<p class="text-[12px] text-on-surface-variant">Operational Stability: 100%</p>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-on-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-low border border-outline-variant">
+<div>
+<p class="font-label-caps text-[10px]">RESEARCH_WING</p>
+<p class="text-[12px] text-on-surface-variant">Operational Stability: 92%</p>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-on-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex items-center justify-between p-2 bg-surface-container-low border border-outline-variant opacity-60">
+<div>
+<p class="font-label-caps text-[10px]">HYDROPONICS_B</p>
+<p class="text-[12px] text-on-surface-variant">Low Power Mode Enabled</p>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest rounded-full relative cursor-pointer">
+<div class="absolute left-1 top-1 w-4 h-4 bg-on-surface-variant rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container p-4 border border-outline-variant flex flex-col">
+<h2 class="font-label-caps text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="bolt">bolt</span>
+                            System Controls
+                        </h2>
+<div class="flex-1 flex flex-col gap-4">
+<button class="w-full flex-1 border border-outline-variant flex flex-col items-center justify-center p-4 hover:bg-surface-container-high transition-all group">
+<span class="material-symbols-outlined text-3xl mb-2 group-hover:scale-110 transition-transform" data-icon="emergency_share">emergency_share</span>
+<span class="font-label-caps text-on-surface">Initiate Reserve</span>
+<span class="text-[10px] text-on-surface-variant mt-1 uppercase tracking-widest">Auth Required</span>
+</button>
+<div class="grid grid-cols-2 gap-2">
+<button class="border border-outline-variant p-3 font-label-caps text-[10px] hover:bg-primary hover:text-on-primary transition-colors">PURGE_VALVES</button>
+<button class="border border-outline-variant p-3 font-label-caps text-[10px] hover:bg-primary hover:text-on-primary transition-colors">RESET_SCRUBBERS</button>
+</div>
+</div>
+</div>
+</div>
+<!-- SYSTEM LOGS -->
+<div class="col-span-4 bg-surface-container p-4 border border-outline-variant flex flex-col max-h-[400px]">
+<h2 class="font-label-caps text-on-surface mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="list_alt">list_alt</span>
+                        System Logs
+                    </h2>
+<div class="flex-1 overflow-y-auto space-y-2 font-mono text-[10px]">
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:55:02</span>
+<span class="text-secondary">[INFO]</span>
+<span>Water reclamation cycle completed. Recovery: 98.2%.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:52:11</span>
+<span class="text-error">[CRITICAL]</span>
+<span class="text-error">Sector_4 O2 Scrubber efficiency below threshold.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:48:45</span>
+<span class="text-primary">[STATUS]</span>
+<span>Solar Array 4 angled to 42.5 deg (Max Yield).</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:30:00</span>
+<span class="text-secondary">[INFO]</span>
+<span>Scheduled diagnostics: Power Grid stability - OK.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:15:22</span>
+<span class="text-secondary">[INFO]</span>
+<span>Hydroponics_B entering Low Power Mode.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">14:02:11</span>
+<span class="text-primary">[STATUS]</span>
+<span>Thermal shielding integrity check: 100%.</span>
+</div>
+<div class="flex gap-2">
+<span class="text-on-surface-variant">13:55:00</span>
+<span class="text-secondary">[INFO]</span>
+<span>System heartbeat nominal.</span>
+</div>
+</div>
+<div class="mt-4 pt-2 border-t border-outline-variant">
+<div class="flex bg-surface-container-low border border-outline-variant px-2 py-1 items-center">
+<span class="text-[10px] text-primary mr-2">&gt;</span>
+<input class="bg-transparent border-none focus:ring-0 text-[10px] text-on-surface flex-1 placeholder-on-surface-variant/30" placeholder="ENTER_COMMAND..." type="text"/>
+</div>
+</div>
+</div>
+<!-- ASYMMETRIC VISUALIZATION (BOTTOM) -->
+<div class="col-span-12 grid grid-cols-12 gap-4">
+<div class="col-span-3 bg-surface-container border border-outline-variant p-4">
+<p class="font-label-caps text-[10px] text-on-surface-variant mb-2">THERMAL_EQUILIBRIUM</p>
+<div class="flex items-end gap-1 h-24">
+<div class="flex-1 bg-primary/40 h-[60%]"></div>
+<div class="flex-1 bg-primary/40 h-[65%]"></div>
+<div class="flex-1 bg-primary/40 h-[62%]"></div>
+<div class="flex-1 bg-primary h-[80%]"></div>
+<div class="flex-1 bg-primary/40 h-[55%]"></div>
+<div class="flex-1 bg-primary/40 h-[58%]"></div>
+<div class="flex-1 bg-primary/40 h-[60%]"></div>
+</div>
+<p class="font-data-readout text-[18px] mt-2">22.4°C</p>
+</div>
+<div class="col-span-9 bg-surface-container border border-outline-variant p-4 relative overflow-hidden">
+<div class="absolute inset-0 opacity-10">
+<div class="grid grid-cols-20 h-full w-full">
+<!-- Decorative Grid -->
+<div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div>
+<div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div><div class="border-r border-outline"></div>
+</div>
+</div>
+<div class="relative z-10 flex justify-between items-center h-full">
+<div>
+<p class="font-label-caps text-primary">HABITAT_VISUAL_MAP_V4</p>
+<p class="text-[12px] text-on-surface-variant mt-1 max-w-md">Real-time resource flow monitoring. All sectors reporting nominal except for Sector_4 scrubbing units. Adjusting primary flow to compensate for density loss.</p>
+</div>
+<div class="w-48 h-32 border border-outline-variant relative bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-50 grayscale contrast-125" data-alt="A highly detailed technical wireframe visualization of a futuristic lunar base habitat. The image shows a complex blueprint of modular structures, glowing data points, and resource conduits connecting various domes and tunnels. The lighting is low-key and high-contrast, emphasizing a sterile, technical UI aesthetic with sharp lines and neon-orange highlights." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAambzrV80uGTbzWCOqmd9xS5_HXy1AvriE8xreW-6Vo0QlhRM_edEbVIzXTXQITx59OdslbORSAENKWNs_ejOGU4ssaPpNVMt20xHJGNPbV395uOxsmUBGD3dJ6_CzbolgVtoWxLWmcEjffxtHGOemBD2Meo_irXMLE90B7gw7Nr29TH1C83ZcJBg_ncPhaq9i4uCG_81AHk8octY67OrvuNmpQ6OwN9fV2ubN3La8YH7KnlkGcf8glz6CVJFU_4qCbtUqj8gupnY"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-4 h-4 bg-error pulse-critical rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>

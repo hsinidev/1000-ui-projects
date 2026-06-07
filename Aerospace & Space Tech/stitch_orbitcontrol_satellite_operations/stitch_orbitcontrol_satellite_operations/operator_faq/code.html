@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ORBITCONTROL V1.0 | Operator Documentation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(12, 22, 10, 0.8);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(132, 150, 126, 0.2);
+        }
+        .laser-glow:hover {
+            box-shadow: 0 0 10px rgba(0, 230, 57, 0.4);
+        }
+        .warning-stripe {
+            background: repeating-linear-gradient(
+                45deg,
+                #93000a,
+                #93000a 10px,
+                #0c160a 10px,
+                #0c160a 20px
+            );
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "outline": "#84967e",
+                      "on-tertiary-fixed": "#181c22",
+                      "secondary": "#c6c6c6",
+                      "secondary-container": "#484949",
+                      "on-error-container": "#ffdad6",
+                      "error": "#ffb4ab",
+                      "surface-container-lowest": "#071106",
+                      "on-surface": "#dae6d2",
+                      "surface-container-high": "#222d20",
+                      "on-tertiary-container": "#5d6168",
+                      "primary-fixed": "#72ff70",
+                      "tertiary": "#f8f8ff",
+                      "on-surface-variant": "#b9ccb2",
+                      "surface-bright": "#313c2e",
+                      "surface": "#0c160a",
+                      "on-secondary": "#2f3131",
+                      "on-error": "#690005",
+                      "surface-dim": "#0c160a",
+                      "primary-fixed-dim": "#00e639",
+                      "tertiary-fixed": "#dfe2eb",
+                      "surface-tint": "#00e639",
+                      "on-primary-fixed-variant": "#00530e",
+                      "on-primary-container": "#007117",
+                      "background": "#0c160a",
+                      "tertiary-fixed-dim": "#c3c6cf",
+                      "surface-container-low": "#141e12",
+                      "surface-container": "#182216",
+                      "inverse-surface": "#dae6d2",
+                      "tertiary-container": "#d9dce5",
+                      "on-tertiary": "#2d3137",
+                      "primary": "#ebffe2",
+                      "on-secondary-container": "#b8b8b8",
+                      "outline-variant": "#3b4b37",
+                      "on-primary-fixed": "#002203",
+                      "primary-container": "#00ff41",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-primary": "#003907",
+                      "surface-variant": "#2d382a",
+                      "on-secondary-fixed-variant": "#464747",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "surface-container-highest": "#2d382a",
+                      "inverse-primary": "#006e16",
+                      "on-background": "#dae6d2",
+                      "error-container": "#93000a",
+                      "on-tertiary-fixed-variant": "#43474e",
+                      "inverse-on-surface": "#283326",
+                      "secondary-fixed": "#e3e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "margin": "24px",
+                      "gutter": "16px",
+                      "unit": "4px",
+                      "container-max": "100%",
+                      "density-medium": "16px",
+                      "density-high": "8px"
+              },
+              "fontFamily": {
+                      "body-standard": ["Inter"],
+                      "display-lg": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"],
+                      "data-mono": ["monospace"]
+              },
+              "fontSize": {
+                      "body-standard": ["14px", {"lineHeight": "22px", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "32px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "data-mono": ["16px", {"lineHeight": "20px", "letterSpacing": "0.02em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-standard overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 h-16 bg-surface/80 backdrop-blur-md border-b border-outline-variant flex justify-between items-center px-margin">
+<div class="flex items-center gap-gutter">
+<span class="font-display-lg text-headline-md font-bold text-primary-container tracking-widest">ORBITCONTROL_V1.0</span>
+<span class="text-on-surface-variant font-data-mono text-xs border border-outline-variant px-2 py-1">SYS_VER: 4.2.0-STABLE</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center bg-surface-container border border-outline-variant px-3 py-1 gap-2">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-caps text-on-surface uppercase w-48" placeholder="SEARCH_DATABASE..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all active:scale-95" data-icon="schedule">schedule</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all active:scale-95" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all active:scale-95" data-icon="settings_suggest">settings_suggest</span>
+<div class="h-8 w-8 rounded bg-surface-variant overflow-hidden border border-outline-variant">
+<img alt="Operator Alpha-01 Avatar" class="w-full h-full object-cover grayscale brightness-75" data-alt="A professional male satellite operator in a high-tech dark room with subtle green neon backlighting. He is wearing technical headsets and looking focused, with multiple glowing telemetry screens reflecting in his eyes. The overall aesthetic is dark, clinical, and authoritative, matching a high-stakes mission control environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAu_sOv3Y_v3prC5jEo0jJVL8Dh39Mvy0NjVy162D39AzPNIrg92n544QK3KE7PW9Ga7VvdiMclVpldDCgk654FZm1T8S3yCwJ2fVnD6-tDOdw9c6creJvHweiJuJqG8Ybj2x4IegOae3W9zVhnmaPw_C7xt0iMt9_Gt558Hhw41Z4Qi8RnNrv-mIEWjyiMEPOI_fdxTxiOH_HGA44QDzARY4TNN9RHXyCT_sFuaXJfFyVcFDdbooTh4-Jaj_y70mKqsaL3LJQLrw"/>
+</div>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 h-full w-64 z-40 bg-surface-container-low/90 backdrop-blur-xl border-r border-outline-variant flex flex-col pt-20 pb-margin">
+<div class="px-6 mb-8">
+<h2 class="font-display-lg text-headline-md text-primary-fixed-dim">ORBIT_ALPHA</h2>
+<p class="font-label-caps text-label-caps uppercase text-on-surface-variant opacity-70">STATUS: NOMINAL</p>
+</div>
+<div class="flex flex-col flex-1">
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="public">public</span>
+<span class="font-label-caps text-label-caps uppercase">Orbital Map</span>
+</a>
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps uppercase">Telemetry</span>
+</a>
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="ads_click">ads_click</span>
+<span class="font-label-caps text-label-caps uppercase">Maneuver</span>
+</a>
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="satellite_alt">satellite_alt</span>
+<span class="font-label-caps text-label-caps uppercase">Downlink</span>
+</a>
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span class="font-label-caps text-label-caps uppercase">Mission Logs</span>
+</a>
+<a class="flex items-center px-6 text-on-surface-variant hover:text-primary py-density-medium hover:bg-surface-variant/50 transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps uppercase">Fleet Admin</span>
+</a>
+<a class="flex items-center px-6 text-on-primary-fixed bg-primary-container border-r-4 border-primary-fixed-dim py-density-medium transition-all duration-150 active:brightness-125 gap-3" href="#">
+<span class="material-symbols-outlined" data-icon="help_center">help_center</span>
+<span class="font-label-caps text-label-caps uppercase">Docs</span>
+</a>
+</div>
+<div class="px-6 mt-auto flex flex-col gap-2">
+<button class="w-full py-2 bg-primary-container text-on-primary-fixed font-label-caps text-label-caps uppercase border border-primary-fixed-dim active:scale-95 transition-all">INITIATE MANEUVER</button>
+<div class="border-t border-outline-variant pt-4 flex flex-col gap-2">
+<a class="flex items-center gap-3 text-error font-label-caps text-label-caps uppercase hover:opacity-80 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="emergency_home">emergency_home</span>
+                    Emergency Stop
+                </a>
+<a class="flex items-center gap-3 text-on-surface-variant font-label-caps text-label-caps uppercase hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+                    Logout
+                </a>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pl-64 pt-16 min-h-screen">
+<div class="p-margin">
+<!-- Documentation Hero Header -->
+<div class="grid grid-cols-12 gap-gutter mb-margin">
+<div class="col-span-12 glass-panel border border-outline-variant p-8 relative overflow-hidden">
+<div class="absolute top-0 right-0 w-64 h-full opacity-10 pointer-events-none">
+<img alt="Vector Map Background" class="w-full h-full object-cover grayscale" data-alt="A detailed digital grid map of the Earth viewed from space, rendered in a clinical technical style with glowing green vector lines and data points. The atmosphere is dark and serene, with intricate orbital trajectories drawn as razor-thin silver lines. This is a high-fidelity scientific visualization for mission control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD1npc9T_KUNk8RUdVo_4-N9eDLoleTJ-_IV49mF2dCKdoDj7ka-6QFhIej5deVFAN2moGc56rHj93W_jIXlRoTRy0URI9WNTwPn6inUfPGaU6Oh7o1vyM5RYfjSknpWAdbc99WkGN6nwGs_i0Xy6l9dstZsN8j5TB7LDwjPP3mGmNWClxY7bWqCSjf13u5FxEmJvm2f35NA94zkH42qd6GQ4EduRM2tZyUI6lZfi940jC0aZk-TBJ4G5xTN_ajerg9Sv8o4BdAZw"/>
+</div>
+<div class="relative z-10">
+<span class="text-primary-fixed-dim font-label-caps text-label-caps bg-surface-variant px-2 py-1 border border-outline-variant">OPERATOR_MANUAL_V2.1</span>
+<h1 class="font-display-lg text-display-lg text-on-surface uppercase mt-4 mb-2 tracking-tighter">TECHNICAL_DATABASE</h1>
+<p class="max-w-2xl text-on-surface-variant font-body-standard leading-relaxed">
+                            Comprehensive procedural documentation for the ORBITAL CONTROL system. This manual contains mission-critical protocols, telemetry interpretation guides, and emergency response checklists. Operators must maintain strict adherence to these guidelines.
+                        </p>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-12 gap-gutter items-start">
+<!-- Left Column: Searchable Database & Protocols -->
+<div class="col-span-8 flex flex-col gap-gutter">
+<!-- Search Controls -->
+<div class="bg-surface-container border border-outline-variant p-4 flex gap-4">
+<div class="flex-1 border border-outline-variant bg-surface flex items-center px-3">
+<span class="material-symbols-outlined text-on-surface-variant mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-on-surface font-data-mono w-full text-sm" placeholder="FILTER_BY_PROTOCOL_ID..." type="text"/>
+</div>
+<button class="px-6 py-2 border border-outline-variant hover:bg-primary-container hover:text-on-primary-fixed transition-all font-label-caps text-label-caps">QUERY</button>
+</div>
+<!-- Accordion Mission Protocols -->
+<div class="flex flex-col gap-1">
+<!-- Protocol Item 1 -->
+<div class="border border-outline-variant bg-surface-container-low overflow-hidden group">
+<div class="p-4 flex items-center justify-between cursor-pointer hover:bg-surface-variant/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-primary-fixed-dim">P-702</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">ORBITAL_PHASING_PROCEDURE</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant transition-transform group-hover:rotate-180">expand_more</span>
+</div>
+<div class="p-4 border-t border-outline-variant bg-surface-container-lowest font-body-standard text-on-surface-variant">
+<div class="grid grid-cols-2 gap-4 mb-4">
+<div class="p-2 border border-outline-variant/30 bg-surface">
+<p class="text-[10px] text-outline font-bold uppercase mb-1">Pre-Check</p>
+<p class="font-data-mono text-xs">Acknowledge telemetry sync (SYNC_ID: 99x-1)</p>
+</div>
+<div class="p-2 border border-outline-variant/30 bg-surface">
+<p class="text-[10px] text-outline font-bold uppercase mb-1">Delta-V Req</p>
+<p class="font-data-mono text-xs">12.4 m/s nominal burn duration</p>
+</div>
+</div>
+<p class="mb-2">1. Initiate station-keeping handshake protocol via S-Band.</p>
+<p class="mb-2">2. Verify inertial guidance platform stability (Error margin &lt; 0.001%).</p>
+<p>3. Execute burn sequence upon passage of the perigee node.</p>
+</div>
+</div>
+<!-- Protocol Item 2 -->
+<div class="border border-outline-variant bg-surface-container-low overflow-hidden group">
+<div class="p-4 flex items-center justify-between cursor-pointer hover:bg-surface-variant/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-primary-fixed-dim">P-411</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">PAYLOAD_THERMAL_MANAGEMENT</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+<!-- Protocol Item 3 -->
+<div class="border border-outline-variant bg-surface-container-low overflow-hidden group">
+<div class="p-4 flex items-center justify-between cursor-pointer hover:bg-surface-variant/50 transition-colors">
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-primary-fixed-dim">P-882</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">SOLAR_ARRAY_DEPLOYMENT</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant">expand_more</span>
+</div>
+</div>
+</div>
+<!-- TLE Data Interpretation Guide -->
+<div class="glass-panel border border-outline-variant p-6 mt-4">
+<div class="flex items-center justify-between mb-4">
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase tracking-wider">TLE_SYNTAX_GUIDE</h3>
+<span class="material-symbols-outlined text-primary-fixed-dim">info</span>
+</div>
+<div class="bg-surface p-4 border border-outline-variant overflow-x-auto">
+<code class="font-data-mono text-sm leading-6 whitespace-pre text-primary-container">
+ISS (ZARYA)             
+1 25544U 98067A   23315.86438657  .00016717  00000-0  30421-3 0  9997
+2 25544  51.6424 233.1587 0004526  58.7416  24.4361 15.49845344424354
+                            </code>
+</div>
+<div class="grid grid-cols-3 gap-4 mt-4">
+<div class="text-xs">
+<p class="text-outline font-bold uppercase">Inclination</p>
+<p class="font-data-mono text-on-surface">51.6424°</p>
+</div>
+<div class="text-xs">
+<p class="text-outline font-bold uppercase">Eccentricity</p>
+<p class="font-data-mono text-on-surface">0.0004526</p>
+</div>
+<div class="text-xs">
+<p class="text-outline font-bold uppercase">Mean Motion</p>
+<p class="font-data-mono text-on-surface">15.4984 rev/day</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Column: Emergency Procedures & Status -->
+<div class="col-span-4 flex flex-col gap-gutter">
+<!-- Critical Alert Panel -->
+<div class="border border-error-container relative">
+<div class="h-2 warning-stripe"></div>
+<div class="bg-surface p-6">
+<div class="flex items-center gap-3 text-error mb-4">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h3 class="font-headline-md text-headline-md uppercase">EMERGENCY_DEORBIT</h3>
+</div>
+<ul class="flex flex-col gap-3 font-body-standard text-sm text-on-surface">
+<li class="flex items-start gap-3">
+<div class="h-5 w-5 border border-outline mt-0.5 flex items-center justify-center cursor-pointer hover:bg-error transition-colors"></div>
+<span>Initiate 'RED_LOCK' hardware override.</span>
+</li>
+<li class="flex items-start gap-3">
+<div class="h-5 w-5 border border-outline mt-0.5 flex items-center justify-center cursor-pointer hover:bg-error transition-colors"></div>
+<span>Vent propulsion oxidizer lines immediately.</span>
+</li>
+<li class="flex items-start gap-3">
+<div class="h-5 w-5 border border-outline mt-0.5 flex items-center justify-center cursor-pointer hover:bg-error transition-colors"></div>
+<span>Transmit termination signal via Deep Space Network.</span>
+</li>
+</ul>
+<button class="w-full mt-6 py-3 bg-error-container text-on-error-container font-label-caps text-label-caps uppercase border border-error hover:brightness-125 transition-all">EXECUTE TERMINATION</button>
+</div>
+<div class="h-2 warning-stripe"></div>
+</div>
+<!-- System Vital Signs -->
+<div class="bg-surface-container border border-outline-variant p-6">
+<h4 class="font-label-caps text-label-caps text-outline uppercase mb-4 border-b border-outline-variant pb-2">DATA_INTEGRITY</h4>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-xs uppercase font-bold text-on-surface-variant">Latency</span>
+<span class="font-data-mono text-primary-fixed-dim">14.2ms</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-primary-container" style="width: 85%;"></div>
+</div>
+<div class="flex justify-between items-end">
+<span class="text-xs uppercase font-bold text-on-surface-variant">Uplink Quality</span>
+<span class="font-data-mono text-primary-fixed-dim">99.8%</span>
+</div>
+<div class="h-1 bg-surface-variant w-full">
+<div class="h-full bg-primary-container" style="width: 99.8%;"></div>
+</div>
+</div>
+</div>
+<!-- Quick Help Guide -->
+<div class="bg-surface-container-high border border-outline-variant p-6">
+<h4 class="font-label-caps text-label-caps text-outline uppercase mb-4">FAQ_SHORTCUTS</h4>
+<div class="flex flex-col gap-2">
+<a class="text-xs text-on-surface-variant hover:text-primary-container flex items-center justify-between border border-outline-variant/20 p-2 group transition-all" href="#">
+<span>Reset Telemetry Feed</span>
+<span class="font-data-mono bg-surface px-1 border border-outline-variant text-[10px]">CMD + R</span>
+</a>
+<a class="text-xs text-on-surface-variant hover:text-primary-container flex items-center justify-between border border-outline-variant/20 p-2 group transition-all" href="#">
+<span>Export Maneuver Logs</span>
+<span class="font-data-mono bg-surface px-1 border border-outline-variant text-[10px]">CMD + E</span>
+</a>
+<a class="text-xs text-on-surface-variant hover:text-primary-container flex items-center justify-between border border-outline-variant/20 p-2 group transition-all" href="#">
+<span>Toggle Terminal View</span>
+<span class="font-data-mono bg-surface px-1 border border-outline-variant text-[10px]">CTRL + `</span>
+</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Stats Area -->
+<div class="mt-margin pt-gutter border-t border-outline-variant flex justify-between text-[10px] text-on-surface-variant font-data-mono">
+<div>LOGGED_IN_OPERATOR: ALPHA-01</div>
+<div>SESSION_TIME: 04:22:15</div>
+<div class="flex items-center gap-2">
+<span class="h-1.5 w-1.5 rounded-full bg-primary-container animate-pulse"></span>
+                    SECURE_LINK_ACTIVE
+                </div>
+</div>
+</div>
+</main>
+</body></html>

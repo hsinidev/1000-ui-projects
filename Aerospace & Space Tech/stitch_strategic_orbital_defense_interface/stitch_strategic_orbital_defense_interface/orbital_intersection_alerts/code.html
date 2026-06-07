@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEFENSE ORBIT | Orbital Intersection Alerts</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#181c20",
+                        "tertiary-container": "#c9a900",
+                        "surface-container-high": "#272a2e",
+                        "primary-container": "#2c2f33",
+                        "secondary-container": "#424655",
+                        "on-secondary": "#2b303e",
+                        "on-primary-container": "#94969b",
+                        "on-surface-variant": "#c5c6ca",
+                        "on-secondary-fixed": "#161b28",
+                        "on-surface": "#e0e2e8",
+                        "outline": "#8f9194",
+                        "primary-fixed": "#e1e2e7",
+                        "on-secondary-fixed-variant": "#424655",
+                        "inverse-primary": "#5c5e63",
+                        "background": "#101417",
+                        "on-tertiary-fixed-variant": "#544600",
+                        "on-background": "#e0e2e8",
+                        "surface-container": "#1c2024",
+                        "surface-tint": "#c4c6cb",
+                        "on-primary-fixed-variant": "#44474b",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#0b0f12",
+                        "on-secondary-container": "#b0b5c6",
+                        "outline-variant": "#45474a",
+                        "inverse-on-surface": "#2d3135",
+                        "surface-container-highest": "#323539",
+                        "on-primary": "#2e3135",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed-dim": "#e9c400",
+                        "surface-dim": "#101417",
+                        "tertiary": "#e9c400",
+                        "on-tertiary": "#3a3000",
+                        "secondary-fixed": "#dee2f4",
+                        "secondary-fixed-dim": "#c2c6d8",
+                        "surface-variant": "#323539",
+                        "surface": "#101417",
+                        "on-primary-fixed": "#191c20",
+                        "primary": "#c4c6cb",
+                        "on-tertiary-container": "#4c3f00",
+                        "inverse-surface": "#e0e2e8",
+                        "primary-fixed-dim": "#c4c6cb",
+                        "surface-bright": "#36393e",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed": "#221b00",
+                        "secondary": "#c2c6d8",
+                        "tertiary-fixed": "#ffe16d"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "grid_columns": "12",
+                        "unit": "4px",
+                        "panel_padding": "12px",
+                        "margin": "24px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "h3": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "data-mono": ["Inter"],
+                        "h2": ["Space Grotesk"],
+                        "h1": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"]
+                    },
+                    "fontSize": {
+                        "h3": ["20px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "700"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(24, 28, 32, 0.7);
+            backdrop-filter: blur(24px);
+            border: 1px solid #45474a;
+        }
+        .inner-bevel {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+        }
+        .heatmap-grid {
+            background-image: radial-gradient(circle at 50% 50%, rgba(233, 196, 0, 0.15) 0%, transparent 70%),
+                              linear-gradient(#45474a 1px, transparent 1px),
+                              linear-gradient(90deg, #45474a 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+        }
+        .pulse-red {
+            box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.4);
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0.7); }
+            70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(255, 180, 171, 0); }
+            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(255, 180, 171, 0); }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-tertiary selection:text-on-tertiary">
+<!-- TopAppBar Shell -->
+<header class="bg-surface-container-lowest/80 backdrop-blur-xl text-primary font-h3 text-h3 uppercase tracking-widest fixed top-0 w-full z-50 border-b border-outline-variant flex justify-between items-center px-margin py-unit h-16">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-tertiary" style="font-variation-settings: 'FILL' 1;">security</span>
+<h1 class="font-h3 text-h3 font-bold text-tertiary tracking-tighter">DEFENSE ORBIT</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-primary-container transition-colors p-2 rounded cursor-pointer">fingerprint</span>
+</div>
+</header>
+<main class="pt-20 pb-24 px-margin min-h-screen max-w-7xl mx-auto">
+<!-- High-Visibility Alert Banner -->
+<div class="mb-6 flex items-center bg-error-container border-2 border-error p-6 rounded-lg gap-4 relative overflow-hidden">
+<div class="absolute inset-0 bg-gradient-to-r from-error/10 to-transparent"></div>
+<span class="material-symbols-outlined text-4xl text-on-error-container pulse-red" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div class="flex-grow">
+<h2 class="font-h2 text-h2 text-on-error-container leading-none mb-1">CRITICAL INTERSECTION DETECTED</h2>
+<p class="font-label-caps text-label-caps text-on-error-container/80 tracking-widest uppercase">Immediate Action Required: Orbital Path Conflict</p>
+</div>
+<div class="hidden md:flex flex-col items-end border-l border-on-error-container/20 pl-6">
+<p class="font-label-caps text-label-caps text-on-error-container/60 mb-1">ALERT ID</p>
+<p class="font-data-mono text-data-mono font-bold text-on-error-container">AX-9902-DELTA</p>
+</div>
+</div>
+<!-- Main Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Collision Probability Heatmap (Bento-style large card) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden flex flex-col min-h-[480px]">
+<div class="bg-surface-container-high px-4 py-3 border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface tracking-widest uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                        Projected Intersection Zone
+                    </span>
+<span class="font-data-mono text-data-mono text-tertiary">COORDS: 42.12N / 12.88W</span>
+</div>
+<div class="flex-grow relative heatmap-grid overflow-hidden">
+<!-- The Background Map -->
+<img class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale" data-alt="A cinematic, high-resolution satellite view of Earth at night from low orbit, showing city lights glowing like veins across dark continents. The image is overlayed with a digital tactical interface of thin slate-grey grid lines and tactical blue telemetry data. The atmosphere glows with a faint cerulean blue at the horizon, set against the pitch black of deep space, creating a sense of strategic surveillance and high-stakes orbital defense." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfFAKbTFV1LI10w2c9xe6IQU97woi3L9a4cCu127Fz13EN7cSjPB2D-4ryzCiFHwMPWxHUCnr9a3WXS-p54yjsojAc1XWFTEUEnY0SGZoA7Eyb4UODMrkFoou63gE3XbSygmaX4rmYZ5LEn6R3EMZDXOjfZnwUHmJoLY7wf_OUPq0s5d1hKgirgP1enaAmVkzBw6CqSd_ah6SAfcRyghzzsws2cVjr6y7AD5DIM0BRaEtcMGmk7M2XhAM8_qLC5ta0Xy6qMIg05y4E"/>
+<!-- Heatmap Overlay Elements -->
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="relative w-64 h-64 border border-tertiary/20 rounded-full flex items-center justify-center">
+<div class="w-48 h-48 border-2 border-tertiary/40 rounded-full flex items-center justify-center animate-pulse">
+<div class="w-32 h-32 bg-tertiary/20 border-2 border-tertiary rounded-full flex items-center justify-center backdrop-blur-md">
+<div class="w-4 h-4 bg-error rounded-full pulse-red"></div>
+</div>
+</div>
+<!-- Vector Lines -->
+<div class="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-tertiary/50 to-transparent rotate-45"></div>
+<div class="absolute top-0 left-1/2 w-px h-full bg-gradient-to-b from-transparent via-error/50 to-transparent -rotate-45"></div>
+</div>
+</div>
+<!-- Telemetry HUD in Glass Overlay -->
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col gap-2">
+<div class="flex items-center justify-between gap-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VELOCITY A</span>
+<span class="font-data-mono text-data-mono text-on-surface">7.65 km/s</span>
+</div>
+<div class="flex items-center justify-between gap-8">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VELOCITY B</span>
+<span class="font-data-mono text-data-mono text-on-surface">8.12 km/s</span>
+</div>
+</div>
+<div class="bg-surface-container-lowest/80 backdrop-blur-md border border-outline-variant p-4 rounded-lg flex flex-col items-center">
+<span class="font-label-caps text-label-caps text-tertiary mb-1">CONFIDENCE</span>
+<span class="font-h2 text-h2 text-tertiary">99.2%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Detailed Breakdown Panel -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-gutter">
+<!-- Countdown Card -->
+<div class="glass-panel p-6 rounded-xl flex flex-col items-center text-center border-tertiary/40">
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-[0.2em] mb-4">T-MINUS TO INTERSECTION</span>
+<div class="flex gap-4 items-baseline">
+<div class="flex flex-col">
+<span class="font-h1 text-h1 text-error leading-none">00</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant/60 text-[10px]">MIN</span>
+</div>
+<span class="font-h1 text-h1 text-error/30 leading-none">:</span>
+<div class="flex flex-col">
+<span class="font-h1 text-h1 text-error leading-none">42</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant/60 text-[10px]">SEC</span>
+</div>
+<span class="font-h1 text-h1 text-error/30 leading-none">:</span>
+<div class="flex flex-col">
+<span class="font-h1 text-h1 text-error leading-none">08</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant/60 text-[10px]">MS</span>
+</div>
+</div>
+</div>
+<!-- Comparison Stats -->
+<div class="glass-panel rounded-xl overflow-hidden">
+<div class="bg-surface-container-high px-4 py-2 border-b border-outline-variant">
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Object Delta Comparison</span>
+</div>
+<div class="p-4 space-y-4">
+<!-- Object A -->
+<div class="p-3 bg-primary-container/40 rounded border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-h3 text-h3 text-tertiary">OBJECT A</span>
+<span class="bg-error/20 text-error font-data-mono text-[10px] px-2 py-0.5 rounded border border-error/30">DEFUNCT SATELLITE</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 text-[10px]">NORAD ID</p>
+<p class="font-data-mono text-data-mono">#25544</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 text-[10px]">ALTITUDE</p>
+<p class="font-data-mono text-data-mono">408.2 KM</p>
+</div>
+</div>
+</div>
+<div class="flex justify-center -my-2 relative z-10">
+<div class="bg-surface-container-high p-1 rounded-full border border-outline-variant">
+<span class="material-symbols-outlined text-error">close</span>
+</div>
+</div>
+<!-- Object B -->
+<div class="p-3 bg-secondary-container/20 rounded border border-outline-variant">
+<div class="flex justify-between items-start mb-2">
+<span class="font-h3 text-h3 text-on-surface">OBJECT B</span>
+<span class="bg-tertiary/20 text-tertiary font-data-mono text-[10px] px-2 py-0.5 rounded border border-tertiary/30">ISS SEGMENT</span>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 text-[10px]">NORAD ID</p>
+<p class="font-data-mono text-data-mono">#43012</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant/70 text-[10px]">ALTITUDE</p>
+<p class="font-data-mono text-data-mono">407.9 KM</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-tertiary text-on-tertiary font-label-caps text-label-caps py-4 rounded inner-bevel hover:opacity-90 active:scale-[0.98] transition-all flex items-center justify-center gap-2 uppercase tracking-widest">
+<span class="material-symbols-outlined text-lg">rocket_launch</span>
+                    Initiate Evasive Burn
+                </button>
+</div>
+</div>
+<!-- Intersection Probability Row -->
+<div class="mt-gutter grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="p-3 bg-error/20 rounded border border-error/30">
+<span class="material-symbols-outlined text-error">analytics</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">COLLISION PROB.</p>
+<p class="font-h3 text-h3 text-error">0.85%</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="p-3 bg-tertiary/20 rounded border border-tertiary/30">
+<span class="material-symbols-outlined text-tertiary">straighten</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">MISS DISTANCE</p>
+<p class="font-h3 text-h3 text-on-surface">124 METERS</p>
+</div>
+</div>
+<div class="glass-panel p-4 rounded-xl flex items-center gap-4">
+<div class="p-3 bg-primary-container rounded border border-outline-variant">
+<span class="material-symbols-outlined text-primary">groups</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface-variant">ASSET VALUE</p>
+<p class="font-h3 text-h3 text-on-surface">$2.4 BILLION</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface-container-low/90 backdrop-blur-2xl border-t border-outline-variant h-16">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">public</span>
+<span class="font-label-caps text-label-caps uppercase text-[10px] mt-1">MAP</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps uppercase text-[10px] mt-1">DASHBOARD</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-tertiary-container/20 text-tertiary rounded-lg p-2 border border-tertiary/40" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-label-caps text-label-caps uppercase text-[10px] mt-1">ALERTS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">vpn_key</span>
+<span class="font-label-caps text-label-caps uppercase text-[10px] mt-1">ENCRYPT</span>
+</a>
+</nav>
+<!-- Background Grid Logic -->
+<div class="fixed inset-0 pointer-events-none z-[-1] opacity-20">
+<div class="absolute inset-0" style="background-image: linear-gradient(#45474a 1px, transparent 1px), linear-gradient(90deg, #45474a 1px, transparent 1px); background-size: 80px 80px;"></div>
+</div>
+</body></html>

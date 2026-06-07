@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AETHER COMMAND | Interstellar Pathfinding</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+        }
+        .glow-gold {
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+        .path-line {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.6));
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary": "#dfb7ff",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface-variant": "#d0c6ab",
+                        "on-tertiary-fixed": "#191c20",
+                        "surface-container-highest": "#353534",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-on-surface": "#313030",
+                        "on-primary": "#3a3000",
+                        "surface-tint": "#e9c400",
+                        "surface-dim": "#131313",
+                        "error-container": "#93000a",
+                        "on-tertiary-container": "#5d5f64",
+                        "on-secondary-container": "#d5a4ff",
+                        "tertiary-container": "#d9d9e0",
+                        "tertiary": "#f5f5fc",
+                        "primary-fixed": "#ffe16d",
+                        "on-secondary-fixed-variant": "#690bac",
+                        "primary-container": "#ffd700",
+                        "secondary-fixed-dim": "#dfb7ff",
+                        "on-error": "#690005",
+                        "surface-variant": "#353534",
+                        "secondary-container": "#6c11af",
+                        "background": "#131313",
+                        "outline": "#999077",
+                        "inverse-surface": "#e5e2e1",
+                        "outline-variant": "#4d4732",
+                        "surface": "#131313",
+                        "error": "#ffb4ab",
+                        "on-background": "#e5e2e1",
+                        "on-tertiary-fixed-variant": "#45474c",
+                        "on-primary-fixed-variant": "#544600",
+                        "tertiary-fixed-dim": "#c5c6cd",
+                        "on-tertiary": "#2e3036",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "on-primary-container": "#705e00",
+                        "tertiary-fixed": "#e2e2e9",
+                        "surface-container": "#201f1f",
+                        "primary": "#fff6df",
+                        "on-error-container": "#ffdad6",
+                        "secondary-fixed": "#f1daff",
+                        "on-primary-fixed": "#221b00",
+                        "surface-bright": "#3a3939",
+                        "on-secondary": "#4b007e",
+                        "on-secondary-fixed": "#2d004f",
+                        "inverse-primary": "#705d00",
+                        "primary-fixed-dim": "#e9c400"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Grotesk"],
+                        "technical-data": ["Space Grotesk"],
+                        "headline-xl": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-lg": ["Space Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "600"}],
+                        "technical-data": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "400"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["24px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-surface-dim text-on-surface font-body-md overflow-hidden">
+<!-- TopAppBar -->
+<header class="bg-black/60 backdrop-blur-xl text-yellow-400 font-['Space_Grotesk'] tracking-widest uppercase text-xs font-bold fixed top-0 w-full z-50 border-b border-yellow-400/20 shadow-[0_0_20px_rgba(138,43,226,0.2)] flex justify-between items-center px-6 h-16">
+<div class="flex items-center gap-8">
+<span class="text-xl font-black text-yellow-400 drop-shadow-[0_0_10px_rgba(255,215,0,0.5)]">AETHER COMMAND</span>
+<nav class="hidden md:flex gap-6">
+<a class="text-yellow-400 border-b-2 border-yellow-400 pb-1 transition-all duration-300 ease-out" href="#">PATHFINDER</a>
+<a class="text-purple-300/50 hover:text-yellow-200 hover:drop-shadow-[0_0_5px_rgba(255,215,0,0.8)] transition-all duration-300 ease-out" href="#">LOGISTICS</a>
+<a class="text-purple-300/50 hover:text-yellow-200 hover:drop-shadow-[0_0_5px_rgba(255,215,0,0.8)] transition-all duration-300 ease-out" href="#">GALACTIC NET</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined text-yellow-400 cursor-pointer p-2 rounded-full hover:bg-yellow-400/10 transition-all">search</span>
+</div>
+<span class="material-symbols-outlined text-yellow-400 cursor-pointer p-2 hover:brightness-125 transition-all">settings</span>
+<span class="material-symbols-outlined text-yellow-400 cursor-pointer p-2 hover:brightness-125 transition-all">notifications</span>
+<span class="material-symbols-outlined text-yellow-400 cursor-pointer p-2 hover:brightness-125 transition-all">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="bg-black/40 backdrop-blur-2xl text-yellow-400 font-['Space_Grotesk'] text-[10px] font-medium tracking-tighter h-full w-24 fixed left-0 top-16 bottom-0 z-40 flex flex-col items-center py-8 border-r border-yellow-400/10 space-y-8">
+<div class="flex flex-col items-center mb-4">
+<div class="w-10 h-10 rounded-full border border-yellow-400/30 overflow-hidden mb-2">
+<img alt="Commander Profile" class="w-full h-full object-cover" data-alt="A professional portrait of a futuristic starship commander in a high-tech obsidian-colored uniform. The lighting is dramatic and moody, with sharp solar gold highlights on their face and uniform panels. The background is a blurred cockpit of a vessel with glowing purple and gold interface displays. The atmosphere is authoritative, precise, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB9Qi7jBAoMvhau8IaVwKd4aPkT0SfzzCcFiKy4bZ0RMObTau-9JtltfxZnziLPfypfovE-L7HaIfutTIsiF5NR5sSc4622v08IGzlbAMuOPYA9aFZ3wf5aX2sUu3-a6196nLKlh1rW5RtH32HnB00qTJOWGretLJB6iZJrtX85LlPl4zt6pR8dXg1f1wd4NkrYb2UmmoA69nwh3TCFoGySP5mRBQomG1p0_NAVgk-sOmRjtISEWpaCTdv13KUScMsK1QqA4D1OhUM"/>
+</div>
+<span class="text-[8px] text-yellow-400/70">OSIRIS-X</span>
+</div>
+<div class="flex flex-col gap-6 w-full px-2">
+<button class="bg-yellow-400/10 text-yellow-400 shadow-[inset_0_0_10px_rgba(255,215,0,0.2)] rounded-sm py-4 flex flex-col items-center gap-1 scale-105 transition-transform duration-200 group">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span>STARCHART</span>
+</button>
+<button class="text-purple-400/40 hover:bg-purple-900/20 hover:text-yellow-200 py-4 flex flex-col items-center gap-1 transition-all duration-200 group">
+<span class="material-symbols-outlined">query_stats</span>
+<span>TELEMETRY</span>
+</button>
+<button class="text-purple-400/40 hover:bg-purple-900/20 hover:text-yellow-200 py-4 flex flex-col items-center gap-1 transition-all duration-200 group">
+<span class="material-symbols-outlined">groups</span>
+<span>CREW</span>
+</button>
+<button class="text-purple-400/40 hover:bg-purple-900/20 hover:text-yellow-200 py-4 flex flex-col items-center gap-1 transition-all duration-200 group">
+<span class="material-symbols-outlined">inventory_2</span>
+<span>CARGO</span>
+</button>
+<button class="text-purple-400/40 hover:bg-purple-900/20 hover:text-yellow-200 py-4 flex flex-col items-center gap-1 transition-all duration-200 group">
+<span class="material-symbols-outlined">history_edu</span>
+<span>ARCHIVE</span>
+</button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-24 mt-16 h-[calc(100vh-64px-48px)] relative overflow-hidden bg-surface-lowest">
+<!-- Interactive Star Chart / Map Background -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-screen" data-alt="A cinematic, ultra-detailed view of a deep space nebula with vibrant clouds of purple, indigo, and violet dust. Scattered across the expanse are thousands of sharp, crystalline stars and distant galaxies. The image has a heavy technical overlay of glowing solar gold vector lines, coordinate grids, and orbiting path trajectories. The overall mood is vast, mysterious, and highly advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAefECxXdgaenIgWvyMyryHiq4Ic0jdCKeBA6_0nQmU30p-LZwNxYUiLbloQnRffqQ_vaXd9eiF2ZcuyqRc0uQtJI-JU6IOyb_1k6TjbOuw-yocC8mKAa3exlmRubPDS_i8j-IcYalgI8Dj4NMpx1wy71ChcFs61dvyCzcQb6cpXFJMxxy8l8L28SznFCx6B2E3gc6rjGicpZYwAYKMdDaMbk0ITt8RmJm6pYT9a9lIDtYer2USg-AdnvYdDUgVjiAG2r_fix6AIsk"/>
+<!-- Vector Overlays -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-80" viewbox="0 0 1200 800">
+<circle cx="600" cy="400" fill="none" r="150" stroke="rgba(255, 215, 0, 0.1)" stroke-dasharray="10,5" stroke-width="1"></circle>
+<circle cx="600" cy="400" fill="none" r="300" stroke="rgba(255, 215, 0, 0.05)" stroke-width="1"></circle>
+<path class="path-line" d="M 200 600 Q 600 200 1000 600" fill="none" stroke="#e9c400" stroke-dasharray="8,4" stroke-width="2"></path>
+<circle class="glow-gold" cx="200" cy="600" fill="#e9c400" r="4"></circle>
+<circle class="glow-gold" cx="1000" cy="600" fill="#e9c400" r="4"></circle>
+<text class="font-technical-data text-[10px]" fill="#e9c400" x="180" y="630">SOL-BASE 01</text>
+<text class="font-technical-data text-[10px]" fill="#e9c400" x="960" y="630">VEGA OUTPOST</text>
+</svg>
+</div>
+<!-- Layout Wrapper -->
+<div class="relative z-10 p-8 h-full flex gap-6">
+<!-- Left Panel: Real-Time Sector Traffic -->
+<div class="w-80 flex flex-col gap-4">
+<div class="glass-panel p-4 rounded-lg flex flex-col gap-4">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-md text-primary text-technical-data uppercase">Sector Traffic</h2>
+<span class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse shadow-[0_0_5px_rgba(255,215,0,0.8)]"></span>
+</div>
+<div class="space-y-3">
+<div class="flex flex-col p-3 bg-white/5 border-l-2 border-yellow-400 rounded-r-sm">
+<div class="flex justify-between items-center mb-1">
+<span class="font-technical-data text-xs text-on-surface">HEAVY CARGO [HC-99]</span>
+<span class="text-[10px] text-yellow-400/70 font-mono">0.4 LY</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-yellow-400"></div>
+</div>
+</div>
+<div class="flex flex-col p-3 bg-white/5 border-l-2 border-white/20 rounded-r-sm opacity-60">
+<div class="flex justify-between items-center mb-1">
+<span class="font-technical-data text-xs text-on-surface">SCOUT VESSEL [SV-12]</span>
+<span class="text-[10px] text-yellow-400/70 font-mono">1.2 LY</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-1/4 h-full bg-yellow-400"></div>
+</div>
+</div>
+<div class="flex flex-col p-3 bg-white/5 border-l-2 border-yellow-400 rounded-r-sm">
+<div class="flex justify-between items-center mb-1">
+<span class="font-technical-data text-xs text-on-surface">PASSENGER LINER [PL-00]</span>
+<span class="text-[10px] text-yellow-400/70 font-mono">0.1 LY</span>
+</div>
+<div class="h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="w-full h-full bg-yellow-400"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Gravitational Wave Warnings -->
+<div class="glass-panel p-4 rounded-lg flex flex-col gap-4 border-l-4 border-error">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error" style="font-variation-settings: 'FILL' 1;">warning</span>
+<h2 class="font-headline-md text-error text-technical-data uppercase">GRAV-WAVE ALERT</h2>
+</div>
+<div class="space-y-2">
+<p class="text-[10px] text-on-surface-variant font-technical-data uppercase leading-relaxed">
+                            Detected magnitude 8.4 spatial fluctuation in Sector 7-G. Recommend trajectory adjustment +15 degrees.
+                        </p>
+<button class="w-full py-2 bg-error/10 border border-error/30 text-error text-[10px] font-bold tracking-widest hover:bg-error/20 transition-all">CALIBRATE SHIELDS</button>
+</div>
+</div>
+</div>
+<!-- Central Content: Pathfinding Controls -->
+<div class="flex-1 flex flex-col justify-between">
+<div class="flex justify-center">
+<div class="glass-panel px-8 py-3 rounded-full flex items-center gap-8 border border-yellow-400/40">
+<div class="text-center">
+<div class="text-[8px] text-yellow-400/60 font-bold uppercase tracking-widest">Warp Factor</div>
+<div class="text-xl font-headline-xl text-primary">9.82</div>
+</div>
+<div class="w-[1px] h-8 bg-yellow-400/20"></div>
+<div class="text-center">
+<div class="text-[8px] text-yellow-400/60 font-bold uppercase tracking-widest">Coordinates</div>
+<div class="text-xl font-headline-xl text-primary">344.02 / 12.9</div>
+</div>
+<div class="w-[1px] h-8 bg-yellow-400/20"></div>
+<div class="text-center">
+<div class="text-[8px] text-yellow-400/60 font-bold uppercase tracking-widest">Time to Jump</div>
+<div class="text-xl font-headline-xl text-primary">00:42:12</div>
+</div>
+</div>
+</div>
+<div class="flex justify-end p-4">
+<button class="bg-primary-container text-on-primary-container px-12 py-4 font-headline-md text-technical-data uppercase tracking-widest rounded-sm glow-gold hover:scale-105 transition-transform flex items-center gap-3">
+<span class="material-symbols-outlined">rocket_launch</span>
+                        INITIATE JUMP
+                    </button>
+</div>
+</div>
+<!-- Right Panel: Arrival Estimates & Details -->
+<div class="w-80 flex flex-col gap-4">
+<div class="glass-panel p-4 rounded-lg flex flex-col gap-4">
+<h2 class="font-headline-md text-primary text-technical-data uppercase">Pathfinding Matrix</h2>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-white/5 p-3 rounded-sm border border-white/5">
+<span class="block text-[8px] text-yellow-400/60 uppercase mb-1">Fuel Consumption</span>
+<span class="text-technical-data text-on-surface">14.2%</span>
+</div>
+<div class="bg-white/5 p-3 rounded-sm border border-white/5">
+<span class="block text-[8px] text-yellow-400/60 uppercase mb-1">Structural Risk</span>
+<span class="text-technical-data text-secondary">LOW</span>
+</div>
+<div class="bg-white/5 p-3 rounded-sm border border-white/5">
+<span class="block text-[8px] text-yellow-400/60 uppercase mb-1">Shield Status</span>
+<span class="text-technical-data text-primary">OPTIMAL</span>
+</div>
+<div class="bg-white/5 p-3 rounded-sm border border-white/5">
+<span class="block text-[8px] text-yellow-400/60 uppercase mb-1">Navigation Drift</span>
+<span class="text-technical-data text-on-surface">0.002s</span>
+</div>
+</div>
+</div>
+<div class="glass-panel overflow-hidden rounded-lg flex-1">
+<div class="p-4 bg-yellow-400/10 border-b border-yellow-400/20">
+<h3 class="text-technical-data text-yellow-400 font-bold uppercase">Estimated Arrival</h3>
+</div>
+<div class="p-4 space-y-6">
+<div class="flex items-start gap-4">
+<div class="relative pt-1">
+<div class="w-3 h-3 bg-yellow-400 rounded-full glow-gold"></div>
+<div class="absolute top-4 left-1.5 w-[1px] h-12 bg-yellow-400/30"></div>
+</div>
+<div>
+<div class="text-[10px] text-yellow-400 font-bold uppercase tracking-tighter">Departure: SOL-BASE</div>
+<div class="text-xs text-on-surface-variant">Stardate: 2145.092</div>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="relative pt-1">
+<div class="w-3 h-3 border border-yellow-400/50 rounded-full"></div>
+<div class="absolute top-4 left-1.5 w-[1px] h-12 bg-yellow-400/30"></div>
+</div>
+<div>
+<div class="text-[10px] text-on-surface/60 font-bold uppercase tracking-tighter">Gateway: NEPTUNE-V</div>
+<div class="text-xs text-on-surface-variant/40">In Transit...</div>
+</div>
+</div>
+<div class="flex items-start gap-4">
+<div class="relative pt-1">
+<div class="w-3 h-3 bg-secondary rounded-full"></div>
+</div>
+<div>
+<div class="text-[10px] text-secondary font-bold uppercase tracking-tighter">Arrival: VEGA OUTPOST</div>
+<div class="text-xs text-on-surface-variant">+3.2 Hours Est.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-black/80 backdrop-blur-md text-yellow-500/80 font-['Space_Grotesk'] text-[8px] tracking-[0.2em] font-light fixed bottom-0 w-full h-12 border-t border-purple-500/20 flex flex-col md:flex-row justify-between items-center px-12 gap-4 z-50">
+<div class="flex items-center gap-6">
+<span class="text-yellow-400 underline decoration-yellow-400/50 underline-offset-4">MISSION LOGS</span>
+<span class="text-purple-400/60 hover:text-yellow-400 hover:brightness-125 transition-opacity duration-500 cursor-pointer">PROTOCOL</span>
+<span class="text-purple-400/60 hover:text-yellow-400 hover:brightness-125 transition-opacity duration-500 cursor-pointer">SUPPORT</span>
+</div>
+<div>
+            © 2145 DEEP SPACE EXPLORATION AGENCY // ALL SYSTEMS NOMINAL
+        </div>
+<div class="flex items-center gap-4 text-[10px]">
+<span class="text-yellow-400/40">LAT: 44.021</span>
+<span class="text-yellow-400/40">LON: -12.933</span>
+<span class="flex items-center gap-1 text-green-400"><span class="w-1.5 h-1.5 bg-green-400 rounded-full"></span> ENCRYPTED</span>
+</div>
+</footer>
+</body></html>

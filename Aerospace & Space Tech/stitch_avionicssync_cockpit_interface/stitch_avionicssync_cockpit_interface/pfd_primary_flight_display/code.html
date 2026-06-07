@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700;900&amp;family=Inter:wght@200;400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "surface": "#131313",
+                "on-primary": "#00363a",
+                "on-primary-container": "#006a71",
+                "error": "#ffb4ab",
+                "inverse-surface": "#e5e2e1",
+                "primary": "#e1fdff",
+                "on-background": "#e5e2e1",
+                "secondary-container": "#454747",
+                "on-secondary": "#2f3131",
+                "on-secondary-fixed-variant": "#454747",
+                "surface-container": "#201f1f",
+                "surface-container-high": "#2a2a2a",
+                "secondary": "#c6c6c7",
+                "on-tertiary-container": "#7e5900",
+                "surface-variant": "#353534",
+                "on-tertiary-fixed-variant": "#5e4200",
+                "error-container": "#93000a",
+                "on-primary-fixed-variant": "#004f54",
+                "outline": "#849495",
+                "inverse-on-surface": "#313030",
+                "primary-container": "#00f2ff",
+                "secondary-fixed": "#e2e2e2",
+                "surface-dim": "#131313",
+                "surface-container-low": "#1c1b1b",
+                "on-error": "#690005",
+                "primary-fixed-dim": "#00dbe7",
+                "primary-fixed": "#74f5ff",
+                "tertiary-fixed": "#ffdea8",
+                "tertiary-fixed-dim": "#ffba20",
+                "outline-variant": "#3a494b",
+                "on-primary-fixed": "#002022",
+                "surface-tint": "#00dbe7",
+                "on-surface-variant": "#b9cacb",
+                "on-surface": "#e5e2e1",
+                "surface-container-lowest": "#0e0e0e",
+                "tertiary": "#fff6ed",
+                "inverse-primary": "#00696f",
+                "secondary-fixed-dim": "#c6c6c7",
+                "surface-container-highest": "#353534",
+                "background": "#131313",
+                "on-tertiary": "#412d00",
+                "on-secondary-fixed": "#1a1c1c",
+                "tertiary-container": "#ffd58c",
+                "on-error-container": "#ffdad6",
+                "on-secondary-container": "#b4b5b5",
+                "on-tertiary-fixed": "#271900",
+                "surface-bright": "#3a3939"
+            },
+            "fontFamily": {
+                "headline-lg": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "data-display": ["Space Grotesk"],
+                "body-sm": ["Inter"],
+                "label-caps": ["Inter"]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .hud-border { border: 1px solid rgba(0, 242, 255, 0.3); }
+        .hud-glow { box-shadow: 0 0 4px rgba(0, 242, 255, 0.2); }
+        .matte-surface { background: linear-gradient(180deg, #131313 0%, #0a0a0a 100%); }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 10;
+            background: linear-gradient(0deg, transparent 0%, rgba(0, 242, 255, 0.03) 50%, transparent 100%);
+            position: absolute;
+            pointer-events: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-sm overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-2 h-14 z-50 bg-black/95 dark:bg-zinc-950/95 border-b border-cyan-900/50 flat no shadows shadow-[0_1px_0_0_rgba(0,242,255,0.1)]">
+<div class="flex items-center h-full">
+<div class="text-cyan-400 font-black tracking-widest text-lg border-r border-cyan-900/50 pr-4 mr-4 flex items-center">
+<span class="material-symbols-outlined mr-2" data-icon="flight">flight</span>
+                AVIONICS_SYNC
+            </div>
+<nav class="flex gap-1 h-full items-center">
+<button class="px-3 py-1 font-['Space_Grotesk'] uppercase tracking-tighter text-[10px] md:text-xs text-cyan-400 border border-cyan-400 bg-cyan-400/10 shadow-[0_0_2px_#00F2FF]">SYSTEM</button>
+<button class="px-3 py-1 font-['Space_Grotesk'] uppercase tracking-tighter text-[10px] md:text-xs text-zinc-500 hover:bg-cyan-400/5 hover:text-cyan-300 transition-colors duration-100">COMM</button>
+<button class="px-3 py-1 font-['Space_Grotesk'] uppercase tracking-tighter text-[10px] md:text-xs text-zinc-500 hover:bg-cyan-400/5 hover:text-cyan-300 transition-colors duration-100">NAV</button>
+</nav>
+</div>
+<div class="font-['Space_Grotesk'] uppercase tracking-tighter text-[10px] md:text-xs text-cyan-400 hidden md:block">
+            ALT: 32000 FT | SPD: 450 KT | BAT: 88% | CON: LNK-4
+        </div>
+</header>
+<!-- Main PFD Content -->
+<main class="flex-grow relative matte-surface overflow-hidden grid grid-cols-12 grid-rows-1 p-4 gap-px bg-cyan-900/10">
+<!-- Left: Airspeed Tape -->
+<div class="col-span-2 flex flex-col justify-center items-end pr-4 border-r border-cyan-900/30 relative">
+<div class="absolute right-0 w-16 h-full flex flex-col justify-between py-20 text-cyan-400/40 font-data-display text-sm">
+<div>480</div>
+<div>470</div>
+<div class="text-cyan-400 font-bold border-y border-cyan-400 py-2 bg-cyan-400/5">460</div>
+<div>450</div>
+<div>440</div>
+<div>430</div>
+</div>
+<div class="z-20 bg-black border border-cyan-400 p-2 text-right">
+<div class="text-label-caps text-cyan-400 mb-1">IAS</div>
+<div class="text-headline-md font-data-display text-primary-container">452</div>
+<div class="text-label-caps text-cyan-800">KNOTS</div>
+</div>
+</div>
+<!-- Center: Artificial Horizon & Pitch -->
+<div class="col-span-8 relative flex items-center justify-center overflow-hidden">
+<!-- Sky/Ground Divider -->
+<div class="absolute inset-0 flex flex-col">
+<div class="h-1/2 bg-cyan-900/10 border-b border-cyan-400/50"></div>
+<div class="h-1/2 bg-zinc-900/40"></div>
+</div>
+<!-- Pitch Ladder -->
+<div class="absolute flex flex-col items-center gap-8 text-cyan-400/40">
+<div class="flex items-center gap-12"><div class="w-20 h-px bg-cyan-400/20"></div><span class="text-xs">20</span><div class="w-20 h-px bg-cyan-400/20"></div></div>
+<div class="flex items-center gap-8"><div class="w-12 h-px bg-cyan-400/20"></div><span class="text-xs">10</span><div class="w-12 h-px bg-cyan-400/20"></div></div>
+<div class="w-48 h-px bg-cyan-400 shadow-[0_0_8px_rgba(0,242,255,0.5)]"></div>
+<div class="flex items-center gap-8"><div class="w-12 h-px bg-cyan-400/20"></div><span class="text-xs">10</span><div class="w-12 h-px bg-cyan-400/20"></div></div>
+<div class="flex items-center gap-12"><div class="w-20 h-px bg-cyan-400/20"></div><span class="text-xs">20</span><div class="w-20 h-px bg-cyan-400/20"></div></div>
+</div>
+<!-- Aircraft Symbol (Waterline) -->
+<div class="relative z-30 flex items-center">
+<div class="w-16 h-1 bg-primary-container shadow-[0_0_4px_rgba(0,242,255,0.8)]"></div>
+<div class="w-4 h-4 border-2 border-primary-container rotate-45 mx-2"></div>
+<div class="w-16 h-1 bg-primary-container shadow-[0_0_4px_rgba(0,242,255,0.8)]"></div>
+</div>
+<!-- Top Header Stats -->
+<div class="absolute top-4 left-4 right-4 flex justify-between">
+<div class="bg-black/60 border border-cyan-900/50 p-2 backdrop-blur-sm">
+<div class="text-[10px] text-cyan-600 uppercase font-bold">GS</div>
+<div class="text-headline-md font-data-display text-cyan-400">468<span class="text-xs ml-1">KT</span></div>
+</div>
+<div class="bg-black/60 border border-cyan-900/50 p-2 backdrop-blur-sm">
+<div class="text-[10px] text-cyan-600 uppercase font-bold">TRK</div>
+<div class="text-headline-md font-data-display text-cyan-400">042°</div>
+</div>
+</div>
+<!-- Heading Indicator (Tape at Bottom of Center) -->
+<div class="absolute bottom-4 w-3/4 h-12 border border-cyan-900/50 bg-black/40 flex flex-col items-center">
+<div class="w-full flex justify-around items-end h-full pb-1 px-4">
+<span class="text-[10px] text-cyan-900">020</span>
+<span class="text-[10px] text-cyan-900">030</span>
+<div class="flex flex-col items-center">
+<div class="w-px h-4 bg-cyan-400"></div>
+<span class="text-sm font-bold text-cyan-400">042</span>
+</div>
+<span class="text-[10px] text-cyan-900">050</span>
+<span class="text-[10px] text-cyan-900">060</span>
+</div>
+<div class="absolute -top-1 w-2 h-2 bg-cyan-400 rotate-45"></div>
+</div>
+</div>
+<!-- Right: Altitude & Vertical Speed -->
+<div class="col-span-2 flex flex-col justify-center items-start pl-4 border-l border-cyan-900/30 relative">
+<div class="absolute left-0 w-16 h-full flex flex-col justify-between py-16 text-cyan-400/40 font-data-display text-sm">
+<div>32500</div>
+<div>32250</div>
+<div class="text-cyan-400 font-bold border-y border-cyan-400 py-2 bg-cyan-400/5">32000</div>
+<div>31750</div>
+<div>31500</div>
+<div>31250</div>
+</div>
+<div class="z-20 bg-black border border-cyan-400 p-2 text-left">
+<div class="text-label-caps text-cyan-400 mb-1">ALT</div>
+<div class="text-headline-md font-data-display text-primary-container">32,040</div>
+<div class="text-label-caps text-cyan-800">FEET</div>
+</div>
+<!-- VSI Tape -->
+<div class="absolute right-4 top-1/4 bottom-1/4 w-4 border-l border-cyan-900/30 flex flex-col justify-between items-center py-4">
+<div class="w-2 h-px bg-cyan-800"></div>
+<div class="w-4 h-px bg-cyan-400 shadow-[0_0_4px_cyan]"></div>
+<div class="w-2 h-px bg-cyan-800"></div>
+</div>
+</div>
+</main>
+<!-- Bottom Status Bar / HUD Data -->
+<div class="grid grid-cols-4 h-12 bg-surface-container border-t border-cyan-900/50">
+<div class="flex items-center px-4 border-r border-cyan-900/20">
+<span class="text-[10px] text-zinc-500 mr-2">FUEL:</span>
+<div class="flex-grow bg-zinc-900 h-2 rounded-full overflow-hidden">
+<div class="bg-cyan-400 h-full w-3/4"></div>
+</div>
+<span class="text-[10px] text-cyan-400 ml-2">75%</span>
+</div>
+<div class="flex items-center px-4 border-r border-cyan-900/20">
+<span class="text-[10px] text-zinc-500 mr-2">ENG1:</span>
+<span class="text-[10px] text-primary-container font-mono">NOMINAL</span>
+</div>
+<div class="flex items-center px-4 border-r border-cyan-900/20">
+<span class="text-[10px] text-zinc-500 mr-2">OAT:</span>
+<span class="text-[10px] text-cyan-400">-42°C</span>
+</div>
+<div class="flex items-center px-4">
+<span class="text-[10px] text-zinc-500 mr-2">SQ:</span>
+<span class="text-[10px] text-cyan-400">1200</span>
+</div>
+</div>
+<!-- BottomNavBar -->
+<footer class="fixed bottom-0 left-0 w-full h-16 z-50 flex items-stretch justify-around px-0 bg-black dark:bg-zinc-950 border-t border-cyan-900/50">
+<button class="flex flex-col items-center justify-center bg-cyan-400/20 text-cyan-400 border-x border-cyan-400 h-full w-full shadow-[inset_0_0_4px_rgba(0,242,255,0.3)] scale-95 transition-transform duration-75">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="font-['Space_Grotesk'] font-bold text-[9px] uppercase tracking-widest mt-1">PFD</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-600 h-full w-full border-x border-transparent hover:bg-zinc-900 hover:text-cyan-200">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Space_Grotesk'] font-bold text-[9px] uppercase tracking-widest mt-1">MAPS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-600 h-full w-full border-x border-transparent hover:bg-zinc-900 hover:text-cyan-200">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-['Space_Grotesk'] font-bold text-[9px] uppercase tracking-widest mt-1">DIAGS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-600 h-full w-full border-x border-transparent hover:bg-zinc-900 hover:text-cyan-200">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-['Space_Grotesk'] font-bold text-[9px] uppercase tracking-widest mt-1">LIB</span>
+</button>
+</footer>
+<!-- Tactical Overlay Scanline -->
+<div class="scanline top-20"></div>
+<div class="scanline bottom-40 opacity-50"></div>
+</body></html>

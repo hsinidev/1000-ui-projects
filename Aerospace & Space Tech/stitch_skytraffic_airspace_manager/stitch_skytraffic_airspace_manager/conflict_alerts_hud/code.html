@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SkyTraffic | Conflict Detection</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "error": "#ffb4ab",
+                "surface-container-low": "#191c1e",
+                "surface-tint": "#c0c1ff",
+                "on-tertiary-fixed": "#001f28",
+                "outline": "#908fa0",
+                "on-primary-container": "#0d0096",
+                "error-container": "#93000a",
+                "on-surface": "#e0e3e5",
+                "secondary": "#bec6e0",
+                "inverse-surface": "#e0e3e5",
+                "on-surface-variant": "#c7c4d7",
+                "tertiary-fixed": "#b7eaff",
+                "secondary-fixed-dim": "#bec6e0",
+                "on-tertiary": "#003543",
+                "on-secondary-container": "#adb4ce",
+                "on-primary": "#1000a9",
+                "on-primary-fixed": "#07006c",
+                "on-error-container": "#ffdad6",
+                "primary-fixed": "#e1e0ff",
+                "surface-container-high": "#272a2c",
+                "background": "#101415",
+                "tertiary": "#4cd6ff",
+                "on-primary-fixed-variant": "#2f2ebe",
+                "inverse-on-surface": "#2d3133",
+                "primary": "#c0c1ff",
+                "surface-container": "#1d2022",
+                "primary-container": "#8083ff",
+                "outline-variant": "#464554",
+                "surface-container-lowest": "#0b0f10",
+                "tertiary-container": "#009dc1",
+                "on-error": "#690005",
+                "primary-fixed-dim": "#c0c1ff",
+                "surface-variant": "#323537",
+                "inverse-primary": "#494bd6",
+                "surface-container-highest": "#323537",
+                "secondary-container": "#3f465c",
+                "on-secondary-fixed-variant": "#3f465c",
+                "on-background": "#e0e3e5",
+                "on-secondary": "#283044",
+                "surface-dim": "#101415",
+                "secondary-fixed": "#dae2fd",
+                "on-tertiary-fixed-variant": "#004e60",
+                "surface": "#101415",
+                "surface-bright": "#363a3b",
+                "on-tertiary-container": "#002e3a",
+                "tertiary-fixed-dim": "#4cd6ff",
+                "on-secondary-fixed": "#131b2e"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "xs": "4px",
+                "xl": "40px",
+                "unit": "4px",
+                "sm": "8px",
+                "lg": "24px",
+                "md": "16px",
+                "gutter": "20px",
+                "margin-edge": "32px"
+              },
+              "fontFamily": {
+                "data-mono": ["Space Grotesk"],
+                "headline-md": ["Space Grotesk"],
+                "label-caps": ["Space Grotesk"],
+                "body-base": ["Inter"],
+                "display-lg": ["Space Grotesk"]
+              },
+              "fontSize": {
+                "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                "headline-md": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                "body-base": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(16, 20, 21, 0.4);
+            backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid rgba(192, 193, 255, 0.1);
+        }
+        .critical-glow {
+            box-shadow: 0 0 20px rgba(128, 131, 255, 0.4), inset 0 0 10px rgba(128, 131, 255, 0.2);
+            border-color: rgba(128, 131, 255, 0.6);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 0%, rgba(192, 193, 255, 0.05) 50%, transparent 100%);
+            background-size: 100% 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="bg-slate-950/40 backdrop-blur-2xl text-indigo-500 font-['Space_Grotesk'] font-bold tracking-tight docked full-width top-0 border-b border-white/10 shadow-[0_4px_20px_rgba(0,0,0,0.4)] fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-indigo-500/30 overflow-hidden">
+<img alt="Pilot Profile" class="w-full h-full object-cover" data-alt="A professional digital avatar of a futuristic drone pilot wearing sleek tactical gear and a HUD-enabled headset. The background is a dark, technical workspace with glowing blue and indigo interfaces. The style is sharp, modern, and high-fidelity, matching an advanced aerospace command center aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY-ggp00Ng84RbXPv2GZpQes_pp8EgQ2y0yviKrm8AOwqS2BgTHSW7TEZWRuGdl8RabRUBycWRt8vgBrrEKLSKby0beAxMFi0sA_g3B624f_pJ8Q4rm6isfxG9OtQL0FIFcDX8p6WrFbx-Zv9ZCDghwASd3HCAnbAlWirBTEaO0gNJ_GdoMBYb76U8cKhLuwgAM6DiaUiGkhlR5sENMzg1FtFjvgXDURLhcWmn-O1eTGDGuGHcCYygcYH1EhEIgY-OOsrU-fV6-Mdj"/>
+</div>
+<span class="text-xl font-black text-white tracking-widest uppercase">SkyTraffic</span>
+</div>
+<button class="hover:bg-white/5 transition-colors active:scale-95 transition-transform p-2 rounded-lg">
+<span class="material-symbols-outlined text-indigo-500" data-icon="notifications_active">notifications_active</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-4 md:px-8 max-w-lg mx-auto min-h-screen scanline">
+<!-- Page Title Section -->
+<section class="mb-8">
+<h1 class="font-display-lg text-display-lg text-primary mb-2">Conflicts</h1>
+<p class="font-data-mono text-data-mono text-secondary-fixed-dim flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-error animate-pulse"></span>
+                3 CRITICAL VECTORS DETECTED
+            </p>
+</section>
+<!-- Active Conflicts List -->
+<div class="space-y-4">
+<!-- Conflict Card 1: Critical -->
+<div class="glass-panel critical-glow rounded-xl p-5 relative overflow-hidden active:scale-[0.98] transition-all cursor-pointer">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-caps text-label-caps text-error bg-error/10 px-2 py-1 rounded">COLLISION IMMINENT</span>
+<h2 class="font-headline-md text-headline-md text-white mt-2">Drone XJ-902</h2>
+<p class="font-data-mono text-data-mono text-on-surface-variant">Class B Civilian Transport</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-3xl text-error block">12s</span>
+<span class="font-label-caps text-[10px] text-error/60 uppercase">To Impact</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-white/5 rounded-lg p-3 border border-white/5">
+<span class="font-label-caps text-[10px] text-slate-400 block mb-1">PROXIMITY</span>
+<span class="font-data-mono text-lg text-white">52m</span>
+</div>
+<div class="bg-white/5 rounded-lg p-3 border border-white/5">
+<span class="font-label-caps text-[10px] text-slate-400 block mb-1">VELOCITY</span>
+<span class="font-data-mono text-lg text-white">44km/h</span>
+</div>
+</div>
+<div class="flex gap-3">
+<button class="flex-1 bg-error-container text-on-error-container font-label-caps py-4 rounded-lg flex items-center justify-center gap-2 hover:saturate-150 transition-all">
+<span class="material-symbols-outlined" data-icon="auto_mode">auto_mode</span>
+                        EVADE
+                    </button>
+<button class="flex-1 border border-white/20 text-white font-label-caps py-4 rounded-lg hover:bg-white/5 transition-all">
+                        DISMISS
+                    </button>
+</div>
+</div>
+<!-- Conflict Card 2 -->
+<div class="glass-panel rounded-xl p-5 border-l-4 border-primary/50">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-caps text-label-caps text-primary bg-primary/10 px-2 py-1 rounded">PROXIMITY ALERT</span>
+<h2 class="font-headline-md text-headline-md text-white mt-2">LogiBot-14</h2>
+<p class="font-data-mono text-data-mono text-on-surface-variant">Medical Payload Carrier</p>
+</div>
+<div class="text-right">
+<span class="font-display-lg text-3xl text-primary block">48s</span>
+<span class="font-label-caps text-[10px] text-primary/60 uppercase">Separation</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6">
+<div class="bg-white/5 rounded-lg p-3">
+<span class="font-label-caps text-[10px] text-slate-400 block mb-1">RANGE</span>
+<span class="font-data-mono text-lg text-white">185m</span>
+</div>
+<div class="bg-white/5 rounded-lg p-3">
+<span class="font-label-caps text-[10px] text-slate-400 block mb-1">ALTITUDE</span>
+<span class="font-data-mono text-lg text-white">+12m</span>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-label-caps py-3 rounded-lg hover:brightness-110 transition-all">
+                    ADJUST FLIGHT PATH
+                </button>
+</div>
+<!-- Conflict Card 3 -->
+<div class="glass-panel rounded-xl p-5 opacity-80 grayscale-[0.5]">
+<div class="flex justify-between items-start mb-4">
+<div>
+<span class="font-label-caps text-label-caps text-tertiary-fixed-dim bg-tertiary-container/20 px-2 py-1 rounded">RESOLVED</span>
+<h2 class="font-headline-md text-headline-md text-slate-400 mt-2">Vortex Alpha</h2>
+<p class="font-data-mono text-data-mono text-slate-500">Autonomous Survey Unit</p>
+</div>
+<span class="material-symbols-outlined text-tertiary" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="text-sm text-slate-400 font-body-base italic">Automated maneuver successful. Path cleared.</p>
+</div>
+</div>
+<!-- Radar Visualization (Contextual) -->
+<div class="mt-8 glass-panel rounded-2xl overflow-hidden aspect-square relative border border-white/5 shadow-inner">
+<div class="absolute inset-0 opacity-40">
+<img class="w-full h-full object-cover" data-alt="A high-tech digital radar map of a futuristic city skyline seen from above. The visuals are composed of glowing cyan lines and indigo wireframes. Several red and purple dots indicate drone positions with faint trajectory lines. The atmosphere is dark and technical, evoking a sophisticated air traffic control interface. Soft glows and minimalist typography accents enhance the UI depth." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzdxaNT9247JAO8-dwfTuRhRgPuHMNC3XKtAHqd1Noghupzb4nDB6G_eWAWx4D1utvfgMlR0AN7a_yX3nVbOzZezQPmZqPSQkyiGvTKejk1PYMWr5V9aZRFknYZufsQBT7-XKPCqp6hF4f7HQnAVPYCRN_K1_tmiaypJFG-LS73iCSvQJ0rQmYVrZVzk28QGsWMgE2g0ogsRERMOU2Bgt7bBSgQIq2-I_szYTFRh6HkETzjZBB9Hr1ec3gLVmNF7-9ToTX9JLAiIhB"/>
+</div>
+<!-- Overlay Scanning UI -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-48 h-48 border border-primary/20 rounded-full animate-[pulse_4s_infinite]"></div>
+<div class="w-24 h-24 border border-primary/40 rounded-full animate-[ping_3s_infinite] absolute"></div>
+<div class="w-full h-[1px] bg-primary/30 absolute top-1/2 -translate-y-1/2"></div>
+<div class="h-full w-[1px] bg-primary/30 absolute left-1/2 -translate-x-1/2"></div>
+</div>
+<div class="absolute bottom-4 left-4 right-4 flex justify-between font-data-mono text-[10px] text-primary">
+<span>SECTOR: 7-DELTA</span>
+<span>RANGE: 2.5KM</span>
+</div>
+</div>
+</main>
+<!-- Navigation Shell -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-3 bg-slate-950/60 backdrop-blur-3xl border-t border-indigo-500/30 shadow-[0_-10px_30px_rgba(0,0,0,0.5)] rounded-t-2xl">
+<!-- Airspace -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="explore">explore</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-1">Airspace</span>
+</a>
+<!-- Plans -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-1">Plans</span>
+</a>
+<!-- Alerts (Active) -->
+<a class="flex flex-col items-center justify-center bg-indigo-500/20 text-indigo-300 rounded-xl px-4 py-1 border border-indigo-500/40 shadow-[0_0_10px_rgba(99,102,241,0.3)] active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-1">Alerts</span>
+</a>
+<!-- Fleet -->
+<a class="flex flex-col items-center justify-center text-slate-500 opacity-70 hover:text-indigo-200 transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="radar">radar</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-medium uppercase tracking-tighter mt-1">Fleet</span>
+</a>
+</nav>
+<!-- FAB (Contextual) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary-container rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-40 border-2 border-white/20">
+<span class="material-symbols-outlined text-3xl" data-icon="bolt">bolt</span>
+</button>
+</body></html>
