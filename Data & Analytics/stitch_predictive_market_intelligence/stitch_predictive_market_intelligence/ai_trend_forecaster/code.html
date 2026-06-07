@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>MarketPulse | AI Trend Forecaster</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#e4e2e4",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "tertiary-container": "#191919",
+                    "surface": "#131315",
+                    "secondary": "#c6c6c6",
+                    "on-secondary-container": "#b8b8b8",
+                    "on-primary-fixed": "#0d1c32",
+                    "on-tertiary": "#313030",
+                    "surface-container-highest": "#343536",
+                    "on-primary": "#233148",
+                    "background": "#131315",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "tertiary": "#c8c6c5",
+                    "outline": "#8f9097",
+                    "surface-container-low": "#1b1b1d",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-secondary-fixed-variant": "#464747",
+                    "on-tertiary-container": "#838181",
+                    "surface-container-high": "#2a2a2c",
+                    "inverse-primary": "#515f78",
+                    "surface-tint": "#b9c7e4",
+                    "primary": "#b9c7e4",
+                    "inverse-surface": "#e4e2e4",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "surface-container-lowest": "#0e0e10",
+                    "secondary-container": "#484949",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "on-surface-variant": "#c5c6cd",
+                    "on-primary-fixed-variant": "#39475f",
+                    "tertiary-fixed": "#e5e2e1",
+                    "surface-dim": "#131315",
+                    "on-tertiary-fixed-variant": "#474646",
+                    "inverse-on-surface": "#303032",
+                    "primary-fixed": "#d6e3ff",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-background": "#e4e2e4",
+                    "primary-container": "#0a192f",
+                    "on-error": "#690005",
+                    "on-secondary": "#2f3131",
+                    "outline-variant": "#44474d",
+                    "surface-variant": "#343536",
+                    "on-primary-container": "#74829d",
+                    "surface-container": "#1f1f21",
+                    "surface-bright": "#39393b"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "container-margin": "24px",
+                    "stack-md": "16px",
+                    "stack-sm": "8px",
+                    "gutter": "16px",
+                    "stack-lg": "32px"
+            },
+            "fontFamily": {
+                    "display-xl": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "body-lg": ["Inter"],
+                    "headline-lg": ["Space Grotesk"],
+                    "data-mono": ["Space Grotesk"],
+                    "label-sm": ["Inter"],
+                    "headline-md": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(10, 25, 47, 0.8);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid rgba(227, 226, 226, 0.1);
+        }
+        .chart-grid {
+            background-image: linear-gradient(rgba(10, 25, 47, 0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(10, 25, 47, 0.5) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .silver-gradient-btn {
+            background: linear-gradient(180deg, #FFFFFF 0%, #C6C6C6 100%);
+            color: #050B14;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(185, 199, 228, 0.5);
+            border: 2px solid #0a192f;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-[#050B14] text-on-surface font-body-md antialiased min-h-screen">
+<!-- Top Navigation Shell -->
+<header class="flex justify-between items-center w-full px-4 h-16 fixed top-0 z-50 bg-[#0A192F]/80 backdrop-blur-xl border-b border-slate-800/50 shadow-2xl shadow-black/50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">insights</span>
+<h1 class="text-xl font-bold text-white tracking-tighter font-['Space_Grotesk']">MarketPulse</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6 font-['Space_Grotesk'] tracking-tight">
+<a class="text-slate-500 hover:text-slate-200 transition-all" href="#">Heatmap</a>
+<a class="text-white font-bold transition-all" href="#">Forecast</a>
+<a class="text-slate-500 hover:text-slate-200 transition-all" href="#">Risk</a>
+<a class="text-slate-500 hover:text-slate-200 transition-all" href="#">Sentiment</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-slate-200 p-2 hover:bg-slate-800/40 rounded-full transition-all">notifications_active</button>
+<div class="w-8 h-8 rounded-full bg-primary-container border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a high-end financial executive in a sharp navy suit. The lighting is dramatic and cinematic, with a cool blue hue reflecting the high-tech trading environment. The background is softly blurred, showing glimpses of glowing data screens in a sleek, modern corporate office. The overall mood is authoritative and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDgqRceo-55deY590f44E4feD0v3IP2BPhPyvEEhxflXnIEAaGlVtWcscUyE0BQXKVwOvh1x3kJSjykAletGrbnsd7eiW0Os0XD4TdNwzreZYJISjBTg1_uRQFQQnxeXujWAlSEu5ZN_4bURNHSXW-puVsYuh_r9shuxSbZR-CeWnKkTHkp4Hm51oZ3HgVAprDsOv5qls7pSuaPPw8hIrjYU842KRmkQwJ9o8wdF6CjCBdYL72jCSsV6tSq0BBtJJabvlsn9g3SIo0i"/>
+</div>
+</div>
+</header>
+<main class="pt-20 pb-24 px-4 md:px-8 max-w-7xl mx-auto">
+<!-- Dashboard Header -->
+<section class="mb-stack-lg flex flex-col md:flex-row md:items-end justify-between gap-4">
+<div>
+<span class="font-label-sm text-label-sm text-secondary uppercase tracking-[0.2em] mb-1 block">Predictive Engine v4.2</span>
+<h2 class="font-display-xl text-display-xl text-white">AI Trend Forecaster</h2>
+</div>
+<div class="flex gap-2">
+<div class="glass-panel px-4 py-2 rounded-lg border border-slate-800/60 flex items-center gap-3">
+<span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_8px_#22d3ee]"></span>
+<span class="font-data-mono text-data-mono text-white">LIVE_STREAM_ACTIVE</span>
+</div>
+<button class="silver-gradient-btn px-6 py-2 rounded-lg font-label-sm text-label-sm uppercase tracking-wider font-bold transition-transform active:scale-95">Execute Hedge</button>
+</div>
+</section>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Main Forecast Chart (The Area Chart) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl p-stack-md border border-slate-800/40 relative overflow-hidden h-[450px]">
+<div class="flex justify-between items-start mb-6 z-10 relative">
+<div>
+<h3 class="font-headline-md text-headline-md text-white">BTC/USD Predictive Velocity</h3>
+<p class="font-label-sm text-label-sm text-slate-500">72-Hour Confidence Horizon</p>
+</div>
+<div class="flex gap-4 font-data-mono text-data-mono">
+<div class="text-right">
+<span class="text-slate-500 block">CURRENT</span>
+<span class="text-white text-lg">$64,281.40</span>
+</div>
+<div class="text-right">
+<span class="text-cyan-400 block">TARGET</span>
+<span class="text-cyan-400 text-lg">$68,420.00</span>
+</div>
+</div>
+</div>
+<!-- Abstract Visual of Area Chart using CSS and Gradients -->
+<div class="absolute inset-0 top-24 chart-grid pointer-events-none opacity-20"></div>
+<div class="absolute bottom-0 left-0 w-full h-[300px] overflow-hidden">
+<svg class="w-full h-full preserve-3d" preserveaspectratio="none" viewbox="0 0 800 300">
+<defs>
+<lineargradient id="areaGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#22d3ee" stop-opacity="0.4"></stop>
+<stop offset="100%" stop-color="#0a192f" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<!-- Predicted area -->
+<path d="M0,250 Q100,220 200,240 T400,180 T600,120 T800,40 L800,300 L0,300 Z" fill="url(#areaGradient)"></path>
+<!-- Primary trend line -->
+<path d="M0,250 Q100,220 200,240 T400,180 T600,120 T800,40" fill="none" stroke="#22d3ee" stroke-width="3"></path>
+<!-- Secondary noise lines -->
+<path d="M400,180 L450,200 L500,160 L550,190 L600,120" fill="none" opacity="0.5" stroke="#b9c7e4" stroke-dasharray="4" stroke-width="1"></path>
+</svg>
+<!-- Data Points -->
+<div class="absolute top-[35px] right-[5%] group">
+<div class="w-3 h-3 bg-white rounded-full shadow-[0_0_15px_#fff]"></div>
+<div class="absolute right-0 mt-2 glass-panel p-2 rounded border border-white/20 whitespace-nowrap">
+<span class="font-data-mono text-xs text-white">94.2% PROBABILITY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Candlestick Insight Sidebar -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-stack-md border border-slate-800/40 h-[450px] flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-white">Volatility Pulse</h3>
+<span class="material-symbols-outlined text-slate-500">more_vert</span>
+</div>
+<!-- Candlestick Visual Mockup -->
+<div class="flex-grow flex items-end justify-between px-2 gap-2">
+<!-- Red candle -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-[1px] h-12 bg-error"></div>
+<div class="w-full h-24 bg-error/40 border border-error"></div>
+<div class="w-[1px] h-8 bg-error"></div>
+</div>
+<!-- Green candle -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-[1px] h-10 bg-cyan-400"></div>
+<div class="w-full h-32 bg-cyan-400/40 border border-cyan-400"></div>
+<div class="w-[1px] h-14 bg-cyan-400"></div>
+</div>
+<!-- Green candle small -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-[1px] h-16 bg-cyan-400"></div>
+<div class="w-full h-12 bg-cyan-400/40 border border-cyan-400"></div>
+<div class="w-[1px] h-6 bg-cyan-400"></div>
+</div>
+<!-- Predicted Hollow Candle -->
+<div class="flex flex-col items-center flex-1">
+<div class="w-[1px] h-20 bg-slate-400 border-dashed border-l"></div>
+<div class="w-full h-40 border-2 border-dashed border-slate-400/60 flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-400 text-sm">auto_graph</span>
+</div>
+<div class="w-[1px] h-10 bg-slate-400 border-dashed border-l"></div>
+</div>
+</div>
+<div class="mt-8 space-y-4">
+<div class="flex justify-between items-center border-t border-slate-800/40 pt-4">
+<span class="font-label-sm text-slate-500 uppercase tracking-widest">Sentiment Bias</span>
+<span class="font-data-mono text-cyan-400">BULLISH [HIGH]</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-sm text-slate-500 uppercase tracking-widest">Resistance</span>
+<span class="font-data-mono text-white">$65,200.00</span>
+</div>
+</div>
+</div>
+<!-- What-If Scenario Slider Container -->
+<div class="col-span-12 glass-panel rounded-xl p-stack-lg border-2 border-slate-800/80 mt-stack-md shadow-[0_0_40px_rgba(0,0,0,0.4)]">
+<div class="flex flex-col md:flex-row items-center gap-8">
+<div class="w-full md:w-1/3">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary">tune</span>
+<h4 class="font-headline-md text-white">What-If Scenario</h4>
+</div>
+<p class="font-body-md text-on-primary-container">Adjust global market volatility to simulate predictive shifts in real-time.</p>
+</div>
+<div class="flex-grow w-full space-y-6">
+<div class="space-y-2">
+<div class="flex justify-between font-data-mono text-xs uppercase text-slate-500">
+<span>Low Volatility (Equilibrium)</span>
+<span class="text-white">Current Alpha: 1.24x</span>
+<span>High Volatility (Stress)</span>
+</div>
+<input class="w-full h-1.5 bg-slate-800 rounded-full appearance-none cursor-pointer accent-white" max="100" min="0" type="range" value="45"/>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="bg-[#050B14] p-3 rounded border border-slate-800/60">
+<span class="font-label-sm text-slate-500 block mb-1">Max Drawdown</span>
+<span class="font-data-mono text-error">-4.12%</span>
+</div>
+<div class="bg-[#050B14] p-3 rounded border border-slate-800/60">
+<span class="font-label-sm text-slate-500 block mb-1">Sharp Ratio</span>
+<span class="font-data-mono text-white">3.85</span>
+</div>
+<div class="bg-[#050B14] p-3 rounded border border-slate-800/60">
+<span class="font-label-sm text-slate-500 block mb-1">Est. Yield</span>
+<span class="font-data-mono text-cyan-400">+12.4%</span>
+</div>
+<div class="bg-[#050B14] p-3 rounded border border-slate-800/60">
+<span class="font-label-sm text-slate-500 block mb-1">Risk Rating</span>
+<div class="flex gap-1 mt-1">
+<div class="h-1 w-4 bg-cyan-400 rounded-full"></div>
+<div class="h-1 w-4 bg-cyan-400 rounded-full"></div>
+<div class="h-1 w-4 bg-slate-700 rounded-full"></div>
+<div class="h-1 w-4 bg-slate-700 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<footer class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-20 px-2 pb-safe bg-[#050B14]/90 backdrop-blur-2xl border-t border-slate-800/60 shadow-[0_-4px_20px_rgba(0,0,0,0.6)] rounded-t-lg">
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3 hover:text-slate-200 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Heatmap</span>
+</a>
+<a class="flex flex-col items-center justify-center text-cyan-400 bg-slate-800/50 rounded-lg py-1 px-3 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Forecast</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3 hover:text-slate-200 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">shield_with_heart</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Risk</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-500 py-1 px-3 hover:text-slate-200 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined">analytics</span>
+<span class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest mt-1">Sentiment</span>
+</a>
+</footer>
+</body></html>

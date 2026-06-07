@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inventory Turnover Analytics - RetailMetric</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&amp;family=Manrope:wght@600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-card {
+            background-color: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 1rem;
+            padding: 24px;
+            transition: all 0.2s ease;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#e7e0eb",
+                      "secondary-fixed-dim": "#b9c7df",
+                      "on-tertiary-container": "#d7d9db",
+                      "on-error-container": "#93000a",
+                      "tertiary": "#444749",
+                      "on-primary-container": "#e1d2ff",
+                      "on-primary-fixed-variant": "#522aa7",
+                      "on-primary-fixed": "#23005c",
+                      "secondary-container": "#d5e3fc",
+                      "on-error": "#ffffff",
+                      "secondary": "#515f74",
+                      "on-secondary-fixed": "#0d1c2e",
+                      "tertiary-container": "#5c5f61",
+                      "on-tertiary": "#ffffff",
+                      "outline-variant": "#cbc3d5",
+                      "surface-container": "#f2ebf7",
+                      "error": "#ba1a1a",
+                      "outline": "#7a7484",
+                      "on-secondary": "#ffffff",
+                      "surface-tint": "#6b46c1",
+                      "on-background": "#1d1a22",
+                      "inverse-on-surface": "#f5eef9",
+                      "on-tertiary-fixed-variant": "#444749",
+                      "on-primary": "#ffffff",
+                      "on-tertiary-fixed": "#191c1e",
+                      "tertiary-fixed": "#e0e3e5",
+                      "secondary-fixed": "#d5e3fc",
+                      "surface-bright": "#fef7ff",
+                      "surface-container-highest": "#e7e0eb",
+                      "surface-dim": "#ded8e3",
+                      "on-secondary-container": "#57657a",
+                      "surface-container-low": "#f8f1fc",
+                      "on-surface": "#1d1a22",
+                      "surface-container-lowest": "#ffffff",
+                      "surface": "#fef7ff",
+                      "surface-container-high": "#ece6f1",
+                      "primary-fixed": "#e9ddff",
+                      "primary-container": "#6b46c1",
+                      "primary": "#532aa8",
+                      "on-surface-variant": "#494453",
+                      "error-container": "#ffdad6",
+                      "primary-fixed-dim": "#d0bcff",
+                      "tertiary-fixed-dim": "#c4c7c9",
+                      "background": "#fef7ff",
+                      "inverse-surface": "#322f37",
+                      "inverse-primary": "#d0bcff",
+                      "on-secondary-fixed-variant": "#3a485b"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "lg": "24px",
+                      "base": "4px",
+                      "container-padding": "40px",
+                      "bento-gap": "20px",
+                      "sm": "12px",
+                      "xs": "8px",
+                      "xl": "32px",
+                      "md": "16px"
+              },
+              "fontFamily": {
+                      "body-sm": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "data-num": ["Manrope"],
+                      "h2": ["Manrope"],
+                      "display": ["Manrope"],
+                      "h3": ["Manrope"],
+                      "body-md": ["Inter"],
+                      "label-caps": ["Inter"],
+                      "h1": ["Manrope"]
+              },
+              "fontSize": {
+                      "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "data-num": ["28px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                      "h2": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "display": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "h3": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "h1": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface text-on-surface font-body-md min-h-screen pb-32">
+<!-- Top App Bar -->
+<header class="bg-surface dark:bg-background docked full-width top-0 z-40 fixed w-full">
+<div class="flex justify-between items-center px-md h-16 w-full max-w-7xl mx-auto">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden bg-primary-container flex items-center justify-center">
+<img alt="User profile photo" class="w-full h-full object-cover" data-alt="A professional studio headshot of a corporate executive with a friendly expression. The lighting is soft and directional, typical of a high-end corporate environment. The background is a clean, neutral gray that complements the light-mode UI. The overall aesthetic is polished, authoritative, and perfectly aligned with the RetailMetric brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuANb6o2q3zbEcu3I4QrztgjrVUYl_EDvv5ipqJZGnmCba-wAkIQZfG-uK7gthC_ryFStrEQlvykUfr6NAj9-DJscsAwacM6Nt0qbUtMxAsxc875eWYdPjiXYHJPN7S-K2cX_2fvu4HYJOTFrtYJPEHrcuaH0MOfj3zLLtUT3OhCK8MfW4ISi5C8XldTbRtPsMn6jYi3-cNDMSzEkqtxmVU7QV93LSWpmGdhhE6iadaDXrlHjJDLXf_QxA_qM3pvrKHp5azKXlvBh_8"/>
+</div>
+<span class="font-display text-h3 font-extrabold text-primary dark:text-primary-fixed">RetailMetric</span>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed p-2 hover:bg-surface-container-high transition-colors rounded-full" data-icon="search">search</button>
+</div>
+</header>
+<main class="pt-20 px-md max-w-7xl mx-auto space-y-md">
+<!-- Page Title -->
+<section class="py-xs">
+<h1 class="font-h1 text-h1 text-on-surface">Inventory Analytics</h1>
+<div class="flex items-center gap-xs mt-base">
+<span class="w-2 h-2 rounded-full bg-emerald-500"></span>
+<p class="font-label-caps text-label-caps text-on-surface-variant">System uptime: 99.9%</p>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-bento-gap">
+<!-- Stock Turn Ratio Card -->
+<div class="bento-card col-span-1 border-outline-variant shadow-sm">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase">Stock Turn Ratio</p>
+<span class="material-symbols-outlined text-primary" data-icon="sync_alt">sync_alt</span>
+</div>
+<div class="mt-md flex items-baseline gap-sm">
+<span class="font-data-num text-display text-primary">8.4x</span>
+<span class="flex items-center text-emerald-600 font-label-caps text-label-caps">
+<span class="material-symbols-outlined text-[14px]" data-icon="trending_up">trending_up</span>
+                        +12.5%
+                    </span>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-xs">Annualized velocity vs. last quarter</p>
+</div>
+<!-- Real-Time Low Stock Alerts -->
+<div class="bento-card col-span-1 border-error-container bg-error-container/10">
+<div class="flex justify-between items-start">
+<p class="font-label-caps text-label-caps text-error font-bold uppercase">Low Stock Alerts</p>
+<span class="material-symbols-outlined text-error" data-icon="warning" data-weight="fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div class="mt-md space-y-sm">
+<div class="flex justify-between items-center bg-white/80 p-sm rounded-lg border border-error-container">
+<div>
+<p class="font-h3 text-[16px] text-on-surface">Nordic Chrono White</p>
+<p class="text-body-sm text-on-surface-variant">SKU: NCW-004</p>
+</div>
+<span class="px-sm py-xs bg-error-container text-on-error-container rounded-full font-label-caps text-[10px] font-bold">4 Left</span>
+</div>
+<div class="flex justify-between items-center bg-white/80 p-sm rounded-lg border border-error-container">
+<div>
+<p class="font-h3 text-[16px] text-on-surface">Echo-Bass Pro XL</p>
+<p class="text-body-sm text-on-surface-variant">SKU: EBP-702</p>
+</div>
+<span class="px-sm py-xs bg-error-container text-on-error-container rounded-full font-label-caps text-[10px] font-bold">2 Left</span>
+</div>
+</div>
+</div>
+<!-- Warehouse Efficiency -->
+<div class="bento-card col-span-1 border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-md">Warehouse Efficiency</p>
+<div class="space-y-md">
+<div>
+<div class="flex justify-between text-body-sm mb-base">
+<span class="text-on-surface-variant">Lead Time</span>
+<span class="font-bold text-on-surface">4.2 Days</span>
+</div>
+<div class="h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary w-2/3"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-body-sm mb-base">
+<span class="text-on-surface-variant">Pick Rate</span>
+<span class="font-bold text-on-surface">114 items/hr</span>
+</div>
+<div class="h-2 bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-4/5"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Top Selling SKUs -->
+<div class="bento-card col-span-1 md:col-span-2 border-outline-variant shadow-sm">
+<p class="font-label-caps text-label-caps text-on-surface-variant uppercase mb-md">Top Selling SKUs</p>
+<div class="grid grid-cols-2 gap-md">
+<div class="relative rounded-lg overflow-hidden h-32 group">
+<img alt="Canvas Tote" class="w-full h-full object-cover" data-alt="A minimalist and high-quality canvas tote bag presented in a bright, modern studio setting. The lighting is clean and even, showcasing the fine fabric texture and durability. The color palette consists of neutral tones and soft whites, mirroring the light-mode corporate aesthetic of a high-end retail dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAaWRI-rLOpQkdhKGObvUz2YQY9X6ywe_-W5JBksEPIxMufkfz8veP3Pkc72OlEn8oRXIDWuzY_4l-sAthHN9BFk4Zu7bZA48nyYZTMcBFEJQ3mzyRSil5SrF6MfEGPdGnIdCRwYvlo43HSoSUwlLy_m1nXUv0MPJC9afto8pTqeEbo49TzrDoZuHqpmkLf2Mnt_YCJdstLzl3k3GiJFWEkH79MLvUhoYz8sCwVTiqbfUPKLlGCiGbI1FfutKn5qX38jolI0__yP0k"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-sm">
+<p class="text-white font-h3 text-sm">Canvas Tote</p>
+<p class="text-white/80 text-xs">2,480 Units</p>
+</div>
+</div>
+<div class="relative rounded-lg overflow-hidden h-32 group">
+<img alt="Slim-Fit Chino" class="w-full h-full object-cover" data-alt="A pair of expertly tailored slim-fit chinos in a versatile khaki color, captured with sharp focus and professional studio lighting. The background is a soft, airy white, maintaining the minimalist corporate vibe. The image emphasizes quality and premium retail appeal, suitable for an advanced data analytics platform's inventory section." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBr9HukabJrx5HqbzJ5vX7eccPt9JZX0Dd7vDN7cHpobNn7NpXUBl99en4HbeElynw6R3uagJ5OMqC61l1T00kcBqRWXPa8PAB2N5Z12AAXGgqwWw3XjiZQBqpPPRZWHdgHz_kpqjk48zhUca3pmxVCZH5TwhezN4cSrhZv4KlfhjgBYjflS9zJSKKiysb_RKCY6cyRLETbohOxJUXVewG9yt1O6fUchINcpj4bxw5a6jdkvScTvS7UWML-RhL64SdwpdGIKO1iqXw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex flex-col justify-end p-sm">
+<p class="text-white font-h3 text-sm">Slim-Fit Chino</p>
+<p class="text-white/80 text-xs">1,920 Units</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Inventory Mix Chart (Simplified for Mobile) -->
+<div class="bento-card col-span-1 border-outline-variant shadow-sm flex flex-col justify-center items-center text-center">
+<div class="w-32 h-32 rounded-full border-[12px] border-primary border-r-secondary-container relative flex items-center justify-center">
+<div class="text-center">
+<p class="font-data-num text-h2 text-primary">64%</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant uppercase">Apparel</p>
+</div>
+</div>
+<p class="mt-md text-body-sm text-on-surface-variant">Current Category Distribution</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-sm pb-base pt-xs bg-surface-container-low dark:bg-surface-dim shadow-sm rounded-t-xl md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-1 hover:bg-surface-container-high transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-label-caps mt-base">Dashboard</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-1 hover:bg-surface-container-high transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span class="font-label-caps text-label-caps mt-base">Customers</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container dark:bg-on-primary-fixed-variant text-on-primary-container dark:text-primary-fixed rounded-full px-4 py-1 transition-transform duration-200 scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span class="font-label-caps text-label-caps mt-base">Inventory</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-1 hover:bg-surface-container-high transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="campaign">campaign</span>
+<span class="font-label-caps text-label-caps mt-base">Campaigns</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-tertiary-container px-4 py-1 hover:bg-surface-container-high transition-transform duration-200 active:scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+<span class="font-label-caps text-label-caps mt-base">More</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Details/Analytics as per instructions, but often relevant for Dashboards - here we stick to the suppression for analytics detail pages) -->
+</body></html>

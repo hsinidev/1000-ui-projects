@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CYBERMETRIC_SIEM | Compliance Audit Log</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-container-low": "#1c1b1b",
+                      "secondary": "#c6c6cb",
+                      "tertiary-container": "#929090",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "surface-tint": "#ffb4a8",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "on-error": "#690005",
+                      "secondary-container": "#46464b",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-dim": "#131313",
+                      "surface-variant": "#353534",
+                      "tertiary-fixed": "#e5e2e1",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "primary-container": "#ff5540",
+                      "inverse-on-surface": "#313030",
+                      "inverse-surface": "#e5e2e1",
+                      "primary-fixed-dim": "#ffb4a8",
+                      "on-primary-fixed-variant": "#930100",
+                      "on-secondary-fixed": "#1a1b1f",
+                      "outline": "#b18780",
+                      "surface-container-highest": "#353534",
+                      "background": "#131313",
+                      "primary": "#ffb4a8",
+                      "on-primary": "#690100",
+                      "on-background": "#e5e2e1",
+                      "on-secondary-fixed-variant": "#46464b",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-container": "#b5b4ba",
+                      "on-primary-fixed": "#410000",
+                      "tertiary": "#c8c6c5",
+                      "on-surface": "#e5e2e1",
+                      "error": "#ffb4ab",
+                      "inverse-primary": "#c00100",
+                      "surface-bright": "#3a3939",
+                      "on-secondary": "#2f3034",
+                      "on-primary-container": "#5c0000",
+                      "on-tertiary": "#313030",
+                      "outline-variant": "#603e39",
+                      "on-surface-variant": "#ebbbb4",
+                      "secondary-fixed": "#e3e2e7",
+                      "error-container": "#93000a",
+                      "primary-fixed": "#ffdad4",
+                      "on-tertiary-container": "#2a2a2a",
+                      "surface": "#131313",
+                      "secondary-fixed-dim": "#c6c6cb",
+                      "surface-container": "#201f1f"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "container-padding": "12px",
+                      "margin": "24px"
+              },
+              "fontFamily": {
+                      "display-xl": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"],
+                      "data-mono": ["Space Grotesk"],
+                      "headline-lg": ["Space Grotesk"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["11px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "data-mono": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #353534;
+        }
+        .laser-glow {
+            box-shadow: 0 0 12px rgba(255, 0, 0, 0.4);
+        }
+        .pulse-critical {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .6; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary overflow-hidden">
+<!-- TopNavBar -->
+<header class="flex justify-between items-center w-full px-gutter h-16 z-50 bg-background border-b border-surface-container-highest fixed top-0 left-0">
+<div class="flex items-center gap-8">
+<div class="font-headline-lg text-headline-lg font-bold text-primary">CYBERMETRIC_SIEM</div>
+<div class="hidden md:flex items-center gap-6">
+<nav class="flex gap-6">
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-2 py-1" href="#">OVERVIEW</a>
+<a class="text-primary font-bold border-b-2 border-primary px-2 py-1" href="#">COMPLIANCE_AUDIT</a>
+<a class="text-on-surface-variant hover:bg-surface-container-high transition-colors px-2 py-1" href="#">THREAT_GEOMETRY</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center bg-surface-container px-3 py-1.5 rounded border border-surface-container-highest w-64">
+<span class="material-symbols-outlined text-on-surface-variant text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-data-mono font-data-mono uppercase w-full py-0" placeholder="SEARCH_LOGS..." type="text"/>
+</div>
+<div class="flex gap-2">
+<button class="p-2 hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined text-primary">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined text-primary">settings_system_daydream</span>
+</button>
+<button class="p-2 hover:bg-surface-container-high transition-colors cursor-pointer active:scale-95">
+<span class="material-symbols-outlined text-primary">terminal</span>
+</button>
+</div>
+<button class="bg-primary text-on-primary font-label-caps px-4 py-2 hover:brightness-110 active:scale-95 transition-all">INCIDENT_REPORT</button>
+<button class="text-on-surface-variant font-label-caps border border-surface-container-highest px-4 py-2 hover:bg-surface-container-high transition-all">LOG_OUT</button>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col pt-20 pb-4 z-40 bg-surface border-r border-surface-container-highest w-64">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest flex items-center justify-center border border-primary">
+<span class="material-symbols-outlined text-primary">admin_panel_settings</span>
+</div>
+<div>
+<div class="font-data-mono text-data-mono text-primary">OPERATOR_01</div>
+<div class="text-[10px] font-label-caps text-on-surface-variant opacity-70">CLEARANCE_LEVEL_V</div>
+</div>
+</div>
+<nav class="flex-1 overflow-y-auto custom-scrollbar">
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">radar</span>
+<span class="font-data-mono text-data-mono uppercase">Threat Stream</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">troubleshoot</span>
+<span class="font-data-mono text-data-mono uppercase">Root Cause</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-data-mono text-data-mono uppercase">Posture</span>
+</a>
+<a class="bg-surface-container-highest text-primary border-l-4 border-primary px-4 py-3 flex items-center gap-3" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">security</span>
+<span class="font-data-mono text-data-mono uppercase font-bold">Compliance</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span class="font-data-mono text-data-mono uppercase">Admin</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">forum</span>
+<span class="font-data-mono text-data-mono uppercase">Collaborate</span>
+</a>
+<a class="text-on-surface-variant px-4 py-3 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-data-mono text-data-mono uppercase">Knowledge</span>
+</a>
+</nav>
+<div class="px-4 py-4 border-t border-surface-container-highest">
+<button class="w-full bg-error-container text-on-error-container font-label-caps py-3 mb-4 hover:brightness-125 transition-all">SYS_REBOOT</button>
+<div class="flex flex-col gap-1">
+<a class="text-on-surface-variant px-2 py-1.5 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">help</span>
+<span class="font-data-mono text-[11px] uppercase">Support</span>
+</a>
+<a class="text-on-surface-variant px-2 py-1.5 flex items-center gap-3 hover:bg-surface-container transition-all" href="#">
+<span class="material-symbols-outlined text-sm">history</span>
+<span class="font-data-mono text-[11px] uppercase">Logs</span>
+</a>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-64 pt-16 h-screen flex flex-col">
+<div class="p-gutter flex flex-col h-full gap-4 overflow-hidden">
+<!-- Page Header & Filter Controls -->
+<div class="flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg uppercase tracking-tight text-on-background">COMPLIANCE_AUDIT_LOGS</h1>
+<p class="font-data-mono text-data-mono text-on-surface-variant uppercase mt-1">Real-time surveillance of system access and policy violations</p>
+</div>
+<div class="flex gap-2">
+<div class="flex items-center gap-4 bg-surface-container p-1 border border-surface-container-highest">
+<span class="text-[10px] font-label-caps px-2 opacity-50">FILTER_BY_SEVERITY:</span>
+<div class="flex gap-1">
+<button class="bg-error-container text-error px-3 py-1 font-data-mono text-[11px] border border-error/20 hover:bg-error/20 transition-all">CRIT</button>
+<button class="bg-surface-container-high text-on-surface-variant px-3 py-1 font-data-mono text-[11px] border border-surface-container-highest hover:bg-primary/10 transition-all">WARN</button>
+<button class="bg-surface-container-high text-on-surface-variant px-3 py-1 font-data-mono text-[11px] border border-surface-container-highest hover:bg-primary/10 transition-all">INFO</button>
+</div>
+</div>
+<button class="bg-surface-container-highest border border-outline-variant px-4 py-2 font-label-caps flex items-center gap-2 text-on-surface hover:bg-surface-bright transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        EXPORT_RAW
+                    </button>
+</div>
+</div>
+<!-- Bento Grid Layout for Telemetry -->
+<div class="grid grid-cols-12 gap-4 h-full overflow-hidden pb-12">
+<!-- Main Audit Table -->
+<div class="col-span-12 lg:col-span-9 bg-surface-container-lowest border border-surface-container-highest flex flex-col overflow-hidden">
+<div class="bg-surface-container p-3 border-b border-surface-container-highest flex justify-between items-center">
+<span class="font-data-mono text-data-mono text-primary flex items-center gap-2">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+                            ACTIVE_MONITORING_STREAM
+                        </span>
+<span class="font-data-mono text-[11px] text-on-surface-variant">ROWS_RECOVERED: 4,812 | LATENCY: 12ms</span>
+</div>
+<div class="flex-1 overflow-auto custom-scrollbar">
+<table class="w-full border-collapse">
+<thead class="sticky top-0 bg-surface-container-low z-10 shadow-md">
+<tr class="text-left border-b border-surface-container-highest font-data-mono text-[11px] uppercase text-on-surface-variant">
+<th class="px-4 py-3 font-medium">TIMESTAMP</th>
+<th class="px-4 py-3 font-medium">SEVERITY</th>
+<th class="px-4 py-3 font-medium">SOURCE_ID</th>
+<th class="px-4 py-3 font-medium">ACTION_PROTOCOL</th>
+<th class="px-4 py-3 font-medium">STATUS</th>
+</tr>
+</thead>
+<tbody class="font-data-mono text-data-mono divide-y divide-surface-container-highest">
+<!-- Row 1 - CRITICAL -->
+<tr class="bg-error-container/5 hover:bg-error-container/10 transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:22:01.442</td>
+<td class="px-4 py-3">
+<span class="bg-error text-on-error px-2 py-0.5 rounded-sm text-[10px] font-bold laser-glow pulse-critical">CRIT</span>
+</td>
+<td class="px-4 py-3 text-secondary">IP.192.168.1.105</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">UNAUTHORIZED_ACCESS_ATTEMPT: ROOT_PRIVILEGES</td>
+<td class="px-4 py-3 text-error">BLOCKED</td>
+</tr>
+<!-- Row 2 - WARNING -->
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:21:58.110</td>
+<td class="px-4 py-3">
+<span class="bg-surface-container-highest text-secondary px-2 py-0.5 rounded-sm text-[10px] font-bold border border-secondary/30">WARN</span>
+</td>
+<td class="px-4 py-3 text-secondary">NODE_EX_04</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">MULTIPLE_FAILED_AUTH: USER_0442</td>
+<td class="px-4 py-3 text-on-surface-variant">FLAGGED</td>
+</tr>
+<!-- Row 3 - INFO -->
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:21:45.892</td>
+<td class="px-4 py-3">
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span>
+</td>
+<td class="px-4 py-3 text-secondary">SYS_KRNL</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">ENCRYPTION_KEY_ROTATION: SUCCESSFUL</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+<!-- Row 4 - CRITICAL -->
+<tr class="bg-error-container/5 hover:bg-error-container/10 transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:21:30.221</td>
+<td class="px-4 py-3">
+<span class="bg-error text-on-error px-2 py-0.5 rounded-sm text-[10px] font-bold laser-glow">CRIT</span>
+</td>
+<td class="px-4 py-3 text-secondary">EXT_GEO_88</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">DATABASE_DUMP_COMMAND_INITIATED</td>
+<td class="px-4 py-3 text-error">INTERCEPTED</td>
+</tr>
+<!-- Row 5 - INFO -->
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:21:12.001</td>
+<td class="px-4 py-3">
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span>
+</td>
+<td class="px-4 py-3 text-secondary">USER_ADMIN_B</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">SESSION_ESTABLISHED: SECURE_TUNNEL</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+<!-- Row 6 - INFO -->
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:20:55.332</td>
+<td class="px-4 py-3">
+<span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span>
+</td>
+<td class="px-4 py-3 text-secondary">NODE_EX_04</td>
+<td class="px-4 py-3 text-on-surface truncate max-w-xs">AUTO_UPDATE_PROTOCOL_SYNC</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+<!-- Repeat generic rows for density -->
+<tr class="hover:bg-surface-container-high transition-colors opacity-60">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:20:42.000</td>
+<td class="px-4 py-3"><span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span></td>
+<td class="px-4 py-3 text-secondary">HEARTBEAT</td>
+<td class="px-4 py-3 text-on-surface">SYS_HEALTH_CHECK_PASSED</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors opacity-60">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:20:30.111</td>
+<td class="px-4 py-3"><span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span></td>
+<td class="px-4 py-3 text-secondary">HEARTBEAT</td>
+<td class="px-4 py-3 text-on-surface">SYS_HEALTH_CHECK_PASSED</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors opacity-60">
+<td class="px-4 py-3 text-secondary">2024-05-20 14:20:20.010</td>
+<td class="px-4 py-3"><span class="bg-surface-container-highest text-on-surface-variant px-2 py-0.5 rounded-sm text-[10px] font-bold">INFO</span></td>
+<td class="px-4 py-3 text-secondary">HEARTBEAT</td>
+<td class="px-4 py-3 text-on-surface">SYS_HEALTH_CHECK_PASSED</td>
+<td class="px-4 py-3 text-secondary">STABLE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Side Panel Metrics -->
+<div class="col-span-12 lg:col-span-3 flex flex-col gap-4">
+<!-- Threat Geometry Visualization -->
+<div class="bg-surface-container border border-surface-container-highest p-4 flex-1 flex flex-col relative overflow-hidden group">
+<div class="font-label-caps text-on-surface-variant mb-4 flex justify-between">
+<span>REGIONAL_ANOMALIES</span>
+<span class="text-primary">LIVE_MAP</span>
+</div>
+<div class="flex-1 bg-[#050505] rounded border border-surface-container-highest relative overflow-hidden">
+<img class="w-full h-full object-cover opacity-40 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A dark digital world map interface displaying cybersecurity threats in real-time. Neon red pulses and connecting lines highlight attack vectors between global data centers. The aesthetic is high-tech and minimalist, with a matte black background and subtle phosphorescence glow. The map is viewed from a tactical satellite perspective with a grid overlay." data-location="Europe" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCf3h4YBc7SlceC8vQiOPXV7tBvO_NfHUCtKdX_E5xy3WMYAwST0KpT9G1qcV9rsA_3UKBDXZzZY646dIpb4wjH-ht7KW4qcStN0YKftJR72NlWLwGJ6KqzJdpuBnAYmG-d1UitZz8zAh-eg1Pmy8KimqJbjluIFSvXmjKX5_BS94jNpsLt-y8cao16tWPvVf6rZXX9UJ-n1G5NRW02d4wzPyqHwPiUPG8yCzs8rg5IKa9m_nJW2422N6UOLTR5AAPiYkM0G24EVeg"/>
+<!-- Overlay UI elements for the map -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<div class="w-24 h-24 border border-primary/20 rounded-full animate-ping"></div>
+</div>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-2">
+<div class="p-2 bg-surface-container-highest border-l-2 border-primary">
+<div class="text-[10px] font-label-caps text-on-surface-variant">EU_CLUSTER</div>
+<div class="font-data-mono text-primary text-lg">94.2%</div>
+</div>
+<div class="p-2 bg-surface-container-highest border-l-2 border-error">
+<div class="text-[10px] font-label-caps text-on-surface-variant">NA_CLUSTER</div>
+<div class="font-data-mono text-error text-lg">12.5%</div>
+</div>
+</div>
+</div>
+<!-- Severity Sparkline Chart -->
+<div class="bg-surface-container border border-surface-container-highest p-4">
+<div class="font-label-caps text-on-surface-variant mb-2">INCIDENT_VELOCITY</div>
+<div class="h-16 flex items-end gap-1 px-1">
+<div class="w-full bg-primary/20 h-[30%]"></div>
+<div class="w-full bg-primary/20 h-[45%]"></div>
+<div class="w-full bg-primary/20 h-[25%]"></div>
+<div class="w-full bg-primary/20 h-[60%]"></div>
+<div class="w-full bg-primary/20 h-[90%]"></div>
+<div class="w-full bg-error h-[100%] laser-glow"></div>
+<div class="w-full bg-primary/20 h-[50%]"></div>
+<div class="w-full bg-primary/20 h-[40%]"></div>
+<div class="w-full bg-primary/20 h-[35%]"></div>
+<div class="w-full bg-primary/20 h-[20%]"></div>
+<div class="w-full bg-primary/20 h-[10%]"></div>
+<div class="w-full bg-primary/20 h-[15%]"></div>
+</div>
+<div class="mt-2 flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>-15 MIN</span>
+<span class="text-error">PEAK_DETECTED</span>
+<span>CURRENT</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Live Feed Ticker -->
+<footer class="fixed bottom-0 left-64 right-0 h-10 bg-surface-container-lowest border-t border-surface-container-highest flex items-center px-4 z-30">
+<div class="bg-primary text-on-primary font-label-caps px-2 py-0.5 text-[10px] mr-4">LIVE_FEED</div>
+<div class="flex-1 overflow-hidden whitespace-nowrap">
+<div class="inline-block animate-marquee font-data-mono text-[11px] text-primary/80">
+                    [SYSTEM] :: SECURE_TUNNEL_08 ACTIVATED :: [NETWORK] :: PACKET_INSPECTION_MODULE_RESTARTED :: [THREAT] :: LEVEL_III_ANOMALY_RESOLVED_IN_NODE_04 :: [AUDIT] :: USER_ROOT_LOGGED_OFF_TERM_02 :: [SYSTEM] :: DISK_ARRAY_V_STABLE ::
+                </div>
+</div>
+<div class="flex gap-4 ml-4">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-data-mono text-[10px] text-secondary">SYNC: ONLINE</span>
+</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant">2024.05.20_14:22:15_UTC</div>
+</div>
+</footer>
+</main>
+<style>
+        @keyframes marquee {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        .animate-marquee {
+            display: inline-block;
+            animation: marquee 30s linear infinite;
+        }
+    </style>
+</body></html>

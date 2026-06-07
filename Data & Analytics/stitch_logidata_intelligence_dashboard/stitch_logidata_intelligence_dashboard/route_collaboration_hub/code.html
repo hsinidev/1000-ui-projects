@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LogiData | Collaborative Route Map</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-variant": "#e4e2e2",
+                        "secondary-fixed-dim": "#c8c6c6",
+                        "on-tertiary-container": "#2e3030",
+                        "on-error-container": "#93000a",
+                        "tertiary": "#5d5f5f",
+                        "on-primary-container": "#561e00",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "on-primary-fixed": "#351000",
+                        "secondary-container": "#e4e2e1",
+                        "on-error": "#ffffff",
+                        "secondary": "#5f5e5e",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "tertiary-container": "#969797",
+                        "on-tertiary": "#ffffff",
+                        "outline-variant": "#e3bfb1",
+                        "surface-container": "#efeded",
+                        "error": "#ba1a1a",
+                        "outline": "#8e7164",
+                        "on-secondary": "#ffffff",
+                        "surface-tint": "#a23f00",
+                        "on-background": "#1b1c1c",
+                        "inverse-on-surface": "#f2f0f0",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-primary": "#ffffff",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed": "#e4e2e1",
+                        "surface-bright": "#fbf9f8",
+                        "surface-container-highest": "#e4e2e2",
+                        "surface-dim": "#dbdad9",
+                        "on-secondary-container": "#656464",
+                        "surface-container-low": "#f5f3f3",
+                        "on-surface": "#1b1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#fbf9f8",
+                        "surface-container-high": "#e9e8e7",
+                        "primary-fixed": "#ffdbcd",
+                        "primary-container": "#ff6700",
+                        "primary": "#a23f00",
+                        "on-surface-variant": "#5a4136",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#ffb595",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "background": "#fbf9f8",
+                        "inverse-surface": "#303031",
+                        "inverse-primary": "#ffb595",
+                        "on-secondary-fixed-variant": "#474747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-padding": "1.5rem",
+                        "margin": "24px",
+                        "stack-md": "1rem",
+                        "gutter": "16px",
+                        "stack-lg": "2rem",
+                        "stack-sm": "0.5rem"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "label-sm": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "data-mono": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["11px", {"lineHeight": "1", "letterSpacing": "0.08em", "fontWeight": "700"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                        "data-mono": ["13px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #333333; }
+        .hard-shadow { box-shadow: 2px 2px 0px 0px rgba(51, 51, 51, 1); }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md">
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full flex flex-col bg-surface-container-lowest dark:bg-inverse-surface h-screen w-64 border-r border-on-background/10 z-50">
+<div class="p-gutter flex items-center gap-stack-md">
+<div class="w-10 h-10 bg-primary-container flex items-center justify-center rounded">
+<span class="material-symbols-outlined text-white" style="font-variation-settings: 'FILL' 1;">local_shipping</span>
+</div>
+<div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">LogiData</h1>
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-secondary">Fleet Control</p>
+</div>
+</div>
+<nav class="mt-stack-lg flex-1">
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-primary border-r-4 border-primary bg-surface-container-high dark:bg-secondary-container/10" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-body-md">Map</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">local_shipping</span>
+<span class="font-body-md">Carriers</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">local_gas_station</span>
+<span class="font-body-md">Fuel</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">warehouse</span>
+<span class="font-body-md">Warehouse</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">health_and_safety</span>
+<span class="font-body-md">Health</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-body-md">Admin</span>
+</a>
+<a class="flex items-center gap-stack-md px-gutter py-stack-md transition-colors duration-150 ease-in-out text-secondary dark:text-secondary-fixed-dim hover:text-on-surface hover:bg-surface-container dark:hover:bg-on-surface-variant/20" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-body-md">FAQ</span>
+</a>
+</nav>
+<div class="p-gutter border-t border-on-background/10">
+<div class="flex items-center gap-stack-md">
+<img alt="User profile" class="w-10 h-10 rounded-full border border-on-background/20" data-alt="A professional male logistics coordinator in a modern office, wearing a sharp grey suit. The lighting is crisp and cool-toned, reflecting a high-efficiency tech environment. He has a serious but focused expression, representing industrial reliability. The background is softly blurred with digital displays showing supply chain logistics." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbEwidf9MOD3DyMaxj19be_ZhIzrBDYKIn9Z6h0INAoiTFqrtGVw9eeLsku8fRfzcrwKN-HfLxHwuIXKkDDwGEw0551bvhbR7ncnMS1BD1i-j5cn4xulaYCvV0f9U6mkmsD3N7rMOBnV5S3eljvmJpjRRibrcU39FpKupAkdWmur5F_jtKWG3TBzXOG3Nggu5bKM53CvGm_63fSxfuFMdwdvyjAtlXadyVhW3kP4EWLiBZVOxdYUGW-7_0C1hqy2daLNloa1JDrXs"/>
+<div>
+<p class="font-label-sm text-on-surface">Alex Rivera</p>
+<p class="text-[10px] text-secondary uppercase font-bold">Shift Supervisor</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed right-0 top-0 h-16 bg-surface-container-lowest dark:bg-surface-dim border-b border-on-background dark:border-outline flex justify-between items-center px-gutter ml-64 w-[calc(100%-16rem)] z-40">
+<div class="flex items-center gap-stack-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Route Control Center</span>
+<div class="flex items-center bg-surface-container px-stack-md py-1.5 border border-on-background/10">
+<span class="material-symbols-outlined text-secondary mr-2 text-sm">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-64 placeholder:text-secondary-fixed-dim" placeholder="Search units, ports, or routes..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<button class="relative p-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-1.5 right-1.5 w-2 h-2 bg-primary-container rounded-full border border-surface-container-lowest"></span>
+</button>
+<button class="flex items-center gap-stack-sm hover:text-primary transition-colors">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-sm uppercase">Support</span>
+</button>
+<div class="h-6 w-px bg-on-background/10 mx-2"></div>
+<button class="bg-primary-container text-white px-gutter py-2 font-label-sm uppercase tracking-wider hard-shadow active:scale-95 transition-transform flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">add</span> New Route
+            </button>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-16 h-screen flex">
+<!-- Center: Geospatial Map Area -->
+<section class="flex-1 relative overflow-hidden bg-surface-variant">
+<!-- Map Visualization Mock -->
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-[#e4e2e2] relative overflow-hidden">
+<!-- Industrial Grid Overlay -->
+<div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: linear-gradient(#333 1px, transparent 1px), linear-gradient(90deg, #333 1px, transparent 1px); background-size: 40px 40px;"></div>
+<img alt="Map Data View" class="w-full h-full object-cover opacity-60" data-alt="A detailed geospatial satellite map of a major industrial shipping port at dusk. The water is a deep navy blue, contrasting with the vibrant orange and white lights of the container terminals. Intricate networks of roads and shipping lanes are highlighted with glowing data overlays in safety orange and neon green. The mood is highly technical, precise, and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoRbbZsOHGF0GAm3XsvZKOsxjbhOFbOS5eP3mLfMzzq2fBMgqN9dgERt2oGiGNYV6FmVevTf7G2EQyaNd21NVla27_SJAGdcy0xkMgfQMkrzofpJ_UIEWXD0Qe6fwdu_jpeh_zIKqz26xjh69GAuP2-3jsWHUQXrJslg_K8svD3BVj2DZvN-UkWo7P7AuZex1scfy8SYadv1ip71pR9oVqb2VmMxdoElYD893xx5VzxcisZrK31j4wOt5wHxfPHUjaiAytfGpEDWQ"/>
+<!-- Fleet Overlays -->
+<div class="absolute top-[30%] left-[40%] group">
+<div class="bg-surface-container-lowest border border-on-background p-2 hard-shadow flex items-center gap-2 cursor-pointer">
+<span class="w-3 h-3 bg-[#4CAF50] rounded-full"></span>
+<span class="font-data-mono text-[11px] font-bold">CARGO_772</span>
+</div>
+</div>
+<div class="absolute top-[55%] left-[25%] group">
+<div class="bg-surface-container-lowest border border-on-background p-2 hard-shadow flex items-center gap-2 cursor-pointer border-primary">
+<span class="w-3 h-3 bg-primary-container rounded-full animate-pulse"></span>
+<span class="font-data-mono text-[11px] font-bold text-primary">UNIT_09-DEL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Map Controls Overlays -->
+<div class="absolute top-gutter left-gutter z-10 flex flex-col gap-stack-sm">
+<div class="bg-surface-container-lowest border border-on-background p-stack-sm hard-shadow">
+<p class="font-label-sm text-secondary uppercase mb-2">Zoom Presets</p>
+<div class="grid grid-cols-2 gap-1">
+<button class="bg-surface-container border border-on-background/10 py-1.5 px-3 font-label-sm hover:border-primary transition-colors">PORT ROTTERDAM</button>
+<button class="bg-surface-container border border-on-background/10 py-1.5 px-3 font-label-sm hover:border-primary transition-colors">PORT SINGAPORE</button>
+<button class="bg-surface-container border border-on-background/10 py-1.5 px-3 font-label-sm hover:border-primary transition-colors">PORT LONG BEACH</button>
+<button class="bg-primary text-white py-1.5 px-3 font-label-sm">GLOBAL VIEW</button>
+</div>
+</div>
+<div class="bg-surface-container-lowest border border-on-background p-stack-sm hard-shadow">
+<p class="font-label-sm text-secondary uppercase mb-2">Live Data Layers</p>
+<div class="flex flex-col gap-2">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="text-primary-container focus:ring-primary rounded-none" type="checkbox"/>
+<span class="font-body-md text-sm">Weather Patterns</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="text-primary-container focus:ring-primary rounded-none" type="checkbox"/>
+<span class="font-body-md text-sm">Vessel Density</span>
+</label>
+<label class="flex items-center gap-2 cursor-pointer">
+<input class="text-primary-container focus:ring-primary rounded-none" type="checkbox"/>
+<span class="font-body-md text-sm">Fuel Depots</span>
+</label>
+</div>
+</div>
+</div>
+<!-- Map Zoom Buttons -->
+<div class="absolute bottom-gutter left-gutter z-10 flex flex-col border border-on-background hard-shadow bg-surface-container-lowest">
+<button class="p-3 border-b border-on-background hover:bg-surface-container"><span class="material-symbols-outlined">add</span></button>
+<button class="p-3 hover:bg-surface-container"><span class="material-symbols-outlined">remove</span></button>
+</div>
+<!-- Legend Overlay -->
+<div class="absolute bottom-gutter right-gutter z-10 bg-surface-container-lowest border border-on-background p-stack-md hard-shadow">
+<div class="flex items-center gap-gutter">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-[#4CAF50] rounded-full"></span>
+<span class="font-label-sm">ON TRACK</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-container rounded-full"></span>
+<span class="font-label-sm">DELAYED</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-on-background/20 rounded-full"></span>
+<span class="font-label-sm">IDLE</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar: Collaboration & Comments -->
+<aside class="w-[400px] border-l border-on-background flex flex-col bg-surface-container-lowest relative z-20">
+<div class="p-gutter border-b border-on-background flex items-center justify-between bg-surface-container">
+<h2 class="font-headline-md text-sm uppercase tracking-widest font-extrabold flex items-center gap-2">
+<span class="material-symbols-outlined text-lg">forum</span>
+                    Collaboration Hub
+                </h2>
+<span class="bg-primary-container text-white text-[10px] font-bold px-1.5 py-0.5 rounded-sm">4 ACTIVE</span>
+</div>
+<!-- Unit Tagging Selector -->
+<div class="p-stack-md border-b border-on-background bg-surface-container-low">
+<div class="relative">
+<select class="w-full bg-surface-container-lowest border border-on-background py-2 px-3 font-body-md text-sm focus:ring-primary focus:border-primary appearance-none">
+<option>Tag Unit for discussion...</option>
+<option>UNIT_09-DEL (Critical)</option>
+<option>CARGO_772 (On Track)</option>
+<option>VESS_BRAVO (Idle)</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-2 pointer-events-none text-secondary">expand_more</span>
+</div>
+</div>
+<!-- Comments Feed -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-gutter space-y-gutter">
+<!-- Comment Item -->
+<div class="border border-on-background p-stack-md bg-white relative">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<img alt="James Miller" class="w-6 h-6 rounded-full" data-alt="A portrait of a senior male fleet manager in a crisp blue shirt, exuding professionalism and authority. The lighting is studio-quality, highlighting facial features and graying hair, set against a dark architectural background. He looks confident and reliable." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCyP4rIW1NH9UmhYpdRG1VdzkTqFmOaKyi_sPpR1pj5v4AkXgcud4jNsIbxXtCATKK0wG_Fpge11E7XS30kAO6lDV3DYiDaCU_4TJagF24irg5KaBM1ERSOkqCQyY-hg1zV136bai5LlLLueEeEpHj0yRwyuWSLCXccPhm4D36vUJGlhlHsZqdjfoeePVy9Wqyvz-fLwpA_THUm8mzMGWgi0PW7Pf5xa-WVgH1FFBqxYSC28_ggVIsnyh-UVtNNhk6nYqwC0lmWJJg"/>
+<span class="font-label-sm">J. Miller</span>
+</div>
+<span class="font-data-mono text-[10px] text-secondary">10:45 AM</span>
+</div>
+<p class="font-body-md text-sm leading-snug">
+<span class="text-primary font-bold">@UNIT_09-DEL</span> rerouting due to severe weather front in Sector 4. Estimated arrival now +140min.
+                    </p>
+<div class="mt-stack-sm pt-stack-sm border-t border-on-background/5 flex gap-stack-md">
+<button class="font-label-sm text-[10px] text-secondary hover:text-primary">REPLY</button>
+<button class="font-label-sm text-[10px] text-secondary hover:text-primary">RESOLVE</button>
+</div>
+<div class="absolute top-0 right-0 w-2 h-2 bg-primary-container"></div>
+</div>
+<!-- Comment Item -->
+<div class="border border-on-background/10 p-stack-md bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<img alt="Sarah Chen" class="w-6 h-6 rounded-full" data-alt="A sharp portrait of a female logistics coordinator in business attire. She has a focused and determined look, emphasizing her expertise in industrial supply chain management. The lighting is bright and modern, creating a professional and clean aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBDUodDykpGo8oN2KJH2U7n7zF9qRx20XSAmMpfx6lZPuU_JhNDabEa9tvJ1wr0PYoCLCWcX0_Y5gSicAPbwV1VnIjBBpiFBkMsRH9PQvw-uSym0-7MbP_u8wCPIRq6eNTAaS7Zz_c33p33QqR7RPThYxQf9WUZcQa0uJGWokBE3wACHvkjGqxCLoDxb8U1yBY1HQqIslWEHNkSOyU-mIM9Az63Uv8Q4gkdf3dB1H6cMCoUnwHKoykyyu16Z_aC7kUzKaCci66z9g4"/>
+<span class="font-label-sm">S. Chen</span>
+</div>
+<span class="font-data-mono text-[10px] text-secondary">09:12 AM</span>
+</div>
+<p class="font-body-md text-sm leading-snug">
+                        Confirming <span class="bg-surface-container-high px-1 font-data-mono text-[11px]">PORT_SIN_GATE_C</span> is clear for CARGO_772. Docking priority set.
+                    </p>
+</div>
+<!-- System Alert Comment -->
+<div class="border-l-4 border-primary bg-primary-fixed/20 p-stack-md">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">warning</span>
+<span class="font-label-sm text-primary uppercase">System Update</span>
+</div>
+<p class="font-body-md text-sm text-on-surface">
+                        Automated reroute suggested for <span class="font-bold">FLEET_NORTH</span> due to congestion.
+                    </p>
+</div>
+<!-- Comment Item -->
+<div class="border border-on-background/10 p-stack-md bg-surface-container-lowest">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 bg-secondary flex items-center justify-center rounded-full text-[10px] text-white">MK</div>
+<span class="font-label-sm">M. Kowalski</span>
+</div>
+<span class="font-data-mono text-[10px] text-secondary">08:50 AM</span>
+</div>
+<p class="font-body-md text-sm leading-snug">
+                        Fuel efficiency dropping on UNIT_12. Scheduled for maintenance at Warehouse 3.
+                    </p>
+</div>
+</div>
+<!-- Input Area -->
+<div class="p-gutter bg-surface-container-low border-t border-on-background">
+<div class="flex flex-col gap-stack-sm">
+<textarea class="w-full bg-white border border-on-background p-stack-md font-body-md text-sm focus:ring-primary focus:border-primary h-24 resize-none" placeholder="Write a note or tag a unit (@)..."></textarea>
+<div class="flex justify-between items-center">
+<div class="flex gap-2">
+<button class="p-1.5 hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-lg">attach_file</span></button>
+<button class="p-1.5 hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-lg">alternate_email</span></button>
+<button class="p-1.5 hover:bg-surface-container transition-colors"><span class="material-symbols-outlined text-lg">location_on</span></button>
+</div>
+<button class="bg-primary text-white px-stack-lg py-2 font-label-sm uppercase hard-shadow hover:bg-primary/90">Post Note</button>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- Contextual FAB (Only on map view) -->
+<div class="fixed bottom-margin right-[424px] z-30">
+<button class="w-14 h-14 bg-primary-container text-white hard-shadow flex items-center justify-center hover:scale-105 transition-transform active:scale-95 group">
+<span class="material-symbols-outlined text-3xl">add_location</span>
+<span class="absolute right-full mr-4 bg-inverse-surface text-white px-3 py-1.5 font-label-sm whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">MARK NEW EVENT</span>
+</button>
+</div>
+</body></html>
