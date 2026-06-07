@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO-TWIN // G8000 - Global GIS Tracking</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .grid-overlay {
+            background-image: linear-gradient(to right, rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(to bottom, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scan-line {
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 243, 255, 0.05) 50%, transparent 100%);
+            height: 100px;
+            width: 100%;
+            position: absolute;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-fixed-dim selection:text-on-primary-fixed overflow-hidden">
+<!-- Grid Overlay -->
+<div class="fixed inset-0 grid-overlay pointer-events-none z-0"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin-mobile h-16 bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant shadow-[0_0_12px_rgba(0,243,255,0.2)]">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="security">security</span>
+<h1 class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim dark:text-primary-fixed-dim">AERO-TWIN // G8000</h1>
+</div>
+<nav class="hidden md:flex gap-8 items-center">
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:border-primary-fixed hover:shadow-[0_0_8px_rgba(0,243,255,0.4)] transition-all duration-300" href="#">MISSION</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:border-primary-fixed hover:shadow-[0_0_8px_rgba(0,243,255,0.4)] transition-all duration-300" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:border-primary-fixed hover:shadow-[0_0_8px_rgba(0,243,255,0.4)] transition-all duration-300" href="#">MAINTAIN</a>
+<a class="font-label-caps text-label-caps text-primary-fixed font-bold" href="#">TRACKING</a>
+</nav>
+<div class="flex items-center">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="satellite_alt">satellite_alt</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-16 pb-20 md:pb-0 h-screen w-full flex relative z-10">
+<!-- GIS Tracking Map (Central Visual) -->
+<div class="flex-grow relative overflow-hidden bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="A high-contrast global satellite map in dark mode, featuring deep obsidian oceans and charcoal continents. A vibrant neon cyan great-circle flight path curves across the Atlantic, glowing intensely with a digital light effect. The atmosphere of the image is technical and precise, mimicking a military-grade global information system with thin grid lines and vector-based data overlays in neon blue and white." data-location="Global" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfAoIQCuDcWyMdyGuoAsi-2iaEvDJROucFK-NhO5hPRkEScJS0ahjsagzpgAFu7rz0ZGJCkm0qIYJ6Qtr_D4KRhyn7GSh_AwRny7wxJzoDqd99LiZa6TzWo9FXDUEiC3eEXQh-CbnqRALeitFkle6An3Zsm_bZ73zakk8xaCzdi9XLdGfUp4PDIWywHx719DAwL0sE3DouMNDQ-QURLeUY2NkkB0YAzpma8EYV_3-lEvkqKDs8rcCHK_jHqzKE-mbUfyraXO5hbIk"/>
+<!-- Scanning Effect -->
+<div class="scan-line top-1/4 opacity-20"></div>
+<!-- HUD Coordinate Overlay (Floating) -->
+<div class="absolute top-gutter left-gutter p-gutter bg-background/80 backdrop-blur-md border border-outline-variant">
+<div class="flex flex-col gap-unit">
+<span class="font-label-caps text-[10px] text-outline">CURRENT_COORD</span>
+<div class="flex gap-4">
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">LATITUDE</span>
+<span class="font-data-lg text-data-lg text-primary-fixed">40.7128° N</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">LONGITUDE</span>
+<span class="font-data-lg text-data-lg text-primary-fixed">74.0060° W</span>
+</div>
+</div>
+<div class="mt-2 pt-2 border-t border-outline-variant/30 flex justify-between items-center">
+<span class="font-label-caps text-[10px] text-outline">ALT: 32,450 FT</span>
+<span class="font-label-caps text-[10px] text-outline">SPD: 480 KTS</span>
+</div>
+</div>
+</div>
+<!-- Map Interactions UI -->
+<div class="absolute bottom-gutter right-gutter flex flex-col gap-2">
+<button class="w-10 h-10 border border-on-surface-variant flex items-center justify-center bg-background/80 hover:border-primary-fixed hover:text-primary-fixed transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 border border-on-surface-variant flex items-center justify-center bg-background/80 hover:border-primary-fixed hover:text-primary-fixed transition-all">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<button class="w-10 h-10 border border-on-surface-variant flex items-center justify-center bg-background/80 hover:border-primary-fixed hover:text-primary-fixed transition-all">
+<span class="material-symbols-outlined">my_location</span>
+</button>
+</div>
+</div>
+<!-- Sidebar Right: Telemetry & Connectivity -->
+<aside class="hidden lg:flex w-96 flex-col border-l border-outline-variant bg-surface-container overflow-y-auto">
+<!-- Satellite Widget -->
+<section class="p-gutter border-b border-outline-variant">
+<div class="flex justify-between items-center mb-gutter">
+<h2 class="font-label-caps text-label-caps text-primary-fixed">SATELLITE_UPLINK</h2>
+<div class="flex gap-1">
+<div class="w-2 h-2 bg-primary-fixed shadow-[0_0_8px_rgba(0,243,255,0.8)]"></div>
+<div class="w-2 h-2 bg-primary-fixed shadow-[0_0_8px_rgba(0,243,255,0.8)]"></div>
+<div class="w-2 h-2 bg-primary-fixed shadow-[0_0_8px_rgba(0,243,255,0.8)]"></div>
+<div class="w-2 h-2 bg-outline-variant"></div>
+</div>
+</div>
+<div class="space-y-gutter">
+<!-- Signal Strength -->
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span>SIGNAL STRENGTH</span>
+<span class="text-primary-fixed">-82 dBm</span>
+</div>
+<div class="grid grid-cols-10 gap-1 h-2">
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed"></div>
+<div class="bg-primary-fixed/30"></div>
+<div class="bg-primary-fixed/10"></div>
+<div class="bg-primary-fixed/10"></div>
+</div>
+</div>
+<!-- Speed Metrics -->
+<div class="grid grid-cols-2 gap-gutter">
+<div class="p-3 border border-outline-variant bg-surface-container-low">
+<span class="font-label-caps text-[10px] text-outline block mb-1">DOWNLINK</span>
+<span class="font-data-md text-data-md text-on-surface">142.4 <span class="text-[10px]">Mbps</span></span>
+</div>
+<div class="p-3 border border-outline-variant bg-surface-container-low">
+<span class="font-label-caps text-[10px] text-outline block mb-1">UPLINK</span>
+<span class="font-data-md text-data-md text-on-surface">24.8 <span class="text-[10px]">Mbps</span></span>
+</div>
+</div>
+</div>
+</section>
+<!-- Mission Telemetry Feed -->
+<section class="flex-grow p-gutter space-y-gutter">
+<h2 class="font-label-caps text-label-caps text-primary-fixed border-b border-outline-variant pb-2">ACTIVE_LOGS</h2>
+<div class="space-y-4">
+<div class="flex gap-4 items-start">
+<span class="font-data-md text-outline text-[10px] pt-1">12:04:22</span>
+<div class="flex-grow">
+<p class="font-data-md text-data-md text-on-surface">WAYPOINT_DELTA_REACHED</p>
+<p class="font-label-caps text-[10px] text-outline">NEXT: KLAX_APP</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<span class="font-data-md text-outline text-[10px] pt-1">12:01:05</span>
+<div class="flex-grow">
+<p class="font-data-md text-data-md text-on-surface">COMM_HANDOVER_SUCCESS</p>
+<p class="font-label-caps text-[10px] text-outline">SAT_ID: IRIDIUM-04</p>
+</div>
+</div>
+<div class="flex gap-4 items-start">
+<span class="font-data-md text-outline text-[10px] pt-1">11:58:40</span>
+<div class="flex-grow">
+<p class="font-data-md text-data-md text-error">TURBULENCE_DETECTED_CAT_2</p>
+<p class="font-label-caps text-[10px] text-error">ADJUSTING_ELEVATION</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Bottom Action Footer for Sidebar -->
+<div class="p-gutter mt-auto">
+<button class="w-full py-4 border border-primary-fixed bg-primary-fixed text-on-primary font-label-caps text-label-caps flex items-center justify-center gap-2 hover:shadow-[0_0_20px_rgba(0,243,255,0.4)] transition-all">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">terminal</span>
+                    MANUAL_OVERRIDE
+                </button>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe bg-surface-container-lowest border-t border-outline-variant h-16">
+<button class="flex flex-col items-center justify-center text-outline pt-2 hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps text-[10px] tracking-tighter">MISSION</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline pt-2 hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-[10px] tracking-tighter">TELEMETRY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline pt-2 hover:text-primary-fixed-dim transition-colors">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+<span class="font-label-caps text-[10px] tracking-tighter">MAINTAIN</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary-fixed border-t-2 border-primary-fixed pt-2 transition-all">
+<span class="material-symbols-outlined" data-icon="location_searching">location_searching</span>
+<span class="font-label-caps text-[10px] tracking-tighter">TRACKING</span>
+</button>
+</nav>
+<!-- NavigationDrawer (Hidden Desktop Sidebar) -->
+<div class="fixed inset-y-0 left-0 z-[60] flex flex-col p-gutter bg-surface-container dark:bg-surface-container border-r border-outline-variant h-full w-80 shadow-[10px_0_20px_rgba(0,0,0,0.5)] -translate-x-full transition-transform duration-300 md:hidden" id="drawer">
+<div class="flex items-center gap-gutter mb-8 left_align">
+<div class="w-12 h-12 border border-primary-fixed flex items-center justify-center overflow-hidden">
+<img alt="COMMANDER_IDENT" class="w-full h-full object-cover grayscale opacity-80" data-alt="A close-up portrait of a specialized aircraft commander in high-tech cockpit gear, shown in a dramatic, high-contrast monochrome style. The lighting is sharp, highlighting the edges of their flight helmet and uniform, suggesting an environment of extreme precision and high-stakes missions. The background is a dark obsidian void, matching the industrial minimalist aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmddWmGIUgov_CsMEEhu-ieNhbdc65lPRluoIY14Je9ShxErCOskvBoP4V5hLp72XVrmxGoiDwPAaa2uG1-4k43a1y3kDzbqTVfdMkYGTc67bZgYRqsg_uv7R6tjMbFi7JcIpRndqZn4q5dHTl0-fMwHrzy27UG_eClC-hESshJAT_8NPMFyJ640OG8revWAVMu0lS4INhVu3P8GWdc10QCJwlSTyNo6X1guqE90FYTZTJI303-wPMmbDcDRzApUMWeRBwGEgCivU"/>
+</div>
+<div>
+<h3 class="font-headline-md text-headline-md text-primary-fixed">XP-9042</h3>
+<p class="font-label-caps text-[10px] text-outline">SECURE TERMINAL // V.8000.2</p>
+</div>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">visibility</span> HUD CONFIG
+            </a>
+<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">terminal</span> SYSTEM LOGS
+            </a>
+<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">enhanced_encryption</span> ENCRYPTION
+            </a>
+<a class="flex items-center gap-4 p-3 bg-primary-container/10 text-primary-fixed border-l-4 border-primary-fixed font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">route</span> FLIGHT PLAN
+            </a>
+<a class="flex items-center gap-4 p-3 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">settings_input_component</span> SETTINGS
+            </a>
+</nav>
+</div>
+</body></html>

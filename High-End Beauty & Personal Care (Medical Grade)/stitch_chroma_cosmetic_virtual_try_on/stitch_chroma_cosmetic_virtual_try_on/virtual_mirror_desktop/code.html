@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHROMA | Virtual Mirror AR</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif:wght@500;600;700&amp;family=Space+Grotesk:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "on-secondary-fixed": "#1b1b1b",
+                      "on-secondary": "#303030",
+                      "on-secondary-container": "#b5b5b5",
+                      "primary-fixed-dim": "#ffb2bc",
+                      "background": "#131313",
+                      "error": "#ffb4ab",
+                      "on-tertiary-container": "#282a2a",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-error-container": "#ffdad6",
+                      "primary": "#ffb2bc",
+                      "error-container": "#93000a",
+                      "primary-container": "#c77b86",
+                      "surface": "#131313",
+                      "inverse-on-surface": "#313030",
+                      "on-primary-fixed-variant": "#70343e",
+                      "surface-container": "#20201f",
+                      "surface-variant": "#353535",
+                      "tertiary": "#c6c6c7",
+                      "on-error": "#690005",
+                      "outline-variant": "#524345",
+                      "primary-fixed": "#ffd9dd",
+                      "tertiary-fixed": "#e2e2e2",
+                      "surface-container-low": "#1c1b1b",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-secondary-fixed-variant": "#474747",
+                      "secondary": "#c6c6c6",
+                      "on-background": "#e5e2e1",
+                      "tertiary-container": "#909191",
+                      "on-primary": "#551e29",
+                      "on-surface-variant": "#d7c1c3",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "on-primary-fixed": "#3a0915",
+                      "inverse-primary": "#8c4b55",
+                      "surface-dim": "#131313",
+                      "surface-bright": "#393939",
+                      "surface-container-high": "#2a2a2a",
+                      "surface-tint": "#ffb2bc",
+                      "on-surface": "#e5e2e1",
+                      "secondary-container": "#474747",
+                      "surface-container-highest": "#353535",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-tertiary": "#2f3131",
+                      "inverse-surface": "#e5e2e1",
+                      "outline": "#9f8c8e",
+                      "on-primary-container": "#4c1722",
+                      "secondary-fixed-dim": "#c6c6c6"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "gutter": "24px",
+                      "sm": "12px",
+                      "base": "8px",
+                      "xl": "80px",
+                      "container-max": "1440px",
+                      "xs": "4px",
+                      "lg": "48px",
+                      "md": "24px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Noto Serif"],
+                      "body-lg": ["Space Grotesk"],
+                      "body-md": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"],
+                      "headline-lg": ["Noto Serif"],
+                      "headline-xl": ["Noto Serif"]
+              },
+              "fontSize": {
+                      "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "headline-xl": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(19, 19, 19, 0.1);
+            backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 178, 188, 0.1);
+        }
+        .ar-split-line {
+            width: 2px;
+            background: linear-gradient(to bottom, transparent, #ffb2bc, transparent);
+            box-shadow: 0 0 15px rgba(255, 178, 188, 0.5);
+        }
+        .camera-overlay-gradient {
+            background: linear-gradient(180deg, rgba(19,19,19,0.4) 0%, rgba(19,19,19,0) 20%, rgba(19,19,19,0) 80%, rgba(19,19,19,0.4) 100%);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-hidden selection:bg-primary selection:text-on-primary">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-primary/20 shadow-[0_4px_30px_rgba(0,0,0,0.1)] h-16 flex justify-between items-center px-gutter">
+<div class="flex items-center gap-md">
+<button class="text-primary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" data-icon="menu">menu</span>
+</button>
+<h1 class="font-headline-md text-headline-md text-primary tracking-widest">CHROMA</h1>
+</div>
+<!-- Desktop Navigation Cluster -->
+<nav class="hidden md:flex items-center gap-lg">
+<a class="font-label-caps text-label-caps text-primary transition-colors duration-300" href="#">Mirror</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Palette</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Tutorials</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary transition-colors duration-300" href="#">Cart</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="text-primary active:opacity-70 transition-opacity">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+</button>
+</div>
+</header>
+<!-- Main Experience Canvas -->
+<main class="relative h-screen w-full pt-16 flex overflow-hidden">
+<!-- AR Camera Comparison View -->
+<div class="relative flex-1 flex h-full bg-black overflow-hidden group">
+<!-- Left Side: Shade A -->
+<div class="relative w-1/2 h-full overflow-hidden">
+<img alt="Virtual Mirror Left View" class="absolute inset-0 w-full h-full object-cover" data-alt="A hyper-realistic cinematic close-up of a high-fashion model with a sharp jawline, appearing in a futuristic digital mirror. Her left side features a deep rose-gold metallic lipstick and subtle shimmering eyeshadow. The lighting is dramatic and cool-toned, reflecting a high-tech studio environment. The image is crisp, emphasizing skin texture and the intricate digital makeup application in a luxury dark mode aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJdIPoazfMq34tWQJ08VlT8twvtdXV8l-EKhRp0KK5Mp2OJYzZAVB8GotWeIUTy9XLg3sXi_6Khz0M9gOTTnaWN8BL7n13NPTKuUj0ig9PFC_3KqCkP75nfdfG0f2F1F6EI29zdcF4xLu0u2uN2ZWdZ0tfIzHrNhO5wbsbmoJaEcG_EnXjqSc4jonDjFqmzYs_EQ_-rP186pYmzXRNmLciLU6Za6N-eT6vhYBZXdA2aUw450M7stNFEhx7TWIRTOe3iplrmFi3lTU"/>
+<div class="absolute bottom-md left-md glass-panel px-sm py-xs rounded-lg">
+<span class="font-label-caps text-[10px] text-primary">SHADE 01: VELVET CRIMSON</span>
+</div>
+</div>
+<!-- Vertical Divider Handle -->
+<div class="absolute inset-y-0 left-1/2 -translate-x-1/2 z-20 flex items-center justify-center pointer-events-none">
+<div class="ar-split-line h-full flex items-center justify-center">
+<div class="w-10 h-10 rounded-full glass-panel flex items-center justify-center border border-primary/40 pointer-events-auto cursor-col-resize">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="unfold_more">unfold_more</span>
+</div>
+</div>
+</div>
+<!-- Right Side: Shade B -->
+<div class="relative w-1/2 h-full overflow-hidden">
+<img alt="Virtual Mirror Right View" class="absolute inset-0 w-full h-full object-cover grayscale-[0.2]" data-alt="The right side of a high-fashion model's face in a digital mirror, displaying a contrasting soft matte mauve lipstick and natural eye makeup. The scene is integrated with transparent AR tracking meshes that highlight facial contours in thin rose-gold lines. The lighting transitions to a warmer, softer glow on this side of the screen. The aesthetic is ultra-modern, minimalist, and focused on high-precision cosmetic simulation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpRW4QwNgEYH6inNXUE_RjEl1n7c4MImndO1fNtrLRus4-L9Qqn50mcP0rO0uSUzcdmB-l7VH0Sk9QS7pS79da42KOj1upPKVbcM1fp7x7bkwfyhyDTwW096uLlV2rHQcCzsYHNzTAltIdgLZfu_P7ry7f5-QdqtAm42eSiDmtzZiobL24nSEn7vdjCiUS125IUsTimlmFZxggNitOQ-o-TS8STBMc1O5eWOr8nhpdhYIRkJKDgN_kJPLA2qAdlr69tIXo6oQ_KDA"/>
+<div class="absolute bottom-md right-md glass-panel px-sm py-xs rounded-lg text-right">
+<span class="font-label-caps text-[10px] text-primary">SHADE 02: DUSTY ORCHID</span>
+</div>
+</div>
+<!-- AR Tracking Stats Overlay -->
+<div class="absolute top-md left-md z-30 flex flex-col gap-xs">
+<div class="glass-panel p-md rounded-xl flex flex-col gap-xs min-w-[200px]">
+<div class="flex justify-between items-center border-b border-primary/10 pb-xs mb-xs">
+<span class="font-label-caps text-[10px] text-primary/70 uppercase">Tracking Status</span>
+<div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#ffb2bc]"></div>
+</div>
+<div class="flex justify-between text-[11px] font-body-md text-on-surface">
+<span>Facial Points</span>
+<span class="font-bold">128 Detected</span>
+</div>
+<div class="flex justify-between text-[11px] font-body-md text-on-surface">
+<span>Latency</span>
+<span class="font-bold text-primary">12ms</span>
+</div>
+<div class="flex justify-between text-[11px] font-body-md text-on-surface">
+<span>Lighting Level</span>
+<span class="font-bold">Optimal</span>
+</div>
+</div>
+</div>
+<!-- Camera Controls -->
+<div class="absolute bottom-lg left-1/2 -translate-x-1/2 z-30 flex gap-md">
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="photo_camera">photo_camera</span>
+</button>
+<button class="w-12 h-12 rounded-full bg-primary text-on-primary flex items-center justify-center hover:scale-110 transition-transform active:scale-95 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+</button>
+<button class="w-12 h-12 rounded-full glass-panel flex items-center justify-center hover:scale-110 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-primary" data-icon="refresh">refresh</span>
+</button>
+</div>
+</div>
+<!-- Sidebar: Product Selection -->
+<aside class="w-[400px] h-full glass-panel border-l border-primary/20 flex flex-col z-40">
+<div class="p-lg flex flex-col gap-lg h-full">
+<header>
+<span class="font-label-caps text-label-caps text-primary mb-xs block">Studio Configuration</span>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-tight">Virtual Vanity</h2>
+</header>
+<!-- Category Selector -->
+<div class="flex gap-sm border-b border-primary/10 pb-md">
+<button class="px-md py-xs rounded-full bg-primary/10 border border-primary/30 text-primary font-label-caps text-[11px]">Lipstick</button>
+<button class="px-md py-xs rounded-full border border-white/10 text-on-surface/50 font-label-caps text-[11px] hover:border-primary/50 hover:text-primary transition-all">Eyeshadow</button>
+<button class="px-md py-xs rounded-full border border-white/10 text-on-surface/50 font-label-caps text-[11px] hover:border-primary/50 hover:text-primary transition-all">Blush</button>
+</div>
+<!-- Product Scroll Area -->
+<div class="flex-1 overflow-y-auto space-y-md pr-sm custom-scrollbar">
+<!-- Product Card 1 -->
+<div class="glass-panel p-md rounded-xl group cursor-pointer hover:border-primary/40 transition-all">
+<div class="flex gap-md">
+<div class="w-20 h-20 bg-surface-container-high rounded-lg overflow-hidden shrink-0 border border-white/5">
+<img alt="Matte Lipstick product" class="w-full h-full object-cover" data-alt="A luxury lipstick tube crafted from polished black obsidian and brushed rose gold, standing elegantly on a refractive glass surface. The product is illuminated by a single spotlight, creating sharp highlights and deep shadows. The cap is slightly ajar, revealing a rich, velvet crimson pigment. The background is a dark, atmospheric gradient that enhances the high-end cosmetic aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqG0kjWvX-gMki285e34M1imwbjQOib8VS66tiRWdRn05Ekq36kGrNQjxnYJ8vTVjmZuySRk1pbh4LndWdmfonrTm5fL6an7pUXDMXb6Q2byj1sgfomntSOvc9T-JhSU_ci1bu19g8naKntPhApZ8o3oo5-ev5-RywAcnmu4gUeZQRa_aBC-rJBgnTFgjQ-FKk31CMtvLOXrD7e3Brv4pqtXWp2psTZY8AnUJW-LxuSxiPxd6S0w4bYl5Gp-UlgoJVH5BOr1XdMfg"/>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<span class="font-label-caps text-[10px] text-primary/60">COLLECTION: NOIR</span>
+<h3 class="font-headline-md text-body-lg text-on-surface mb-xs">Velvet Crimson</h3>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-[#8B0000]"></div>
+<span class="text-[11px] text-on-surface-variant">Deep Matte</span>
+</div>
+</div>
+<div class="flex flex-col items-end justify-between">
+<span class="font-label-caps text-sm text-primary">$42</span>
+<button class="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 2 -->
+<div class="glass-panel p-md rounded-xl group cursor-pointer hover:border-primary/40 transition-all border-primary/40 bg-primary/5">
+<div class="flex gap-md">
+<div class="w-20 h-20 bg-surface-container-high rounded-lg overflow-hidden shrink-0 border border-white/5">
+<img alt="Gloss Lipstick product" class="w-full h-full object-cover" data-alt="A sleek, transparent glass lipstick tube featuring a rose-gold applicator and a luminous, dusty orchid pigment. The product rests on a dark marble surface with subtle pink veining, under soft, diffused lighting that creates a gentle glow. The visual style is minimal and sophisticated, emphasizing the texture and purity of the cosmetic formula in a futuristic laboratory setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAflqw65yBxBiZXnmCzjtOggvi8EvGYVGJELICMqHPGrseNv8tHPNrY55VXqQ7lLIfiwVDPuCUHMIsu8TY51PGrEf0jjiI20y8u6os1UT3pk_X5_b4T7qbr5IB1etEPuLExyQ972iYL5FwQ0CnLDuIbQBUYOYQd2am2BcHARjBB9I78-UVDvcxY4P3KrPhw3XT0PvJHNPG5N2354cCgfgAA7ve5382aiJw36eOMtf-zuMmVQGzPFZEPoIhIaU22ng7o0_XTzcZKaaA"/>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<span class="font-label-caps text-[10px] text-primary/60">COLLECTION: ETHEREAL</span>
+<h3 class="font-headline-md text-body-lg text-on-surface mb-xs">Dusty Orchid</h3>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-[#B76E79]"></div>
+<span class="text-[11px] text-on-surface-variant">Satin Glow</span>
+</div>
+</div>
+<div class="flex flex-col items-end justify-between">
+<span class="font-label-caps text-sm text-primary">$38</span>
+<button class="w-8 h-8 rounded-full bg-primary text-on-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-sm" data-icon="check">check</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Product Card 3 -->
+<div class="glass-panel p-md rounded-xl group cursor-pointer hover:border-primary/40 transition-all">
+<div class="flex gap-md">
+<div class="w-20 h-20 bg-surface-container-high rounded-lg overflow-hidden shrink-0 border border-white/5">
+<img alt="Lip Balm product" class="w-full h-full object-cover" data-alt="A minimalist white ceramic lipstick container with a thin, elegant rose-gold ring at the base. The product is placed against a pitch-black background, highlighted by a sharp geometric light beam that cuts through the darkness. The scene feels like a high-end art gallery exhibition of a beauty product, focusing on form, luxury, and scientific precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuATGjxrHTOeR38QTXmBrfsMw21e4Jv9SEh30W-rJ5zqOvUIzq7mcdUg8vtetVf3jSJ3L_EGmbHEw6vIN2vxpEh03OzUnT45os2I0OzOlLYaTijxAdeiA5pYQrm92wJaDK3UFfSb41FlcyAwpjp3bHAZnYsU5hYraMzIY3r_MRCDxGDM1ksOLcSkQNrbTK7SxIadR7rj6yGkEj2xUffFSqyAEGEOYpn0t2ybdxjj8Cnj7Z2bD2TRbD0IHWa7AxWT4BCWp1ZJh-EqT4Y"/>
+</div>
+<div class="flex-1 flex flex-col justify-center">
+<span class="font-label-caps text-[10px] text-primary/60">COLLECTION: PURE</span>
+<h3 class="font-headline-md text-body-lg text-on-surface mb-xs">Nude Quartz</h3>
+<div class="flex items-center gap-xs">
+<div class="w-3 h-3 rounded-full bg-[#E8C3BC]"></div>
+<span class="text-[11px] text-on-surface-variant">Sheer Shine</span>
+</div>
+</div>
+<div class="flex flex-col items-end justify-between">
+<span class="font-label-caps text-sm text-primary">$35</span>
+<button class="w-8 h-8 rounded-full border border-primary/20 flex items-center justify-center hover:bg-primary hover:text-on-primary transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Summary -->
+<div class="pt-lg border-t border-primary/10 mt-auto">
+<div class="flex justify-between items-end mb-md">
+<div>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Current Selection</span>
+<div class="text-body-lg font-bold text-primary">2 Products Selected</div>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Subtotal</span>
+<div class="text-headline-md text-on-surface">$80.00</div>
+</div>
+</div>
+<button class="w-full py-md bg-gradient-to-r from-primary-container to-primary text-on-primary-container font-label-caps text-label-caps rounded-lg hover:shadow-[0_0_20px_rgba(255,178,188,0.3)] transition-all active:scale-[0.98]">
+                        PROCEED TO CHECKOUT
+                    </button>
+</div>
+</div>
+</aside>
+</main>
+<!-- Contextual Drawer (Triggered by menu) - Hidden by default -->
+<div class="fixed inset-y-0 left-0 w-80 bg-background/95 backdrop-blur-3xl border-r border-primary/10 shadow-xl z-[60] -translate-x-full transition-transform duration-500">
+<div class="flex flex-col h-full p-md gap-sm">
+<div class="flex items-center gap-md mb-lg">
+<div class="w-12 h-12 rounded-full overflow-hidden bg-primary/20 border border-primary/30 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="account_circle" style="font-variation-settings: 'FILL' 1;">account_circle</span>
+</div>
+<div>
+<h3 class="font-headline-md text-body-lg text-primary">Modern Muse</h3>
+<p class="text-[11px] text-on-surface-variant">Platinum Member</p>
+</div>
+</div>
+<nav class="flex flex-col gap-xs">
+<a class="flex items-center gap-md p-md rounded-lg text-primary font-bold bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="stars">stars</span>
+<span>Exclusive Access</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="auto_fix_high">auto_fix_high</span>
+<span>Virtual Vanity</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history_edu">history_edu</span>
+<span>Order History</span>
+</a>
+<a class="flex items-center gap-md p-md rounded-lg text-on-surface-variant hover:bg-primary/10 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span>Concierge</span>
+</a>
+</nav>
+<div class="mt-auto pt-md border-t border-primary/10">
+<span class="font-label-caps text-[10px] text-on-surface/30">V-01 EDITION</span>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith Cabin | Crew Admin Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary-fixed-dim": "#8ad0f1",
+                    "on-tertiary-fixed": "#1a1c1d",
+                    "inverse-primary": "#8ad0f1",
+                    "on-primary": "#ffffff",
+                    "error": "#ba1a1a",
+                    "on-tertiary-container": "#515254",
+                    "on-surface-variant": "#40484d",
+                    "on-error": "#ffffff",
+                    "background": "#fbf9f8",
+                    "tertiary-fixed": "#e2e2e4",
+                    "surface-bright": "#fbf9f8",
+                    "error-container": "#ffdad6",
+                    "on-background": "#1b1c1c",
+                    "on-primary-fixed": "#001f2a",
+                    "surface-container": "#efeded",
+                    "primary-fixed": "#bee9ff",
+                    "primary-container": "#89cff0",
+                    "primary": "#0d6683",
+                    "outline-variant": "#bfc8cd",
+                    "on-secondary-container": "#626363",
+                    "inverse-surface": "#303030",
+                    "surface-container-highest": "#e4e2e2",
+                    "outline": "#70787d",
+                    "secondary-fixed": "#e3e2e2",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "on-error-container": "#93000a",
+                    "on-secondary-fixed-variant": "#464747",
+                    "surface-container-low": "#f5f3f3",
+                    "on-secondary": "#ffffff",
+                    "secondary-container": "#e0dfdf",
+                    "secondary": "#5d5e5f",
+                    "surface-container-lowest": "#ffffff",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "on-tertiary": "#ffffff",
+                    "tertiary": "#5d5e60",
+                    "surface": "#fbf9f8",
+                    "surface-tint": "#0d6683",
+                    "surface-variant": "#e4e2e2",
+                    "on-primary-container": "#005974",
+                    "on-tertiary-fixed-variant": "#454749",
+                    "tertiary-container": "#c5c6c8",
+                    "on-surface": "#1b1c1c",
+                    "surface-container-high": "#eae8e7",
+                    "tertiary-fixed-dim": "#c6c6c8",
+                    "surface-dim": "#dbd9d9",
+                    "on-primary-fixed-variant": "#004d65",
+                    "inverse-on-surface": "#f2f0f0"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "gutter-desktop": "32px",
+                    "unit": "8px",
+                    "margin-mobile": "24px",
+                    "container-max": "1440px",
+                    "margin-desktop": "64px",
+                    "gutter-mobile": "16px"
+            },
+            "fontFamily": {
+                    "headline-md": ["manrope"],
+                    "body-md": ["inter"],
+                    "headline-lg-mobile": ["manrope"],
+                    "headline-lg": ["manrope"],
+                    "label-md": ["inter"],
+                    "display-lg": ["manrope"],
+                    "body-lg": ["inter"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                    "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                    "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                    "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+                    "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            box-shadow: 0 40px 40px -10px rgba(137, 207, 240, 0.1);
+        }
+        .liquid-fill {
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-fill::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: wave 3s infinite linear;
+        }
+        @keyframes wave {
+            100% { transform: translateX(100%); }
+        }
+        .orbital-pulse {
+            animation: pulse-orbital 4s infinite ease-in-out;
+        }
+        @keyframes pulse-orbital {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter-mobile md:px-margin-desktop h-20 bg-surface/60 backdrop-blur-xl border-b border-white/20 shadow-[0_40px_40px_-10px_rgba(137,207,240,0.1)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="support_agent">support_agent</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Zenith Cabin</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2 px-4 py-2 rounded-full bg-primary-container/20 text-primary">
+<span class="material-symbols-outlined text-sm orbital-pulse" data-icon="lens" style="font-variation-settings: 'FILL' 1;">lens</span>
+<span class="font-label-md text-label-md">SYSTEM ACTIVE</span>
+</div>
+<button class="material-symbols-outlined text-secondary hover:bg-white/10 p-2 rounded-full transition-all duration-300 active:scale-95" data-icon="bedtime">bedtime</button>
+</div>
+</header>
+<main class="pt-28 pb-32 px-4 md:px-margin-desktop max-w-container-max mx-auto">
+<!-- Master Overrides & Global Alerts -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+<!-- Global Dashboard -->
+<div class="lg:col-span-8 glass-card rounded-xl p-8">
+<div class="flex justify-between items-center mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-1">Cabin Overview</h2>
+<p class="text-secondary font-body-md">Real-time environmental synchronization</p>
+</div>
+<div class="flex gap-3">
+<button class="px-6 py-2 bg-primary text-on-primary rounded-full font-label-md text-label-md hover:opacity-90 transition-all shadow-lg">Master Purge</button>
+<button class="px-6 py-2 bg-surface-container-highest text-on-surface rounded-full font-label-md text-label-md hover:bg-white/10 transition-all border border-outline/10">Lock Cabin</button>
+</div>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+<div class="flex flex-col gap-2">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-widest">Air Quality</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">98%</span>
+<span class="material-symbols-outlined text-primary text-sm" data-icon="stat_3">stat_3</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[98%] bg-primary liquid-fill"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-widest">Cabin Temp</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">22.4°</span>
+<span class="text-sm text-secondary">C</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[65%] bg-primary-fixed-dim liquid-fill"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-widest">Humidity</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">45%</span>
+<span class="material-symbols-outlined text-primary-container text-sm" data-icon="humidity_mid">humidity_mid</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[45%] bg-primary liquid-fill"></div>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<span class="text-secondary font-label-md text-label-md uppercase tracking-widest">CO2 Levels</span>
+<div class="flex items-baseline gap-1">
+<span class="font-headline-md text-headline-md text-on-surface">412</span>
+<span class="text-xs text-secondary ml-1">PPM</span>
+</div>
+<div class="h-1 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full w-[30%] bg-primary liquid-fill"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Priority Alerts -->
+<div class="lg:col-span-4 glass-card rounded-xl p-8 border-primary/20">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-headline-md text-headline-md text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-error" data-icon="notifications_active">notifications_active</span>
+                        Priority
+                    </h3>
+<span class="bg-error-container text-on-error-container px-3 py-1 rounded-full font-label-md text-[10px]">2 ACTIONABLE</span>
+</div>
+<div class="space-y-4">
+<div class="p-4 bg-error-container/20 rounded-xl border border-error/10 flex items-start gap-4">
+<span class="material-symbols-outlined text-error mt-1" data-icon="water_drop">water_drop</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Seat 2A: Low Hydration</p>
+<p class="text-sm text-on-surface-variant">Recommended: 250ml Electrolytes</p>
+</div>
+</div>
+<div class="p-4 bg-tertiary-container/20 rounded-xl border border-tertiary/10 flex items-start gap-4">
+<span class="material-symbols-outlined text-tertiary mt-1" data-icon="air">air</span>
+<div>
+<p class="font-label-md text-label-md text-on-surface">Seat 1B: Filter Bypass</p>
+<p class="text-sm text-on-surface-variant">Odor detection active. Purging...</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Passenger Seat Grid -->
+<h2 class="font-headline-md text-headline-md text-primary mb-8 px-2">Cabin Configuration</h2>
+<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-8">
+<!-- Seat Card 1A -->
+<div class="glass-card rounded-xl p-6 transition-all hover:scale-[1.02] duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-primary font-headline-md">1A</div>
+<div>
+<h3 class="font-headline-md text-headline-md">Elena Vance</h3>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary orbital-pulse"></span>
+<span class="text-xs text-secondary font-label-md uppercase tracking-widest">REM Sleep</span>
+</div>
+</div>
+</div>
+<button class="material-symbols-outlined text-secondary" data-icon="more_vert">more_vert</button>
+</div>
+<div class="space-y-6">
+<!-- Biometrics -->
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-xs text-secondary uppercase font-label-md">Heart Rate</span>
+</div>
+<p class="text-headline-md font-headline-md">62 <span class="text-sm font-body-md text-secondary">BPM</span></p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl border border-primary/20">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="water_drop">water_drop</span>
+<span class="text-xs text-secondary uppercase font-label-md">Hydration</span>
+</div>
+<p class="text-headline-md font-headline-md">84 <span class="text-sm font-body-md text-secondary">%</span></p>
+</div>
+</div>
+<!-- Environment Control -->
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary">Air Flow</span>
+<span class="text-primary font-label-md">Standard</span>
+</div>
+<div class="h-[2px] bg-outline-variant w-full relative">
+<div class="absolute -top-2 left-1/2 w-4 h-4 bg-primary rounded-full shadow-[0_0_10px_rgba(13,102,131,0.5)]"></div>
+</div>
+<div class="flex items-center justify-between pt-2">
+<span class="font-label-md text-label-md text-secondary">Lighting</span>
+<span class="text-primary font-label-md">Aurora Dusk</span>
+</div>
+<div class="h-[2px] bg-outline-variant w-full relative">
+<div class="absolute -top-2 left-1/4 w-4 h-4 bg-primary-fixed-dim rounded-full shadow-[0_0_10px_rgba(138,208,241,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Seat Card 1B -->
+<div class="glass-card rounded-xl p-6 transition-all hover:scale-[1.02] duration-300 border-primary-container">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-primary font-headline-md">1B</div>
+<div>
+<h3 class="font-headline-md text-headline-md">Julian Thorne</h3>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+<span class="text-xs text-secondary font-label-md uppercase tracking-widest">Awake (Active)</span>
+</div>
+</div>
+</div>
+<button class="material-symbols-outlined text-secondary" data-icon="more_vert">more_vert</button>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-xs text-secondary uppercase font-label-md">Heart Rate</span>
+</div>
+<p class="text-headline-md font-headline-md">78 <span class="text-sm font-body-md text-secondary">BPM</span></p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl border border-error/30">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-sm" data-icon="water_drop">water_drop</span>
+<span class="text-xs text-secondary uppercase font-label-md">Hydration</span>
+</div>
+<p class="text-headline-md font-headline-md text-error">18 <span class="text-sm font-body-md text-secondary">%</span></p>
+</div>
+</div>
+<div class="p-4 rounded-xl bg-primary-container/10 border border-primary/10">
+<p class="text-xs font-label-md text-primary uppercase mb-2">Recommended Adjustment</p>
+<p class="text-sm text-on-surface">Decrease temperature by 1.5°C to lower metabolic load. Increase local O2 concentration.</p>
+<button class="mt-4 w-full py-2 bg-primary/10 hover:bg-primary/20 text-primary font-label-md text-label-md rounded-lg transition-all">Apply Adjustment</button>
+</div>
+</div>
+</div>
+<!-- Seat Card 2A -->
+<div class="glass-card rounded-xl p-6 transition-all hover:scale-[1.02] duration-300">
+<div class="flex justify-between items-start mb-6">
+<div class="flex items-center gap-3">
+<div class="w-12 h-12 rounded-xl bg-primary-container/40 flex items-center justify-center text-primary font-headline-md">2A</div>
+<div>
+<h3 class="font-headline-md text-headline-md">Saffron Li</h3>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary orbital-pulse"></span>
+<span class="text-xs text-secondary font-label-md uppercase tracking-widest">Deep Sleep</span>
+</div>
+</div>
+</div>
+<button class="material-symbols-outlined text-secondary" data-icon="more_vert">more_vert</button>
+</div>
+<div class="space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-error text-sm" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="text-xs text-secondary uppercase font-label-md">Heart Rate</span>
+</div>
+<p class="text-headline-md font-headline-md">54 <span class="text-sm font-body-md text-secondary">BPM</span></p>
+</div>
+<div class="p-4 bg-surface-container-low rounded-xl">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="water_drop">water_drop</span>
+<span class="text-xs text-secondary uppercase font-label-md">Hydration</span>
+</div>
+<p class="text-headline-md font-headline-md">92 <span class="text-sm font-body-md text-secondary">%</span></p>
+</div>
+</div>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="font-label-md text-label-md text-secondary">Air Flow</span>
+<span class="text-primary font-label-md">Whisper Mode</span>
+</div>
+<div class="h-[2px] bg-outline-variant w-full relative">
+<div class="absolute -top-2 left-0 w-4 h-4 bg-primary rounded-full shadow-[0_0_10px_rgba(13,102,131,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Visualization -->
+<section class="mt-12 glass-card rounded-2xl overflow-hidden h-[400px] relative group">
+<img class="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-[20s] ease-linear" data-alt="A futuristic, minimalist cockpit or command center view overlooking a stylized digital map of the earth. The aesthetic is clean and high-end, featuring glass surfaces and soft azure lighting. Glowing data overlays show orbital flight paths and atmospheric conditions. The lighting is low-key and serene, with a color palette of deep navy, silver, and soft cyan, creating a professional and technologically advanced atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJ13rCCDs917cdIkq3XlKiA7QvMKa6aU8T9tiBxAB6tI5xXqUr75Ee8cYSFPK0skdCCCojtjU3pd6L6bXi7FeZw-DR7dDF3KbSLqipet_d1N3LkbF6r2DKHGkIm4_U31qPUn0On7tig92Z34kXl_5kOhejsTlcGA6QnhvXqssd45Hf2bHR-iRD3BkZ--16FP3c3E3NBlwu8yNhrcvSPn4ThmQqyncUhiL0fQPsJ_pK72jeC38D6RzPGg9VFHhFZ37lM1cd2mVoZJw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-8 left-8 right-8 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md text-primary mb-2">Flight Path Integrity</h3>
+<p class="text-on-surface-variant max-w-md">Zenith-OS is currently maintaining Level 4 Autonomous Environmental Stability. No turbulence predicted for the next 140 minutes.</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="text-xs font-label-md text-secondary uppercase tracking-widest">ETA London</p>
+<p class="text-headline-md font-headline-md text-on-surface">04:22:15</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Simulation as requested by component structure) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 bg-surface/60 backdrop-blur-xl border-t border-white/20 shadow-[0_-40px_40px_-10px_rgba(137,207,240,0.1)] rounded-t-xl md:hidden">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="spa">spa</span>
+<span class="font-label-md text-label-md">Wellness</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+<span class="font-label-md text-label-md">Lighting</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary-container/40 text-on-primary-container rounded-xl p-2 shadow-[0_0_15px_rgba(13,102,131,0.2)] animate-pulse-slow">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-label-md text-label-md">Air</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="noise_aware">noise_aware</span>
+<span class="font-label-md text-label-md">Quiet</span>
+</button>
+</nav>
+<!-- Floating Orbital Indicator -->
+<div class="fixed bottom-10 right-10 z-[60] hidden md:block">
+<div class="w-16 h-16 rounded-full glass-card flex items-center justify-center cursor-pointer hover:scale-110 transition-all duration-300">
+<span class="material-symbols-outlined text-primary text-3xl orbital-pulse" data-icon="radar">radar</span>
+</div>
+</div>
+</body></html>

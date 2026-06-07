@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>META-ATELIER | AR TRY-ON</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&amp;family=Outfit:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .iridescent-border {
+            position: relative;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+        }
+        .iridescent-border::before {
+            content: "";
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 4px;
+            background: linear-gradient(45deg, #ecb2ff, #bd00ff, #320047, #ecb2ff);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0.8;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bloom-effect:hover {
+            box-shadow: 0 0 20px rgba(236, 178, 255, 0.4);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "primary-fixed-dim": "#ecb2ff",
+                        "on-primary": "#520071",
+                        "background": "#19101c",
+                        "surface-container": "#261c28",
+                        "inverse-on-surface": "#372d3a",
+                        "secondary": "#c6c6c7",
+                        "on-primary-container": "#ffffff",
+                        "outline-variant": "#514255",
+                        "surface": "#19101c",
+                        "surface-variant": "#3c313e",
+                        "error": "#ffb4ab",
+                        "primary": "#ecb2ff",
+                        "error-container": "#93000a",
+                        "surface-dim": "#19101c",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#302733",
+                        "secondary-container": "#454747",
+                        "inverse-surface": "#eeddee",
+                        "surface-bright": "#403643",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-tertiary": "#313030",
+                        "inverse-primary": "#9900cf",
+                        "on-tertiary-container": "#fcffff",
+                        "on-secondary-container": "#b4b5b5",
+                        "tertiary": "#c8c6c5",
+                        "on-surface-variant": "#d4c0d7",
+                        "primary-fixed": "#f8d8ff",
+                        "on-primary-fixed-variant": "#74009f",
+                        "on-secondary-fixed-variant": "#454747",
+                        "surface-tint": "#ecb2ff",
+                        "surface-container-lowest": "#130b16",
+                        "tertiary-fixed": "#e5e2e1",
+                        "tertiary-container": "#777575",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-error": "#690005",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "primary-container": "#bd00ff",
+                        "on-surface": "#eeddee",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "outline": "#9d8ba0",
+                        "on-secondary": "#2f3131",
+                        "on-background": "#eeddee",
+                        "on-primary-fixed": "#320047",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface-container-highest": "#3c313e",
+                        "surface-container-low": "#211824"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "margin-mobile": "20px",
+                        "gutter": "24px",
+                        "margin-desktop": "80px",
+                        "container-max": "1440px",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "display-xl": ["syne"],
+                        "headline-lg": ["syne"],
+                        "label-sm": ["outfit"],
+                        "editorial-caps": ["outfit"],
+                        "headline-lg-mobile": ["syne"],
+                        "body-md": ["outfit"]
+                    },
+                    "fontSize": {
+                        "display-xl": ["80px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "800"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "editorial-caps": ["14px", {"lineHeight": "24px", "letterSpacing": "0.4em", "fontWeight": "600"}],
+                        "headline-lg-mobile": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md overflow-hidden h-screen w-screen">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 backdrop-blur-xl border-b border-white/10 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] flex justify-between items-center px-margin-mobile md:px-margin-desktop h-20">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-2xl cursor-pointer hover:opacity-80 transition-opacity">menu</span>
+<h1 class="font-display-xl text-headline-lg-mobile tracking-tighter text-primary-fixed-dim">META-ATELIER</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-editorial-caps text-editorial-caps text-primary tracking-widest hover:opacity-80 transition-opacity" href="#">COLLECTIONS</a>
+<a class="font-editorial-caps text-editorial-caps text-on-surface-variant tracking-widest hover:opacity-80 transition-opacity" href="#">ARCHIVE</a>
+</nav>
+<div class="w-10 h-10 rounded-full bg-surface-container overflow-hidden border border-white/20">
+<img alt="User profile" class="w-full h-full object-cover" data-alt="A high-fashion editorial portrait of a person with iridescent makeup and sleek hair. The lighting is cinematic and dramatic, featuring soft purple and cyan glows that reflect the avant-garde aesthetic of a digital metaverse. The mood is sophisticated, exclusive, and technologically forward-thinking." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnbtnQDAL5-cyg7-18ljwwjCjus6lL07n5PcQtm6I2tESyYapDfcGkT07Gq6moI_iblHqQDrQeNr_j5Lo8T9s0SjItdHvyLV7NWIlCs22k_Glo63SxYDXrmdE7GEyaYfnBBHaR5T4BicmTlKZpnFw5tCuWlOw89pHs6B2lCElMrEymRDI2brJEmnMQ4o15s-FRXe5U7kFN5u6eEXfsTWGatLYeronA6jHV0KgdHVqGRFjHCe6wgVHjwGpy3x7simGL1DHQs6BCovg"/>
+</div>
+</div>
+</header>
+<!-- Main Camera Canvas -->
+<main class="relative w-full h-full pt-20">
+<!-- Live Camera Feed Simulation -->
+<div class="absolute inset-0 z-0">
+<img alt="Background camera feed" class="w-full h-full object-cover grayscale-[0.2] brightness-[0.7]" data-alt="A full-length vertical shot of a person standing in a minimalist concrete gallery space, framed as if through a mobile camera viewfinder. The environment is lit with ethereal, soft-focus highlights and deep shadows typical of a high-end fashion shoot. Iridescent light particles float in the air, creating a dreamlike, digital atmosphere that bridges reality and the metaverse." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmfLiCaFFPt4bU2DpZAtZvNI873kj_RlyRjbXcyunVJDGprNE9n6zQXw8_Wr8nxGWXULecQ8edG6BvZiSJFOmY3IFLXvi4E9ASz6F2WyIqcUPH8RqbYytVONWwUJiZz3AyAGlKgTfk8gR8KO8Vc_9QNbRVYWjRkwdMHrAixvMONzZxjp7NmMpmOAfkI0z__q_ogc3BVmIyBBoBk8FtjyQZGAUVdec8JONFNVya19mT1kWacrkrIDogZNza-_ZtSrQ2yTBOjQ5wK1g"/>
+</div>
+<!-- AR Overlays: Garment Stats -->
+<div class="absolute top-24 left-margin-mobile z-10 flex flex-col gap-4">
+<div class="glass-card p-4 rounded-xl flex flex-col gap-1 w-48 border-l-2 border-primary">
+<p class="font-editorial-caps text-[10px] text-primary opacity-80">ACTIVE_LAYER</p>
+<h3 class="font-display-xl text-xl tracking-tight text-white">NEO-DRAPE V.2</h3>
+<div class="flex gap-2 mt-2">
+<span class="px-2 py-0.5 bg-white/10 rounded-full font-label-sm text-[9px] text-on-surface-variant">LIQUID MESH</span>
+<span class="px-2 py-0.5 bg-white/10 rounded-full font-label-sm text-[9px] text-on-surface-variant">LUMEN-8</span>
+</div>
+</div>
+<div class="glass-card p-4 rounded-xl flex flex-col gap-2 w-48 border-l-2 border-white/20">
+<div class="flex justify-between items-center">
+<p class="font-label-sm text-[10px] text-on-surface-variant">FIT_ACCURACY</p>
+<p class="font-label-sm text-primary text-[10px]">98.4%</p>
+</div>
+<div class="h-1 w-full bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[98%] shadow-[0_0_8px_rgba(236,178,255,0.8)]"></div>
+</div>
+</div>
+</div>
+<!-- Social Instant-Post FAB Cluster -->
+<div class="absolute top-24 right-margin-mobile z-10 flex flex-col items-center gap-3">
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center bloom-effect transition-all duration-300 group">
+<span class="material-symbols-outlined text-white opacity-60 group-hover:opacity-100">share</span>
+</button>
+<div class="flex flex-col gap-3">
+<div class="w-10 h-10 glass-card rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-sm">public</span>
+</div>
+<div class="w-10 h-10 glass-card rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-sm">photo_camera_front</span>
+</div>
+</div>
+</div>
+<!-- Garment Selectors (Horizontal Scroll) -->
+<div class="absolute bottom-40 w-full z-20 px-margin-mobile flex gap-4 overflow-x-auto no-scrollbar pb-4">
+<div class="flex-shrink-0 w-20 h-20 glass-card rounded-full flex items-center justify-center border-primary/60 border-2 shadow-[0_0_15px_rgba(236,178,255,0.3)]">
+<span class="material-symbols-outlined text-primary scale-125">texture</span>
+</div>
+<div class="flex-shrink-0 w-20 h-20 glass-card rounded-full flex items-center justify-center opacity-60">
+<span class="material-symbols-outlined text-white">apparel</span>
+</div>
+<div class="flex-shrink-0 w-20 h-20 glass-card rounded-full flex items-center justify-center opacity-60">
+<span class="material-symbols-outlined text-white">styler</span>
+</div>
+<div class="flex-shrink-0 w-20 h-20 glass-card rounded-full flex items-center justify-center opacity-60">
+<span class="material-symbols-outlined text-white">diamond</span>
+</div>
+<div class="flex-shrink-0 w-20 h-20 glass-card rounded-full flex items-center justify-center opacity-60">
+<span class="material-symbols-outlined text-white">blur_on</span>
+</div>
+</div>
+<!-- Primary Actions: Capture Button -->
+<div class="absolute bottom-12 left-0 w-full z-30 flex justify-center items-center gap-12">
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">restart_alt</span>
+</button>
+<div class="relative flex items-center justify-center">
+<div class="iridescent-border w-24 h-24 flex items-center justify-center cursor-pointer active:scale-90 transition-transform">
+<div class="w-16 h-16 bg-white rounded-full shadow-[0_0_20px_rgba(255,255,255,0.5)]"></div>
+</div>
+</div>
+<button class="w-12 h-12 glass-card rounded-full flex items-center justify-center opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined">auto_fix_high</span>
+</button>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<nav class="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md rounded-full backdrop-blur-2xl z-50 bg-surface-container-lowest/40 border border-white/5 shadow-[0_8px_32px_0_rgba(0,0,0,0.8)] flex justify-around items-center h-16 px-6">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:scale-105 hover:text-primary transition-all duration-300 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">grid_view</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-fixed-dim scale-110 drop-shadow-[0_0_8px_rgba(236,178,255,0.6)] cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">view_in_ar</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:scale-105 hover:text-primary transition-all duration-300 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">movie_filter</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:scale-105 hover:text-primary transition-all duration-300 cursor-pointer active:scale-95">
+<span class="material-symbols-outlined">texture</span>
+</div>
+</nav>
+<!-- Visual Edge Accents -->
+<div class="fixed inset-0 pointer-events-none border-[1px] border-white/5 z-[60]"></div>
+<div class="fixed top-0 left-0 w-full h-32 bg-gradient-to-b from-background to-transparent z-40"></div>
+<div class="fixed bottom-0 left-0 w-full h-48 bg-gradient-to-t from-background via-background/40 to-transparent z-40"></div>
+</body></html>

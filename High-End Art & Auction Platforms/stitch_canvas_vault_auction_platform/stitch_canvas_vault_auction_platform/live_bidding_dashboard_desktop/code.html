@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CANVAS-VAULT | Live Bidding Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,wght@0,400..900;1,400..900&amp;family=Inter:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-highest": "#e2e2e2",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-high": "#e8e8e8",
+                    "secondary-fixed-dim": "#b8c8da",
+                    "error": "#ba1a1a",
+                    "surface-container-lowest": "#ffffff",
+                    "on-primary-fixed-variant": "#474646",
+                    "primary": "#000000",
+                    "on-secondary": "#ffffff",
+                    "surface-container-low": "#f3f3f3",
+                    "on-secondary-container": "#556474",
+                    "error-container": "#ffdad6",
+                    "tertiary": "#000000",
+                    "secondary-container": "#d1e1f4",
+                    "secondary": "#50606f",
+                    "on-primary-fixed": "#1c1b1b",
+                    "secondary-fixed": "#d4e4f6",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "tertiary-fixed": "#e2e2e2",
+                    "primary-fixed": "#e5e2e1",
+                    "on-primary": "#ffffff",
+                    "inverse-primary": "#c8c6c5",
+                    "surface-tint": "#5f5e5e",
+                    "on-error": "#ffffff",
+                    "primary-container": "#1c1b1b",
+                    "on-tertiary-container": "#838484",
+                    "primary-fixed-dim": "#c8c6c5",
+                    "background": "#f9f9f9",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "outline": "#747878",
+                    "tertiary-container": "#1a1c1c",
+                    "on-primary-container": "#858383",
+                    "surface-bright": "#f9f9f9",
+                    "inverse-on-surface": "#f1f1f1",
+                    "outline-variant": "#c4c7c7",
+                    "surface-container": "#eeeeee",
+                    "on-secondary-fixed-variant": "#394857",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-error-container": "#93000a",
+                    "surface-dim": "#dadada",
+                    "on-surface": "#1a1c1c",
+                    "surface": "#f9f9f9",
+                    "on-background": "#1a1c1c",
+                    "on-surface-variant": "#444748",
+                    "on-secondary-fixed": "#0d1d2a",
+                    "inverse-surface": "#2f3131",
+                    "surface-variant": "#e2e2e2"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "section-padding": "128px",
+                    "gutter": "32px",
+                    "margin-x": "64px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "label-sm": ["Inter"],
+                    "body-md": ["Inter"],
+                    "headline-lg": ["Bodoni Moda"],
+                    "display-xl": ["Bodoni Moda"],
+                    "headline-md": ["Bodoni Moda"],
+                    "body-lg": ["Inter"]
+            },
+            "fontSize": {
+                    "label-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                    "display-xl": ["80px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .loupe-overlay {
+            cursor: zoom-in;
+            background: radial-gradient(circle at center, transparent 30%, rgba(0,0,0,0.05) 100%);
+        }
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #000; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-background border-b border-primary dark:border-outline-variant docked full-width top-0 z-50">
+<nav class="flex justify-between items-center w-full px-margin-x py-gutter max-w-container-max mx-auto h-20">
+<div class="font-headline-md text-headline-md tracking-tighter text-primary dark:text-on-background">CANVAS-VAULT</div>
+<div class="hidden md:flex items-center gap-8">
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors" href="#">Catalog</a>
+<a class="font-label-sm text-label-sm uppercase text-primary dark:text-on-background border-b border-primary dark:border-on-background pb-1 opacity-70 transition-opacity" href="#">Bidding</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors" href="#">Archives</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors" href="#">Collection</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors" href="#">Admin</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative hidden lg:block">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-secondary text-sm">search</span>
+<input class="bg-transparent border border-outline-variant py-2 pl-10 pr-4 text-label-sm font-label-sm focus:border-primary transition-all outline-none" placeholder="SEARCH ARCHIVES..." type="text"/>
+</div>
+<button class="material-symbols-outlined text-primary hover:opacity-70 transition-opacity" data-icon="person">person</button>
+</div>
+</nav>
+</header>
+<main class="max-w-container-max mx-auto px-margin-x py-gutter grid grid-cols-12 gap-gutter h-[calc(100vh-160px)] min-h-[800px]">
+<!-- Left Pane: High-Fidelity Viewer -->
+<section class="col-span-12 lg:col-span-6 flex flex-col border border-primary overflow-hidden group">
+<div class="bg-primary text-on-primary px-4 py-2 flex justify-between items-center">
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Digital Loupe 8K Viewer</span>
+<span class="flex items-center gap-2 font-label-sm text-label-sm">
+<span class="w-2 h-2 bg-error rounded-full"></span> SECURE FEED
+                </span>
+</div>
+<div class="relative flex-grow bg-surface-container overflow-hidden loupe-overlay">
+<img class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-150 origin-center" data-alt="A high-fidelity archival scan of a museum-grade oil painting featuring intricate brushwork and deep textures. The lighting is clinical and uniform, highlighting the cracks in the aged pigment and the quality of the canvas. The aesthetic is sophisticated and elite, captured in a sterile gallery setting with a minimalist black and white color palette. The image conveys absolute permanence and extreme detail." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDo_-JpYxmTHTu-PVhyhutgLqA3m-flqbMIRnqZMFkcxuUJzIHkVoCmZm-HOz-TTfudNd94VZcI0YF3ShMTiPhk_CoDU-Gg8MRR3ydCk9dytxCd8TuHU9WqKltIFSPLIDxOydI3JJ62AdC8GO3jzyuhm0ubeb2umakXy9Q-14WFIF83CqEdMkLrUcpdTdCwTZSEUgcuQmcjS1CTd4WH0dXhyhVu8EQrHtXf8W_ajLtvngblxcbbADxdDT1j21Taelx5YBf-wJKmSYA6"/>
+<div class="absolute bottom-6 left-6 right-6 flex gap-4 pointer-events-none">
+<div class="bg-primary/90 text-on-primary p-4 backdrop-blur-sm border border-white/20">
+<p class="font-label-sm text-label-sm uppercase opacity-60">Catalogue No.</p>
+<p class="font-headline-md text-headline-md leading-none">CV-9928-X</p>
+</div>
+<div class="bg-primary/90 text-on-primary p-4 backdrop-blur-sm border border-white/20">
+<p class="font-label-sm text-label-sm uppercase opacity-60">Dimensions</p>
+<p class="font-body-md text-body-md">120cm x 150cm</p>
+</div>
+</div>
+</div>
+</section>
+<!-- Middle Pane: Real-time Bidding -->
+<section class="col-span-12 md:col-span-6 lg:col-span-3 flex flex-col border border-primary bg-white">
+<div class="p-8 border-b border-primary">
+<p class="font-label-sm text-label-sm uppercase text-secondary mb-2">Current Valuation</p>
+<h1 class="font-display-xl text-display-xl leading-none">$2,450,000</h1>
+<p class="font-label-sm text-label-sm uppercase text-on-secondary-container mt-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">trending_up</span> Reserve Met
+                </p>
+</div>
+<div class="flex-grow p-8 overflow-y-auto space-y-6">
+<div class="flex justify-between items-end border-b border-surface-container pb-2">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Verified Bid</span>
+<span class="font-body-lg text-body-lg font-bold">#Bidder_842</span>
+</div>
+<span class="font-body-md text-body-md">$2,450,000</span>
+</div>
+<div class="flex justify-between items-end border-b border-surface-container pb-2 opacity-50">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Outbid</span>
+<span class="font-body-lg text-body-lg">#Bidder_211</span>
+</div>
+<span class="font-body-md text-body-md">$2,425,000</span>
+</div>
+<div class="flex justify-between items-end border-b border-surface-container pb-2 opacity-30">
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm uppercase text-secondary">Outbid</span>
+<span class="font-body-lg text-body-lg">#Bidder_905</span>
+</div>
+<span class="font-body-md text-body-md">$2,400,000</span>
+</div>
+</div>
+<div class="p-8 bg-surface-container-low">
+<div class="flex items-center gap-3 mb-6 p-3 border border-secondary text-secondary">
+<span class="material-symbols-outlined" data-weight="fill">verified_user</span>
+<span class="font-label-sm text-label-sm uppercase">Proof of Funds: $5.0M Verified</span>
+</div>
+<button class="w-full bg-primary text-on-primary py-6 font-label-sm text-label-sm uppercase tracking-[0.2em] hover:bg-on-surface-variant transition-all active:scale-[0.98]">
+                    Place Bid: $2,500,000
+                </button>
+</div>
+</section>
+<!-- Right Pane: History & Bidders -->
+<section class="col-span-12 md:col-span-6 lg:col-span-3 flex flex-col border border-primary bg-white">
+<div class="border-b border-primary h-1/2 flex flex-col">
+<div class="bg-primary text-on-primary px-4 py-2 font-label-sm text-label-sm uppercase">Active Bidders (12)</div>
+<div class="flex-grow overflow-y-auto p-4 space-y-3">
+<div class="flex items-center justify-between p-3 border border-primary">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="font-label-sm text-label-sm">#Bidder_842 (Current)</span>
+</div>
+<span class="material-symbols-outlined text-sm">shield</span>
+</div>
+<div class="flex items-center justify-between p-3 border border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="font-label-sm text-label-sm">#Bidder_211</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span>
+<span class="font-label-sm text-label-sm">#Bidder_905</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 border border-surface-container-highest">
+<div class="flex items-center gap-3">
+<span class="w-2 h-2 bg-secondary rounded-full"></span>
+<span class="font-label-sm text-label-sm">#Bidder_332 (Idle)</span>
+</div>
+</div>
+</div>
+</div>
+<div class="h-1/2 flex flex-col">
+<div class="bg-surface-container-highest px-4 py-2 font-label-sm text-label-sm uppercase border-t border-primary">Provenance Audit Trail</div>
+<div class="flex-grow overflow-y-auto p-6">
+<div class="relative border-l border-primary pl-6 space-y-8">
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-2.5 h-2.5 bg-primary rounded-full"></div>
+<p class="font-label-sm text-label-sm uppercase text-secondary">12:04:22 PM</p>
+<p class="font-body-md text-body-md text-primary mt-1">Blockchain confirmation: Transaction ID: 0x4f...92e verified.</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-2.5 h-2.5 bg-outline-variant rounded-full"></div>
+<p class="font-label-sm text-label-sm uppercase text-secondary">11:58:04 AM</p>
+<p class="font-body-md text-body-md text-primary mt-1">Bid placed by #Bidder_842 for $2,450,000</p>
+</div>
+<div class="relative">
+<div class="absolute -left-[31px] top-1 w-2.5 h-2.5 bg-outline-variant rounded-full"></div>
+<p class="font-label-sm text-label-sm uppercase text-secondary">11:45:00 AM</p>
+<p class="font-body-md text-body-md text-primary mt-1">Bidding Session CV-9928-X initialized.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface dark:bg-background border-t border-primary dark:border-outline-variant full-width mt-12">
+<div class="w-full px-margin-x py-section-padding max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-start gap-gutter">
+<div class="space-y-4">
+<div class="font-headline-md text-headline-md text-primary dark:text-on-background">CANVAS-VAULT</div>
+<p class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container max-w-xs">
+                    © 2024 CANVAS-VAULT. SECURED ARCHIVAL PROVENANCE.
+                </p>
+</div>
+<div class="grid grid-cols-2 gap-x-16 gap-y-4">
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors active:scale-95 transition-transform" href="#">Privacy Policy</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors active:scale-95 transition-transform" href="#">Terms of Sale</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors active:scale-95 transition-transform" href="#">Provenance Standards</a>
+<a class="font-label-sm text-label-sm uppercase text-secondary dark:text-on-secondary-container hover:text-primary dark:hover:text-on-background transition-colors active:scale-95 transition-transform" href="#">Contact</a>
+</div>
+<div class="flex flex-col gap-4">
+<span class="font-label-sm text-label-sm uppercase text-secondary">SYSTEM STATUS: OPTIMAL</span>
+<span class="font-label-sm text-label-sm uppercase text-primary underline">VIEW SECURITY PROTOCOLS</span>
+</div>
+</div>
+</footer>
+</body></html>

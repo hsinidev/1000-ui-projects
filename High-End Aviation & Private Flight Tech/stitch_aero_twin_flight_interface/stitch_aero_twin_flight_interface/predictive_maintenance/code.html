@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AERO-TWIN // G8000 - PREDICTIVE MAINTENANCE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;800&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0A0A0B;
+            background-image: 
+                linear-gradient(rgba(0, 243, 255, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 243, 255, 0.05) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .scanline {
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(0, 243, 255, 0.2), transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .bracket-tl { border-top: 2px solid #849495; border-left: 2px solid #849495; width: 8px; height: 8px; position: absolute; top: -1px; left: -1px; }
+        .bracket-tr { border-top: 2px solid #849495; border-right: 2px solid #849495; width: 8px; height: 8px; position: absolute; top: -1px; right: -1px; }
+        .bracket-bl { border-bottom: 2px solid #849495; border-left: 2px solid #849495; width: 8px; height: 8px; position: absolute; bottom: -1px; left: -1px; }
+        .bracket-br { border-bottom: 2px solid #849495; border-right: 2px solid #849495; width: 8px; height: 8px; position: absolute; bottom: -1px; right: -1px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-primary-fixed-variant": "#004f53",
+                      "primary-fixed": "#6ff6ff",
+                      "outline": "#849495",
+                      "on-tertiary-fixed-variant": "#474647",
+                      "on-secondary-container": "#b4b5b5",
+                      "on-tertiary-container": "#616061",
+                      "tertiary-container": "#dedbdc",
+                      "background": "#131315",
+                      "on-tertiary-fixed": "#1c1b1c",
+                      "tertiary": "#fbf7f8",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "error": "#ffb4ab",
+                      "on-secondary-fixed-variant": "#454747",
+                      "outline-variant": "#3a494b",
+                      "surface-container-lowest": "#0e0e10",
+                      "surface-container-high": "#2a2a2c",
+                      "surface-variant": "#353437",
+                      "surface": "#131315",
+                      "surface-container-highest": "#353437",
+                      "on-primary-fixed": "#002022",
+                      "surface-container": "#1f1f21",
+                      "surface-dim": "#131315",
+                      "on-error-container": "#ffdad6",
+                      "inverse-on-surface": "#303032",
+                      "primary-container": "#00f3ff",
+                      "on-surface": "#e4e2e4",
+                      "primary": "#e3fdff",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-bright": "#39393b",
+                      "surface-tint": "#00dce6",
+                      "inverse-surface": "#e4e2e4",
+                      "on-error": "#690005",
+                      "primary-fixed-dim": "#00dce6",
+                      "on-primary-container": "#006b71",
+                      "inverse-primary": "#00696f",
+                      "tertiary-fixed-dim": "#c8c6c7",
+                      "on-surface-variant": "#b9cacb",
+                      "on-tertiary": "#313031",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-primary": "#00373a",
+                      "error-container": "#93000a",
+                      "on-background": "#e4e2e4",
+                      "on-secondary": "#2f3131",
+                      "secondary": "#c6c6c7",
+                      "secondary-container": "#454747",
+                      "surface-container-low": "#1b1b1d",
+                      "tertiary-fixed": "#e5e2e3"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "gutter": "16px",
+                      "margin-desktop": "32px",
+                      "margin-mobile": "16px",
+                      "grid-overlay-size": "40px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Hanken Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["Hanken Grotesk"],
+                      "display-lg": ["Hanken Grotesk"],
+                      "headline-md": ["Hanken Grotesk"],
+                      "data-lg": ["JetBrains Mono"],
+                      "data-md": ["JetBrains Mono"],
+                      "body-lg": ["Hanken Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                      "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                      "data-md": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="text-on-background min-h-screen pb-24 md:pb-0">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-margin-mobile h-16 bg-background dark:bg-background border-b border-outline-variant dark:border-outline-variant shadow-[0_0_12px_rgba(0,243,255,0.2)] docked full-width top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="security">security</span>
+<h1 class="font-label-caps text-label-caps tracking-widest text-primary-fixed-dim">AERO-TWIN // G8000</h1>
+</div>
+<div class="hidden md:flex items-center gap-8">
+<nav class="flex gap-6">
+<a class="font-label-caps text-label-caps text-outline hover:text-primary-fixed transition-colors" href="#">MISSION</a>
+<a class="font-label-caps text-label-caps text-outline hover:text-primary-fixed transition-colors" href="#">TELEMETRY</a>
+<a class="font-label-caps text-label-caps text-primary-fixed font-bold" href="#">MAINTAIN</a>
+<a class="font-label-caps text-label-caps text-outline hover:text-primary-fixed transition-colors" href="#">TRACKING</a>
+</nav>
+<div class="h-6 w-px bg-outline-variant"></div>
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="satellite_alt">satellite_alt</span>
+</div>
+</header>
+<main class="p-4 md:p-8 max-w-[1440px] mx-auto grid grid-cols-1 md:grid-cols-12 gap-6">
+<!-- Header Section -->
+<section class="md:col-span-12 flex flex-col md:flex-row md:items-end justify-between gap-4 border-b border-outline-variant pb-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<span class="w-2 h-2 bg-primary-container shadow-[0_0_8px_rgba(0,243,255,0.8)]"></span>
+<span class="font-label-caps text-label-caps text-primary-fixed uppercase">System Status: Nominal</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg uppercase">Engine Health Analytics</h2>
+<p class="font-body-md text-on-surface-variant max-w-2xl">Real-time predictive diagnostics for the G8000 dual-pulse propulsion system. Monitoring thermodynamic variance and vibrational harmonics.</p>
+</div>
+<div class="flex gap-4">
+<button class="px-6 h-12 border border-outline font-label-caps text-label-caps hover:border-primary-fixed hover:text-primary-fixed transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="terminal">terminal</span>
+                    DEBUG LOG
+                </button>
+<button class="px-6 h-12 bg-primary-container text-on-primary font-label-caps text-label-caps hover:shadow-[0_0_15px_rgba(0,243,255,0.5)] transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="construction">construction</span>
+                    INITIATE REPAIR
+                </button>
+</div>
+</section>
+<!-- Bento Grid: Main Analytics -->
+<!-- PORT ENGINE X-RAY -->
+<div class="md:col-span-8 bg-surface-container border border-outline-variant relative overflow-hidden group">
+<div class="bracket-tl"></div><div class="bracket-tr"></div><div class="bracket-bl"></div><div class="bracket-br"></div>
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-outline">01 // PORT_PROPULSION_CORE</span>
+<span class="font-data-md text-data-md text-primary-fixed">UUID: 88-X-001</span>
+</div>
+<div class="relative h-[400px] flex items-center justify-center p-8">
+<img alt="Engine X-Ray" class="w-full h-full object-contain opacity-80 mix-blend-screen" data-alt="A detailed blueprint-style 3D technical illustration of a futuristic jet engine core. The rendering uses neon cyan wireframe lines and glowing technical callouts against a dark obsidian background. Visible interior components like turbine blades and fuel injectors are highlighted with soft luminescent gradients, suggesting a high-tech X-ray diagnostic view." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDCT9cX41b8A96fJQogY4t0t7CFQjy3lYExNp9bjTMrIAT9UCblRZqR0-Rqecm6q4R__sDRQSbj6e2eJLS0mhC4KdfC8rYb5zAY-gc8PVr4m1fK2lmoikv8JZ52-S_BQD6o-zd6TbeGN-1V2J4-bL8b67XSZ4Q35b1sgGk5hh33xCWmNf-54NKYjXhgE8JbsATUajU__Gorh2x6jW4ZQ9hI6wmhtSXkEtcxmXln86b_2WRwq9AshGIzoopGanwmj5W2gVvjRmB-cDg"/>
+<!-- HUD Overlays -->
+<div class="absolute top-12 left-12 flex flex-col gap-2">
+<div class="bg-background/80 border-l-2 border-primary-fixed p-3 backdrop-blur-sm">
+<p class="font-label-caps text-[10px] text-outline">TEMP_CORE</p>
+<p class="font-data-lg text-data-lg text-primary-fixed">1,450°C</p>
+</div>
+<div class="bg-background/80 border-l-2 border-primary-fixed p-3 backdrop-blur-sm">
+<p class="font-label-caps text-[10px] text-outline">VIBE_IDX</p>
+<p class="font-data-lg text-data-lg text-primary-fixed">0.02mm</p>
+</div>
+</div>
+<div class="absolute bottom-12 right-12 flex flex-col items-end">
+<div class="font-display-lg text-display-lg text-primary-fixed">98.4%</div>
+<div class="font-label-caps text-label-caps text-outline">OVERALL_HEALTH</div>
+</div>
+</div>
+</div>
+<!-- ENGINE STATS PANEL -->
+<div class="md:col-span-4 flex flex-col gap-6">
+<div class="bg-surface-container border border-outline-variant p-6 relative flex-1">
+<div class="bracket-tl"></div><div class="bracket-tr"></div>
+<h3 class="font-label-caps text-label-caps text-primary-fixed mb-6 flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="analytics">analytics</span>
+                    TELEMETRY_STREAM
+                </h3>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-label-caps">THRUST_EFFICIENCY</span>
+<span class="font-data-md text-data-md">94%</span>
+</div>
+<div class="h-2 w-full bg-outline-variant flex gap-1">
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[4%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-label-caps">THERMAL_STRESS</span>
+<span class="font-data-md text-data-md">22%</span>
+</div>
+<div class="h-2 w-full bg-outline-variant flex gap-1">
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[10%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+<div class="h-full w-[2%] bg-primary-fixed shadow-[0_0_5px_rgba(0,243,255,0.5)]"></div>
+</div>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-outline">UPCOMING_MAINTENANCE</span>
+</div>
+<div class="bg-surface-container-high p-4 border border-outline-variant">
+<div class="flex items-center gap-3 mb-2">
+<span class="material-symbols-outlined text-primary-fixed" data-icon="calendar_today">calendar_today</span>
+<span class="font-data-md text-data-md">24.08.2074</span>
+</div>
+<p class="font-label-caps text-[10px] text-primary-fixed">PROCEDURE: TURBINE_ALIGNMENT</p>
+<p class="font-body-md text-[12px] text-on-surface-variant mt-2">Predicted drift detected in secondary stator assembly.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- STARBOARD ENGINE OVERVIEW -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-4 gap-6">
+<!-- STARBOARD MINI X-RAY -->
+<div class="md:col-span-1 bg-surface-container border border-outline-variant p-4 relative group">
+<div class="bracket-bl"></div><div class="bracket-br"></div>
+<div class="flex flex-col h-full">
+<span class="font-label-caps text-label-caps text-outline mb-4">02 // STARBOARD_CORE</span>
+<div class="flex-1 flex items-center justify-center relative">
+<img alt="Starboard Engine" class="w-full h-32 object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all" data-alt="A side-profile technical rendering of a high-performance jet turbine engine. The style is industrial minimalism, using thin grey and cyan lines to define the mechanical structure. The lighting is low-key, with glowing hotspots indicating heat signatures in the combustion chamber. The mood is clinical and precise, set against a dark background with a subtle digital grid." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDC3EvASM0fhVH9dp88xobe7IH-rvUfjXOiToeIJ02L4VsqYyTHBYx1o9Ihhn9FtTdDwiNPUijiBDydtgOCSIysnupzD_HWkfIo7uyVc3TnWVhNDpbLY0PovDvcYvzTeU50OtiDKe5dvdFlaMYGoKAi5YMRvfzdotCKQ2XjAF3bgT5de5buzMxeTKCVNgTHKlC1Y4xtmi1lKkRPeuOOsVdzWaCX0YCBEaiNEV_Hbknhsii5Pu_nkatuviu_5nrKbfaSqRGNmaVlEQs"/>
+</div>
+<div class="mt-4 flex justify-between items-end">
+<div>
+<p class="font-label-caps text-[10px] text-outline uppercase">Health</p>
+<p class="font-data-lg text-data-lg text-primary-fixed">92.1%</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed" data-icon="check_circle">check_circle</span>
+</div>
+</div>
+</div>
+<!-- PREDICTIVE ANALYSIS LOG -->
+<div class="md:col-span-3 bg-surface-container border border-outline-variant relative">
+<div class="bracket-tr"></div><div class="bracket-br"></div>
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-outline flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="history_edu">history_edu</span>
+                        FAILURE_PREDICTION_LOG
+                    </h3>
+<div class="flex gap-4">
+<span class="flex items-center gap-1 text-[10px] font-label-caps text-primary-fixed">
+<span class="w-1.5 h-1.5 bg-primary-fixed"></span> ACTIVE
+                        </span>
+</div>
+</div>
+<div class="divide-y divide-outline-variant max-h-[300px] overflow-y-auto">
+<!-- Log Item 1 -->
+<div class="p-4 flex items-start gap-4 hover:bg-surface-variant transition-colors group">
+<div class="text-[10px] font-data-md text-outline pt-1">14:02:11</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-primary-fixed mb-1">BEARING_WEAR_WARNING</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Vibration signature in bearing 4-B exceeds standard deviation by 0.4%. Potential failure in 4,200 flight hours.</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-md text-data-md text-primary-fixed">6% PROB</span>
+<span class="material-symbols-outlined text-outline" data-icon="info">info</span>
+</div>
+</div>
+<!-- Log Item 2 -->
+<div class="p-4 flex items-start gap-4 hover:bg-surface-variant transition-colors">
+<div class="text-[10px] font-data-md text-outline pt-1">12:45:00</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-on-surface mb-1">FUEL_PUMP_STOCHASTIC_SYNC</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Sync-cycle complete. All injectors calibrated within +/- 0.001ms variance.</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-md text-data-md text-outline">0% PROB</span>
+<span class="material-symbols-outlined text-primary-fixed" data-icon="verified">verified</span>
+</div>
+</div>
+<!-- Log Item 3 -->
+<div class="p-4 flex items-start gap-4 hover:bg-surface-variant transition-colors bg-error-container/10">
+<div class="text-[10px] font-data-md text-outline pt-1">09:12:33</div>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-error mb-1">CRITICAL_THERMAL_SURGE_DETECTED</p>
+<p class="font-body-md text-[13px] text-on-surface-variant">Starboard bypass valve experienced momentary friction spike. Logging for review.</p>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-md text-data-md text-error">12% PROB</span>
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar (Mobile) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-2 pb-safe bg-surface-container-lowest border-t border-outline-variant">
+<a class="flex flex-col items-center justify-center text-outline pt-2 font-label-caps text-[10px] tracking-tighter hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+            MISSION
+        </a>
+<a class="flex flex-col items-center justify-center text-outline pt-2 font-label-caps text-[10px] tracking-tighter hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+            TELEMETRY
+        </a>
+<a class="flex flex-col items-center justify-center text-primary-fixed border-t-2 border-primary-fixed pt-2 font-label-caps text-[10px] tracking-tighter" href="#">
+<span class="material-symbols-outlined" data-icon="build">build</span>
+            MAINTAIN
+        </a>
+<a class="flex flex-col items-center justify-center text-outline pt-2 font-label-caps text-[10px] tracking-tighter hover:text-primary-fixed-dim transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="location_searching">location_searching</span>
+            TRACKING
+        </a>
+</nav>
+<!-- Navigation Drawer (Overlay Sidebar Concept) -->
+<aside class="fixed inset-y-0 left-0 z-[60] flex flex-col p-gutter bg-surface-container border-r border-outline-variant h-full w-80 shadow-[10px_0_20px_rgba(0,0,0,0.5)] -translate-x-full lg:translate-x-0 hidden lg:flex">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 bg-surface-variant border border-outline flex items-center justify-center overflow-hidden">
+<img alt="COMMANDER_IDENT" class="w-full h-full object-cover" data-alt="A futuristic passport-style profile portrait of a pilot wearing high-tech headgear with integrated HUD displays. The image is high-contrast black and white with subtle cyan digital noise. The style is industrial and utilitarian, suggesting an official personnel identification record." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJl90C4QB6E3IQINORZKZwMYoPRPQQA10fDIhrpOrfIRCcCGDiQ5GaPZ9cPB9Yea_GkLgIpFYom2aMUyPEz8IKJ4VIr10MNRaDqblu96sx3OepVn4Yd2gQ0lvdxY_f8HbvyF0SNbs5oEYJkAWPtGUOpcockk68tzYtut7Rg9Z_hr8EGZjJZxvgiKIG4WHHJ3LKHSYRmzdFas4Wv0ElLBf8wCHlE2v_Z-y-EJsCIKtbZoZLZswogngYc7fnmWMcws-63qxlE-cGMGc"/>
+</div>
+<div>
+<p class="font-headline-md text-headline-md text-primary-fixed leading-none">XP-9042</p>
+<p class="font-label-caps text-label-caps text-outline">SECURE TERMINAL</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-2">
+<div class="p-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="font-label-caps text-label-caps">HUD CONFIG</span>
+</div>
+<div class="p-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-label-caps text-label-caps">SYSTEM LOGS</span>
+</div>
+<div class="p-3 flex items-center gap-3 bg-primary-container/10 text-primary-fixed border-l-4 border-primary-fixed">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps">ENCRYPTION</span>
+</div>
+<div class="p-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="font-label-caps text-label-caps">FLIGHT PLAN</span>
+</div>
+<div class="p-3 flex items-center gap-3 text-on-surface-variant hover:bg-surface-variant transition-colors cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">SETTINGS</span>
+</div>
+</nav>
+<div class="mt-auto border-t border-outline-variant pt-4">
+<p class="font-label-caps text-[10px] text-outline">TERMINAL_VERSION</p>
+<p class="font-data-md text-data-md text-primary-fixed">V.8000.2</p>
+</div>
+</aside>
+</body></html>

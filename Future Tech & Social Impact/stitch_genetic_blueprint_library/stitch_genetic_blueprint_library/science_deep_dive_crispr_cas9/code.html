@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GEN_ARCHITECT // CRISPR_CAS9_ANALYSIS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-container": "#758cad",
+                    "tertiary-container": "#032a00",
+                    "inverse-primary": "#49607f",
+                    "error": "#ffb4ab",
+                    "primary": "#b1c8ec",
+                    "secondary-container": "#00eefc",
+                    "on-secondary": "#00363a",
+                    "primary-fixed-dim": "#b1c8ec",
+                    "outline-variant": "#43474d",
+                    "on-primary-fixed": "#011c38",
+                    "on-tertiary": "#053900",
+                    "on-surface": "#e0e3e5",
+                    "on-secondary-container": "#00686f",
+                    "outline": "#8e9198",
+                    "on-error-container": "#ffdad6",
+                    "error-container": "#93000a",
+                    "inverse-on-surface": "#2d3133",
+                    "surface-variant": "#323537",
+                    "surface-tint": "#b1c8ec",
+                    "secondary-fixed": "#7df4ff",
+                    "primary-fixed": "#d3e3ff",
+                    "surface-dim": "#101415",
+                    "tertiary-fixed-dim": "#2ae500",
+                    "surface-container-low": "#191c1e",
+                    "inverse-surface": "#e0e3e5",
+                    "on-secondary-fixed": "#002022",
+                    "on-error": "#690005",
+                    "secondary": "#d3fbff",
+                    "tertiary": "#2ae500",
+                    "surface-container": "#1d2022",
+                    "background": "#101415",
+                    "surface-bright": "#363a3b",
+                    "secondary-fixed-dim": "#00dbe9",
+                    "surface": "#101415",
+                    "surface-container-lowest": "#0b0f10",
+                    "on-background": "#e0e3e5",
+                    "tertiary-fixed": "#79ff5b",
+                    "on-primary-fixed-variant": "#314866",
+                    "on-secondary-fixed-variant": "#004f54",
+                    "surface-container-highest": "#323537",
+                    "on-tertiary-fixed": "#022100",
+                    "on-tertiary-fixed-variant": "#095300",
+                    "surface-container-high": "#272a2c",
+                    "on-primary": "#1a314e",
+                    "primary-container": "#0a2440",
+                    "on-surface-variant": "#c4c6ce",
+                    "on-tertiary-container": "#1ba000"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "grid-unit": "32px",
+                    "base": "4px",
+                    "gutter": "16px",
+                    "margin-edge": "48px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "code-data": ["Space Grotesk"],
+                    "headline-md": ["Space Grotesk"],
+                    "headline-lg": ["Space Grotesk"],
+                    "technical-label": ["Space Grotesk"],
+                    "body-lg": ["Inter"],
+                    "headline-sm": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "code-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "technical-label": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.3", "letterSpacing": "0", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #101415;
+            background-image: 
+                linear-gradient(rgba(26, 75, 132, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(26, 75, 132, 0.1) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .crosshair-cursor:hover {
+            cursor: crosshair;
+        }
+        .extension-line-h::before {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 20px;
+            background: #43474d;
+            left: -20px;
+            top: 0;
+        }
+        .extension-line-h::after {
+            content: '';
+            position: absolute;
+            height: 1px;
+            width: 20px;
+            background: #43474d;
+            right: -20px;
+            top: 0;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface antialiased">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-50 w-full bg-slate-950/90 backdrop-blur-none border-b border-slate-800">
+<div class="flex justify-between items-center w-full px-8 py-0 h-16 max-w-[1920px] mx-auto">
+<div class="flex items-center h-full">
+<div class="text-xl font-black text-cyan-400 tracking-tighter border-r border-slate-800 pr-6 mr-6 uppercase">
+                    GEN_ARCHITECT_v1.0
+                </div>
+<nav class="hidden md:flex gap-8 items-center h-full">
+<a class="text-slate-400 hover:text-cyan-200 transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold h-full flex items-center" href="#">SEQUENCE_MAP</a>
+<a class="text-cyan-400 border-b-2 border-cyan-400 pb-1 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold h-full flex items-center translate-y-[1px]" href="#">DOCUMENTATION</a>
+<a class="text-slate-400 hover:text-cyan-200 transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold h-full flex items-center" href="#">ANALYSIS_LAB</a>
+<a class="text-slate-400 hover:text-cyan-200 transition-colors font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold h-full flex items-center" href="#">ARCHIVE</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="bg-slate-900/50 p-2 border border-slate-800 hover:cursor-crosshair active:bg-slate-800 transition-all">
+<span class="material-symbols-outlined text-cyan-400">search</span>
+</button>
+<button class="bg-secondary-container text-on-secondary px-6 py-2 font-['Space_Grotesk'] uppercase tracking-widest text-[11px] font-bold hover:cursor-crosshair transition-all active:scale-95">
+                    SYSTEM_LOGIN
+                </button>
+</div>
+</div>
+</header>
+<main class="pt-32 pb-24 px-8 max-w-[1920px] mx-auto">
+<!-- Header Section -->
+<section class="mb-16">
+<div class="flex flex-col md:flex-row justify-between items-end gap-4 mb-4">
+<div>
+<span class="font-technical-label text-technical-label text-secondary-fixed uppercase tracking-widest mb-2 block">RESEARCH_PROTOCOLS // GEN_001</span>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">CRISPR_CAS9_MECHANICS</h1>
+</div>
+<div class="flex gap-4">
+<div class="px-4 py-2 bg-surface-container border border-outline-variant flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-code-data text-code-data text-on-surface-variant uppercase">STATUS: VERIFIED</span>
+</div>
+<div class="px-4 py-2 bg-surface-container border border-outline-variant flex items-center gap-2">
+<span class="font-code-data text-code-data text-on-surface-variant uppercase">REF_ID: 99.42-X</span>
+</div>
+</div>
+</div>
+<div class="h-px bg-slate-800 w-full relative">
+<div class="absolute -top-1 left-0 w-2 h-2 bg-cyan-400"></div>
+<div class="absolute -top-1 right-0 w-2 h-2 bg-cyan-400"></div>
+</div>
+</section>
+<!-- Bento Grid Analysis -->
+<div class="grid grid-cols-12 gap-8 items-start">
+<!-- Technical Overview -->
+<div class="col-span-12 lg:col-span-8">
+<div class="bg-primary-container/40 border border-slate-800 relative p-8">
+<div class="absolute top-2 right-4 font-code-data text-[10px] text-on-primary-container">[42.01 // 88.04]</div>
+<h2 class="font-headline-sm text-headline-sm text-primary mb-6">THE ARCHITECTURE OF PRECISION</h2>
+<p class="font-body-lg text-body-lg text-on-surface-variant mb-8 max-w-3xl">
+                        CRISPR-Cas9 is a specialized system of DNA sequences found in the genomes of prokaryotic organisms. In genetic engineering, it functions as a highly programmable pair of "molecular scissors," allowing researchers to locate, isolate, and modify specific segments of genomic data with architectural precision.
+                    </p>
+<!-- Interactive Diagram Mockup -->
+<div class="relative bg-slate-950 border border-slate-800 p-12 overflow-hidden aspect-[16/9] flex items-center justify-center">
+<!-- Blueprint Visuals -->
+<div class="absolute inset-0 opacity-20 pointer-events-none">
+<div class="absolute top-1/2 left-0 w-full h-px border-t border-dashed border-cyan-400"></div>
+<div class="absolute left-1/2 top-0 h-full w-px border-l border-dashed border-cyan-400"></div>
+</div>
+<!-- Central Schematic Image -->
+<div class="relative z-10 w-full h-full flex items-center justify-center">
+<img alt="Genetic Schematic" class="w-full h-full object-cover opacity-80 mix-blend-screen grayscale" data-alt="A technical, laboratory-style micro-photography of a DNA double helix being manipulated by robotic micro-needles. The lighting is cold, blue-toned, and high-contrast, evoking a clinical and high-tech research environment. The image is overlayed with faint digital grid lines and coordinate markers, reinforcing the architectural and precise nature of genetic engineering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBcMnW0knhfNXr9WkMr0CCFr-EwIwMz8j1Hv2n9GorL342iJ1d03kRO6Ga-vQCuS8rIVU0sdjf6ZKz3Npnl6eKCvKDim69K1tf6uKTp_lyhJBET8pbb-PW2IBshHbNUj-KebF5_Fcyd1kGXxcLwHP3pnD7SuiL9TEno2Z5yhvXZXWUENWSu5CglmcvrMkiU7h2DrN3wYDeuHPJY6Y-nTF-txRiaqENjcBitWHBcPjT2pPlaOuj1PifcYpVglu4DW_342bmWrXQOjc5M"/>
+<!-- Tactical Callouts -->
+<div class="absolute top-1/4 left-1/4 group cursor-pointer">
+<div class="w-4 h-4 bg-cyan-400 animate-pulse rounded-full border-4 border-slate-950"></div>
+<div class="absolute left-6 top-0 w-48 p-3 bg-slate-950 border border-cyan-400 hidden group-hover:block z-20">
+<span class="font-technical-label text-[10px] text-cyan-400 block mb-1">PROBE_01</span>
+<span class="font-code-data text-[12px] text-slate-300">Targeting sequence identification via gRNA alignment.</span>
+</div>
+<div class="absolute top-2 left-2 w-12 h-px bg-cyan-400"></div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 group cursor-pointer">
+<div class="w-4 h-4 bg-tertiary animate-pulse rounded-full border-4 border-slate-950"></div>
+<div class="absolute right-6 bottom-0 w-48 p-3 bg-slate-950 border border-tertiary hidden group-hover:block z-20">
+<span class="font-technical-label text-[10px] text-tertiary block mb-1">PROBE_02</span>
+<span class="font-code-data text-[12px] text-slate-300">Cas9 endonuclease activation and double-strand break execution.</span>
+</div>
+<div class="absolute bottom-2 right-2 w-12 h-px bg-tertiary"></div>
+</div>
+</div>
+<!-- Technical Footnotes on the diagram -->
+<div class="absolute bottom-4 left-4 font-code-data text-[10px] text-slate-500 flex gap-8">
+<span>SCALE: 1:1,000,000 NM</span>
+<span>AXIS_LOCK: TRUE</span>
+<span>REF_LAYER: DNA_STRAND_7</span>
+</div>
+</div>
+</div>
+<!-- Documentation Flow -->
+<div class="mt-12 space-y-8">
+<section>
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-4 mb-6">
+<span class="w-8 h-px bg-cyan-400"></span>
+                            01 // THE gRNA CARRIER
+                        </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+                            The guide RNA (gRNA) is a synthetic piece of RNA that combines the functions of the crRNA and the tracrRNA. It is engineered to have a base sequence that is complementary to the target DNA sequence. This is the search protocol of the CRISPR operation.
+                        </p>
+<div class="bg-slate-900 border-l-4 border-cyan-400 p-4 font-code-data text-code-data text-cyan-200">
+<code>SEQ_TARGET = [A-G-G-C-T-A-C-G-A-T-C-G] <br/> ALIGN_CONFIRM = 0.9982ms</code>
+</div>
+</section>
+<section>
+<h3 class="font-headline-sm text-headline-sm text-on-surface flex items-center gap-4 mb-6">
+<span class="w-8 h-px bg-cyan-400"></span>
+                            02 // CAS9 ENDONUCLEASE
+                        </h3>
+<p class="font-body-md text-body-md text-on-surface-variant mb-4 leading-relaxed">
+                            Once the gRNA identifies the target sequence, the Cas9 protein (the endonuclease) performs a physical intervention. It cuts the DNA double helix at a specific location, creating what is known as a double-strand break (DSB).
+                        </p>
+<div class="grid grid-cols-2 gap-4">
+<div class="p-4 bg-surface-container border border-slate-800">
+<span class="font-technical-label text-[10px] text-slate-500 block mb-2 uppercase">Input_Vector</span>
+<div class="h-2 w-full bg-slate-800 relative">
+<div class="absolute top-0 left-0 h-full w-3/4 bg-cyan-400"></div>
+</div>
+</div>
+<div class="p-4 bg-surface-container border border-slate-800">
+<span class="font-technical-label text-[10px] text-slate-500 block mb-2 uppercase">Enzyme_Yield</span>
+<div class="h-2 w-full bg-slate-800 relative">
+<div class="absolute top-0 left-0 h-full w-1/2 bg-tertiary"></div>
+</div>
+</div>
+</div>
+</section>
+</div>
+</div>
+<!-- Sidebar Stats & Side-Nav -->
+<aside class="col-span-12 lg:col-span-4 space-y-8">
+<!-- Process Progress -->
+<div class="bg-surface-container-high border border-slate-800 p-6 relative">
+<div class="absolute top-0 left-0 w-8 h-px bg-cyan-400"></div>
+<div class="absolute top-0 left-0 w-px h-8 bg-cyan-400"></div>
+<h4 class="font-technical-label text-technical-label text-on-primary-container uppercase mb-6">ANALYTICS_DASHBOARD</h4>
+<div class="space-y-6">
+<div>
+<div class="flex justify-between text-[11px] mb-2 font-code-data">
+<span class="text-slate-400">REPLICATION_RATE</span>
+<span class="text-cyan-400">88.4%</span>
+</div>
+<div class="h-1 w-full bg-slate-800">
+<div class="h-full bg-cyan-400 w-[88.4%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-2 font-code-data">
+<span class="text-slate-400">HEURISTIC_CONFIDENCE</span>
+<span class="text-tertiary">96.1%</span>
+</div>
+<div class="h-1 w-full bg-slate-800">
+<div class="h-full bg-tertiary w-[96.1%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-[11px] mb-2 font-code-data">
+<span class="text-slate-400">DROSS_RATIO</span>
+<span class="text-error">0.02%</span>
+</div>
+<div class="h-1 w-full bg-slate-800">
+<div class="h-full bg-error w-[2%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Technical Diagrams Side -->
+<div class="bg-slate-950 border border-slate-800 p-1">
+<img alt="Microscopic View" class="w-full grayscale border border-slate-800 opacity-60" data-alt="A high-resolution scanning electron microscope view of cellular structures, rendered in a cold architectural style. The image highlights the intricate, geometric lattices of molecular biology, appearing almost like an urban blueprint for a future city. The lighting is dramatic, with deep shadows and sharp, neon-cyan highlights that match the overall design system's color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDda6_cm7HKldc2ij8j8WKfVfPKWN9WgDY0kkxY3lB-siuyZbRCQbHUaaru_Dm8F1fyi-lvJ3tf2cqKu0uV1_7j8FySL9ZhttQZRoxm33EawRopNjH3GzqI_eRSE9EbRMcfliONJgP-lPCow2QTs5FILzi3dOV6AeQNBsw-3j1o0T1qjTTtk6-cURO112M0HlZ93CDIuDeCeU4mT-G0BCI-axUsaNaE-08_XzxeSEapPwDQgfmSxgDzsudW4v4aFtCpzVq4uJVmBjWS"/>
+<div class="p-4 border-t border-slate-800">
+<span class="font-technical-label text-[10px] text-slate-500 uppercase">FIG_B: CELLULAR_MESH_ALIGNMENT</span>
+</div>
+</div>
+<!-- Navigation List -->
+<nav class="border-l border-slate-800 pl-6 space-y-4">
+<span class="font-technical-label text-technical-label text-on-primary-container uppercase block mb-4">TABLE_OF_CONTENTS</span>
+<a class="block font-code-data text-cyan-400 hover:translate-x-2 transition-transform flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> 01 // Introduction
+                    </a>
+<a class="block font-code-data text-slate-400 hover:text-cyan-400 hover:translate-x-2 transition-transform flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> 02 // Genomic Splicing
+                    </a>
+<a class="block font-code-data text-slate-400 hover:text-cyan-400 hover:translate-x-2 transition-transform flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> 03 // PAM Recognition
+                    </a>
+<a class="block font-code-data text-slate-400 hover:text-cyan-400 hover:translate-x-2 transition-transform flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> 04 // Repair Pathways
+                    </a>
+<a class="block font-code-data text-slate-400 hover:text-cyan-400 hover:translate-x-2 transition-transform flex items-center gap-2" href="#">
+<span class="material-symbols-outlined text-[16px]">play_arrow</span> 05 // Clinical Applications
+                    </a>
+</nav>
+<!-- System Notification -->
+<div class="p-4 bg-tertiary/10 border border-tertiary/30">
+<div class="flex items-start gap-3">
+<span class="material-symbols-outlined text-tertiary">info</span>
+<div>
+<span class="font-technical-label text-[10px] text-tertiary uppercase block font-bold">SYSTEM_ADVISORY</span>
+<p class="font-code-data text-[12px] text-on-surface-variant leading-tight mt-1">Ensure all CRISPR targeting simulations are verified through the SEQUENCE_MAP prior to laboratory execution.</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- Footer -->
+<footer class="bg-slate-950 border-t border-slate-800 w-full px-8 py-12 flex flex-col md:flex-row justify-between items-start gap-8">
+<div class="max-w-md">
+<div class="text-slate-400 font-bold font-headline-sm mb-4 uppercase">GEN_RESEARCH_LAB</div>
+<p class="font-body-md text-slate-500 text-[12px] leading-relaxed">
+                A system dedicated to the precise mapping and manipulation of genomic architectures. All data points are verified through recursive sequence analysis protocols.
+            </p>
+</div>
+<div class="flex flex-wrap gap-x-12 gap-y-6">
+<div class="flex flex-col gap-2">
+<span class="font-technical-label text-[10px] text-slate-600 uppercase mb-2">DIRECTORY</span>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-cyan-400 underline underline-offset-4 transition-opacity" href="#">LEGAL_COMPLIANCE</a>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-cyan-400 underline underline-offset-4 transition-opacity" href="#">TECHNICAL_CONTACT</a>
+</div>
+<div class="flex flex-col gap-2">
+<span class="font-technical-label text-[10px] text-slate-600 uppercase mb-2">RESOURCES</span>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-cyan-400 underline underline-offset-4 transition-opacity" href="#">API_DOCUMENTATION</a>
+<a class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-500 hover:text-cyan-400 underline underline-offset-4 transition-opacity" href="#">SECURITY_PROTOCOLS</a>
+</div>
+</div>
+<div class="flex flex-col items-end gap-4">
+<div class="font-['Space_Grotesk'] text-[10px] uppercase tracking-widest text-slate-500">
+                ©2024 GEN_RESEARCH_LAB // REF_GRID_001
+            </div>
+<div class="flex gap-2">
+<div class="w-2 h-2 bg-slate-800"></div>
+<div class="w-2 h-2 bg-slate-700"></div>
+<div class="w-2 h-2 bg-slate-600"></div>
+<div class="w-2 h-2 bg-cyan-400"></div>
+</div>
+</div>
+</footer>
+</body></html>

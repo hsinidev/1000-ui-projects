@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zenith Cabin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "primary-fixed-dim": "#8ad0f1",
+                      "on-tertiary-fixed": "#1a1c1d",
+                      "inverse-primary": "#8ad0f1",
+                      "on-primary": "#ffffff",
+                      "error": "#ba1a1a",
+                      "on-tertiary-container": "#515254",
+                      "on-surface-variant": "#40484d",
+                      "on-error": "#ffffff",
+                      "background": "#fbf9f8",
+                      "tertiary-fixed": "#e2e2e4",
+                      "surface-bright": "#fbf9f8",
+                      "error-container": "#ffdad6",
+                      "on-background": "#1b1c1c",
+                      "on-primary-fixed": "#001f2a",
+                      "surface-container": "#efeded",
+                      "primary-fixed": "#bee9ff",
+                      "primary-container": "#89cff0",
+                      "primary": "#0d6683",
+                      "outline-variant": "#bfc8cd",
+                      "on-secondary-container": "#626363",
+                      "inverse-surface": "#303030",
+                      "surface-container-highest": "#e4e2e2",
+                      "outline": "#70787d",
+                      "secondary-fixed": "#e3e2e2",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-error-container": "#93000a",
+                      "on-secondary-fixed-variant": "#464747",
+                      "surface-container-low": "#f5f3f3",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#e0dfdf",
+                      "secondary": "#5d5e5f",
+                      "surface-container-lowest": "#ffffff",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "on-tertiary": "#ffffff",
+                      "tertiary": "#5d5e60",
+                      "surface": "#fbf9f8",
+                      "surface-tint": "#0d6683",
+                      "surface-variant": "#e4e2e2",
+                      "on-primary-container": "#005974",
+                      "on-tertiary-fixed-variant": "#454749",
+                      "tertiary-container": "#c5c6c8",
+                      "on-surface": "#1b1c1c",
+                      "surface-container-high": "#eae8e7",
+                      "tertiary-fixed-dim": "#c6c6c8",
+                      "surface-dim": "#dbd9d9",
+                      "on-primary-fixed-variant": "#004d65",
+                      "inverse-on-surface": "#f2f0f0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "gutter-desktop": "32px",
+                      "unit": "8px",
+                      "margin-mobile": "24px",
+                      "container-max": "1440px",
+                      "margin-desktop": "64px",
+                      "gutter-mobile": "16px"
+              },
+              "fontFamily": {
+                      "headline-md": ["manrope"],
+                      "body-md": ["inter"],
+                      "headline-lg-mobile": ["manrope"],
+                      "headline-lg": ["manrope"],
+                      "label-md": ["inter"],
+                      "display-lg": ["manrope"],
+                      "body-lg": ["inter"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                      "label-md": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+                      "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+      </script>
+<style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 192, 192, 0.3);
+            box-shadow: 0 40px 40px -10px rgba(137, 207, 240, 0.1);
+        }
+        .liquid-fill {
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: translateX(-100%);
+            animation: flow 3s infinite;
+        }
+        @keyframes flow {
+            100% { transform: translateX(100%); }
+        }
+        .orbital-ring {
+            border: 1.5px solid rgba(13, 102, 131, 0.2);
+            border-top-color: rgba(13, 102, 131, 0.8);
+            border-radius: 50%;
+            animation: spin 4s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen selection:bg-primary-container">
+<!-- Top Navigation Anchor (Shared Component Mapping) -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter-desktop h-20 bg-surface/60 backdrop-blur-xl border-b border-white/20 shadow-[0_40px_40px_-10px_rgba(137,207,240,0.1)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="support_agent">support_agent</span>
+<h1 class="font-headline-md text-headline-md text-primary tracking-tight">Zenith Cabin</h1>
+</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="flex flex-col items-center justify-center bg-primary-container/40 text-on-primary-container rounded-xl p-2 px-4 shadow-[0_0_15px_rgba(13,102,131,0.2)] transition-all duration-300 scale-95" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="dashboard">dashboard</span>
+<span class="font-label-md text-label-md">Wellness</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="light_mode">light_mode</span>
+<span class="font-label-md text-label-md">Lighting</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="air">air</span>
+<span class="font-label-md text-label-md">Air</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2 hover:bg-white/10 transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="noise_aware">noise_aware</span>
+<span class="font-label-md text-label-md">Quiet</span>
+</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="p-2 rounded-full hover:bg-white/20 transition-all duration-300">
+<span class="material-symbols-outlined text-primary" data-icon="bedtime">bedtime</span>
+</button>
+<div class="w-10 h-10 rounded-full border-2 border-primary-container overflow-hidden">
+<img alt="Profile" data-alt="A professional and serene portrait of a high-end traveler with a peaceful expression. The lighting is soft and directional, typical of a luxury private jet cabin at dusk. The overall aesthetic is minimalist with a clean, light-mode color palette of silk whites and soft silvers, reflecting a premium wellness-focused lifestyle." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAQVB_dFvBsnXGqD6KoiNX-yTjsvgjj-__K4mDwn0sJ458UbmfiW9JlvnmMAiizjW-sxUszG0kj1I5vAvLysmE19J8hq8tTCRiRRobUeADAIjHM4SSfFwOh1YJZEsWdhruOABn_ICO7MkFVUZ7SUW147KQk5kMBuuyNauICDZbfA1W3cyTjcHSDTM5JP18mf1OkLNLNzjQ50pXPjKunxMq45qQ8e1c3i_7tWBqc6ulJY7NjEZw_Rwzc9Y8I2qD9wo5ZY16ys5SrlhU"/>
+</div>
+</div>
+</header>
+<main class="pt-28 pb-12 px-gutter-desktop max-w-container-max mx-auto">
+<!-- Hero Welcome Section -->
+<section class="mb-12 flex justify-between items-end">
+<div>
+<p class="text-primary font-label-md uppercase tracking-widest mb-2">Command Center</p>
+<h2 class="font-display-lg text-display-lg text-on-background">Welcome back, Commander.</h2>
+<p class="text-secondary font-body-lg mt-2">Environment optimized for Restorative Sleep. Cabin pressure: Nominal.</p>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<div class="absolute inset-0 orbital-ring"></div>
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+</section>
+<!-- Main Bento Grid -->
+<div class="grid grid-cols-12 gap-gutter-desktop">
+<!-- Biometric Wellness (Primary Focus) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-3xl p-8 relative overflow-hidden">
+<div class="flex justify-between items-start mb-8">
+<div>
+<h3 class="font-headline-md text-headline-md text-on-surface">Biometric Wellness</h3>
+<p class="text-secondary font-body-md">Real-time physiological synchronization</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim text-4xl" data-icon="monitor_heart" data-weight="fill" style="font-variation-settings: 'FILL' 1;">monitor_heart</span>
+</div>
+<div class="grid md:grid-cols-2 gap-8">
+<!-- Resting Pulse Card -->
+<div class="bg-white/30 rounded-2xl p-6 border border-white/40">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-md text-secondary">Resting Pulse</span>
+<span class="text-primary font-bold">Optimal</span>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-5xl font-headline-lg text-on-surface">62</span>
+<span class="text-secondary font-label-md">BPM</span>
+</div>
+<div class="h-1.5 w-full bg-secondary-container rounded-full overflow-hidden">
+<div class="h-full w-[62%] bg-primary liquid-fill rounded-full"></div>
+</div>
+</div>
+<!-- Hydration Card -->
+<div class="bg-white/30 rounded-2xl p-6 border border-white/40">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-md text-secondary">Hydration Level</span>
+<span class="text-primary font-bold">Stable</span>
+</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-5xl font-headline-lg text-on-surface">84</span>
+<span class="text-secondary font-label-md">%</span>
+</div>
+<div class="h-1.5 w-full bg-secondary-container rounded-full overflow-hidden">
+<div class="h-full w-[84%] bg-primary liquid-fill rounded-full"></div>
+</div>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-white/20">
+<div class="flex items-center gap-3 text-primary">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+<span class="font-body-md">OS is actively adjusting oxygen saturation for optimal recovery.</span>
+</div>
+</div>
+</div>
+<!-- Direct Line to Crew (Sidebar Section) -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter-desktop">
+<div class="glass-panel rounded-3xl p-8 h-full">
+<h3 class="font-headline-md text-headline-md mb-6 text-on-surface">Direct Line to Crew</h3>
+<div class="space-y-6">
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-white/40 border border-white/40 hover:bg-white/60 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container">
+<span class="material-symbols-outlined" data-icon="restaurant">restaurant</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">In-Flight Sommelier</p>
+<p class="text-secondary text-sm">Request refreshment</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-white/40 border border-white/40 hover:bg-white/60 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-tertiary-container flex items-center justify-center text-on-tertiary-container">
+<span class="material-symbols-outlined" data-icon="concierge">concierge</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Cabin Attendant</p>
+<p class="text-secondary text-sm">Turndown service</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-4 rounded-2xl bg-white/40 border border-white/40 hover:bg-white/60 transition-all cursor-pointer">
+<div class="w-12 h-12 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+</div>
+<div>
+<p class="font-label-md text-on-surface">Medical Officer</p>
+<p class="text-secondary text-sm">Biometric consultation</p>
+</div>
+</div>
+</div>
+<button class="w-full mt-8 py-4 px-6 rounded-2xl bg-primary text-on-primary font-label-md tracking-wider flex items-center justify-center gap-2 hover:opacity-90 transition-all">
+<span class="material-symbols-outlined" data-icon="emergency">emergency</span>
+                        URGENT ASSISTANCE
+                    </button>
+</div>
+</div>
+<!-- Circadian Lighting (Instant-Comfort Trigger) -->
+<div class="col-span-12 md:col-span-4 glass-panel rounded-3xl p-8 border-t-2 border-primary-container/20">
+<div class="flex justify-between items-center mb-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="flare">flare</span>
+<span class="font-label-md text-primary py-1 px-3 bg-primary-container/30 rounded-full">Relaxing</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Circadian Lighting</h3>
+<p class="text-secondary font-body-md mb-8">Warm amber spectrum (2200K)</p>
+<div class="relative py-4">
+<div class="h-0.5 w-full bg-silver bg-opacity-30 rounded-full"></div>
+<div class="absolute top-1/2 left-3/4 -translate-y-1/2 w-8 h-8 rounded-full glass-panel flex items-center justify-center shadow-[0_0_20px_rgba(137,207,240,0.4)] border border-primary-fixed-dim">
+<div class="w-2 h-2 rounded-full bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Air Quality -->
+<div class="col-span-12 md:col-span-4 glass-panel rounded-3xl p-8">
+<div class="flex justify-between items-center mb-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="air_purifier_gen">air_purifier_gen</span>
+<span class="font-label-md text-primary py-1 px-3 bg-primary-container/30 rounded-full">Pure</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Air Quality</h3>
+<div class="flex items-baseline gap-2">
+<span class="text-4xl font-headline-lg text-on-surface">12</span>
+<span class="text-secondary font-label-md">AQI</span>
+</div>
+<div class="mt-8 flex gap-1">
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/20 rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/20 rounded-full"></div>
+<div class="h-1 flex-1 bg-primary/20 rounded-full"></div>
+</div>
+<p class="text-secondary text-sm mt-4">H14 HEPA filtration active</p>
+</div>
+<!-- Acoustic Sanctuary -->
+<div class="col-span-12 md:col-span-4 glass-panel rounded-3xl p-8">
+<div class="flex justify-between items-center mb-10">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="spatial_audio_off">spatial_audio_off</span>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+<span class="font-label-md text-primary">Active</span>
+</div>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-surface mb-2">Acoustic Sanctuary</h3>
+<p class="text-secondary font-body-md mb-6">Phase-inverted white noise</p>
+<div class="flex items-center gap-4 overflow-hidden h-12">
+<div class="flex gap-1 items-end h-full">
+<div class="w-1 bg-primary/20 h-4"></div>
+<div class="w-1 bg-primary/40 h-8"></div>
+<div class="w-1 bg-primary h-6"></div>
+<div class="w-1 bg-primary/60 h-10"></div>
+<div class="w-1 bg-primary/30 h-5"></div>
+<div class="w-1 bg-primary/80 h-12"></div>
+<div class="w-1 bg-primary h-7"></div>
+<div class="w-1 bg-primary/40 h-9"></div>
+</div>
+<span class="text-on-surface font-label-md">-32dB Ambient</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Nav for Mobile Context (Shared Component Logic) -->
+<footer class="md:hidden fixed bottom-0 w-full z-50 bg-surface/60 backdrop-blur-xl border-t border-white/20 flex justify-around items-center px-4 py-2 rounded-t-xl shadow-[0_-40px_40px_-10px_rgba(137,207,240,0.1)]">
+<div class="flex flex-col items-center justify-center bg-primary-container/40 text-on-primary-container rounded-xl p-2 shadow-[0_0_15px_rgba(13,102,131,0.2)]">
+<span class="material-symbols-outlined" data-icon="spa">spa</span>
+<span class="font-label-md text-label-md">Wellness</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2">
+<span class="material-symbols-outlined" data-icon="light_mode">light_mode</span>
+<span class="font-label-md text-label-md">Lighting</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-label-md text-label-md">Air</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/70 p-2">
+<span class="material-symbols-outlined" data-icon="noise_aware">noise_aware</span>
+<span class="font-label-md text-label-md">Quiet</span>
+</div>
+</footer>
+<!-- Aesthetic Ambient Background Elements -->
+<div class="fixed top-[-10%] right-[-10%] w-[60%] h-[60%] bg-primary-container/10 rounded-full blur-[120px] pointer-events-none -z-10"></div>
+<div class="fixed bottom-[-10%] left-[-10%] w-[50%] h-[50%] bg-primary-fixed-dim/5 rounded-full blur-[100px] pointer-events-none -z-10"></div>
+</body></html>

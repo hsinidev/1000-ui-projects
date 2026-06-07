@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-EVTOL | Skyview Navigation</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500&amp;family=Metropolis:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0f150e;
+            color: #dee4d9;
+            font-family: 'Metropolis', sans-serif;
+            overflow: hidden;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(32px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .mint-glow {
+            box-shadow: 0 0 15px rgba(119, 220, 122, 0.3);
+        }
+        .flight-path {
+            filter: drop-shadow(0 0 8px #77dc7a);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                "on-tertiary-fixed": "#261901",
+                "secondary-fixed": "#e2e2e2",
+                "tertiary-fixed": "#fadfb3",
+                "on-primary-fixed-variant": "#005316",
+                "on-error-container": "#ffdad6",
+                "tertiary-fixed-dim": "#dcc399",
+                "tertiary-container": "#fadfb3",
+                "secondary-container": "#454747",
+                "surface-bright": "#353b33",
+                "surface-container-lowest": "#0a1009",
+                "on-secondary-fixed-variant": "#454747",
+                "on-tertiary-container": "#75623f",
+                "surface-variant": "#30362f",
+                "primary-container": "#93f993",
+                "on-tertiary": "#3d2e10",
+                "on-surface-variant": "#becab9",
+                "tertiary": "#ffffff",
+                "inverse-primary": "#006e20",
+                "error-container": "#93000a",
+                "error": "#ffb4ab",
+                "on-secondary-fixed": "#1a1c1c",
+                "surface-container-highest": "#30362f",
+                "on-tertiary-fixed-variant": "#554424",
+                "surface": "#0f150e",
+                "on-surface": "#dee4d9",
+                "on-primary-container": "#007523",
+                "outline-variant": "#3f4a3d",
+                "on-secondary": "#2f3131",
+                "inverse-on-surface": "#2c322a",
+                "primary": "#ffffff",
+                "surface-tint": "#77dc7a",
+                "on-primary": "#00390c",
+                "surface-container-high": "#262c24",
+                "surface-container-low": "#171d16",
+                "on-primary-fixed": "#002105",
+                "secondary-fixed-dim": "#c6c6c7",
+                "surface-dim": "#0f150e",
+                "on-error": "#690005",
+                "secondary": "#c6c6c7",
+                "inverse-surface": "#dee4d9",
+                "on-background": "#dee4d9",
+                "primary-fixed-dim": "#77dc7a",
+                "on-secondary-container": "#b4b5b5",
+                "outline": "#889484",
+                "surface-container": "#1b211a",
+                "primary-fixed": "#93f993",
+                "background": "#0f150e"
+            },
+            "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+            },
+            "spacing": {
+                "margin-mobile": "20px",
+                "margin-desktop": "64px",
+                "xl": "80px",
+                "lg": "48px",
+                "xs": "4px",
+                "base": "8px",
+                "gutter": "24px",
+                "sm": "12px",
+                "md": "24px"
+            },
+            "fontFamily": {
+                "headline-lg-mobile": ["Space Grotesk"],
+                "headline-lg": ["Space Grotesk"],
+                "label-caps": ["JetBrains Mono"],
+                "body-md": ["Metropolis"],
+                "display-lg": ["Space Grotesk"]
+            },
+            "fontSize": {
+                "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen">
+<!-- Top Navigation Shell -->
+<nav class="fixed top-0 z-50 w-full flex justify-between items-center px-margin-mobile h-16 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-lg shadow-primary/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-white/20">
+<img alt="Executive user profile" data-alt="A close-up portrait of a professional executive in a sleek, dark studio setting. The lighting is sophisticated, with soft cool-toned rim lights highlighting sharp facial features. The style is ultra-modern and high-fidelity, matching a premium aerospace aesthetic. The background is a dark, out-of-focus tech environment with subtle mint green glows." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBF9gkH9obxF1obdDfsOLwN9g0X4l3WxCw-qt5MUo_uc3NDhBMLUH9ammBn3pCuRkWp_zHUAqimQ4798HF3L2KF_0Ovqn_woDC8MOpLZmLGkguHvVED9lXOyvrFLZkIgiUeTI5WNgvllgY8eCsUBN9ue0lVUat-ExwOs-8PgvtDHzAYZMGkLZEPM7aqzZdlO1BXgx3OukQAwGFawAyXwPCnCMZCUk15PahLmtAYaMX1W5czOYUseUOS6rQq8fMu4GV5By3NRvb8Jp0"/>
+</div>
+<h1 class="font-headline-lg-mobile text-primary uppercase tracking-widest text-headline-lg-mobile">AERO-EVTOL</h1>
+</div>
+<button class="bg-surface-tint text-on-primary px-6 py-2 rounded-full font-bold active:scale-95 duration-200 hover:bg-white/5 hover:text-primary transition-colors">
+            BOOK
+        </button>
+</nav>
+<!-- Main 3D Canvas -->
+<main class="relative w-full h-screen pt-16 pb-20">
+<!-- Background Map Visualization -->
+<div class="absolute inset-0 z-0 bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-40 grayscale" data-alt="A futuristic 3D aerial view of a dark, high-density city at night. The skyscrapers are rendered in matte carbon black with minimalist white architectural lighting. Glowing mint green flight corridors weave between the buildings like neon ribbons. The overall atmosphere is silent, expansive, and high-tech, evoking the feeling of an advanced urban transportation network. Soft volumetric fog rests in the lower streets." data-location="Singapore" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRss9axrwNV6c1G3AwmmFnH5k68rzvSEX64ZQDPa2nmHiGhSiyCammO3MOc_-p6TiUUoQH8GI6Tyj139JETdVfuw9LBjYN_lI4vZFcPU4mNLfu8SfpX-ymn8vKW5xdY40OqhT4Do_oJK9E3RSjX1bf_2Sf5prLQ9kYWhjSxGZ5H8P4W7zXWtOux2vPYu0bLPOvls7wddUmLZ9RdLNj9fd-rH-wVA2ZWCFr1-JSO9Du-U8vEorc_UnanfWG-praR-zqNI2-KbfDh-w"/>
+<!-- Map Overlay UI -->
+<div class="absolute inset-0 bg-gradient-to-t from-surface via-transparent to-surface/20"></div>
+<!-- SVG Flight Paths Layer -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-80" viewbox="0 0 1000 1000">
+<path class="flight-path" d="M100,800 Q400,200 900,100" fill="none" stroke="#77dc7a" stroke-dasharray="8 4" stroke-width="2"></path>
+<path class="flight-path" d="M200,900 Q600,500 800,300" fill="none" opacity="0.5" stroke="#77dc7a" stroke-width="1.5"></path>
+<circle class="animate-pulse" cx="900" cy="100" fill="#77dc7a" r="4"></circle>
+<circle cx="100" cy="800" fill="#77dc7a" r="4"></circle>
+</svg>
+</div>
+<!-- Float Controls (Right Side) -->
+<div class="absolute right-margin-mobile top-24 z-10 flex flex-col gap-4">
+<div class="glass-panel p-4 rounded-xl flex flex-col gap-6 w-16 items-center">
+<button class="text-surface-tint hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">add</span>
+</button>
+<div class="w-full h-[1px] bg-white/10"></div>
+<button class="text-on-surface-variant hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">remove</span>
+</button>
+<div class="w-full h-[1px] bg-white/10"></div>
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors">
+<span class="material-symbols-outlined" data-weight="fill">layers</span>
+</button>
+</div>
+<div class="glass-panel p-4 rounded-xl flex flex-col gap-4 w-16 items-center">
+<button class="text-on-surface-variant hover:text-surface-tint transition-colors">
+<span class="material-symbols-outlined">explore</span>
+</button>
+</div>
+</div>
+<!-- Left Information Panels (Bento Layout) -->
+<div class="absolute left-margin-mobile top-24 z-10 w-80 space-y-4">
+<!-- Flight Status Card -->
+<div class="glass-panel p-6 rounded-2xl">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-on-surface-variant uppercase">Active Flight</span>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-surface-tint animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-surface-tint">LIVE</span>
+</div>
+</div>
+<div class="space-y-1 mb-4">
+<h2 class="font-headline-lg text-headline-lg text-primary">Skyport Delta</h2>
+<p class="font-body-md text-on-surface-variant">ETA: <span class="font-label-caps text-white">14:22 PM</span></p>
+</div>
+<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+<div class="bg-gradient-to-r from-surface-tint to-primary h-full w-2/3"></div>
+</div>
+</div>
+<!-- Heatmap Control Card -->
+<div class="glass-panel p-6 rounded-2xl">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-surface-tint">noise_control_off</span>
+<h3 class="font-headline-lg-mobile text-headline-lg-mobile">Noise Impact</h3>
+</div>
+<div class="flex items-center justify-between p-3 bg-white/5 rounded-xl border border-white/5">
+<span class="font-body-md text-on-surface">Heatmap Overlay</span>
+<button class="w-12 h-6 rounded-full bg-surface-tint relative flex items-center px-1">
+<div class="w-4 h-4 rounded-full bg-white ml-auto"></div>
+</button>
+</div>
+<div class="mt-4 flex gap-2">
+<div class="h-1 flex-1 bg-green-500/20 rounded"></div>
+<div class="h-1 flex-1 bg-yellow-500/20 rounded"></div>
+<div class="h-1 flex-1 bg-red-500/40 rounded"></div>
+</div>
+<div class="flex justify-between mt-2">
+<span class="text-[10px] font-label-caps text-on-surface-variant">QUIET</span>
+<span class="text-[10px] font-label-caps text-on-surface-variant">PEAK</span>
+</div>
+</div>
+<!-- Altimeter Gauge -->
+<div class="glass-panel p-6 rounded-2xl flex items-center justify-between">
+<div>
+<span class="font-label-caps text-label-caps text-on-surface-variant">ALTITUDE</span>
+<div class="flex items-baseline gap-1 mt-1">
+<span class="text-2xl font-bold font-headline-lg">1,250</span>
+<span class="text-xs font-label-caps text-on-surface-variant">FT</span>
+</div>
+</div>
+<div class="relative w-16 h-16 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90" viewbox="0 0 36 36">
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"></path>
+<path d="M18 2.0845 a 15.9155 15.9155 0 0 1 0 31.831 a 15.9155 15.9155 0 0 1 0 -31.831" fill="none" stroke="#77dc7a" stroke-dasharray="75, 100" stroke-width="2"></path>
+</svg>
+<span class="material-symbols-outlined absolute text-xs text-surface-tint">height</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Shell -->
+<footer class="fixed bottom-0 w-full z-50 rounded-t-xl bg-surface/90 backdrop-blur-2xl border-t border-white/5 shadow-[0_-4px_24px_rgba(0,0,0,0.5)]">
+<div class="flex justify-around items-center w-full px-2 py-3 pb-safe">
+<!-- Skyview Active -->
+<div class="flex flex-col items-center justify-center text-surface-tint bg-white/5 rounded-xl px-3 py-1 active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined" data-weight="fill">map</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Skyview</span>
+</div>
+<!-- Systems -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined">battery_charging_full</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Systems</span>
+</div>
+<!-- Book -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined">flight_takeoff</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Book</span>
+</div>
+<!-- Ports -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined">location_on</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Ports</span>
+</div>
+<!-- Metrics -->
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary transition-all active:scale-90 duration-300 ease-out">
+<span class="material-symbols-outlined">query_stats</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">Metrics</span>
+</div>
+</div>
+</footer>
+</body></html>

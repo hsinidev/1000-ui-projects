@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sonic-Thump Acoustic Map | Mobile HUD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-on-surface": "#313030",
+                        "on-secondary-container": "#b8b8b8",
+                        "error": "#ffb4ab",
+                        "outline": "#aa8a7d",
+                        "surface-variant": "#353534",
+                        "surface-container-low": "#1c1b1b",
+                        "on-surface": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "primary": "#ffb596",
+                        "surface": "#131313",
+                        "primary-fixed": "#ffdbcd",
+                        "tertiary-container": "#969797",
+                        "primary-container": "#ff6600",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "background": "#131313",
+                        "on-tertiary-container": "#2e3030",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary": "#2f3131",
+                        "on-surface-variant": "#e3bfb1",
+                        "surface-tint": "#ffb596",
+                        "on-secondary": "#2f3131",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#e2e2e2",
+                        "secondary-fixed": "#e3e2e2",
+                        "surface-container-highest": "#353534",
+                        "secondary": "#c7c6c6",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary-fixed": "#360f00",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "tertiary": "#c6c6c7",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-primary": "#581e00",
+                        "secondary-container": "#484949",
+                        "surface-dim": "#131313",
+                        "on-primary-container": "#561d00",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "outline-variant": "#5a4136",
+                        "inverse-surface": "#e5e2e1",
+                        "on-error": "#690005",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface-bright": "#393939",
+                        "primary-fixed-dim": "#ffb596",
+                        "inverse-primary": "#a33e00",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "surface-container": "#201f1f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "24px",
+                        "container-max": "1440px",
+                        "gutter": "16px",
+                        "unit": "4px"
+                    },
+                    "fontFamily": {
+                        "headline-sm": ["Space Grotesk"],
+                        "data-display": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["JetBrains Mono"],
+                        "body-lg": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-sm": ["24px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "data-display": ["28px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "300"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "300"}],
+                        "body-md": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "body-lg": ["18px", {"lineHeight": "1.5", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .radar-sweep {
+            background: conic-gradient(from 0deg, transparent 0deg, rgba(255, 181, 150, 0.1) 360deg);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(255, 102, 0, 0.05) 50.5%, transparent 51%);
+            background-size: 100% 4px;
+        }
+        .sonic-gradient {
+            background: radial-gradient(circle, rgba(255,102,0,0.6) 0%, rgba(255,181,150,0.2) 50%, transparent 100%);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-hidden h-screen flex flex-col">
+<!-- Top Navigation Bar -->
+<header class="bg-surface dark:bg-surface text-primary dark:text-primary flex justify-between items-center w-full px-margin h-16 border-b border-outline dark:border-outline fixed top-0 z-50">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined" data-icon="flight">flight</span>
+<h1 class="text-data-display font-data-display text-primary dark:text-primary tracking-tighter">MACH 1.25 | ALT 45,000FT | 14:22 UTC</h1>
+</div>
+<div class="flex items-center">
+<button class="hover:bg-surface-container-high dark:hover:bg-surface-container-high transition-colors duration-75 p-2">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Canvas: Radar Map -->
+<main class="flex-grow pt-16 pb-20 relative overflow-hidden bg-surface-container-lowest">
+<!-- Background Map Texture -->
+<div class="absolute inset-0 opacity-20 grayscale pointer-events-none">
+<img alt="Terrain overview" class="w-full h-full object-cover" data-alt="A top-down satellite view of a rugged desert landscape with intricate geological features and dry lake beds. The image is rendered in high-contrast monochrome with deep charcoal shadows and stark white highlights to fit a tactical aerospace HUD aesthetic. The lighting is harsh and direct, emphasizing the texture of the terrain below. This visual serves as the tactical background for a high-performance aircraft navigation system." data-location="Mojave Desert" src="https://lh3.googleusercontent.com/aida-public/AB6AXuASBPCwfQ_RCbRU2_XbGv-d6jfUpWaCy_vb2-ZZIFx-ROwORB29IiRB-D3oH6BCDMA-Feesdki3RBjd7TIccPAjIhJtQEeSi6W4kXuU8-_kNHCNNeuuJJffR5cigVfCX9_aS_GcsEMrcAdM3WUtKA9Weug4eVpfRd_iu_Ggd4-X9VoliowZVMMZBEU6tAcpiDGsOJpECJhXIowKjvbvO9ewLyrT6fsl67mmky_tcMh-BGJeWVOSw5MBZRmI-l4InDZ-yhEmUf4LteU"/>
+</div>
+<!-- Radar Grid Overlays -->
+<div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+<!-- Concentric Circles -->
+<div class="border border-outline/30 rounded-full w-[200px] h-[200px] absolute"></div>
+<div class="border border-outline/20 rounded-full w-[400px] h-[400px] absolute"></div>
+<div class="border border-outline/10 rounded-full w-[600px] h-[600px] absolute"></div>
+<div class="border border-outline/5 rounded-full w-[800px] h-[800px] absolute"></div>
+<!-- Crosshairs -->
+<div class="w-px h-full bg-outline/20 absolute left-1/2"></div>
+<div class="h-px w-full bg-outline/20 absolute top-1/2"></div>
+<!-- Radar Sweep Effect -->
+<div class="radar-sweep absolute inset-0 opacity-30"></div>
+</div>
+<!-- Sonic Thump Projection (Heatmap) -->
+<div class="absolute inset-0 flex items-center justify-center">
+<!-- Primary Impact Zone -->
+<div class="sonic-gradient w-96 h-96 rounded-full border border-primary-container/40 flex items-center justify-center">
+<div class="w-32 h-32 rounded-full bg-primary-container/30 border border-primary-container animate-pulse"></div>
+</div>
+<!-- Aircraft Marker -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+<div class="relative">
+<span class="material-symbols-outlined text-primary text-4xl" style="font-variation-settings: 'FILL' 1;">navigation</span>
+<div class="absolute -top-12 left-1/2 -translate-x-1/2 bg-surface border border-primary px-3 py-1 whitespace-nowrap">
+<span class="text-label-caps font-label-caps text-primary">VECTOR: 092° MAG</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Scanning HUD Overlay -->
+<div class="scanline absolute inset-0 pointer-events-none"></div>
+<!-- Sidebar Telemetry Pods -->
+<div class="absolute right-0 top-16 bottom-20 w-72 p-gutter flex flex-col gap-4 pointer-events-none">
+<!-- Decibel Pod -->
+<div class="bg-surface/80 backdrop-blur-md border border-outline p-4 pointer-events-auto">
+<div class="text-label-caps font-label-caps text-secondary mb-2">ACOUSTIC INTENSITY</div>
+<div class="flex items-baseline gap-2 mb-4">
+<span class="text-data-display font-data-display text-primary">112.4</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">LPL (dB)</span>
+</div>
+<!-- dB Meter -->
+<div class="h-2 w-full bg-surface-container-high border border-outline overflow-hidden flex">
+<div class="bg-primary h-full" style="width: 75%"></div>
+</div>
+<div class="flex justify-between mt-1 text-[8px] font-data-display text-secondary">
+<span>40</span>
+<span>80</span>
+<span>120</span>
+<span class="text-primary">160</span>
+</div>
+</div>
+<!-- Ground Impact Telemetry -->
+<div class="bg-surface/80 backdrop-blur-md border border-outline p-4 pointer-events-auto">
+<div class="text-label-caps font-label-caps text-secondary mb-3">GROUND TELEMETRY</div>
+<div class="space-y-4">
+<div class="flex justify-between border-b border-outline/20 pb-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">FOOTPRINT</span>
+<span class="text-label-caps font-label-caps text-primary">22.4 KM</span>
+</div>
+<div class="flex justify-between border-b border-outline/20 pb-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">POP INTENSITY</span>
+<span class="text-label-caps font-label-caps text-primary">HIGH</span>
+</div>
+<div class="flex justify-between border-b border-outline/20 pb-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">LATERAL SPREAD</span>
+<span class="text-label-caps font-label-caps text-primary">4.2° ARC</span>
+</div>
+</div>
+</div>
+<!-- Alerts Pod -->
+<div class="bg-primary-container/20 border border-primary-container p-4 pointer-events-auto">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-primary-container text-sm" data-icon="warning">warning</span>
+<span class="text-label-caps font-label-caps text-primary-container">NOISE ADVISORY</span>
+</div>
+<div class="text-body-md font-body-md text-on-surface leading-tight uppercase">
+                    Approaching residential corridor. Suppressing peak transient 0.4s.
+                </div>
+</div>
+<!-- Coordinates Overlay (HUD style) -->
+<div class="mt-auto pointer-events-none">
+<div class="flex flex-col text-[10px] font-data-display text-secondary text-right">
+<span>LAT: 35.0117° N</span>
+<span>LON: 117.8912° W</span>
+<span>GND: 2,342 FT MSL</span>
+</div>
+</div>
+</div>
+<!-- Left Sidebar Indicators -->
+<div class="absolute left-0 top-16 bottom-20 p-gutter pointer-events-none flex flex-col justify-center">
+<div class="flex flex-col gap-8">
+<!-- Compass Rose HUD Element -->
+<div class="w-12 h-48 border-l border-r border-outline/30 relative flex flex-col justify-between items-center py-2">
+<span class="text-label-caps font-label-caps text-primary">N</span>
+<div class="w-8 h-px bg-primary"></div>
+<div class="w-4 h-px bg-outline"></div>
+<div class="w-4 h-px bg-outline"></div>
+<div class="w-4 h-px bg-outline"></div>
+<div class="w-8 h-px bg-outline"></div>
+<div class="w-4 h-px bg-outline"></div>
+<div class="w-4 h-px bg-outline"></div>
+<div class="w-4 h-px bg-outline"></div>
+<span class="text-label-caps font-label-caps text-secondary">E</span>
+</div>
+<!-- Speed Ribbon -->
+<div class="flex flex-col gap-1 items-start">
+<div class="text-[8px] font-label-caps text-secondary">AIRSPEED</div>
+<div class="text-xl font-data-display text-primary bg-surface/80 border-r-2 border-primary px-2">824</div>
+<div class="text-[8px] font-label-caps text-secondary">KNOTS</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-stretch h-20 bg-surface dark:bg-surface border-t border-outline dark:border-outline">
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-6 py-2 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all duration-75">
+<span class="material-symbols-outlined" data-icon="speed">speed</span>
+<span class="text-label-caps font-label-caps mt-1">Telemetry</span>
+</button>
+<button class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-none px-6 py-2 ring-1 ring-primary transition-all duration-75">
+<span class="material-symbols-outlined" data-icon="explore" style="font-variation-settings: 'FILL' 1;">explore</span>
+<span class="text-label-caps font-label-caps mt-1">Navigation</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-6 py-2 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all duration-75">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="text-label-caps font-label-caps mt-1">Thermal</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-6 py-2 hover:bg-surface-variant dark:hover:bg-surface-variant transition-all duration-75">
+<span class="material-symbols-outlined" data-icon="route">route</span>
+<span class="text-label-caps font-label-caps mt-1">Flight Paths</span>
+</button>
+</nav>
+</body></html>
