@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aura-Glass Virtual Try-On</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-primary": "#00696f",
+                        "surface-dim": "#0b112e",
+                        "inverse-on-surface": "#292e4d",
+                        "on-tertiary-fixed-variant": "#414561",
+                        "surface-container-lowest": "#060b29",
+                        "on-primary": "#00363a",
+                        "on-tertiary-fixed": "#161a33",
+                        "on-tertiary-container": "#5a5e7b",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-secondary-container": "#b4b5b5",
+                        "secondary-fixed": "#e2e2e2",
+                        "background": "#0b112e",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-surface": "#dee0ff",
+                        "outline": "#849495",
+                        "on-error": "#690005",
+                        "primary-container": "#00f2ff",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#dee0ff",
+                        "tertiary": "#f9f6ff",
+                        "on-primary-fixed": "#002022",
+                        "secondary": "#c6c6c7",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "secondary-container": "#454747",
+                        "inverse-surface": "#dee0ff",
+                        "on-background": "#dee0ff",
+                        "tertiary-container": "#d6d9fb",
+                        "primary": "#e1fdff",
+                        "outline-variant": "#3a494b",
+                        "surface-bright": "#323756",
+                        "surface-container-high": "#232846",
+                        "on-surface-variant": "#b9cacb",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-low": "#141937",
+                        "surface-tint": "#00dbe7",
+                        "on-primary-container": "#006a71",
+                        "on-error-container": "#ffdad6",
+                        "surface-container": "#181d3b",
+                        "surface": "#0b112e",
+                        "surface-variant": "#2e3352",
+                        "on-secondary": "#2f3131",
+                        "on-tertiary": "#2b2f49",
+                        "tertiary-fixed-dim": "#c1c4e6",
+                        "primary-fixed": "#74f5ff",
+                        "surface-container-highest": "#2e3352",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "40px",
+                        "safe-margin": "64px",
+                        "lg": "24px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "sm": "8px",
+                        "hud-gutter": "12px",
+                        "md": "16px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["Geist"],
+                        "data-mono": ["JetBrains Mono"],
+                        "headline-sm": ["Geist"],
+                        "body-main": ["Geist"],
+                        "body-sm": ["Geist"],
+                        "display-md": ["Geist"],
+                        "label-caps": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "headline-sm": ["24px", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "display-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scan-line {
+            background: linear-gradient(to bottom, transparent, #00dbe7, transparent);
+            height: 2px;
+            width: 100%;
+            position: absolute;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: 0%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { top: 100%; opacity: 0; }
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(11, 17, 46, 0.4);
+        }
+        .hud-bracket {
+            border: 1px solid rgba(0, 219, 231, 0.3);
+            position: relative;
+        }
+        .hud-bracket::before, .hud-bracket::after {
+            content: '';
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-color: #00dbe7;
+            border-style: solid;
+        }
+        .bracket-tl::before { top: -2px; left: -2px; border-width: 2px 0 0 2px; }
+        .bracket-tr::after { top: -2px; right: -2px; border-width: 2px 2px 0 0; }
+        .bracket-bl::before { bottom: -2px; left: -2px; border-width: 0 0 2px 2px; }
+        .bracket-br::after { bottom: -2px; right: -2px; border-width: 0 2px 2px 0; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-dim text-on-surface font-body-main selection:bg-primary-fixed-dim/30 overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_0_15px_rgba(0,219,231,0.1)] flex justify-between items-center px-hud-gutter h-16">
+<div class="flex items-center gap-sm transition-all duration-300 ease-in-out active:scale-95">
+<span class="material-symbols-outlined text-primary-fixed-dim">settings_input_antenna</span>
+<span class="font-data-mono text-body-main font-bold text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(0,219,231,0.6)] uppercase tracking-widest">[ AURA.SYSTEM_v01 ]</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary hover:drop-shadow-[0_0_10px_rgba(0,219,231,0.8)] cursor-pointer">sync</span>
+</div>
+</header>
+<!-- Main Camera Canvas (Simulated) -->
+<main class="relative h-screen w-full flex flex-col items-center justify-center pt-16 pb-24 overflow-hidden">
+<!-- Background Camera Feed Placeholder -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[0.2] brightness-75" data-alt="A high-fashion close-up portrait of a person with sharp facial features, looking directly into a camera lens. The lighting is moody and cinematic with deep shadows and soft ambient highlights in cyan and indigo. The background is a blurred high-tech minimalist studio, creating a sophisticated luxury tech aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAmyZ2IquSYf_sWMWRYWEDjoDWOUcYJAR9P9QGrz8HkQgmbZsqpxgwOOCVsNf3fZCfyXWLMnAz4hkqUfCsVF0X4MSK-5KrpXLV1SxS0ib_k8vS6rRLnUQIrFKf4Np-HiFEBnCLECWK2jNcNIBFAlHsFrv8SO7jYrenEfKfoIlh_apDr9CdUbxpMhTp3Og8wqwa5cEYLoyf0DuhCvkME7Sxe8bgl4yN38OtHL5T_AGqNrclx-kkA0j4Ddnf3fJyov84zKYZdNguKeGk"/>
+<!-- Scanline Animation Layer -->
+<div class="absolute inset-0 pointer-events-none overflow-hidden opacity-30">
+<div class="scan-line"></div>
+</div>
+</div>
+<!-- HUD Central Reticle -->
+<div class="relative z-10 w-80 h-96 flex items-center justify-center">
+<!-- Reticle Corners -->
+<div class="absolute inset-0 hud-bracket bracket-tl bracket-tr bracket-bl bracket-br opacity-80 border-none pointer-events-none"></div>
+<!-- Sunglasses AR Rendering Component -->
+<div class="relative w-72 transform -translate-y-8 animate-pulse">
+<img class="w-full drop-shadow-[0_0_25px_rgba(0,219,231,0.6)] mix-blend-screen" data-alt="A pair of ultra-modern, sleek sunglasses with a carbon fiber frame and holographic cyan-tinted lenses. The sunglasses are floating in mid-air against a dark background, captured in a high-key studio lighting setup that emphasizes the sharp lines and technological texture. The lenses reflect a digital interface pattern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtVWqIIHmjEeyPOz3W_T99PlBochP9zmrD4tsg2KBsGuO_f2iMiUN85N5r0fcy2PMjbIbSjoxSMMAqwRpCPmWR2QhoNbIyGVU6O0eA1EAqmPCRuM1sD6P9b3B8qEXH2xFzYROsAjB1L8wIs1btAvioHLi0IgTO1JQsT8nTRF1sj-JDnNi_5d0wVZeATYQPIP7nj0WAKOJatBC4EZ4lPVfmmIKPGyy8NBHuiKJDpIs-YoaQ-hV-eRx17DAUP39ETi_H_OiWTYKj9aI"/>
+<!-- Tracking Chips -->
+<div class="absolute -top-6 -right-6 font-data-mono text-label-caps text-primary-fixed-dim bg-surface-dim/40 px-xs py-1 border border-primary-fixed-dim/30 backdrop-blur-md">
+                    [ ANGLE_42.0 ]
+                </div>
+<div class="absolute -bottom-6 -left-6 font-data-mono text-label-caps text-primary-fixed-dim bg-surface-dim/40 px-xs py-1 border border-primary-fixed-dim/30 backdrop-blur-md">
+                    [ LOCK_STABLE ]
+                </div>
+</div>
+<!-- Scanning HUD Overlay -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-1 flex items-center justify-between pointer-events-none">
+<div class="w-4 h-4 border-l border-t border-primary-fixed-dim"></div>
+<div class="w-4 h-4 border-r border-t border-primary-fixed-dim"></div>
+</div>
+</div>
+<!-- Bottom Actions (Floating HUD Clusters) -->
+<div class="absolute bottom-28 w-full px-safe-margin flex flex-col gap-md z-20">
+<!-- Firmware Syncing Status -->
+<div class="glass-panel border border-outline-variant/30 px-md py-sm flex items-center justify-between">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-ping"></div>
+<span class="font-data-mono text-data-mono text-primary-fixed-dim">SYNCING_OPTICS... 88%</span>
+</div>
+<div class="flex gap-1">
+<div class="w-8 h-1 bg-primary-fixed-dim"></div>
+<div class="w-8 h-1 bg-primary-fixed-dim"></div>
+<div class="w-8 h-1 bg-primary-fixed-dim"></div>
+<div class="w-8 h-1 bg-on-surface-variant/20"></div>
+</div>
+</div>
+<div class="flex gap-md">
+<!-- Switch Lens Button -->
+<button class="flex-1 glass-panel border border-primary-fixed-dim/50 py-md flex flex-col items-center gap-xs hover:bg-primary-fixed-dim/10 transition-all active:scale-95 group">
+<span class="material-symbols-outlined text-primary-fixed-dim group-hover:drop-shadow-[0_0_10px_rgba(0,219,231,0.8)]">refresh</span>
+<span class="font-label-caps text-label-caps text-on-surface">Switch Lens</span>
+</button>
+<!-- Order Now Button -->
+<button class="flex-[1.5] bg-primary-fixed-dim/20 border border-primary-fixed-dim py-md flex flex-col items-center gap-xs hover:bg-primary-fixed-dim/30 transition-all active:scale-95 shadow-[0_0_15px_rgba(0,219,231,0.3)]">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<span class="font-label-caps text-label-caps text-primary-fixed-dim font-bold">Order Now</span>
+</button>
+</div>
+</div>
+<!-- Peripheral Data Widgets -->
+<aside class="absolute left-hud-gutter top-24 z-20 flex flex-col gap-lg max-w-[120px]">
+<div class="flex flex-col gap-xs opacity-60">
+<span class="font-data-mono text-label-caps text-on-surface-variant uppercase">Operator</span>
+<span class="font-data-mono text-data-mono text-on-surface">OPERATOR_042</span>
+</div>
+<div class="flex flex-col gap-xs opacity-60">
+<span class="font-data-mono text-label-caps text-on-surface-variant uppercase">Latency</span>
+<span class="font-data-mono text-data-mono text-on-surface">0.02ms</span>
+</div>
+</aside>
+<aside class="absolute right-hud-gutter top-24 z-20 flex flex-col gap-lg items-end max-w-[120px]">
+<div class="flex flex-col gap-xs items-end">
+<span class="font-data-mono text-label-caps text-primary-fixed-dim uppercase">FIRMWARE</span>
+<span class="font-data-mono text-data-mono text-primary-fixed-dim">v2.0.4</span>
+</div>
+<div class="flex flex-col gap-xs items-end opacity-60">
+<span class="font-data-mono text-label-caps text-on-surface-variant uppercase">AR_CORE</span>
+<span class="font-data-mono text-data-mono text-on-surface">CONNECTED</span>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-lowest/40 dark:bg-surface-container-lowest/40 backdrop-blur-md border-t border-primary/10 shadow-[0_-5px_20px_rgba(0,219,231,0.15)] flex justify-around items-center px-safe-margin pb-4 h-20 rounded-t-full">
+<div class="flex flex-col items-center justify-center text-primary-fixed-dim drop-shadow-[0_0_12px_rgba(0,219,231,0.9)] border-t-2 border-primary-fixed-dim pt-2 cursor-pointer transition-all hover:scale-110">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">VIEWPORT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 cursor-pointer hover:text-primary-fixed hover:scale-110 transition-all">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">OVERLAY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 cursor-pointer hover:text-primary-fixed hover:scale-110 transition-all">
+<span class="material-symbols-outlined">settings_remote</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">SYNC</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 cursor-pointer hover:text-primary-fixed hover:scale-110 transition-all">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">PROFILE</span>
+</div>
+</nav>
+<!-- Scanning Line Effect Visual -->
+<div class="fixed inset-0 pointer-events-none z-[60] bg-[linear-gradient(rgba(18,16,16,0)_50%,rgba(0,0,0,0.1)_50%),linear-gradient(90deg,rgba(255,0,0,0.02),rgba(0,255,0,0.01),rgba(0,0,255,0.02))] bg-[length:100%_4px,3px_100%]"></div>
+</body></html>

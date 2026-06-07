@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Metropolis:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            background-image: 
+                linear-gradient(to right, #1c1c1c 1px, transparent 1px),
+                linear-gradient(to bottom, #1c1c1c 1px, transparent 1px);
+            background-size: 32px 32px;
+            font-family: 'Metropolis', sans-serif;
+        }
+        .jetbrains-mono { font-family: 'JetBrains Mono', monospace; }
+        .glass-hud {
+            background: rgba(42, 229, 0, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(42, 229, 0, 0.2);
+        }
+        .noise-texture {
+            position: relative;
+        }
+        .noise-texture::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "inverse-surface": "#e4e2e1",
+                        "on-tertiary-fixed": "#022100",
+                        "error-container": "#93000a",
+                        "on-primary-fixed": "#1b1b1b",
+                        "inverse-on-surface": "#303030",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "surface-container-highest": "#353535",
+                        "on-secondary": "#2f3131",
+                        "on-surface-variant": "#c4c7c7",
+                        "outline-variant": "#444748",
+                        "tertiary-fixed": "#79ff5b",
+                        "on-surface": "#e4e2e1",
+                        "secondary-fixed": "#e3e2e2",
+                        "primary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#474746",
+                        "primary": "#c8c6c5",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-low": "#1b1c1c",
+                        "on-background": "#e4e2e1",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-tertiary-container": "#199900",
+                        "tertiary": "#2ae500",
+                        "on-secondary-fixed-variant": "#464747",
+                        "surface": "#131313",
+                        "surface-tint": "#c8c6c5",
+                        "surface-bright": "#393939",
+                        "surface-variant": "#353535",
+                        "surface-container": "#1f2020",
+                        "secondary": "#c7c6c6",
+                        "surface-container-high": "#2a2a2a",
+                        "on-primary": "#313030",
+                        "on-tertiary": "#053900",
+                        "on-primary-container": "#858484",
+                        "outline": "#8e9192",
+                        "error": "#ffb4ab",
+                        "primary-fixed": "#e5e2e1",
+                        "background": "#131313",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-error": "#690005",
+                        "inverse-primary": "#5f5e5e",
+                        "surface-dim": "#131313",
+                        "tertiary-container": "#022200",
+                        "tertiary-fixed-dim": "#2ae500",
+                        "on-tertiary-fixed-variant": "#095300",
+                        "on-secondary-container": "#b8b8b8",
+                        "primary-container": "#1c1c1c",
+                        "secondary-container": "#484949"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-desktop": "48px",
+                        "grid-line": "1px",
+                        "unit": "4px",
+                        "margin-mobile": "16px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["metropolis"],
+                        "headline-lg": ["metropolis"],
+                        "data-lg": ["jetbrainsMono"],
+                        "headline-lg-mobile": ["metropolis"],
+                        "headline-xl": ["metropolis"],
+                        "data-sm": ["jetbrainsMono"],
+                        "label-caps": ["jetbrainsMono"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "data-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="text-on-surface">
+<aside class="flex flex-col h-full bg-surface border-r border-outline-variant h-screen w-64 fixed left-0 top-0 z-50">
+<div class="p-6">
+<h1 class="font-headline-lg text-tertiary tracking-tight uppercase">AERO-COMPUTE</h1>
+<p class="font-label-caps text-on-surface-variant opacity-60">SYS_VER_4.2.0</p>
+</div>
+<nav class="flex-1 mt-4">
+<a class="border-l-4 border-transparent text-secondary font-label-caps flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-tertiary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="settings_input_component">settings_input_component</span>
+                CONFIG_CORE
+            </a>
+<a class="border-l-4 border-transparent text-secondary font-label-caps flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-tertiary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="thermostat">thermostat</span>
+                THERMAL_HUD
+            </a>
+<a class="border-l-4 border-transparent text-secondary font-label-caps flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-tertiary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="analytics">analytics</span>
+                BENCH_REPORTS
+            </a>
+<a class="border-l-4 border-transparent text-secondary font-label-caps flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-tertiary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="admin_panel_settings">admin_panel_settings</span>
+                ADMIN_RACK
+            </a>
+<a class="border-l-4 border-tertiary bg-surface-container-high text-tertiary font-label-caps flex items-center px-4 py-3 brightness-125" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="forum">forum</span>
+                BUILD_LOGS
+            </a>
+<a class="border-l-4 border-transparent text-secondary font-label-caps flex items-center px-4 py-3 hover:bg-surface-container-highest hover:text-tertiary transition-colors duration-150" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="terminal">terminal</span>
+                TECH_DOCS
+            </a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full bg-tertiary text-on-tertiary-fixed font-label-caps py-3 tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                NEW_BUILD_INIT
+            </button>
+</div>
+</aside>
+<header class="flex justify-between items-center px-margin-desktop w-full border-b border-outline-variant fixed top-0 right-0 w-[calc(100%-16rem)] h-16 bg-surface z-40 ml-64">
+<div class="flex items-center gap-4">
+<span class="font-label-caps text-on-surface-variant">LOCATION: /BUILD_LOGS/COMMUNITY</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center bg-surface-container px-3 py-1 border border-outline-variant">
+<span class="material-symbols-outlined text-on-surface-variant text-sm mr-2" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-label-caps text-on-surface placeholder:text-outline w-48" placeholder="SEARCH_LOGS..." type="text"/>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary cursor-pointer" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary cursor-pointer" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-tertiary cursor-pointer" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<main class="ml-64 mt-16 p-12 grid grid-cols-12 gap-8">
+<div class="col-span-12 md:col-span-8 flex flex-col gap-12">
+<section class="noise-texture bg-surface-container p-1 border border-outline-variant">
+<div class="relative aspect-video overflow-hidden border border-outline-variant">
+<img alt="Internal wiring" class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" data-alt="A high-resolution, industrial-style close-up of complex server internal wiring and copper heat pipes. The lighting is dramatic and moody, with deep shadows and sharp highlights reflecting off brushed metallic surfaces and semi-translucent fiber-optic cables. The aesthetic is ultra-precise and mechanical, featuring neon green status LEDs that cast a soft glow across the dark, high-performance hardware components. The atmosphere is cold, professional, and technologically advanced." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxmPWniIUIL5zlQ9mKQD-M2KXTrjCrH8OQ9DenKeyWe6Z-3wyTQBAX5iESXTpcSQMRzTiHmLHW4396wM1KfqCqvY8Jv0yevEjo71fDufrvnAKLfEroeWwIq1Y3w-1vN3_nF3daUB0RCv0WP5lzOp_YYvWhR9r79dDeeT15r31E3UQ6-_qyj2dff_krRMXXq2Nybiq5NwoPPrfbtyTMiSGxcvD73aRWVcZ6T5xMkSmigz9CuAtlwO_q3hO4uXMui2MPPAEmtR_1wFrQ"/>
+<div class="absolute top-4 right-4 glass-hud px-4 py-2 flex flex-col items-end">
+<span class="font-label-caps text-tertiary">CORE_TEMP: 32°C</span>
+<span class="font-data-sm text-[8px] text-tertiary opacity-70">REF_ID: 884-AX-LOG</span>
+</div>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<div class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></div>
+<span class="font-label-caps text-tertiary">LIVE_FEED_READY</span>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant">
+<div class="flex justify-between items-start mb-4">
+<div>
+<h2 class="font-headline-lg text-on-surface uppercase tracking-tighter">Liquid Nitro Loop #042</h2>
+<p class="font-data-sm text-on-surface-variant mt-1">LOGGED BY: <span class="text-tertiary">@VECTOR_ENGINEER</span> | DATE: 2024.11.14_08:30</p>
+</div>
+<div class="flex gap-4">
+<div class="text-right">
+<p class="font-label-caps text-outline">UPTIME</p>
+<p class="font-data-lg text-tertiary">422:12:04</p>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-outline">STABILITY</p>
+<p class="font-data-lg text-tertiary">99.8%</p>
+</div>
+</div>
+</div>
+<p class="font-body-md text-on-surface-variant mb-6 leading-relaxed">
+                        Optimized the coolant flow vectors for the primary processing array. Sub-zero saturation achieved at idle. The custom-machined steel fittings are holding pressure within a 0.02% margin of error. Added copper shielding to the main bus to mitigate EMI from the high-voltage rail. Benchmarks show a 14% uplift in multi-threaded throughput.
+                    </p>
+<div class="flex gap-2">
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant font-label-caps text-secondary">#NITROGEN_COOLING</span>
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant font-label-caps text-secondary">#VECTOR_PROC</span>
+<span class="px-3 py-1 bg-surface-container-high border border-outline-variant font-label-caps text-secondary">#COMMUNITY_VALIDATED</span>
+</div>
+</div>
+</section>
+<section class="flex flex-col gap-6">
+<div class="flex items-center gap-4 border-b border-outline-variant pb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="comment">comment</span>
+<h3 class="font-label-caps text-tertiary text-lg">SYSTEM_COMMUNICATION_LOG</h3>
+<span class="font-data-sm text-outline ml-auto">14 ENTRIES FOUND</span>
+</div>
+<div class="space-y-8">
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="person">person</span>
+</div>
+<div class="flex-1">
+<div class="bg-surface-container-high p-4 border-l-2 border-tertiary relative">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-tertiary">@HEX_ARCHITECT</span>
+<span class="font-data-sm text-outline">12:14:02 UTC</span>
+</div>
+<p class="font-body-md text-on-surface">The wiring management here is elite. Are those custom-sleeved Teflon cables or standard industrial grade? I'm seeing minimal cross-talk on your spectrum analyzer readings.</p>
+<div class="flex gap-4 mt-4">
+<button class="font-label-caps text-tertiary hover:underline">UPVOTE[12]</button>
+<button class="font-label-caps text-outline hover:text-on-surface">REPLY</button>
+</div>
+</div>
+<div class="mt-4 ml-8 flex gap-4">
+<div class="w-8 h-8 bg-surface-container-highest border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-tertiary" data-icon="verified_user">verified_user</span>
+</div>
+<div class="flex-1 bg-surface-container p-4 border border-outline-variant">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-on-surface">@VECTOR_ENGINEER <span class="text-[8px] bg-tertiary text-on-tertiary px-1 ml-1 uppercase">OP</span></span>
+<span class="font-data-sm text-outline">12:20:45 UTC</span>
+</div>
+<p class="font-body-md text-on-surface-variant italic">@HEX_ARCHITECT: PTFE-coated silver strand. Expensive, but the signal integrity is unmatched at these clock speeds.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="robot">robot</span>
+</div>
+<div class="flex-1 bg-surface-container-high p-4 border-l-2 border-outline relative">
+<div class="flex justify-between mb-2">
+<span class="font-label-caps text-on-surface">@NULL_POINTER</span>
+<span class="font-data-sm text-outline">14:05:11 UTC</span>
+</div>
+<p class="font-body-md text-on-surface">Can you share the STL for those custom mounting brackets? The geometry looks perfect for high-vibration rack environments.</p>
+<div class="flex gap-4 mt-4">
+<button class="font-label-caps text-tertiary hover:underline">UPVOTE[4]</button>
+<button class="font-label-caps text-outline hover:text-on-surface">REPLY</button>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-4">
+<textarea class="w-full bg-surface-container-low border border-outline-variant p-4 font-data-sm text-on-surface focus:ring-1 focus:ring-tertiary focus:border-tertiary outline-none resize-none" placeholder="INITIALIZE NEW MESSAGE..." rows="3"></textarea>
+<div class="flex justify-end mt-4">
+<button class="px-6 py-2 bg-tertiary text-on-tertiary-fixed font-label-caps hover:brightness-110 active:scale-95 transition-all">
+                            TRANSMIT_DATA
+                        </button>
+</div>
+</div>
+</section>
+</div>
+<div class="col-span-12 md:col-span-4 flex flex-col gap-8">
+<section class="bg-surface-container border border-outline-variant">
+<div class="bg-surface-container-high p-4 border-b border-outline-variant flex items-center justify-between">
+<h3 class="font-label-caps text-on-surface">TOP_CONTRIBUTORS</h3>
+<span class="material-symbols-outlined text-tertiary text-sm" data-icon="leaderboard">leaderboard</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<div class="p-4 flex items-center gap-4 hover:bg-surface-container-highest transition-colors">
+<span class="font-data-sm text-tertiary">01</span>
+<div class="w-8 h-8 rounded-full bg-tertiary flex items-center justify-center text-on-tertiary-fixed font-bold">V</div>
+<div class="flex-1">
+<p class="font-label-caps text-on-surface">VECTOR_ENGINEER</p>
+<p class="font-data-sm text-outline text-[10px]">1,244 COMMITS</p>
+</div>
+<div class="text-right">
+<span class="text-tertiary material-symbols-outlined" data-icon="star" data-weight="fill" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-surface-container-highest transition-colors">
+<span class="font-data-sm text-outline">02</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">H</div>
+<div class="flex-1">
+<p class="font-label-caps text-on-surface">HEX_ARCHITECT</p>
+<p class="font-data-sm text-outline text-[10px]">982 COMMITS</p>
+</div>
+</div>
+<div class="p-4 flex items-center gap-4 hover:bg-surface-container-highest transition-colors">
+<span class="font-data-sm text-outline">03</span>
+<div class="w-8 h-8 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold">M</div>
+<div class="flex-1">
+<p class="font-label-caps text-on-surface">MATRIX_NODE</p>
+<p class="font-data-sm text-outline text-[10px]">745 COMMITS</p>
+</div>
+</div>
+</div>
+</section>
+<section class="bg-surface-container border border-outline-variant">
+<div class="bg-surface-container-high p-4 border-b border-outline-variant">
+<h3 class="font-label-caps text-on-surface">ACTIVE_BUILDS_TELEMETRY</h3>
+</div>
+<div class="p-4 space-y-4">
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span class="text-outline">RACK_01_POWER</span>
+<span class="text-tertiary">88%</span>
+</div>
+<div class="h-1 bg-surface-container-low w-full border border-outline-variant">
+<div class="h-full bg-tertiary shadow-[0_0_8px_rgba(42,229,0,0.5)]" style="width: 88%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between font-label-caps text-[10px] mb-1">
+<span class="text-outline">NETWORK_BANDWIDTH</span>
+<span class="text-tertiary">14.2 GB/S</span>
+</div>
+<div class="h-1 bg-surface-container-low w-full border border-outline-variant">
+<div class="h-full bg-tertiary shadow-[0_0_8px_rgba(42,229,0,0.5)]" style="width: 42%"></div>
+</div>
+</div>
+<div class="pt-2">
+<img alt="Server room circuitry" class="w-full h-24 object-cover border border-outline-variant grayscale opacity-50" data-alt="A macro photography shot of glowing microchips and emerald green circuitry on a high-end motherboard. The focus is razor-sharp on a central processor surrounded by intricate pathways of light, creating a sense of high-speed data transmission. The lighting is cool and technical, with dark shadows accentuating the futuristic, industrial aesthetic. The color palette is strictly limited to deep blacks, charcoal greys, and vibrant neon green accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXVcQeWAw8h3vIDyqM4r-KVe7qbfFw9aa-zKxkScCOJnMJJVffF1fB1MdMR1SLCQRJ0RSXhjWoiaCGI7_Ivz8enyJQrGocmi3V2gQu0VGN9gv9GhNRjcNLQNOarItapSUyaqqcsr0sxPwOh_ylmRnZPISvyBlykl33F-z2Y6kq4vUCF9DH2iHMvOAeyhFbCv10ft3isF9a0dKW0IzdsmEI2n_LXMkY0bKu_GOkfZDxc3KraipPmJ1aUdRB0FoZ5KlyfVR4tSisl6RI"/>
+</div>
+</div>
+</section>
+<section class="space-y-4">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-tertiary" data-icon="lock_open">lock_open</span>
+<h3 class="font-label-caps text-on-surface text-lg uppercase tracking-widest">ACCESS_HATCH_FAQ</h3>
+</div>
+<div class="border border-outline-variant">
+<button class="w-full p-4 flex items-center justify-between bg-surface-container-high hover:bg-surface-container-highest transition-all group">
+<span class="font-label-caps text-on-surface">01: COOLANT_LEAK_PROTOCOLS</span>
+<span class="material-symbols-outlined text-outline group-hover:text-tertiary" data-icon="expand_more">expand_more</span>
+</button>
+<div class="p-4 bg-surface-container border-t border-outline-variant">
+<p class="font-data-sm text-on-surface-variant leading-relaxed">
+                            Immediately terminate primary power rail. Isolate the ruptured valve using the manual override. Deploy absorbent fiber mats and initiate atmospheric scrubbers to neutralize particulate vapor.
+                        </p>
+</div>
+</div>
+<div class="border border-outline-variant">
+<button class="w-full p-4 flex items-center justify-between bg-surface-container-low hover:bg-surface-container-highest transition-all group">
+<span class="font-label-caps text-outline">02: SIGNAL_NOISE_REDUCTION</span>
+<span class="material-symbols-outlined text-outline group-hover:text-tertiary" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+<div class="border border-outline-variant">
+<button class="w-full p-4 flex items-center justify-between bg-surface-container-low hover:bg-surface-container-highest transition-all group">
+<span class="font-label-caps text-outline">03: RACK_MOUNT_DYNAMICS</span>
+<span class="material-symbols-outlined text-outline group-hover:text-tertiary" data-icon="expand_more">expand_more</span>
+</button>
+</div>
+</section>
+</div>
+</main>
+<footer class="ml-64 p-8 border-t border-outline-variant bg-surface flex justify-between items-center">
+<div class="flex items-center gap-8">
+<div class="flex flex-col">
+<span class="font-label-caps text-outline">ENCRYPTION</span>
+<span class="font-data-sm text-tertiary">AES-256_ACTIVE</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-outline">CORE_STATUS</span>
+<span class="font-data-sm text-tertiary">NOMINAL</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-outline">GLOBAL_PEERS</span>
+<span class="font-data-sm text-tertiary">4,882</span>
+</div>
+</div>
+<div class="text-right">
+<p class="font-label-caps text-outline">© 2024 AERO-COMPUTE SYSTEMS</p>
+<p class="font-data-sm text-outline opacity-40">VER: 4.2.0-STABLE | KERNEL: 0x884F</p>
+</div>
+</footer>
+</body></html>

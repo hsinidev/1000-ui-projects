@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHRONO-THREAD | Smart-Home Integration</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    .brushed-steel {
+      background: linear-gradient(135deg, #8E8E93 0%, #BFC0C4 50%, #8E8E93 100%);
+    }
+    .glass-panel {
+      backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .thread-line {
+      height: 2px;
+      background: #8E8E93;
+      box-shadow: 0 0 8px rgba(175, 200, 240, 0.4);
+    }
+    body {
+      background-color: #131313;
+      color: #e5e2e1;
+      font-family: 'Hanken Grotesk', sans-serif;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-container-high": "#2a2a2a",
+            "surface-container-highest": "#353535",
+            "on-tertiary": "#2f3131",
+            "secondary-fixed-dim": "#c6c6cb",
+            "error": "#ffb4ab",
+            "primary": "#afc8f0",
+            "on-secondary": "#2f3034",
+            "surface-container-lowest": "#0e0e0e",
+            "on-primary-fixed-variant": "#2f486a",
+            "on-secondary-container": "#b5b4ba",
+            "error-container": "#93000a",
+            "surface-container-low": "#1c1b1b",
+            "tertiary": "#c6c6c7",
+            "tertiary-fixed": "#e2e2e2",
+            "primary-fixed": "#d4e3ff",
+            "on-primary": "#163152",
+            "inverse-primary": "#476083",
+            "on-tertiary-fixed": "#1a1c1c",
+            "secondary-fixed": "#e3e2e7",
+            "on-primary-fixed": "#001c3a",
+            "secondary": "#c6c6cb",
+            "secondary-container": "#46464b",
+            "on-tertiary-container": "#858687",
+            "primary-container": "#001f3f",
+            "surface-tint": "#afc8f0",
+            "on-error": "#690005",
+            "tertiary-fixed-dim": "#c6c6c7",
+            "background": "#131313",
+            "primary-fixed-dim": "#afc8f0",
+            "tertiary-container": "#1d1f1f",
+            "outline": "#8e9198",
+            "inverse-on-surface": "#313030",
+            "surface-bright": "#393939",
+            "on-primary-container": "#6f88ad",
+            "surface-container": "#20201f",
+            "on-secondary-fixed-variant": "#46464b",
+            "outline-variant": "#43474e",
+            "surface-dim": "#131313",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-fixed-variant": "#454747",
+            "on-background": "#e5e2e1",
+            "surface": "#131313",
+            "on-surface": "#e5e2e1",
+            "inverse-surface": "#e5e2e1",
+            "on-surface-variant": "#c4c6cf",
+            "on-secondary-fixed": "#1a1b1f",
+            "surface-variant": "#353535"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "base": "8px",
+            "container-padding": "24px",
+            "stack-sm": "8px",
+            "section-gap": "48px",
+            "stack-md": "16px",
+            "gutter": "16px",
+            "stack-lg": "32px"
+          },
+          "fontFamily": {
+            "body-lg": ["Hanken Grotesk"],
+            "headline-md": ["Hanken Grotesk"],
+            "data-mono": ["Hanken Grotesk"],
+            "headline-lg": ["Hanken Grotesk"],
+            "display": ["Hanken Grotesk"],
+            "body-md": ["Hanken Grotesk"],
+            "label-caps": ["Hanken Grotesk"]
+          },
+          "fontSize": {
+            "body-lg": ["18px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+            "headline-md": ["22px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "data-mono": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+            "headline-lg": ["28px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+            "display": ["42px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+            "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/40 flex justify-between items-center px-container-padding h-16">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="watch">watch</span>
+<h1 class="font-display text-headline-lg tracking-tighter text-primary">CHRONO-THREAD</h1>
+</div>
+<div class="flex items-center">
+<button class="material-symbols-outlined text-on-surface-variant hover:opacity-80 transition-opacity duration-300" data-icon="settings_bluetooth">settings_bluetooth</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-padding max-w-4xl mx-auto">
+<!-- Hero Visualization -->
+<section class="mb-stack-lg">
+<div class="flex items-center justify-between mb-stack-md">
+<h2 class="font-headline-md text-headline-md uppercase tracking-widest text-on-surface">Action Mapping</h2>
+<span class="font-label-caps text-label-caps text-primary bg-primary-container px-3 py-1 border border-primary/20">CONNECTED</span>
+</div>
+<div class="relative w-full aspect-video rounded-lg overflow-hidden border border-outline-variant/40 bg-surface-container-lowest">
+<img class="w-full h-full object-cover opacity-60 mix-blend-luminosity" data-alt="A high-end close-up shot of a dark navy technical blazer sleeve featuring three distinct, precision-machined metallic buttons. The scene is lit with dramatic, low-angle studio lighting highlighting the brushed steel texture of the hardware against the sophisticated fabric. The aesthetic is clean, architectural, and luxurious, using a palette of deep navy and cold silver tones to emphasize a futuristic technical garment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCuXzKyn6VPkphSiVQVgOYCGUx64m_FJJXG3gxCUO9PpBoMN6lbI1spL4jpwtT7fIUXvKsF8DFuu93d3Yk9J4iIc6QQ4e4HPqzvnQin8KhCdhuMS--PFuH-YLw8J4mfQI2f9dTB2KZy0K6VgeeG-C_HFF74RTfjaBGhNIqAyXEQamuaOQlgM5tERZ7UpGYEXPM92XzhULYXqGKdckwgmxz3QcQGEQnfbjQ6a0O8QIWf-7Q6CU5fn6RA12sMh1qOOiGywCOjrvOlFZA"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<!-- Overlay HUD Indicators -->
+<div class="absolute inset-0 flex flex-col justify-end p-gutter pointer-events-none">
+<div class="flex gap-stack-md items-end">
+<div class="flex flex-col gap-1">
+<div class="w-12 h-1 brushed-steel shadow-[0_0_8px_rgba(175,200,240,0.5)]"></div>
+<p class="font-label-caps text-label-caps text-on-surface">BTN_A_ALPHA</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="w-12 h-1 bg-surface-container-highest"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-40">BTN_B_BETA</p>
+</div>
+<div class="flex flex-col gap-1">
+<div class="w-12 h-1 bg-surface-container-highest"></div>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-40">BTN_C_GAMMA</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Mappable Actions Section -->
+<section class="space-y-stack-md">
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<div class="w-1 h-6 bg-primary"></div>
+<h3 class="font-label-caps text-label-caps text-outline uppercase">Assign Smart Triggers</h3>
+</div>
+<!-- Action Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Action Card 1 -->
+<div class="bg-surface-container-low border border-outline-variant/40 p-gutter group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-stack-md">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/40">
+<span class="material-symbols-outlined text-primary text-2xl" data-icon="light_off">light_off</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md leading-none">Lights Off</h4>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">SALIENCE_HUB_01</p>
+</div>
+</div>
+<div class="brushed-steel px-2 py-0.5 text-on-primary font-label-caps text-[10px]">ACTIVE</div>
+</div>
+<div class="flex items-center justify-between pt-stack-sm border-t border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ASSIGNED TO</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-primary bg-primary-container text-primary font-data-mono text-data-mono">A</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">B</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">C</button>
+</div>
+</div>
+</div>
+<!-- Action Card 2 -->
+<div class="bg-surface-container-low border border-outline-variant/40 p-gutter group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-stack-md">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/40">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="lock">lock</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md leading-none">Lock All</h4>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">SECURITY_SHIELD</p>
+</div>
+</div>
+<div class="bg-surface-container-highest px-2 py-0.5 text-on-surface-variant font-label-caps text-[10px]">UNASSIGNED</div>
+</div>
+<div class="flex items-center justify-between pt-stack-sm border-t border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ASSIGNED TO</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">A</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">B</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">C</button>
+</div>
+</div>
+</div>
+<!-- Action Card 3 -->
+<div class="bg-surface-container-low border border-outline-variant/40 p-gutter group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-stack-md">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/40">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="nest_thermostat">nest_thermostat</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md leading-none">Eco Temp</h4>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">CLIMATE_LINK</p>
+</div>
+</div>
+<div class="bg-surface-container-highest px-2 py-0.5 text-on-surface-variant font-label-caps text-[10px]">UNASSIGNED</div>
+</div>
+<div class="flex items-center justify-between pt-stack-sm border-t border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ASSIGNED TO</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">A</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">B</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">C</button>
+</div>
+</div>
+</div>
+<!-- Action Card 4 -->
+<div class="bg-surface-container-low border border-outline-variant/40 p-gutter group hover:border-primary/50 transition-all duration-300">
+<div class="flex justify-between items-start mb-stack-md">
+<div class="flex items-center gap-stack-md">
+<div class="w-12 h-12 flex items-center justify-center bg-surface-container-high border border-outline-variant/40">
+<span class="material-symbols-outlined text-on-surface-variant text-2xl" data-icon="coffee_maker">coffee_maker</span>
+</div>
+<div>
+<h4 class="font-headline-md text-headline-md leading-none">Brew Start</h4>
+<p class="font-label-caps text-[10px] text-on-surface-variant mt-1">KITCHEN_OS</p>
+</div>
+</div>
+<div class="bg-surface-container-highest px-2 py-0.5 text-on-surface-variant font-label-caps text-[10px]">UNASSIGNED</div>
+</div>
+<div class="flex items-center justify-between pt-stack-sm border-t border-outline-variant/20">
+<p class="font-label-caps text-label-caps text-on-surface-variant">ASSIGNED TO</p>
+<div class="flex gap-2">
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">A</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">B</button>
+<button class="w-8 h-8 flex items-center justify-center border border-outline-variant/40 text-on-surface-variant font-data-mono text-data-mono hover:bg-surface-container-highest">C</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Technical Specs & Gauges -->
+<section class="mt-section-gap grid grid-cols-3 gap-gutter border-t border-outline-variant/40 pt-stack-lg">
+<div class="flex flex-col items-center gap-2">
+<div class="relative w-16 h-16 rounded-full border border-outline-variant/40 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-primary" cx="32" cy="32" fill="transparent" r="30" stroke="currentColor" stroke-dasharray="188" stroke-dashoffset="40" stroke-width="1.5"></circle>
+</svg>
+<span class="font-data-mono text-data-mono text-primary">82%</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">LINK STRENGTH</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="relative w-16 h-16 rounded-full border border-outline-variant/40 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-tertiary" cx="32" cy="32" fill="transparent" r="30" stroke="currentColor" stroke-dasharray="188" stroke-dashoffset="10" stroke-width="1.5"></circle>
+</svg>
+<span class="font-data-mono text-data-mono text-tertiary">94%</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">BATTERY_LVL</span>
+</div>
+<div class="flex flex-col items-center gap-2">
+<div class="relative w-16 h-16 rounded-full border border-outline-variant/40 flex items-center justify-center">
+<svg class="absolute inset-0 w-full h-full -rotate-90">
+<circle class="text-outline-variant" cx="32" cy="32" fill="transparent" r="30" stroke="currentColor" stroke-dasharray="188" stroke-dashoffset="150" stroke-width="1.5"></circle>
+</svg>
+<span class="font-data-mono text-data-mono text-on-surface-variant">0.4s</span>
+</div>
+<span class="font-label-caps text-[10px] text-on-surface-variant">LATENCY</span>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 bg-surface-container-low/90 backdrop-blur-xl border-t border-outline-variant/40">
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="touch_app">touch_app</span>
+<span class="font-label-caps text-label-caps">Command</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="contactless">contactless</span>
+<span class="font-label-caps text-label-caps">NFC Link</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-2 pb-4 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps">Actions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="apparel">apparel</span>
+<span class="font-label-caps text-label-caps">Style</span>
+</a>
+</nav>
+</body></html>

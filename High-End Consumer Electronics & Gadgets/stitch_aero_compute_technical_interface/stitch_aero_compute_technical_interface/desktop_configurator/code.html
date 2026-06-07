@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for technical density */
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: #131315; }
+        ::-webkit-scrollbar-thumb { background: #434749; border-radius: 0px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00e1ab; }
+        
+        /* Metallic Noise Texture Simulation */
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3UniqueId%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#e4e2e4",
+                        "inverse-surface": "#e4e2e4",
+                        "primary-container": "#bdc3c7",
+                        "primary": "#d9dfe3",
+                        "secondary-fixed-dim": "#00e1ab",
+                        "on-primary-container": "#4a5054",
+                        "surface-container": "#1f1f21",
+                        "secondary": "#ffffff",
+                        "surface-container-highest": "#353437",
+                        "on-error-container": "#ffdad6",
+                        "inverse-primary": "#595f63",
+                        "outline-variant": "#434749",
+                        "inverse-on-surface": "#303032",
+                        "surface-variant": "#353437",
+                        "on-tertiary-fixed-variant": "#47464a",
+                        "on-secondary-fixed-variant": "#00513c",
+                        "surface-container-low": "#1b1b1d",
+                        "on-primary-fixed-variant": "#41484b",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "on-tertiary": "#303033",
+                        "tertiary-fixed-dim": "#c8c6ca",
+                        "on-primary": "#2b3135",
+                        "tertiary-fixed": "#e4e1e5",
+                        "surface": "#131315",
+                        "outline": "#8e9194",
+                        "surface-container-high": "#2a2a2c",
+                        "secondary-fixed": "#36ffc4",
+                        "tertiary-container": "#c4c1c5",
+                        "primary-fixed-dim": "#c1c7cb",
+                        "surface-dim": "#131315",
+                        "on-primary-fixed": "#161c20",
+                        "on-secondary": "#003828",
+                        "background": "#131315",
+                        "on-tertiary-container": "#504f52",
+                        "on-surface-variant": "#c4c7c9",
+                        "secondary-container": "#36ffc4",
+                        "on-surface": "#e4e2e4",
+                        "primary-fixed": "#dde3e7",
+                        "tertiary": "#e0dde1",
+                        "on-secondary-container": "#007255",
+                        "on-tertiary-fixed": "#1b1b1e",
+                        "surface-tint": "#c1c7cb",
+                        "error": "#ffb4ab",
+                        "surface-container-lowest": "#0e0e10",
+                        "on-secondary-fixed": "#002116",
+                        "surface-bright": "#39393b"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-max": "1440px",
+                        "gutter": "16px",
+                        "grid-columns": "12",
+                        "margin": "32px"
+                    },
+                    "fontFamily": {
+                        "data-point": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "mono-label": ["Inter"],
+                        "headline-xl": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "data-point": ["13px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "mono-label": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-sm selection:bg-secondary-fixed-dim selection:text-on-secondary min-h-screen flex flex-col overflow-hidden">
+<div class="noise-bg fixed inset-0 z-0"></div>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-gutter w-full z-50 bg-surface dark:bg-surface docked full-width top-0 h-16 border-b border-outline-variant relative">
+<div class="flex items-center gap-4">
+<span class="font-headline-md text-headline-md font-bold text-secondary-fixed-dim uppercase tracking-tighter">Aero-Compute</span>
+<div class="h-4 w-px bg-outline-variant mx-2"></div>
+<span class="font-mono-label text-mono-label text-outline uppercase tracking-widest">System_ID: 0x-ALPHA-44</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-secondary-fixed-dim hover:text-secondary-fixed hover:bg-surface-container-highest transition-colors cursor-pointer p-2 active:scale-95 duration-100" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-secondary-fixed-dim hover:text-secondary-fixed hover:bg-surface-container-highest transition-colors cursor-pointer p-2 active:scale-95 duration-100" data-icon="notifications">notifications</span>
+</div>
+<div class="w-8 h-8 bg-surface-container-highest border border-outline-variant overflow-hidden">
+<img alt="Operator Profile Avatar" class="w-full h-full object-cover" data-alt="A futuristic and minimalist operator profile avatar generated with sharp geometric shapes and a neon mint and graphite color scheme. The style is highly technical and industrial, reflecting a professional workstation environment with absolute precision and engineering-grade visual aesthetics. The background consists of a dark, subtle metallic mesh pattern." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeiMyTY-Gb0kjdHvRjSW92v8Fjn7T7MDKGGv7asH_GHg8eg14GDiEoXjAd26kCXhXiLLm7-TZu3NZWpb8odc-qEuptYKo93z5eshcK5usfmWPjN8pB-LTX5lD473l2AQILukgde3WdEnh9R06UoO82nxOldlAZm-AYZ5erxHu7eoIkhLAVVZ2z2h4BUcf6lZ0ADJ3OeeEIotyI89ohyO9eo4upDqNavK8iUANZ_JdGco2Ypx55gH5d2LtCmaMoUyZhSF0mfIB1Myk"/>
+</div>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden relative">
+<!-- SideNavBar -->
+<nav class="flex flex-col h-full py-margin bg-surface-container-low dark:bg-surface-container-low docked left-0 h-screen w-64 border-r border-outline-variant z-40 shrink-0">
+<div class="px-6 mb-8">
+<h2 class="font-headline-md text-headline-md text-on-surface">AERO-CORE</h2>
+<p class="font-mono-label text-mono-label text-outline">v4.0.1-STABLE</p>
+</div>
+<div class="flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 bg-surface-container-highest text-secondary-fixed-dim border-l-2 border-secondary-fixed-dim px-4 py-3 transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-mono-label text-mono-label uppercase tracking-wider">Configurator</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-mono-label text-mono-label uppercase tracking-wider">Fleet Console</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-3 hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-mono-label text-mono-label uppercase tracking-wider">Support Hub</span>
+</a>
+</div>
+<div class="mt-8 px-4">
+<button class="w-full py-3 border border-secondary-fixed-dim text-secondary-fixed-dim font-mono-label text-mono-label uppercase tracking-widest hover:bg-secondary-fixed-dim/10 transition-colors">
+                    INITIATE BUILD
+                </button>
+</div>
+<div class="mt-auto flex flex-col gap-1 px-2">
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="query_stats">query_stats</span>
+<span class="font-mono-label text-mono-label">Diagnostics</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface-variant px-4 py-2 hover:bg-surface-container-high hover:text-on-surface transition-all duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="history_edu">history_edu</span>
+<span class="font-mono-label text-mono-label">Logs</span>
+</a>
+</div>
+</nav>
+<!-- Main Workspace -->
+<main class="flex-1 flex overflow-hidden bg-surface">
+<!-- Left Pane: Hardware Categorization -->
+<section class="w-72 border-r border-outline-variant flex flex-col overflow-y-auto bg-surface-container-lowest">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center">
+<span class="font-mono-label text-mono-label uppercase text-outline">Category_Selector</span>
+<span class="font-mono-label text-[10px] text-outline opacity-50">0x-H001</span>
+</div>
+<div class="p-2 space-y-1">
+<!-- Category Item -->
+<div class="p-3 border border-secondary-fixed-dim bg-surface-container-high flex items-center gap-3 cursor-pointer">
+<span class="material-symbols-outlined text-secondary-fixed-dim" data-icon="memory">memory</span>
+<div class="flex-1">
+<div class="font-mono-label text-secondary-fixed-dim text-[11px] leading-none">PROCESSOR</div>
+<div class="text-[10px] text-outline">LGA 1700 / AM5</div>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed-dim text-sm" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<!-- Category Item -->
+<div class="p-3 border border-outline-variant hover:border-outline bg-surface-container-low flex items-center gap-3 cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface" data-icon="graphic_eq">graphic_eq</span>
+<div class="flex-1">
+<div class="font-mono-label text-on-surface text-[11px] leading-none">GPU_ARRAY</div>
+<div class="text-[10px] text-outline">RTX / RDNA CORE</div>
+</div>
+</div>
+<!-- Category Item -->
+<div class="p-3 border border-outline-variant hover:border-outline bg-surface-container-low flex items-center gap-3 cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface" data-icon="ac_unit">ac_unit</span>
+<div class="flex-1">
+<div class="font-mono-label text-on-surface text-[11px] leading-none">THERMAL_MGNT</div>
+<div class="text-[10px] text-outline">AIO / AIR_BLOCK</div>
+</div>
+</div>
+<!-- Category Item -->
+<div class="p-3 border border-outline-variant hover:border-outline bg-surface-container-low flex items-center gap-3 cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface" data-icon="developer_board">developer_board</span>
+<div class="flex-1">
+<div class="font-mono-label text-on-surface text-[11px] leading-none">MAINBOARD</div>
+<div class="text-[10px] text-outline">Z790 / X670E</div>
+</div>
+</div>
+<!-- Category Item -->
+<div class="p-3 border border-outline-variant hover:border-outline bg-surface-container-low flex items-center gap-3 cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface" data-icon="sd_card">sd_card</span>
+<div class="flex-1">
+<div class="font-mono-label text-on-surface text-[11px] leading-none">MEMORY_MODULES</div>
+<div class="text-[10px] text-outline">DDR5 OCTA-CHANNEL</div>
+</div>
+</div>
+<!-- Category Item -->
+<div class="p-3 border border-outline-variant hover:border-outline bg-surface-container-low flex items-center gap-3 cursor-pointer group transition-colors">
+<span class="material-symbols-outlined text-outline group-hover:text-on-surface" data-icon="database">database</span>
+<div class="flex-1">
+<div class="font-mono-label text-on-surface text-[11px] leading-none">STORAGE_BLOCKS</div>
+<div class="text-[10px] text-outline">NVMe GEN5</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Center Pane: Detailed Component Specs -->
+<section class="flex-1 border-r border-outline-variant flex flex-col overflow-y-auto bg-surface">
+<div class="p-4 border-b border-outline-variant flex justify-between items-center bg-surface-container-low">
+<div>
+<h3 class="font-headline-md text-[18px] text-on-surface uppercase tracking-tight">CPU_CATALOG</h3>
+<p class="text-[10px] font-mono-label text-outline">FILTERING: HIGH_PERFORMANCE_CORES</p>
+</div>
+<div class="flex gap-2">
+<div class="h-8 w-8 border border-outline-variant flex items-center justify-center cursor-pointer hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm" data-icon="filter_list">filter_list</span>
+</div>
+<div class="h-8 w-8 border border-outline-variant flex items-center justify-center cursor-pointer hover:bg-surface-container-high">
+<span class="material-symbols-outlined text-sm" data-icon="sort">sort</span>
+</div>
+</div>
+</div>
+<div class="p-4 grid grid-cols-1 gap-4">
+<!-- Hardware Card -->
+<div class="border border-outline-variant p-4 bg-surface-container-low relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 bg-outline-variant font-mono-label text-[9px] text-surface">0x-CP-99</div>
+<div class="flex gap-4">
+<div class="w-24 h-24 bg-surface-container-lowest border border-outline-variant flex items-center justify-center relative">
+<img class="w-full h-full object-contain opacity-80" data-alt="A high-end modern computer processor (CPU) with detailed silicon circuitry and metallic heat spreader. The lighting is dramatic and technical, using neon mint highlights against a graphite-grey industrial background. The image is framed as a precision engineering component inside a high-tech workstation builder interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8lEp09HThofTgiTahxFCNlrts1QqQJn9wzWnIqUEaZLbl9Owu8c8hFSEWYg8UONxjVxxtHQyyHFUwo3fApRaTDio5LGrc9wg0rRkS_tkFMIcvpS5iQfplpLVowthmKI1YpcJBU-1UqX7r4cOk1CJhVFfPPZFfpxaQLDAPrzTuRr2O3owqBBUTaR8CUAjZRplCJwE1PjwED-qNcMgZiLkymDaRL7XyCy7AtQVvhRpStrQeCXsMobkEAs0O9clQIwR-eKZZ_5M1VSE"/>
+<div class="absolute inset-0 bg-secondary-fixed-dim/5 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-[16px] text-on-surface">Core i9-14900K</h4>
+<span class="font-data-point text-secondary-fixed-dim text-lg">$589.00</span>
+</div>
+<div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">Cores</span>
+<span class="text-[10px] text-on-surface font-bold">24 (8P + 16E)</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">Clock</span>
+<span class="text-[10px] text-on-surface font-bold">6.0 GHz</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">TDP</span>
+<span class="text-[10px] text-on-surface font-bold">125W / 253W</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">Socket</span>
+<span class="text-[10px] text-on-surface font-bold">LGA1700</span>
+</div>
+</div>
+<button class="mt-4 w-full py-2 bg-secondary-fixed-dim text-on-secondary-fixed font-mono-label text-[11px] uppercase tracking-widest hover:brightness-110 active:scale-[0.98] transition-all">
+                                    INTEGRATE_MODULE
+                                </button>
+</div>
+</div>
+</div>
+<!-- Hardware Card 2 -->
+<div class="border border-outline-variant p-4 bg-surface-container-low relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 bg-outline-variant font-mono-label text-[9px] text-surface">0x-CP-98</div>
+<div class="flex gap-4">
+<div class="w-24 h-24 bg-surface-container-lowest border border-outline-variant flex items-center justify-center relative">
+<img class="w-full h-full object-contain opacity-80" data-alt="A professional-grade Ryzen computer processor showing the AM5 socket side with gold contact points and etched branding on the heat spreader. The environment is a clean-room laboratory with cool cyan and slate lighting, reflecting a high-performance technological aesthetic. The image details the intricate surface architecture of the semiconductor." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBR7Q_DHuX9XFnk13jcNnGvXyDZa2M2DYYhUHPbN8TJkHxD57LRRuEvVE2gJbKrdJY7vRSiqEaCgOOf9IEpBEfIHLZMv3E_HM3s1-gRS88XArCrj3scn6DsYMsOxqMJkzpKcXgiNkJsaB3iT-mTWXM24IkgjsnSFgTChP6yg4QcI2B2EMfLCNNC2KpF_Tt3yU4lTKWHngkb-xBjWd6S5s8RkVje0_yo7HNxLhjhzMHPXWJoCr9yTmhVmRtbkPPajPkzy96bNS16J3U"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-start">
+<h4 class="font-headline-md text-[16px] text-on-surface">Ryzen 9 7950X3D</h4>
+<span class="font-data-point text-secondary-fixed-dim text-lg">$629.00</span>
+</div>
+<div class="mt-2 grid grid-cols-2 gap-x-4 gap-y-1">
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">Cores</span>
+<span class="text-[10px] text-on-surface font-bold">16 Cores / 32 Threads</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">L3 Cache</span>
+<span class="text-[10px] text-on-surface font-bold">128MB (3D V-Cache)</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">TDP</span>
+<span class="text-[10px] text-on-surface font-bold">120W</span>
+</div>
+<div class="flex justify-between border-b border-outline-variant/30 pb-1">
+<span class="text-[10px] text-outline uppercase">Socket</span>
+<span class="text-[10px] text-on-surface font-bold">AM5</span>
+</div>
+</div>
+<button class="mt-4 w-full py-2 border border-outline-variant text-on-surface-variant font-mono-label text-[11px] uppercase tracking-widest hover:bg-surface-container-high transition-all">
+                                    SELECT_COMPONENT
+                                </button>
+</div>
+</div>
+</div>
+<!-- Hardware Card 3 (Simplified for density) -->
+<div class="border border-outline-variant p-4 bg-surface-container-low relative overflow-hidden group border-dashed opacity-60">
+<div class="flex items-center justify-center h-20">
+<span class="font-mono-label text-[10px] text-outline">CATALOG_END // MORE_MODULES_PENDING_LOAD</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Pane: 3D Build Visualizer -->
+<section class="flex-[1.5] relative flex flex-col bg-surface-container-lowest overflow-hidden">
+<div class="absolute inset-0 z-0 opacity-10 pointer-events-none" style="background-image: linear-gradient(#434749 1px, transparent 1px), linear-gradient(90deg, #434749 1px, transparent 1px); background-size: 40px 40px;">
+</div>
+<div class="relative z-10 p-6 flex justify-between items-start">
+<div>
+<div class="font-mono-label text-outline text-[10px] tracking-widest uppercase">Visualizer_Mode</div>
+<h2 class="font-headline-md text-on-surface uppercase">AERO_SHELL_V1</h2>
+</div>
+<div class="flex flex-col gap-2 items-end">
+<div class="flex gap-2">
+<button class="w-10 h-10 border border-outline-variant bg-surface flex items-center justify-center hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+</button>
+<button class="w-10 h-10 border border-outline-variant bg-surface flex items-center justify-center hover:bg-surface-container-high">
+<span class="material-symbols-outlined" data-icon="3d_rotation">3d_rotation</span>
+</button>
+<button class="w-10 h-10 border border-secondary-fixed-dim bg-surface flex items-center justify-center text-secondary-fixed-dim">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+</div>
+<div class="bg-surface border border-outline-variant px-3 py-1 flex items-center gap-2">
+<div class="w-2 h-2 rounded-full bg-secondary-fixed-dim animate-pulse"></div>
+<span class="font-mono-label text-[10px] text-on-surface uppercase">RENDER_LIVE</span>
+</div>
+</div>
+</div>
+<!-- Main Visualizer Content -->
+<div class="flex-1 flex items-center justify-center relative p-12">
+<!-- Simulated 3D Case Frame -->
+<div class="w-full max-w-2xl aspect-video border-2 border-outline-variant bg-surface-container/30 relative flex items-center justify-center group">
+<img class="max-h-full object-contain drop-shadow-[0_0_30px_rgba(0,225,171,0.15)]" data-alt="A high-end open-loop liquid cooled PC build within a minimalist industrial chassis. The internal components like the motherboard, GPU, and RAM are clearly visible, illuminated by soft neon mint and cold white LEDs. The scene is presented from an isometric 3D perspective, showcasing the precision engineering and clean cable management of a professional workstation." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAoPHKyCtdqDV4d9ktFvQh_RM45o5emfPWPYPX32ss0xG8vL9y4Y3zRVutkBOEQK295V8_yYZooNV5TIAslmOHKehSc1AISHUxJyzWyUQIm_aLBppOzFWTX092J0dS9mraGXXK9Y-m5zJIyqJnQuT6NMqHOjyXtQplUJSQQC1--9zPfQPP_VsfeREeDAa5PUkmBQBddW0-bI4aLGecqkTksHmbEhgHLwDwQo2Y64kqirpcoBlG8eGh1G-7FHHl6tOQXng26nDcLIyM"/>
+<!-- Hover Interaction Markers -->
+<div class="absolute top-[40%] left-[45%] w-6 h-6 border border-secondary-fixed-dim rounded-full flex items-center justify-center cursor-pointer hover:bg-secondary-fixed-dim/20 transition-all">
+<div class="w-1.5 h-1.5 bg-secondary-fixed-dim rounded-full"></div>
+<div class="absolute -bottom-8 bg-surface-container border border-outline-variant px-2 py-1 whitespace-nowrap hidden group-hover:block font-mono-label text-[9px]">LGA-1700_SOCKET</div>
+</div>
+<div class="absolute bottom-[30%] right-[35%] w-6 h-6 border border-secondary-fixed-dim rounded-full flex items-center justify-center cursor-pointer hover:bg-secondary-fixed-dim/20 transition-all">
+<div class="w-1.5 h-1.5 bg-secondary-fixed-dim rounded-full"></div>
+</div>
+<!-- Coordinate Overlay -->
+<div class="absolute bottom-4 left-4 font-mono-label text-[9px] text-outline opacity-40">
+                            X: 254.22 // Y: 112.09 // Z: 0.00
+                        </div>
+</div>
+</div>
+<!-- Telemetry Gauges Section -->
+<div class="p-6 grid grid-cols-3 gap-6 border-t border-outline-variant bg-surface-container-lowest">
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-mono-label text-[10px] text-outline uppercase">CPU_LOAD</span>
+<span class="font-mono-label text-[10px] text-secondary-fixed-dim">12.4%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full bg-secondary-fixed-dim" style="width: 12.4%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-mono-label text-[10px] text-outline uppercase">THERMAL_STATE</span>
+<span class="font-mono-label text-[10px] text-on-surface">34°C</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full bg-on-surface" style="width: 34%"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-1">
+<span class="font-mono-label text-[10px] text-outline uppercase">BUS_SATURATION</span>
+<span class="font-mono-label text-[10px] text-outline">0.2%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest">
+<div class="h-full bg-outline-variant" style="width: 2%"></div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Status Bar & Footer -->
+<footer class="h-12 bg-surface-container-lowest border-t border-outline-variant flex items-center px-gutter z-50 justify-between shrink-0">
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-3">
+<span class="font-mono-label text-[11px] text-outline uppercase tracking-wider">COMPATIBILITY:</span>
+<div class="flex items-center gap-2 px-2 py-1 bg-secondary-fixed-dim/10 border border-secondary-fixed-dim/30">
+<span class="material-symbols-outlined text-[14px] text-secondary-fixed-dim" data-icon="verified">verified</span>
+<span class="font-mono-label text-[10px] text-secondary-fixed-dim font-bold uppercase">NO_CONFLICTS_DETECTED</span>
+</div>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-3">
+<span class="font-mono-label text-[11px] text-outline uppercase tracking-wider">POWER_DRAW:</span>
+<div class="flex items-center gap-1">
+<span class="font-data-point text-on-surface">412</span>
+<span class="font-mono-label text-[10px] text-outline">/ 850W</span>
+</div>
+<div class="w-32 h-1.5 bg-surface-container-highest">
+<div class="h-full bg-secondary-fixed-dim" style="width: 48%"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-4 font-mono-label text-[11px] text-outline">
+<span class="hover:text-secondary-fixed cursor-pointer transition-colors">API_DOCS</span>
+<span class="hover:text-secondary-fixed cursor-pointer transition-colors">SECURITY_PROTOCOL</span>
+<span class="hover:text-secondary-fixed cursor-pointer transition-colors">HARDWARE_INDEX</span>
+</div>
+<div class="h-4 w-px bg-outline-variant"></div>
+<div class="font-mono-label text-[10px] text-outline">
+                © 2024 AERO-COMPUTE // SYSTEM_STATUS: <span class="text-secondary-fixed-dim">OPERATIONAL</span>
+</div>
+</div>
+</footer>
+<!-- Overlay Terminal Console (Collapsible state simulated as small toggle) -->
+<div class="fixed bottom-16 right-gutter z-[60] w-80 bg-surface-container-high border border-outline-variant shadow-2xl">
+<div class="p-2 border-b border-outline-variant bg-surface flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]" data-icon="terminal">terminal</span>
+<span class="font-mono-label text-[10px] uppercase">Telemetry_Log</span>
+</div>
+<span class="material-symbols-outlined text-[14px] cursor-pointer" data-icon="expand_more">expand_more</span>
+</div>
+<div class="p-3 font-mono-label text-[9px] h-32 overflow-y-auto space-y-1">
+<p class="text-outline">[09:21:44] <span class="text-secondary-fixed-dim">INFO</span> Socket LGA-1700 validation check passed.</p>
+<p class="text-outline">[09:21:45] <span class="text-secondary-fixed-dim">INFO</span> Power rail estimation updated: +253W Peak.</p>
+<p class="text-outline">[09:22:01] <span class="text-on-surface">TRACE</span> Mapping memory channel A1/B1...</p>
+<p class="text-outline">[09:22:04] <span class="text-secondary-fixed-dim">INFO</span> Asset Aero_Shell_v1.mesh loaded successfully.</p>
+<div class="w-1 h-3 bg-secondary-fixed-dim inline-block animate-pulse"></div>
+</div>
+</div>
+</body></html>

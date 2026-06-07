@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>3D Dimensioning Tool | APEX ATELIER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .neumorphic-recessed {
+            box-shadow: inset 4px 4px 8px rgba(0, 0, 0, 0.5), 
+                        inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+        }
+        .neumorphic-extruded {
+            box-shadow: 8px 8px 16px rgba(0, 0, 0, 0.6), 
+                        -4px -4px 12px rgba(255, 255, 255, 0.03);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            background: #D4AF37;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #131313;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            background: #D4AF37;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid #131313;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-variant": "#353535",
+                      "primary-container": "#1a1a1a",
+                      "error": "#ffb4ab",
+                      "surface": "#131313",
+                      "on-secondary": "#3c2f00",
+                      "surface-dim": "#131313",
+                      "primary-fixed": "#e5e2e1",
+                      "on-secondary-container": "#342800",
+                      "primary": "#c8c6c5",
+                      "on-primary-fixed-variant": "#474746",
+                      "surface-container-highest": "#353535",
+                      "on-tertiary-container": "#977e6e",
+                      "error-container": "#93000a",
+                      "on-tertiary": "#3f2c20",
+                      "tertiary-container": "#26170c",
+                      "outline-variant": "#444748",
+                      "tertiary-fixed": "#fbddca",
+                      "on-tertiary-fixed-variant": "#574335",
+                      "on-primary": "#313030",
+                      "inverse-surface": "#e4e2e1",
+                      "on-secondary-fixed": "#241a00",
+                      "on-background": "#e4e2e1",
+                      "primary-fixed-dim": "#c8c6c5",
+                      "surface-bright": "#393939",
+                      "tertiary": "#dec1af",
+                      "secondary-fixed-dim": "#e9c349",
+                      "on-primary-container": "#848282",
+                      "inverse-primary": "#5f5e5e",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#af8d11",
+                      "inverse-on-surface": "#303030",
+                      "on-secondary-fixed-variant": "#574500",
+                      "secondary": "#e9c349",
+                      "outline": "#8e9192",
+                      "on-primary-fixed": "#1c1b1b",
+                      "on-surface-variant": "#c4c7c7",
+                      "surface-container-high": "#2a2a2a",
+                      "tertiary-fixed-dim": "#dec1af",
+                      "background": "#131313",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed": "#28180d",
+                      "secondary-fixed": "#ffe088",
+                      "surface-tint": "#c8c6c5",
+                      "surface-container": "#1f2020",
+                      "on-surface": "#e4e2e1",
+                      "surface-container-lowest": "#0e0e0e",
+                      "surface-container-low": "#1b1c1c"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "max-width": "1440px",
+                      "margin-desktop": "64px",
+                      "gutter": "24px",
+                      "margin-tablet": "32px",
+                      "margin-mobile": "20px"
+              },
+              "fontFamily": {
+                      "body-md": ["Inter"],
+                      "body-lg": ["Inter"],
+                      "label-sm": ["Inter"],
+                      "headline-lg-mobile": ["Playfair Display"],
+                      "headline-lg": ["Playfair Display"],
+                      "display-lg": ["Playfair Display"],
+                      "headline-md": ["Playfair Display"],
+                      "label-lg": ["Inter"],
+                      "headline-sm": ["Playfair Display"]
+              },
+              "fontSize": {
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["36px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "display-lg": ["64px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                      "label-lg": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.4", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface shadow-md h-20 px-margin-mobile md:px-margin-desktop flex justify-between items-center">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-2xl cursor-pointer">menu</span>
+<h1 class="font-headline-sm text-headline-sm uppercase tracking-[0.2em] font-bold text-primary">APEX ATELIER</h1>
+</div>
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-secondary transition-colors duration-300 cursor-pointer">forum</span>
+</div>
+</header>
+<main class="pt-28 px-margin-mobile md:px-margin-desktop max-w-max-width mx-auto">
+<!-- Header Section -->
+<section class="mb-12">
+<h2 class="font-headline-md text-headline-md text-primary mb-2">Precision Dimensions</h2>
+<p class="text-on-surface-variant font-body-md opacity-70">Configure your bespoke workspace with architectural accuracy.</p>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Left: 3D Visualization Canvas (Large Extruded Card) -->
+<div class="lg:col-span-8 neumorphic-extruded bg-surface-container-high rounded-xl p-unit min-h-[500px] flex flex-col relative overflow-hidden">
+<div class="absolute top-8 left-8 z-10">
+<span class="font-label-sm text-label-sm uppercase tracking-widest text-secondary px-3 py-1 bg-surface-container-lowest/50 rounded-full backdrop-blur-md border border-white/5">Active Visualization</span>
+</div>
+<div class="flex-grow flex items-center justify-center p-12">
+<div class="relative w-full h-full flex items-center justify-center">
+<!-- Simulated 3D Desk Model -->
+<div class="w-4/5 h-64 bg-surface-container-lowest rounded-lg neumorphic-extruded relative transition-all duration-500 ease-out flex flex-col items-center justify-end group">
+<!-- Desktop Surface -->
+<div class="absolute top-0 w-full h-8 bg-tertiary-container rounded-t-lg border-b border-white/5"></div>
+<!-- Legs -->
+<div class="flex justify-between w-full px-12 h-48 items-end">
+<div class="w-4 h-full bg-surface-variant rounded-b-lg"></div>
+<div class="w-4 h-full bg-surface-variant rounded-b-lg"></div>
+</div>
+<!-- Measurement Overlays -->
+<div class="absolute -bottom-8 left-0 w-full flex justify-between px-2 text-[10px] uppercase tracking-tighter text-on-surface-variant opacity-50">
+<span>0cm</span>
+<div class="flex-grow border-b border-dashed border-on-surface-variant/30 mx-2 mb-1.5"></div>
+<span>240cm</span>
+</div>
+</div>
+<img class="absolute inset-0 w-full h-full object-contain mix-blend-overlay opacity-20 pointer-events-none" data-alt="A highly detailed close-up of a carbon fiber and brushed aluminum texture, emphasizing the precision engineering and high-end materials of a luxury design tool. The lighting is cold and cinematic, reflecting off polished metallic surfaces with subtle depth and micro-textures. The aesthetic is futuristic and architectural, perfectly aligned with a dark mode premium interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsWtK73SCBn8pIstkBQfYZuMadbVqD8ws-oZrmZZcKXDFpwKj0wX6S7B3TCpoqgNasCAjo2rJYqm0n-IzX8LbEAgCg2qnqt-86D23NfJIJ7qiGZCokZiNzI4bStD4t5TRzkXz9OzbiEQtMxGc5Vd-g62YLE3eNo9P5XWPHHqih0TQ5nx0U45835D_bBxlVnUo5Q93ngYL22drHPKsidFc8KdKnbY66qwU9f8cJPPICE0VZFpP8YrP-1BzO7j5v43icFQZEsS501ao"/>
+</div>
+</div>
+<!-- Action Button Overlay -->
+<div class="p-8 mt-auto flex justify-center">
+<button class="bg-secondary text-on-secondary px-8 py-4 font-label-lg text-label-lg uppercase tracking-widest rounded-lg flex items-center gap-3 hover:scale-105 active:scale-95 transition-all shadow-lg">
+<span class="material-symbols-outlined" data-weight="fill">view_in_ar</span>
+                        View in My Office
+                    </button>
+</div>
+</div>
+<!-- Right: Precision Sliders (Recessed Tech Well) -->
+<aside class="lg:col-span-4 flex flex-col gap-unit">
+<!-- Width Control -->
+<div class="bg-surface-container-high neumorphic-extruded p-10 rounded-xl">
+<div class="flex justify-between items-baseline mb-6">
+<label class="font-label-lg text-label-lg uppercase tracking-widest text-on-surface-variant">Width</label>
+<span class="font-headline-sm text-headline-sm text-secondary italic">180<span class="text-body-md not-italic ml-1 opacity-50">cm</span></span>
+</div>
+<div class="neumorphic-recessed p-2 rounded-full mb-2">
+<input class="w-full h-2 bg-transparent appearance-none cursor-pointer accent-secondary" max="240" min="120" type="range" value="180"/>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant/40 uppercase tracking-widest mt-2">
+<span>120cm</span>
+<span>240cm</span>
+</div>
+</div>
+<!-- Depth Control -->
+<div class="bg-surface-container-high neumorphic-extruded p-10 rounded-xl">
+<div class="flex justify-between items-baseline mb-6">
+<label class="font-label-lg text-label-lg uppercase tracking-widest text-on-surface-variant">Depth</label>
+<span class="font-headline-sm text-headline-sm text-secondary italic">85<span class="text-body-md not-italic ml-1 opacity-50">cm</span></span>
+</div>
+<div class="neumorphic-recessed p-2 rounded-full mb-2">
+<input class="w-full h-2 bg-transparent appearance-none cursor-pointer accent-secondary" max="100" min="70" type="range" value="85"/>
+</div>
+<div class="flex justify-between text-[10px] text-on-surface-variant/40 uppercase tracking-widest mt-2">
+<span>70cm</span>
+<span>100cm</span>
+</div>
+</div>
+<!-- Height Toggles -->
+<div class="bg-surface-container-high neumorphic-extruded p-10 rounded-xl">
+<label class="font-label-lg text-label-lg uppercase tracking-widest text-on-surface-variant block mb-6">Elevation Profile</label>
+<div class="grid grid-cols-2 gap-4">
+<button class="neumorphic-recessed p-6 rounded-xl flex flex-col items-center gap-2 border border-secondary/30">
+<span class="material-symbols-outlined text-secondary">vertical_align_center</span>
+<span class="font-label-sm text-label-sm text-secondary">Fixed</span>
+</button>
+<button class="neumorphic-extruded p-6 rounded-xl flex flex-col items-center gap-2 hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-on-surface-variant">height</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant opacity-60">Sit-to-Stand</span>
+</button>
+</div>
+</div>
+<!-- Material Spec Info -->
+<div class="bg-surface-container p-6 rounded-lg opacity-60 border-l-2 border-secondary/20">
+<p class="font-body-md text-body-md italic leading-relaxed">
+                        "Precision-machined tolerances within 0.5mm ensure structural integrity at all dimensions."
+                    </p>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar (Destination: Design active) -->
+<nav class="fixed bottom-0 left-0 w-full z-50 pb-safe bg-surface-container shadow-[0_-10px_30px_rgba(0,0,0,0.8)] h-24 flex justify-around items-center px-margin-mobile md:px-margin-desktop">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity duration-300" href="#">
+<span class="material-symbols-outlined mb-1">gallery_thumbnail</span>
+<span class="font-label-lg text-label-lg uppercase tracking-wider">Portfolio</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_8px_rgba(233,195,73,0.4)]" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<span class="font-label-lg text-label-lg uppercase tracking-wider">Design</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:opacity-100 transition-opacity duration-300" href="#">
+<span class="material-symbols-outlined mb-1">chat_bubble</span>
+<span class="font-label-lg text-label-lg uppercase tracking-wider">Consult</span>
+</a>
+</nav>
+</body></html>

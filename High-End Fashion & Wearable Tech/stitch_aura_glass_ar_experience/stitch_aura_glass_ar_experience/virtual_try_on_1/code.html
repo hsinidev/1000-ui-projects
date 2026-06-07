@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AURA_GLASS | Virtual Try-On</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-background": "#dee0ff",
+                      "on-primary-container": "#006a71",
+                      "on-secondary-container": "#b0b3d4",
+                      "outline": "#849495",
+                      "surface-container-lowest": "#060b29",
+                      "surface-tint": "#00dbe7",
+                      "inverse-primary": "#00696f",
+                      "primary": "#e1fdff",
+                      "secondary": "#c1c4e6",
+                      "tertiary": "#f7f8f8",
+                      "on-secondary-fixed": "#161a33",
+                      "outline-variant": "#3a494b",
+                      "on-secondary-fixed-variant": "#414561",
+                      "error-container": "#93000a",
+                      "on-surface": "#dee0ff",
+                      "error": "#ffb4ab",
+                      "on-tertiary-fixed-variant": "#454747",
+                      "on-secondary": "#2b2f49",
+                      "surface": "#0b112e",
+                      "inverse-on-surface": "#292e4d",
+                      "on-primary-fixed": "#002022",
+                      "background": "#0b112e",
+                      "on-error": "#690005",
+                      "surface-variant": "#2e3352",
+                      "surface-container-high": "#232846",
+                      "primary-fixed": "#74f5ff",
+                      "on-tertiary": "#2f3131",
+                      "surface-container-low": "#141937",
+                      "tertiary-container": "#dbdbdb",
+                      "on-primary": "#00363a",
+                      "inverse-surface": "#dee0ff",
+                      "on-tertiary-container": "#5e6060",
+                      "secondary-fixed": "#dee0ff",
+                      "tertiary-fixed-dim": "#c6c6c7",
+                      "primary-fixed-dim": "#00dbe7",
+                      "on-surface-variant": "#b9cacb",
+                      "surface-bright": "#323756",
+                      "secondary-container": "#414561",
+                      "secondary-fixed-dim": "#c1c4e6",
+                      "surface-container-highest": "#2e3352",
+                      "on-error-container": "#ffdad6",
+                      "surface-dim": "#0b112e",
+                      "on-tertiary-fixed": "#1a1c1c",
+                      "primary-container": "#00f2ff",
+                      "surface-container": "#181d3b",
+                      "on-primary-fixed-variant": "#004f54",
+                      "tertiary-fixed": "#e2e2e2"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "component-gap": "8px",
+                      "unit": "4px",
+                      "safe-zone": "40px",
+                      "gutter": "16px",
+                      "hud-margin": "24px"
+              },
+              "fontFamily": {
+                      "label-caps": ["Space Mono"],
+                      "display-lg": ["Space Grotesk"],
+                      "data-mono": ["Space Mono"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-md": ["Inter"]
+              },
+              "fontSize": {
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(11, 17, 46, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-glass {
+            background: rgba(11, 17, 46, 0.6);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hud-bracket-tl { border-top: 2px solid #00f2ff; border-left: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; top: 0; left: 0; }
+        .hud-bracket-tr { border-top: 2px solid #00f2ff; border-right: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; top: 0; right: 0; }
+        .hud-bracket-bl { border-bottom: 2px solid #00f2ff; border-left: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; bottom: 0; left: 0; }
+        .hud-bracket-br { border-bottom: 2px solid #00f2ff; border-right: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; bottom: 0; right: 0; }
+        
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+            box-shadow: 0 0 15px #00f2ff;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.6;
+        }
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-md border-b border-outline-variant/20 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.1)] flex justify-between items-center px-hud-margin py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 0;">blur_on</span>
+<h1 class="font-display-lg text-headline-md tracking-widest text-primary-container">AURA_GLASS</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant transition-transform hover:rotate-180 duration-500 cursor-pointer">sync</span>
+</div>
+</header>
+<!-- AR Camera View Container -->
+<main class="pt-20 pb-32 flex flex-col items-center relative min-h-screen">
+<!-- AR Field of View -->
+<section class="relative w-full aspect-[3/4] max-w-md mt-4 px-4">
+<div class="relative w-full h-full overflow-hidden border border-outline-variant/30 rounded-lg">
+<!-- Mock Camera Feed Background -->
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale-[20%] brightness-75" data-alt="A high-fashion editorial portrait of a person with minimalist features looking directly into the lens. The lighting is crisp and cold, suggesting a high-tech studio environment with subtle lens flares and a deep indigo color palette. The subject is perfectly centered to serve as a canvas for AR glasses, reflecting a futuristic-chic and technologically advanced aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDK4Vjaw6Qe_uGnnFGq0Db3JiaLmAya8AWH9EAjq4MmGlSR8scq8QPDzDrVB5LuEpHj8_xmsQL32ar01MSDeckET02YFtcklsRiPfzbvDK6BPEm1FHcvDCz41h6DxyIiDup0Fbny9DMu2T7at_1iXMuLwxQZ0FDo5oW9SCxzGsspdD9Jt7X2VwK7TaUuu7vN150nC6w57zNF5LN93e31PbiU0UAKAgoJdbWMACcZpjHbcVuwkGqbC-T1CXM4vMUdu3x2qlrgSDndYA"/>
+</div>
+<!-- HUD Overlays -->
+<div class="absolute inset-0 z-10 pointer-events-none p-6">
+<!-- Scanning HUD -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 flex items-center justify-center">
+<div class="relative w-full h-full border border-primary-container/20">
+<div class="hud-bracket-tl"></div>
+<div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div>
+<div class="hud-bracket-br"></div>
+<!-- Reticle -->
+<div class="absolute inset-0 flex items-center justify-center opacity-40">
+<span class="material-symbols-outlined text-primary-container text-6xl">filter_center_focus</span>
+</div>
+<!-- Scan Text -->
+<div class="absolute -bottom-8 left-0 w-full text-center">
+<p class="font-label-caps text-label-caps text-primary-container flex items-center justify-center gap-2">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                                    SCANNING_IDENTITY...
+                                </p>
+</div>
+</div>
+</div>
+<!-- System Telemetry -->
+<div class="absolute top-4 left-4 flex flex-col gap-1">
+<span class="font-data-mono text-[10px] text-primary-container/60">FRM_RATE: 120 FPS</span>
+<span class="font-data-mono text-[10px] text-primary-container/60">LATENCY: 0.002MS</span>
+</div>
+</div>
+<!-- AR Overlay Object (The Glasses) -->
+<div class="absolute top-1/3 left-1/2 -translate-x-1/2 z-20 w-48 opacity-90 drop-shadow-[0_0_15px_rgba(0,242,255,0.4)]">
+<img class="w-full object-contain mix-blend-screen" data-alt="A pair of sleek, futuristic obsidian sunglasses with metallic cyan accents along the frame. The lenses have a soft mirror finish with subtle digital data readouts appearing as ghosted reflections. The product is presented from a frontal perspective, floating in a void of deep indigo and soft neon light, embodying a high-end luxury tech instrument." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByi_aCBNjaX6WCp0-tK1W_EzdybjYx6l-HE3j8142bM_PBgQAhZ0uUTdvq2UYuzDZ8SyCZIqadRDagpP-czT5EbX5tgIe4_UaQU9o7X6uZ6Z_rb9-LhNSdqmbIuWPEmepQ-yeT5fzNsQ2YOROJqmt-Ny-hRcsQIUfMILP2L2mKEhMLn31GdRcOsTyhMUeCjHgKR2rZ658MP9S3oUHpCY1uqCSJyU5l_0op1baqZq2YkDZwB_d9yCvD24iFzspirzknw2xmubMrl0Y"/>
+</div>
+</div>
+</section>
+<!-- Lens Carousel -->
+<section class="w-full mt-8 overflow-x-auto no-scrollbar px-hud-margin pb-4">
+<div class="flex gap-4 min-w-max">
+<!-- Active Lens Card -->
+<div class="w-64 glass-panel p-4 flex flex-col gap-3 relative overflow-hidden group">
+<div class="scan-line"></div>
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-primary-container">PROTOTYPE_01</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div class="h-24 bg-surface-container/50 flex items-center justify-center overflow-hidden">
+<img class="h-16 object-contain" data-alt="A close-up studio shot of avant-garde eyewear featuring rectangular frames with an integrated digital display inside the lens. The aesthetic is clean, minimalist, and tech-forward, with sharp edges and premium matte finishes. Lighting highlights the thin cyan glow emanating from the frame's core, creating a visionary and sophisticated feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCu1rPEQ4slTslcEAkND8O8w1UF280hs2JYUxVDp8-AYOq9lfByuZlJMHVPKfBHpe_7hDGdtYkx6ptsxFnXZV8npUrXXqdZp_x7rm0z_ZC9ViYjQPOIeGk1Elb_-tBfYUHXPMoKrOdO3LwEsSP8-loNg44ppXaTuKvG_LhSfPNobCxPoe7PaMaCoUyGLV8pDDEH_MINId-7UgIiiWjdX0tsHxB6MMiPK_ACaRS0aOzuV8VJWJCevMwIwoA-J3ayVJWQaUDpOnYxhes"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>VLT_RATING</span>
+<span class="text-primary-container">12%</span>
+</div>
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>LATENCY</span>
+<span class="text-primary-container">0.8 MS</span>
+</div>
+</div>
+</div>
+<!-- Inactive Lens Card -->
+<div class="w-64 glass-panel p-4 flex flex-col gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">KINETIC_FLOW</span>
+<span class="material-symbols-outlined text-on-surface-variant">lock</span>
+</div>
+<div class="h-24 bg-surface-container/50 flex items-center justify-center overflow-hidden">
+<img class="h-16 object-contain grayscale" data-alt="Modern designer sunglasses with a wrap-around aerodynamic shape. The frame is a semi-transparent deep indigo with hints of electric blue rim lighting. The lenses have a gradient tint from clear to dark smoke, looking like a professional piece of sports-tech for high-velocity activities in a futuristic setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuALH78JEc87idKfDO6pT6Xc0YAyM8ATKyIzrxJzI9zC4-nSEdx8bn499OxTAPh-IxlZ2owP_QsrQYsav2YorIor985Yk8BmWKhiQdeuwa4GzFp0V2HqvLYYgdS156Iix2UbrR7T858RxzqljhlQEHi8Y1_1dVYU8oVdHDAir3vujcC-JTvDTR9UalBnLRsCdTT4e5vf8GVfwpT6wnNlOxCzLFY_elz6Y41tym-YfNj1HpDvG-WAp0eGY8TjV7_WupjeciBmDptb9XM"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>VLT_RATING</span>
+<span>15%</span>
+</div>
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>LATENCY</span>
+<span>1.2 MS</span>
+</div>
+</div>
+</div>
+<!-- Inactive Lens Card 2 -->
+<div class="w-64 glass-panel p-4 flex flex-col gap-3 opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-label-caps text-on-surface-variant">VOID_CHRONO</span>
+<span class="material-symbols-outlined text-on-surface-variant">visibility</span>
+</div>
+<div class="h-24 bg-surface-container/50 flex items-center justify-center overflow-hidden">
+<img class="h-16 object-contain grayscale" data-alt="Sleek eyewear with oversized circular lenses, blending 70s retro-futurism with cyberpunk aesthetics. The frame is constructed from polished titanium and features glowing cyan indicators at the temple. The scene is illuminated with sharp side-lighting that emphasizes the glass-like transparency of the UI overlay on the lens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAcgqQ60ayfRamvAIXZ8ufvudNN7rGvf67xsyEBgr1SmS_bOkWTMSJoihrsVSTlmyE0YH2RrR2W20BHuIczIe0Ts79cw97IoUN2DVSJ6tLzQAZnl1XnjfgqRTtgGUrbppbGPqfjzsTvrSbZiMZHgqRK0oUnM96j1Sc570yCXfDx8S3uj2WqiGSUsj63TZm2FqIPqVbDr_WrfuSvwUdI1S7nkKKgV0FfA_CfoEZOS9YimFt_Miu2oi0UxrEAOfmk03p1tT5rZj1w6fI"/>
+</div>
+<div class="flex flex-col gap-1">
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>VLT_RATING</span>
+<span>08%</span>
+</div>
+<div class="flex justify-between font-data-mono text-[10px] text-on-surface-variant">
+<span>LATENCY</span>
+<span>0.5 MS</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="w-full px-hud-margin mt-8 mb-20">
+<button class="w-full py-5 glass-panel border-primary-container/40 text-primary-container font-label-caps text-label-caps uppercase tracking-[0.3em] flex items-center justify-center gap-3 active:scale-95 transition-all shadow-[0_0_20px_rgba(0,242,255,0.2)] group hover:shadow-[0_0_30px_rgba(0,242,255,0.4)]">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+                ACQUIRE_UNIT
+                <span class="w-1.5 h-1.5 bg-primary-container rounded-full animate-pulse ml-2"></span>
+</button>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/60 backdrop-blur-2xl border-t border-outline-variant/30 shadow-[0_-4px_24px_rgba(0,219,231,0.15)] flex justify-around items-center h-20 px-hud-margin">
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all duration-500 ease-out hover:bg-primary/10 hover:text-primary-container">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">OVERLAY</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all duration-500 ease-out hover:bg-primary/10 hover:text-primary-container">
+<span class="material-symbols-outlined">flare</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">LENS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 transition-all duration-500 ease-out hover:bg-primary/10 hover:text-primary-container">
+<span class="material-symbols-outlined">grid_view</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">ECOSYSTEM</span>
+</button>
+<button class="flex flex-col items-center justify-center text-primary-container border-t-2 border-primary-container pt-2 transition-all duration-500 ease-out">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">face</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">TRY-ON</span>
+</button>
+</nav>
+<!-- Style Support for no-scrollbar -->
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

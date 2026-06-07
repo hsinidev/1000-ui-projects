@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@400;500&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .bracket-corner {
+            position: relative;
+        }
+        .bracket-corner::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 12px;
+            height: 12px;
+            border-top: 2px solid #00f2ff;
+            border-left: 2px solid #00f2ff;
+        }
+        .bracket-corner::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 12px;
+            height: 12px;
+            border-bottom: 2px solid #00f2ff;
+            border-right: 2px solid #00f2ff;
+        }
+        .scan-line {
+            background: linear-gradient(to bottom, transparent 0%, #00f2ff 50%, transparent 100%);
+            height: 2px;
+            width: 100%;
+            opacity: 0.3;
+        }
+        .hud-glow {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.15);
+        }
+        body {
+            background-color: #0b112e;
+            color: #dee0ff;
+            overflow-x: hidden;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#dee0ff",
+                        "on-primary-container": "#006a71",
+                        "on-secondary-container": "#b0b3d4",
+                        "outline": "#849495",
+                        "surface-container-lowest": "#060b29",
+                        "surface-tint": "#00dbe7",
+                        "inverse-primary": "#00696f",
+                        "primary": "#e1fdff",
+                        "secondary": "#c1c4e6",
+                        "tertiary": "#f7f8f8",
+                        "on-secondary-fixed": "#161a33",
+                        "outline-variant": "#3a494b",
+                        "on-secondary-fixed-variant": "#414561",
+                        "error-container": "#93000a",
+                        "on-surface": "#dee0ff",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary": "#2b2f49",
+                        "surface": "#0b112e",
+                        "inverse-on-surface": "#292e4d",
+                        "on-primary-fixed": "#002022",
+                        "background": "#0b112e",
+                        "on-error": "#690005",
+                        "surface-variant": "#2e3352",
+                        "surface-container-high": "#232846",
+                        "primary-fixed": "#74f5ff",
+                        "on-tertiary": "#2f3131",
+                        "surface-container-low": "#141937",
+                        "tertiary-container": "#dbdbdb",
+                        "on-primary": "#00363a",
+                        "inverse-surface": "#dee0ff",
+                        "on-tertiary-container": "#5e6060",
+                        "secondary-fixed": "#dee0ff",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "primary-fixed-dim": "#00dbe7",
+                        "on-surface-variant": "#b9cacb",
+                        "surface-bright": "#323756",
+                        "secondary-container": "#414561",
+                        "secondary-fixed-dim": "#c1c4e6",
+                        "surface-container-highest": "#2e3352",
+                        "on-error-container": "#ffdad6",
+                        "surface-dim": "#0b112e",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "primary-container": "#00f2ff",
+                        "surface-container": "#181d3b",
+                        "on-primary-fixed-variant": "#004f54",
+                        "tertiary-fixed": "#e2e2e2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "component-gap": "8px",
+                        "unit": "4px",
+                        "safe-zone": "40px",
+                        "gutter": "16px",
+                        "hud-margin": "24px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Space Mono"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["Space Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background font-body-md text-on-surface antialiased">
+<!-- Top Navigation Anchor -->
+<header class="fixed top-0 w-full z-50 bg-surface/40 backdrop-blur-md border-b border-outline-variant/20 shadow-[inset_0_-1px_0_0_rgba(255,255,255,0.1)] flex justify-between items-center px-hud-margin py-4">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary-container text-headline-md" data-icon="blur_on">blur_on</span>
+<h1 class="font-display-lg text-headline-md tracking-widest text-primary-container uppercase">AURA_GLASS</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4 md:flex hidden">
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer uppercase">OVERLAY</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer uppercase">LENS</span>
+<span class="font-label-caps text-label-caps text-primary-container font-bold transition-colors cursor-pointer uppercase border-b-2 border-primary-container pb-1">ECOSYSTEM</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-fixed-dim transition-colors cursor-pointer uppercase">TRY-ON</span>
+</div>
+<button class="material-symbols-outlined text-primary-container scale-95 active:scale-90 transition-transform" data-icon="sync">sync</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-24 px-hud-margin min-h-screen relative overflow-hidden">
+<!-- Background Ambient Image Layer -->
+<div class="fixed inset-0 z-[-1] opacity-30">
+<img class="w-full h-full object-cover" data-alt="A high-end futuristic landscape with deep indigo nebula clouds and faint cyan geometric grid lines stretching toward a digital horizon. The mood is cinematic and serene, featuring subtle rim lighting on atmospheric particles. This visual serves as a sophisticated background for a spatial computing interface, maintaining a luxury aesthetic with technical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDdwH0nKb22LKWWsWgV_x-9sLeuSU8XXG74RQu5-cJBiOPlkPt-nUUe-2y0dFh0Kr4pyi42W9IshqoCeUpNHLRJGQ45Hdk5HjmstAo_kuAAiJ1Lf2PWyifsQEAFxPOFukrKYIvVcCS11_qc6-ZC4eQwc6wdpT0BI9ZpkbhHoS6bKB1TjhzPfZYHUvH5tb9IbrcIDwyYuP5q6zSo7AIL6k2soCbHupTVgFd7bItK_Oo1al6ltHYd17TqwUr4BrkvXo5yC_ROCDW3rUU"/>
+</div>
+<!-- Dashboard Header -->
+<section class="mb-12 flex flex-col md:flex-row justify-between items-end gap-6">
+<div>
+<div class="flex items-center gap-2 mb-2">
+<div class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></div>
+<span class="font-label-caps text-label-caps text-primary-container">SYSTEM STATUS: OPTIMAL</span>
+</div>
+<h2 class="font-display-lg text-display-lg text-on-surface uppercase max-w-2xl">App Ecosystem</h2>
+<p class="font-body-md text-body-md text-on-surface-variant mt-2 max-w-xl">Synchronized spatial services providing real-time data overlays and aesthetic intelligence for the Aura interface.</p>
+</div>
+<div class="glass-panel p-6 bracket-corner bg-surface/40 min-w-[280px]">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-primary-container">SYNCING FIRMWARE</span>
+<span class="font-data-mono text-data-mono text-primary-container">98%</span>
+</div>
+<div class="h-1 w-full bg-outline-variant/30 rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[98%] shadow-[0_0_10px_#00f2ff]"></div>
+</div>
+<div class="mt-4 flex justify-between">
+<span class="font-data-mono text-data-mono text-on-surface-variant">UPLINK: 4.2 GB/S</span>
+<span class="font-data-mono text-data-mono text-on-surface-variant">V.2.0.4</span>
+</div>
+</div>
+</section>
+<!-- Services Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Smart Path Feature (Large) -->
+<div class="md:col-span-8 group cursor-pointer">
+<div class="glass-panel bg-surface/40 h-[400px] bracket-corner overflow-hidden relative transition-all duration-500 hover:bg-surface/60">
+<div class="absolute top-0 left-0 w-full h-full z-0">
+<img class="w-full h-full object-cover opacity-40 group-hover:scale-105 transition-transform duration-700" data-alt="A futuristic birds-eye view of a smart city at night, with glowing cyan neon pathways and golden navigation markers overlaid onto sleek dark architecture. The image uses a cinematic tilt-shift effect and deep indigo shadows to emphasize a high-tech GPS navigation aesthetic. Digital reticles and scanning lines frame the composition to suggest an augmented reality interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBanZrtHspBa5ns8Qm1kGr2GIaIQZq4sfZJ-NW8vwhKB3txo5zIcbqw_Vgud5KMHZXMTX2IXnld1K5Z8xFsX0gxH8uFvB4yXINgVcpW6RgS6YtAYyJMauC-50_5NE-QmgAL988pOG2It2hVfPjV5FrVkz8fOle-9Qm3spJXUBfi7BWBNjN3fN19Wq12PCLbsBiKN7eZXsHeJsnaCBhHxVAPyGeqPwOmu95Sycy6FUCbf1xFiOYgt1mt7wGM1SCinZBtBtk9YjaT2nY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 p-hud-margin h-full flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="p-3 border border-primary-container/30 bg-primary-container/5 rounded-full">
+<span class="material-symbols-outlined text-primary-container" data-icon="explore">explore</span>
+</div>
+<span class="font-label-caps text-label-caps px-3 py-1 border border-primary-container text-primary-container rounded-full">LIVE HUD</span>
+</div>
+<div>
+<h3 class="font-display-lg text-headline-md text-on-surface uppercase mb-2">Smart Path Navigation</h3>
+<p class="font-body-md text-on-surface-variant max-w-md">Real-time AR pathfinding with topographic awareness and environmental integration. Predictive routing based on visual traffic density.</p>
+<button class="mt-6 font-label-caps text-label-caps text-primary-container border border-primary-container px-6 py-2 uppercase hover:bg-primary/10 transition-all">INITIALIZE MODULE</button>
+</div>
+</div>
+<div class="scan-line absolute top-0 left-0"></div>
+</div>
+</div>
+<!-- Device Health Feature (Vertical) -->
+<div class="md:col-span-4 group">
+<div class="glass-panel bg-surface/60 h-full bracket-corner p-hud-margin flex flex-col justify-between transition-all duration-500 hover:border-primary-container/50">
+<div>
+<div class="flex items-center gap-3 mb-8">
+<span class="material-symbols-outlined text-primary-container text-headline-md" data-icon="memory">memory</span>
+<span class="font-label-caps text-label-caps text-on-surface uppercase">Device Health</span>
+</div>
+<div class="space-y-6">
+<div class="border-b border-outline-variant/30 pb-4">
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface-variant">Thermal Load</span>
+<span class="font-data-mono text-primary-container">32°C</span>
+</div>
+<div class="h-1 bg-outline-variant/20 w-full">
+<div class="h-full bg-primary-container w-[45%]"></div>
+</div>
+</div>
+<div class="border-b border-outline-variant/30 pb-4">
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface-variant">Optical Clarity</span>
+<span class="font-data-mono text-primary-container">99.2%</span>
+</div>
+<div class="h-1 bg-outline-variant/20 w-full">
+<div class="h-full bg-primary-container w-[99%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<span class="font-body-md text-on-surface-variant">Battery Projection</span>
+<span class="font-data-mono text-primary-container">12.4H</span>
+</div>
+<div class="h-1 bg-outline-variant/20 w-full">
+<div class="h-full bg-primary-container w-[82%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8">
+<div class="p-4 bg-surface-container-low border border-outline-variant/30 rounded-lg">
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="info">info</span>
+<p class="text-xs font-body-md text-on-surface-variant leading-relaxed">System performing within peak efficiency parameters. No maintenance required for 45 days.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Style-Assist Feature (Large Highlight) -->
+<div class="md:col-span-12 group">
+<div class="glass-panel bg-surface/40 bracket-corner overflow-hidden flex flex-col md:flex-row min-h-[300px]">
+<div class="md:w-1/2 relative h-64 md:h-auto overflow-hidden">
+<img class="w-full h-full object-cover grayscale brightness-75 group-hover:grayscale-0 transition-all duration-1000" data-alt="A portrait of a fashion model wearing high-end futuristic eyewear that reflects vibrant cyan data streams. The lighting is dramatic, with cool indigo rim lights and sharp shadows. The aesthetic is futuristic-chic, blending luxury haute couture with advanced spatial technology elements, creating a visionary and sophisticated mood." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBN-YMOqc9q-SvJu4pM2HpSI0xL5Igz33BdrVRtjkk-WjfzbRiUDMYkMZoosJSWwlwIbd-lJRWe8UBVhLJxlqE7DTcaLgbIB1vTkds97yt8uNb-DXRJJV82SYNBKL3VbKFik9pULnSHjtiSPJHCHuHz3jCcyEsuKe3kM4gFHB5XT3NxhBBdj__H65pLxSro1RrvhObI5Iz5v3ZJ0aih05z4bd5OY_fVApx_PaZqz0b_W2SiuKxdE3DzTX3Ibv7XHbf8nlaTAmZTy-8"/>
+<div class="absolute inset-0 bg-primary-container/10 mix-blend-overlay"></div>
+</div>
+<div class="md:w-1/2 p-hud-margin flex flex-col justify-center">
+<div class="flex items-center gap-3 mb-4">
+<span class="material-symbols-outlined text-primary-container" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps text-primary-container uppercase">Style-Assist AI</span>
+</div>
+<h3 class="font-display-lg text-headline-md text-on-surface uppercase mb-4">Aesthetic Intelligence</h3>
+<p class="font-body-md text-on-surface-variant mb-6">Our AI fashion advisor analyzes your environment and occasion to project optimized garment overlays and accessory recommendations. Seamlessly syncs with your digital wardrobe.</p>
+<div class="flex flex-wrap gap-4">
+<div class="flex items-center gap-2 px-4 py-2 border border-outline-variant/50 rounded-full bg-surface-container-high/40">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-caps text-xs text-on-surface uppercase">Wardrobe Synced</span>
+</div>
+<div class="flex items-center gap-2 px-4 py-2 border border-outline-variant/50 rounded-full bg-surface-container-high/40">
+<span class="w-2 h-2 rounded-full bg-primary-container"></span>
+<span class="font-label-caps text-xs text-on-surface uppercase">Color Matching Active</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Interconnected Services HUD -->
+<div class="md:col-span-4 glass-panel bg-surface/40 p-gutter bracket-corner hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-primary-container mb-4" data-icon="settings_input_antenna">settings_input_antenna</span>
+<h4 class="font-label-caps text-label-caps text-on-surface uppercase mb-2">Firmware Matrix</h4>
+<p class="text-sm text-on-surface-variant">Global cloud-sync for interface personalization and architectural mapping.</p>
+</div>
+<div class="md:col-span-4 glass-panel bg-surface/40 p-gutter bracket-corner hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-primary-container mb-4" data-icon="fingerprint">fingerprint</span>
+<h4 class="font-label-caps text-label-caps text-on-surface uppercase mb-2">Biometric Lock</h4>
+<p class="text-sm text-on-surface-variant">Secure identity verification via iris-scan and neural-pulse authentication.</p>
+</div>
+<div class="md:col-span-4 glass-panel bg-surface/40 p-gutter bracket-corner hover:border-primary-container/30 transition-all">
+<span class="material-symbols-outlined text-primary-container mb-4" data-icon="hub">hub</span>
+<h4 class="font-label-caps text-label-caps text-on-surface uppercase mb-2">Neural Link</h4>
+<p class="text-sm text-on-surface-variant">Direct peripheral device management and localized data mesh streaming.</p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 pb-safe bg-surface/60 backdrop-blur-2xl border-t border-outline-variant/30 shadow-[0_-4px_24px_rgba(0,219,231,0.15)] flex justify-around items-center h-20 px-hud-margin">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-primary/10 hover:text-primary-container transition-all duration-500 ease-out group" href="#">
+<span class="material-symbols-outlined" data-icon="visibility">visibility</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">OVERLAY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-primary/10 hover:text-primary-container transition-all duration-500 ease-out group" href="#">
+<span class="material-symbols-outlined" data-icon="flare">flare</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">LENS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary-container border-t-2 border-primary-container pt-2 transition-all duration-500 ease-out" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view" style="font-variation-settings: 'FILL' 1;">grid_view</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">ECOSYSTEM</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:bg-primary/10 hover:text-primary-container transition-all duration-500 ease-out group" href="#">
+<span class="material-symbols-outlined" data-icon="face">face</span>
+<span class="font-label-caps text-label-caps uppercase mt-1">TRY-ON</span>
+</a>
+</nav>
+<!-- Left Navigation Drawer (HUD Style) -->
+<aside class="h-full w-80 fixed left-0 top-0 z-[60] bg-surface-container-lowest/90 backdrop-blur-3xl border-r border-outline-variant/40 shadow-2xl shadow-primary-container/10 transform -translate-x-full md:translate-x-0 transition-transform duration-300 hidden lg:flex flex-col p-hud-margin gap-component-gap">
+<div class="flex items-center gap-4 mb-8">
+<div class="w-12 h-12 rounded-full border border-primary-container p-1 overflow-hidden">
+<img class="w-full h-full object-cover grayscale" data-alt="A minimalist, high-contrast studio portrait of a man with sharp facial features and sleek, groomed hair. The lighting is cold and clinical, emphasizing the luxury tech aesthetic. The overall mood is serious, professional, and sophisticated, reflecting the persona of a high-end system operator in a futuristic environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBdkkZWbDAtnGlpAkNiwXolN0gN3j5OZ00X2qzfdRj1tdqO8do6A0tcWaN4uEAiVW7GX67GXRQ9zLm2zr-dDmoLxal8hA2g9CYYPh3g9EqBAvlh3r_yK7enYxBOzC81tHvvekKKcWvGGCp3qTnFlZHH8r33V2XJePrw_FwVvN3VNlxDgICdtOIaKi_0E-TQURfmJlGF1pMk3XCIX2tabh6TxWJRSd7z6vt5_x_nqsudpPPy-vY940IRWqtj3blwbUAT4Fomx2rung"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary-container">OPERATOR_01</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant">SYNCED: 98%</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<div class="flex items-center gap-4 p-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="memory">memory</span>
+<span class="font-label-caps text-label-caps">FIRMWARE</span>
+</div>
+<div class="flex items-center gap-4 p-3 bg-primary/10 text-primary-container border-l-4 border-primary-container transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="auto_awesome">auto_awesome</span>
+<span class="font-label-caps text-label-caps">STYLE ASSIST</span>
+</div>
+<div class="flex items-center gap-4 p-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="fingerprint">fingerprint</span>
+<span class="font-label-caps text-label-caps">BIOMETRICS</span>
+</div>
+<div class="flex items-center gap-4 p-3 text-on-surface-variant hover:text-on-surface hover:bg-surface-variant/30 transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-label-caps text-label-caps">SYSTEM</span>
+</div>
+</nav>
+<div class="mt-auto pt-6 border-t border-outline-variant/30">
+<p class="font-data-mono text-[10px] text-on-surface-variant mb-2">BUILD_IDENT: 0X_F42B</p>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant">V.2.0.4</span>
+<div class="flex gap-1">
+<div class="w-1 h-3 bg-primary-container"></div>
+<div class="w-1 h-3 bg-primary-container"></div>
+<div class="w-1 h-3 bg-primary-container/30"></div>
+</div>
+</div>
+</div>
+</aside>
+<!-- Floating HUD Elements -->
+<div class="fixed top-24 right-hud-margin z-40 hidden md:block">
+<div class="glass-panel p-4 flex flex-col items-end gap-2 border-r-2 border-primary-container bg-surface/20">
+<span class="font-data-mono text-[10px] text-primary-container uppercase tracking-widest">Atmospheric_Pressure</span>
+<span class="font-display-lg text-headline-md text-on-surface">1013.2 hPa</span>
+<div class="flex gap-1 mt-1">
+<div class="h-1 w-8 bg-primary-container/20 overflow-hidden">
+<div class="h-full bg-primary-container w-[60%]"></div>
+</div>
+<div class="h-1 w-8 bg-primary-container/20"></div>
+</div>
+</div>
+</div>
+</body></html>

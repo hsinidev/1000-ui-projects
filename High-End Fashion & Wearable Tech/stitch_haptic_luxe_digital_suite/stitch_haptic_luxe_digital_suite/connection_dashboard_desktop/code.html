@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Haptic-Luxe | Heartbeat Sync Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;700&amp;family=Manrope:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glow-champagne {
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+        }
+        .ripple-glow {
+            animation: pulse-glow 3s infinite ease-in-out;
+        }
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 10px rgba(212, 175, 55, 0.1); }
+            50% { box-shadow: 0 0 25px rgba(212, 175, 55, 0.3); }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-container": "#556474",
+                        "surface-tint": "#735c00",
+                        "on-primary": "#ffffff",
+                        "surface-container-highest": "#e4e2e4",
+                        "surface-bright": "#fbf8fb",
+                        "on-surface-variant": "#4d4635",
+                        "inverse-on-surface": "#f3f0f2",
+                        "outline": "#7f7663",
+                        "tertiary": "#5d5f5c",
+                        "surface-container-low": "#f5f3f5",
+                        "on-primary-fixed-variant": "#574500",
+                        "background": "#fbf8fb",
+                        "primary": "#735c00",
+                        "on-secondary": "#ffffff",
+                        "on-primary-container": "#554300",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed": "#e2e3df",
+                        "tertiary-container": "#b2b3af",
+                        "secondary-container": "#d1e1f4",
+                        "on-tertiary-fixed": "#1a1c1a",
+                        "surface-container": "#f0edef",
+                        "inverse-primary": "#e9c349",
+                        "outline-variant": "#d0c5af",
+                        "inverse-surface": "#303032",
+                        "secondary-fixed": "#d4e4f6",
+                        "surface-container-high": "#eae7ea",
+                        "secondary": "#50606f",
+                        "on-primary-fixed": "#241a00",
+                        "primary-fixed": "#ffe088",
+                        "on-secondary-fixed": "#0d1d2a",
+                        "on-surface": "#1b1b1d",
+                        "primary-container": "#d4af37",
+                        "on-error": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#fbf8fb",
+                        "on-error-container": "#93000a",
+                        "on-background": "#1b1b1d",
+                        "on-tertiary": "#ffffff",
+                        "tertiary-fixed-dim": "#c6c7c3",
+                        "on-secondary-fixed-variant": "#394857",
+                        "surface-variant": "#e4e2e4",
+                        "surface-dim": "#dcd9dc",
+                        "secondary-fixed-dim": "#b8c8da",
+                        "on-tertiary-container": "#444543",
+                        "primary-fixed-dim": "#e9c349",
+                        "on-tertiary-fixed-variant": "#454745"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin-edge": "40px",
+                        "stack-md": "32px",
+                        "gutter": "24px",
+                        "stack-sm": "16px",
+                        "unit": "8px",
+                        "stack-lg": "64px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "display-lg": ["EB Garamond"],
+                        "body-rg": ["Manrope"],
+                        "title-sm": ["Manrope"],
+                        "headline-md": ["EB Garamond"],
+                        "label-xs": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "body-rg": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "title-sm": ["18px", {"lineHeight": "1.5", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "400"}],
+                        "label-xs": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-rg selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopNavBar -->
+<header class="docked full-width top-0 sticky backdrop-blur-md bg-surface/90 dark:bg-surface-dim/90 shadow-[0_10px_30px_rgba(0,0,0,0.04)] z-50 transition-all duration-500 hover:shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+<div class="flex justify-between items-center w-full px-margin-edge py-stack-sm max-w-container-max mx-auto">
+<div class="flex items-center gap-gutter">
+<span class="font-display-lg text-headline-md tracking-tighter text-primary dark:text-primary-fixed">Haptic-Luxe</span>
+<nav class="hidden md:flex gap-gutter">
+<a class="font-body-rg text-body-rg text-on-surface-variant dark:text-on-secondary-container hover:text-primary transition-all duration-300" href="#">Suite</a>
+<a class="font-body-rg text-body-rg text-primary dark:text-primary-fixed border-b-2 border-primary pb-1" href="#">Dashboard</a>
+<a class="font-body-rg text-body-rg text-on-surface-variant dark:text-on-secondary-container hover:text-primary transition-all duration-300" href="#">Admin</a>
+<a class="font-body-rg text-body-rg text-on-surface-variant dark:text-on-secondary-container hover:text-primary transition-all duration-300" href="#">Care</a>
+</nav>
+</div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary cursor-pointer transition-all duration-300 active:scale-95" data-icon="shopping_bag">shopping_bag</span>
+<span class="material-symbols-outlined text-primary cursor-pointer transition-all duration-300 active:scale-95" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<div class="flex max-w-container-max mx-auto min-h-screen relative">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-80px)] sticky top-20 py-stack-md px-stack-sm gap-stack-sm w-72 bg-surface-container-low dark:bg-inverse-surface shadow-[30px_0_60px_rgba(0,0,0,0.04)] border-r border-outline-variant/30">
+<div class="mb-stack-md">
+<div class="flex items-center gap-stack-sm mb-stack-sm">
+<div class="w-12 h-12 rounded-full bg-surface-container-highest overflow-hidden">
+<img alt="User profile" data-alt="A sophisticated close-up portrait of a professional woman in a high-end studio setting. The lighting is soft and cinematic, highlighting the elegant features and the minimalist pearl necklace she is wearing. The background is a soft, warm neutral tone, consistent with a luxury brand aesthetic. The overall mood is one of quiet confidence and refined elegance." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCb_mmFcF8SyhOKCXxD0Gy9BqimUHCxCeB4IaYgoMyJhcGBXh1MePRNSVfj-Q_JdNUdgQvgD__UpGbHujep0CDEZLepI7BtparooNeXCgx5doVQvTHWz1NwuuvG_e6oOSYU5QFMegJ0x81TlP_6UPnbgYR_RwW-vImBEFn5ZPr0e5Iv3OS9a9h3yTzxhC9cuFYvF2FC7EcIpMN_2cmnDzO0_F6-aKUqxLsZPA3i3i-f-uM-LxKNjpHWpBK_WHxbzgQ6pfwwtVxsmS8"/>
+</div>
+<div>
+<h3 class="font-title-sm text-title-sm text-on-surface">Alex Rivera</h3>
+<p class="font-label-xs text-label-xs text-on-surface-variant">Signature Edition</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-col gap-unit">
+<a class="flex items-center gap-4 text-on-surface-variant dark:text-on-tertiary-fixed-variant p-4 hover:bg-surface-container-high transition-colors duration-300 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="diamond">diamond</span>
+<span class="font-title-sm text-title-sm">Product Suite</span>
+</a>
+<a class="flex items-center gap-4 bg-primary-container dark:bg-primary-fixed-variant text-on-primary-container dark:text-on-primary-fixed rounded-xl p-4 shadow-[0_0_15px_rgba(212,175,55,0.15)] translate-x-1 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="vibration">vibration</span>
+<span class="font-title-sm text-title-sm">Haptic Sync</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant dark:text-on-tertiary-fixed-variant p-4 hover:bg-surface-container-high transition-colors duration-300 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="settings_accessibility">settings_accessibility</span>
+<span class="font-title-sm text-title-sm">Management</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant dark:text-on-tertiary-fixed-variant p-4 hover:bg-surface-container-high transition-colors duration-300 rounded-xl" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-title-sm text-title-sm">Trust &amp; Care</span>
+</a>
+</nav>
+<div class="mt-auto">
+<button class="w-full bg-on-background text-on-primary py-stack-sm rounded-xl font-label-xs text-label-xs tracking-widest hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transition-all duration-500 active:scale-95">SYNC DEVICE</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 px-margin-edge py-stack-lg max-w-[calc(1440px-288px)]">
+<!-- Header Section -->
+<div class="mb-stack-lg flex flex-col md:flex-row justify-between items-end gap-stack-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-surface mb-unit">Heartbeat Sync Dashboard</h1>
+<p class="font-body-rg text-body-rg text-on-surface-variant max-w-xl">Experience the intimacy of shared presence. Synchronize your pulse with your partner through the resonance of fine metals and precious stones.</p>
+</div>
+<div class="flex items-center gap-stack-sm bg-surface-container p-4 rounded-2xl border border-outline-variant shadow-sm transition-all hover:shadow-md">
+<div class="relative">
+<div class="w-12 h-12 rounded-full overflow-hidden border-2 border-primary-container">
+<img alt="Partner profile" data-alt="A high-resolution, close-up portrait of a man with a warm and genuine smile. The background is softly blurred with warm lighting, suggesting a cozy, luxurious environment. The lighting is gentle, emphasizing natural skin textures and a relaxed expression. The overall atmosphere is intimate and trustworthy, fitting for a 'Connected Partner' display in a high-end application." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPNkPmPLEsifS5pk_np6qBq1xm8k2yRpg5C6sO4F2z2RosKk6q4Ralr3pa811uZLlf6DFsDfR-viadnrq8adWt3p50A5T-E9Rn3xFZXSg7jq3acaJ9ehODzs3m7FBaWwj0lzNne8xzfg2_yVWrKN-wu1-F7Z8Z8fpP9juokU7EaiZG3lRcmUhNYUhGdqefK2rXj-aiU95Z9TaK-XkBpDvUR1cfIQTavxGhimQ2ziYG92ywzULci2leyPzSmvlqds7s3_Ai34qPWKg"/>
+</div>
+<span class="absolute bottom-0 right-0 w-3 h-3 bg-primary-container rounded-full border-2 border-surface ripple-glow"></span>
+</div>
+<div>
+<p class="font-label-xs text-label-xs text-on-surface-variant uppercase">Connected Partner</p>
+<p class="font-title-sm text-title-sm text-on-surface">Julian Vane</p>
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-[14px] text-primary" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="font-label-xs text-label-xs text-primary">72 BPM Syncing</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Tutorial Area -->
+<div class="md:col-span-8 bg-surface-container-lowest rounded-[32px] p-stack-md shadow-[0_10px_30px_rgba(0,0,0,0.02)] border border-outline-variant/20 overflow-hidden relative group">
+<div class="absolute top-0 right-0 p-stack-md opacity-20 group-hover:opacity-40 transition-opacity">
+<span class="material-symbols-outlined text-display-lg" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface mb-stack-sm">Heartbeat Sync Tutorial</h2>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-stack-md">
+<div class="space-y-stack-sm">
+<div class="p-stack-sm rounded-2xl bg-surface-container-low border border-outline-variant/30 hover:border-primary-container transition-colors">
+<p class="font-label-xs text-label-xs text-primary mb-1">STEP 01</p>
+<h4 class="font-title-sm text-title-sm text-on-surface">Dwell to Connect</h4>
+<p class="font-body-rg text-body-rg text-on-surface-variant">Rest your finger on the gold center-point of your device. Wait for the soft pulse.</p>
+</div>
+<div class="p-stack-sm rounded-2xl bg-surface-container-low border border-outline-variant/30 hover:border-primary-container transition-colors">
+<p class="font-label-xs text-label-xs text-primary mb-1">STEP 02</p>
+<h4 class="font-title-sm text-title-sm text-on-surface">Calibrate Resonance</h4>
+<p class="font-body-rg text-body-rg text-on-surface-variant">Adjust the frequency sliders below until the vibration mimics a gentle breath.</p>
+</div>
+</div>
+<div class="relative h-full min-h-[200px] rounded-2xl overflow-hidden shadow-inner bg-surface-dim">
+<img alt="Haptic Device Resonance" class="w-full h-full object-cover mix-blend-multiply opacity-80" data-alt="A stunning macro photograph of a high-end haptic jewelry piece made of brushed 18k Champagne Gold and small, brilliantly cut diamonds. The lighting is dramatic, coming from the side to emphasize the fine textures of the metal and the prismatic reflections within the stones. The atmosphere is luxurious and technologically advanced, with a subtle glow emanating from the core of the piece, suggesting active haptic feedback." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1ZSxSJh3np0WAdWY33gvHAg1rezfahIcd0W1G-mE1GWGo4RXmH9f8302mcNAaDKZrSq6giRsH6cLAobjRhpXNZSEQcmyMMysW881ySLYTo2EnZbt42zQSOCFAEpR65Mip7D1ayma-MCPDiWLUYHYSXYCxjCT1V1ICKSZ3Ryv5ZQR3WVnE5_h6Ok1uPM0uG0AR2vJlSVCHa8k1tM9w7G-6TFMyO1YgZLH9bFagFETFHXBjvNw4ZHwXWjUP1G8Y0KSlFxs5B5xtGtw"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-16 h-16 rounded-full border border-primary-container/50 flex items-center justify-center ripple-glow">
+<div class="w-8 h-8 rounded-full bg-primary-container/80 backdrop-blur-sm shadow-[0_0_15px_rgba(212,175,55,0.5)]"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Status -->
+<div class="md:col-span-4 bg-primary text-on-primary rounded-[32px] p-stack-md flex flex-col justify-between shadow-xl relative overflow-hidden">
+<div class="absolute -right-10 -bottom-10 w-40 h-40 bg-primary-container/20 rounded-full blur-3xl"></div>
+<div>
+<span class="material-symbols-outlined text-headline-md mb-stack-sm" data-icon="waves">waves</span>
+<h3 class="font-headline-md text-headline-md mb-unit">Current Link</h3>
+<p class="font-body-rg text-on-primary/70">Device: Haptic-Ring v4<br/>Latency: 12ms<br/>Resonance: 98% Match</p>
+</div>
+<div class="mt-stack-lg">
+<div class="w-full h-1.5 bg-on-primary/20 rounded-full overflow-hidden">
+<div class="w-4/5 h-full bg-primary-container shadow-[0_0_10px_#D4AF37]"></div>
+</div>
+<p class="font-label-xs text-label-xs mt-2 uppercase tracking-widest text-primary-fixed">Signal Integrity</p>
+</div>
+</div>
+<!-- Vibration-Pattern Designer -->
+<div class="md:col-span-12 lg:col-span-12 grid grid-cols-1 lg:grid-cols-3 gap-gutter">
+<!-- Sliders Section -->
+<div class="bg-surface-container-low rounded-[32px] p-stack-md border border-outline-variant/30">
+<h3 class="font-title-sm text-title-sm text-on-surface mb-stack-md flex items-center gap-2">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+                            Designer Controls
+                        </h3>
+<div class="space-y-stack-md">
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Frequency (Hz)</label>
+<span class="font-label-xs text-label-xs text-primary">1.2Hz</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" max="5.0" min="0.1" step="0.1" type="range" value="1.2"/>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Intensity</label>
+<span class="font-label-xs text-label-xs text-primary">64%</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="64"/>
+</div>
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-xs text-label-xs text-on-surface-variant uppercase">Dampening</label>
+<span class="font-label-xs text-label-xs text-primary">Soft</span>
+</div>
+<input class="w-full h-1 bg-outline-variant rounded-lg appearance-none cursor-pointer accent-primary" max="100" min="0" type="range" value="20"/>
+</div>
+</div>
+<div class="mt-stack-lg pt-stack-md border-t border-outline-variant/50">
+<button class="w-full py-4 rounded-xl border border-primary text-primary font-label-xs text-label-xs uppercase tracking-widest hover:bg-primary hover:text-on-primary transition-all duration-300">Save Preset</button>
+</div>
+</div>
+<!-- Visual Blueprint Area -->
+<div class="lg:col-span-2 bg-surface-container-lowest rounded-[32px] p-stack-md border border-outline-variant/30 flex flex-col md:flex-row gap-gutter">
+<div class="flex-1">
+<h3 class="font-title-sm text-title-sm text-on-surface mb-stack-sm">Material Resonance Blueprint</h3>
+<div class="grid grid-cols-2 gap-stack-sm mb-stack-md">
+<div class="p-4 rounded-2xl bg-surface-container-high flex flex-col items-center gap-2 border border-primary-container glow-champagne">
+<div class="w-8 h-8 rounded-full bg-primary-container shadow-inner"></div>
+<span class="font-label-xs text-label-xs">Champagne Gold</span>
+</div>
+<div class="p-4 rounded-2xl bg-surface-container flex flex-col items-center gap-2 border border-outline-variant opacity-60 hover:opacity-100 transition-opacity">
+<div class="w-8 h-8 rounded-full bg-surface-container-highest shadow-inner"></div>
+<span class="font-label-xs text-label-xs">Polished Pearl</span>
+</div>
+</div>
+<ul class="space-y-unit">
+<li class="flex items-center gap-3 p-3 border-b border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-dim overflow-hidden">
+<img alt="Gold Texture" data-alt="A macro-photography shot of raw gold grains, showing their natural crystalline structure and intense metallic yellow color. The lighting is high-contrast, creating deep shadows and bright highlights that emphasize the luxury and purity of the 18k gold material. The background is a dark, neutral slate color to make the gold pop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9-Gb9vMZd9bnACe5I4jOVngvlJ5W-ohrEk6UgHNySjpWJTTU3AjHw4_IH0cKp5STN06SayVXmZAT1hCYWSnjKGoo6UJgyzCjy7pSkdGn6iAW3ROmMIgNqNtUJvk_x7boeHljmGbsqh5kb-YlFDeK6xnU50EzHMUK8yJjE5Bwx3T3Kd759L5XqzwvgP2qt8WYZOeh1JubeNQb5UXPmuiUC3LdqJ70EprTRtlaZwBdC8fFmrNqnPc6PXSpr4c6GWQYvd58hA8CFMb0"/>
+</div>
+<div>
+<p class="font-label-xs text-label-xs text-on-surface">18k Champagne Gold Base</p>
+<p class="text-[10px] text-on-surface-variant">Low-frequency conductor</p>
+</div>
+</li>
+<li class="flex items-center gap-3 p-3 border-b border-outline-variant/20">
+<div class="w-8 h-8 rounded bg-surface-dim overflow-hidden">
+<img alt="Diamond Texture" data-alt="An extreme macro view of a high-quality diamond, focusing on its internal facets and the way it refracts light into a spectrum of colors. The style is pristine and clinical yet artistic, with a focus on geometric perfection and clarity. The overall color palette is cool and brilliant, emphasizing the 'Diamond' material's resonance property." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5QjEhUn_D3_HTIJxZ2IWACr6l3HHnogsThrPSB0xFLgqBKn1Ep1YM1kHn-Hr7FNeWyO6u5s9UcWKsaq2I4XCd0u-EAnwWw1WIDrvYEB-XRt_owZVllmkDveWLX4cMg2PNGfN9CfDpxmkRPJSie2sG5fwtSPxZrVqLp6Btpzaduxhkx1aAUVwRj59o-d6eUd-vnNnvmZDmB7SIsC9N38xG6Hw2qIPWd7t0gD1C8EXI7W3lF1vFQTX-qfvSBn7uB36gY_ZUpxVpbns"/>
+</div>
+<div>
+<p class="font-label-xs text-label-xs text-on-surface">Heart-Rate Diamond Sensor</p>
+<p class="text-[10px] text-on-surface-variant">Precision haptic focal point</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="flex-1 bg-surface-dim rounded-2xl relative min-h-[300px] overflow-hidden group">
+<img alt="Resonance Map" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110" data-alt="A technical blueprint overlaying a macro photograph of high-end jewelry. Fine white lines and glowing nodes indicate the paths of vibration and haptic feedback across the champagne gold surface. The background image is soft and warm, while the glowing technical elements are crisp and sharp, creating a sophisticated blend of craftsmanship and digital technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBtZOMH30HanzrL81fsFoqa-GkpvcTmkTquDFVlIFvZZD5G2l2vgITlQRlXzaeJQA42OaG_roMDzRHiBDM1BoUmWH_UhDCOVihEF_f_zMUfIGfezCDhsDc0aNQd6p0qNUCgYk1_dOlPlTT04ZH7ZEI0jz8IwEJCYRFLNhYMeia32C317VkmA_WqaCiUVe82JDEc3jXWSpF2ZPqxoR7mpAnRB3k3tAr0cRn48G_LlM7Ji5y-BghJjzveC7RDz8yeuS9lIaJA5PngjUs"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface-dim/80 to-transparent"></div>
+<div class="absolute bottom-4 left-4 right-4">
+<div class="bg-surface-container-lowest/80 backdrop-blur-md p-3 rounded-xl border border-outline-variant">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label-xs text-label-xs text-on-surface">Thermal Resonance</span>
+<span class="font-label-xs text-label-xs text-primary">Optimal</span>
+</div>
+<div class="flex gap-1">
+<div class="h-1 flex-1 bg-primary-container rounded-full"></div>
+<div class="h-1 flex-1 bg-primary-container rounded-full"></div>
+<div class="h-1 flex-1 bg-primary-container rounded-full"></div>
+<div class="h-1 flex-1 bg-primary-container/30 rounded-full"></div>
+<div class="h-1 flex-1 bg-primary-container/30 rounded-full"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full mt-stack-lg border-t border-outline-variant dark:border-outline">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-edge py-stack-lg max-w-container-max mx-auto">
+<div class="md:col-span-1">
+<span class="font-display-lg text-headline-md text-on-surface">Haptic-Luxe</span>
+<p class="font-body-rg text-label-xs text-on-secondary-container mt-4 opacity-70">© 2024 Haptic-Luxe. The Digital Touch.</p>
+</div>
+<div class="flex flex-col gap-unit">
+<h4 class="font-title-sm text-title-sm text-on-surface mb-2">Platform</h4>
+<a class="font-body-rg text-label-xs text-on-secondary-container opacity-70 hover:opacity-100 transition-opacity hover:text-primary" href="#">Privacy</a>
+<a class="font-body-rg text-label-xs text-on-secondary-container opacity-70 hover:opacity-100 transition-opacity hover:text-primary" href="#">Terms of Craft</a>
+</div>
+<div class="flex flex-col gap-unit">
+<h4 class="font-title-sm text-title-sm text-on-surface mb-2">Artisanship</h4>
+<a class="font-body-rg text-label-xs text-on-secondary-container opacity-70 hover:opacity-100 transition-opacity hover:text-primary" href="#">Material Sourcing</a>
+<a class="font-body-rg text-label-xs text-on-secondary-container opacity-70 hover:opacity-100 transition-opacity hover:text-primary" href="#">Contact</a>
+</div>
+<div class="flex flex-col items-start md:items-end">
+<div class="flex gap-stack-sm mb-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform" data-icon="share">share</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:scale-110 transition-transform" data-icon="language">language</span>
+</div>
+<p class="font-body-rg text-label-xs text-on-secondary-container text-right opacity-70">Designed for connection.</p>
+</div>
+</div>
+</footer>
+</main>
+</div>
+<!-- Haptic Feedback Indicator (Floating) -->
+<div class="fixed bottom-margin-edge right-margin-edge flex flex-col items-center gap-unit z-[60] group">
+<div class="bg-on-background text-on-primary p-4 rounded-full shadow-2xl transition-all duration-500 hover:shadow-[0_0_30px_rgba(212,175,55,0.6)] cursor-pointer active:scale-95 flex items-center justify-center">
+<span class="material-symbols-outlined text-headline-md ripple-glow" data-icon="vibration">vibration</span>
+</div>
+<div class="bg-surface-container-lowest/90 backdrop-blur-md px-4 py-2 rounded-xl border border-outline-variant shadow-lg opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+<p class="font-label-xs text-label-xs text-primary uppercase whitespace-nowrap">Pulse Active</p>
+</div>
+</div>
+</body></html>

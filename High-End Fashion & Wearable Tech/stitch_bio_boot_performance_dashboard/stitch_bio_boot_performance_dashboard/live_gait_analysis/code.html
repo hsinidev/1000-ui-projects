@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BIO-BOOT // LIVE GAIT ANALYSIS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700;800&amp;family=Inter:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 48;
+        }
+        .technical-corner {
+            position: relative;
+        }
+        .technical-corner::before, .technical-corner::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #ff6700;
+        }
+        .technical-corner::before {
+            top: -1px;
+            left: -1px;
+            border-top: 2px solid;
+            border-left: 2px solid;
+        }
+        .technical-corner::after {
+            bottom: -1px;
+            right: -1px;
+            border-bottom: 2px solid;
+            border-right: 2px solid;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(255, 103, 0, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "error-container": "#93000a",
+                        "on-error": "#690005",
+                        "primary-container": "#ff6700",
+                        "on-surface": "#e5e2e1",
+                        "on-secondary-fixed": "#002020",
+                        "primary-fixed": "#ffdbcd",
+                        "secondary": "#ffffff",
+                        "on-primary-fixed": "#351000",
+                        "surface-container-high": "#2a2a2a",
+                        "surface": "#131313",
+                        "on-secondary-fixed-variant": "#004f4f",
+                        "tertiary-fixed-dim": "#b9c9d5",
+                        "on-tertiary": "#23323c",
+                        "on-background": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#3a4953",
+                        "primary-fixed-dim": "#ffb595",
+                        "secondary-fixed-dim": "#00dddd",
+                        "on-tertiary-container": "#22313b",
+                        "surface-dim": "#131313",
+                        "surface-variant": "#353535",
+                        "on-surface-variant": "#e3bfb1",
+                        "surface-bright": "#393939",
+                        "surface-container-highest": "#353535",
+                        "on-primary": "#571e00",
+                        "surface-tint": "#ffb595",
+                        "on-secondary-container": "#007070",
+                        "surface-container-lowest": "#0e0e0e",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary": "#b9c9d5",
+                        "outline": "#aa8a7d",
+                        "inverse-on-surface": "#313030",
+                        "on-tertiary-fixed": "#0e1d26",
+                        "secondary-container": "#00fbfb",
+                        "tertiary-container": "#8999a5",
+                        "tertiary-fixed": "#d5e5f1",
+                        "on-secondary": "#003737",
+                        "on-primary-container": "#561e00",
+                        "primary": "#ffb595",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#7c2e00",
+                        "background": "#131313",
+                        "secondary-fixed": "#00fbfb",
+                        "outline-variant": "#5a4136",
+                        "inverse-surface": "#e5e2e1",
+                        "inverse-primary": "#a23f00",
+                        "surface-container": "#20201f"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "20px",
+                        "stack-gap": "4px",
+                        "gutter": "16px",
+                        "panel-padding": "12px",
+                        "base": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["JetBrains Mono"],
+                        "data-display": ["JetBrains Mono"],
+                        "body-md": ["Inter"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-lg": ["JetBrains Mono"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.01em", "fontWeight": "700"}],
+                        "data-display": ["48px", {"lineHeight": "1.0", "letterSpacing": "-0.05em", "fontWeight": "800"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky z-50 bg-surface border-b border-outline-variant flex justify-between items-center px-margin py-base h-16">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary" data-icon="precision_manufacturing">precision_manufacturing</span>
+<h1 class="font-headline-md text-headline-md text-primary-container tracking-tighter uppercase">BIO-BOOT // SYS_V2.0</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2 px-3 py-1 bg-surface-container-high border border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary uppercase">Live Feed</span>
+</div>
+<button class="material-symbols-outlined text-on-surface-variant hover:bg-surface-variant p-2 transition-transform active:scale-95" data-icon="settings_input_component">settings_input_component</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-grow p-margin pb-32 grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Left Data Panel -->
+<aside class="md:col-span-3 flex flex-col gap-gutter">
+<div class="technical-corner bg-surface-container border border-outline-variant p-panel-padding shadow-inner">
+<h3 class="font-label-caps text-label-caps text-outline mb-2">CADENCE_READOUT</h3>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-primary">174</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">SPM</span>
+</div>
+<div class="mt-4 h-2 bg-surface-container-lowest border border-outline-variant relative overflow-hidden">
+<div class="absolute inset-y-0 left-0 bg-primary-container" style="width: 74%;"></div>
+</div>
+</div>
+<div class="technical-corner bg-surface-container border border-outline-variant p-panel-padding">
+<h3 class="font-label-caps text-label-caps text-outline mb-2">IMPACT_FORCE</h3>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-secondary">2.4</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">G-FORCE</span>
+</div>
+<div class="flex items-center gap-1 mt-4">
+<span class="w-2 h-4 bg-primary-container"></span>
+<span class="w-2 h-4 bg-primary-container"></span>
+<span class="w-2 h-4 bg-primary-container"></span>
+<span class="w-2 h-4 bg-primary-container"></span>
+<span class="w-2 h-4 bg-surface-variant opacity-20"></span>
+<span class="w-2 h-4 bg-surface-variant opacity-20"></span>
+</div>
+</div>
+<div class="technical-corner bg-surface-container-high border border-primary-container p-panel-padding scanline">
+<h3 class="font-label-caps text-label-caps text-primary-container mb-2">CRITICAL_ALERT</h3>
+<p class="font-label-caps text-label-caps text-on-surface leading-tight">ASYMMETRIC LOADING DETECTED IN L_ANKLE_MODULE</p>
+</div>
+</aside>
+<!-- Center Visualization Panel (The Heatmap) -->
+<section class="md:col-span-6 flex flex-col items-center justify-center bg-surface-container-lowest border border-outline-variant relative min-h-[500px]">
+<div class="absolute top-4 left-4 flex gap-4">
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-secondary-container rounded-full"></span>
+<span class="font-label-caps text-label-caps text-secondary-fixed-dim">STABLE</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="w-3 h-3 bg-primary-container rounded-full"></span>
+<span class="font-label-caps text-label-caps text-primary-container">PRESSURE</span>
+</div>
+</div>
+<div class="relative flex gap-12 items-end">
+<!-- Left Foot -->
+<div class="relative w-32 h-64 border-2 border-outline-variant opacity-80 flex items-center justify-center" style="border-radius: 40% 40% 30% 30% / 60% 60% 20% 20%;">
+<div class="absolute inset-0 scanline opacity-20"></div>
+<!-- Pressure Heatmap Overlays -->
+<div class="absolute top-8 left-1/2 -translate-x-1/2 w-16 h-16 rounded-full bg-secondary-container blur-xl opacity-40"></div>
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 w-20 h-24 rounded-full bg-primary-container blur-2xl opacity-60"></div>
+<span class="font-label-caps text-label-caps text-outline z-10">L_PLATE</span>
+</div>
+<!-- Right Foot -->
+<div class="relative w-32 h-64 border-2 border-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(255,103,0,0.2)]" style="border-radius: 40% 40% 30% 30% / 60% 60% 20% 20%;">
+<div class="absolute inset-0 scanline opacity-30"></div>
+<!-- Pressure Heatmap Overlays -->
+<div class="absolute top-6 left-1/2 -translate-x-1/2 w-20 h-20 rounded-full bg-primary blur-2xl opacity-80"></div>
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 w-24 h-28 rounded-full bg-primary-container blur-3xl opacity-90"></div>
+<span class="font-label-caps text-label-caps text-primary-container z-10">R_PLATE</span>
+</div>
+</div>
+<div class="absolute bottom-4 w-full px-8 flex justify-between border-t border-outline-variant pt-4 opacity-50">
+<span class="font-label-caps text-label-caps">TELEMETRY_LINK: ACTIVE</span>
+<span class="font-label-caps text-label-caps">00:14:52:08</span>
+</div>
+</section>
+<!-- Right Data Panel -->
+<aside class="md:col-span-3 flex flex-col gap-gutter">
+<div class="technical-corner bg-surface-container border border-outline-variant p-panel-padding">
+<h3 class="font-label-caps text-label-caps text-outline mb-2">CONTACT_TIME</h3>
+<div class="flex items-baseline gap-2">
+<span class="font-data-display text-data-display text-primary">242</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">MS</span>
+</div>
+<div class="mt-4 grid grid-cols-2 gap-2">
+<div class="p-2 border border-outline-variant text-center">
+<div class="font-label-caps text-label-caps text-outline">LEFT</div>
+<div class="font-headline-md text-headline-md text-on-surface">240</div>
+</div>
+<div class="p-2 border border-primary-container text-center bg-primary-container/10">
+<div class="font-label-caps text-label-caps text-primary-container">RIGHT</div>
+<div class="font-headline-md text-headline-md text-on-surface">244</div>
+</div>
+</div>
+</div>
+<div class="technical-corner bg-surface-container border border-outline-variant p-panel-padding flex-grow">
+<h3 class="font-label-caps text-label-caps text-outline mb-4">SYSTEM_LOGS</h3>
+<div class="space-y-2">
+<div class="flex gap-2 text-xs font-mono text-secondary-container">
+<span>[14:52:01]</span>
+<span>LINK_ESTABLISHED</span>
+</div>
+<div class="flex gap-2 text-xs font-mono text-on-surface-variant">
+<span>[14:52:03]</span>
+<span>CALIBRATION_COMPLETED</span>
+</div>
+<div class="flex gap-2 text-xs font-mono text-error">
+<span>[14:52:07]</span>
+<span>PRONATION_ALERT_R</span>
+</div>
+<div class="flex gap-2 text-xs font-mono text-on-surface-variant">
+<span>[14:52:08]</span>
+<span>STREAMING_PRESSURE_MAP...</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary-container py-4 font-headline-md text-headline-md text-on-primary-container uppercase transition-all active:scale-95 hover:shadow-[0_0_15px_rgba(255,103,0,0.4)]">
+                END SESSION
+            </button>
+</aside>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 border-t border-outline-variant flex justify-around items-center h-16 bg-surface-container-lowest">
+<!-- GAIT: ACTIVE -->
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container p-2 border border-primary flex-1 h-full hover:text-primary transition-colors active:bg-surface-bright duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="directions_run" style="font-variation-settings: 'FILL' 1;">directions_run</span>
+<span class="font-label-caps text-label-caps uppercase">GAIT</span>
+</a>
+<!-- PRONATION -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 opacity-60 flex-1 h-full hover:text-primary transition-colors active:bg-surface-bright duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+<span class="font-label-caps text-label-caps uppercase">PRONATION</span>
+</a>
+<!-- MODEL -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 opacity-60 flex-1 h-full hover:text-primary transition-colors active:bg-surface-bright duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-label-caps uppercase">MODEL</span>
+</a>
+<!-- THE LAB -->
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-2 opacity-60 flex-1 h-full hover:text-primary transition-colors active:bg-surface-bright duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps uppercase">THE LAB</span>
+</a>
+</nav>
+</body></html>

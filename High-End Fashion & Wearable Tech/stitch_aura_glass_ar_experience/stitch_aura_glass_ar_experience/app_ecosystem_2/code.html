@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "on-tertiary-fixed-variant": "#454747",
+                  "tertiary-container": "#dbdbdb",
+                  "inverse-on-surface": "#292e4d",
+                  "surface-tint": "#00dbe7",
+                  "background": "#0b112e",
+                  "surface-bright": "#323756",
+                  "secondary-fixed": "#dee0ff",
+                  "tertiary-fixed": "#e2e2e2",
+                  "on-tertiary-fixed": "#1a1c1c",
+                  "primary-container": "#00f2ff",
+                  "on-error": "#690005",
+                  "surface-dim": "#0b112e",
+                  "surface-container-highest": "#2e3352",
+                  "primary-fixed-dim": "#00dbe7",
+                  "primary": "#e1fdff",
+                  "on-tertiary-container": "#5e6060",
+                  "on-secondary-fixed-variant": "#414561",
+                  "on-primary": "#00363a",
+                  "on-background": "#dee0ff",
+                  "tertiary": "#f7f8f8",
+                  "on-primary-container": "#006a71",
+                  "surface-variant": "#2e3352",
+                  "secondary": "#c1c4e6",
+                  "error-container": "#93000a",
+                  "surface-container": "#181d3b",
+                  "surface-container-low": "#141937",
+                  "secondary-container": "#414561",
+                  "on-surface-variant": "#b9cacb",
+                  "on-surface": "#dee0ff",
+                  "surface": "#0b112e",
+                  "secondary-fixed-dim": "#c1c4e6",
+                  "outline": "#849495",
+                  "primary-fixed": "#74f5ff",
+                  "on-error-container": "#ffdad6",
+                  "outline-variant": "#3a494b",
+                  "on-tertiary": "#2f3131",
+                  "on-secondary": "#2b2f49",
+                  "on-secondary-container": "#b0b3d4",
+                  "on-secondary-fixed": "#161a33",
+                  "surface-container-lowest": "#060b29",
+                  "tertiary-fixed-dim": "#c6c6c7",
+                  "error": "#ffb4ab",
+                  "on-primary-fixed-variant": "#004f54",
+                  "surface-container-high": "#232846",
+                  "inverse-surface": "#dee0ff",
+                  "inverse-primary": "#00696f",
+                  "on-primary-fixed": "#002022"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "gutter": "16px",
+                  "component-gap": "8px",
+                  "unit": "4px",
+                  "hud-margin": "24px",
+                  "safe-zone": "40px"
+          },
+          "fontFamily": {
+                  "headline-md": ["Space Grotesk"],
+                  "display-lg": ["Space Grotesk"],
+                  "data-mono": ["Space Mono"],
+                  "label-caps": ["Space Mono"],
+                  "body-md": ["Inter"]
+          },
+          "fontSize": {
+                  "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                  "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                  "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                  "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                  "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-base { @apply bg-surface-container-lowest/40 backdrop-blur-md border border-outline-variant/20; }
+    .glass-active { @apply bg-surface-container-low/60 backdrop-blur-2xl border border-white/20 shadow-[0_0_15px_rgba(0,242,255,0.1)]; }
+    .bracket-corners {
+      position: relative;
+    }
+    .bracket-corners::before, .bracket-corners::after {
+      content: "";
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-color: #00f2ff;
+      pointer-events: none;
+    }
+    .bracket-corners::before { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+    .bracket-corners::after { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+    
+    .scan-line {
+      position: absolute;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+      top: 0;
+      left: 0;
+      opacity: 0.2;
+    }
+
+    .pulse-dot {
+      width: 6px;
+      height: 6px;
+      background-color: #00f2ff;
+      border-radius: 50%;
+      display: inline-block;
+      box-shadow: 0 0 8px #00f2ff;
+    }
+
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md min-h-screen overflow-x-hidden">
+<!-- TopAppBar Navigation Shell -->
+<header class="fixed top-0 left-0 w-full h-16 flex justify-between items-center px-hud-margin bg-surface/40 backdrop-blur-md border-b border-outline-variant/20 z-50">
+<div class="flex items-center gap-4">
+<h1 class="font-display-lg text-headline-md text-primary tracking-[0.2em] uppercase">AURA-GLASS</h1>
+<div class="h-4 w-px bg-outline-variant/30 ml-2"></div>
+<span class="font-label-caps text-label-caps text-on-surface-variant tracking-widest">APP_ECOSYSTEM_HUB</span>
+</div>
+<div class="hidden md:flex items-center gap-gutter">
+<nav class="flex gap-8">
+<a class="font-label-caps text-label-caps text-primary font-bold transition-colors duration-300" href="#">EXPLORE</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">UTILITIES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">BIOMETRICS</a>
+</nav>
+<div class="flex items-center gap-4 ml-8">
+<span class="material-symbols-outlined text-primary cursor-pointer active:scale-95 transition-transform" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer active:scale-95 transition-transform" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar Shell -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container-lowest/40 backdrop-blur-xl border-r border-outline-variant/20 flex flex-col py-6 gap-component-gap z-40 hidden md:flex">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 glass-active rounded-full flex items-center justify-center border-primary/20">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="shield">shield</span>
+</div>
+<div>
+<div class="font-label-caps text-[10px] text-primary tracking-widest">SYSTEM.OPERATOR</div>
+<div class="font-data-mono text-[10px] text-on-surface-variant/70">STATUS: ENHANCED</div>
+</div>
+</div>
+<nav class="flex flex-col gap-1">
+<a class="group px-6 py-3 flex items-center gap-4 text-primary border-r-2 border-primary bg-primary/10 shadow-[inset_-10px_0_15px_-10px_rgba(0,242,255,0.3)] transition-all duration-200" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</a>
+<a class="group px-6 py-3 flex items-center gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="developer_board">developer_board</span>
+<span class="font-label-caps text-label-caps">DEVICES</span>
+</a>
+<a class="group px-6 py-3 flex items-center gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="forum">forum</span>
+<span class="font-label-caps text-label-caps">COMMUNITY</span>
+</a>
+<a class="group px-6 py-3 flex items-center gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="quiz">quiz</span>
+<span class="font-label-caps text-label-caps">FAQ</span>
+</a>
+<a class="group px-6 py-3 flex items-center gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200" href="#">
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">ANALYTICS</span>
+</a>
+</nav>
+<div class="mt-auto px-6">
+<button class="w-full py-4 border border-primary/40 glass-base text-primary font-label-caps text-[10px] tracking-[0.3em] hover:bg-primary/10 transition-all active:scale-95">
+        SYNC DEVICE
+      </button>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 mt-16 p-hud-margin">
+<!-- Hero Section -->
+<section class="mb-12 relative overflow-hidden glass-active h-80 flex flex-col justify-end p-8 bracket-corners">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-overlay" data-alt="A first-person perspective view through futuristic AR glasses showing a vibrant city street overlayed with holographic navigation paths in cyan and data clusters. The atmosphere is high-tech and sophisticated, with deep indigo shadows and glowing light-as-air digital interface elements. High-end luxury tech aesthetic with crisp geometric reticles and scanning lines." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGuyR_xWe_g82JTYFUzpt_XffEzpDJxlJLBCNzB8t299GqnjQxawpmmNn6mhUzeMhl2UlHNodjBP16r9nGlJCZE0XuzgWssBg0uXjaUFBn3I9SSlxQi-ZsjxxYaWd51XmEJ--7nlMTyR08o7F0FVHiwnWI5dfPWE6lMuyHuanqnVahwDiUlSRFnmBD33QwWFL76fAXVVEucUYzpHgkhejLXmpe8HGy1wVBJV8uWjHY6wFxJ78z6PWxJN_z74IiRBdxaC7sZZS72aY"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-2xl">
+<div class="flex items-center gap-2 mb-4">
+<div class="pulse-dot"></div>
+<span class="font-label-caps text-[10px] text-primary">CORE SYSTEM ONLINE</span>
+</div>
+<h2 class="font-display-lg text-primary mb-2">NEURAL INTEGRATION HUB</h2>
+<p class="font-body-md text-on-surface-variant max-w-lg mb-6">Seamlessly bridge your cognitive intent with environmental data. Managing 3 active neural streams and 12 spatial services.</p>
+<div class="flex gap-4">
+<button class="px-8 py-3 bg-primary-container text-on-primary-container font-label-caps hover:bg-primary transition-colors">INITIALIZE_LINK</button>
+<button class="px-8 py-3 border border-outline-variant/50 glass-base font-label-caps text-primary hover:border-primary transition-colors">DIAGNOSTICS</button>
+</div>
+</div>
+<div class="scan-line"></div>
+</section>
+<!-- App Ecosystem Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- Smart Path Navigation -->
+<div class="glass-base p-6 bracket-corners group hover:glass-active transition-all duration-500 cursor-pointer flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<div class="glass-active w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="route">route</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant/40">V_1.0.4</span>
+</div>
+<h3 class="font-headline-md text-primary mb-2">Smart Path Navigation</h3>
+<p class="font-body-md text-on-surface-variant/80 text-sm mb-6 flex-grow">Predictive spatial routing with real-time obstacle avoidance and biological efficiency mapping.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">SPATIAL</span>
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">LIVE</span>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Aesthetic Intelligence -->
+<div class="glass-base p-6 bracket-corners group hover:glass-active transition-all duration-500 cursor-pointer flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<div class="glass-active w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant/40">STYLE_ENGINE</span>
+</div>
+<h3 class="font-headline-md text-primary mb-2">Aesthetic Intelligence</h3>
+<p class="font-body-md text-on-surface-variant/80 text-sm mb-6 flex-grow">Context-aware style assistance analyzing environmental aesthetics to optimize personal visual presentation.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">FASHION</span>
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">AI</span>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Neural Link -->
+<div class="glass-base p-6 bracket-corners group hover:glass-active transition-all duration-500 cursor-pointer flex flex-col">
+<div class="flex justify-between items-start mb-8">
+<div class="glass-active w-12 h-12 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="neurology">neurology</span>
+</div>
+<span class="font-data-mono text-[10px] text-on-surface-variant/40">LATENCY: 2MS</span>
+</div>
+<h3 class="font-headline-md text-primary mb-2">Neural Link</h3>
+<p class="font-body-md text-on-surface-variant/80 text-sm mb-6 flex-grow">Advanced device management interface for direct-link neural hardware synchronization and health metrics.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-2">
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">CORE</span>
+<span class="px-2 py-1 bg-surface-container-highest/60 text-[10px] font-label-caps text-secondary-fixed">HARDWARE</span>
+</div>
+<span class="material-symbols-outlined text-primary group-hover:translate-x-2 transition-transform" data-icon="arrow_forward">arrow_forward</span>
+</div>
+</div>
+<!-- Extended Services (Asymmetric Layout) -->
+<div class="lg:col-span-2 glass-base p-8 bracket-corners group hover:glass-active transition-all duration-500 flex flex-col md:flex-row gap-8">
+<div class="w-full md:w-1/2">
+<div class="flex items-center gap-2 mb-4">
+<div class="pulse-dot"></div>
+<span class="font-label-caps text-[10px] text-secondary">ACTIVE PROTOCOLS</span>
+</div>
+<h3 class="font-headline-md text-primary mb-4">System Synchronization</h3>
+<ul class="space-y-4">
+<li class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<span class="font-data-mono text-sm">BIO_METRIC_FEED</span>
+<span class="font-label-caps text-[10px] text-primary">ENCRYPTED</span>
+</li>
+<li class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<span class="font-data-mono text-sm">SPATIAL_MAPPING</span>
+<span class="font-label-caps text-[10px] text-primary">RENDERING</span>
+</li>
+<li class="flex items-center justify-between border-b border-outline-variant/20 pb-2">
+<span class="font-data-mono text-sm">ENVIRONMENT_ANALYSIS</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant/40">STANDBY</span>
+</li>
+</ul>
+</div>
+<div class="w-full md:w-1/2 relative h-48 md:h-auto rounded glass-base overflow-hidden">
+<img class="w-full h-full object-cover opacity-50" data-alt="A high-tech digital circuitry background with glowing cyan and deep blue lines representing neural pathways and data flow. The style is abstract and futuristic, utilizing a shallow depth of field and soft glows to create a sense of advanced computational power. The palette is dominated by dark indigos and electric blues, fitting a premium HUD interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMag6rfFixajCHJCv0lC0A8fnDf1FcpppfA6XImFHAaln5-DmmWPAgEbzDedN-Em0LwWMb3FOSRjfrJkHyYGKba5-_X0UdUeBqigWJ2LE8LkgZDKyS-sboOMNa-eyntO4X7dynVHIyJpu1-H4YcxLabxkkEmc-xNMPD32NEwzAChB7uVPJCHXlBSXLUZllYP2Jqyyx_4rx6NjnoJ7gYcKu4_is63ptN9hzGOub9MJXliPSt7ge6Vlp00PKF51RTdCFW6ugxNh7r9I"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-6xl opacity-30" data-icon="data_exploration">data_exploration</span>
+</div>
+</div>
+</div>
+<!-- Quick Actions -->
+<div class="glass-base p-6 bracket-corners flex flex-col justify-center gap-4">
+<h4 class="font-label-caps text-[10px] text-on-surface-variant mb-2">QUICK_ACTIONS</h4>
+<button class="flex items-center gap-4 p-3 glass-active border-primary/20 hover:bg-primary/20 transition-all text-left">
+<span class="material-symbols-outlined text-primary" data-icon="settings_input_antenna">settings_input_antenna</span>
+<span class="font-label-caps text-[10px]">RECALIBRATE GLASS</span>
+</button>
+<button class="flex items-center gap-4 p-3 border border-outline-variant/30 hover:glass-active transition-all text-left">
+<span class="material-symbols-outlined text-secondary" data-icon="refresh">refresh</span>
+<span class="font-label-caps text-[10px]">REFRESH ECOSYSTEM</span>
+</button>
+<button class="flex items-center gap-4 p-3 border border-outline-variant/30 hover:glass-active transition-all text-left">
+<span class="material-symbols-outlined text-secondary" data-icon="download">download</span>
+<span class="font-label-caps text-[10px]">UPDATE ALL APPS</span>
+</button>
+</div>
+</div>
+<!-- HUD Status Footer -->
+<footer class="mt-12 flex flex-col md:flex-row justify-between items-center gap-6 p-6 border-t border-outline-variant/10">
+<div class="flex items-center gap-8">
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-on-surface-variant">CPU_LOAD</span>
+<div class="w-32 h-1 bg-surface-container-highest mt-1 relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-[42%] bg-primary shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-on-surface-variant">MEM_USAGE</span>
+<div class="w-32 h-1 bg-surface-container-highest mt-1 relative overflow-hidden">
+<div class="absolute left-0 top-0 h-full w-[68%] bg-primary shadow-[0_0_8px_#00f2ff]"></div>
+</div>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-data-mono text-[10px] text-on-surface-variant">AURA_OS v.2.4.9 // NODE: 04-XQ</span>
+<div class="h-4 w-px bg-outline-variant/30"></div>
+<span class="font-data-mono text-[10px] text-primary">ENHANCED_EYE_TRACKING: ON</span>
+</div>
+</footer>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="fixed bottom-0 left-0 w-full md:hidden bg-surface/80 backdrop-blur-xl border-t border-outline-variant/20 px-hud-margin py-4 flex justify-between items-center z-50">
+<span class="material-symbols-outlined text-primary" data-icon="grid_view" data-weight="fill">grid_view</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="explore">explore</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="account_circle">account_circle</span>
+</nav>
+</body></html>

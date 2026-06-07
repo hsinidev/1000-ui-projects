@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CHRONO-THREAD | NFC Contact Manager</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .brushed-steel {
+            background: linear-gradient(135deg, #8E8E93 0%, #BFC0C4 50%, #8E8E93 100%);
+        }
+        .glass-header {
+            backdrop-filter: blur(20px);
+            background-color: rgba(19, 19, 19, 0.8);
+        }
+        /* Custom scrollbar for minimalist look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #131313; }
+        ::-webkit-scrollbar-thumb { background: #43474e; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-high": "#2a2a2a",
+                        "surface-container-highest": "#353535",
+                        "on-tertiary": "#2f3131",
+                        "secondary-fixed-dim": "#c6c6cb",
+                        "error": "#ffb4ab",
+                        "primary": "#afc8f0",
+                        "on-secondary": "#2f3034",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#2f486a",
+                        "on-secondary-container": "#b5b4ba",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1c1b1b",
+                        "tertiary": "#c6c6c7",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary-fixed": "#d4e3ff",
+                        "on-primary": "#163152",
+                        "inverse-primary": "#476083",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "secondary-fixed": "#e3e2e7",
+                        "on-primary-fixed": "#001c3a",
+                        "secondary": "#c6c6cb",
+                        "secondary-container": "#46464b",
+                        "on-tertiary-container": "#858687",
+                        "primary-container": "#001f3f",
+                        "surface-tint": "#afc8f0",
+                        "on-error": "#690005",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "background": "#131313",
+                        "primary-fixed-dim": "#afc8f0",
+                        "tertiary-container": "#1d1f1f",
+                        "outline": "#8e9198",
+                        "inverse-on-surface": "#313030",
+                        "surface-bright": "#393939",
+                        "on-primary-container": "#6f88ad",
+                        "surface-container": "#20201f",
+                        "on-secondary-fixed-variant": "#46464b",
+                        "outline-variant": "#43474e",
+                        "surface-dim": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-background": "#e5e2e1",
+                        "surface": "#131313",
+                        "on-surface": "#e5e2e1",
+                        "inverse-surface": "#e5e2e1",
+                        "on-surface-variant": "#c4c6cf",
+                        "on-secondary-fixed": "#1a1b1f",
+                        "surface-variant": "#353535"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "container-padding": "24px",
+                        "stack-sm": "8px",
+                        "section-gap": "48px",
+                        "stack-md": "16px",
+                        "gutter": "16px",
+                        "stack-lg": "32px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"],
+                        "data-mono": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display": ["Hanken Grotesk"],
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["22px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["28px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "display": ["42px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary/30">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background/80 backdrop-blur-xl border-b border-outline-variant/40 flex justify-between items-center px-container-padding h-16">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-primary" data-icon="watch">watch</span>
+<span class="font-display text-headline-lg tracking-tighter text-primary">CHRONO-THREAD</span>
+</div>
+<button class="text-on-surface-variant hover:opacity-80 transition-opacity duration-300">
+<span class="material-symbols-outlined" data-icon="settings_bluetooth">settings_bluetooth</span>
+</button>
+</header>
+<main class="pt-24 pb-32 px-container-padding max-w-4xl mx-auto">
+<!-- Hero Context -->
+<section class="mb-stack-lg">
+<h1 class="font-display text-display text-on-surface mb-stack-sm uppercase tracking-tight">Cuff Link</h1>
+<p class="font-body-lg text-on-surface-variant max-w-xl">Configure your garment's integrated NFC thread to broadcast your professional identity with a single wrist gesture.</p>
+</section>
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Programming Interface (Left/Main) -->
+<div class="md:col-span-7 space-y-stack-lg">
+<div class="bg-surface-container-low border border-outline-variant/40 p-container-padding relative overflow-hidden">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary"></div>
+<h2 class="font-label-caps text-label-caps text-primary mb-stack-lg">IDENTITY PROFILE</h2>
+<div class="space-y-stack-md">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">FULL NAME</label>
+<input class="bg-transparent border border-outline-variant/60 p-stack-sm text-on-surface font-headline-md focus:border-primary focus:ring-0 transition-colors" placeholder="Julian Sterling" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">TITLE</label>
+<input class="bg-transparent border border-outline-variant/60 p-stack-sm text-on-surface font-body-md focus:border-primary focus:ring-0 transition-colors" placeholder="Executive Director" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">COMPANY</label>
+<input class="bg-transparent border border-outline-variant/60 p-stack-sm text-on-surface font-body-md focus:border-primary focus:ring-0 transition-colors" placeholder="Sterling-Horology" type="text"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-caps text-label-caps text-on-surface-variant">LINKEDIN URL / VCARD DATA</label>
+<div class="relative">
+<input class="w-full bg-transparent border border-outline-variant/60 p-stack-sm pr-12 text-on-surface font-body-md focus:border-primary focus:ring-0 transition-colors" placeholder="linkedin.com/in/j-sterling" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-outline" data-icon="link">link</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full brushed-steel text-primary-container font-label-caps text-label-caps py-6 flex items-center justify-center gap-stack-sm group active:scale-95 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="contactless">contactless</span>
+                    WRITE TO CUFF
+                    <span class="material-symbols-outlined opacity-0 group-hover:opacity-100 transition-opacity" data-icon="chevron_right">chevron_right</span>
+</button>
+<!-- Status Indicator -->
+<div class="flex items-center gap-stack-sm p-stack-sm border border-primary/20 bg-primary/5">
+<span class="material-symbols-outlined text-primary text-sm" data-icon="check_circle">check_circle</span>
+<span class="font-data-mono text-data-mono text-primary">HARDWARE SYNCED: CUFF-TAG 04-B2X DETECTED</span>
+</div>
+</div>
+<!-- Preview & History (Right/Sidebar) -->
+<div class="md:col-span-5 space-y-stack-md">
+<!-- Digital Card Preview -->
+<div class="bg-primary-container border border-outline-variant/40 p-container-padding flex flex-col justify-between aspect-[1.6/1] relative group">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary/40 text-4xl" data-icon="nfc">nfc</span>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-primary/60">CHRONO-THREAD</p>
+<p class="font-data-mono text-[10px] text-primary/40">V.2.0.4</p>
+</div>
+</div>
+<div class="space-y-1">
+<p class="font-headline-md text-primary tracking-tight">Julian Sterling</p>
+<p class="font-label-caps text-[10px] text-on-primary-container uppercase">Executive Director • Sterling-Horology</p>
+</div>
+<!-- Decorative Thread -->
+<div class="absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent opacity-30"></div>
+</div>
+<!-- Recent Tags / Contacts -->
+<div class="bg-surface-container-low border border-outline-variant/40">
+<div class="p-stack-md border-b border-outline-variant/40 flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-on-surface">CONTACT LOG</h3>
+<span class="font-data-mono text-[10px] text-outline">12 TOTAL</span>
+</div>
+<div class="divide-y divide-outline-variant/20 h-64 overflow-y-auto">
+<!-- Contact Item -->
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 border border-outline-variant/40 flex items-center justify-center bg-background">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Elena Vance</p>
+<p class="font-data-mono text-[10px] text-outline">CTO @ NEURAL-SYNC</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100" data-icon="ios_share">ios_share</span>
+</div>
+<!-- Contact Item -->
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 border border-outline-variant/40 flex items-center justify-center bg-background">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Marcus Thorne</p>
+<p class="font-data-mono text-[10px] text-outline">INVESTOR @ ALPHA-GRID</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100" data-icon="ios_share">ios_share</span>
+</div>
+<!-- Contact Item -->
+<div class="p-stack-md flex items-center justify-between hover:bg-surface-container-high transition-colors cursor-pointer group">
+<div class="flex items-center gap-stack-md">
+<div class="w-10 h-10 border border-outline-variant/40 flex items-center justify-center bg-background">
+<span class="material-symbols-outlined text-outline" data-icon="person">person</span>
+</div>
+<div>
+<p class="font-body-md text-on-surface">Sarah Chen</p>
+<p class="font-data-mono text-[10px] text-outline">SR ARCHITECT</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline opacity-0 group-hover:opacity-100" data-icon="ios_share">ios_share</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Biometric Gauge Decorative Element -->
+<div class="mt-section-gap flex justify-center opacity-20">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<svg class="absolute w-full h-full rotate-[-90deg]" viewbox="0 0 100 100">
+<circle cx="50" cy="50" fill="none" r="45" stroke="#43474e" stroke-width="1"></circle>
+<circle cx="50" cy="50" fill="none" r="45" stroke="#afc8f0" stroke-dasharray="283" stroke-dashoffset="70" stroke-width="2"></circle>
+</svg>
+<div class="text-center">
+<p class="font-label-caps text-[8px] text-outline">SIGNAL</p>
+<p class="font-data-mono text-headline-md text-primary">88%</p>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-low/90 backdrop-blur-xl border-t border-outline-variant/40 flex justify-around items-center px-4 md:hidden">
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="touch_app">touch_app</span>
+<span class="font-label-caps text-label-caps mt-1">Command</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary border-t-2 border-primary pt-2 pb-4 hover:bg-surface-container-highest/20 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="contactless">contactless</span>
+<span class="font-label-caps text-label-caps mt-1">NFC Link</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-caps text-label-caps mt-1">Actions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-tertiary-container pt-2 pb-4 opacity-60 hover:bg-surface-container-highest/20 transition-all duration-200 active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="apparel">apparel</span>
+<span class="font-label-caps text-label-caps mt-1">Style</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AURA-GLASS | VIRTUAL_TRY_ON_PROTO</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@300..600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .bracket-corner {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-color: #00f2ff;
+            opacity: 0.6;
+        }
+        .bracket-tl { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+        .bracket-tr { top: 0; right: 0; border-top: 1px solid; border-right: 1px solid; }
+        .bracket-bl { bottom: 0; left: 0; border-bottom: 1px solid; border-left: 1px solid; }
+        .bracket-br { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+        
+        .scan-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#454747",
+                        "tertiary-container": "#dbdbdb",
+                        "inverse-on-surface": "#292e4d",
+                        "surface-tint": "#00dbe7",
+                        "background": "#0b112e",
+                        "surface-bright": "#323756",
+                        "secondary-fixed": "#dee0ff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "primary-container": "#00f2ff",
+                        "on-error": "#690005",
+                        "surface-dim": "#0b112e",
+                        "surface-container-highest": "#2e3352",
+                        "primary-fixed-dim": "#00dbe7",
+                        "primary": "#e1fdff",
+                        "on-tertiary-container": "#5e6060",
+                        "on-secondary-fixed-variant": "#414561",
+                        "on-primary": "#00363a",
+                        "on-background": "#dee0ff",
+                        "tertiary": "#f7f8f8",
+                        "on-primary-container": "#006a71",
+                        "surface-variant": "#2e3352",
+                        "secondary": "#c1c4e6",
+                        "error-container": "#93000a",
+                        "surface-container": "#181d3b",
+                        "surface-container-low": "#141937",
+                        "secondary-container": "#414561",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#dee0ff",
+                        "surface": "#0b112e",
+                        "secondary-fixed-dim": "#c1c4e6",
+                        "outline": "#849495",
+                        "primary-fixed": "#74f5ff",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#3a494b",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary": "#2b2f49",
+                        "on-secondary-container": "#b0b3d4",
+                        "on-secondary-fixed": "#161a33",
+                        "surface-container-lowest": "#060b29",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#232846",
+                        "inverse-surface": "#dee0ff",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed": "#002022"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "component-gap": "8px",
+                        "unit": "4px",
+                        "hud-margin": "24px",
+                        "safe-zone": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container min-h-screen overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full h-16 flex justify-between items-center px-hud-margin bg-surface/40 backdrop-blur-md border-b border-outline-variant/20 z-50 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+<div class="flex items-center gap-8">
+<span class="font-display-lg text-headline-md text-primary tracking-[0.2em] uppercase">AURA-GLASS</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-label-caps text-label-caps text-primary font-bold transition-colors duration-300" href="#">DEVICES</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">CONFIG</a>
+<a class="font-label-caps text-label-caps text-on-surface-variant hover:text-primary-container transition-colors duration-300" href="#">EXPLORE</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative group">
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-colors">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary-container rounded-full border border-background"></span>
+</div>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-colors">settings</span>
+<span class="material-symbols-outlined cursor-pointer text-on-surface-variant hover:text-primary transition-colors">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar (Hidden on main layout to focus on AR Canvas, but defined as per JSON) -->
+<aside class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container-lowest/40 backdrop-blur-xl border-r border-outline-variant/20 flex flex-col py-6 gap-component-gap z-40">
+<div class="px-6 mb-8 flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary/20 border border-primary/40 flex items-center justify-center overflow-hidden">
+<img alt="User HUD Profile" class="w-full h-full object-cover" data-alt="A futuristic close-up portrait of a tech-savvy individual with subtle neon rim lighting against a dark navy background. The person has a neutral, professional expression, embodying the role of a system operator. The lighting is cold and clinical, using cyan and deep indigo tones to match a high-end HUD aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBy70ynHArVfqnp21mrYyBpOVfWU94MGdGzeEtyFU5jFvZp8cWInYSxeTeDc6V_P0utbsBS3lHWxfpwmJSHmnR-sSKw2dMsG6ri2RhnvEz2q8ekY6lrFf-yQAXhSe7ItZIBhJAvjURCHgrjaJb9DEuAYzwrN5FmTpuSDvAtp7E2kCBPySS3gmc4yk_yUxGTQF8-UcZQRympnMwdU0ouIffzI2Piu6AbhvaTJhgcpUpHZ4iE-XEhqtfD6zStSrcZ4RVuve6P0A1VK3I"/>
+</div>
+<div>
+<p class="font-label-caps text-[10px] text-primary tracking-widest">SYSTEM.OPERATOR</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant/70">STATUS: ENHANCED</p>
+</div>
+</div>
+<nav class="flex-1 px-2 space-y-1">
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer group hover:bg-primary/5 hover:text-primary transition-all duration-200 text-on-surface-variant/70">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">grid_view</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer group bg-primary/10 text-primary border-r-2 border-primary shadow-[inset_-10px_0_15px_-10px_rgba(0,242,255,0.3)]">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">developer_board</span>
+<span class="font-label-caps text-label-caps">DEVICES</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer group hover:bg-primary/5 hover:text-primary transition-all duration-200 text-on-surface-variant/70">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">forum</span>
+<span class="font-label-caps text-label-caps">COMMUNITY</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer group hover:bg-primary/5 hover:text-primary transition-all duration-200 text-on-surface-variant/70">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">quiz</span>
+<span class="font-label-caps text-label-caps">FAQ</span>
+</div>
+<div class="flex items-center gap-4 px-4 py-3 cursor-pointer group hover:bg-primary/5 hover:text-primary transition-all duration-200 text-on-surface-variant/70">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1">query_stats</span>
+<span class="font-label-caps text-label-caps">ANALYTICS</span>
+</div>
+</nav>
+<div class="px-4 mt-auto">
+<button class="w-full py-4 border border-primary/40 bg-primary/5 hover:bg-primary/10 text-primary font-label-caps text-label-caps transition-all active:scale-95">
+                SYNC DEVICE
+            </button>
+</div>
+</aside>
+<!-- Main Content: Virtual Try-On Canvas -->
+<main class="pl-64 pt-16 h-screen flex flex-col relative overflow-hidden">
+<!-- Header Text -->
+<div class="absolute top-24 left-72 z-30">
+<h1 class="font-display-lg text-primary tracking-tighter opacity-90">VIRTUAL_TRY_ON_PROTO</h1>
+<div class="flex items-center gap-2 mt-2">
+<span class="w-2 h-2 rounded-full bg-primary-container shadow-[0_0_8px_#00f2ff] animate-pulse"></span>
+<p class="font-label-caps text-xs text-on-surface-variant tracking-widest">LIVE SPATIAL MAPPING ACTIVE</p>
+</div>
+</div>
+<!-- Central AR Viewport -->
+<div class="flex-1 flex items-center justify-center p-hud-margin relative overflow-hidden">
+<!-- HUD Reticles & Borders -->
+<div class="absolute inset-0 pointer-events-none border-[12px] border-surface-container-lowest/50 backdrop-blur-[2px] m-hud-margin rounded-xl"></div>
+<!-- Portrait Container -->
+<div class="relative w-full max-w-4xl h-[819px] bg-surface-container-lowest rounded-xl overflow-hidden shadow-2xl border border-outline-variant/30">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover grayscale opacity-60" data-alt="A high-resolution, ultra-detailed fashion portrait of a male model with a clean aesthetic, positioned in a high-tech photography studio with soft, diffused blue and violet lighting. The person is looking directly at the camera. Overlaid are translucent cyan AR interface elements, including circular scanning reticles and data points on his facial features, suggesting a virtual eyewear fitting process." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrrG6pZ_2E6V0YNrXaGGJuCoFKLZ9otL8OdR61LigkVE-j_ZRlgXzRxjewr0Qawr0Ng7tkHykVBpCwnrBSWmy5Gv9fLbQgjFKT9mW4XJ5Miwoa-hPz_Ln1XgqYOp09M_QIFtT5cnrB0fyUonCl-vJdoZ0_8b5TlydEDCulC_FjJKzh15B_dtXNrrvWxG8hCeTKg3UK-XsrGwhyOqO4HAVaFawNn8ywNfCiDo2IkdN9AZa72tI7ujfT9PLsZT4_TBe67peA4LfM0jo"/>
+</div>
+<!-- HUD Overlays -->
+<div class="absolute inset-0 p-8 flex flex-col justify-between pointer-events-none">
+<div class="flex justify-between">
+<div class="p-4 bg-surface/40 backdrop-blur-md border border-white/10 rounded-sm">
+<p class="font-label-caps text-[10px] text-primary">FACE.SCAN.ID</p>
+<p class="font-data-mono text-xl text-primary mt-1">AX-7792-B</p>
+<div class="mt-4 flex flex-col gap-1">
+<div class="h-1 w-32 bg-primary/20 overflow-hidden"><div class="h-full w-3/4 bg-primary shadow-[0_0_5px_#00f2ff]"></div></div>
+<div class="h-1 w-32 bg-primary/20 overflow-hidden"><div class="h-full w-1/2 bg-primary shadow-[0_0_5px_#00f2ff]"></div></div>
+</div>
+</div>
+<div class="flex flex-col gap-2 items-end">
+<span class="font-data-mono text-xs text-primary-container bg-primary-container/10 px-2 py-1">CALIBRATING...</span>
+<div class="w-48 h-48 border border-primary/20 rounded-full flex items-center justify-center">
+<div class="w-32 h-32 border border-primary/40 rounded-full flex items-center justify-center animate-spin-slow">
+<div class="w-1 h-1 bg-primary absolute top-0 left-1/2 -translate-x-1/2 rounded-full shadow-[0_0_10px_#00f2ff]"></div>
+</div>
+<span class="material-symbols-outlined text-primary text-4xl opacity-50">center_focus_strong</span>
+</div>
+</div>
+</div>
+<div class="flex justify-between items-end">
+<div class="flex flex-col gap-4">
+<div class="glass-panel p-4 bg-surface/40 backdrop-blur-md border border-white/10 relative overflow-hidden min-w-[200px]">
+<div class="bracket-corner bracket-tl"></div><div class="bracket-corner bracket-tr"></div><div class="bracket-corner bracket-bl"></div><div class="bracket-corner bracket-br"></div>
+<p class="font-label-caps text-[10px] text-on-surface-variant">SELECTED_FRAME</p>
+<p class="font-headline-md text-primary mt-1">ONYX_VECTOR</p>
+<div class="mt-2 flex gap-4 border-t border-outline-variant/20 pt-2">
+<div>
+<p class="font-data-mono text-[9px] text-on-surface-variant">VLT RATING</p>
+<p class="font-data-mono text-xs text-primary">12%</p>
+</div>
+<div>
+<p class="font-data-mono text-[9px] text-on-surface-variant">LATENCY</p>
+<p class="font-data-mono text-xs text-primary">0.4ms</p>
+</div>
+</div>
+</div>
+</div>
+<div class="glass-panel p-4 bg-primary/20 backdrop-blur-md border border-primary/40 group cursor-pointer transition-all hover:bg-primary/30 active:scale-95">
+<div class="flex items-center gap-4">
+<div class="text-right">
+<p class="font-label-caps text-xs text-primary tracking-widest">INITIATE TRANSACTION</p>
+<p class="font-display-lg text-2xl text-primary">ACQUIRE_UNIT</p>
+</div>
+<span class="material-symbols-outlined text-4xl text-primary">shopping_cart_checkout</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Central Scanning Bar -->
+<div class="scan-line shadow-[0_0_20px_#00f2ff]" style="top: 45%;"></div>
+</div>
+</div>
+<!-- Frame Selection Carousel -->
+<div class="h-48 w-full bg-surface-container-lowest/60 backdrop-blur-xl border-t border-outline-variant/30 px-hud-margin flex items-center gap-6 overflow-x-auto no-scrollbar relative z-30">
+<!-- Carousel Item 1 -->
+<div class="flex-shrink-0 w-64 h-32 bg-surface/40 border border-primary/40 p-4 relative cursor-pointer group hover:bg-primary/10 transition-all border-r-4">
+<div class="absolute top-0 right-0 p-2 opacity-50"><span class="material-symbols-outlined text-sm">info</span></div>
+<p class="font-label-caps text-[10px] text-primary">SERIES_01</p>
+<p class="font-headline-md text-lg text-primary">ONYX_VECTOR</p>
+<div class="mt-4 grid grid-cols-2 gap-2">
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">VLT</p>
+<p class="font-data-mono text-[10px] text-primary">12%</p>
+</div>
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">LAT</p>
+<p class="font-data-mono text-[10px] text-primary">0.4ms</p>
+</div>
+</div>
+</div>
+<!-- Carousel Item 2 -->
+<div class="flex-shrink-0 w-64 h-32 bg-surface/20 border border-outline-variant/20 p-4 relative cursor-pointer group hover:border-primary/40 hover:bg-primary/5 transition-all">
+<p class="font-label-caps text-[10px] text-on-surface-variant">SERIES_01</p>
+<p class="font-headline-md text-lg text-on-surface">SILVER_LINING</p>
+<div class="mt-4 grid grid-cols-2 gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">VLT</p>
+<p class="font-data-mono text-[10px]">18%</p>
+</div>
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">LAT</p>
+<p class="font-data-mono text-[10px]">0.6ms</p>
+</div>
+</div>
+</div>
+<!-- Carousel Item 3 -->
+<div class="flex-shrink-0 w-64 h-32 bg-surface/20 border border-outline-variant/20 p-4 relative cursor-pointer group hover:border-primary/40 hover:bg-primary/5 transition-all">
+<p class="font-label-caps text-[10px] text-on-surface-variant">SERIES_02</p>
+<p class="font-headline-md text-lg text-on-surface">NEON_DRIFT</p>
+<div class="mt-4 grid grid-cols-2 gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">VLT</p>
+<p class="font-data-mono text-[10px]">05%</p>
+</div>
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">LAT</p>
+<p class="font-data-mono text-[10px]">0.2ms</p>
+</div>
+</div>
+</div>
+<!-- Carousel Item 4 -->
+<div class="flex-shrink-0 w-64 h-32 bg-surface/20 border border-outline-variant/20 p-4 relative cursor-pointer group hover:border-primary/40 hover:bg-primary/5 transition-all">
+<p class="font-label-caps text-[10px] text-on-surface-variant">ELITE_CORE</p>
+<p class="font-headline-md text-lg text-on-surface">VOID_WALKER</p>
+<div class="mt-4 grid grid-cols-2 gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">VLT</p>
+<p class="font-data-mono text-[10px]">02%</p>
+</div>
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">LAT</p>
+<p class="font-data-mono text-[10px]">0.1ms</p>
+</div>
+</div>
+</div>
+<!-- Carousel Item 5 -->
+<div class="flex-shrink-0 w-64 h-32 bg-surface/20 border border-outline-variant/20 p-4 relative cursor-pointer group hover:border-primary/40 hover:bg-primary/5 transition-all">
+<p class="font-label-caps text-[10px] text-on-surface-variant">SERIES_01</p>
+<p class="font-headline-md text-lg text-on-surface">GHOST_FRAME</p>
+<div class="mt-4 grid grid-cols-2 gap-2 opacity-50 group-hover:opacity-100 transition-opacity">
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">VLT</p>
+<p class="font-data-mono text-[10px]">95%</p>
+</div>
+<div class="bg-surface/60 p-1 text-center border border-outline-variant/20">
+<p class="font-data-mono text-[8px] opacity-60">LAT</p>
+<p class="font-data-mono text-[10px]">0.9ms</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- UI Accents: HUD Fixed Margins -->
+<div class="fixed top-24 right-hud-margin flex flex-col items-end gap-6 z-30">
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-primary opacity-50">LOCATION.NODE</p>
+<p class="font-data-mono text-xs text-on-surface">NEO-TOKYO.SEC-04</p>
+</div>
+<div class="w-16 h-[2px] bg-primary/30"></div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-primary opacity-50">CHIPSET.TEMP</p>
+<p class="font-data-mono text-xs text-on-surface">34.2°C</p>
+</div>
+<div class="w-16 h-[2px] bg-primary/30"></div>
+<div class="text-right">
+<p class="font-label-caps text-[10px] text-primary opacity-50">EYE_TRACKING</p>
+<p class="font-data-mono text-xs text-primary-container">ACTIVE</p>
+</div>
+</div>
+<div class="fixed bottom-hud-margin right-hud-margin z-50">
+<button class="bg-primary shadow-[0_0_20px_rgba(0,242,255,0.4)] text-on-primary-container px-6 py-3 font-label-caps text-label-caps flex items-center gap-2 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined">help</span>
+            SYSTEM TUTORIAL
+        </button>
+</div>
+</body></html>

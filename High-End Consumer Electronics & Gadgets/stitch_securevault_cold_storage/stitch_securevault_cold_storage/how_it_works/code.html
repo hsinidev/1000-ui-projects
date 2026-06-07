@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SECURE_VAULT - How It Works</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom Inset Shadow for Industrial Look */
+        .inset-mechanical {
+            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.8), inset -1px -1px 2px rgba(255,255,255,0.1);
+        }
+        /* Noise Overlay */
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3%3Ffilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+            pointer-events: none;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#e2e2e2",
+                      "primary-container": "#e3e2e0",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "on-error-container": "#ffdad6",
+                      "primary-fixed": "#e3e2e0",
+                      "surface": "#141313",
+                      "primary": "#ffffff",
+                      "surface-container-low": "#1c1b1b",
+                      "surface-variant": "#353434",
+                      "on-surface": "#e5e2e1",
+                      "on-secondary-container": "#b8b6d0",
+                      "inverse-on-surface": "#313030",
+                      "error": "#ffb4ab",
+                      "outline": "#8e918e",
+                      "surface-tint": "#c7c6c4",
+                      "on-secondary": "#2f2e43",
+                      "error-container": "#93000a",
+                      "on-tertiary": "#303030",
+                      "on-surface-variant": "#c4c7c4",
+                      "on-tertiary-container": "#646464",
+                      "surface-container-lowest": "#0e0e0e",
+                      "background": "#141313",
+                      "tertiary": "#ffffff",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-primary": "#303130",
+                      "secondary-container": "#47475d",
+                      "surface-dim": "#141313",
+                      "surface-container-highest": "#353434",
+                      "secondary": "#c6c4df",
+                      "surface-container-high": "#2a2a29",
+                      "on-primary-fixed": "#1b1c1b",
+                      "on-primary-fixed-variant": "#464746",
+                      "tertiary-fixed": "#e2e2e2",
+                      "secondary-fixed": "#e2e0fc",
+                      "surface-container": "#201f1f",
+                      "surface-bright": "#3a3939",
+                      "primary-fixed-dim": "#c7c6c4",
+                      "inverse-primary": "#5e5e5d",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "outline-variant": "#444845",
+                      "inverse-surface": "#e5e2e1",
+                      "on-error": "#690005",
+                      "secondary-fixed-dim": "#c6c4df",
+                      "on-secondary-fixed-variant": "#45455b",
+                      "on-primary-container": "#646463",
+                      "on-background": "#e5e2e1",
+                      "on-secondary-fixed": "#1a1a2e"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "container-padding": "24px",
+                      "touch-target": "56px",
+                      "border-width": "3px",
+                      "base": "8px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "data-mono": ["Space Mono"],
+                      "headline-lg-mobile": ["Space Grotesk"],
+                      "headline-xl": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "headline-lg": ["Space Grotesk"],
+                      "label-caps": ["Space Mono"]
+              },
+              "fontSize": {
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "headline-xl": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md min-h-screen pb-32 overflow-x-hidden">
+<div class="noise-bg fixed inset-0 z-[-1]"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-background dark:bg-background border-b-3 border-outline dark:border-outline flex justify-between items-center px-container-padding h-touch-target w-full">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="shield_lock">shield_lock</span>
+<span class="font-headline-lg text-headline-lg-mobile text-primary tracking-tighter">SECURE_VAULT</span>
+</div>
+<button class="hover:bg-surface-variant transition-colors p-2 active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="settings_input_component">settings_input_component</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="mt-20 px-container-padding space-y-gutter max-w-md mx-auto">
+<!-- Hero Header -->
+<section class="py-8 border-l-3 border-primary pl-4">
+<h1 class="font-headline-xl text-headline-xl text-primary leading-none mb-2">SYSTEM_GUIDE</h1>
+<p class="font-data-mono text-data-mono text-on-surface-variant uppercase">Protocol: Hardware-Enforced-Security</p>
+</section>
+<!-- Timeline Steps -->
+<div class="space-y-12 relative">
+<!-- Connecting Line -->
+<div class="absolute left-[27px] top-4 bottom-4 w-1 bg-outline-variant z-0"></div>
+<!-- Step 1: Biometric -->
+<div class="relative z-10 flex gap-gutter">
+<div class="flex-shrink-0 w-14 h-14 bg-background border-3 border-primary flex items-center justify-center">
+<span class="font-data-mono text-primary">01</span>
+</div>
+<div class="space-y-4">
+<h2 class="font-headline-lg text-headline-lg-mobile text-primary">BIOMETRIC_TRIGGER</h2>
+<p class="text-on-surface-variant">Access requires a sustained physical verification. The capacitive sensor maps 4,000 distinct ridges in real-time.</p>
+<!-- Interactive Visual Component: Biometric Sensor -->
+<div class="border-3 border-outline bg-surface-container-low p-gutter flex flex-col items-center justify-center space-y-4">
+<div class="w-24 h-24 rounded-full border-3 border-primary flex items-center justify-center inset-mechanical bg-surface-container overflow-hidden group">
+<span class="material-symbols-outlined text-5xl text-primary opacity-50" data-icon="fingerprint">fingerprint</span>
+<div class="absolute inset-0 bg-primary opacity-10 flex items-center justify-center">
+<div class="w-full h-[2px] bg-primary/40 -translate-y-12 blur-[1px]"></div>
+</div>
+</div>
+<div class="text-center">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-1">STATUS: WAITING_FOR_INPUT</span>
+<button class="font-data-mono text-data-mono bg-primary text-on-primary px-6 py-3 border-r-3 border-b-3 border-outline active:scale-95 transition-transform">HOLD_TO_AUTHORIZE</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 2: Cold-Storage Signing -->
+<div class="relative z-10 flex gap-gutter">
+<div class="flex-shrink-0 w-14 h-14 bg-background border-3 border-primary flex items-center justify-center">
+<span class="font-data-mono text-primary">02</span>
+</div>
+<div class="space-y-4 w-full">
+<h2 class="font-headline-lg text-headline-lg-mobile text-primary">OFFLINE_SIGNING</h2>
+<p class="text-on-surface-variant">Private keys never leave the secure element. Encryption occurs within a Faraday-shielded partition.</p>
+<div class="grid grid-cols-2 gap-2">
+<div class="aspect-square bg-surface-container-high border-3 border-outline p-4 flex flex-col justify-end">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="lock">lock</span>
+<span class="font-label-caps text-label-caps text-primary">ENCRYPT</span>
+</div>
+<div class="aspect-square bg-surface-container-high border-3 border-outline p-4 flex flex-col justify-end">
+<span class="material-symbols-outlined text-primary mb-2" data-icon="key">key</span>
+<span class="font-label-caps text-label-caps text-primary">SECURE_KEY</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Step 3: Air-Gapped Sync -->
+<div class="relative z-10 flex gap-gutter">
+<div class="flex-shrink-0 w-14 h-14 bg-background border-3 border-primary flex items-center justify-center">
+<span class="font-data-mono text-primary">03</span>
+</div>
+<div class="space-y-4">
+<h2 class="font-headline-lg text-headline-lg-mobile text-primary">AIR_GAPPED_SYNC</h2>
+<p class="text-on-surface-variant">Zero connectivity. Transaction data is transmitted via visual QR-matrix scanning to eliminate RF-based attacks.</p>
+<div class="relative border-3 border-outline p-2 bg-white/5">
+<img alt="QR Sync" class="w-full grayscale brightness-75 border-1 border-outline" data-alt="A macro close-up of a high-resolution monochromatic QR code being scanned by a futuristic device. The scene is shot in a dark, high-contrast studio environment with hard industrial lighting. Sharp silver borders and a digital grid overlay reinforce the cryptographic security aesthetic. The mood is clinical, technical, and intensely secure, using a palette of pure blacks and stark whites." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZdXCbVcwTYnF38khvh-sVD8MPtqNLZlN04LA02JwenwE7X9S5Q3JYf5FaIUDKa6p23h8NJcsWViGd2zptaERVKznVeKuERmR5jnn4cAPSgziKeB_CcJZzEbdDkRvyfYLsc7iuvVuULCKtnw5SqLFSoDZxq7R0muVNdX97xzOfA5EItXrG-QwFPGIeuVVirNwWGJsiKh3ktA_cxivV5KdPYkWZ6hGEGSoTxifJrF5piFCAgZtUGUAhfgI8BTgYlD-5nNRGsRCY4GpZ"/>
+<div class="absolute top-4 right-4 bg-background border-1 border-primary px-2 py-1">
+<span class="font-data-mono text-[10px] text-primary">TRANS_HASH: 0x8E...2F</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- System Log Snippet -->
+<section class="mt-8 border-3 border-outline p-4 font-data-mono text-[11px] text-on-surface-variant bg-surface-container-lowest">
+<div class="flex justify-between items-center mb-2 border-b-1 border-outline-variant pb-1">
+<span class="text-primary uppercase">Console_Output</span>
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse"></span>
+</div>
+<p>&gt; initializing secure_kernel...</p>
+<p>&gt; biometric_module: ready</p>
+<p>&gt; airgap_protocol: enabled</p>
+<p>&gt; status: system_hardened</p>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-background pb-safe border-t-3 border-outline flex justify-around items-stretch h-touch-target">
+<a class="flex flex-col items-center justify-center text-on-surface-variant h-full px-4 hover:bg-surface-container-high active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span class="font-data-mono text-data-mono mt-1">VAULT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant h-full px-4 hover:bg-surface-container-high active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-data-mono text-data-mono mt-1">SECURITY</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary text-on-primary rounded-none h-full px-4 border-l-3 border-r-3 border-outline active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book" style="font-variation-settings: 'FILL' 1;">menu_book</span>
+<span class="font-data-mono text-data-mono mt-1">GUIDE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant h-full px-4 hover:bg-surface-container-high active:scale-95 transition-transform duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="font-data-mono text-data-mono mt-1">ORDER</span>
+</a>
+</nav>
+</body></html>

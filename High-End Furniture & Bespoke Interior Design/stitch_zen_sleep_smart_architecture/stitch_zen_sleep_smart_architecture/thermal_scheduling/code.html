@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zen-Sleep | Thermal Scheduling</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;600;800&amp;family=Plus+Jakarta+Sans:wght@600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "surface-container-highest": "#e4e2e2",
+                  "on-secondary-container": "#765f3d",
+                  "on-surface-variant": "#46464c",
+                  "primary-fixed-dim": "#c5c5d8",
+                  "on-tertiary-container": "#61696f",
+                  "surface-variant": "#e4e2e2",
+                  "surface-dim": "#dbdad9",
+                  "tertiary": "#575f65",
+                  "on-tertiary-fixed-variant": "#40484d",
+                  "tertiary-container": "#e1e9f0",
+                  "surface-container": "#efeded",
+                  "surface": "#fbf9f9",
+                  "on-primary": "#ffffff",
+                  "primary-fixed": "#e1e1f5",
+                  "surface-container-lowest": "#ffffff",
+                  "on-primary-container": "#656677",
+                  "error-container": "#ffdad6",
+                  "background": "#fbf9f9",
+                  "on-surface": "#1b1c1c",
+                  "outline-variant": "#c7c5cc",
+                  "secondary-container": "#fbdbb0",
+                  "on-background": "#1b1c1c",
+                  "on-secondary-fixed": "#281801",
+                  "inverse-primary": "#c5c5d8",
+                  "surface-bright": "#fbf9f9",
+                  "secondary": "#725a39",
+                  "inverse-on-surface": "#f2f0f0",
+                  "on-secondary": "#ffffff",
+                  "error": "#ba1a1a",
+                  "on-tertiary": "#ffffff",
+                  "tertiary-fixed": "#dbe4ea",
+                  "on-primary-fixed": "#191b29",
+                  "secondary-fixed": "#feddb3",
+                  "surface-tint": "#5c5d6e",
+                  "on-error": "#ffffff",
+                  "primary-container": "#e6e6fa",
+                  "secondary-fixed-dim": "#e1c299",
+                  "primary": "#5c5d6e",
+                  "inverse-surface": "#303031",
+                  "tertiary-fixed-dim": "#bfc8ce",
+                  "on-tertiary-fixed": "#151d22",
+                  "outline": "#77767d",
+                  "on-error-container": "#93000a",
+                  "on-primary-fixed-variant": "#444655",
+                  "surface-container-low": "#f5f3f3",
+                  "surface-container-high": "#e9e8e7",
+                  "on-secondary-fixed-variant": "#584324"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.25rem",
+                  "lg": "0.5rem",
+                  "xl": "0.75rem",
+                  "full": "9999px"
+          },
+          "spacing": {
+                  "container-padding": "32px",
+                  "section-gap": "64px",
+                  "unit": "8px",
+                  "gutter": "24px"
+          },
+          "fontFamily": {
+                  "body-md": ["Manrope"],
+                  "headline-lg-mobile": ["Manrope"],
+                  "label-sm": ["Plus Jakarta Sans"],
+                  "headline-lg": ["Manrope"],
+                  "display-lg": ["Manrope"]
+          },
+          "fontSize": {
+                  "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                  "headline-lg-mobile": ["28px", {"lineHeight": "36px", "fontWeight": "400"}],
+                  "label-sm": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                  "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "400"}],
+                  "display-lg": ["48px", {"lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "300"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-card {
+      background: rgba(240, 248, 255, 0.6);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .breathing-glow {
+      box-shadow: 0 0 40px rgba(230, 230, 250, 0.1);
+    }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+    }
+    .active-nav-glow {
+        box-shadow: 0 0 20px rgba(230, 230, 250, 0.5);
+    }
+    input[type=range] {
+      -webkit-appearance: none;
+      background: transparent;
+    }
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 12px;
+      background: #e6e6fa;
+      border-radius: 999px;
+    }
+    input[type=range]::-webkit-slider-thumb {
+      height: 28px;
+      width: 28px;
+      border-radius: 50%;
+      background: #D2B48C;
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -8px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md text-body-md min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-surface/60 dark:bg-surface-dim/60 backdrop-blur-xl docked full-width top-0 sticky shadow-[0_0_40px_rgba(230,230,250,0.1)] z-50">
+<div class="flex items-center justify-between px-gutter w-full h-20 max-w-7xl mx-auto">
+<div class="flex items-center gap-3 active:scale-95 transition-transform duration-500 cursor-pointer hover:opacity-80 transition-opacity">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed-dim text-3xl">bedtime</span>
+<h1 class="font-headline-lg text-headline-lg tracking-tight text-primary dark:text-primary-fixed-dim">Zen-Sleep</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed-dim p-2 hover:opacity-80 transition-opacity active:scale-95 transition-transform duration-500">emergency_home</button>
+</div>
+</div>
+</header>
+<main class="flex-grow max-w-7xl mx-auto w-full px-gutter py-section-gap space-y-section-gap pb-40">
+<!-- Hero Section: Current State -->
+<section class="grid grid-cols-1 lg:grid-cols-2 gap-gutter">
+<div class="glass-card rounded-[32px] p-10 flex flex-col justify-between min-h-[400px]">
+<div class="space-y-2">
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-70">Thermal Status</p>
+<h2 class="font-display-lg text-display-lg">Optimal Restoration</h2>
+</div>
+<div class="flex items-end justify-between">
+<div class="space-y-1">
+<span class="text-6xl font-light text-primary">68°</span>
+<p class="text-on-surface-variant">Target Reached</p>
+</div>
+<div class="w-24 h-24 rounded-full bg-primary-container/40 flex items-center justify-center breathing-glow">
+<div class="w-16 h-16 rounded-full bg-primary-container border-4 border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-3xl" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sunrise Visualizer Toggle -->
+<div class="glass-card rounded-[32px] p-10 relative overflow-hidden flex flex-col justify-between">
+<img alt="" class="absolute inset-0 w-full h-full object-cover opacity-20 pointer-events-none" data-alt="A serene, soft-focus image of a hazy sunrise over a peaceful meadow. The colors are dominated by soft lavenders, pale ambers, and frosty whites, creating a tranquil atmosphere. The lighting is ethereal and diffused, perfectly capturing the Zen-Sleep brand's compassionate and restorative aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAAeDvtAfQ1VnDryvvViiJ90HWZu7qjQ9R9baaqy39RmgtNozdojXdkVOsGfMKZnOWUs2ISnx7gr-vC0sakgUWdBOYBvLnTemycq5nwqFGyStbUIWEechbZLg8IUtyxRNrfGt61tazf6PMaUXD7FpTfuE5dPu4sZr-S1x9GbILzTKvEQy0U_QALiYftL-4hl0ejuLIDqnY9KC779ZuZaz9jYZUZZ0Ju_lVF6oDEP1YvBDCUr27aZJ91uTJQ1yTdltCmFtc5c1_DemE3"/>
+<div class="relative z-10 space-y-2">
+<div class="flex items-center justify-between">
+<p class="font-label-sm text-label-sm uppercase tracking-widest text-on-surface-variant opacity-70">Sunrise Alarm</p>
+<div class="w-12 h-6 bg-primary-container rounded-full relative cursor-pointer">
+<div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow-sm"></div>
+</div>
+</div>
+<h3 class="font-headline-lg text-headline-lg">Luminous Awakening</h3>
+<p class="text-on-surface-variant max-w-xs">Gently warm the mattress and fade in amber light to mimic a natural sunrise at 6:30 AM.</p>
+</div>
+<div class="relative z-10 pt-4">
+<div class="flex gap-2">
+<span class="px-4 py-2 bg-white/40 rounded-full text-label-sm font-label-sm uppercase">06:30 AM</span>
+<span class="px-4 py-2 bg-white/40 rounded-full text-label-sm font-label-sm uppercase">+2° Warmth</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Dual Zone Temperature Control -->
+<section class="space-y-gutter">
+<div class="flex items-center justify-between">
+<h2 class="font-headline-lg text-headline-lg">Dual-Zone Calibration</h2>
+<span class="material-symbols-outlined text-outline">info</span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Zone Left -->
+<div class="glass-card rounded-[32px] p-8 space-y-8">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">person</span>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest opacity-60">Zone One</p>
+<p class="font-bold">Deep Sleep Focus</p>
+</div>
+</div>
+<span class="text-headline-lg font-light">67°</span>
+</div>
+<div class="space-y-4">
+<input class="w-full" max="80" min="60" type="range" value="67"/>
+<div class="flex justify-between text-label-sm text-outline px-1">
+<span>Cooling</span>
+<span>Neutral</span>
+<span>Warming</span>
+</div>
+</div>
+<div class="h-32 w-full bg-white/20 rounded-2xl flex items-end overflow-hidden p-4 gap-1">
+<!-- Mock Temperature Curve -->
+<div class="flex-1 bg-primary/20 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[25%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[35%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[50%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/50 h-[80%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[90%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- Zone Right -->
+<div class="glass-card rounded-[32px] p-8 space-y-8 border-primary/20">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary">person_4</span>
+<div>
+<p class="font-label-sm text-label-sm uppercase tracking-widest opacity-60">Zone Two</p>
+<p class="font-bold">Recovery Cycle</p>
+</div>
+</div>
+<span class="text-headline-lg font-light">71°</span>
+</div>
+<div class="space-y-4">
+<input class="w-full" max="80" min="60" type="range" value="71"/>
+<div class="flex justify-between text-label-sm text-outline px-1">
+<span>Cooling</span>
+<span>Neutral</span>
+<span>Warming</span>
+</div>
+</div>
+<div class="h-32 w-full bg-white/20 rounded-2xl flex items-end overflow-hidden p-4 gap-1">
+<!-- Mock Temperature Curve -->
+<div class="flex-1 bg-primary/20 h-[30%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[40%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[60%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/30 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/20 h-[75%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/40 h-[70%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/50 h-[65%] rounded-t-sm"></div>
+<div class="flex-1 bg-primary/60 h-[60%] rounded-t-sm"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Manual Override Bar -->
+<section>
+<div class="glass-card rounded-full p-2 pl-8 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-secondary-container">bolt</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Manual Override</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-6 py-3 bg-white rounded-full text-label-sm font-label-sm uppercase hover:opacity-80 transition-all">Reset Curve</button>
+<button class="px-8 py-3 bg-primary text-on-primary rounded-full text-label-sm font-label-sm uppercase shadow-lg shadow-primary/20 active:scale-95 transition-all">Boost Heat</button>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-surface/60 dark:bg-surface-dim/60 backdrop-blur-2xl fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 rounded-t-xl shadow-[0_-8px_32px_rgba(230,230,250,0.15)]">
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1">analytics</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Architecture</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed-dim animate-pulse bg-primary-container/30 rounded-full p-3 active:animate-[breathing_10s_ease-in-out_infinite] scale-105" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">thermostat</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Thermal</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1">bedtime_off</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Ambiance</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1">vital_signs</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined mb-1">tune</span>
+<span class="font-label-sm text-label-sm uppercase tracking-widest">Manual</span>
+</a>
+</nav>
+</body></html>

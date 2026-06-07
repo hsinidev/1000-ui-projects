@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Neuro-Veil | Mood Map Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Questrial&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-tint": "#5952af",
+                        "surface-container": "#e8eff1",
+                        "surface-container-low": "#eef5f7",
+                        "on-secondary-fixed": "#141b2c",
+                        "primary-fixed": "#e3dfff",
+                        "inverse-surface": "#2b3234",
+                        "on-secondary-fixed-variant": "#3f4759",
+                        "on-secondary-container": "#5d6478",
+                        "secondary-fixed-dim": "#bfc6dd",
+                        "primary": "#5952af",
+                        "surface-variant": "#dde4e6",
+                        "outline-variant": "#c8c4d3",
+                        "secondary": "#575e72",
+                        "inverse-on-surface": "#ebf2f4",
+                        "tertiary": "#5c5f61",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "surface": "#f4fafd",
+                        "on-tertiary-fixed-variant": "#444749",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#a4a7a9",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#a29bfe",
+                        "on-tertiary-container": "#393d3e",
+                        "on-surface": "#161d1f",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#191c1e",
+                        "on-background": "#161d1f",
+                        "outline": "#787583",
+                        "on-error-container": "#93000a",
+                        "on-surface-variant": "#474552",
+                        "on-primary-container": "#362d8a",
+                        "tertiary-fixed": "#e0e3e5",
+                        "on-primary-fixed-variant": "#413996",
+                        "tertiary-fixed-dim": "#c4c7c9",
+                        "surface-dim": "#d4dbdd",
+                        "surface-container-highest": "#dde4e6",
+                        "secondary-fixed": "#dbe2fa",
+                        "background": "#f4fafd",
+                        "primary-fixed-dim": "#c5c0ff",
+                        "inverse-primary": "#c5c0ff",
+                        "surface-container-high": "#e2e9ec",
+                        "surface-bright": "#f4fafd",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dbe2fa",
+                        "on-primary-fixed": "#140067",
+                        "surface-container-lowest": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "xs": "0.5rem",
+                        "sm": "1rem",
+                        "md": "2rem",
+                        "margin": "max(5vw, 24px)",
+                        "lg": "4rem",
+                        "gutter": "24px",
+                        "xl": "8rem",
+                        "unit": "8px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["Questrial"],
+                        "headline-md": ["Questrial"],
+                        "display-lg": ["Questrial"],
+                        "body-base": ["Questrial"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", {"lineHeight": "1.5", "letterSpacing": "0.08em", "fontWeight": "500"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "letterSpacing": "0.03em", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.2", "letterSpacing": "0.04em", "fontWeight": "400"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Questrial', sans-serif;
+            background: radial-gradient(circle at top right, #e3dfff 0%, #f4fafd 40%, #ffffff 100%);
+            min-height: 100vh;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 8px 32px 0 rgba(89, 82, 175, 0.05);
+        }
+        .inner-glow {
+            box-shadow: inset 1px 1px 0px rgba(255, 255, 255, 0.8);
+        }
+        .breathing-pacer {
+            animation: breath 8s ease-in-out infinite;
+        }
+        @keyframes breath {
+            0%, 100% { transform: scale(1); opacity: 0.4; }
+            50% { transform: scale(1.15); opacity: 0.7; }
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #c8c4d3; border-radius: 10px; }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Top Navigation Shell -->
+<header class="flex justify-between items-center w-full px-margin py-sm fixed top-0 z-50 bg-surface/80 backdrop-blur-xl shadow-[0_8px_32px_0_rgba(89,82,175,0.05)]">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-headline-md" data-icon="waves">waves</span>
+<h1 class="text-headline-md font-headline-md font-medium tracking-widest text-primary">Neuro-Veil</h1>
+</div>
+<nav class="hidden md:flex items-center gap-xl">
+<a class="text-secondary hover:opacity-80 transition-opacity duration-500 font-label-sm text-label-sm" href="#">Science</a>
+<a class="text-primary font-label-sm text-label-sm border-b-2 border-primary/30 pb-1" href="#">Mood Map</a>
+<a class="text-secondary hover:opacity-80 transition-opacity duration-500 font-label-sm text-label-sm" href="#">Calm</a>
+<a class="text-secondary hover:opacity-80 transition-opacity duration-500 font-label-sm text-label-sm" href="#">Shop</a>
+</nav>
+<div class="flex items-center gap-md">
+<button class="material-symbols-outlined text-primary text-headline-md hover:opacity-80 transition-opacity duration-500" data-icon="notifications_active">notifications_active</button>
+<div class="w-10 h-10 rounded-full bg-primary-fixed border border-white flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary-fixed-variant" data-icon="person">person</span>
+</div>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="pt-32 pb-24 px-margin max-w-7xl mx-auto">
+<!-- Header Section with Breathing Pacer -->
+<section class="mb-lg flex flex-col md:flex-row justify-between items-end gap-md">
+<div class="space-y-xs">
+<h2 class="text-display-lg font-display-lg text-primary tracking-tight">Your Resonance.</h2>
+<p class="text-body-base font-body-base text-secondary max-w-lg">Weekly equilibrium report. Your biological markers indicate a 12% increase in sustained calm over the last 7 days.</p>
+</div>
+<div class="flex items-center gap-sm glass-card px-md py-xs rounded-full inner-glow">
+<div class="w-3 h-3 bg-primary rounded-full breathing-pacer"></div>
+<span class="text-label-sm font-label-sm text-primary tracking-widest">PACED BREATH ACTIVE</span>
+</div>
+</section>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Chart Card (Large) -->
+<div class="md:col-span-8 glass-card rounded-xl p-md inner-glow relative overflow-hidden h-[450px]">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface">Biological Resonance</h3>
+<p class="text-label-sm font-label-sm text-secondary uppercase">Weekly Comparison (Hz)</p>
+</div>
+<div class="flex gap-xs">
+<span class="flex items-center gap-1 text-label-sm font-label-sm text-primary-container"><span class="w-2 h-2 rounded-full bg-primary-container"></span> Current</span>
+<span class="flex items-center gap-1 text-label-sm font-label-sm text-outline-variant ml-md"><span class="w-2 h-2 rounded-full bg-outline-variant"></span> Previous</span>
+</div>
+</div>
+<!-- Fluid Visualization Placeholder -->
+<div class="w-full h-64 relative mt-10">
+<svg class="w-full h-full" viewbox="0 0 800 200">
+<!-- Previous Week Line -->
+<path d="M0,150 Q100,120 200,140 T400,110 T600,160 T800,130" fill="none" stroke="#c8c4d3" stroke-dasharray="8,4" stroke-width="2"></path>
+<!-- Current Week Fluid Path -->
+<path d="M0,140 Q100,80 200,100 T400,40 T600,90 T800,60" fill="none" stroke="#5952af" stroke-linecap="round" stroke-width="4"></path>
+<!-- Decorative Gradient Under Path -->
+<path d="M0,140 Q100,80 200,100 T400,40 T600,90 T800,60 L800,200 L0,200 Z" fill="url(#grad1)" opacity="0.1"></path>
+<defs>
+<lineargradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#5952af;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#5952af;stop-opacity:0"></stop>
+</lineargradient>
+</defs>
+<!-- Data Points -->
+<circle class="animate-pulse" cx="400" cy="40" fill="#5952af" r="6"></circle>
+</svg>
+<div class="absolute top-[30px] left-[390px] glass-card px-sm py-xs rounded-lg text-label-sm font-label-sm text-primary border-primary/20">
+                        Peak Flow: 7.2Hz
+                    </div>
+</div>
+</div>
+<!-- Side Metric Cards -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- Peak Calm Card -->
+<div class="glass-card rounded-xl p-md inner-glow flex flex-col justify-between h-1/2 overflow-hidden relative group">
+<div class="z-10">
+<span class="material-symbols-outlined text-primary-container" data-icon="self_care">self_care</span>
+<h4 class="text-label-sm font-label-sm text-secondary uppercase mt-xs">Peak Calm Duration</h4>
+<div class="text-display-lg font-display-lg text-primary mt-xs">4.2<span class="text-headline-md">hrs</span></div>
+</div>
+<div class="z-10 mt-md">
+<div class="w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="w-3/4 h-full bg-primary-container"></div>
+</div>
+<p class="text-label-sm font-label-sm text-secondary mt-xs">+18% from target</p>
+</div>
+<!-- Decorative Bio-Shape -->
+<div class="absolute -right-8 -bottom-8 w-32 h-32 bg-primary/5 rounded-full blur-3xl group-hover:scale-150 transition-transform duration-700"></div>
+</div>
+<!-- Resonance Score Card -->
+<div class="glass-card rounded-xl p-md inner-glow flex flex-col justify-between h-1/2 overflow-hidden relative group">
+<div class="z-10">
+<span class="material-symbols-outlined text-tertiary-container" data-icon="psychology">psychology</span>
+<h4 class="text-label-sm font-label-sm text-secondary uppercase mt-xs">Resonance Score</h4>
+<div class="text-display-lg font-display-lg text-primary mt-xs">88<span class="text-headline-md">/100</span></div>
+</div>
+<div class="z-10 flex items-center gap-xs mt-md">
+<span class="text-label-sm font-label-sm px-xs py-[2px] bg-primary-fixed text-on-primary-fixed-variant rounded-full">Optimized</span>
+<p class="text-label-sm font-label-sm text-secondary">High Coherence</p>
+</div>
+<div class="absolute -right-12 top-0 w-40 h-40 bg-secondary-container/10 rounded-full blur-3xl group-hover:bg-primary/10 transition-colors duration-700"></div>
+</div>
+</div>
+<!-- Session History (Wide) -->
+<div class="md:col-span-8 glass-card rounded-xl p-md inner-glow">
+<div class="flex justify-between items-center mb-md">
+<h3 class="text-headline-md font-headline-md text-on-surface">Recent Vails</h3>
+<button class="text-label-sm font-label-sm text-primary uppercase flex items-center gap-1 hover:opacity-70 transition-opacity">
+                        View All <span class="material-symbols-outlined text-[14px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<div class="space-y-sm max-h-64 overflow-y-auto custom-scrollbar pr-xs">
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-white/40 transition-colors duration-300 cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A serene close-up of soft morning light filtering through a frosted glass window with gentle botanical shadows. The mood is tranquil and ethereal, reflecting a light-mode aesthetic with a palette of whites and soft primary lavender tones. The style is high-end architectural photography with a minimalist, airy feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCoBdkm8omlQtHbK_1eup7rjIoAF6KFf_xlKsrCJXE5WTyJ5RMjRLwl-69JxxYp7JtcjeK4VWimPujItxAaIpjJup1pyGKIkEx8I03GsaqaV7CbtraEshLj96Kb526NR3n3lySfFb3oGYW-4OwpwjQuur4FJgg6IkNerKLBz_tvFlYQXhHPbFv6GRLnI6AlOL8qRwBOefJfByu5YQswEjYsyrR98VV_642ukLoP4wDMBhjeRH0430h5NtiJjwqq5ct3RsJQUt-cVnXF"/>
+</div>
+<div>
+<p class="text-body-base font-body-base text-on-surface">Deep Delta Immersion</p>
+<p class="text-label-sm font-label-sm text-secondary">Tuesday • 45 mins • 7.4Hz Avg</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-white/40 transition-colors duration-300 cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An artistic representation of soft water ripples in a pristine pool, reflecting a bright and clear sky. The colors are muted pastels and whites, creating a sense of crystalline clarity and calm. The visual style is focused on atmospheric depth and biological resonance, aligning with a high-end digital wellness interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPdj9CdInzJ9yyvqcwe5XNY3jdklNZDlzIRdvo0Ff2C3MAeAlD_KudmcdHFPpp1dXjBc-GGlKMSb6eQO9jVa9t2X14Ts5hEx2go1j912BDEf_P84QIzbBCkKRxnyihD89JbSR3Am4-0OoFpmTh9seFLkINFXXPw4HomEcuioaaWRAOeOfuRI8ItsMEjPytVNC2MNJyT5czMC2QuDBWQwYMcEOswPoV0l742gND3HYsgj0MTv0EeT_W5RZf4j3DdsAgXa8ie_SXgx6F"/>
+</div>
+<div>
+<p class="text-body-base font-body-base text-on-surface">Morning Equilibrium</p>
+<p class="text-label-sm font-label-sm text-secondary">Monday • 20 mins • 6.8Hz Avg</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-white/40 transition-colors duration-300 cursor-pointer">
+<div class="flex items-center gap-md">
+<div class="w-12 h-12 rounded-full overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="Macro detail of a translucent leaf showcasing delicate organic veins under soft, diffused lighting. The image emphasizes high-key lighting and a palette of airy lavender and whites. It captures a sense of biological complexity and serene precision, designed for a modern health technology dashboard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtdduiBU1dgAwLbd0xWM014LuDr31MbbZ3U4kNsN31GYHha-Ag08swW8pMOzm-mdcMNIk3tHm0d_dA1VTp_WuM_tVOMcyBTTLAQ525XRuriGEuQcKYol_bOYpRZOjrGkD946zjgb8YQJw-vJ-Fy0jgQDOcN1d8B0VCgwKiqP82tRKnjxL5dAs1j41YT2qUlL91yQQ1XXGi-_aqelkvxn3XkWhpSe8DCsBQZBZuOQ4XOuViWBEHNkvtNVupyWPFuwxnPUP5d5BG2NmD"/>
+</div>
+<div>
+<p class="text-body-base font-body-base text-on-surface">Focus Flow: Beta-State</p>
+<p class="text-label-sm font-label-sm text-secondary">Sunday • 60 mins • 12.1Hz Avg</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-outline-variant" data-icon="more_horiz">more_horiz</span>
+</div>
+</div>
+</div>
+<!-- Mood-to-Color Guide (Interactive Tile) -->
+<div class="md:col-span-4 glass-card rounded-xl p-md inner-glow bg-gradient-to-br from-primary/5 to-surface flex flex-col justify-between">
+<div>
+<h3 class="text-headline-md font-headline-md text-on-surface mb-xs">Mood Matrix</h3>
+<p class="text-label-sm font-label-sm text-secondary">Current Color Resonance</p>
+</div>
+<div class="grid grid-cols-3 gap-xs my-md">
+<div class="aspect-square rounded-lg bg-primary opacity-90 flex flex-col items-center justify-center text-white p-xs shadow-lg shadow-primary/20">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Zen</span>
+<span class="text-[10px] font-bold">Lavender</span>
+</div>
+<div class="aspect-square rounded-lg bg-primary-container flex flex-col items-center justify-center text-on-primary-container p-xs border border-white/20">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Focus</span>
+<span class="text-[10px] font-bold">Frost</span>
+</div>
+<div class="aspect-square rounded-lg bg-surface-variant flex flex-col items-center justify-center text-on-surface-variant p-xs border border-white/20">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Neutral</span>
+<span class="text-[10px] font-bold">Mist</span>
+</div>
+<div class="aspect-square rounded-lg bg-tertiary-container flex flex-col items-center justify-center text-on-tertiary-container p-xs">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Stable</span>
+<span class="text-[10px] font-bold">Slate</span>
+</div>
+<div class="aspect-square rounded-lg bg-secondary-fixed flex flex-col items-center justify-center text-on-secondary-fixed p-xs border border-primary/10">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Calm</span>
+<span class="text-[10px] font-bold">Sky</span>
+</div>
+<div class="aspect-square rounded-lg bg-primary-fixed flex flex-col items-center justify-center text-primary p-xs ring-2 ring-primary ring-offset-2">
+<span class="text-[10px] font-label-sm uppercase opacity-70">Active</span>
+<span class="text-[10px] font-bold">Veil</span>
+</div>
+</div>
+<p class="text-label-sm font-label-sm text-secondary leading-relaxed">
+                    Your current veil color is <span class="text-primary font-bold">Veil Purple</span>, indicating active mindfulness.
+                </p>
+</div>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile View Transition Placeholder) -->
+<footer class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-lowest/70 backdrop-blur-2xl border-t border-white/20 shadow-[0_-8px_32px_0_rgba(89,82,175,0.08)] rounded-t-xl">
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="psychology">psychology</span>
+<span class="text-label-sm font-label-sm">Science</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary bg-primary-fixed/30 rounded-full px-4 py-1 transition-all duration-700 ease-in-out">
+<span class="material-symbols-outlined" data-icon="insights" data-weight="fill" style="font-variation-settings: 'FILL' 1;">insights</span>
+<span class="text-label-sm font-label-sm">Mood Map</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="self_care">self_care</span>
+<span class="text-label-sm font-label-sm">Calm</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant opacity-60">
+<span class="material-symbols-outlined" data-icon="shopping_bag">shopping_bag</span>
+<span class="text-label-sm font-label-sm">Shop</span>
+</div>
+</footer>
+<!-- Floating Action Button (Active only on Home/Map) -->
+<button class="fixed bottom-10 right-10 w-14 h-14 rounded-full bg-primary text-white shadow-xl flex items-center justify-center hover:scale-110 transition-transform duration-300 z-40 group">
+<span class="material-symbols-outlined text-headline-md group-hover:rotate-90 transition-transform duration-500" data-icon="add">add</span>
+</button>
+</body></html>

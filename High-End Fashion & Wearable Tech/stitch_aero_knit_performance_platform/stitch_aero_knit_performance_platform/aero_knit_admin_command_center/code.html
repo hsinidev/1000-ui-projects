@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Aero-Knit | Admin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(28, 27, 27, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(68, 71, 72, 0.12);
+        }
+        .kinetic-grid {
+            background-image: linear-gradient(rgba(229, 226, 225, 0.03) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(229, 226, 225, 0.03) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .neon-glow {
+            box-shadow: 0 0 15px rgba(201, 198, 197, 0.15);
+        }
+        .mint-accent { color: #c9c6c5; } /* Based on Primary in Config */
+        /* Overriding primary slightly to match 'Neon Mint' prompt requirement while staying in-system */
+        .status-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .4; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-highest": "#353434",
+                        "primary-fixed": "#e5e2e1",
+                        "on-primary-container": "#7b7979",
+                        "on-tertiary-container": "#7c7977",
+                        "on-tertiary-fixed-variant": "#484645",
+                        "on-primary-fixed-variant": "#474646",
+                        "tertiary-fixed": "#e6e1df",
+                        "on-primary": "#313030",
+                        "secondary-container": "#484949",
+                        "surface": "#141313",
+                        "surface-bright": "#3a3939",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "secondary-fixed-dim": "#c7c6c6",
+                        "tertiary-fixed-dim": "#cac6c3",
+                        "secondary": "#c7c6c6",
+                        "on-tertiary": "#32302f",
+                        "on-secondary-container": "#b8b8b8",
+                        "tertiary-container": "#0b0a09",
+                        "on-tertiary-fixed": "#1d1b1a",
+                        "on-error": "#690005",
+                        "on-surface-variant": "#c4c7c7",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-surface": "#e5e2e1",
+                        "error-container": "#93000a",
+                        "surface-container-low": "#1c1b1b",
+                        "on-primary-fixed": "#1c1b1b",
+                        "inverse-on-surface": "#313030",
+                        "background": "#141313",
+                        "surface-tint": "#c9c6c5",
+                        "primary-container": "#0a0a0a",
+                        "tertiary": "#cac6c3",
+                        "outline": "#8e9192",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed-variant": "#464747",
+                        "inverse-surface": "#e5e2e1",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-error-container": "#ffdad6",
+                        "surface-variant": "#353434",
+                        "outline-variant": "#444748",
+                        "primary": "#c9c6c5",
+                        "inverse-primary": "#5f5e5e",
+                        "surface-container-high": "#2b2a2a",
+                        "error": "#ffb4ab",
+                        "surface-dim": "#141313",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "on-secondary": "#2f3131"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "4px",
+                        "base": "8px",
+                        "sm": "12px",
+                        "xl": "80px",
+                        "lg": "48px",
+                        "gutter": "24px",
+                        "margin": "32px",
+                        "md": "24px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Space Grotesk"],
+                        "label-caps": ["JetBrains Mono"],
+                        "headline-md": ["Space Grotesk"],
+                        "data-point": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "display-xl": ["Space Grotesk"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0.01em", "fontWeight": "600"}],
+                        "data-point": ["32px", {"lineHeight": "1", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "display-xl": ["72px", {"lineHeight": "1.1", "letterSpacing": "-0.04em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md kinetic-grid min-h-screen">
+<!-- TopNavBar -->
+<header class="fixed top-0 z-50 w-full h-xl bg-surface/60 backdrop-blur-[20px] flex justify-between items-center px-margin border-b border-outline-variant/12">
+<div class="flex items-center gap-lg">
+<span class="font-headline-md text-headline-md font-bold text-primary tracking-tighter">Aero-Knit</span>
+<div class="hidden md:flex items-center bg-surface-container-highest/30 px-md py-xs rounded-full border border-outline-variant/20">
+<span class="material-symbols-outlined text-on-surface-variant mr-base">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-body-md w-64 placeholder:text-on-surface-variant/50" placeholder="Search system nodes..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex gap-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">sensors</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<button class="relative text-on-surface-variant hover:text-primary transition-colors duration-200">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full border-2 border-surface"></span>
+</button>
+</div>
+<div class="w-10 h-10 rounded-full border border-primary/20 overflow-hidden">
+<img alt="Athlete Profile Avatar" data-alt="A highly detailed close-up of a professional athlete avatar for a futuristic textile company dashboard. The style is ultra-modern, using deep black backgrounds with subtle silver highlights and a sharp, technological aesthetic. Soft studio lighting reflects off synthetic fabric textures, creating a mood of focused intensity and premium performance in a dark mode UI context." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9pd3wl3Z53qIkD7__OMd9WgzsDbzt7V9_y2niK-XKIZRcT0Uy4ZQcg-ZTF17elXpaLmILm9FNlevNIIU30uhyXYdgJx-TL26r9urZ5uUMGXLRBI2AGcEx7J7ts_VQgtQwR_nYZqjkJ9eID5fVl4L0k3Gu25BOX9hWw0w5dPtcQBOCQbOeV23z8SCoBfLEhMW6GRzH4ojnHFodg7GMGbPwVkJYcmr085GfV9xcjD2TR0OKICUlV-YZhHD3oh6MJMAQ8a5_Z21P-ig"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 h-screen w-xl flex flex-col py-gutter bg-surface-container-low/40 backdrop-blur-[20px] border-r border-outline-variant/12 z-40 pt-xl">
+<div class="px-md mb-lg">
+<div class="flex flex-col">
+<span class="font-headline-md text-headline-md text-primary font-bold">KINETIC CORE</span>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full status-pulse"></span>
+<span class="font-label-caps text-label-caps text-on-surface-variant">SYSTEM ACTIVE</span>
+</div>
+</div>
+</div>
+<nav class="flex-1 space-y-xs px-xs">
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span>The Science</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">thermostat</span>
+<span>Thermal Mapping</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">monitoring</span>
+<span>Recovery Analytics</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>
+<span>Shop</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">quiz</span>
+<span>FAQ</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-primary border-l-2 border-primary bg-primary/5 transition-all" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+<span>Admin Panel</span>
+</a>
+</nav>
+<div class="mt-auto px-xs space-y-xs border-t border-outline-variant/12 pt-gutter">
+<button class="w-full bg-primary text-on-primary font-label-caps text-label-caps py-sm mb-gutter hover:opacity-90 transition-all rounded-sm">UPGRADE GEAR</button>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm font-label-caps text-label-caps text-on-surface-variant hover:bg-surface-container-highest/50 hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-xl pt-xl px-margin pb-margin">
+<header class="py-lg flex justify-between items-end">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface uppercase tracking-tight">Admin Command</h1>
+<p class="text-on-surface-variant/70 font-body-lg">Real-time textile performance &amp; fabrication logistics.</p>
+</div>
+<div class="flex gap-md">
+<div class="glass-panel px-md py-sm rounded-lg flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">NODE UPTIME</span>
+<span class="font-data-point text-primary">99.98%</span>
+</div>
+<div class="glass-panel px-md py-sm rounded-lg flex flex-col items-end">
+<span class="font-label-caps text-[10px] text-on-surface-variant">ACTIVE DATA STREAMS</span>
+<span class="font-data-point text-primary">12,402</span>
+</div>
+</div>
+</header>
+<!-- High-Density Dashboard Grid -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Manufacturing Heat-Map (Primary Visual) -->
+<div class="col-span-12 lg:col-span-8 glass-panel rounded-xl overflow-hidden relative group">
+<div class="p-gutter border-b border-outline-variant/12 flex justify-between items-center">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">grid_view</span>
+<h3 class="font-headline-md text-headline-md uppercase">Heat-Map Fabrication Visualization</h3>
+</div>
+<div class="flex gap-base">
+<span class="px-sm py-xs bg-surface-container-highest rounded text-[10px] font-label-caps text-on-surface border border-outline-variant/20">LIVE: TOKYO_HUB</span>
+<span class="px-sm py-xs bg-surface-container-highest rounded text-[10px] font-label-caps text-on-surface border border-outline-variant/20">BERLIN_NODE</span>
+</div>
+</div>
+<div class="h-[400px] relative">
+<img class="w-full h-full object-cover opacity-60 mix-blend-screen" data-alt="A sophisticated data visualization map showing global manufacturing nodes. The image features a dark carbon background with glowing geometric paths and neon mint heat-map zones pulsing with energy. Thin silver grid lines provide a technical structure, suggesting a high-velocity aerospace or advanced textile control interface in a dark, premium aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzIwMsx3u6e0-ok1AmV69H29VkyDDIDcKRyeXgu_C3nUlKvICpUGySmwdFejzSFt08y_vKHPM2CDDP5ZZhNo-WORiAo8rylNm421nQV-rI-9cx_HT0ky5704wyXgABBKP1VNoZ1NaN30JmqqEnRr7MKOKxKGQMrfLBazk24y7_MAJGyNc-BimkVhCHOXQtYKDvCg2B7pq0HRAgQ6ChMepL1D-aA1KDifLLdiC-BImR1dYzag1XZfltx2x-YjA2LdYufjAu5OwP0a4"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-40"></div>
+<!-- Data Overlays -->
+<div class="absolute bottom-md left-md p-md glass-panel rounded border-primary/20">
+<div class="text-[10px] font-label-caps text-primary mb-xs">CRITICAL THERMAL DELTA</div>
+<div class="text-headline-md font-bold text-on-surface">+12.4°C / s</div>
+</div>
+</div>
+</div>
+<!-- Material Inventory -->
+<div class="col-span-12 lg:col-span-4 glass-panel rounded-xl p-gutter flex flex-col">
+<div class="flex items-center gap-md mb-lg">
+<span class="material-symbols-outlined text-primary">inventory_2</span>
+<h3 class="font-headline-md text-headline-md uppercase">Phase-Change Materials</h3>
+</div>
+<div class="space-y-gutter flex-1">
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>PCM-720 POLYMER</span>
+<span class="text-primary">82%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[82%] neon-glow"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>THERMAL-GRID MESH</span>
+<span class="text-primary">45%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[45%] neon-glow"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between font-label-caps text-label-caps text-on-surface-variant">
+<span>AERO-KNIT FIBER L3</span>
+<span class="text-primary">12%</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-error w-[12%] shadow-[0_0_10px_rgba(255,180,171,0.5)]"></div>
+</div>
+</div>
+</div>
+<button class="w-full mt-lg py-md border border-outline text-on-surface font-label-caps text-label-caps hover:bg-primary/10 transition-colors">INITIATE RE-STOCK</button>
+</div>
+<!-- Biometric Aggregates -->
+<div class="col-span-12 lg:col-span-5 glass-panel rounded-xl p-gutter">
+<div class="flex items-center justify-between mb-lg">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">analytics</span>
+<h3 class="font-headline-md text-headline-md uppercase">Biometric Streams</h3>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">open_in_full</span>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="bg-surface-container-low p-md rounded border border-outline-variant/10">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-xs">AVG CORE TEMP</div>
+<div class="text-headline-md font-bold text-primary">37.2°C</div>
+</div>
+<div class="bg-surface-container-low p-md rounded border border-outline-variant/10">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-xs">HYDRATION INDEX</div>
+<div class="text-headline-md font-bold text-primary">88%</div>
+</div>
+<div class="bg-surface-container-low p-md rounded border border-outline-variant/10">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-xs">LACTATE THRESHOLD</div>
+<div class="text-headline-md font-bold text-primary">4.2 mmol</div>
+</div>
+<div class="bg-surface-container-low p-md rounded border border-outline-variant/10">
+<div class="text-[10px] font-label-caps text-on-surface-variant mb-xs">SYNC COHERENCE</div>
+<div class="text-headline-md font-bold text-primary">0.92</div>
+</div>
+</div>
+</div>
+<!-- System Status Node List -->
+<div class="col-span-12 lg:col-span-7 glass-panel rounded-xl overflow-hidden">
+<div class="p-gutter border-b border-outline-variant/12 bg-surface-container-highest/20">
+<h3 class="font-headline-md text-headline-md uppercase">Global Manufacturing Nodes</h3>
+</div>
+<div class="divide-y divide-outline-variant/12">
+<div class="flex items-center justify-between p-md hover:bg-surface-container-highest/30 transition-colors group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary group-hover:scale-110 transition-transform">factory</span>
+<div>
+<div class="font-label-caps text-on-surface">SHIBUYA_FAB_01</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Tokyo, Japan • Priority Alpha</div>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="text-right">
+<div class="text-xs font-label-caps text-on-surface">94% LOAD</div>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full mt-1">
+<div class="w-full bg-primary h-full"></div>
+</div>
+</div>
+<span class="px-sm py-1 bg-primary/10 text-primary font-label-caps text-[10px] rounded border border-primary/20">OPERATIONAL</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-highest/30 transition-colors group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary">factory</span>
+<div>
+<div class="font-label-caps text-on-surface">MITTE_NODE_X</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Berlin, DE • Priority Beta</div>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="text-right">
+<div class="text-xs font-label-caps text-on-surface">32% LOAD</div>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full mt-1">
+<div class="w-1/3 bg-primary h-full"></div>
+</div>
+</div>
+<span class="px-sm py-1 bg-primary/10 text-primary font-label-caps text-[10px] rounded border border-primary/20">OPERATIONAL</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-md hover:bg-surface-container-highest/30 transition-colors group">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-error">warning</span>
+<div>
+<div class="font-label-caps text-on-surface">RED_HOOK_MILL</div>
+<div class="text-[10px] text-on-surface-variant uppercase">Brooklyn, USA • Priority Gamma</div>
+</div>
+</div>
+<div class="flex items-center gap-lg">
+<div class="text-right">
+<div class="text-xs font-label-caps text-on-surface">0% LOAD</div>
+<div class="w-16 h-1 bg-surface-container-highest rounded-full mt-1">
+<div class="w-0 bg-error h-full"></div>
+</div>
+</div>
+<span class="px-sm py-1 bg-error/10 text-error font-label-caps text-[10px] rounded border border-error/20">MAINTENANCE</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Material Tag (Status Indicator) -->
+<div class="fixed bottom-margin right-margin flex items-center gap-base glass-panel px-md py-sm rounded-lg border-primary/20 z-50">
+<span class="w-2 h-2 bg-primary rounded-full status-pulse"></span>
+<span class="font-label-caps text-label-caps text-primary">CORE TELEMETRY: SYNCED</span>
+</div>
+</body></html>

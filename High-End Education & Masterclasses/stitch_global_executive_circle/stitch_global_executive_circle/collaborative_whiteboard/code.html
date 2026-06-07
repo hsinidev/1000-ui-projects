@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global-Cohort | Collaborative Whiteboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&amp;family=Hanken+Grotesk:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 200, 'GRAD' 0, 'opsz' 24;
+        }
+        .canvas-grid {
+            background-image: radial-gradient(rgba(233, 195, 73, 0.05) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+        .gold-foil-border {
+            border: 1px solid transparent;
+            border-image: linear-gradient(to bottom right, #ffe088, #e9c349, #af8d11) 1;
+        }
+        .gold-foil-line {
+            background: linear-gradient(90deg, transparent, #e9c349, transparent);
+            height: 1px;
+        }
+        .haptic-pulse:active {
+            transform: scale(0.97);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "secondary-fixed": "#ffe088",
+                        "secondary": "#e9c349",
+                        "on-primary-fixed": "#141a32",
+                        "secondary-container": "#af8d11",
+                        "inverse-primary": "#575d78",
+                        "tertiary-fixed": "#e3e2e2",
+                        "primary-fixed": "#dce1ff",
+                        "on-primary": "#292f48",
+                        "tertiary": "#c6c6c6",
+                        "primary-fixed-dim": "#bfc5e4",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "background": "#111415",
+                        "on-error": "#690005",
+                        "surface-tint": "#bfc5e4",
+                        "on-tertiary-container": "#7d7e7e",
+                        "primary-container": "#0a1128",
+                        "secondary-container": "#af8d11",
+                        "inverse-primary": "#575d78",
+                        "on-secondary-container": "#342800",
+                        "error-container": "#93000a",
+                        "on-secondary": "#3c2f00",
+                        "primary": "#bfc5e4",
+                        "surface-container-high": "#282a2b",
+                        "on-tertiary": "#2f3131",
+                        "surface-container-highest": "#323536",
+                        "surface-container-low": "#191c1d",
+                        "error": "#ffb4ab",
+                        "surface": "#111415",
+                        "on-surface": "#e1e3e4",
+                        "on-background": "#e1e3e4",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#464747",
+                        "surface-dim": "#111415",
+                        "surface-variant": "#323536",
+                        "inverse-surface": "#e1e3e4",
+                        "on-surface-variant": "#c6c6ce",
+                        "on-secondary-fixed": "#241a00",
+                        "on-primary-container": "#767c99",
+                        "inverse-on-surface": "#2e3132",
+                        "surface-bright": "#373a3b",
+                        "outline": "#909098",
+                        "tertiary-container": "#111313",
+                        "outline-variant": "#46464d",
+                        "surface-container": "#1d2021",
+                        "on-secondary-fixed-variant": "#574500"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "stack-md": "16px",
+                        "stack-sm": "8px",
+                        "container-padding": "24px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "stack-xl": "64px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "label-caps": ["Hanken Grotesk"],
+                        "label-sm": ["Hanken Grotesk"],
+                        "headline-lg": ["Playfair Display"],
+                        "headline-xl": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-lg": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "label-sm": ["13px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "headline-xl": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md min-h-screen flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-container-padding py-stack-sm bg-surface/40 backdrop-blur-3xl border-b border-on-surface/10 shadow-[0_40px_40px_-10px_rgba(0,0,0,0.4)]">
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-secondary hover:opacity-80 transition-opacity cursor-pointer" data-icon="verified_user">verified_user</span>
+<h1 class="font-headline-md text-headline-md font-playfair-display tracking-widest text-secondary dark:text-secondary-fixed uppercase">GLOBAL-COHORT</h1>
+</div>
+<div class="flex items-center gap-stack-md">
+<div class="flex -space-x-2">
+<div class="w-8 h-8 rounded-full border border-secondary/30 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A close-up portrait of a refined executive with silver hair, wearing a navy blue tailored suit. The lighting is soft and professional, emphasizing a mood of quiet authority and luxury. The background is a blurred high-end lounge with warm golden accents, matching the premium networking brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAX_tBxLuapA9bcvzp6OJMwvDbjQcKoaRs0bcdArQxU28erVY0CY3Aap6dAX5c-uFfXYWjrOcFiZYBMLpnvw57mgDbphFqrEh9p3XrQBdRIEikZqseAfe-BiEVSylMnZhY3DwRkjiM0JmyhBtegYPETgqUusp8SneZxY4hXL07Lqh5phFOAiFwln6dnCjVxTJbU9LWVFJ50RMSIAjaG5Z4Xw_YMxfLh-tQQd3waLUp1CV_wSn7MM2UaE2riAHK8NyrfwZ8eTgqr9g0"/>
+</div>
+<div class="w-8 h-8 rounded-full border border-secondary/30 bg-surface-container overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A portrait of an elegant woman executive with a minimalist style, wearing a cream-colored silk blouse. The scene is set in a dimly lit, high-end private office with subtle glass textures and deep midnight blue tones. The lighting is focused and warm, creating a sense of exclusivity and focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBw1nZK6duTWS-AwDqmV2rTOW0h17fiYcdIeRJMCuythlkZQRfXEn6YQoFxIF-IW9qpHqYjhe1EyiRlbnl_jipX7FxmaAx91TiTMa4Ong7Aqe_zc8g2euUj-o7oNksknxuF9aZDzKhC_dVLVSqWV7KcIlgSkQWl3E6DRN7P5hyJbwZFL-mgIuV7qJ3u967l1soMoh6wZGBAjhUZGq_M-vZ3-gdRbxERCu2gJeGcw7igqDWa8pWQqNnIw4ZVPA_mb3YdKMQh7nyBTNY"/>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary hover:opacity-80 transition-opacity cursor-pointer" data-icon="vpn_key">vpn_key</span>
+</div>
+</header>
+<!-- Canvas Area -->
+<main class="flex-1 mt-16 relative overflow-hidden canvas-grid">
+<!-- Floating Canvas Tools (Mobile Centered) -->
+<div class="absolute left-1/2 -translate-x-1/2 bottom-32 z-40 px-gutter w-full max-w-md">
+<div class="bg-surface/60 backdrop-blur-3xl rounded-full border border-on-surface/10 p-2 flex justify-between items-center shadow-[0_20px_50px_rgba(0,0,0,0.5)]">
+<!-- Pen Tool (Active) -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full bg-primary-container border border-secondary/50 text-secondary haptic-pulse">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">edit</span>
+</button>
+<!-- Sticky Note Tool -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-secondary transition-colors haptic-pulse">
+<span class="material-symbols-outlined">sticky_note_2</span>
+</button>
+<!-- Shape Tool -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-secondary transition-colors haptic-pulse">
+<span class="material-symbols-outlined">category</span>
+</button>
+<!-- Text Tool -->
+<button class="w-12 h-12 flex items-center justify-center rounded-full text-on-surface-variant hover:text-secondary transition-colors haptic-pulse">
+<span class="material-symbols-outlined">text_fields</span>
+</button>
+<!-- Color Picker Tool -->
+<button class="w-10 h-10 rounded-full border-2 border-secondary overflow-hidden haptic-pulse">
+<div class="w-full h-full bg-secondary-container"></div>
+</button>
+</div>
+</div>
+<!-- Canvas Content (Simulated Elements) -->
+<div class="absolute inset-0 p-container-padding flex flex-col gap-stack-lg pt-12">
+<!-- Glassmorphism Sticky Note -->
+<div class="w-48 h-48 bg-surface/40 backdrop-blur-xl rounded-xl border border-on-surface/10 p-stack-md rotate-3 shadow-lg flex flex-col justify-between">
+<div class="gold-foil-line absolute top-0 left-0 right-0 rounded-t-xl opacity-60"></div>
+<p class="text-label-caps text-secondary uppercase opacity-70">Q3 Vision</p>
+<p class="font-body-md text-on-surface">Accelerate peer-to-peer liquidity networks in APAC region.</p>
+<div class="flex justify-end">
+<span class="material-symbols-outlined text-secondary/40 text-[18px]">drag_indicator</span>
+</div>
+</div>
+<!-- Sketchy Layout Shape -->
+<div class="ml-12 w-64 h-32 border-2 border-secondary/20 rounded-full flex items-center justify-center -rotate-2">
+<span class="font-headline-md text-secondary/30 italic">High-Net-Worth Cluster</span>
+</div>
+<!-- Strategic Connection Line (SVG) -->
+<svg class="absolute top-1/2 left-0 w-full h-48 -z-10 pointer-events-none opacity-40">
+<path d="M 50 100 Q 200 10 350 150" fill="none" stroke="#e9c349" stroke-dasharray="8 4" stroke-width="1.5"></path>
+</svg>
+<!-- Secondary Note -->
+<div class="self-end mt-12 w-40 h-40 bg-surface/40 backdrop-blur-xl rounded-xl border border-on-surface/10 p-stack-md -rotate-6 shadow-lg flex flex-col justify-between">
+<div class="gold-foil-line absolute top-0 left-0 right-0 rounded-t-xl opacity-60"></div>
+<p class="font-body-md text-on-surface italic">"The value is in the silence between notes."</p>
+<div class="flex items-center gap-2">
+<div class="w-4 h-4 rounded-full bg-secondary"></div>
+<span class="text-[10px] text-label-caps opacity-50 uppercase">Marcus V.</span>
+</div>
+</div>
+</div>
+<!-- Collaborative Activity Indicator -->
+<div class="absolute top-4 left-4 z-10 flex items-center gap-2 px-3 py-1 bg-primary-container/60 backdrop-blur-md rounded-full border border-secondary/20">
+<span class="w-2 h-2 rounded-full bg-secondary animate-pulse"></span>
+<span class="text-label-caps text-secondary text-[10px] uppercase tracking-widest">Active Co-Creation</span>
+</div>
+<!-- Zoom/Controls -->
+<div class="absolute right-4 bottom-32 z-40 flex flex-col gap-2">
+<button class="w-10 h-10 bg-surface/40 backdrop-blur-md border border-on-surface/10 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">add</span>
+</button>
+<button class="w-10 h-10 bg-surface/40 backdrop-blur-md border border-on-surface/10 rounded-lg flex items-center justify-center text-on-surface-variant hover:text-secondary transition-colors">
+<span class="material-symbols-outlined">remove</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-gutter pb-6 pt-2 bg-surface/40 backdrop-blur-3xl border-t-[1px] border-secondary/20 shadow-[0_-20px_40px_-10px_rgba(0,0,0,0.4)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:text-secondary-fixed transition-colors haptic-pulse" href="#">
+<span class="material-symbols-outlined" data-icon="diversity_3">diversity_3</span>
+<span class="font-label-caps text-label-caps mt-1">Network</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:text-secondary-fixed transition-colors haptic-pulse" href="#">
+<span class="material-symbols-outlined" data-icon="chat_bubble">chat_bubble</span>
+<span class="font-label-caps text-label-caps mt-1">Messages</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary border-t-2 border-secondary pt-2 haptic-pulse" href="#">
+<span class="material-symbols-outlined" data-icon="event_note" style="font-variation-settings: 'FILL' 1;">event_note</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant/60 pt-2 hover:text-secondary-fixed transition-colors haptic-pulse" href="#">
+<span class="material-symbols-outlined" data-icon="security">security</span>
+<span class="font-label-caps text-label-caps mt-1">Vault</span>
+</a>
+</nav>
+<!-- Active Participants Tooltip (Floating) -->
+<div class="fixed bottom-24 right-container-padding z-50 flex items-center gap-stack-sm bg-surface/80 backdrop-blur-xl border border-secondary/30 px-3 py-2 rounded-full shadow-2xl">
+<div class="flex -space-x-1">
+<div class="w-5 h-5 rounded-full bg-secondary-container border border-background"></div>
+<div class="w-5 h-5 rounded-full bg-primary-fixed border border-background"></div>
+</div>
+<span class="text-label-caps text-[10px] text-secondary font-bold">+2 Collaborating</span>
+</div>
+</body></html>

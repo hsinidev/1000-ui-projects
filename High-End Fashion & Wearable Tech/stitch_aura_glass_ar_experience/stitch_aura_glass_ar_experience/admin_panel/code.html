@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#454747",
+                        "tertiary-container": "#dbdbdb",
+                        "inverse-on-surface": "#292e4d",
+                        "surface-tint": "#00dbe7",
+                        "background": "#0b112e",
+                        "surface-bright": "#323756",
+                        "secondary-fixed": "#dee0ff",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "primary-container": "#00f2ff",
+                        "on-error": "#690005",
+                        "surface-dim": "#0b112e",
+                        "surface-container-highest": "#2e3352",
+                        "primary-fixed-dim": "#00dbe7",
+                        "primary": "#e1fdff",
+                        "on-tertiary-container": "#5e6060",
+                        "on-secondary-fixed-variant": "#414561",
+                        "on-primary": "#00363a",
+                        "on-background": "#dee0ff",
+                        "tertiary": "#f7f8f8",
+                        "on-primary-container": "#006a71",
+                        "surface-variant": "#2e3352",
+                        "secondary": "#c1c4e6",
+                        "error-container": "#93000a",
+                        "surface-container": "#181d3b",
+                        "surface-container-low": "#141937",
+                        "secondary-container": "#414561",
+                        "on-surface-variant": "#b9cacb",
+                        "on-surface": "#dee0ff",
+                        "surface": "#0b112e",
+                        "secondary-fixed-dim": "#c1c4e6",
+                        "outline": "#849495",
+                        "primary-fixed": "#74f5ff",
+                        "on-error-container": "#ffdad6",
+                        "outline-variant": "#3a494b",
+                        "on-tertiary": "#2f3131",
+                        "on-secondary": "#2b2f49",
+                        "on-secondary-container": "#b0b3d4",
+                        "on-secondary-fixed": "#161a33",
+                        "surface-container-lowest": "#060b29",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "on-primary-fixed-variant": "#004f54",
+                        "surface-container-high": "#232846",
+                        "inverse-surface": "#dee0ff",
+                        "inverse-primary": "#00696f",
+                        "on-primary-fixed": "#002022"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "16px",
+                        "component-gap": "8px",
+                        "unit": "4px",
+                        "hud-margin": "24px",
+                        "safe-zone": "40px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "display-lg": ["Space Grotesk"],
+                        "data-mono": ["Space Mono"],
+                        "label-caps": ["Space Mono"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(11, 17, 46, 0.4);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        .active-glass {
+            background: rgba(11, 17, 46, 0.6);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .hud-bracket-tl { border-top: 2px solid #00f2ff; border-left: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; top: -1px; left: -1px; }
+        .hud-bracket-tr { border-top: 2px solid #00f2ff; border-right: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; top: -1px; right: -1px; }
+        .hud-bracket-bl { border-bottom: 2px solid #00f2ff; border-left: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; bottom: -1px; left: -1px; }
+        .hud-bracket-br { border-bottom: 2px solid #00f2ff; border-right: 2px solid #00f2ff; width: 12px; height: 12px; position: absolute; bottom: -1px; right: -1px; }
+        
+        .scan-line {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #00f2ff, transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+        }
+        
+        .cyan-glow {
+            box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+        }
+
+        .pulse-dot {
+            width: 6px;
+            height: 6px;
+            background-color: #00f2ff;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 8px;
+            box-shadow: 0 0 8px #00f2ff;
+        }
+
+        body {
+            background-color: #0b112e;
+            background-image: radial-gradient(circle at 50% 50%, #181d3b 0%, #0b112e 100%);
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+<body class="font-body-md text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full h-16 flex justify-between items-center px-hud-margin bg-surface/40 backdrop-blur-md border-b border-outline-variant/20 z-50 shadow-[0_0_15px_rgba(0,242,255,0.1)]">
+<div class="flex items-center gap-4">
+<span class="font-display-lg text-headline-md text-primary tracking-[0.2em] uppercase">AURA-GLASS</span>
+<div class="h-4 w-[1px] bg-outline-variant/40 mx-2"></div>
+<span class="font-label-caps text-label-caps text-primary/70 tracking-widest">SYSTEM_OPERATOR_HUD</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-8">
+<a class="text-primary font-bold font-label-caps text-label-caps cursor-pointer active:scale-95 transition-transform uppercase" href="#">MONITOR</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors duration-300 font-label-caps text-label-caps cursor-pointer active:scale-95 transition-transform uppercase" href="#">DIAGNOSTICS</a>
+<a class="text-on-surface-variant hover:text-primary-container transition-colors duration-300 font-label-caps text-label-caps cursor-pointer active:scale-95 transition-transform uppercase" href="#">SECURITY</a>
+</div>
+<div class="flex items-center gap-4 ml-4">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-container transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-container transition-colors" data-icon="settings">settings</span>
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-container transition-colors" data-icon="account_circle">account_circle</span>
+</div>
+</div>
+</header>
+<!-- SideNavBar -->
+<nav class="fixed left-0 top-16 h-[calc(100vh-64px)] w-64 bg-surface-container-lowest/40 backdrop-blur-xl border-r border-outline-variant/20 flex flex-col py-6 gap-component-gap z-40">
+<div class="px-6 mb-8 flex items-center gap-4">
+<div class="w-10 h-10 rounded-full border border-primary/30 flex items-center justify-center p-0.5">
+<img alt="User HUD Profile" class="w-full h-full rounded-full bg-surface-container-high" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBoh1FQ2NZeIADeveod1PAxU3b6prQ8izne8w_JqXU5sUYljak_o_ZKMvoYMYSOxYKjEuPQ_4pP7ceAMNaxzjst2zDJsI9V0Ig7Q_Gos6s4iBxWfes-whKhqdLnZ8UYp3qwAkrYkdoSJraEvU4sHry3te0QnTm4Hli1DzC2Wr5WmSQYFlBOZ40iC7OakynobA6LkGBGscZb5N3phx5D6jRRumeRpcKcPrbul_xyWkxaXvm2gn3OOqfnarjtClFOSKbNSnq-K6zbluo"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">SYSTEM.OPERATOR</p>
+<p class="text-[10px] font-data-mono text-primary-container/60">STATUS: ENHANCED</p>
+</div>
+</div>
+<div class="flex flex-col flex-1">
+<a class="flex items-center px-6 py-4 gap-4 text-primary border-r-2 border-primary bg-primary/10 shadow-[inset_-10px_0_15px_-10px_rgba(0,242,255,0.3)] transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="grid_view">grid_view</span>
+<span class="font-label-caps text-label-caps">DASHBOARD</span>
+</a>
+<a class="flex items-center px-6 py-4 gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="developer_board">developer_board</span>
+<span class="font-label-caps text-label-caps">DEVICES</span>
+</a>
+<a class="flex items-center px-6 py-4 gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="forum">forum</span>
+<span class="font-label-caps text-label-caps">COMMUNITY</span>
+</a>
+<a class="flex items-center px-6 py-4 gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="quiz">quiz</span>
+<span class="font-label-caps text-label-caps">FAQ</span>
+</a>
+<a class="flex items-center px-6 py-4 gap-4 text-on-surface-variant/70 hover:bg-primary/5 hover:text-primary transition-all duration-200 group" href="#">
+<span class="material-symbols-outlined transition-transform group-hover:translate-x-1" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">ANALYTICS</span>
+</a>
+</div>
+<div class="px-6 mt-auto">
+<button class="w-full py-3 border border-primary text-primary font-label-caps text-label-caps hover:bg-primary/10 transition-colors cursor-pointer active:scale-95">
+                SYNC DEVICE
+            </button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 pt-16 min-h-screen p-hud-margin">
+<div class="max-w-7xl mx-auto space-y-gutter">
+<!-- Hero Grid: Device Health -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Thermal Load Card -->
+<div class="glass-panel p-6 min-h-[180px] flex flex-col justify-between">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<div class="scan-line"></div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-primary/80">THERMAL_LOAD</h3>
+<span class="material-symbols-outlined text-primary-container" data-icon="thermostat">thermostat</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-primary text-4xl">38.4</span>
+<span class="font-label-caps text-on-surface-variant">°C</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1 mt-4">
+<div class="bg-primary-container h-full w-[42%] cyan-glow"></div>
+</div>
+<div class="flex justify-between mt-2 font-data-mono text-[10px] text-on-surface-variant/60">
+<span>NOMINAL RANGE</span>
+<span>MAX 45°C</span>
+</div>
+</div>
+<!-- Optical Clarity Card -->
+<div class="glass-panel p-6 min-h-[180px] flex flex-col justify-between">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-primary/80">OPTICAL_CLARITY</h3>
+<span class="material-symbols-outlined text-primary-container" data-icon="visibility">visibility</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-primary text-4xl">99.8</span>
+<span class="font-label-caps text-on-surface-variant">%</span>
+</div>
+<div class="flex gap-1 mt-4">
+<div class="h-1 flex-1 bg-primary-container"></div>
+<div class="h-1 flex-1 bg-primary-container"></div>
+<div class="h-1 flex-1 bg-primary-container"></div>
+<div class="h-1 flex-1 bg-primary-container"></div>
+<div class="h-1 flex-1 bg-primary-container/20"></div>
+</div>
+<div class="flex justify-between mt-2 font-data-mono text-[10px] text-on-surface-variant/60">
+<span>PHOTONIC TRANSMISSION</span>
+<span>OPTIMAL</span>
+</div>
+</div>
+<!-- Battery Projection Card -->
+<div class="glass-panel p-6 min-h-[180px] flex flex-col justify-between">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<div class="flex justify-between items-start">
+<h3 class="font-label-caps text-label-caps text-primary/80">BATTERY_PROJECTION</h3>
+<span class="material-symbols-outlined text-primary-container" data-icon="battery_charging_full">battery_charging_full</span>
+</div>
+<div class="flex items-baseline gap-2">
+<span class="font-display-lg text-primary text-4xl">14:22</span>
+<span class="font-label-caps text-on-surface-variant">HRS</span>
+</div>
+<div class="mt-4 flex items-center">
+<span class="pulse-dot"></span>
+<span class="font-data-mono text-[11px] text-primary-container uppercase">Power Flow: Stable</span>
+</div>
+<div class="mt-2 font-data-mono text-[10px] text-on-surface-variant/60">
+                        CONSUMPTION: 120mW/H
+                    </div>
+</div>
+</section>
+<!-- Secondary Layout: Bento Style -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Firmware Management (Large Panel) -->
+<section class="lg:col-span-8 glass-panel p-hud-margin">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<div class="flex justify-between items-end mb-8">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary mb-1">FIRMWARE_MANAGEMENT</h2>
+<p class="font-data-mono text-on-surface-variant/70 uppercase">Global Version: V4.8.2-AURORA</p>
+</div>
+<button class="px-6 py-2 border border-primary/30 font-label-caps text-label-caps hover:bg-primary/10 transition-all uppercase flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="sync">sync</span>
+                            Full Audit
+                        </button>
+</div>
+<div class="space-y-4">
+<!-- Firmware Item -->
+<div class="flex items-center justify-between py-4 border-b border-primary/10 group cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="memory">memory</span>
+<div>
+<p class="font-label-caps text-label-caps">KERNEL_SUBSYSTEM</p>
+<p class="font-data-mono text-[12px] text-on-surface-variant">Stable Build 2024.11.02</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-primary-container font-data-mono text-[12px]">UP_TO_DATE</span>
+<div class="w-32 h-1 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-container w-full opacity-30 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+</div>
+<!-- Firmware Item -->
+<div class="flex items-center justify-between py-4 border-b border-primary/10 group cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="eye_tracking">eye_tracking</span>
+<div>
+<p class="font-label-caps text-label-caps">GAZE_TRACKING_MODULE</p>
+<p class="font-data-mono text-[12px] text-on-surface-variant">Pending Update V4.9.0</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-secondary font-data-mono text-[12px]">UPDATE_AVAILABLE</span>
+<div class="w-32 h-1 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Firmware Item -->
+<div class="flex items-center justify-between py-4 border-b border-primary/10 group cursor-pointer">
+<div class="flex items-center gap-6">
+<span class="material-symbols-outlined text-primary-container" data-icon="spatial_audio">spatial_audio</span>
+<div>
+<p class="font-label-caps text-label-caps">SPATIAL_ACOUSTICS</p>
+<p class="font-data-mono text-[12px] text-on-surface-variant">Stable Build 2024.10.15</p>
+</div>
+</div>
+<div class="flex items-center gap-8">
+<span class="text-primary-container font-data-mono text-[12px]">UP_TO_DATE</span>
+<div class="w-32 h-1 bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-primary-container w-full opacity-30 group-hover:opacity-100 transition-opacity"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-8 relative h-48 w-full overflow-hidden border border-outline-variant/30">
+<img class="w-full h-full object-cover opacity-40 mix-blend-screen" data-alt="A close-up photographic visualization of high-tech circuit boards and glowing blue fibre optics inside a futuristic AR glass chassis. The image captures a complex, dense architecture of microchips and glowing pathways illuminated with a vibrant cyan luminescence. The lighting is moody and dark, reflecting a high-performance technological environment. The aesthetic is industrial yet sophisticated, with a deep indigo background and bright neon accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBv8IBveUjzLa4dN9lytMimIVwp5_asqJefiOnFKKy-V5fntdJC4aNHCoFFmvHRZdwW8tuU6-XVCUc8nc5Uald8sqNJnS-XC0nhE3odEfMv_SKb2hUCfC9QhQEaOvbKRx69SXCUbr9_Iq8umb39TfsWEAJgB4V99yrHLFQYjY2dQKwVFgxsINfV4SafrVJIrwQkasFgShGvDiB4JESfoAqcVvT6Po2VKxlTpb8dKfJQa_GfLoGeVw5MXWG2emQD6wB_udHqRhhwVZ0"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute bottom-4 left-4">
+<p class="font-label-caps text-label-caps text-primary-container">HARDWARE_SCAN_STATUS: NOMINAL</p>
+<p class="font-data-mono text-[10px] text-on-surface-variant/60">LAST SCAN COMPLETED: 02:44:11 UTC</p>
+</div>
+</div>
+</section>
+<!-- Biometric & Security (Side Panel) -->
+<section class="lg:col-span-4 space-y-gutter">
+<!-- Biometric Lock Card -->
+<div class="glass-panel p-hud-margin">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<h2 class="font-label-caps text-label-caps text-primary mb-6">BIOMETRIC_LOCK</h2>
+<div class="flex flex-col items-center justify-center py-8">
+<div class="relative w-32 h-32 flex items-center justify-center">
+<div class="absolute inset-0 border-2 border-dashed border-primary/20 rounded-full"></div>
+<span class="material-symbols-outlined text-primary text-6xl" data-icon="fingerprint">fingerprint</span>
+<div class="absolute top-0 w-full h-1 bg-primary-container/40 cyan-glow scan-line"></div>
+</div>
+<p class="mt-6 font-data-mono text-primary text-center">ENCRYPTED_AUTH_ACTIVE</p>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-center text-[12px] font-data-mono text-on-surface-variant">
+<span>IRIS_SCAN</span>
+<span class="text-primary-container">VERIFIED</span>
+</div>
+<div class="flex justify-between items-center text-[12px] font-data-mono text-on-surface-variant">
+<span>RETINAL_ID</span>
+<span class="text-primary-container">VERIFIED</span>
+</div>
+<div class="flex justify-between items-center text-[12px] font-data-mono text-on-surface-variant">
+<span>DNA_SIGNATURE</span>
+<span class="text-on-surface-variant/40">DISABLED</span>
+</div>
+</div>
+<button class="w-full mt-8 py-3 bg-primary-container/10 border border-primary-container/30 text-primary-container font-label-caps text-label-caps hover:bg-primary-container/20 transition-all">
+                            CONFIGURE AUTH
+                        </button>
+</div>
+<!-- System Reticle / Location Status -->
+<div class="glass-panel p-6 aspect-square flex flex-col items-center justify-center gap-4 text-center">
+<div class="hud-bracket-tl"></div><div class="hud-bracket-tr"></div>
+<div class="hud-bracket-bl"></div><div class="hud-bracket-br"></div>
+<div class="relative w-40 h-40">
+<!-- Decorative HUD elements -->
+<div class="absolute inset-0 border border-primary/10 rounded-full"></div>
+<div class="absolute inset-4 border border-primary/20 rounded-full border-dashed"></div>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-1 h-8 bg-primary/40 absolute top-0"></div>
+<div class="w-1 h-8 bg-primary/40 absolute bottom-0"></div>
+<div class="h-1 w-8 bg-primary/40 absolute left-0"></div>
+<div class="h-1 w-8 bg-primary/40 absolute right-0"></div>
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="explore">explore</span>
+</div>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">GPS_COORDINATES</p>
+<p class="font-data-mono text-on-surface-variant text-[12px]">34.0522° N, 118.2437° W</p>
+</div>
+</div>
+</section>
+</div>
+</div>
+</main>
+<!-- Contextual FAB (Only on Dashboard) -->
+<div class="fixed bottom-hud-margin right-hud-margin z-50">
+<button class="w-14 h-14 bg-primary-container text-on-primary-container flex items-center justify-center shadow-[0_0_20px_rgba(0,242,255,0.5)] active:scale-95 transition-transform">
+<span class="material-symbols-outlined font-bold" data-icon="add">add</span>
+</button>
+</div>
+</body></html>

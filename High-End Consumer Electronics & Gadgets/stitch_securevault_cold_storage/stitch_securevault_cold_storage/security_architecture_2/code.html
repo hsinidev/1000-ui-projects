@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SECURE_VAULT | Architecture</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;700&amp;family=Inter:wght@400;500;700&amp;family=Space+Mono:wght@400;700&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary": "#ffffff",
+                    "on-tertiary-container": "#646464",
+                    "on-secondary-container": "#b8b6d0",
+                    "inverse-primary": "#5e5e5d",
+                    "surface-bright": "#3a3939",
+                    "tertiary-fixed-dim": "#c6c6c6",
+                    "on-tertiary": "#303030",
+                    "surface-container-high": "#2a2a29",
+                    "secondary-container": "#47475d",
+                    "on-error-container": "#ffdad6",
+                    "inverse-surface": "#e5e2e1",
+                    "primary": "#ffffff",
+                    "error": "#ffb4ab",
+                    "surface-dim": "#141313",
+                    "error-container": "#93000a",
+                    "surface-variant": "#353434",
+                    "surface": "#141313",
+                    "outline-variant": "#444845",
+                    "secondary": "#c6c4df",
+                    "on-primary-container": "#646463",
+                    "inverse-on-surface": "#313030",
+                    "surface-container": "#201f1f",
+                    "background": "#141313",
+                    "on-primary": "#303130",
+                    "primary-fixed-dim": "#c7c6c4",
+                    "on-tertiary-fixed": "#1b1b1b",
+                    "secondary-fixed-dim": "#c6c4df",
+                    "surface-container-low": "#1c1b1b",
+                    "surface-container-highest": "#353434",
+                    "on-background": "#e5e2e1",
+                    "on-primary-fixed": "#1b1c1b",
+                    "on-secondary": "#2f2e43",
+                    "outline": "#8e918e",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "primary-container": "#e3e2e0",
+                    "on-surface": "#e5e2e1",
+                    "on-error": "#690005",
+                    "on-secondary-fixed": "#1a1a2e",
+                    "secondary-fixed": "#e2e0fc",
+                    "tertiary-container": "#e2e2e2",
+                    "tertiary-fixed": "#e2e2e2",
+                    "surface-container-lowest": "#0e0e0e",
+                    "surface-tint": "#c7c6c4",
+                    "on-primary-fixed-variant": "#464746",
+                    "on-secondary-fixed-variant": "#45455b",
+                    "primary-fixed": "#e3e2e0",
+                    "on-surface-variant": "#c4c7c4"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "touch-target": "56px",
+                    "base": "8px",
+                    "gutter": "16px",
+                    "container-padding": "24px",
+                    "border-width": "3px"
+            },
+            "fontFamily": {
+                    "headline-lg-mobile": ["Space Grotesk"],
+                    "headline-xl": ["Space Grotesk"],
+                    "body-md": ["Inter"],
+                    "label-caps": ["Space Mono"],
+                    "headline-lg": ["Space Grotesk"],
+                    "data-mono": ["Space Mono"]
+            },
+            "fontSize": {
+                    "headline-lg-mobile": ["24px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noise-bg {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+        }
+        .blueprint-grid {
+            background-image: linear-gradient(to right, #1a1a2e 1px, transparent 1px), linear-gradient(to bottom, #1a1a2e 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .inset-hard {
+            box-shadow: inset 4px 4px 0px 0px rgba(0,0,0,0.5);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary">
+<div class="fixed inset-0 noise-bg pointer-events-none z-[100]"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full flex justify-between items-center px-container-padding h-touch-target z-50 bg-background border-b-3 border-secondary">
+<div class="font-label-caps text-label-caps tracking-widest text-primary uppercase">SECURE_VAULT</div>
+<div class="hidden md:flex gap-gutter">
+<span class="font-headline-lg text-headline-lg-mobile md:text-headline-lg font-bold text-primary">ARCHITECTURE_CONSOLE</span>
+</div>
+<div class="flex items-center gap-base">
+<button class="material-symbols-outlined p-base text-primary hover:bg-secondary-container hover:text-primary transition-colors duration-100 active:translate-y-0.5">fingerprint</button>
+<button class="material-symbols-outlined p-base text-primary hover:bg-secondary-container hover:text-primary transition-colors duration-100 active:translate-y-0.5">lock_open</button>
+<button class="material-symbols-outlined p-base text-primary hover:bg-secondary-container hover:text-primary transition-colors duration-100 active:translate-y-0.5">settings</button>
+</div>
+</header>
+<!-- SideNavBar (Desktop Only) -->
+<nav class="hidden md:flex fixed left-0 top-0 h-full w-64 flex-col pt-touch-target z-40 bg-surface border-r-3 border-secondary">
+<div class="p-gutter border-b-3 border-secondary mb-gutter">
+<h2 class="font-headline-lg text-headline-lg text-primary">SECURE_CONSOLE</h2>
+<p class="font-data-mono text-data-mono uppercase text-secondary">V.4.2_HARDENED</p>
+</div>
+<ul class="flex flex-col gap-0 px-base">
+<li class="mb-base">
+<a class="text-secondary hover:text-primary flex items-center gap-base p-gutter border-3 border-transparent hover:border-secondary hover:bg-surface-container-high active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">account_balance_wallet</span>Vault
+                </a>
+</li>
+<li class="mb-base">
+<a class="bg-primary text-on-primary font-bold flex items-center gap-base p-gutter border-3 border-primary active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">security</span>Security
+                </a>
+</li>
+<li class="mb-base">
+<a class="text-secondary hover:text-primary flex items-center gap-base p-gutter border-3 border-transparent hover:border-secondary hover:bg-surface-container-high active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>Admin
+                </a>
+</li>
+<li class="mb-base">
+<a class="text-secondary hover:text-primary flex items-center gap-base p-gutter border-3 border-transparent hover:border-secondary hover:bg-surface-container-high active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">menu_book</span>Guide
+                </a>
+</li>
+<li class="mb-base">
+<a class="text-secondary hover:text-primary flex items-center gap-base p-gutter border-3 border-transparent hover:border-secondary hover:bg-surface-container-high active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">groups</span>Community
+                </a>
+</li>
+<li class="mb-base">
+<a class="text-secondary hover:text-primary flex items-center gap-base p-gutter border-3 border-transparent hover:border-secondary hover:bg-surface-container-high active:scale-95 transition-all duration-75 font-data-mono text-data-mono uppercase" href="#">
+<span class="material-symbols-outlined">shopping_cart</span>Order
+                </a>
+</li>
+</ul>
+<div class="mt-auto p-gutter border-t-3 border-secondary flex items-center gap-base">
+<div class="w-10 h-10 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary">shield_person</span>
+</div>
+<div>
+<p class="font-data-mono text-[10px] text-on-surface-variant leading-none">AUTH_ADMIN</p>
+<p class="font-data-mono text-data-mono text-primary truncate">Root_Developer</p>
+</div>
+</div>
+</nav>
+<!-- Main Content Canvas -->
+<main class="md:ml-64 pt-24 px-container-padding pb-container-padding min-h-screen blueprint-grid">
+<div class="max-w-6xl mx-auto space-y-gutter">
+<!-- Hero Hardware Diagram -->
+<section class="relative bg-surface-container-lowest border-3 border-primary p-gutter overflow-hidden">
+<div class="absolute top-0 right-0 p-gutter font-data-mono text-[10px] text-primary/30 z-10 pointer-events-none">
+                    REF_ID: 0x88_HARDWARE_CORE_V2
+                </div>
+<header class="mb-gutter relative z-10">
+<h1 class="font-headline-xl text-headline-xl text-primary uppercase">Secure Element Architecture</h1>
+<p class="font-data-mono text-data-mono text-secondary mt-base">SCHEMATIC: SEV-X9_ENCLAVE_EAL7+ CERTIFIED</p>
+</header>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-8 relative aspect-video bg-black border-3 border-secondary inset-hard flex items-center justify-center group overflow-hidden">
+<!-- Blueprint Visual Mockup -->
+<div class="absolute inset-0 blueprint-grid opacity-20"></div>
+<img class="w-4/5 h-4/5 object-contain mix-blend-screen opacity-90 grayscale brightness-125 transition-transform duration-500 group-hover:scale-105" data-alt="A highly detailed 3D technical blueprint of a microprocessor chip, rendered in a striking high-contrast brutalist style with platinum silver lines against a deep obsidian black background. The image features complex trace patterns, glowing pin connectors, and a central secure element core highlighted with intense white light. The mood is clinical, industrial, and hyper-modern, emphasizing cryptographic resilience and hardware hardening." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCkRmQyd5R-5Er4z6_fd22HlMupnTyTOnQ7cuWp_IKk2qaKRnYdh0C6sVtY4lrPHRp9e8i0f2SmRUqCINYQyhrELWS9eT4XqDFQ2JGUnS3hpQdaNItzAR1ZXZ1hwUzioo4MtDXSpBictZOFrvqYf_Mkq-nqq-FPcFhXjklOya9dHA9KYmJevS0i5uW-skU5se8B2hFLfYYsUK4VOW5o2sanGYVg3jZeXy41KviKCOJ6qILSQbBl9RIq3JeITu2YbZq1uuuA03M6D_Xo"/>
+<!-- Interactive Labels Overlay -->
+<div class="absolute top-[20%] left-[10%] p-base border-3 border-primary bg-black/80 font-data-mono text-[10px] text-primary">
+<span class="block font-bold">CORE_ISOLATION</span>
+                            PHYSICAL_MESH_V4
+                        </div>
+<div class="absolute bottom-[30%] right-[15%] p-base border-3 border-primary bg-black/80 font-data-mono text-[10px] text-primary">
+<span class="block font-bold">TRNG_FEED</span>
+                            ENTROPY_0.999
+                        </div>
+<div class="absolute top-[40%] right-[10%] p-base border-3 border-error bg-black/80 font-data-mono text-[10px] text-error">
+<span class="block font-bold">ALERT: SHIELD_STABLE</span>
+                            TAMPER_DETECT_ACTIVE
+                        </div>
+</div>
+<div class="lg:col-span-4 space-y-gutter">
+<div class="border-3 border-secondary p-gutter bg-surface-container">
+<h3 class="font-label-caps text-label-caps text-primary mb-base">EAL7+ SECURITY RATING</h3>
+<p class="text-on-surface-variant text-sm leading-relaxed mb-base">
+                                The SEV-X9 core provides formal verification of the cryptographic boundary, meeting the highest government-grade standards for air-gapped asset protection.
+                            </p>
+<div class="flex gap-base">
+<span class="px-base py-1 border-1 border-primary font-data-mono text-[10px] text-primary uppercase">Hardened</span>
+<span class="px-base py-1 border-1 border-primary font-data-mono text-[10px] text-primary uppercase">Formal_Verified</span>
+</div>
+</div>
+<button class="w-full bg-primary text-on-primary font-bold py-gutter border-3 border-primary flex items-center justify-center gap-base active:translate-y-0.5 transition-all">
+<span class="material-symbols-outlined">analytics</span>
+                            DOWNLOAD_DATASHEET
+                        </button>
+</div>
+</div>
+</section>
+<!-- Technical Side-by-Side Specs -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<!-- Biometric Enclave -->
+<section class="border-3 border-secondary bg-surface p-gutter">
+<div class="flex items-center gap-gutter mb-gutter">
+<div class="p-base border-3 border-primary bg-primary/10">
+<span class="material-symbols-outlined text-primary scale-125">fingerprint</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Biometric Enclave</h2>
+<p class="font-data-mono text-data-mono text-secondary">PHYSICAL_ID_ISOLATION</p>
+</div>
+</div>
+<ul class="space-y-base font-data-mono text-sm">
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Sensor Type</span>
+<span class="text-primary">Ultrasonic_3D</span>
+</li>
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Template Storage</span>
+<span class="text-primary">Encrypted_SRAM</span>
+</li>
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Auth Protocol</span>
+<span class="text-primary">Zero_Knowledge_Proof</span>
+</li>
+<li class="flex justify-between pb-2">
+<span class="text-on-surface-variant">Liveness Check</span>
+<span class="text-primary">Pulse_Ox_Detect</span>
+</li>
+</ul>
+</section>
+<!-- Air-Gapped Signing -->
+<section class="border-3 border-secondary bg-surface p-gutter">
+<div class="flex items-center gap-gutter mb-gutter">
+<div class="p-base border-3 border-primary bg-primary/10">
+<span class="material-symbols-outlined text-primary scale-125">leak_remove</span>
+</div>
+<div>
+<h2 class="font-headline-lg text-headline-lg-mobile md:text-headline-lg text-primary">Air-Gapped Signing</h2>
+<p class="font-data-mono text-data-mono text-secondary">TRANSACTION_ISOLATION_PROTOCOL</p>
+</div>
+</div>
+<ul class="space-y-base font-data-mono text-sm">
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Data Bridge</span>
+<span class="text-primary">QR_Optical_Scan</span>
+</li>
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Signing Engine</span>
+<span class="text-primary">Asymmetric_HSM</span>
+</li>
+<li class="flex justify-between border-b border-secondary/30 pb-2">
+<span class="text-on-surface-variant">Leak Protection</span>
+<span class="text-primary">EMF_Faraday_Cage</span>
+</li>
+<li class="flex justify-between pb-2">
+<span class="text-on-surface-variant">Auth Channel</span>
+<span class="text-primary">Secure_Bus_Only</span>
+</li>
+</ul>
+</section>
+</div>
+<!-- System Manifest Table -->
+<section class="border-3 border-primary bg-surface p-gutter">
+<header class="flex justify-between items-end mb-gutter">
+<div>
+<h2 class="font-headline-lg text-headline-lg text-primary uppercase">System Manifest</h2>
+<p class="font-data-mono text-data-mono text-secondary">V.4.20_RUNTIME_COMPONENT_LOG</p>
+</div>
+<div class="text-right">
+<span class="font-data-mono text-label-caps text-on-surface-variant uppercase">Status: <span class="text-primary font-bold">ALL_SYSTEMS_HARDENED</span></span>
+</div>
+</header>
+<div class="overflow-x-auto">
+<table class="w-full border-collapse font-data-mono text-sm text-left">
+<thead>
+<tr class="border-b-3 border-secondary bg-surface-container-high">
+<th class="p-gutter text-primary">COMPONENT_ID</th>
+<th class="p-gutter text-primary">PROTECTION_LAYER</th>
+<th class="p-gutter text-primary">ENCRYPTION_STANDARD</th>
+<th class="p-gutter text-primary">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-secondary/50 hover:bg-surface-container-high transition-colors">
+<td class="p-gutter font-bold">TRNG_SRC_A1</td>
+<td class="p-gutter">PHYSICAL_ATMOSPHERIC_NOISE</td>
+<td class="p-gutter">SHA3-512_STREAM</td>
+<td class="p-gutter">
+<div class="flex items-center gap-2">
+<div class="w-2 h-4 bg-primary"></div>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+</tr>
+<tr class="border-b border-secondary/50 hover:bg-surface-container-high transition-colors">
+<td class="p-gutter font-bold">BUS_ENCRYPT_0x02</td>
+<td class="p-gutter">INTERNAL_DATA_STREAMS</td>
+<td class="p-gutter">AES-256-GCM_HW</td>
+<td class="p-gutter">
+<div class="flex items-center gap-2">
+<div class="w-2 h-4 bg-primary"></div>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+</tr>
+<tr class="border-b border-secondary/50 hover:bg-surface-container-high transition-colors">
+<td class="p-gutter font-bold">SIDE_CHANNEL_S3</td>
+<td class="p-gutter">POWER_ANALYSIS_SHIELD</td>
+<td class="p-gutter">DPA_SPA_COUNTERMEASURES</td>
+<td class="p-gutter">
+<div class="flex items-center gap-2">
+<div class="w-2 h-4 bg-primary"></div>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+</tr>
+<tr class="border-b border-secondary/50 hover:bg-surface-container-high transition-colors">
+<td class="p-gutter font-bold">BOOTLOADER_SEC_0</td>
+<td class="p-gutter">FIRMWARE_SIGNATURE_AUTH</td>
+<td class="p-gutter">RSA-4096_PKCS1_V2</td>
+<td class="p-gutter">
+<div class="flex items-center gap-2">
+<div class="w-2 h-4 bg-primary"></div>
+<span class="text-primary">NOMINAL</span>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- Bottom Warning / Compliance -->
+<footer class="p-gutter border-3 border-secondary bg-surface-container flex flex-col md:flex-row justify-between items-center gap-gutter opacity-60 grayscale hover:grayscale-0 transition-all">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary">workspace_premium</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant uppercase">Certified Security Level: CC_EAL7+ (High Assurance)</span>
+</div>
+<div class="flex gap-gutter">
+<span class="font-data-mono text-[10px] text-on-surface-variant uppercase">ID: VAULT_4.2.0_HW_MANIFEST</span>
+<span class="font-data-mono text-[10px] text-on-surface-variant uppercase">© 2024 SECURE_VAULT_LABS</span>
+</div>
+</footer>
+</div>
+</main>
+<!-- Privacy Shield Overlay (Simulated UI Component) -->
+<div class="fixed inset-0 bg-black/90 pointer-events-none opacity-0 transition-opacity duration-300 z-[1000] flex items-center justify-center backdrop-blur-md border-3 border-primary m-gutter" id="privacy-shield">
+<div class="text-center font-data-mono">
+<span class="material-symbols-outlined text-primary text-6xl mb-gutter">encrypted</span>
+<h2 class="text-primary font-headline-lg text-headline-lg uppercase">Privacy_Shield_Active</h2>
+<p class="text-secondary text-data-mono mt-base">BLURRING_SENSITIVE_ARCHITECTURE_VIEWPORT</p>
+</div>
+</div>
+</body></html>

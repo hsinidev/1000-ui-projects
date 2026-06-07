@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Polymath-Path Admin | Ecosystem Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&amp;family=Sora:wght@600;700;800&amp;family=Space+Grotesk:wght@600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#e7c365",
+                        "primary": "#cfbcff",
+                        "secondary": "#cdc0e9",
+                        "surface-tint": "#cfbcff",
+                        "surface-container-lowest": "#0f0d13",
+                        "inverse-primary": "#6750a4",
+                        "on-background": "#e6e0e9",
+                        "on-primary-container": "#e0d2ff",
+                        "outline": "#948e9c",
+                        "on-secondary-container": "#bfb2da",
+                        "on-primary-fixed": "#22005d",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-secondary": "#342b4b",
+                        "surface": "#141218",
+                        "inverse-on-surface": "#322f35",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "error-container": "#93000a",
+                        "on-surface": "#e6e0e9",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#1f1635",
+                        "outline-variant": "#494551",
+                        "surface-container-low": "#1d1b20",
+                        "tertiary-container": "#c9a74d",
+                        "secondary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#503d00",
+                        "on-primary": "#381e72",
+                        "inverse-surface": "#e6e0e9",
+                        "surface-container-high": "#2b292f",
+                        "primary-fixed": "#e9ddff",
+                        "on-tertiary": "#3e2e00",
+                        "surface-variant": "#36343a",
+                        "background": "#141218",
+                        "on-error": "#690005",
+                        "surface-dim": "#141218",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary-container": "#6750a4",
+                        "surface-container": "#211f24",
+                        "tertiary-fixed": "#ffdf93",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "surface-container-highest": "#36343a",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#3b383e",
+                        "secondary-container": "#4d4465",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-surface-variant": "#cbc4d2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "lg": "2.5rem",
+                        "xs": "0.5rem",
+                        "xl": "4rem",
+                        "sm": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Sora"],
+                        "title-sm": ["Sora"],
+                        "label-caps": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .active-glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1.5px solid transparent;
+            background-clip: padding-box, border-box;
+            background-origin: padding-box, border-box;
+            background-image: linear-gradient(#1e1e1e, #1e1e1e), linear-gradient(to right, #cfbcff, #e7c365);
+        }
+        .energy-loop-gradient {
+            background: linear-gradient(135deg, #6750a4 0%, #cfbcff 100%);
+        }
+        .intellect-loop-chip {
+            background: rgba(205, 192, 233, 0.1);
+            border: 1px solid rgba(205, 192, 233, 0.2);
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 h-16 flex items-center justify-between px-lg z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center gap-md">
+<span class="font-display-lg text-[24px] font-extrabold text-primary tracking-tight">Polymath-Path</span>
+<div class="hidden md:flex items-center ml-xl gap-md">
+<nav class="flex gap-md h-16 items-center">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Map</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Quizzes</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Panel</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Admin</a>
+</nav>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">notifications</span>
+<span class="absolute -top-1 -right-1 w-2 h-2 bg-tertiary rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-colors">settings</span>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBygrvBgJjju9Q7EA06q7WJIM8SiLAnSJvMdmqOnxax3KpvC0So5U5ELtwHdflhaVnvbxklcI5ryl4tHKYZq6FKJuDY_8Fyy-ZpX-0f4iPpDqs1H2UqEwMp4R0MlzTTlvXFzAmRD7GgA0UlGjbfTEb-yd59-VXV-dDx_tYf073IgE1bbPPn-kjP9lOitJDsm-Qui8ZANpMlkmu_yQdEEsFi2Ib_OnfKY3qhLnco16R5cVx4Y9aOfFh58qIjAxHIaMjwj8f_wIW051A"/>
+</div>
+</header>
+<!-- SideNavBar (Admin Focused) -->
+<aside class="fixed left-0 top-0 bottom-0 hidden md:flex flex-col p-md z-40 bg-surface-container-lowest border-r border-white/5 w-64 pt-20">
+<div class="mb-lg px-xs">
+<h2 class="font-headline-md text-[20px] font-bold text-primary">Admin Control</h2>
+<p class="font-label-caps text-[10px] text-on-surface-variant">LEARNING LOOP MONITOR</p>
+</div>
+<nav class="flex-1 space-y-xs">
+<a class="flex items-center gap-sm px-sm py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/30 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">hub</span>
+<span class="font-label-caps text-label-caps">MAP</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/30 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">quiz</span>
+<span class="font-label-caps text-label-caps">QUIZZES</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md rounded-lg text-on-surface-variant hover:bg-surface-variant/30 transition-all duration-300 group" href="#">
+<span class="material-symbols-outlined group-hover:text-primary">groups</span>
+<span class="font-label-caps text-label-caps">PANEL</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md rounded-lg text-primary border-r-4 border-primary bg-primary/10 group" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">ADMIN</span>
+</a>
+</nav>
+<div class="mt-auto space-y-xs pt-md border-t border-outline-variant/20">
+<button class="w-full energy-loop-gradient text-on-primary font-bold py-sm rounded-lg flex items-center justify-center gap-xs mb-md">
+<span class="material-symbols-outlined">add</span>
+<span>New Synthesis</span>
+</button>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">help</span>
+<span class="font-label-caps text-label-caps">SUPPORT</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-xs text-on-surface-variant hover:text-on-surface" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-label-caps text-label-caps">LOG OUT</span>
+</a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="md:ml-64 pt-20 p-md min-h-screen">
+<div class="max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="mb-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="font-display-lg text-display-lg text-on-background">Ecosystem Dashboard</h1>
+<p class="text-on-surface-variant font-body-lg">Monitoring the pulse of cross-disciplinary synthesis.</p>
+</div>
+<div class="flex gap-sm">
+<div class="glass-card px-md py-xs rounded-full flex items-center gap-xs">
+<span class="w-2 h-2 rounded-full bg-tertiary"></span>
+<span class="font-label-caps text-label-caps">LIVE: 1,240 NODES</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-md">
+<!-- Metric Card: Global Loop Cohesion -->
+<div class="md:col-span-4 glass-card p-md rounded-xl flex flex-col justify-between h-64 border-l-4 border-primary">
+<div>
+<span class="font-label-caps text-label-caps text-primary">ECOSYSTEM METRIC</span>
+<h3 class="font-title-sm text-title-sm mt-xs">Global Loop Cohesion</h3>
+</div>
+<div class="flex items-center gap-md">
+<div class="relative w-24 h-24">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="48" cy="48" fill="transparent" r="40" stroke="currentColor" stroke-width="8"></circle>
+<circle cx="48" cy="48" fill="transparent" r="40" stroke="url(#loopGradient)" stroke-dasharray="251.2" stroke-dashoffset="30" stroke-width="8"></circle>
+</svg>
+<defs>
+<lineargradient id="loopGradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#cfbcff;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#e7c365;stop-opacity:1"></stop>
+</lineargradient>
+</defs>
+<span class="absolute inset-0 flex items-center justify-center font-bold text-headline-md text-[20px]">88%</span>
+</div>
+<p class="text-on-surface-variant text-sm">Connectivity across all disciplinary hubs increased by 12% this month.</p>
+</div>
+</div>
+<!-- Metric Card: User Growth -->
+<div class="md:col-span-8 glass-card p-md rounded-xl h-64 relative overflow-hidden">
+<div class="flex justify-between items-start relative z-10">
+<div>
+<span class="font-label-caps text-label-caps text-tertiary">NETWORK SCALE</span>
+<h3 class="font-title-sm text-title-sm mt-xs">User Growth &amp; Velocity</h3>
+</div>
+<div class="flex items-center gap-sm">
+<span class="text-tertiary font-bold">+24%</span>
+<span class="material-symbols-outlined text-tertiary">trending_up</span>
+</div>
+</div>
+<!-- Mock Chart Visualization -->
+<div class="absolute bottom-0 left-0 right-0 h-32 px-md pb-md flex items-end justify-between gap-1">
+<div class="w-full bg-primary/20 h-[40%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[35%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[55%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[48%] rounded-t-sm"></div>
+<div class="w-full bg-primary/20 h-[70%] rounded-t-sm"></div>
+<div class="w-full bg-primary/40 h-[65%] rounded-t-sm"></div>
+<div class="w-full bg-primary h-[90%] rounded-t-sm"></div>
+</div>
+</div>
+<!-- Tool: Subject Pairings -->
+<div class="md:col-span-7 glass-card p-md rounded-xl min-h-[400px]">
+<div class="flex justify-between items-center mb-md">
+<span class="font-label-caps text-label-caps">MANAGEMENT TOOLS</span>
+<button class="text-primary hover:underline font-label-caps">VIEW ALL PAIRINGS</button>
+</div>
+<h3 class="font-headline-md text-[24px] mb-md">Active Subject Pairings</h3>
+<div class="space-y-md">
+<div class="p-sm glass-card border-none bg-surface-container-high/40 rounded-lg flex items-center justify-between group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex -space-x-2">
+<div class="w-10 h-10 rounded-full energy-loop-gradient flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">science</span></div>
+<div class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">palette</span></div>
+</div>
+<div>
+<h4 class="font-title-sm text-sm">Quantum Physics &amp; Surrealism</h4>
+<p class="text-xs text-on-surface-variant">Active Synthesis Loop #402</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">edit_note</span>
+</div>
+<div class="p-sm glass-card border-none bg-surface-container-high/40 rounded-lg flex items-center justify-between group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex -space-x-2">
+<div class="w-10 h-10 rounded-full bg-secondary flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">psychology</span></div>
+<div class="w-10 h-10 rounded-full bg-primary flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">code</span></div>
+</div>
+<div>
+<h4 class="font-title-sm text-sm">Neurobiology &amp; Data Architecture</h4>
+<p class="text-xs text-on-surface-variant">Active Synthesis Loop #118</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">edit_note</span>
+</div>
+<div class="p-sm glass-card border-none bg-surface-container-high/40 rounded-lg flex items-center justify-between group hover:bg-surface-variant transition-colors">
+<div class="flex items-center gap-md">
+<div class="flex -space-x-2">
+<div class="w-10 h-10 rounded-full bg-tertiary flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">architecture</span></div>
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center border-2 border-surface"><span class="material-symbols-outlined text-sm">music_note</span></div>
+</div>
+<div>
+<h4 class="font-title-sm text-sm">Bauhaus Theory &amp; Algorithmic Jazz</h4>
+<p class="text-xs text-on-surface-variant">Active Synthesis Loop #092</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant opacity-0 group-hover:opacity-100 transition-opacity">edit_note</span>
+</div>
+</div>
+</div>
+<!-- Most Popular Synthesis (Visual) -->
+<div class="md:col-span-5 active-glass-card p-md rounded-xl flex flex-col justify-between overflow-hidden relative">
+<img alt="Popular Synthesis Visualization" class="absolute inset-0 w-full h-full object-cover opacity-20" data-alt="An abstract 3D visualization of interconnected glowing nodes and neural pathways forming a complex geometric sphere. The background is a dark, matte deep black with vibrant streaks of violet and amber light representing data flow. The style is ultra-modern, featuring glassmorphic depth effects and soft atmospheric glows that suggest a high-tech intellectual environment. The overall mood is futuristic and intellectually stimulating." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3Kv4pwP0cPbdhStD3sY5QMDDGGJfSKX7ZMT_Jfgyt2RsxCpSiUSmox7qGlekIuYuW2borjJpPITk9mi_srios6tCWwnerqoCOqXevFfjUiskUZO7tKeYKXn51KpXeBXp_KG_s2v8pRFX8hK2mfkq5Qcn6U_pTMkzZ1WS5fmzOJ5NcFAjpd04bluVEeLwkpQDZOHvfRUwqXcNrQaybYR4HolwWCiCPxHAByYfCvOVxi9i1oMrdiXVZwSvanJRxM_niAEvm_PH1JHM"/>
+<div class="relative z-10">
+<span class="font-label-caps text-label-caps text-primary">TRENDING SYNTHESIS</span>
+<h3 class="font-headline-md text-[28px] mt-xs">Bio-Mimetic Architecture</h3>
+<div class="flex flex-wrap gap-xs mt-md">
+<span class="intellect-loop-chip px-sm py-1 rounded-full text-[10px] font-label-caps">BIOLOGY</span>
+<span class="intellect-loop-chip px-sm py-1 rounded-full text-[10px] font-label-caps">DESIGN</span>
+<span class="intellect-loop-chip px-sm py-1 rounded-full text-[10px] font-label-caps">AI</span>
+</div>
+</div>
+<div class="relative z-10">
+<p class="text-on-surface mb-md text-sm">4.8k active learners exploring the intersection of fungal mycelium growth and urban structural efficiency.</p>
+<button class="w-full bg-white text-surface py-sm rounded-lg font-bold hover:bg-primary transition-colors">Review Module</button>
+</div>
+</div>
+<!-- Community Aha! Highlights -->
+<div class="md:col-span-12 glass-card p-md rounded-xl">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-[24px]">Community Aha! Highlights</h3>
+<div class="flex gap-sm">
+<button class="p-xs glass-card rounded-lg hover:text-primary"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-xs glass-card rounded-lg hover:text-primary"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-md">
+<div class="p-md bg-surface-container-low rounded-xl border border-white/5 flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="User Avatar" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAxqT3ICJ1TKj2CcQhmrhJIPGThM3p1ic_YUK-zxE86eEOQDrVtTNwBjp-sJvHJPcKQhyr6spOn4mju1LxXm_b7ydZDi5YvAZTLV0yHgLUsCU5echtp-4pYNON_eMQ3xhEVtvgddKy8XRstgw0zlY6E1p1DqMDP-p7U_71EM9-hqTD5jovsXRbWEHEIEX2al8IUzbMrYV4m_-1PiktrhR9Cskt7-FezPZnUVXewnwPIyGnG-d_5-13GHgLbmrRx4yxOPyaCrwCgzH0"/>
+<div>
+<p class="text-sm font-bold">Dr. Elena Vos</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant">COGNITIVE SCIENTIST</p>
+</div>
+</div>
+<p class="italic text-sm text-on-surface">"The way the system linked my research on synaptic pruning to the 'Garbage Collection' algorithms in Python was a total revelation."</p>
+<div class="mt-auto pt-sm flex justify-between items-center border-t border-white/5">
+<span class="text-tertiary font-bold text-xs">Featured Moment</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">bookmark</span>
+</div>
+</div>
+<div class="p-md bg-surface-container-low rounded-xl border border-white/5 flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="User Avatar" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7FW1CnjUnkxNPFxCFD_G-v719F-OCNXlz_SvxW8ar7WCmDz2RXRxt5SVI0IXYGM4B0nVqB1C3u1Gi3bNjQODnF-Ux8OaP-FywyzIWXcQmoVqnZ--fA4AakO01l4280WC-9EAjQ46MDV_zd1bcE5vExlDivuuZ_meY6sHv8WQBRHr54Q81AgjbPt_qvdhWkHDSIx9bhjEDlfCVTHNiD9f51svHvx125yxvmk8tyh0lwOczuNL8ObJoe_Iv82t8FqOHfjQcDYC-oGE"/>
+<div>
+<p class="text-sm font-bold">Marcus Thorne</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant">JAZZ PIANIST / DEV</p>
+</div>
+</div>
+<p class="italic text-sm text-on-surface">"Finally understood recursive functions by seeing them mapped as Coltrane's 'Giant Steps' changes. Mind blown."</p>
+<div class="mt-auto pt-sm flex justify-between items-center border-t border-white/5">
+<span class="text-tertiary font-bold text-xs">Featured Moment</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">bookmark</span>
+</div>
+</div>
+<div class="p-md bg-surface-container-low rounded-xl border border-white/5 flex flex-col gap-md">
+<div class="flex items-center gap-sm">
+<img alt="User Avatar" class="w-8 h-8 rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbkFHK0Y_CE0sAMUF5q_XooYWIh7UNj4u5jC2cq-pu2LJuk3ndTpMbrEIR1MsD5w8wis5lt3WITV2gHCZS5E31SwfgCgdq0z8U4MsIWIxsqKCxprIMH7H6iYkX4T8cWAolaxz3RjaUE8xkgvZ8lZ_4kvZLqNQJep1lYYzvfwAMsPZ_eTTwf8_yATWUmXD-8ZmfJMKMhjI_ES9Dl31cFBDUlJ0LTV8BxIKNQRWxU3fHQgYgo29QuMTGL0LSNOBIuCT5EkU5RhASoSc"/>
+<div>
+<p class="text-sm font-bold">Sita Patel</p>
+<p class="text-[10px] font-label-caps text-on-surface-variant">URBAN PLANNER</p>
+</div>
+</div>
+<p class="italic text-sm text-on-surface">"Synthesizing ancient irrigation systems with modern blockchain mesh networks. This is where the future of cities lies."</p>
+<div class="mt-auto pt-sm flex justify-between items-center border-t border-white/5">
+<span class="text-tertiary font-bold text-xs">Featured Moment</span>
+<span class="material-symbols-outlined text-sm text-on-surface-variant">bookmark</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Expert Moderation Queue -->
+<div class="md:col-span-12 glass-card p-md rounded-xl mb-xl">
+<div class="flex items-center justify-between mb-md">
+<h3 class="font-headline-md text-[24px]">Expert Moderation Queue</h3>
+<span class="bg-error-container text-on-error-container text-[10px] px-sm py-1 rounded-full font-bold">4 PENDING REVIEWS</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead class="border-b border-white/10">
+<tr>
+<th class="py-sm font-label-caps text-[10px] text-on-surface-variant">SUBJECT A</th>
+<th class="py-sm font-label-caps text-[10px] text-on-surface-variant">SUBJECT B</th>
+<th class="py-sm font-label-caps text-[10px] text-on-surface-variant">SYNTHESIS PROPOSAL</th>
+<th class="py-sm font-label-caps text-[10px] text-on-surface-variant">AUTHOR</th>
+<th class="py-sm font-label-caps text-[10px] text-on-surface-variant text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-white/5">
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="py-md text-sm font-bold">Game Theory</td>
+<td class="py-md text-sm font-bold">Botanical Evolution</td>
+<td class="py-md text-sm text-on-surface-variant">Competitive survival strategies in forest canopies...</td>
+<td class="py-md text-sm">Julian R.</td>
+<td class="py-md text-right">
+<button class="px-sm py-1 bg-primary text-on-primary text-xs font-bold rounded-full">Approve</button>
+</td>
+</tr>
+<tr class="group hover:bg-white/5 transition-colors">
+<td class="py-md text-sm font-bold">Stoicism</td>
+<td class="py-md text-sm font-bold">Error Handling</td>
+<td class="py-md text-sm text-on-surface-variant">Philosophical resilience vs system fault tolerance...</td>
+<td class="py-md text-sm">Aria Sun</td>
+<td class="py-md text-right">
+<button class="px-sm py-1 bg-primary text-on-primary text-xs font-bold rounded-full">Approve</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB -->
+<button class="fixed bottom-lg right-lg w-14 h-14 rounded-full energy-loop-gradient flex items-center justify-center text-white shadow-2xl z-50 hover:scale-105 transition-transform">
+<span class="material-symbols-outlined" style="font-variation-settings: 'wght' 600;">add</span>
+</button>
+</body></html>

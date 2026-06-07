@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SPATIAL_LAB.v1 - 3D Exploder</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-secondary": "#2c303d",
+                      "tertiary-fixed": "#e2e2e2",
+                      "on-surface-variant": "#b9cacb",
+                      "tertiary-container": "#dcdcdc",
+                      "primary": "#e3fdff",
+                      "surface-container-low": "#151d1e",
+                      "on-surface": "#dce4e4",
+                      "tertiary-fixed-dim": "#c6c6c6",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary": "#303030",
+                      "tertiary": "#f9f9f9",
+                      "on-secondary-fixed-variant": "#434654",
+                      "inverse-on-surface": "#2a3232",
+                      "primary-container": "#00f3ff",
+                      "secondary-container": "#454957",
+                      "on-secondary-container": "#b5b8c9",
+                      "secondary": "#c3c6d7",
+                      "primary-fixed": "#6ff6ff",
+                      "secondary-fixed-dim": "#c3c6d7",
+                      "on-primary-fixed-variant": "#004f53",
+                      "error-container": "#93000a",
+                      "outline-variant": "#3a494b",
+                      "on-error": "#690005",
+                      "on-tertiary-fixed-variant": "#474747",
+                      "surface-dim": "#0d1515",
+                      "surface": "#0d1515",
+                      "on-secondary-fixed": "#171b28",
+                      "background": "#0d1515",
+                      "on-background": "#dce4e4",
+                      "surface-bright": "#333b3b",
+                      "primary-fixed-dim": "#00dce6",
+                      "outline": "#849495",
+                      "surface-variant": "#2e3637",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed": "#002022",
+                      "secondary-fixed": "#dfe2f3",
+                      "surface-tint": "#00dce6",
+                      "surface-container-high": "#232b2c",
+                      "surface-container-lowest": "#081010",
+                      "inverse-primary": "#00696f",
+                      "on-primary": "#00373a",
+                      "inverse-surface": "#dce4e4",
+                      "surface-container-highest": "#2e3637",
+                      "surface-container": "#192122",
+                      "on-tertiary-fixed": "#1b1b1b",
+                      "on-tertiary-container": "#606060",
+                      "on-primary-container": "#006b71"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "panel-padding": "24px",
+                      "unit": "4px",
+                      "margin": "32px",
+                      "gutter": "16px",
+                      "safe-area": "64px"
+              },
+              "fontFamily": {
+                      "headline-lg": ["Space Grotesk"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-md": ["JetBrains Mono"],
+                      "data-mono": ["JetBrains Mono"],
+                      "display-xl": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "data-mono": ["14px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                      "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(0, 243, 255, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+        .corner-bracket {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-color: #00f3ff;
+        }
+        .bracket-tl { top: 0; left: 0; border-top: 1px solid; border-left: 1px solid; }
+        .bracket-tr { top: 0; right: 0; border-top: 1px solid; border-right: 1px solid; }
+        .bracket-bl { bottom: 0; left: 0; border-bottom: 1px solid; border-left: 1px solid; }
+        .bracket-br { bottom: 0; right: 0; border-bottom: 1px solid; border-right: 1px solid; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- AR CAMERA BACKGROUND -->
+<div class="fixed inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 brightness-50" data-alt="A high-tech industrial engineering laboratory filled with advanced machinery and robotic arms. The lighting is low-key with deep indigo shadows and sharp architectural lines. The atmosphere is clinical and professional, featuring stainless steel surfaces and subtle glowing indicator lights in the background, creating a perfect backdrop for a holographic augmented reality interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCNpKyy-aDveKfcb2SHRlI6ZefBzRy2alGU0UR0SlZU8LnY0-IxyqI9SVUQr_leap0fpPEeLivE8m8GmUfvENuCKsYYIRV2PKvWR1Itmz_1nyvrAewE0mGySAdvarePf4uJzwhcOYE0RSQUDTzGg_WB8jUmLbM8XWLoogIdwz3mSQGfmux7-QZpNPh8ArXTpSohTPEc8_uI9IV1u0ymJ-ZReTJDV0thLWqfcm2tbXLbrrqdfq51KgtfzOnQK4iitBJj1LyqN9jcRms"/>
+<div class="absolute inset-0 scanline pointer-events-none"></div>
+<div class="absolute inset-0 bg-gradient-to-b from-surface-container-low/20 via-transparent to-surface-container-low/40"></div>
+</div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface/70 dark:bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30">
+<div class="flex items-center gap-gutter">
+<span class="material-symbols-outlined text-primary-container" data-icon="grid_view">grid_view</span>
+<h1 class="font-headline-lg text-headline-lg text-primary-container tracking-tighter">SPATIAL_LAB.v1</h1>
+</div>
+<div class="flex items-center gap-margin">
+<div class="flex items-center gap-unit px-gutter py-1 bg-primary-container/10 border border-primary-container/30 rounded-full">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#00f3ff]"></span>
+<span class="font-label-caps text-label-caps text-primary-container">HMD-LINK: ACTIVE</span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant hover:bg-primary-container/10 transition-colors cursor-pointer p-unit rounded" data-icon="settings_input_antenna">settings_input_antenna</span>
+</div>
+</header>
+<!-- Main Content Canvas (The Exploded View) -->
+<main class="relative z-10 w-full h-screen flex items-center justify-center pt-16 pb-24 overflow-hidden">
+<!-- Central 3D Model Placeholder -->
+<div class="relative w-[80vw] h-[530px] flex items-center justify-center">
+<!-- Connection Lines (Visualized via SVG) -->
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-40">
+<line stroke="#00f3ff" stroke-dasharray="4" stroke-width="1" x1="50%" x2="30%" y1="50%" y2="20%"></line>
+<line stroke="#00f3ff" stroke-dasharray="4" stroke-width="1" x1="50%" x2="70%" y1="50%" y2="25%"></line>
+<line stroke="#00f3ff" stroke-dasharray="4" stroke-width="1" x1="50%" x2="25%" y1="50%" y2="70%"></line>
+<line stroke="#00f3ff" stroke-dasharray="4" stroke-width="1" x1="50%" x2="75%" y1="50%" y2="75%"></line>
+</svg>
+<!-- Holographic Engine Parts -->
+<div class="grid grid-cols-3 gap-12 items-center">
+<div class="col-start-2 z-20 group cursor-pointer transform hover:scale-110 transition-transform">
+<img class="w-48 h-48 object-contain filter drop-shadow-[0_0_15px_rgba(0,243,255,0.4)]" data-alt="A highly detailed 3D model of a futuristic jet engine core, rendered in a clinical technical style. The material is a mix of brushed titanium and translucent composite with glowing neon cyan internal components. The part is shown in isolation against a dark void, with faint light-emitting diode patterns visible on its surface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC3ykp54nJJ_Oo3LkDWzYuBM6HRHcZmV08mjNY9uzAb53164czcOk7E11RwcG_3SExU88n5ImgOLKwosVD9dsoKAuwiYFenUKKORi4Haz0dHnx3opUHa2SwcsJj58tXhOiHS7NdeMI3PN7Z5dHbPZH0jBhXma-_uFSylpjKDwN5pQGPbHdFrtrHa976IT9SOU46-CHrlgfTwjM_v-8fB28il29dXHnaD7VBzUbUIP-WQlRn-pqBTa24UHTfu68CvTPONrJDcBmRMnM"/>
+<div class="mt-2 text-center bg-primary-container/20 border border-primary-container py-1 px-3">
+<span class="font-label-caps text-label-caps text-primary-container">CORE_MODULE_X1</span>
+</div>
+</div>
+<div class="absolute top-10 left-10 transform -rotate-12 group cursor-pointer hover:translate-x-2 transition-transform">
+<img class="w-32 h-32 object-contain grayscale brightness-125 contrast-125" data-alt="A complex mechanical assembly part, possibly a high-precision turbine fan or hydraulic pump component. The design features sharp geometric edges and intricate cabling. It is presented with a holographic blue tint, glowing with cyan energy at the joint points, emphasizing its high-tech aerospace origin." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqN9CQfEyo-55Oxpz38wi6cGyEAd0_CyIcNcqUXBMaVXHQUVBYMsayDNXSN4xhpVHPNX7f1uRCkSwNiSOFyiaYUeGGJTAwP-CBcK2KUGbFnV9OhAm8Ffnk6e0HdtMqMrC1NfWXrT-eXYaTF5_dQzCe59q4q1Pf1rVC-G9VSoOSfoheadMQGCr1C-5nsOh7nr68TNyCbezqh6TkCJR0q-e2IgFcvicbuXKxFGB_-5h2klyohvJar6BafluxedvOHrjtf5PykvwxBdg"/>
+<div class="absolute -top-4 -left-4 font-data-mono text-primary-container text-[10px]">POS: X-142 | Y+082</div>
+</div>
+<div class="absolute bottom-10 right-10 transform rotate-6 group cursor-pointer hover:-translate-x-2 transition-transform">
+<img class="w-32 h-32 object-contain grayscale brightness-125 contrast-125" data-alt="An intricate array of sensors and circuitry encased in a transparent housing. The interior glows with a soft neon cyan light, highlighting the micro-connections and processing units. The aesthetic is clean and futuristic, fitting for an advanced medical or aerospace diagnostic tool." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCFb0gVJaGQ4gwoh6mnqhBipCzk7S4ehuxhbDPVeq2rQuiBmPGQjxyccp8Lsx4rTMMZg37yWu_CPQghF4H_OlU9I3ReXZSTx1ols3EXtndYNRYSyWjx6Zmk7n7b1h1xmgevjU-OXf0j4TNXq4KzX62qk2C9UG1c5Q4wqUvdzdGlDHaymbMKZ5lmMDxfXXwDxVHsOKWD1ydmQvUfFZZPWCINEUjJ5U61Vf7oPsMEOoWE8_nnGPX8pKhdEafe_dwdX66b1y7SZMHaUa8"/>
+<div class="absolute -bottom-4 -right-4 font-data-mono text-primary-container text-[10px]">SIG_STRENGTH: 98%</div>
+</div>
+</div>
+</div>
+</main>
+<!-- LEFT: Technical Specs Readout -->
+<aside class="fixed left-panel-padding top-1/2 -translate-y-1/2 w-72 flex flex-col gap-gutter z-30">
+<div class="bg-surface-container-low/80 backdrop-blur-2xl border-l-2 border-primary-container p-panel-padding relative">
+<div class="corner-bracket bracket-tr"></div>
+<div class="corner-bracket bracket-br"></div>
+<h2 class="font-label-caps text-label-caps text-primary-container mb-gutter">SYSTEM_MANIFEST</h2>
+<div class="space-y-unit">
+<div class="flex justify-between font-data-mono text-data-mono border-b border-outline-variant/30 pb-unit mb-unit">
+<span class="text-on-surface-variant">PART_ID:</span>
+<span class="text-on-surface">SL-X990</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono border-b border-outline-variant/30 pb-unit mb-unit">
+<span class="text-on-surface-variant">TEMP:</span>
+<span class="text-primary-container">42.8 °C</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono border-b border-outline-variant/30 pb-unit mb-unit">
+<span class="text-on-surface-variant">RPM_MAX:</span>
+<span class="text-on-surface">14,200</span>
+</div>
+<div class="flex justify-between font-data-mono text-data-mono">
+<span class="text-on-surface-variant">INTEGRITY:</span>
+<span class="text-primary-container">NOMINAL</span>
+</div>
+</div>
+<!-- Mini Radar/Graph -->
+<div class="mt-margin h-24 border border-outline-variant/50 relative overflow-hidden bg-background/40">
+<svg class="absolute inset-0 w-full h-full" viewbox="0 0 100 40">
+<path d="M0 30 L10 25 L20 35 L30 15 L40 20 L50 5 L60 25 L70 10 L80 15 L90 25 L100 20" fill="none" stroke="#00f3ff" stroke-width="1"></path>
+</svg>
+<div class="absolute bottom-1 right-1 font-data-mono text-[8px] text-on-surface-variant">WAVEFORM_MONITOR</div>
+</div>
+</div>
+</aside>
+<!-- RIGHT: Parts List Transparent Panel -->
+<aside class="fixed right-panel-padding top-1/2 -translate-y-1/2 w-64 z-30 flex flex-col gap-gutter">
+<div class="bg-surface-container-low/80 backdrop-blur-2xl border border-outline-variant/50 p-gutter rounded-lg relative">
+<h3 class="font-label-caps text-label-caps text-on-surface mb-gutter flex items-center justify-between">
+                ASSEMBLY_PARTS
+                <span class="material-symbols-outlined text-primary-container text-sm" data-icon="filter_list">filter_list</span>
+</h3>
+<div class="space-y-2 max-h-[442px] overflow-y-auto pr-1">
+<!-- Part Item 1 -->
+<div class="group flex items-center gap-gutter p-2 bg-surface-variant/20 hover:bg-primary-container/10 border border-transparent hover:border-primary-container/50 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-on-secondary/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="settings_input_component">settings_input_component</span>
+</div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-on-surface">INTAKE_VALVE_A</div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">READY_FOR_DETACH</div>
+</div>
+</div>
+<!-- Part Item 2 -->
+<div class="group flex items-center gap-gutter p-2 bg-primary-container/10 border border-primary-container/30 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-primary-container/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="view_in_ar" style="font-variation-settings: 'FILL' 1;">view_in_ar</span>
+</div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-primary-container">CORE_MODULE_X1</div>
+<div class="font-data-mono text-[9px] text-primary-container/70">ACTIVE_FOCUS</div>
+</div>
+</div>
+<!-- Part Item 3 -->
+<div class="group flex items-center gap-gutter p-2 bg-surface-variant/20 hover:bg-primary-container/10 border border-transparent hover:border-primary-container/50 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-on-secondary/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="adjust">adjust</span>
+</div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-on-surface">COMPRESSOR_FAN</div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">LOCKED_IN_PLACE</div>
+</div>
+</div>
+<!-- Part Item 4 -->
+<div class="group flex items-center gap-gutter p-2 bg-surface-variant/20 hover:bg-primary-container/10 border border-transparent hover:border-primary-container/50 transition-all cursor-pointer">
+<div class="w-10 h-10 bg-on-secondary/50 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="cable">cable</span>
+</div>
+<div class="flex-1">
+<div class="font-label-caps text-[10px] text-on-surface">NEURAL_ARRAY_B</div>
+<div class="font-data-mono text-[9px] text-on-surface-variant">DIAGNOSTIC_PENDING</div>
+</div>
+</div>
+</div>
+<button class="w-full mt-gutter py-2 border border-primary-container font-label-caps text-label-caps text-primary-container hover:bg-primary-container hover:text-background transition-all">
+                COLLAPSE_ALL
+            </button>
+</div>
+</aside>
+<!-- BOTTOM: Gesture Navigation Ring -->
+<div class="fixed bottom-safe-area left-1/2 -translate-x-1/2 z-40 flex items-center justify-center">
+<!-- Main Gesture HUD Ring -->
+<div class="relative w-48 h-48 flex items-center justify-center">
+<!-- Rotating/Pulsing Outer Rings -->
+<div class="absolute inset-0 border-2 border-dashed border-primary-container/20 rounded-full animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute inset-4 border border-primary-container/40 rounded-full animate-pulse shadow-[0_0_20px_rgba(0,243,255,0.1)]"></div>
+<!-- Gesture Indicator Center -->
+<div class="w-24 h-24 rounded-full border border-primary-container flex items-center justify-center bg-primary-container/10 backdrop-blur-md relative">
+<span class="material-symbols-outlined text-primary-container text-4xl" data-icon="pinch">pinch</span>
+<!-- Selection Marks -->
+<div class="absolute -top-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-primary-container"></div>
+<div class="absolute top-1/2 -right-2 -translate-y-1/2 w-3 h-1 bg-primary-container/30"></div>
+<div class="absolute -bottom-2 left-1/2 -translate-x-1/2 w-1 h-3 bg-primary-container/30"></div>
+<div class="absolute top-1/2 -left-2 -translate-y-1/2 w-3 h-1 bg-primary-container/30"></div>
+</div>
+<!-- Floating Label -->
+<div class="absolute -bottom-8 left-1/2 -translate-x-1/2 whitespace-nowrap">
+<span class="font-label-caps text-label-caps text-primary-container">GESTURE_INPUT: READY</span>
+</div>
+</div>
+</div>
+<!-- Navigation Rail (Vertical Rail SideNav) -->
+<nav class="fixed left-0 top-0 h-full flex flex-col p-gutter z-40 border-r border-outline-variant/50 bg-surface-container-low/80 backdrop-blur-2xl w-20 justify-center">
+<div class="flex flex-col gap-margin">
+<div class="group flex flex-col items-center gap-unit cursor-pointer text-on-surface-variant hover:text-primary-container transition-all">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">EXPLODER</span>
+</div>
+<div class="group flex flex-col items-center gap-unit cursor-pointer text-on-primary-container bg-primary-container/20 border-l-2 border-primary-container py-gutter scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="format_list_numbered">format_list_numbered</span>
+<span class="font-label-caps text-[8px]">PROCEDURE</span>
+</div>
+<div class="group flex flex-col items-center gap-unit cursor-pointer text-on-surface-variant hover:text-primary-container transition-all">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">WORKSHOP</span>
+</div>
+<div class="group flex flex-col items-center gap-unit cursor-pointer text-on-surface-variant hover:text-primary-container transition-all">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-label-caps text-[8px] opacity-0 group-hover:opacity-100 transition-opacity">SKILLS</span>
+</div>
+</div>
+</nav>
+<!-- BottomNavBar (Mobile Context) -->
+<footer class="fixed bottom-0 left-1/2 -translate-x-1/2 w-auto mb-safe flex gap-gutter px-margin py-unit z-50 rounded-full border border-outline-variant/20 backdrop-blur-md bg-transparent md:hidden">
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="home_app_logo">home_app_logo</span>
+</div>
+<div class="flex flex-col items-center justify-center border border-primary-container rounded-full p-unit bg-primary-container/10 shadow-[0_0_15px_rgba(0,243,255,0.3)] animate-pulse">
+<span class="material-symbols-outlined text-primary-container" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant/60 hover:text-primary-container scale-110 transition-transform">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</div>
+</footer>
+<!-- Overlay UI Coordinates -->
+<div class="fixed top-20 left-panel-padding font-data-mono text-[10px] text-primary-container/40 z-20 pointer-events-none">
+        FOV_INDEX: 1.042<br/>
+        LOC: GRID_A-04
+    </div>
+<div class="fixed top-20 right-panel-padding font-data-mono text-[10px] text-primary-container/40 z-20 text-right pointer-events-none">
+        LATENCY: 4ms<br/>
+        BUF: 100%
+    </div>
+</body></html>

@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Polymath-Path | Cross-Subject Quizzes</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600&amp;family=Sora:wght@600;700;800&amp;family=Space+Grotesk:wght@600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#e7c365",
+                        "primary": "#cfbcff",
+                        "secondary": "#cdc0e9",
+                        "surface-tint": "#cfbcff",
+                        "surface-container-lowest": "#0f0d13",
+                        "inverse-primary": "#6750a4",
+                        "on-background": "#e6e0e9",
+                        "on-primary-container": "#e0d2ff",
+                        "outline": "#948e9c",
+                        "on-secondary-container": "#bfb2da",
+                        "on-primary-fixed": "#22005d",
+                        "on-tertiary-fixed-variant": "#594400",
+                        "on-secondary": "#342b4b",
+                        "surface": "#141218",
+                        "inverse-on-surface": "#322f35",
+                        "on-secondary-fixed-variant": "#4b4263",
+                        "error-container": "#93000a",
+                        "on-surface": "#e6e0e9",
+                        "error": "#ffb4ab",
+                        "on-secondary-fixed": "#1f1635",
+                        "outline-variant": "#494551",
+                        "surface-container-low": "#1d1b20",
+                        "tertiary-container": "#c9a74d",
+                        "secondary-fixed": "#e9ddff",
+                        "on-tertiary-container": "#503d00",
+                        "on-primary": "#381e72",
+                        "inverse-surface": "#e6e0e9",
+                        "surface-container-high": "#2b292f",
+                        "primary-fixed": "#e9ddff",
+                        "on-tertiary": "#3e2e00",
+                        "surface-variant": "#36343a",
+                        "background": "#141218",
+                        "on-error": "#690005",
+                        "surface-dim": "#141218",
+                        "on-tertiary-fixed": "#241a00",
+                        "primary-container": "#6750a4",
+                        "surface-container": "#211f24",
+                        "tertiary-fixed": "#ffdf93",
+                        "on-primary-fixed-variant": "#4f378a",
+                        "surface-container-highest": "#36343a",
+                        "on-error-container": "#ffdad6",
+                        "surface-bright": "#3b383e",
+                        "secondary-container": "#4d4465",
+                        "secondary-fixed-dim": "#cdc0e9",
+                        "tertiary-fixed-dim": "#e7c365",
+                        "primary-fixed-dim": "#cfbcff",
+                        "on-surface-variant": "#cbc4d2"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "1.5rem",
+                        "lg": "2.5rem",
+                        "xs": "0.5rem",
+                        "xl": "4rem",
+                        "sm": "1rem"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Hanken Grotesk"],
+                        "headline-md": ["Sora"],
+                        "body-lg": ["Hanken Grotesk"],
+                        "display-lg": ["Sora"],
+                        "title-sm": ["Sora"],
+                        "label-caps": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "800"}],
+                        "title-sm": ["20px", {"lineHeight": "1.4", "fontWeight": "600"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(30, 30, 30, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .energy-loop-gradient {
+            background: linear-gradient(135deg, #cfbcff 0%, #6750a4 100%);
+        }
+        .intellect-loop-border {
+            border: 1.5px solid;
+            border-image-source: linear-gradient(135deg, #cfbcff, #e7c365);
+            border-image-slice: 1;
+        }
+        .bento-active {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            position: relative;
+        }
+        .bento-active::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            padding: 1.5px;
+            border-radius: inherit;
+            background: linear-gradient(135deg, #cfbcff, #e7c365);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            pointer-events: none;
+        }
+        .learning-line {
+            position: relative;
+        }
+        .learning-line::before {
+            content: '';
+            position: absolute;
+            width: 1px;
+            height: 100%;
+            left: -1rem;
+            background: linear-gradient(to bottom, transparent, #cfbcff, transparent);
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="bg-surface-container-lowest text-on-surface min-h-screen font-body-md overflow-x-hidden">
+<!-- TopNavBar -->
+<header class="fixed top-0 right-0 left-0 h-16 flex items-center justify-between px-lg z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
+<div class="flex items-center gap-sm">
+<span class="font-display-lg text-display-lg font-extrabold text-primary">Polymath-Path</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex gap-md items-center h-full">
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Map</a>
+<a class="text-primary font-bold border-b-2 border-primary pb-1" href="#">Quizzes</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Panel</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-200" href="#">Syllabus</a>
+</nav>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all">notifications</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-all">settings</span>
+<img alt="User profile avatar" class="w-8 h-8 rounded-full border border-outline-variant" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXgnHbAZI6E1Vsr3HWfLLaCM_ww-h6GXwfldrEUolwnBOHgsCHyDGbx4wYR6YcywhjM5GdYVOBBgZpHn33eiDUzxAzp2oLO4BHPFoWmLLl6cmE3QPzRrCrV4b41DXYTBjHq8BLUSSlTYprqVhKVdxmgR5uwbxeh0eFY3xk3LxrtexONh8_Cx3Zk_B-jrwLHKuqFzcWFxaNJjlhg6fwrFBPW6JiCygjFhSg2Oc6rAG0LloItKSeAJmcMntpBNux-SDw9qP2UJWKNiU"/>
+</div>
+</div>
+</header>
+<!-- Sidebar (Shared Component Style) -->
+<aside class="fixed left-0 top-0 bottom-0 hidden lg:flex flex-col p-md z-40 bg-surface-container-lowest border-r border-white/5 w-64 pt-20">
+<div class="mb-lg">
+<span class="font-label-caps text-label-caps text-on-surface-variant block mb-xs">CURRENT LOOP</span>
+<div class="p-sm bg-primary/10 border-r-4 border-primary rounded-r-lg">
+<span class="font-title-sm text-title-sm text-primary block">Quantum Gastronomy</span>
+<span class="text-xs text-on-surface-variant">Level 4 Analysis</span>
+</div>
+</div>
+<nav class="space-y-xs flex-grow">
+<div class="group flex items-center gap-sm p-sm rounded-lg hover:bg-surface-variant/30 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">hub</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Map</span>
+</div>
+<div class="group flex items-center gap-sm p-sm rounded-lg bg-primary/10 border-r-4 border-primary cursor-pointer">
+<span class="material-symbols-outlined text-primary">quiz</span>
+<span class="font-label-caps text-label-caps text-primary">Quizzes</span>
+</div>
+<div class="group flex items-center gap-sm p-sm rounded-lg hover:bg-surface-variant/30 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">groups</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Panel</span>
+</div>
+<div class="group flex items-center gap-sm p-sm rounded-lg hover:bg-surface-variant/30 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">dashboard_customize</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Syllabus</span>
+</div>
+</nav>
+<button class="energy-loop-gradient text-on-primary font-bold py-sm px-md rounded-lg mb-md flex items-center justify-center gap-xs hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-weight="fill">add_circle</span>
+<span>New Synthesis</span>
+</button>
+<div class="mt-auto space-y-xs pt-md border-t border-white/5">
+<div class="group flex items-center gap-sm p-xs rounded-lg hover:bg-surface-variant/30 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">help</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Support</span>
+</div>
+<div class="group flex items-center gap-sm p-xs rounded-lg hover:bg-surface-variant/30 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">logout</span>
+<span class="font-label-caps text-label-caps text-on-surface-variant group-hover:text-on-surface">Log Out</span>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="lg:ml-64 pt-16 p-md lg:p-lg">
+<div class="grid grid-cols-12 gap-md items-start">
+<!-- Left Column: Subject Categories (Bento Grid Style) -->
+<div class="col-span-12 md:col-span-3 space-y-md">
+<div class="glass-card p-md rounded-xl">
+<h3 class="font-label-caps text-label-caps text-primary mb-md">DOMAINS</h3>
+<div class="grid grid-cols-1 gap-sm">
+<div class="bento-active p-sm rounded-lg group cursor-pointer">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title-sm text-title-sm text-on-surface">Physics</span>
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<p class="text-xs text-on-surface-variant">Thermodynamics &amp; Energy</p>
+</div>
+<div class="glass-card p-sm rounded-lg border-white/5 group hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title-sm text-title-sm text-on-surface-variant group-hover:text-on-surface">Gastronomy</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-tertiary">restaurant</span>
+</div>
+<p class="text-xs text-on-surface-variant">Molecular Interactions</p>
+</div>
+<div class="glass-card p-sm rounded-lg border-white/5 group hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title-sm text-title-sm text-on-surface-variant group-hover:text-on-surface">Cybernetics</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary">memory</span>
+</div>
+<p class="text-xs text-on-surface-variant">Feedback Loop Theory</p>
+</div>
+<div class="glass-card p-sm rounded-lg border-white/5 group hover:border-primary/50 transition-all cursor-pointer">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-title-sm text-title-sm text-on-surface-variant group-hover:text-on-surface">Sociology</span>
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-secondary">diversity_3</span>
+</div>
+<p class="text-xs text-on-surface-variant">Group Dynamics</p>
+</div>
+</div>
+</div>
+<!-- Stats Bento Card -->
+<div class="glass-card p-md rounded-xl relative overflow-hidden">
+<div class="absolute -right-4 -bottom-4 w-24 h-24 bg-primary/10 rounded-full blur-2xl"></div>
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md uppercase">Synthesis Rank</h3>
+<div class="flex flex-col items-center py-md">
+<div class="relative w-24 h-24 flex items-center justify-center mb-sm">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-white/5" cx="48" cy="48" fill="transparent" r="44" stroke="currentColor" stroke-width="4"></circle>
+<circle cx="48" cy="48" fill="transparent" r="44" stroke="url(#gradient)" stroke-dasharray="276" stroke-dashoffset="69" stroke-linecap="round" stroke-width="6"></circle>
+<defs>
+<lineargradient id="gradient" x1="0%" x2="100%" y1="0%" y2="100%">
+<stop offset="0%" style="stop-color:#cfbcff"></stop>
+<stop offset="100%" style="stop-color:#e7c365"></stop>
+</lineargradient>
+</defs>
+</svg>
+<span class="absolute font-display-lg text-title-sm text-primary">75%</span>
+</div>
+<span class="font-headline-md text-headline-md text-on-surface">Tier IV</span>
+<span class="text-sm text-on-surface-variant">Architect of Ideas</span>
+</div>
+</div>
+</div>
+<!-- Center Column: Active Quiz Content -->
+<div class="col-span-12 md:col-span-6 space-y-md">
+<div class="glass-card p-lg rounded-xl bento-active">
+<div class="flex justify-between items-start mb-lg">
+<div>
+<span class="font-label-caps text-label-caps text-primary tracking-[0.2em]">CURRENT CHALLENGE</span>
+<h1 class="font-headline-md text-headline-md mt-xs">Entropy in Culinary Arts</h1>
+</div>
+<div class="bg-surface-variant/50 px-sm py-xs rounded-lg flex items-center gap-xs">
+<span class="material-symbols-outlined text-tertiary text-sm">timer</span>
+<span class="font-label-caps text-label-caps text-on-surface">04:12</span>
+</div>
+</div>
+<div class="relative mb-lg">
+<img alt="Culinarily abstract visual" class="w-full h-64 object-cover rounded-xl border border-white/10 brightness-75" data-alt="A professional culinary plating scene showing liquid nitrogen being poured over an intricate dessert, creating mystical swirling smoke. The lighting is dramatic and moody, emphasizing the high-contrast textures of the food and the vapor. The aesthetic is modern and high-tech, with deep shadows and vibrant violet and amber lighting accents, reflecting a polymathic scientific approach to gastronomy." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDMLlYCp7mn3r_iVBFFW3VlqX2fGyYDSBkM7dc5S49AIk-M2jqNwSCcfnV7_UwPAXUW7R07GhPkB_Ezh9tXmQBGoEEt0u8vGeqEVM4cTzrRFhGq9CR6otQANkhCeeVapyYphcHtxcx88Vmrg_8D1BqgiTS6ImfDjD32K_aRKk9aS-VIS3pKNhIwKI8YjiLGUs98uP3mamyQQUeFsCOkUBasHAUJrzwcZCcrZ3Sf6R7ocJdcOLZQ3ZMbt079MVhQu_DqluGg0nFqbL8"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent opacity-60"></div>
+</div>
+<div class="space-y-lg">
+<p class="text-body-lg text-body-lg text-on-surface">
+                            Considering the second law of thermodynamics, how does the process of emulsification in a Béarnaise sauce represent a local decrease in entropy, and what external energy source facilitates this synthesis?
+                        </p>
+<div class="grid grid-cols-1 gap-sm">
+<button class="flex items-center gap-md p-md rounded-xl border border-white/10 hover:border-primary/50 hover:bg-white/5 transition-all text-left group">
+<span class="w-8 h-8 flex items-center justify-center rounded-full border border-white/20 text-on-surface-variant group-hover:border-primary group-hover:text-primary font-label-caps">A</span>
+<span class="text-body-md text-on-surface-variant group-hover:text-on-surface">Kinetic energy via manual whisking creates ordered micelle structures.</span>
+</button>
+<button class="flex items-center gap-md p-md rounded-xl border border-primary bg-primary/5 text-left group">
+<span class="w-8 h-8 flex items-center justify-center rounded-full bg-primary text-on-primary font-label-caps">B</span>
+<span class="text-body-md text-on-surface">Thermal conduction from the bain-marie reorganizes molecular bonding.</span>
+</button>
+<button class="flex items-center gap-md p-md rounded-xl border border-white/10 hover:border-primary/50 hover:bg-white/5 transition-all text-left group">
+<span class="w-8 h-8 flex items-center justify-center rounded-full border border-white/20 text-on-surface-variant group-hover:border-primary group-hover:text-primary font-label-caps">C</span>
+<span class="text-body-md text-on-surface-variant group-hover:text-on-surface">Evaporative cooling stabilizes the crystalline structure of the lipids.</span>
+</button>
+</div>
+</div>
+<div class="mt-xl flex justify-between items-center">
+<div class="flex -space-x-2">
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBK3OKe229-e8GHUmMcEcb4qWNjCYUZMgWej-uiQ-1w55OUG30vbKX5HA-VBRec6tQppCTyGE-QUnsPCNoaJ7R-cDqh6Ngws_29hNjJYZQM0E02mAC0qREMqS2H8AfLhpVPB4kZDmMhBcti-s3vXFkDcSBK9okn0XqSYpheRr07nJ73oH85WR8FD-0wuZ5KhqEgrkHcDFnovGql4r--2XMB9oqw5kYAlZQQhwJ_QJsG_5zfY1nIThFTY_kF69-EZOWp9x83lw7Zgg"/>
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU-A-YW4xsMt8qRioJ5TX3VsylRZcH08iHq1-MZvkx-uOA_d5Lrb2S1sD3z0CY-cl2SQUuOAcqtdI7LxUrGGB-oaZrz5elpafxhaktM9591jMw7zUKm9WPA3uNjR-eJMtwUs0CeackcXtmIugCT2fdyAo6vN1MRNtvwlv4yV5OyNjOWu9cc_sdc6I-GYA6kKAe-zgLxLaAPZnTcSlDgoQ9q25wO2eQiBehY6O3-65t22aKYUEkVzP9g14p0nAsAgFEQf1XQtjAqAc"/>
+<img alt="Avatar" class="w-8 h-8 rounded-full border-2 border-surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAww4y5ZHYgoQKZiWlpRL57NOsFVbpt_nxyUjeaslJljdCmAUbGnUkGb3lWnbzKFk_lfrbSTDUh2ofqWy2Mw2mhH7XPcKw-4owix1vUAeLmQEfF38Bf5XfAluJzbcfLL8DFP6nrvXNsXXQ-dhOWQddrlEWGlBHnkcbYQmBE7yQLvSIDCf0sVa4mT2VmNfGc8FVgghi2b0S0fXFpCbUqLiknX5J83R7_zrNxAE460H4Ji93AF24AwQTuNLwcGaTg6qebaKdZSsVNBwQ"/>
+<div class="w-8 h-8 rounded-full border-2 border-surface bg-surface-variant flex items-center justify-center text-[10px] text-on-surface-variant">+12</div>
+</div>
+<button class="energy-loop-gradient text-on-primary font-bold px-lg py-sm rounded-lg flex items-center gap-xs">
+                            Submit Synthesis
+                            <span class="material-symbols-outlined">double_arrow</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Right Column: Community & Leaderboard -->
+<div class="col-span-12 md:col-span-3 space-y-md">
+<!-- Leaderboard -->
+<div class="glass-card p-md rounded-xl">
+<h3 class="font-label-caps text-label-caps text-tertiary mb-md flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm">workspace_premium</span>
+                        GLOBAL LEADERS
+                    </h3>
+<div class="space-y-sm">
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-primary">01</span>
+<div>
+<p class="text-sm font-bold">Aria_Quantum</p>
+<p class="text-[10px] text-on-surface-variant">Polymath Level 8</p>
+</div>
+</div>
+<span class="text-sm font-bold text-tertiary">14.2k</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg bg-white/5 border border-white/5">
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-on-surface-variant">02</span>
+<div>
+<p class="text-sm font-bold">Dr_Synthesizer</p>
+<p class="text-[10px] text-on-surface-variant">Polymath Level 7</p>
+</div>
+</div>
+<span class="text-sm font-bold text-tertiary">12.8k</span>
+</div>
+<div class="flex items-center justify-between p-sm rounded-lg hover:bg-white/5 transition-all cursor-pointer">
+<div class="flex items-center gap-sm">
+<span class="font-label-caps text-on-surface-variant">03</span>
+<div>
+<p class="text-sm font-bold">Logic_Gourmet</p>
+<p class="text-[10px] text-on-surface-variant">Polymath Level 7</p>
+</div>
+</div>
+<span class="text-sm font-bold text-tertiary">11.1k</span>
+</div>
+</div>
+</div>
+<!-- Live Chat/Comments -->
+<div class="glass-card flex flex-col h-[500px] rounded-xl">
+<div class="p-md border-b border-white/5">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">Live Synthesis Discussion</h3>
+</div>
+<div class="flex-grow overflow-y-auto p-md space-y-md">
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<span class="text-xs font-bold text-primary">Aria_Quantum</span>
+<span class="text-[10px] text-on-surface-variant">2m ago</span>
+</div>
+<p class="text-xs text-on-surface bg-white/5 p-sm rounded-lg rounded-tl-none">The connection between heat flux and flavor profile is fascinating. Anyone looked into the Maxwell-Boltzmann distribution here?</p>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<span class="text-xs font-bold text-secondary">Chef_Scientist</span>
+<span class="text-[10px] text-on-surface-variant">1m ago</span>
+</div>
+<p class="text-xs text-on-surface bg-white/5 p-sm rounded-lg rounded-tl-none">Absolutely. It's all about the kinetic energy of the molecules overcoming the surface tension of the fat droplets.</p>
+</div>
+<div class="space-y-xs">
+<div class="flex items-center gap-xs">
+<span class="text-xs font-bold text-tertiary">Neo_Learner</span>
+<span class="text-[10px] text-on-surface-variant">Just now</span>
+</div>
+<div class="flex gap-xs items-center p-xs bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-xs text-primary">bolt</span>
+<span class="text-[10px] text-primary italic">is typing...</span>
+</div>
+</div>
+</div>
+<div class="p-md pt-0">
+<div class="relative">
+<input class="w-full bg-surface-container-low border-b-2 border-white/10 focus:border-primary focus:ring-0 text-sm py-sm pr-10 rounded-lg transition-all" placeholder="Share a synthesis..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 text-primary hover:text-white transition-colors">
+<span class="material-symbols-outlined">send</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Floating Action Button - Supressed as per detail page logic -->
+</body></html>

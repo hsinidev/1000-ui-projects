@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Playfair+Display:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<style>
+        .glass-surface {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+        }
+        .grain-overlay {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            opacity: 0.02;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+        .silver-thread-v {
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(142, 145, 146, 0.4), transparent);
+        }
+        .silver-thread-h {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(142, 145, 146, 0.4), transparent);
+        }
+        .acid-green-glow {
+            box-shadow: 0 0 15px rgba(186, 255, 41, 0.2);
+        }
+        .critique-slider-handle {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#484949",
+                        "on-primary-fixed": "#1c1b1b",
+                        "secondary": "#c6c6c6",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "secondary-fixed": "#e3e2e2",
+                        "inverse-primary": "#5f5e5e",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed": "#e5e2e1",
+                        "on-primary": "#313030",
+                        "tertiary": "#c9c6c5",
+                        "primary-fixed-dim": "#c9c6c5",
+                        "background": "#141313",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "on-error": "#690005",
+                        "surface-tint": "#c9c6c5",
+                        "on-tertiary-container": "#797777",
+                        "primary-container": "#050505",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "error": "#ffb4ab",
+                        "on-tertiary": "#313030",
+                        "surface-container-highest": "#353434",
+                        "surface-container-high": "#2b2a2a",
+                        "surface-container-low": "#1c1b1b",
+                        "on-secondary-container": "#b8b8b8",
+                        "error-container": "#93000a",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#474646",
+                        "on-secondary": "#2f3131",
+                        "primary": "#c9c6c5",
+                        "on-surface": "#e5e2e1",
+                        "surface": "#141313",
+                        "on-background": "#e5e2e1",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "surface-dim": "#141313",
+                        "surface-variant": "#353434",
+                        "on-surface-variant": "#c4c7c7",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-container": "#797777",
+                        "surface-bright": "#3a3939",
+                        "inverse-on-surface": "#313030",
+                        "outline": "#8e9192",
+                        "tertiary-container": "#050505",
+                        "outline-variant": "#444748",
+                        "surface-container": "#201f1f",
+                        "on-secondary-fixed-variant": "#464747",
+                        "acid-green": "#BAFF29"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "gutter": "32px",
+                        "stack-lg": "80px",
+                        "margin": "64px",
+                        "unit": "8px",
+                        "stack-sm": "16px",
+                        "stack-md": "32px",
+                        "container-max": "1440px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Playfair Display"],
+                        "display-xl": ["Playfair Display"],
+                        "headline-md": ["Playfair Display"],
+                        "body-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "600"}],
+                        "headline-lg": ["48px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "display-xl": ["84px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["32px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface selection:bg-primary selection:text-primary-container">
+<div class="grain-overlay"></div>
+<!-- Navigation Drawer (Desktop Only) -->
+<nav class="hidden lg:flex h-full w-80 fixed left-0 top-0 border-r border-outline/40 flex-col py-stack-md px-stack-sm z-50 bg-surface">
+<div class="mb-stack-lg">
+<h1 class="font-headline-lg text-headline-lg text-on-surface tracking-widest px-4">MUSE</h1>
+</div>
+<div class="flex flex-col gap-unit flex-1">
+<a class="flex items-center gap-4 text-on-surface border-l-2 border-primary pl-4 font-body-lg text-body-lg transition-all duration-300" href="#">
+<span class="material-symbols-outlined">brush</span>
+<span>The Atelier</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant pl-4 opacity-60 font-body-lg text-body-lg hover:bg-white/5 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">rate_review</span>
+<span>Private Critique</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant pl-4 opacity-60 font-body-lg text-body-lg hover:bg-white/5 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">auto_stories</span>
+<span>Inspiration Vault</span>
+</a>
+<a class="flex items-center gap-4 text-on-surface-variant pl-4 opacity-60 font-body-lg text-body-lg hover:bg-white/5 hover:text-on-surface transition-all" href="#">
+<span class="material-symbols-outlined">history_edu</span>
+<span>Masterclass Archive</span>
+</a>
+</div>
+<div class="mt-auto pt-stack-md border-t border-outline/20">
+<div class="flex items-center gap-4 px-4">
+<div class="w-12 h-12 rounded-full overflow-hidden border border-outline/40">
+<img alt="Creative Director" data-alt="A cinematic close-up portrait of a high-fashion creative director with sharp features, wearing a minimalist black turtleneck. The lighting is dramatic chiaroscuro style, with deep shadows and soft highlights on the face. The background is a blurred, dark industrial studio space. The overall mood is serious, prestigious, and avant-garde." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjR8fXBcl-rekR6KwL9FyL9XfZ_1XYMyEX-Phz3EifgAQnH4l7609OlUlPZ0KjmkhY6rO5a805HZlUMB-JRAyDx3Z5CveX4RJaY8LNtOfu64exDOrpRDM_vjbprEh8RN--xcY0tXe9ryPEKswaQXfxz-Jecwo9D57DOvGdyDLmjDPgWAQ5gJrc-U6fvwLkNkjxZC5g8-4q4ZHXf2Rp5qwR1spvvUbx2WibGPgJwD9p-M5vemuFHS01lpu4MaBeFreVOMwhDZtELDlQ"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">CREATIVE DIRECTOR</p>
+<p class="text-on-surface-variant text-xs opacity-60">Elite Tier Member</p>
+</div>
+</div>
+</div>
+</nav>
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-40 bg-background/80 backdrop-blur-xl border-b border-outline/40 flex justify-between items-center px-gutter py-4 lg:pl-96">
+<div class="flex items-center gap-4 lg:hidden">
+<span class="material-symbols-outlined text-primary">menu</span>
+<span class="font-headline-md text-headline-md tracking-widest text-on-surface">MUSE</span>
+</div>
+<div class="hidden lg:block">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PRIVATE CRITIQUE HUB</span>
+</div>
+<div class="flex items-center gap-stack-sm">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors duration-500">search</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-on-surface cursor-pointer transition-colors duration-500">notifications</span>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="min-h-screen pt-24 pb-32 lg:pl-80 max-w-container-max mx-auto">
+<div class="px-gutter lg:px-margin">
+<!-- Hero Header Section -->
+<section class="mb-stack-lg">
+<div class="flex flex-col gap-4">
+<span class="font-label-caps text-label-caps text-primary tracking-[0.3em]">PROJECT EVOLUTION</span>
+<h2 class="font-display-xl text-display-xl text-on-surface">Digital Atelier Critique</h2>
+</div>
+<div class="silver-thread-h my-stack-md w-full"></div>
+</section>
+<!-- Before-and-After Critique Slider -->
+<section class="mb-stack-lg">
+<div class="relative w-full aspect-[21/9] overflow-hidden rounded-lg border border-outline/40 glass-surface">
+<!-- After Image -->
+<div class="absolute inset-0">
+<img class="w-full h-full object-cover" data-alt="A highly sophisticated, futuristic digital interface design showcasing sleek glass panels, liquid metal gradients in silver and chrome, and subtle electric purple accents. The typography is minimalist and high-contrast. The layout is asymmetric and avant-garde, representing a finished, professional creative masterpiece. The lighting is moody with glowing atmospheric mists." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDvKjrkId6X1a5KgpBCwvMiz_pdLcFXW0Gd77WnamJHVxb7dpJO2hP_30uJA0VPfGemDVJ7oJZmULBNOV5S8KJiEShYlixa3jnDckBDANRYvzOA-AHSXdyRKbAD52Lnby5zekhrGKMKA0IXHg6DeO2pawxU0q-LwXkv3AeK9Db6a-Y3TpG3aPfy64yhLWdaaIHEHOZ3eZzwdr5BNkY2eAJs0vB40pJ96SU55IvxHhajL-ZV7mSaDRQ6WK1GeGtmfVHpJJbPoQSB0gTS"/>
+</div>
+<!-- Before Image Overlay (Clipped) -->
+<div class="absolute inset-0 w-1/2 overflow-hidden border-r border-white/50 z-10">
+<img class="w-[200%] max-w-none h-full object-cover grayscale opacity-60" data-alt="A raw, unfinished architectural sketch with basic grid lines and flat gray surfaces. It represents the early, unpolished stage of a digital design. The composition is simple and lacks the refinement and lighting of the final version. The style is industrial and skeletal, shown in a muted, desaturated monochromatic palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsfM7aav4rES46pP4SqawHlITGDU3j957SmLSjYEMSJs9iLuwYMNoxtVFgYVBrbB2wNbtWwlANmCoee87kzWMebNvxmq8Pz-rziBHYoQs8PNGBWjLUUXRSslguG6lm9TNBbyE9yVd-ieleTqp50Olcwj0Tgw37z5PMtnPPqe9vwRvMY3XyfnjqZpDSHHOJ7x5JDf_fOniwsKK6XHbVcOJDqVYTWkPESv9_LJcFcRvXVXxjRAF46zQLBgl-B27YzYd4kyoHwSyjEuur"/>
+<div class="absolute top-8 left-8 bg-background/80 backdrop-blur-md border border-outline/40 px-4 py-2 rounded-full">
+<span class="font-label-caps text-[10px] text-on-surface">INITIAL DRAFT</span>
+</div>
+</div>
+<!-- Slider Handle -->
+<div class="absolute inset-y-0 left-1/2 -ml-[1px] w-[2px] bg-white z-20 critique-slider-handle">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-12 h-12 rounded-full glass-surface border border-white flex items-center justify-center shadow-2xl">
+<span class="material-symbols-outlined text-white">unfold_more</span>
+</div>
+</div>
+<div class="absolute top-8 right-8 bg-background/80 backdrop-blur-md border border-outline/40 px-4 py-2 rounded-full z-10">
+<span class="font-label-caps text-[10px] text-primary">EVOLVED OUTPUT</span>
+</div>
+</div>
+</section>
+<!-- Expert Commentary & Analysis (Asymmetric Bento) -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-stack-lg">
+<div class="lg:col-span-8 flex flex-col gap-gutter">
+<div class="glass-surface border border-outline/40 p-stack-md relative overflow-hidden group">
+<div class="absolute top-0 right-0 w-32 h-32 bg-acid-green/5 blur-3xl rounded-full"></div>
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<span class="bg-acid-green text-black px-2 py-1 font-label-caps text-[10px] rounded acid-green-glow">VERIFIED CRITIQUE</span>
+<span class="font-label-caps text-label-caps text-on-surface opacity-80">DIRECTOR'S ANALYSIS</span>
+</div>
+<span class="material-symbols-outlined text-primary" data-weight="fill">verified</span>
+</div>
+<h3 class="font-headline-md text-headline-md mb-4">"The kinetic tension between the glass layers creates a sense of digital depth rarely seen in mobile architectures."</h3>
+<p class="font-body-md text-body-md text-on-surface-variant max-w-2xl">The refinement of the specular highlights on the 1px borders elevates the interface from a standard UI to a piece of editorial art. The introduction of the Acid Green accent provides a necessary jolt of energy against the monochromatic depth.</p>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="glass-surface border border-outline/40 p-stack-sm flex flex-col justify-between h-48">
+<span class="font-label-caps text-[10px] text-on-surface-variant">COLOR THEORY</span>
+<div class="flex items-end justify-between">
+<p class="font-headline-md text-headline-md">Infinite Black &amp; Silver</p>
+<span class="material-symbols-outlined text-outline">palette</span>
+</div>
+</div>
+<div class="glass-surface border border-outline/40 p-stack-sm flex flex-col justify-between h-48">
+<span class="font-label-caps text-[10px] text-on-surface-variant">TYPOGRAPHY</span>
+<div class="flex items-end justify-between">
+<p class="font-headline-md text-headline-md">Playfair Modernist</p>
+<span class="material-symbols-outlined text-outline">format_size</span>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-4 glass-surface border border-outline/40 p-stack-md flex flex-col">
+<p class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">CRITIQUE CONTRIBUTORS</p>
+<div class="space-y-6">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border border-outline/20 overflow-hidden">
+<img alt="Expert 1" data-alt="A portrait of a minimalist female designer with short, platinum hair and architectural glasses. The lighting is high-key and cold, with a sterile white background. She is wearing a structured gray blazer. The mood is highly professional, clinical, and sophisticated." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBqLmP1gnmxTSC58bZDzH7m3NcDpcaJ4qqW5bNtt_VDGYgBbeYB7tBfaMYaoUNLVp5O4_BkVq-8KYS587i48KnEN4v1VirRGW44um-7p0SSh8jt7egVE_JqLclracuEwTPoNFLWxj6AhnpwJ0CrgChhsa4C2VCtTOJ2s5TdR4mwYR6VHc9EgWKJ5W_AaR6mrjiyPcdCXSDtCAP9VfdDRJShdhKnZOdSCct4I60kBLVRcoz-M8tBMh9X3wkhyAenyWBLUezaVZSzC18c"/>
+</div>
+<div>
+<p class="font-label-caps text-[12px] text-on-surface">ELARA VANCE</p>
+<p class="text-[10px] text-primary">Senior Visual Lead</p>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full border border-outline/20 overflow-hidden">
+<img alt="Expert 2" data-alt="A portrait of a male creative director with a salt-and-pepper beard, wearing a high-end designer eyewear. The background is a moody, dark gray textured wall. The lighting focuses on the contours of his face, emphasizing wisdom and experience in the fashion and design world." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDTMf51u837AvZKVNJCCRiYB-QnzLH6Sg2F3Tl3CsnH_3D2b8eGesh13KNKcrquAz0bonFTc3K3KjzCz-rSIYjJRo6ZYf5E8Mt4o6_Hyx-fUlROU4HO-t7l9WbKrgTynCrd1Ilf8VJyMD8COesv9u35wAgP4jgVoboA-LzTza8_q1or3rbyQeH9V_r-pEaQqYZaRIswAV5iJvZUou6OuSdY_CcjY7WyB1FBvan-mfytIWHeFU6BWS7zj5DhNLzP9tZBXfGx87_SNSMN"/>
+</div>
+<div>
+<p class="font-label-caps text-[12px] text-on-surface">JULIAN MARKS</p>
+<p class="text-[10px] text-primary">Art Director</p>
+</div>
+</div>
+<div class="silver-thread-h my-4"></div>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed italic">"A masterclass in restraint. The evolution shows a clear understanding of brand-led visual narratives."</p>
+</div>
+</div>
+</section>
+<!-- Community Feedback Feed -->
+<section class="mb-stack-lg">
+<div class="flex items-center justify-between mb-stack-md">
+<h3 class="font-headline-md text-headline-md">Community Feedback</h3>
+<div class="flex gap-4">
+<button class="bg-primary text-on-primary-fixed px-6 py-2 font-label-caps text-[10px] transition-all hover:bg-acid-green active:scale-95">ADD CRITIQUE</button>
+</div>
+</div>
+<div class="space-y-gutter">
+<!-- Comment 1 -->
+<div class="flex gap-6 group">
+<div class="flex flex-col items-center">
+<div class="w-1px h-full bg-outline/20"></div>
+<div class="w-3 h-3 rounded-full border border-primary bg-background my-2"></div>
+<div class="w-1px h-full bg-outline/20"></div>
+</div>
+<div class="flex-1 glass-surface border border-outline/40 p-6 transition-all group-hover:border-primary/40">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-[10px] text-on-surface">SARAH K.</span>
+<span class="text-[10px] text-on-surface-variant opacity-40">2 HOURS AGO</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-acid-green" data-weight="fill">thumb_up</span>
+<span class="text-[10px] font-label-caps">24</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">The way the 'Silver Thread' guides the user's eye from the hero to the critique cards is brilliant. It creates a hierarchy that feels both organic and strictly engineered.</p>
+</div>
+</div>
+<!-- Comment 2 -->
+<div class="flex gap-6 group">
+<div class="flex flex-col items-center">
+<div class="w-1px h-full bg-outline/20"></div>
+<div class="w-3 h-3 rounded-full border border-primary bg-background my-2"></div>
+<div class="w-1px h-full bg-outline/20"></div>
+</div>
+<div class="flex-1 glass-surface border border-outline/40 p-6 transition-all group-hover:border-primary/40">
+<div class="flex justify-between items-start mb-4">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-[10px] text-on-surface">MARCUS R.</span>
+<span class="text-[10px] text-on-surface-variant opacity-40">5 HOURS AGO</span>
+</div>
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-on-surface-variant">thumb_up</span>
+<span class="text-[10px] font-label-caps">12</span>
+</div>
+</div>
+<p class="font-body-md text-body-md text-on-surface-variant">Are we considering the motion design for that before/after slider? It needs to feel heavy, almost magnetic when it snaps.</p>
+</div>
+</div>
+</div>
+</section>
+</div>
+</main>
+<!-- Bottom Navigation (Mobile Only) -->
+<nav class="lg:hidden fixed bottom-0 w-full z-50 bg-background/90 backdrop-blur-2xl border-t border-outline/40 flex justify-around items-center h-20 px-margin">
+<button class="flex flex-col items-center text-on-surface-variant opacity-50 transition-all hover:text-on-surface active:scale-90">
+<span class="material-symbols-outlined">grid_view</span>
+</button>
+<button class="flex flex-col items-center text-on-surface scale-110 transition-all active:scale-90">
+<span class="material-symbols-outlined">play_circle</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant opacity-50 transition-all hover:text-on-surface active:scale-90">
+<span class="material-symbols-outlined">compare</span>
+</button>
+<button class="flex flex-col items-center text-on-surface-variant opacity-50 transition-all hover:text-on-surface active:scale-90">
+<span class="material-symbols-outlined">auto_awesome_motion</span>
+</button>
+</nav>
+<!-- Floating Action Button Contextual (On Home/Feed only, but kept for UI completion) -->
+<button class="fixed bottom-24 right-8 lg:bottom-12 lg:right-12 w-16 h-16 rounded-full bg-primary text-on-primary-fixed shadow-2xl flex items-center justify-center transition-all hover:scale-110 active:scale-95 z-40 group">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform duration-300">add</span>
+</button>
+</body></html>

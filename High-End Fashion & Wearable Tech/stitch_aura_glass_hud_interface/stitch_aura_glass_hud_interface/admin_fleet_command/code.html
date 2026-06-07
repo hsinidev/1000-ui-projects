@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AURA Fleet Command | System Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#414561",
+                    "on-error-container": "#ffdad6",
+                    "surface-dim": "#0b112e",
+                    "on-surface": "#dee0ff",
+                    "on-background": "#dee0ff",
+                    "surface": "#0b112e",
+                    "inverse-surface": "#dee0ff",
+                    "on-surface-variant": "#b9cacb",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "surface-variant": "#2e3352",
+                    "outline": "#849495",
+                    "tertiary-container": "#d6d9fb",
+                    "on-primary-container": "#006a71",
+                    "inverse-on-surface": "#292e4d",
+                    "surface-bright": "#323756",
+                    "outline-variant": "#3a494b",
+                    "surface-container": "#181d3b",
+                    "on-secondary-fixed-variant": "#454747",
+                    "tertiary": "#f9f6ff",
+                    "secondary-fixed": "#e2e2e2",
+                    "on-tertiary-fixed": "#161a33",
+                    "secondary-container": "#454747",
+                    "secondary": "#c6c6c7",
+                    "on-primary-fixed": "#002022",
+                    "tertiary-fixed": "#dee0ff",
+                    "primary-fixed": "#74f5ff",
+                    "on-primary": "#00363a",
+                    "inverse-primary": "#00696f",
+                    "surface-tint": "#00dbe7",
+                    "on-error": "#690005",
+                    "primary-container": "#00f2ff",
+                    "on-tertiary-container": "#5a5e7b",
+                    "primary-fixed-dim": "#00dbe7",
+                    "tertiary-fixed-dim": "#c1c4e6",
+                    "background": "#0b112e",
+                    "surface-container-high": "#232846",
+                    "surface-container-highest": "#2e3352",
+                    "on-tertiary": "#2b2f49",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "error": "#ffb4ab",
+                    "primary": "#e1fdff",
+                    "on-secondary": "#2f3131",
+                    "surface-container-lowest": "#060b29",
+                    "on-primary-fixed-variant": "#004f54",
+                    "surface-container-low": "#141937",
+                    "on-secondary-container": "#b4b5b5",
+                    "error-container": "#93000a"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "md": "16px",
+                    "xs": "4px",
+                    "sm": "8px",
+                    "xl": "40px",
+                    "safe-margin": "64px",
+                    "hud-gutter": "12px",
+                    "lg": "24px"
+            },
+            "fontFamily": {
+                    "display-lg": ["Geist"],
+                    "body-main": ["Geist"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["JetBrains Mono"],
+                    "headline-sm": ["Geist"],
+                    "display-md": ["Geist"],
+                    "body-sm": ["Geist"]
+            },
+            "fontSize": {
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-main": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "data-mono": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                    "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                    "headline-sm": ["24px", {"lineHeight": "1.3", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "display-md": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0.01em", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0b112e;
+            background-image: radial-gradient(circle at 50% 50%, #141937 0%, #0b112e 100%);
+            min-height: 100vh;
+        }
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(11, 17, 46, 0.6);
+            border: 1px solid rgba(132, 148, 149, 0.2);
+        }
+        .hud-bracket-tl { border-top: 2px solid #00dbe7; border-left: 2px solid #00dbe7; width: 12px; height: 12px; position: absolute; top: -1px; left: -1px; }
+        .hud-bracket-tr { border-top: 2px solid #00dbe7; border-right: 2px solid #00dbe7; width: 12px; height: 12px; position: absolute; top: -1px; right: -1px; }
+        .hud-bracket-bl { border-bottom: 2px solid #00dbe7; border-left: 2px solid #00dbe7; width: 12px; height: 12px; position: absolute; bottom: -1px; left: -1px; }
+        .hud-bracket-br { border-bottom: 2px solid #00dbe7; border-right: 2px solid #00dbe7; width: 12px; height: 12px; position: absolute; bottom: -1px; right: -1px; }
+        
+        .scan-line {
+            height: 1px;
+            width: 100%;
+            background: linear-gradient(90deg, transparent, #00dbe7, transparent);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body class="font-body-main text-on-surface antialiased overflow-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 bg-surface/60 dark:bg-surface/60 backdrop-blur-xl border-b border-outline-variant/20 shadow-[0_0_15px_rgba(0,219,231,0.1)] flex justify-between items-center px-hud-gutter h-16">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">settings_input_antenna</span>
+<h1 class="font-data-mono text-body-main font-bold text-primary-fixed-dim drop-shadow-[0_0_8px_rgba(0,219,231,0.6)] uppercase tracking-widest">[ AURA.SYSTEM_v01 ]</h1>
+</div>
+<div class="flex items-center gap-lg">
+<div class="hidden md:flex gap-md font-data-mono text-data-mono uppercase tracking-widest text-on-surface-variant">
+<span class="text-primary-fixed-dim">FLEET_COMMAND</span>
+<span class="hover:text-primary transition-colors cursor-pointer">ANALYTICS</span>
+<span class="hover:text-primary transition-colors cursor-pointer">SENSORS</span>
+</div>
+<button class="flex items-center gap-xs hover:text-primary hover:drop-shadow-[0_0_10px_rgba(0,219,231,0.8)] transition-all duration-300 active:scale-95">
+<span class="material-symbols-outlined text-primary-fixed-dim">sync</span>
+<span class="text-data-mono font-data-mono text-[10px]">RE-SYNC</span>
+</button>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- NavigationDrawer -->
+<aside class="hidden lg:flex flex-col h-full w-80 border-r border-outline-variant/30 bg-surface-dim/95 dark:bg-surface-dim/95 backdrop-blur-2xl shadow-2xl shadow-primary-container/5 py-md px-md overflow-y-auto">
+<div class="flex flex-col items-start mb-xl px-md">
+<div class="w-12 h-12 rounded-full border border-primary-fixed-dim p-1 mb-md">
+<img alt="OPERATOR_042" class="w-full h-full object-cover rounded-full" data-alt="A cinematic close-up of a futuristic human operator's portrait with digital interfaces reflecting in their eyes. The scene is dominated by deep blues and cyan light, echoing a high-tech augmented reality environment. The lighting is low-key, focused on the sharp details of the face and the glowing HUD elements that seem to float in front of them. The aesthetic is ultra-modern and clinical yet elegant." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpEGpHilU5n2PS-gHMChh_55YBvPR19_oqythxLSOERItRcQHGhfP5lUV4hkxc9mjyA9lfjvkl25E-ll7NyLVRkSe5I0DmPxaHH90yBTQoDtvw-A2mJy49WLeOF4u-xhsrHf71yHa8cTtgLaC21njwYtiF-snQ4XA3cdZMy_oNTd1rBwhRew7XSGPimIi-gqTgxjtGEzpeOBjdJtBzfkoeEtS2wR6w9j2CwJ_HEVQj1R8GA7aZVysDhRL-LrzmLkwRxWviNdEUtd4"/>
+</div>
+<h3 class="font-display-md text-primary-fixed-dim text-[18px]">OPERATOR_042</h3>
+<p class="font-data-mono text-body-sm text-on-surface-variant/70">HUD_CONNECTED_BT_LE</p>
+<p class="font-data-mono text-[10px] text-primary-fixed-dim/50 mt-xs">FIRMWARE: 2.0.4</p>
+</div>
+<nav class="flex flex-col gap-sm divide-y divide-outline-variant/10">
+<div class="pt-sm space-y-1">
+<a class="flex items-center gap-md bg-primary-container/10 text-primary-fixed-dim border-l-4 border-primary-fixed-dim pl-4 py-3 font-data-mono text-body-sm transition-all" href="#">
+<span class="material-symbols-outlined">biotech</span>
+                        OPTIC_CALIBRATION
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant hover:pl-6 hover:bg-surface-bright/20 hover:text-primary py-3 px-4 font-data-mono text-body-sm transition-all" href="#">
+<span class="material-symbols-outlined">troubleshoot</span>
+                        DIAGNOSTICS
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant hover:pl-6 hover:bg-surface-bright/20 hover:text-primary py-3 px-4 font-data-mono text-body-sm transition-all" href="#">
+<span class="material-symbols-outlined">update</span>
+                        FIRMWARE_UPDATE
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant hover:pl-6 hover:bg-surface-bright/20 hover:text-primary py-3 px-4 font-data-mono text-body-sm transition-all" href="#">
+<span class="material-symbols-outlined">visibility_off</span>
+                        GHOST_MODE
+                    </a>
+<a class="flex items-center gap-md text-on-surface-variant hover:pl-6 hover:bg-surface-bright/20 hover:text-primary py-3 px-4 font-data-mono text-body-sm transition-all" href="#">
+<span class="material-symbols-outlined">terminal</span>
+                        SYSTEM_LOGS
+                    </a>
+</div>
+</nav>
+<div class="mt-auto p-md glass-panel relative">
+<div class="hud-bracket-tl"></div>
+<div class="hud-bracket-tr"></div>
+<p class="text-label-caps text-primary-fixed-dim mb-xs uppercase">Global Health</p>
+<div class="flex items-center justify-between font-data-mono text-[11px] mb-2">
+<span>NET_LATENCY</span>
+<span class="text-primary-fixed-dim">14MS</span>
+</div>
+<div class="w-full bg-surface-container-highest h-1">
+<div class="bg-primary-fixed-dim h-full w-[88%] shadow-[0_0_8px_#00dbe7]"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 overflow-y-auto bg-surface-container-lowest/20 p-md lg:p-xl custom-scrollbar relative">
+<div class="scan-line"></div>
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Header Stats Area -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md">
+<div class="glass-panel p-md relative border-l-2 border-l-primary-fixed-dim">
+<div class="flex justify-between items-start">
+<span class="text-label-caps text-on-surface-variant">ACTIVE_UNITS</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">precision_manufacturing</span>
+</div>
+<div class="mt-md font-display-md text-primary-fixed-dim">1,248</div>
+<div class="font-data-mono text-[10px] text-on-primary-container">+4.2% PK_LOAD</div>
+</div>
+<div class="glass-panel p-md relative">
+<div class="flex justify-between items-start">
+<span class="text-label-caps text-on-surface-variant">UPLINK_STABILITY</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">satellite_alt</span>
+</div>
+<div class="mt-md font-display-md text-primary-fixed-dim">99.98<span class="text-[16px]">%</span></div>
+<div class="font-data-mono text-[10px] text-on-primary-container">SECURE_TUNNEL_EST</div>
+</div>
+<div class="glass-panel p-md relative">
+<div class="flex justify-between items-start">
+<span class="text-label-caps text-on-surface-variant">DATA_THROUGHPUT</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">memory</span>
+</div>
+<div class="mt-md font-display-md text-primary-fixed-dim">4.2 <span class="text-[16px]">PB/S</span></div>
+<div class="font-data-mono text-[10px] text-on-primary-container">OPTIC_FIBER_MAIN</div>
+</div>
+<div class="glass-panel p-md relative">
+<div class="flex justify-between items-start">
+<span class="text-label-caps text-on-surface-variant">ERR_REPORTS</span>
+<span class="material-symbols-outlined text-error text-sm">warning</span>
+</div>
+<div class="mt-md font-display-md text-error">02</div>
+<div class="font-data-mono text-[10px] text-error/60 uppercase">Action Required</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-md h-fit">
+<!-- Real-time Diagnostic Map -->
+<div class="col-span-12 lg:col-span-8 glass-panel min-h-[400px] relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-full p-md z-10 flex justify-between items-center bg-gradient-to-b from-surface-dim/80 to-transparent">
+<div class="flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary-fixed-dim animate-pulse"></span>
+<span class="font-data-mono text-label-caps">LIVE_FLEET_DISTRIBUTION</span>
+</div>
+<div class="flex gap-xs">
+<button class="px-2 py-1 bg-primary-fixed-dim/10 border border-primary-fixed-dim/30 text-[10px] font-data-mono text-primary-fixed-dim">HEATMAP</button>
+<button class="px-2 py-1 bg-surface-container-highest border border-outline-variant/30 text-[10px] font-data-mono text-on-surface-variant">NODE_VIEW</button>
+</div>
+</div>
+<div class="w-full h-full bg-[#0b112e] flex items-center justify-center">
+<img class="w-full h-full object-cover opacity-40 grayscale contrast-125" data-alt="A stylized digital map of the world displayed in a wireframe aesthetic with glowing nodes and interconnecting lines. The color scheme is monochrome deep blue with cyan accents for data points. The map looks like a tactical interface from a high-tech control center, showing density of active AR units across continents with a subtle scan-line texture and luminous depth." data-location="Global Fleet" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBjGbFlbbS7SUxkI0NCZA-2k6MG_-c9d3NWnwQp9atVAQhYiVS3X-HtKnHmZlut2AE5V1BLSNEvVYbzWXlphzp9nsIgiw8Da9BXBWlqY22_AE89hKrN5OM-Cjgi8VWSp0C6404AccQ9b5vtc_IbFjXwsFTfGXfYRI9yOROrVit8fihxUnUOtrE7g_AZlD5OuoIyBPBHe4rGFw45r7-FFj_CiKKyIYls9RFEggz4YJzg7maGE4_eWjrzo8BQTy8T596NFMsl-Rbkgmc"/>
+<!-- HUD Overlays on Map -->
+<div class="absolute top-1/4 left-1/3 p-2 glass-panel scale-75 lg:scale-100">
+<div class="hud-bracket-tl"></div>
+<div class="font-data-mono text-[10px] text-primary-fixed-dim">NODE_PARIS_01</div>
+<div class="text-[12px] font-bold">STABLE</div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 p-2 glass-panel scale-75 lg:scale-100 border-error/30">
+<div class="hud-bracket-tr border-error"></div>
+<div class="font-data-mono text-[10px] text-error">NODE_TOKYO_09</div>
+<div class="text-[12px] font-bold text-error">LATENCY_HIGH</div>
+</div>
+</div>
+</div>
+<!-- Firmware Update Status -->
+<div class="col-span-12 lg:col-span-4 glass-panel p-md relative flex flex-col">
+<h4 class="font-data-mono text-label-caps text-on-surface-variant mb-md flex items-center gap-sm">
+<span class="material-symbols-outlined text-[14px]">system_update_alt</span>
+                            FIRMWARE_STAGING
+                        </h4>
+<div class="flex-1 space-y-md">
+<div class="p-sm bg-surface-container-high/40 rounded border border-outline-variant/20">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-data-mono text-[11px]">v2.1.0_BETA</span>
+<span class="text-label-caps text-primary-fixed-dim">78% DEPLOYED</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1.5 overflow-hidden">
+<div class="bg-primary-fixed-dim h-full w-[78%]"></div>
+</div>
+<div class="mt-sm flex justify-between text-[10px] font-data-mono text-on-surface-variant/60">
+<span>STAGED: 10,402</span>
+<span>PENDING: 3,120</span>
+</div>
+</div>
+<div class="p-sm bg-surface-container-low/20 rounded border border-outline-variant/10">
+<div class="flex justify-between items-center mb-sm">
+<span class="font-data-mono text-[11px] opacity-60">v2.0.4_STABLE</span>
+<span class="text-label-caps text-on-surface-variant/40">100% ACTIVE</span>
+</div>
+<div class="w-full bg-surface-container-lowest h-1">
+<div class="bg-on-surface-variant/20 h-full w-full"></div>
+</div>
+</div>
+<button class="w-full py-md mt-auto glass-panel border-primary-fixed-dim/20 text-primary-fixed-dim font-label-caps text-[12px] hover:bg-primary-fixed-dim/10 transition-colors uppercase tracking-widest">
+                                Initialize New Rollout
+                            </button>
+</div>
+</div>
+<!-- Terminal Style Logs -->
+<div class="col-span-12 glass-panel p-md relative">
+<div class="flex justify-between items-center border-b border-outline-variant/20 pb-sm mb-md">
+<h4 class="font-data-mono text-label-caps text-on-surface-variant">REAL-TIME_TERMINAL_FEED</h4>
+<div class="flex gap-md font-data-mono text-[10px] text-on-surface-variant/50">
+<span>TTY: /DEV/AURA_CORE</span>
+<span class="text-primary-fixed-dim">STATUS: RUNNING</span>
+</div>
+</div>
+<div class="font-data-mono text-[12px] leading-relaxed max-h-[160px] overflow-y-auto space-y-1 text-on-surface-variant/80 custom-scrollbar">
+<p><span class="text-primary-fixed-dim">[ 14:22:01 ]</span> <span class="text-on-surface">SYS_INIT:</span> Boot sequence verified. Core modules online.</p>
+<p><span class="text-primary-fixed-dim">[ 14:22:05 ]</span> <span class="text-on-surface">NET_MGR:</span> Uplink established via Sat-Link 07. Latency check: 12ms.</p>
+<p><span class="text-primary-fixed-dim">[ 14:23:44 ]</span> <span class="text-error">WARN_EVT:</span> Thermal threshold reached on Node_TK_09. Throttling active.</p>
+<p><span class="text-primary-fixed-dim">[ 14:25:12 ]</span> <span class="text-on-surface">USR_AUTH:</span> Operator_042 session validated. Root privileges granted.</p>
+<p><span class="text-primary-fixed-dim">[ 14:28:33 ]</span> <span class="text-on-primary-container">DATA_SYNC:</span> Global fleet state updated. 1,248 units synchronized.</p>
+<p><span class="text-primary-fixed-dim">[ 14:30:00 ]</span> <span class="text-on-surface">SYS_LOG:</span> Heartbeat pulse emitted to all peripheral arrays.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Contextual Padding for Bottom Nav -->
+<div class="h-24"></div>
+</main>
+</div>
+<!-- BottomNavBar -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full flex justify-around items-center px-safe-margin pb-4 bg-surface-container-lowest/40 dark:bg-surface-container-lowest/40 backdrop-blur-md rounded-t-full border-t border-primary/10 shadow-[0_-5px_20px_rgba(0,219,231,0.15)] z-50">
+<div class="flex flex-col items-center justify-center text-primary-fixed-dim drop-shadow-[0_0_12px_rgba(0,219,231,0.9)] border-t-2 border-primary-fixed-dim pt-2 hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">visibility</span>
+<span class="font-label-caps text-label-caps">VIEWPORT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 hover:text-primary-fixed hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">layers</span>
+<span class="font-label-caps text-label-caps">OVERLAY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 hover:text-primary-fixed hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">settings_remote</span>
+<span class="font-label-caps text-label-caps">SYNC</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-tertiary-container/50 pt-2 hover:text-primary-fixed hover:scale-110 transition-transform cursor-pointer">
+<span class="material-symbols-outlined">account_circle</span>
+<span class="font-label-caps text-label-caps">PROFILE</span>
+</div>
+</nav>
+<!-- UI Elements: Crosshair/Reticle decor -->
+<div class="fixed top-20 right-8 pointer-events-none opacity-20 hidden xl:block">
+<div class="relative w-48 h-48">
+<div class="absolute inset-0 border border-primary-fixed-dim/40 rounded-full border-dashed animate-[spin_20s_linear_infinite]"></div>
+<div class="absolute inset-4 border border-primary-fixed-dim/20 rounded-full"></div>
+<div class="absolute top-1/2 left-0 w-full h-[1px] bg-primary-fixed-dim/30"></div>
+<div class="absolute top-0 left-1/2 w-[1px] h-full bg-primary-fixed-dim/30"></div>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 bg-primary-fixed-dim"></div>
+</div>
+</div>
+<style>
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(0, 219, 231, 0.2); border-radius: 10px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(0, 219, 231, 0.5); }
+        
+        @keyframes scan-line {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100vh); }
+        }
+        .scan-line {
+            animation: scan-line 8s linear infinite;
+        }
+    </style>
+</body></html>
