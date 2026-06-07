@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>DEXA_SCAN_OS | Clinical Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface": "#f9f9f9",
+                        "on-tertiary-fixed-variant": "#004f51",
+                        "on-error": "#ffffff",
+                        "tertiary-container": "#002021",
+                        "tertiary": "#000101",
+                        "on-tertiary": "#ffffff",
+                        "error-container": "#ffdad6",
+                        "primary-container": "#1a1c1e",
+                        "on-secondary": "#ffffff",
+                        "on-secondary-fixed": "#161d1f",
+                        "primary-fixed": "#e2e2e5",
+                        "inverse-surface": "#2f3131",
+                        "surface-tint": "#5d5e61",
+                        "surface-container": "#eeeeee",
+                        "surface-container-low": "#f3f3f3",
+                        "primary": "#000101",
+                        "surface-variant": "#e2e2e2",
+                        "outline-variant": "#c5c6ca",
+                        "secondary": "#585f62",
+                        "inverse-on-surface": "#f1f1f1",
+                        "on-secondary-fixed-variant": "#41484b",
+                        "on-secondary-container": "#5d6467",
+                        "secondary-fixed-dim": "#c1c8cb",
+                        "on-primary": "#ffffff",
+                        "secondary-container": "#dae1e4",
+                        "inverse-primary": "#c6c6c9",
+                        "surface-container-high": "#e8e8e8",
+                        "surface-bright": "#f9f9f9",
+                        "on-primary-fixed": "#1a1c1e",
+                        "surface-container-lowest": "#ffffff",
+                        "on-tertiary-fixed": "#002020",
+                        "on-background": "#1a1c1c",
+                        "outline": "#75777a",
+                        "on-error-container": "#93000a",
+                        "on-tertiary-container": "#009395",
+                        "on-surface": "#1a1c1c",
+                        "error": "#ba1a1a",
+                        "tertiary-fixed-dim": "#2ddbde",
+                        "surface-dim": "#dadada",
+                        "surface-container-highest": "#e2e2e2",
+                        "secondary-fixed": "#dde3e7",
+                        "background": "#f9f9f9",
+                        "primary-fixed-dim": "#c6c6c9",
+                        "on-surface-variant": "#44474a",
+                        "on-primary-container": "#838486",
+                        "tertiary-fixed": "#5af8fb",
+                        "on-primary-fixed-variant": "#454749"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "margin": "32px",
+                        "gutter": "16px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["JetBrains Mono"],
+                        "mono-data": ["JetBrains Mono"],
+                        "headline-md": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "mono-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .bento-grid {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 16px;
+        }
+        .data-border {
+            border: 1px solid #D1D5DB;
+        }
+        .heatmap-cell {
+            aspect-ratio: 1;
+        }
+    </style>
+</head>
+<body class="bg-surface font-body-md text-on-surface">
+<!-- Side Navigation Bar -->
+<nav class="h-screen w-64 fixed left-0 top-0 bg-surface-container-low flex flex-col py-4 border-r border-outline-variant z-50">
+<div class="px-6 mb-8">
+<h1 class="font-headline-md text-headline-md text-primary font-bold tracking-tighter">STATION_01</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">Clinical Unit v2.4</p>
+</div>
+<div class="flex-grow space-y-1">
+<a class="flex items-center px-6 py-3 bg-primary-container text-on-primary-container border-r-2 border-primary font-bold transition-all duration-150 translate-x-1" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="query_stats">query_stats</span>
+<span class="font-label-caps text-label-caps">Clinical</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="calendar_today">calendar_today</span>
+<span class="font-label-caps text-label-caps">Booking</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-caps text-label-caps">Command</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">Library</span>
+</a>
+<a class="flex items-center px-6 py-3 text-on-surface-variant hover:bg-surface-variant transition-colors" href="#">
+<span class="material-symbols-outlined mr-3" data-icon="comment_bank">comment_bank</span>
+<span class="font-label-caps text-label-caps">Consult</span>
+</a>
+</div>
+<div class="px-4 py-4 space-y-1 border-t border-outline-variant">
+<button class="w-full text-left flex items-center px-2 py-2 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined mr-2" data-icon="help_outline">help_outline</span> Support
+            </button>
+<button class="w-full text-left flex items-center px-2 py-2 text-on-surface-variant hover:bg-surface-variant font-label-caps text-label-caps">
+<span class="material-symbols-outlined mr-2" data-icon="terminal">terminal</span> Logs
+            </button>
+<button class="mt-4 w-full bg-primary text-on-primary py-3 font-mono-data text-mono-data border border-primary hover:bg-opacity-90 transition-all active:scale-95">
+                Export Data
+            </button>
+</div>
+</nav>
+<!-- Main Canvas -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- Top Bar -->
+<header class="w-full h-16 sticky top-0 bg-surface-container-lowest border-b border-outline-variant z-40 flex justify-between items-center px-margin">
+<div class="flex items-center space-x-8">
+<span class="font-headline-md text-headline-md font-bold tracking-tighter text-primary">DEXA_SCAN_OS</span>
+<nav class="flex space-x-6 h-16 items-center">
+<a class="font-mono-data text-mono-data text-primary border-b-2 border-primary h-full flex items-center pt-1" href="#">Dashboard</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:bg-surface-container transition-colors px-2" href="#">Facility</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:bg-surface-container transition-colors px-2" href="#">Admin</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:bg-surface-container transition-colors px-2" href="#">Resources</a>
+</nav>
+</div>
+<div class="flex items-center space-x-4">
+<div class="relative">
+<input class="bg-surface-container border border-outline-variant px-4 py-1.5 text-mono-data focus:border-primary focus:ring-0 w-64" placeholder="Search Patient ID..." type="text"/>
+</div>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="h-8 w-8 bg-primary-container rounded-sm flex items-center justify-center text-on-primary text-xs font-bold">
+                    DR
+                </div>
+</div>
+</header>
+<!-- Content Area -->
+<div class="p-margin max-w-container-max mx-auto w-full flex-grow">
+<!-- Patient Header -->
+<div class="flex justify-between items-end mb-8 border-b border-outline-variant pb-4">
+<div>
+<div class="flex items-center space-x-3 mb-1">
+<span class="font-label-caps text-label-caps text-on-surface-variant">PATIENT_ID: 9942-X</span>
+<span class="bg-surface-variant px-2 py-0.5 text-[10px] font-mono-data">STATUS: ANALYSIS_COMPLETE</span>
+</div>
+<h2 class="font-headline-lg text-headline-lg">ARTHUR_VANDELAY.PDF</h2>
+</div>
+<div class="flex space-x-2">
+<button class="px-4 py-2 border border-outline-variant text-mono-data flex items-center hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined text-sm mr-2" data-icon="history">history</span> COMPARISON
+                    </button>
+<button class="px-4 py-2 bg-primary text-on-primary text-mono-data flex items-center hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-sm mr-2" data-icon="add">add</span> NEW SCAN
+                    </button>
+</div>
+</div>
+<!-- Dashboard Grid -->
+<div class="bento-grid">
+<!-- Body Composition Heatmap -->
+<div class="col-span-12 lg:col-span-5 bg-surface-container-lowest data-border relative overflow-hidden">
+<div class="flex justify-between items-center p-4 border-b border-outline-variant">
+<h3 class="font-label-caps text-label-caps">ANATOMICAL_HEATMAP</h3>
+<span class="text-[10px] font-mono-data text-outline">REF: AX-01</span>
+</div>
+<div class="p-6 flex items-start space-x-8">
+<div class="w-1/2 aspect-[1/2] relative bg-surface-container-low border border-outline-variant flex items-center justify-center overflow-hidden">
+<img alt="Anatomy map" class="opacity-30 mix-blend-multiply grayscale" data-alt="A highly technical medical illustration of a human skeletal structure seen from a front profile, presented in a clean digital blueprint style. The background is a stark, light-mode sterile white with subtle grid lines. The image uses a restricted color palette of deep charcoal greys and medical-grade teals to highlight muscle density zones and bone markers. The aesthetic is clinical, precise, and sophisticated, avoiding all decorative elements for a pure laboratory data look." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCODd1VmdKjpXfTXXFMS6V96o1vE-7fhZknatVBVRoCIO7dNDRYJiuh9pcDBQLOJ6gXuCyg86vfPK39_6jMSx4S0GOAC_b_u2VPSO0MdJXhh38hzBRggAwWjB65HuFpUIQyYjUn4GZVUq6TEYnvIM84i3150K0jAvH9mvTSFJ6AozYYgz8cjSqYNgDrZ3HtCjHaUijqsGEGs5xZshcv4GmtzS_bnHLp5rugUWhaJbwiIIH57StSbvMDGfyP210QK5njFdO3CAERa-M"/>
+<!-- Overlay markers -->
+<div class="absolute top-10 left-1/2 -translate-x-1/2 w-4 h-4 border border-primary bg-primary/20"></div>
+<div class="absolute top-24 left-1/4 w-8 h-12 border border-primary bg-primary/10"></div>
+<div class="absolute top-24 right-1/4 w-8 h-12 border border-primary bg-primary/10"></div>
+<div class="absolute bottom-16 left-1/2 -translate-x-1/2 w-10 h-24 border border-primary bg-primary/30"></div>
+</div>
+<div class="w-1/2 space-y-6">
+<div>
+<p class="text-[10px] font-mono-data text-outline mb-1">TOTAL_BODY_FAT</p>
+<p class="text-3xl font-headline-md">14.2%</p>
+<div class="w-full h-1 bg-surface-variant mt-2 overflow-hidden">
+<div class="h-full bg-primary w-[14.2%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="border-l-2 border-outline-variant pl-3">
+<p class="text-[10px] font-mono-data text-outline">LEAN_MASS</p>
+<p class="text-mono-data font-bold">72.4kg</p>
+</div>
+<div class="border-l-2 border-outline-variant pl-3">
+<p class="text-[10px] font-mono-data text-outline">FAT_MASS</p>
+<p class="text-mono-data font-bold">11.1kg</p>
+</div>
+<div class="border-l-2 border-outline-variant pl-3">
+<p class="text-[10px] font-mono-data text-outline">BMC</p>
+<p class="text-mono-data font-bold">3.2kg</p>
+</div>
+<div class="border-l-2 border-outline-variant pl-3">
+<p class="text-[10px] font-mono-data text-outline">HYDRATION</p>
+<p class="text-mono-data font-bold">62.1%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bone Density T-Score -->
+<div class="col-span-12 lg:col-span-4 flex flex-col space-y-4">
+<div class="flex-grow bg-surface-container-lowest data-border relative overflow-hidden">
+<div class="flex justify-between items-center p-4 border-b border-outline-variant">
+<h3 class="font-label-caps text-label-caps">BONE_DENSITY_TSCORE</h3>
+<span class="text-[10px] font-mono-data text-outline">REF: BD-44</span>
+</div>
+<div class="p-6 text-center">
+<div class="relative inline-block w-48 h-48 mb-4">
+<!-- Gauge placeholder style -->
+<svg class="w-full h-full transform -rotate-90">
+<circle cx="96" cy="96" fill="none" r="88" stroke="#e2e2e2" stroke-width="8"></circle>
+<circle cx="96" cy="96" fill="none" r="88" stroke="#000" stroke-dasharray="552" stroke-dashoffset="120" stroke-width="8"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-4xl font-headline-lg">+1.2</span>
+<span class="text-[10px] font-mono-data bg-tertiary-fixed text-primary px-2 py-0.5">OPTIMAL</span>
+</div>
+</div>
+<div class="flex justify-between border-t border-outline-variant pt-4 mt-2">
+<div class="text-left">
+<p class="text-[10px] font-mono-data text-outline">LUMBAR_SPINE</p>
+<p class="text-mono-data font-bold">+0.8</p>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-mono-data text-outline">LEFT_FEMUR</p>
+<p class="text-mono-data font-bold">+1.4</p>
+</div>
+</div>
+</div>
+</div>
+<div class="bg-surface-container-lowest data-border p-4">
+<div class="flex justify-between items-center mb-2">
+<p class="font-label-caps text-label-caps">FRACTURE_RISK</p>
+<span class="text-[10px] font-mono-data text-primary font-bold">LOW_0.02%</span>
+</div>
+<div class="w-full h-2 bg-surface-container flex">
+<div class="h-full bg-primary w-2"></div>
+<div class="flex-grow"></div>
+</div>
+</div>
+</div>
+<!-- Visceral Fat Analytics -->
+<div class="col-span-12 lg:col-span-3 bg-primary text-on-primary border border-primary relative overflow-hidden">
+<div class="flex justify-between items-center p-4 border-b border-on-primary/20">
+<h3 class="font-label-caps text-label-caps">VAT_ANALYTICS</h3>
+<span class="text-[10px] font-mono-data opacity-50">UNIT: cm²</span>
+</div>
+<div class="p-6">
+<p class="text-[10px] font-mono-data opacity-60 mb-2">VISCERAL_ADIPOSE_TISSUE</p>
+<div class="flex items-baseline space-x-2 mb-8">
+<p class="text-5xl font-headline-lg">84.2</p>
+<span class="material-symbols-outlined text-tertiary-fixed" data-icon="trending_down">trending_down</span>
+</div>
+<div class="space-y-4">
+<div class="flex justify-between items-end">
+<span class="text-xs font-mono-data opacity-70">METABOLIC_AGE</span>
+<span class="text-xl font-headline-md">29</span>
+</div>
+<div class="flex justify-between items-end border-t border-on-primary/10 pt-4">
+<span class="text-xs font-mono-data opacity-70">A/G_RATIO</span>
+<span class="text-xl font-headline-md">0.82</span>
+</div>
+<div class="flex justify-between items-end border-t border-on-primary/10 pt-4">
+<span class="text-xs font-mono-data opacity-70">ANDROID_FAT</span>
+<span class="text-xl font-headline-md">16.1%</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-0 right-0 p-2">
+<span class="text-[8px] font-mono-data opacity-20">SYSTEM_SIGNATURE_8829</span>
+</div>
+</div>
+<!-- Technical Timeline / Longitudinal Data -->
+<div class="col-span-12 bg-surface-container-lowest data-border">
+<div class="flex justify-between items-center p-4 border-b border-outline-variant">
+<h3 class="font-label-caps text-label-caps">LONGITUDINAL_DATA_SERIES</h3>
+<div class="flex space-x-4">
+<span class="flex items-center text-[10px] font-mono-data"><span class="w-2 h-2 bg-primary mr-2"></span> MUSCLE_MASS</span>
+<span class="flex items-center text-[10px] font-mono-data"><span class="w-2 h-2 bg-outline mr-2"></span> BODY_FAT</span>
+</div>
+</div>
+<div class="h-48 p-6 flex items-end justify-between space-x-4">
+<!-- Simulated Chart Bars -->
+<div class="flex-grow flex items-end space-x-2">
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[70%]"></div>
+<div class="bg-primary w-1/2 h-[90%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">JAN</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[75%]"></div>
+<div class="bg-primary w-1/2 h-[88%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">FEB</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[72%]"></div>
+<div class="bg-primary w-1/2 h-[92%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">MAR</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[80%]"></div>
+<div class="bg-primary w-1/2 h-[85%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">APR</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[85%]"></div>
+<div class="bg-primary w-1/2 h-[80%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">MAY</span>
+</div>
+<div class="flex flex-col items-center w-full group">
+<div class="w-full flex items-end space-x-1 h-32">
+<div class="bg-primary-fixed-dim w-1/2 h-[82%]"></div>
+<div class="bg-primary w-1/2 h-[95%]"></div>
+</div>
+<span class="text-[10px] font-mono-data mt-2 opacity-40">JUN</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="w-full bg-surface-dim flex justify-between items-center px-margin py-4 border-t border-outline-variant mt-auto">
+<p class="font-mono-data text-mono-data text-secondary">© 2024 PRECISION_DEXA. SYSTEM_STATUS: NOMINAL</p>
+<div class="flex space-x-8">
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Protocol</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:text-primary transition-colors" href="#">HIPAA Compliance</a>
+<a class="font-mono-data text-mono-data text-on-surface-variant hover:text-primary transition-colors" href="#">API Documentation</a>
+</div>
+</footer>
+</main>
+</body></html>

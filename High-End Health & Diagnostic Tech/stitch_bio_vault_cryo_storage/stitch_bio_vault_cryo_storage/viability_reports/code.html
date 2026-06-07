@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELL_STORE_v1.0 | Viability Reports</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        @keyframes scan {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(1000%); }
+        }
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #39ff14;
+            opacity: 0.3;
+            box-shadow: 0 0 8px #39ff14;
+            animation: scan 4s linear infinite;
+            pointer-events: none;
+        }
+        .flicker-animation-on-hover:hover {
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        .segmented-progress span {
+            height: 8px;
+            width: 4px;
+            background-color: #39ff14;
+            margin-right: 2px;
+        }
+        .segmented-progress span.inactive {
+            background-color: #1a1c1c;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#fdf9f9",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary-fixed": "#022100",
+                        "secondary": "#c6c6c7",
+                        "secondary-container": "#454747",
+                        "inverse-primary": "#106e00",
+                        "on-primary": "#053900",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed": "#79ff5b",
+                        "surface-tint": "#2ae500",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#626161",
+                        "primary-container": "#39ff14",
+                        "primary-fixed-dim": "#2ae500",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "background": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#313030",
+                        "surface-container-highest": "#353535",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "primary": "#efffe3",
+                        "on-secondary": "#2f3131",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#095300",
+                        "surface-container-low": "#1b1b1b",
+                        "on-secondary-container": "#b4b5b5",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e2e2e2",
+                        "on-background": "#e2e2e2",
+                        "surface": "#131313",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface-variant": "#baccb0",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-variant": "#353535",
+                        "outline": "#85967c",
+                        "tertiary-container": "#e0dddc",
+                        "on-primary-container": "#107100",
+                        "inverse-on-surface": "#303030",
+                        "surface-bright": "#393939",
+                        "outline-variant": "#3c4b35",
+                        "surface-container": "#1f1f1f",
+                        "on-secondary-fixed-variant": "#454747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin": "32px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "48px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "data-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base min-h-screen selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar Shell -->
+<header class="bg-background dark:bg-background border-b border-on-surface-variant dark:border-outline-variant flex justify-between items-center w-full px-md py-sm sticky top-0 z-50">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-data-lg text-data-lg font-bold tracking-widest text-primary dark:text-primary-fixed uppercase">CELL_STORE_v1.0</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md font-label-caps text-label-caps">
+<span class="text-secondary hover:text-primary transition-colors cursor-pointer flicker-animation-on-hover">VAULT</span>
+<span class="text-primary cursor-pointer border-b border-primary">VIABILITY</span>
+<span class="text-secondary hover:text-primary transition-colors cursor-pointer flicker-animation-on-hover">PROTOCOLS</span>
+<span class="text-secondary hover:text-primary transition-colors cursor-pointer flicker-animation-on-hover">LEGAL</span>
+</div>
+<button class="material-symbols-outlined text-primary flicker-animation-on-hover" data-icon="settings_input_component">settings_input_component</button>
+</div>
+</header>
+<main class="flex min-h-[calc(100vh-112px)]">
+<!-- NavigationDrawer Shell -->
+<aside class="hidden md:flex flex-col h-auto w-64 border-r border-primary bg-background p-lg scanning-line-overlay">
+<div class="flex flex-col gap-unit mb-xl">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 border border-primary p-xs">
+<img alt="OPERATOR_082" class="w-full h-full object-cover grayscale" data-alt="A high-contrast macro photograph of a cybernetic eye lens reflecting a grid of neon green data points. The lighting is clinical and dark, emphasizing the metallic textures and technological precision. The overall aesthetic is cold, expert, and ultra-high-tech, fitting for a secure bio-banking facility." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDlH8K8f-DdEZ0hMzvMr4H3sir0yNewN58peOpfSbiqdQn1jXEY-V8BG2pMXN322OpZeehnn83WaxZxW-RByJSctXYA4r7TwIVRj68u__iusMYba_RooG4l92tw0RirPgmktRihe4VG3cJ0vWTYAZB5u3a4u9Wox9ws9eXFSyS8tod9DtaEtbjuPAOAZ9YTC78R9ZCyTq2MUiv4-ZfD7V2tUgdlMvzh-vxeRHKjDDS4HBCDTjp_5Ave2S8Cb4O8ro7eBZYnaa1Lvc8"/>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-primary">OPERATOR_082</div>
+<div class="font-data-sm text-data-sm text-secondary opacity-70">ENCRYPTION_LEVEL_05</div>
+</div>
+</div>
+<div class="mt-sm font-label-caps text-[8px] text-primary-fixed bg-on-primary-fixed-variant/20 px-xs py-[2px] w-fit">SYSTEM_ACTIVE</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<div class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">SYSTEM_PULSE</span>
+</div>
+<div class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">NODE_STATUS</span>
+</div>
+<div class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:bg-surface-container-high transition-all cursor-pointer group">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps">BIO_ENCRYPTION</span>
+</div>
+<div class="mt-xl border-t border-outline-variant pt-md">
+<div class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:text-error transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">SECURE_LOGOUT</span>
+</div>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<section class="flex-1 p-margin bg-background relative overflow-y-auto">
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-end mb-xl border-l-4 border-primary pl-md">
+<div>
+<h2 class="font-headline-xl text-headline-xl text-primary tracking-tight">VIABILITY_REPORT</h2>
+<p class="font-data-sm text-data-sm text-secondary uppercase opacity-60">SPECIMEN_ID: ALPHA-0992-K // TIMESTAMP: 2024.05.21.0800</p>
+</div>
+<div class="mt-md md:mt-0 flex flex-col items-end">
+<div class="font-label-caps text-label-caps text-secondary mb-xs">GLOBAL_INTEGRITY</div>
+<div class="flex segmented-progress">
+<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span class="inactive"></span>
+</div>
+<div class="font-data-lg text-data-lg text-primary mt-xs">92.4%</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Main Metric: Cell Count -->
+<div class="md:col-span-8 border border-outline-variant bg-surface-container-low p-lg scanning-line-overlay">
+<div class="flex justify-between items-start mb-md">
+<span class="font-label-caps text-label-caps text-secondary">CELL_COUNT_DENSITY</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">SN: 882-99-C</span>
+</div>
+<div class="h-64 flex items-end gap-xs w-full">
+<!-- Bar chart mockup -->
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[40%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[55%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[45%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[80%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[60%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[90%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[75%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[85%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[65%]"></div>
+<div class="bg-primary/20 hover:bg-primary-container transition-colors w-full h-[70%]"></div>
+</div>
+<div class="mt-md grid grid-cols-3 gap-md">
+<div class="border-l border-primary p-sm">
+<div class="font-label-caps text-[10px] text-secondary">PEAK_COUNT</div>
+<div class="font-data-lg text-data-lg text-primary">4.2M / ml</div>
+</div>
+<div class="border-l border-primary p-sm">
+<div class="font-label-caps text-[10px] text-secondary">DVI_INDEX</div>
+<div class="font-data-lg text-data-lg text-primary">0.082</div>
+</div>
+<div class="border-l border-primary p-sm">
+<div class="font-label-caps text-[10px] text-secondary">VARIANCE</div>
+<div class="font-data-lg text-data-lg text-primary">±1.2%</div>
+</div>
+</div>
+</div>
+<!-- Circular Analysis -->
+<div class="md:col-span-4 border border-outline-variant bg-surface-container-low p-lg flex flex-col items-center justify-center gap-md">
+<div class="relative w-48 h-48 border-[12px] border-surface-container-highest rounded-full flex items-center justify-center">
+<!-- Neon Circle Fill -->
+<div class="absolute inset-0 border-[12px] border-primary border-t-transparent border-l-transparent rounded-full rotate-45 opacity-80"></div>
+<div class="text-center">
+<div class="font-headline-md text-headline-md text-primary">98.1%</div>
+<div class="font-label-caps text-label-caps text-secondary">VIABILITY</div>
+</div>
+</div>
+<div class="w-full flex flex-col gap-sm mt-md">
+<div class="flex justify-between font-data-sm text-data-sm">
+<span class="text-secondary">METABOLIC_RATE</span>
+<span class="text-primary">OPTIMAL</span>
+</div>
+<div class="w-full h-[1px] bg-outline-variant"></div>
+<div class="flex justify-between font-data-sm text-data-sm">
+<span class="text-secondary">PH_STABILITY</span>
+<span class="text-primary">7.42</span>
+</div>
+</div>
+</div>
+<!-- Detailed Data Grid -->
+<div class="md:col-span-12 border border-primary bg-background overflow-hidden">
+<div class="bg-primary-container p-sm flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-on-primary-container font-bold">CRYOGENIC_STASIS_LOGS</span>
+<span class="font-data-sm text-data-sm text-on-primary-container">SESSION_0092</span>
+</div>
+<table class="w-full text-left font-data-sm text-data-sm">
+<thead>
+<tr class="border-b border-outline-variant text-secondary opacity-50">
+<th class="p-md font-label-caps">PARAMETER</th>
+<th class="p-md font-label-caps">NOMINAL</th>
+<th class="p-md font-label-caps">ACTUAL</th>
+<th class="p-md font-label-caps">STATUS</th>
+</tr>
+</thead>
+<tbody>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-md">THERMAL_REGULATION</td>
+<td class="p-md">-196.2°C</td>
+<td class="p-md text-primary">-196.1°C</td>
+<td class="p-md"><span class="flex items-center gap-xs"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-md">PRESSURE_VALVE_04</td>
+<td class="p-md">1.02 BAR</td>
+<td class="p-md text-primary">1.02 BAR</td>
+<td class="p-md"><span class="flex items-center gap-xs"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-md">CO2_CONCENTRATION</td>
+<td class="p-md">5.0%</td>
+<td class="p-md text-primary">5.1%</td>
+<td class="p-md"><span class="flex items-center gap-xs"><span class="w-2 h-2 bg-primary rounded-full"></span> NOMINAL</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Interaction Card -->
+<div class="md:col-span-12 flex flex-col md:flex-row items-center justify-between border-2 border-primary bg-primary/5 p-lg mt-md">
+<div class="flex items-center gap-md mb-md md:mb-0">
+<span class="material-symbols-outlined text-primary text-4xl" data-icon="swap_horiz" data-weight="fill">swap_horiz</span>
+<div>
+<div class="font-headline-md text-headline-md text-primary uppercase">AUTHORIZE_TRANSFER</div>
+<p class="font-data-sm text-data-sm text-secondary">Initiate hardened blockchain verification for specimen movement.</p>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary-container font-label-caps text-data-lg px-xl py-md hover:bg-primary transition-all flicker-animation-on-hover uppercase font-bold border-2 border-primary shadow-[0_0_15px_rgba(57,255,20,0.4)]">
+                        SECURE_TRANSFER
+                    </button>
+</div>
+</div>
+<!-- Security Badge -->
+<div class="fixed bottom-margin right-margin z-40">
+<div class="border border-primary bg-background p-md font-data-sm text-data-sm shadow-[0_0_20px_rgba(0,0,0,0.8)] border-l-4">
+<div class="text-primary font-bold mb-xs">ENCRYPTION: HARDENED</div>
+<div class="text-secondary opacity-70">PULSE: 72 BPM</div>
+<div class="text-secondary opacity-70">NODE: K-992-DELTA</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar Shell (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center py-sm bg-background border-t border-on-surface-variant dark:border-outline-variant">
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+<span class="font-label-caps text-[8px]">VAULT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-[8px]">VIABILITY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-[8px]">PROTOCOLS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-[8px]">LEGAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 transition-opacity">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-[8px]">TRANSFER</span>
+</div>
+</nav>
+</body></html>

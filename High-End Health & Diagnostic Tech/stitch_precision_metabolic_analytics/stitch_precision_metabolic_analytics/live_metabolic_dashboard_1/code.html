@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BLOOD-LOGIC | METABOLIC_DASHBOARD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700;900&amp;family=JetBrains+Mono:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary-fixed-variant": "#39475f",
+                    "surface-container-high": "#dee8ff",
+                    "inverse-surface": "#263143",
+                    "error": "#ba1a1a",
+                    "inverse-primary": "#b9c7e4",
+                    "on-primary-fixed": "#0d1c32",
+                    "on-secondary-container": "#007352",
+                    "on-secondary": "#ffffff",
+                    "outline-variant": "#c5c6cd",
+                    "on-tertiary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "tertiary-fixed-dim": "#c3c7cb",
+                    "on-secondary-fixed": "#002115",
+                    "surface": "#f9f9ff",
+                    "secondary-fixed-dim": "#69dbad",
+                    "on-surface-variant": "#44474d",
+                    "on-surface": "#111c2d",
+                    "primary-fixed": "#d6e3ff",
+                    "on-error-container": "#93000a",
+                    "outline": "#75777e",
+                    "secondary": "#006c4d",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#d8e3fb",
+                    "surface-container": "#e7eeff",
+                    "secondary-container": "#86f8c8",
+                    "surface-container-low": "#f0f3ff",
+                    "on-tertiary-container": "#808488",
+                    "primary": "#000000",
+                    "surface-container-highest": "#d8e3fb",
+                    "primary-fixed-dim": "#b9c7e4",
+                    "on-primary-container": "#76849f",
+                    "tertiary": "#000000",
+                    "on-secondary-fixed-variant": "#005139",
+                    "on-primary": "#ffffff",
+                    "on-background": "#111c2d",
+                    "on-tertiary-fixed": "#171c1f",
+                    "tertiary-fixed": "#dfe3e7",
+                    "surface-dim": "#cfdaf2",
+                    "primary-container": "#0d1c32",
+                    "on-error": "#ffffff",
+                    "surface-bright": "#f9f9ff",
+                    "background": "#f9f9ff",
+                    "secondary-fixed": "#86f8c8",
+                    "tertiary-container": "#171c1f",
+                    "on-tertiary-fixed-variant": "#43474b",
+                    "surface-tint": "#515f78",
+                    "inverse-on-surface": "#ecf1ff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "base": "4px",
+                    "grid_line": "1px",
+                    "gutter": "16px",
+                    "margin": "24px"
+            },
+            "fontFamily": {
+                    "headline-md": ["Hanken Grotesk"],
+                    "data-value": ["JetBrains Mono"],
+                    "display-data": ["JetBrains Mono"],
+                    "data-label": ["JetBrains Mono"],
+                    "headline-lg": ["Hanken Grotesk"],
+                    "body-md": ["Hanken Grotesk"]
+            },
+            "fontSize": {
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "data-value": ["14px", {"lineHeight": "1.0", "fontWeight": "600"}],
+                    "display-data": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "data-label": ["12px", {"lineHeight": "1.0", "fontWeight": "500"}],
+                    "headline-lg": ["30px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .grid-blueprint {
+            background-image: linear-gradient(#e2e8f0 1px, transparent 1px), linear-gradient(90deg, #e2e8f0 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .zebra-striping div:nth-child(even) {
+            background-color: rgba(0, 115, 82, 0.02);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-md selection:bg-secondary-container">
+<!-- Telemetry Strip -->
+<div class="w-full bg-primary-container text-on-primary-fixed-variant h-8 flex items-center px-gutter overflow-hidden border-b border-outline">
+<div class="flex items-center space-x-6 whitespace-nowrap animate-pulse">
+<div class="flex items-center space-x-2">
+<span class="font-data-label text-data-label text-secondary-fixed">LIVE_GLUCOSE:</span>
+<span class="font-data-value text-data-value text-white">94 MG/DL</span>
+<span class="material-symbols-outlined text-[12px] text-secondary-fixed">trending_flat</span>
+</div>
+<div class="flex items-center space-x-2 border-l border-outline-variant pl-6">
+<span class="font-data-label text-data-label text-secondary-fixed">KETONES:</span>
+<span class="font-data-value text-data-value text-white">1.2 MMOL/L</span>
+<span class="material-symbols-outlined text-[12px] text-secondary-fixed">trending_up</span>
+</div>
+<div class="flex items-center space-x-2 border-l border-outline-variant pl-6">
+<span class="font-data-label text-data-label text-secondary-fixed">HRV:</span>
+<span class="font-data-value text-data-value text-white">68 MS</span>
+</div>
+<div class="flex items-center space-x-2 border-l border-outline-variant pl-6">
+<span class="font-data-label text-data-label text-secondary-fixed">CORE_TEMP:</span>
+<span class="font-data-value text-data-value text-white">36.8 C</span>
+</div>
+</div>
+</div>
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-gutter h-16 bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary cursor-pointer">menu</span>
+<h1 class="font-headline-lg text-headline-lg font-bold tracking-tighter text-primary uppercase">BLOOD-LOGIC</h1>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex items-center gap-4">
+<span class="font-data-label text-data-label text-primary font-bold">DASHBOARD</span>
+<span class="font-data-label text-data-label text-on-surface-variant">ANALYTICS</span>
+<span class="font-data-label text-data-label text-on-surface-variant">NUTRITION</span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer">settings</span>
+</div>
+</header>
+<main class="flex min-h-screen">
+<!-- NavigationDrawer (Desktop) -->
+<aside class="hidden md:flex flex-col h-full w-80 border-r border-outline-variant bg-surface sticky top-16">
+<div class="p-gutter border-b border-outline-variant flex flex-col gap-2">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">person</span>
+</div>
+<div>
+<p class="font-data-value text-data-value text-primary uppercase">OPERATOR_0821</p>
+<p class="text-[10px] font-data-label text-secondary uppercase tracking-widest">STATUS: OPTIMIZED</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 py-4">
+<div class="px-gutter py-3 bg-secondary-container text-on-secondary-container font-bold border-l-4 border-secondary flex items-center gap-3">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-data-value text-data-value uppercase">BIOMARKER_FEED</span>
+</div>
+<div class="px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined">description</span>
+<span class="font-data-value text-data-value uppercase">LAB_REPORTS</span>
+</div>
+<div class="px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined">sync_alt</span>
+<span class="font-data-value text-data-value uppercase">DEVICE_SYNC</span>
+</div>
+<div class="px-gutter py-3 text-on-surface-variant hover:bg-surface-container-high transition-colors cursor-pointer flex items-center gap-3">
+<span class="material-symbols-outlined">terminal</span>
+<span class="font-data-value text-data-value uppercase">PROTOCOLS</span>
+</div>
+</nav>
+<div class="p-gutter border-t border-outline-variant">
+<div class="flex items-center gap-3 text-on-surface-variant hover:text-error transition-colors cursor-pointer">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-data-value text-data-value uppercase">LOGOUT</span>
+</div>
+<p class="mt-4 text-[10px] font-data-label text-outline text-right uppercase">V.2.4.0</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 grid-blueprint p-6 md:p-margin">
+<!-- Hero Grid: Metabolic Score & Status -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+<!-- Metabolic Score Gauge -->
+<div class="lg:col-span-8 bg-surface border border-outline-variant p-gutter relative overflow-hidden flex flex-col md:flex-row items-center gap-8">
+<div class="relative w-48 h-48 flex items-center justify-center">
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-container-highest" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-width="12"></circle>
+<circle class="text-secondary" cx="96" cy="96" fill="transparent" r="88" stroke="currentColor" stroke-dasharray="552.92" stroke-dashoffset="110" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="font-display-data text-display-data text-primary leading-none">88</span>
+<span class="font-data-label text-data-label text-on-surface-variant uppercase mt-1">SCORE</span>
+</div>
+</div>
+<div class="flex-1 space-y-4">
+<div>
+<h2 class="font-headline-md text-headline-md text-primary tracking-tight">METABOLIC_EFFICIENCY</h2>
+<p class="font-body-md text-on-surface-variant text-sm">Real-time analysis based on multi-sensor telemetry integration. Current state: <span class="text-secondary font-bold">OPTIMIZED_FAT_OXIDATION</span>.</p>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="border border-outline-variant p-3">
+<p class="font-data-label text-data-label text-outline uppercase mb-1">STABILITY</p>
+<p class="font-data-value text-headline-md text-secondary">94%</p>
+</div>
+<div class="border border-outline-variant p-3">
+<p class="font-data-label text-data-label text-outline uppercase mb-1">RECOVERY</p>
+<p class="font-data-value text-headline-md text-secondary">HIGH</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Sync & System Status -->
+<div class="lg:col-span-4 bg-primary-container border border-primary p-gutter flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div>
+<p class="font-data-label text-data-label text-secondary-fixed uppercase tracking-widest">SYSTEM_STATUS</p>
+<h3 class="font-headline-md text-white tracking-tighter mt-1 uppercase">ACTIVE_SYNC</h3>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed animate-pulse">sensors</span>
+</div>
+<div class="space-y-3">
+<div class="flex justify-between items-center border-b border-on-primary-container pb-2">
+<span class="font-data-label text-data-label text-on-primary-container uppercase">CGM_DEXCOM_G7</span>
+<span class="font-data-value text-data-value text-white">CONNECTED</span>
+</div>
+<div class="flex justify-between items-center border-b border-on-primary-container pb-2">
+<span class="font-data-label text-data-label text-on-primary-container uppercase">KETONE_BIO_SENSE</span>
+<span class="font-data-value text-data-value text-white">CALIBRATING</span>
+</div>
+<div class="flex justify-between items-center border-b border-on-primary-container pb-2">
+<span class="font-data-label text-data-label text-on-primary-container uppercase">OURA_RING_V3</span>
+<span class="font-data-value text-data-value text-white">SYNC_OK</span>
+</div>
+</div>
+<div class="mt-4">
+<button class="w-full bg-secondary text-white py-2 font-data-value text-data-value uppercase hover:bg-on-secondary-fixed-variant transition-colors">INITIATE_MANUAL_CALIBRATION</button>
+</div>
+</div>
+</div>
+<!-- Detailed Telemetry Charts -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+<!-- Glucose Telemetry -->
+<div class="bg-surface border border-outline-variant p-gutter">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-secondary rounded-full"></div>
+<h4 class="font-data-value text-data-value text-primary uppercase">GLUCOSE_TELEMETRY (24H)</h4>
+</div>
+<span class="font-data-label text-data-label text-outline uppercase">MG/DL</span>
+</div>
+<div class="h-48 w-full border-l border-b border-outline-variant relative">
+<!-- Simple SVG for clinical sparkline effect -->
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<polyline fill="rgba(0, 108, 77, 0.05)" points="0,40 0,20 10,18 20,22 30,25 40,20 50,15 60,18 70,22 80,18 90,15 100,12 100,40" stroke="none"></polyline>
+<polyline fill="none" points="0,20 10,18 20,22 30,25 40,20 50,15 60,18 70,22 80,18 90,15 100,12" stroke="#006c4d" stroke-width="0.5"></polyline>
+</svg>
+<div class="absolute inset-0 grid grid-cols-4 pointer-events-none opacity-20">
+<div class="border-r border-outline-variant"></div>
+<div class="border-r border-outline-variant"></div>
+<div class="border-r border-outline-variant"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4">
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">MIN</p>
+<p class="font-data-value text-primary">78</p>
+</div>
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">MAX</p>
+<p class="font-data-value text-primary">112</p>
+</div>
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">AVG</p>
+<p class="font-data-value text-primary">94</p>
+</div>
+</div>
+</div>
+<!-- Ketone Telemetry -->
+<div class="bg-surface border border-outline-variant p-gutter">
+<div class="flex justify-between items-center mb-6">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-on-secondary-container rounded-full"></div>
+<h4 class="font-data-value text-data-value text-primary uppercase">KETONE_PRODUCTION</h4>
+</div>
+<span class="font-data-label text-data-label text-outline uppercase">MMOL/L</span>
+</div>
+<div class="h-48 w-full border-l border-b border-outline-variant relative">
+<svg class="w-full h-full" preserveaspectratio="none" viewbox="0 0 100 40">
+<polyline fill="rgba(0, 115, 82, 0.05)" points="0,40 0,35 15,30 30,32 45,25 60,20 75,15 90,12 100,10 100,40" stroke="none"></polyline>
+<polyline fill="none" points="0,35 15,30 30,32 45,25 60,20 75,15 90,12 100,10" stroke="#007352" stroke-width="0.5"></polyline>
+</svg>
+<div class="absolute inset-0 grid grid-cols-4 pointer-events-none opacity-20">
+<div class="border-r border-outline-variant"></div>
+<div class="border-r border-outline-variant"></div>
+<div class="border-r border-outline-variant"></div>
+</div>
+</div>
+<div class="flex justify-between mt-4">
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">FASTED_STATE</p>
+<p class="font-data-value text-primary">0.4</p>
+</div>
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">GKI_INDEX</p>
+<p class="font-data-value text-primary">4.2</p>
+</div>
+<div class="text-center">
+<p class="font-data-label text-[10px] text-outline uppercase">CURRENT</p>
+<p class="font-data-value text-secondary font-bold">1.2</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Bento Grid - Secondary Insights -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<!-- Cell 1: Biomarker Status -->
+<div class="bg-surface border border-outline-variant p-4">
+<p class="font-data-label text-data-label text-outline uppercase mb-2">HBA1C_PRED</p>
+<div class="flex items-center gap-2">
+<span class="font-data-value text-headline-md text-primary">4.9%</span>
+<div class="px-2 py-0.5 border border-secondary text-secondary text-[10px] font-bold">OPTIMAL</div>
+</div>
+</div>
+<!-- Cell 2: Biomarker Status -->
+<div class="bg-surface border border-outline-variant p-4">
+<p class="font-data-label text-data-label text-outline uppercase mb-2">AMINO_INDEX</p>
+<div class="flex items-center gap-2">
+<span class="font-data-value text-headline-md text-primary">82/100</span>
+<div class="px-2 py-0.5 border border-error text-error text-[10px] font-bold">LOW</div>
+</div>
+</div>
+<!-- Cell 3: Technical Telemetry -->
+<div class="bg-surface border border-outline-variant p-4 col-span-1 sm:col-span-2">
+<div class="flex justify-between items-center mb-2">
+<p class="font-data-label text-data-label text-outline uppercase">DATA_INGESTION_LATENCY</p>
+<span class="font-data-value text-[10px] text-secondary">0.024MS</span>
+</div>
+<div class="w-full bg-surface-container-highest h-2 overflow-hidden">
+<div class="bg-secondary h-full w-[85%]"></div>
+</div>
+</div>
+</div>
+<!-- Log Table -->
+<div class="mt-6 bg-surface border border-outline-variant overflow-hidden">
+<div class="p-gutter border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h4 class="font-data-value text-data-value text-primary uppercase">SYSTEM_LOGS_TIMESTAMPED</h4>
+<span class="material-symbols-outlined text-outline">download</span>
+</div>
+<div class="zebra-striping flex flex-col">
+<div class="flex px-gutter py-3 border-b border-outline-variant text-[12px]">
+<span class="w-24 font-data-label text-outline uppercase">08:42:12</span>
+<span class="flex-1 font-data-value text-primary uppercase">GLUCOSE_SPIKE_DETECTED (+12%)</span>
+<span class="w-32 font-data-label text-on-secondary-fixed-variant text-right uppercase">POST_PRANDIAL</span>
+</div>
+<div class="flex px-gutter py-3 border-b border-outline-variant text-[12px]">
+<span class="w-24 font-data-label text-outline uppercase">08:21:05</span>
+<span class="flex-1 font-data-value text-primary uppercase">AUTOPHAGY_THRESHOLD_REACHED</span>
+<span class="w-32 font-data-label text-secondary text-right uppercase">CELLULAR_REPAIR</span>
+</div>
+<div class="flex px-gutter py-3 border-b border-outline-variant text-[12px]">
+<span class="w-24 font-data-label text-outline uppercase">07:55:48</span>
+<span class="flex-1 font-data-value text-primary uppercase">BASE_METABOLIC_RATE_CALIBRATION</span>
+<span class="w-32 font-data-label text-on-surface-variant text-right uppercase">ROUTINE_SYNC</span>
+</div>
+<div class="flex px-gutter py-3 text-[12px]">
+<span class="w-24 font-data-label text-outline uppercase">07:30:00</span>
+<span class="flex-1 font-data-value text-primary uppercase">CORTISOL_SURGE_DETECTED</span>
+<span class="w-32 font-data-label text-error text-right uppercase">WAKE_ALERT</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center bg-surface border-t border-outline-variant h-16">
+<div class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-none p-2 border-t-2 border-primary">
+<span class="material-symbols-outlined">monitoring</span>
+<span class="font-data-label text-[10px] uppercase tracking-widest">DASHBOARD</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined">science</span>
+<span class="font-data-label text-[10px] uppercase tracking-widest">ANALYTICS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined">restaurant</span>
+<span class="font-data-label text-[10px] uppercase tracking-widest">NUTRITION</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant p-2">
+<span class="material-symbols-outlined">history</span>
+<span class="font-data-label text-[10px] uppercase tracking-widest">ARCHIVE</span>
+</div>
+</nav>
+<!-- Contextual FAB -->
+<button class="fixed right-6 bottom-20 md:bottom-6 bg-primary text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-inverse-surface transition-all">
+<span class="material-symbols-outlined">add</span>
+</button>
+</body></html>

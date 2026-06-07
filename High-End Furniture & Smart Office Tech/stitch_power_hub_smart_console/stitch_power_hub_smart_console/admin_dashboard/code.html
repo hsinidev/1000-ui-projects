@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>GaN CORE OS - Power Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-container-low": "#1c1b1b",
+                        "secondary-container": "#454747",
+                        "surface-container": "#20201f",
+                        "error-container": "#93000a",
+                        "secondary": "#c6c6c7",
+                        "surface-variant": "#353535",
+                        "primary-fixed": "#ffdbcc",
+                        "on-error-container": "#ffdad6",
+                        "outline": "#a98a7d",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "surface": "#131313",
+                        "on-surface-variant": "#e2bfb0",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "on-secondary-container": "#b4b5b5",
+                        "outline-variant": "#5a4136",
+                        "on-tertiary": "#303030",
+                        "on-secondary": "#2f3131",
+                        "on-primary-fixed": "#351000",
+                        "inverse-primary": "#a04100",
+                        "surface-container-high": "#2a2a2a",
+                        "inverse-surface": "#e5e2e1",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "error": "#ffb4ab",
+                        "surface-tint": "#ffb693",
+                        "inverse-on-surface": "#313030",
+                        "tertiary-container": "#9a9999",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "secondary-fixed": "#e2e2e2",
+                        "surface-bright": "#393939",
+                        "background": "#131313",
+                        "surface-dim": "#131313",
+                        "primary-container": "#ff6b00",
+                        "on-error": "#690005",
+                        "on-tertiary-fixed": "#1b1c1c",
+                        "tertiary-fixed": "#e4e2e1",
+                        "tertiary": "#c8c6c5",
+                        "on-primary-container": "#572000",
+                        "on-primary": "#561f00",
+                        "on-background": "#e5e2e1",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-tertiary-container": "#313131",
+                        "surface-container-highest": "#353535",
+                        "primary-fixed-dim": "#ffb693",
+                        "primary": "#ffb693"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "flow-line-thickness": "2px",
+                        "margin": "24px",
+                        "card-padding": "20px",
+                        "unit": "4px",
+                        "gutter": "16px",
+                        "stack-gap": "8px"
+                    },
+                    "fontFamily": {
+                        "headline-md": ["Space Grotesk"],
+                        "body-base": ["Inter"],
+                        "data-readout": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "label-technical": ["JetBrains Mono"],
+                        "display-metrics": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "data-readout": ["14px", {"lineHeight": "1.4", "fontWeight": "400"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "label-technical": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "display-metrics": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .flow-line {
+            stroke-dasharray: 8, 8;
+            stroke-dashoffset: 100;
+        }
+        .active-glow {
+            box-shadow: inset 0 0 15px rgba(255, 107, 0, 0.2), 0 0 10px rgba(255, 107, 0, 0.1);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-hidden flex h-screen">
+<!-- SideNavBar Component -->
+<aside class="fixed left-0 top-0 h-screen w-64 bg-surface-container-low border-r border-outline-variant flex flex-col z-50">
+<div class="px-6 py-8 flex flex-col gap-1">
+<h2 class="font-headline-md text-headline-md text-on-surface">CORE-X1</h2>
+<p class="font-label-technical text-label-technical text-primary uppercase tracking-widest">GaN Fast Charging</p>
+</div>
+<nav class="flex-1 px-3 space-y-1">
+<a class="bg-primary text-on-primary font-bold rounded-none border-l-4 border-on-primary-container px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Dashboard</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="bolt">bolt</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Power Monitor</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="thermostat">thermostat</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">System Health</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Cable Guide</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Admin Panel</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="forum">forum</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Community</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-3 flex items-center gap-3 transition-all duration-200 active:scale-[0.98]" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">FAQ</span>
+</a>
+</nav>
+<div class="p-4 border-t border-outline-variant">
+<button class="w-full py-3 bg-error-container text-on-error-container font-label-technical text-label-technical uppercase tracking-widest hover:brightness-110 transition-all">
+                Emergency Shutdown
+            </button>
+</div>
+<div class="p-4 space-y-1">
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Security</span>
+</a>
+<a class="text-secondary hover:text-primary hover:bg-surface-variant/50 px-4 py-2 flex items-center gap-3 transition-all duration-200" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-technical text-label-technical uppercase tracking-widest">Log Out</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 flex-1 flex flex-col min-w-0">
+<!-- TopAppBar Component -->
+<header class="bg-surface border-b border-outline-variant h-16 flex justify-between items-center w-full px-6 sticky top-0 z-40">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-lg text-headline-lg font-bold text-primary tracking-tighter">GaN CORE OS</h1>
+<div class="bg-primary-container text-on-primary-container px-3 py-1 rounded-none flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px]" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+<span class="font-label-technical text-label-technical uppercase">Fast-Charge Active</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="bg-surface-variant border-none text-on-surface font-label-technical text-label-technical h-10 pl-10 pr-4 focus:ring-1 focus:ring-primary w-64" placeholder="PORT SEARCH..." type="text"/>
+</div>
+<button class="p-2 hover:bg-surface-variant transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 hover:bg-surface-variant transition-colors text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="settings_power">settings_power</span>
+</button>
+<div class="w-8 h-8 bg-outline-variant overflow-hidden">
+<img alt="Administrator profile" data-alt="A macro close-up of a professional user profile avatar on a high-tech screen, set against a dark carbon-fiber textured background with orange light leaks and industrial design elements, portraying a sense of elite system administration and security control." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCXlwf7_ZQpNErE9fY1MswfRcAePgrmwn8prHV3xrzZv-KhWIiI9asGpK_kQ0mWDuAgube8aDfonOwDUFvH5-QhP-fXaVnDNjZ8_Dzz16JKf0vKirTHEBDOV4w5tCNFizlrHZ6GFFgmYMee5_fYC33vTYELY-GaorKqdBEuRN7UhIJW-XYA3oGnpfQfNRhET7ebP1SL-OY6H8D0ey6fmarpdKPf-0fJl_0ABAElYxbJRHTpZtj5bMdsYnaOp1TbtwKupek-Us2lKlZE"/>
+</div>
+</div>
+</header>
+<!-- Dashboard Canvas -->
+<div class="p-6 overflow-y-auto space-y-6">
+<!-- High Level Metrics Row -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="bg-surface-container border border-outline-variant p-5">
+<p class="font-label-technical text-label-technical text-secondary mb-2">TOTAL DRAW</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-primary">248.5</span>
+<span class="font-label-technical text-headline-md text-secondary">W</span>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-5">
+<p class="font-label-technical text-label-technical text-secondary mb-2">ACTIVE PORTS</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">06</span>
+<span class="font-label-technical text-headline-md text-secondary">/ 08</span>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-5">
+<p class="font-label-technical text-label-technical text-secondary mb-2">CORE TEMP</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">42.8</span>
+<span class="font-label-technical text-headline-md text-secondary">°C</span>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant p-5">
+<p class="font-label-technical text-label-technical text-secondary mb-2">EFFICIENCY</p>
+<div class="flex items-baseline gap-2">
+<span class="font-display-metrics text-display-metrics text-on-surface">94</span>
+<span class="font-label-technical text-headline-md text-secondary">%</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Main Content -->
+<div class="grid grid-cols-12 gap-6 h-[500px]">
+<!-- Central Capacity Gauge -->
+<div class="col-span-12 md:col-span-4 bg-surface-container border border-outline-variant relative overflow-hidden flex flex-col items-center justify-center p-6">
+<div class="absolute top-4 left-4 font-label-technical text-label-technical text-secondary">SYSTEM CAPACITY</div>
+<div class="relative w-64 h-64 flex items-center justify-center">
+<svg class="w-full h-full -rotate-90">
+<circle class="text-outline-variant" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="2"></circle>
+<circle class="text-primary" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="180" stroke-width="6"></circle>
+</svg>
+<div class="absolute flex flex-col items-center">
+<span class="font-display-metrics text-[64px] text-on-surface leading-none">74</span>
+<span class="font-label-technical text-label-technical text-secondary uppercase">Percent Loaded</span>
+</div>
+</div>
+<div class="mt-8 w-full space-y-3">
+<div class="flex justify-between font-label-technical text-label-technical">
+<span class="text-secondary">MAX CAPACITY</span>
+<span class="text-on-surface">350W</span>
+</div>
+<div class="w-full h-1 bg-surface-variant">
+<div class="w-[74%] h-full bg-primary"></div>
+</div>
+</div>
+</div>
+<!-- Real-time Flow Visualization -->
+<div class="col-span-12 md:col-span-5 bg-surface-container-high border border-outline-variant p-6 relative flex flex-col">
+<div class="flex justify-between items-center mb-8">
+<p class="font-label-technical text-label-technical text-secondary">ACTIVE ENERGY FLOW</p>
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+</div>
+<div class="flex-1 flex justify-between items-center px-4">
+<div class="flex flex-col items-center gap-4">
+<div class="w-12 h-12 bg-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-on-primary" data-icon="bolt" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bolt</span>
+</div>
+<span class="font-label-technical text-label-technical">CORE SOURCE</span>
+</div>
+<div class="flex-1 h-32 relative">
+<svg class="w-full h-full" preserveaspectratio="none">
+<path class="flow-line" d="M 0 64 Q 50 64 100 20" fill="transparent" stroke="#5a4136" stroke-width="2"></path>
+<path class="flow-line" d="M 0 64 Q 50 64 100 64" fill="transparent" stroke="#5a4136" stroke-width="2"></path>
+<path class="flow-line" d="M 0 64 Q 50 64 100 108" fill="transparent" stroke="#5a4136" stroke-width="2"></path>
+<path d="M 0 64 Q 50 64 100 20" fill="transparent" stroke="#ffb693" stroke-dasharray="10 20" stroke-width="2"></path>
+<path d="M 0 64 Q 50 64 100 64" fill="transparent" stroke="#ffb693" stroke-dasharray="5 15" stroke-width="2"></path>
+<path d="M 0 64 Q 50 64 100 108" fill="transparent" stroke="#ffb693" stroke-dasharray="15 25" stroke-width="2"></path>
+</svg>
+</div>
+<div class="flex flex-col gap-6">
+<div class="flex items-center gap-3">
+<div class="bg-surface-variant p-2 font-label-technical text-label-technical text-on-surface">USB-C 1</div>
+<span class="font-data-readout text-data-readout text-primary">140W</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-surface-variant p-2 font-label-technical text-label-technical text-on-surface">USB-C 2</div>
+<span class="font-data-readout text-data-readout text-primary">65W</span>
+</div>
+<div class="flex items-center gap-3">
+<div class="bg-surface-variant p-2 font-label-technical text-label-technical text-on-surface">USB-A 1</div>
+<span class="font-data-readout text-data-readout text-primary">18W</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Efficiency Trend Chart -->
+<div class="col-span-12 md:col-span-3 bg-surface-container border border-outline-variant p-6 flex flex-col">
+<p class="font-label-technical text-label-technical text-secondary mb-4">EFFICIENCY TREND (24H)</p>
+<div class="flex-1 flex items-end gap-2 px-2">
+<div class="flex-1 bg-outline-variant/30 h-[40%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-outline-variant/30 h-[55%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-outline-variant/30 h-[45%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-outline-variant/30 h-[70%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-outline-variant/30 h-[85%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-primary h-[94%] active-glow"></div>
+<div class="flex-1 bg-outline-variant/30 h-[60%] hover:bg-primary/50 transition-all"></div>
+<div class="flex-1 bg-outline-variant/30 h-[40%] hover:bg-primary/50 transition-all"></div>
+</div>
+<div class="mt-6 space-y-2">
+<div class="flex justify-between font-label-technical text-[10px] text-secondary">
+<span>00:00</span>
+<span>CURRENT</span>
+</div>
+<div class="border-t border-outline-variant pt-4">
+<p class="font-label-technical text-label-technical text-secondary mb-1">STABILITY RATING</p>
+<p class="font-headline-md text-headline-md text-on-surface">OPTIMAL</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Port Detail Quick Grid -->
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4 active-glow">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-primary text-on-primary px-2 py-0.5">C1</span>
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="power" data-weight="fill" style="font-variation-settings: 'FILL' 1;">power</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">PD 3.1</p>
+<p class="font-data-readout text-headline-md text-on-surface">140W</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-surface-variant text-on-surface px-2 py-0.5">C2</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="power">power</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">PD 3.0</p>
+<p class="font-data-readout text-headline-md text-on-surface">65W</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-surface-variant text-on-surface px-2 py-0.5">C3</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="power">power</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">PD 3.0</p>
+<p class="font-data-readout text-headline-md text-on-surface">30W</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-surface-variant text-on-surface px-2 py-0.5">A1</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="power">power</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">QC 4.0</p>
+<p class="font-data-readout text-headline-md text-on-surface">18W</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-surface-variant text-on-surface px-2 py-0.5">AC1</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="outlet">outlet</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">110V/15A</p>
+<p class="font-data-readout text-headline-md text-on-surface">0W</p>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-4 space-y-4 opacity-40">
+<div class="flex justify-between items-start">
+<span class="font-label-technical text-[10px] bg-surface-variant text-on-surface px-2 py-0.5">AC2</span>
+<span class="material-symbols-outlined text-secondary text-[18px]" data-icon="outlet">outlet</span>
+</div>
+<div>
+<p class="font-label-technical text-[10px] text-secondary">INACTIVE</p>
+<p class="font-data-readout text-headline-md text-on-surface">0W</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Contextual FAB - suppressed as per mandate for detailed dashboards, but shown here for user interaction if needed for 'Add Device' -->
+<!-- Removed FAB as per Shell Visibility Rules for Dashboard/Detailed view -->
+</body></html>

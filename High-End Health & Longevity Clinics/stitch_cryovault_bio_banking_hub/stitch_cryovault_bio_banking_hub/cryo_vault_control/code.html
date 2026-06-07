@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0c1609;
+            color: #dae6d0;
+        }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 2px solid #1A1A1A;
+        }
+        .scanning-line {
+            background: linear-gradient(to bottom, transparent 0%, rgba(57, 255, 20, 0.1) 50%, transparent 100%);
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+        }
+        .neon-glow-active {
+            box-shadow: inset 0 0 10px #39ff14;
+            border-color: #39ff14 !important;
+        }
+        .hardened-border {
+            border: 2px solid #1A1A1A;
+        }
+        .hardened-border-active {
+            border: 2px solid #39ff14;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "inverse-primary": "#106e00",
+                    "surface-container-high": "#222d1e",
+                    "surface-bright": "#323c2d",
+                    "on-primary": "#053900",
+                    "secondary-container": "#454747",
+                    "on-primary-fixed": "#022100",
+                    "surface-container-lowest": "#071105",
+                    "on-tertiary-container": "#626161",
+                    "on-surface": "#dae6d0",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "on-background": "#dae6d0",
+                    "outline": "#85967c",
+                    "on-error-container": "#ffdad6",
+                    "on-surface-variant": "#baccb0",
+                    "on-primary-container": "#107100",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-primary-fixed-variant": "#095300",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-dim": "#0c1609",
+                    "surface-container-highest": "#2d3828",
+                    "secondary-fixed": "#e2e2e2",
+                    "background": "#0c1609",
+                    "primary-fixed-dim": "#2ae500",
+                    "tertiary": "#fdf9f9",
+                    "on-tertiary": "#313030",
+                    "error-container": "#93000a",
+                    "surface": "#0c1609",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "on-error": "#690005",
+                    "tertiary-container": "#e0dddc",
+                    "on-secondary": "#2f3131",
+                    "primary-container": "#39ff14",
+                    "surface-tint": "#2ae500",
+                    "surface-container": "#182214",
+                    "surface-container-low": "#141e11",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "primary-fixed": "#79ff5b",
+                    "inverse-surface": "#dae6d0",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-secondary-container": "#b4b5b5",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "primary": "#efffe3",
+                    "surface-variant": "#2d3828",
+                    "outline-variant": "#3c4b35",
+                    "secondary": "#c6c6c7",
+                    "inverse-on-surface": "#293324"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0rem",
+                    "lg": "0rem",
+                    "xl": "0rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "xs": "4px",
+                    "sm": "8px",
+                    "md": "16px",
+                    "margin": "32px",
+                    "lg": "24px",
+                    "gutter": "24px",
+                    "xl": "48px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "data-mono": ["JetBrains Mono"],
+                    "label-caps": ["JetBrains Mono"],
+                    "display-lg": ["Inter"],
+                    "headline-md": ["Inter"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="font-body-md bg-background text-on-background overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-margin bg-surface/10 backdrop-blur-lg border-b-2 border-outline-variant h-16">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-headline-md font-bold text-primary-container tracking-tighter">CELL-STORE</span>
+</div>
+<div class="flex items-center gap-lg">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors duration-200 p-sm" data-icon="sensors">sensors</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors duration-200 p-sm" data-icon="notifications_active">notifications_active</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:bg-surface-container-highest transition-colors duration-200 p-sm" data-icon="account_circle">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-0 h-full w-72 flex flex-col pt-20 pb-8 bg-surface-container-low border-r-2 border-outline-variant z-40">
+<div class="px-6 mb-8">
+<h2 class="font-label-caps text-primary-container text-xs tracking-widest">BIO-VAULT ALPHA</h2>
+<p class="font-data-mono text-xs text-on-surface-variant">SYSTEM: SECURE</p>
+</div>
+<nav class="flex-grow">
+<div class="flex items-center gap-4 py-4 px-6 cursor-pointer text-on-surface-variant hover:bg-surface-container-high transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-data-mono text-data-mono uppercase">Dashboard</span>
+</div>
+<div class="flex items-center gap-4 py-4 px-6 cursor-pointer bg-surface-container-highest text-primary-container border-l-4 border-primary-container shadow-[inset_0_0_10px_#39ff14]">
+<span class="material-symbols-outlined" data-icon="database">database</span>
+<span class="font-data-mono text-data-mono uppercase">Cryo-Inventory</span>
+</div>
+<div class="flex items-center gap-4 py-4 px-6 cursor-pointer text-on-surface-variant hover:bg-surface-container-high transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-data-mono text-data-mono uppercase">Bio-Logs</span>
+</div>
+<div class="flex items-center gap-4 py-4 px-6 cursor-pointer text-on-surface-variant hover:bg-surface-container-high transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="encrypted">encrypted</span>
+<span class="font-data-mono text-data-mono uppercase">Security Vault</span>
+</div>
+<div class="flex items-center gap-4 py-4 px-6 cursor-pointer text-on-surface-variant hover:bg-surface-container-high transition-all duration-150">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-data-mono text-data-mono uppercase">System Admin</span>
+</div>
+</nav>
+<div class="px-6 mt-auto">
+<button class="w-full hardened-border text-error font-data-mono py-md hover:bg-error-container/20 transition-colors uppercase text-xs tracking-widest">
+                EMERGENCY LOCKDOWN
+            </button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="ml-72 pt-16 min-h-screen bg-surface">
+<div class="p-margin">
+<!-- Dashboard Header -->
+<div class="flex justify-between items-end mb-xl border-b-2 border-outline-variant pb-md">
+<div>
+<h1 class="font-display-lg text-display-lg uppercase text-primary-container">Vault Status: Level 09</h1>
+<p class="font-data-mono text-on-surface-variant">CRYOGENIC STORAGE SECTOR MATRIX | LIVE TELEMETRY</p>
+</div>
+<div class="flex gap-md">
+<div class="hardened-border px-lg py-sm">
+<span class="font-label-caps text-on-surface-variant block">UPTIME</span>
+<span class="font-data-mono text-primary-container">428:12:09:55</span>
+</div>
+<div class="hardened-border-active px-lg py-sm bg-primary-container/10">
+<span class="font-label-caps text-primary-container block">PROTOCOL</span>
+<span class="font-data-mono text-primary-container">ALPHA-9 ACTIVE</span>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Security Matrix Panel -->
+<div class="col-span-12 lg:col-span-4 hardened-border bg-surface-container p-lg flex flex-col gap-lg relative overflow-hidden">
+<div class="scanning-line"></div>
+<div class="flex justify-between items-center">
+<h3 class="font-label-caps text-primary-container flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="security">security</span>
+                            SECURITY MATRIX
+                        </h3>
+<span class="font-data-mono text-xs text-primary-container animate-pulse">SCANNING...</span>
+</div>
+<div class="space-y-md">
+<div class="hardened-border p-md bg-surface-container-low">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-caps text-xs">BIOMETRIC LOCKS</span>
+<span class="text-primary-container font-data-mono text-xs">STABLE</span>
+</div>
+<div class="w-full bg-outline-variant h-1">
+<div class="bg-primary-container h-full w-[94%]"></div>
+</div>
+</div>
+<div class="hardened-border p-md bg-surface-container-low">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-caps text-xs">PERIMETER SHIELD</span>
+<span class="text-primary-container font-data-mono text-xs">100% ENERGY</span>
+</div>
+<div class="w-full bg-outline-variant h-1">
+<div class="bg-primary-container h-full w-full"></div>
+</div>
+</div>
+<div class="hardened-border p-md bg-surface-container-low border-error/50">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-caps text-xs text-error">ATMOSPHERIC PRESSURE</span>
+<span class="text-error font-data-mono text-xs">OSCILLATING</span>
+</div>
+<div class="w-full bg-outline-variant h-1">
+<div class="bg-error h-full w-[76%]"></div>
+</div>
+</div>
+</div>
+<div class="mt-auto hardened-border p-md bg-black/40">
+<p class="font-data-mono text-[10px] leading-relaxed text-on-surface-variant opacity-60">
+                            [LOG] 14:02:44 - AUTHENTICATED ACCESS: USER_771<br/>
+                            [LOG] 14:02:49 - VAULT DOOR 04 ENGAGED<br/>
+                            [LOG] 14:03:01 - THERMAL REGULATION COMPENSATING<br/>
+                            [LOG] 14:03:15 - BIOMETRIC RE-VALIDATION COMPLETE
+                        </p>
+</div>
+</div>
+<!-- Vault Sector Grid -->
+<div class="col-span-12 lg:col-span-8 grid grid-cols-2 gap-gutter">
+<!-- Sector Alpha -->
+<div class="hardened-border bg-surface-container p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-on-surface-variant text-xs">SECTOR</span>
+<h4 class="font-headline-md text-primary-container">ALPHA-01</h4>
+</div>
+<div class="hardened-border px-sm py-1 border-primary-container/30">
+<span class="font-data-mono text-[10px] text-primary-container">OPTIMAL</span>
+</div>
+</div>
+<div class="h-32 flex items-end gap-1 px-1">
+<div class="bg-primary-container/20 w-full h-[60%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[65%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[62%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[70%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[68%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[75%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[72%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[80%] border-t-2 border-primary-container"></div>
+</div>
+<div class="flex justify-between font-data-mono text-xs">
+<span class="text-on-surface-variant">TEMP: -196.2°C</span>
+<span class="text-primary-container">VACUUM: 10^-9 TORR</span>
+</div>
+</div>
+<!-- Sector Beta -->
+<div class="hardened-border bg-surface-container p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-on-surface-variant text-xs">SECTOR</span>
+<h4 class="font-headline-md text-primary-container">BETA-02</h4>
+</div>
+<div class="hardened-border px-sm py-1 border-primary-container/30">
+<span class="font-data-mono text-[10px] text-primary-container">OPTIMAL</span>
+</div>
+</div>
+<div class="h-32 flex items-end gap-1 px-1">
+<div class="bg-primary-container/20 w-full h-[40%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[45%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[42%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[40%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[38%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[41%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[39%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[42%] border-t-2 border-primary-container"></div>
+</div>
+<div class="flex justify-between font-data-mono text-xs">
+<span class="text-on-surface-variant">TEMP: -195.8°C</span>
+<span class="text-primary-container">VACUUM: 10^-9 TORR</span>
+</div>
+</div>
+<!-- Sector Gamma -->
+<div class="hardened-border bg-surface-container p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-on-surface-variant text-xs">SECTOR</span>
+<h4 class="font-headline-md text-primary-container">GAMMA-03</h4>
+</div>
+<div class="hardened-border px-sm py-1 border-error/50">
+<span class="font-data-mono text-[10px] text-error">WARNING</span>
+</div>
+</div>
+<div class="h-32 flex items-end gap-1 px-1">
+<div class="bg-error/20 w-full h-[85%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[88%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[92%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[90%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[95%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[98%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[94%] border-t-2 border-error"></div>
+<div class="bg-error/20 w-full h-[96%] border-t-2 border-error"></div>
+</div>
+<div class="flex justify-between font-data-mono text-xs">
+<span class="text-error">TEMP: -188.4°C ↑</span>
+<span class="text-on-surface-variant">VACUUM: 10^-8 TORR</span>
+</div>
+</div>
+<!-- Sector Delta -->
+<div class="hardened-border bg-surface-container p-lg flex flex-col gap-md">
+<div class="flex justify-between items-start">
+<div>
+<span class="font-label-caps text-on-surface-variant text-xs">SECTOR</span>
+<h4 class="font-headline-md text-primary-container">DELTA-04</h4>
+</div>
+<div class="hardened-border px-sm py-1 border-primary-container/30">
+<span class="font-data-mono text-[10px] text-primary-container">OPTIMAL</span>
+</div>
+</div>
+<div class="h-32 flex items-end gap-1 px-1">
+<div class="bg-primary-container/20 w-full h-[55%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[54%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[56%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[55%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[57%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[55%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[54%] border-t-2 border-primary-container"></div>
+<div class="bg-primary-container/20 w-full h-[56%] border-t-2 border-primary-container"></div>
+</div>
+<div class="flex justify-between font-data-mono text-xs">
+<span class="text-on-surface-variant">TEMP: -196.0°C</span>
+<span class="text-primary-container">VACUUM: 10^-9 TORR</span>
+</div>
+</div>
+</div>
+<!-- Footer-style Data Visualizations row -->
+<div class="col-span-12 hardened-border bg-surface-container-low p-lg flex gap-xl items-center">
+<div class="flex-grow">
+<span class="font-label-caps text-xs text-on-surface-variant mb-sm block uppercase">Core Stability Feed</span>
+<div class="h-8 w-full hardened-border relative overflow-hidden bg-black/40">
+<div class="absolute inset-0 bg-[repeating-linear-gradient(90deg,transparent,transparent_20px,rgba(57,255,20,0.1)_20px,rgba(57,255,20,0.1)_21px)]"></div>
+<div class="h-full bg-primary-container/10 border-r-2 border-primary-container w-[65%]"></div>
+</div>
+</div>
+<div class="flex gap-lg">
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">CPU Load</span>
+<p class="font-data-mono text-primary-container">12.4%</p>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Network</span>
+<p class="font-data-mono text-primary-container">844 GB/S</p>
+</div>
+<div class="text-right">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">Encryption</span>
+<p class="font-data-mono text-primary-container">AES-8192</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Visualization Glass Card -->
+<div class="mt-xl hardened-border bg-surface-container overflow-hidden group">
+<div class="relative h-64 w-full">
+<img alt="Server room infrastructure" class="w-full h-full object-cover opacity-20 grayscale transition-all duration-700 group-hover:grayscale-0 group-hover:scale-105" data-alt="A futuristic cryogenic server farm with rows of tall black pillars emitting a faint green bioluminescent glow. The room is filled with a thick, cold mist at the base of the servers, illuminated by sharp laser scanners crisscrossing the dark, industrial laboratory. The aesthetic is extremely high-tech, clinical, and secure, with deep shadows and high-contrast green lighting accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAIbejkxJBpyzyIapl52iqAT7VrXMdVJkDOXvaegRk2F1PbI6yI4_HOZ0hMCq2BKaGg0_OxCK-6BUTprhRzTroG1xM_oktqtyJzsaqsCreCid9-Ncm2bjPQoASk68Y0jivUv9WN2ElbIYHgWL97_tn2_hX1LcoU0roveiPqV0dDa2rEq0d0o0GxLkTyBnIyefHYF1hzP4fIE7j1dLCpVLYX1ReKOf637p1ljWcDlKqFOdMkr1-h4zkxCxq-pltM8XpwRGMH2WDudfQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-surface to-transparent"></div>
+<div class="absolute bottom-margin left-margin">
+<h2 class="font-headline-md text-primary-container uppercase">Live Chamber Visual Feed</h2>
+<p class="font-data-mono text-sm text-on-surface-variant">CRYOGENIC UNIT 094 - SECTOR ALPHA</p>
+</div>
+<div class="absolute top-margin right-margin flex gap-sm">
+<span class="material-symbols-outlined text-primary-container" data-icon="videocam">videocam</span>
+<span class="font-data-mono text-xs text-primary-container">LIVE</span>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer -->
+<footer class="ml-72 w-[calc(100%-18rem)] flex flex-col md:flex-row justify-between items-center px-margin py-md gap-4 bg-surface-dim border-t-2 border-outline-variant relative z-30">
+<p class="font-data-mono text-label-caps text-on-surface-variant">© 2024 CELL-STORE BIO-BANKING. PROTOCOL 9-X ACTIVE.</p>
+<div class="flex gap-lg">
+<a class="font-data-mono text-label-caps text-on-surface-variant hover:text-primary-container underline transition-all duration-300" href="#">Security Schematic</a>
+<a class="font-data-mono text-label-caps text-on-surface-variant hover:text-primary-container underline transition-all duration-300" href="#">Lab Access</a>
+<a class="font-data-mono text-label-caps text-on-surface-variant hover:text-primary-container underline transition-all duration-300" href="#">Data Integrity</a>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gut-Biome | Symptom Logger</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .neumorphic-raised {
+            box-shadow: -6px -6px 12px rgba(255, 255, 255, 1), 6px 6px 12px rgba(74, 93, 78, 0.08);
+        }
+        .neumorphic-inset {
+            box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 1), inset 3px 3px 6px rgba(74, 93, 78, 0.12);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #f7fbef; /* surface-bright */
+            font-family: 'Geist', sans-serif;
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-bright": "#f7fbef",
+                    "surface-container-highest": "#e0e4d9",
+                    "on-surface-variant": "#434843",
+                    "surface-tint": "#506354",
+                    "on-primary": "#ffffff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#656461",
+                    "tertiary": "#404242",
+                    "surface-container-low": "#f1f5e9",
+                    "outline": "#737872",
+                    "inverse-on-surface": "#eef2e7",
+                    "tertiary-fixed": "#e2e2e2",
+                    "tertiary-container": "#575959",
+                    "secondary-container": "#e5e2dd",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "error": "#ba1a1a",
+                    "primary": "#334537",
+                    "on-primary-container": "#c0d5c2",
+                    "on-secondary": "#ffffff",
+                    "background": "#f7fbef",
+                    "on-primary-fixed-variant": "#394b3d",
+                    "secondary-fixed": "#e5e2dd",
+                    "inverse-surface": "#2d322a",
+                    "outline-variant": "#c3c8c1",
+                    "inverse-primary": "#b7ccb9",
+                    "surface-container": "#ebefe4",
+                    "primary-container": "#4a5d4e",
+                    "on-error": "#ffffff",
+                    "error-container": "#ffdad6",
+                    "on-surface": "#181d16",
+                    "secondary": "#5f5e5b",
+                    "surface-container-high": "#e5eade",
+                    "on-primary-fixed": "#0e1f13",
+                    "primary-fixed": "#d3e8d5",
+                    "on-secondary-fixed": "#1c1c19",
+                    "surface": "#f7fbef",
+                    "on-secondary-fixed-variant": "#474743",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-tertiary": "#ffffff",
+                    "on-background": "#181d16",
+                    "on-error-container": "#93000a",
+                    "primary-fixed-dim": "#b7ccb9",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "on-tertiary-container": "#cfd0d0",
+                    "secondary-fixed-dim": "#c9c6c2",
+                    "surface-dim": "#d7dcd0",
+                    "surface-variant": "#e0e4d9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "8px",
+                    "section-margin": "64px",
+                    "container-padding": "32px",
+                    "gutter": "24px",
+                    "card-gap": "24px"
+            },
+            "fontFamily": {
+                    "body-md": ["Geist"],
+                    "data-display": ["Geist"],
+                    "h2": ["EB Garamond"],
+                    "h3": ["EB Garamond"],
+                    "body-lg": ["Geist"],
+                    "h1": ["EB Garamond"],
+                    "label-sm": ["Geist"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "data-display": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                    "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                    "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface-bright text-on-surface selection:bg-primary-fixed">
+<!-- TopAppBar -->
+<header class="bg-surface dark:bg-surface shadow-[-6px_-6px_12px_rgba(255,255,255,1),6px_6px_12px_rgba(74,93,78,0.08)] fixed top-0 left-0 w-full z-50 flex justify-between items-center px-container-padding py-unit w-full">
+<div class="flex items-center gap-unit">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="biotech">biotech</span>
+<h1 class="font-h2 text-h2 text-primary dark:text-primary-fixed">Gut-Biome</h1>
+</div>
+<div class="w-10 h-10 rounded-full overflow-hidden neumorphic-raised border-2 border-white">
+<img alt="User profile avatar" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a clinical researcher in a high-tech medical facility. The lighting is soft and high-key, emphasizing a clean and bright aesthetic. The background is a minimalist medical laboratory with soft greens and whites. The individual looks approachable and focused, representing high-end healthcare and precision science." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUuXXthJ-hnZiIesVZYSdBnxNnsC-r5hHRgSUE4aCGtLGGpb5UdlaCfndSK_FHbg0oTCUjFSPT_7j8P0kithZg9nsHXIiJKJGri9wxzOQtrgv5NYqWw-xgzpuVEMOX1UoScCPS78sxA1MSUSAm8VtwDJNCqLb3tajUUkTzAQru7WqXIzbc0IxswfMw1s6IQrcx7gtdjxNEn90Fm_G0KzjfTN6Gd04EU0fTX9VHu8Dg4o5lu7mBD3BbTC9nXn_lwqZLbz6qoe6O_GL7"/>
+</div>
+</header>
+<main class="pt-24 pb-32 px-container-padding max-w-4xl mx-auto space-y-gutter">
+<!-- Quick Log Intro -->
+<section class="space-y-unit">
+<h2 class="font-h3 text-h3 text-primary">Food-Reaction Log</h2>
+<p class="font-body-md text-on-surface-variant max-w-lg">Record your internal biome response to nutritional intake in real-time for clinical correlation.</p>
+</section>
+<!-- Bento Grid Logger -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-card-gap">
+<!-- Food Entry Field (Bento Large) -->
+<div class="md:col-span-12 neumorphic-raised bg-surface-bright p-8 rounded-xl space-y-4">
+<label class="font-label-sm text-on-surface-variant uppercase tracking-widest block">Primary Intake Source</label>
+<div class="relative group">
+<div class="neumorphic-inset bg-surface-bright rounded-full px-6 py-4 flex items-center gap-unit transition-all group-focus-within:ring-2 ring-primary/20">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="restaurant">restaurant</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-body-md text-on-surface placeholder:text-outline-variant" placeholder="Search components (e.g., Kefir, Sourdough, Kimchi)..." type="text"/>
+</div>
+<!-- Autocomplete Dropdown Mock -->
+<div class="absolute top-full left-0 right-0 mt-4 bg-surface-bright neumorphic-raised rounded-xl overflow-hidden z-20 hidden group-focus-within:block">
+<div class="p-4 hover:bg-surface-container-low cursor-pointer font-body-md transition-colors">Artichoke Hearts (Prebiotic)</div>
+<div class="p-4 hover:bg-surface-container-low cursor-pointer font-body-md transition-colors">Asparagus Root</div>
+<div class="p-4 hover:bg-surface-container-low cursor-pointer font-body-md transition-colors">Avocado Fat</div>
+</div>
+</div>
+</div>
+<!-- Organic Reaction Buttons (Bento Left) -->
+<div class="md:col-span-7 neumorphic-raised bg-surface-bright p-8 rounded-xl space-y-6">
+<label class="font-label-sm text-on-surface-variant uppercase tracking-widest block">Immediate Bio-Reaction</label>
+<div class="flex flex-wrap gap-4">
+<!-- Unpressed State -->
+<button class="neumorphic-raised bg-surface-bright px-6 py-3 rounded-full flex items-center gap-2 hover:opacity-80 transition-all active:scale-95 text-on-surface">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="bolt">bolt</span>
+<span class="font-body-md">Energy Surge</span>
+</button>
+<!-- Pressed State (Active) -->
+<button class="neumorphic-inset bg-surface-bright text-primary px-6 py-3 rounded-full flex items-center gap-2 border border-primary/10 transition-all">
+<span class="material-symbols-outlined" data-icon="bubble_chart">bubble_chart</span>
+<span class="font-body-md font-semibold">Mild Bloat</span>
+</button>
+<button class="neumorphic-raised bg-surface-bright px-6 py-3 rounded-full flex items-center gap-2 hover:opacity-80 transition-all active:scale-95 text-on-surface">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="psychology">psychology</span>
+<span class="font-body-md">Brain Focus</span>
+</button>
+<button class="neumorphic-raised bg-surface-bright px-6 py-3 rounded-full flex items-center gap-2 hover:opacity-80 transition-all active:scale-95 text-on-surface">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="sentiment_neutral">sentiment_neutral</span>
+<span class="font-body-md">Lethargy</span>
+</button>
+<button class="neumorphic-raised bg-surface-bright px-6 py-3 rounded-full flex items-center gap-2 hover:opacity-80 transition-all active:scale-95 text-on-surface">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="water_drop">water_drop</span>
+<span class="font-body-md">Hydrated</span>
+</button>
+</div>
+</div>
+<!-- Intensity Slider (Bento Right) -->
+<div class="md:col-span-5 neumorphic-raised bg-surface-bright p-8 rounded-xl flex flex-col justify-between">
+<label class="font-label-sm text-on-surface-variant uppercase tracking-widest block mb-4">Response Magnitude</label>
+<div class="relative py-8">
+<div class="h-2 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full w-2/3 bg-primary"></div>
+</div>
+<div class="absolute top-1/2 left-2/3 -translate-x-1/2 -translate-y-1/2 w-8 h-8 rounded-full neumorphic-raised bg-white border-4 border-primary flex items-center justify-center">
+<div class="w-1 h-1 bg-primary rounded-full"></div>
+</div>
+</div>
+<div class="flex justify-between font-label-sm text-outline">
+<span>Baseline</span>
+<span>Significant</span>
+</div>
+</div>
+<!-- Submit Button (Full Width Call to Action) -->
+<div class="md:col-span-12 flex justify-center pt-unit">
+<button class="bg-primary text-on-primary px-12 py-4 rounded-full font-body-lg font-semibold neumorphic-raised flex items-center gap-3 hover:opacity-90 active:scale-95 transition-all">
+<span class="material-symbols-outlined" data-icon="add_task">add_task</span>
+                    Confirm Log Entry
+                </button>
+</div>
+</div>
+<!-- Timeline Section -->
+<section class="mt-section-margin space-y-gutter">
+<div class="flex items-center justify-between">
+<h3 class="font-h3 text-h3 text-primary">Daily Bio-Timeline</h3>
+<span class="font-label-sm text-on-surface-variant bg-surface-container-low px-4 py-1 rounded-full">Today: Oct 24</span>
+</div>
+<div class="space-y-4">
+<!-- Timeline Item 1 -->
+<div class="flex gap-gutter">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full neumorphic-inset bg-surface-bright flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="breakfast_dining">breakfast_dining</span>
+</div>
+<div class="w-0.5 h-full bg-surface-container-highest mt-2"></div>
+</div>
+<div class="flex-1 pb-gutter">
+<div class="neumorphic-raised bg-surface-bright p-6 rounded-xl relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-2 bg-primary/20"></div>
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body-md font-bold">Overnight Oats &amp; Berries</h4>
+<span class="font-label-sm text-outline">08:30 AM</span>
+</div>
+<div class="flex gap-2">
+<span class="text-label-sm bg-primary-fixed text-on-primary-fixed px-3 py-1 rounded-full">Focused</span>
+<span class="text-label-sm bg-surface-container-highest text-on-surface-variant px-3 py-1 rounded-full">Stable Energy</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline Item 2 -->
+<div class="flex gap-gutter">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full neumorphic-inset bg-surface-bright flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="coffee">coffee</span>
+</div>
+<div class="w-0.5 h-full bg-surface-container-highest mt-2"></div>
+</div>
+<div class="flex-1 pb-gutter">
+<div class="neumorphic-raised bg-surface-bright p-6 rounded-xl relative overflow-hidden">
+<div class="absolute right-0 top-0 h-full w-2 bg-error/20"></div>
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body-md font-bold">Black Coffee (Second Cup)</h4>
+<span class="font-label-sm text-outline">10:45 AM</span>
+</div>
+<div class="flex gap-2">
+<span class="text-label-sm bg-error-container text-on-error-container px-3 py-1 rounded-full">Jittery</span>
+<span class="text-label-sm bg-error-container text-on-error-container px-3 py-1 rounded-full">Acidity</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Timeline Item 3 (Current/Most Recent) -->
+<div class="flex gap-gutter">
+<div class="flex flex-col items-center">
+<div class="w-10 h-10 rounded-full neumorphic-raised bg-primary flex items-center justify-center text-white">
+<span class="material-symbols-outlined text-[18px]" data-icon="lunch_dining">lunch_dining</span>
+</div>
+</div>
+<div class="flex-1">
+<div class="neumorphic-inset bg-surface-container-low p-6 rounded-xl border border-primary/5">
+<div class="flex justify-between items-start mb-2">
+<h4 class="font-body-md font-bold text-primary">Grilled Salmon &amp; Kimchi</h4>
+<span class="font-label-sm text-primary">13:15 PM</span>
+</div>
+<p class="font-label-sm text-on-surface-variant italic mb-2">High probiotic load detected. Expected metabolic peak in 45m.</p>
+<div class="flex gap-2">
+<span class="text-label-sm bg-primary text-on-primary px-3 py-1 rounded-full">Probiotic Support</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Navigation Drawer (Off-screen / Mobile-ready) -->
+<aside class="fixed left-0 top-0 h-full w-80 bg-surface dark:bg-surface shadow-[6px_0px_12px_rgba(74,93,78,0.08)] z-[100] transform -translate-x-full transition-transform duration-300 ease-in-out lg:translate-x-0 hidden lg:flex flex-col p-container-padding gap-gutter" id="nav-drawer">
+<div class="flex flex-col gap-unit mb-8">
+<div class="flex items-center gap-unit">
+<div class="w-12 h-12 rounded-xl neumorphic-raised bg-surface-bright flex items-center justify-center text-primary">
+<span class="material-symbols-outlined" data-icon="microbiology">microbiology</span>
+</div>
+<div>
+<h3 class="font-h3 text-h3 text-primary leading-none">Clinical Profile</h3>
+<p class="font-label-sm text-on-surface-variant">Patient ID: GB-8829</p>
+</div>
+</div>
+<p class="font-label-sm text-outline px-1">Last Sync: 2m ago</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="microbiology">microbiology</span>
+<span class="font-body-md">Lab Results</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-primary font-bold bg-surface-container-low rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-md">Symptom History</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="clinical_notes">clinical_notes</span>
+<span class="font-body-md">Clinical Trials</span>
+</a>
+<hr class="border-surface-container-highest my-2"/>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md">Settings</span>
+</a>
+<a class="flex items-center gap-4 p-4 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="contact_support">contact_support</span>
+<span class="font-body-md">Support</span>
+</a>
+</nav>
+</aside>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface dark:bg-surface shadow-[-6px_-6px_12px_rgba(255,255,255,1),6px_6px_12px_rgba(74,93,78,0.08)] flex justify-around items-center px-4 pb-8 pt-4 rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="deceased">deceased</span>
+<span class="font-label-sm text-label-sm">Ecosystem</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed shadow-[inset_-3px_-3px_6px_rgba(255,255,255,1),inset_3px_3px_6px_rgba(74,93,78,0.12)] rounded-xl px-4 py-1 active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-sm text-label-sm">Tracker</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-sm text-label-sm">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1 hover:text-primary-container transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-sm text-label-sm">Science</span>
+</a>
+</nav>
+<!-- FAB Suppression: On Logger screen, the main action is the "Confirm Log Entry" in content, so we hide global FAB for focus -->
+</body></html>

@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROBO_FLEET | Blade Health Monitoring</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Geist:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #131313;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .beveled-button {
+            box-shadow: inset 1px 1px 0px rgba(255,255,255,0.1), inset -1px -1px 0px rgba(0,0,0,0.5);
+        }
+        .inner-glow-orange {
+            box-shadow: inset 0 0 10px rgba(255,107,0,0.2);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "primary-fixed-dim": "#ffb693",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#c8c6c6",
+                        "on-primary-container": "#572000",
+                        "on-secondary": "#303030",
+                        "on-tertiary-container": "#313131",
+                        "primary-container": "#ff6b00",
+                        "surface-bright": "#393939",
+                        "on-tertiary": "#303030",
+                        "outline": "#a98a7d",
+                        "secondary-container": "#474747",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-fixed": "#ffdbcc",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353534",
+                        "background": "#131313",
+                        "on-surface-variant": "#e2bfb0",
+                        "error-container": "#93000a",
+                        "surface-tint": "#ffb693",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "primary": "#ffb693",
+                        "on-secondary-container": "#b6b5b4",
+                        "inverse-on-surface": "#313030",
+                        "surface-variant": "#353534",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#351000",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-primary": "#561f00",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "outline-variant": "#5a4136",
+                        "inverse-primary": "#a04100",
+                        "tertiary-container": "#9a9898",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-secondary-fixed-variant": "#474747",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "secondary-fixed-dim": "#c8c6c6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "margin": "20px",
+                        "md": "16px",
+                        "base": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Geist"],
+                        "data-mono": ["Geist"],
+                        "display-lg": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-lg h-xl bg-surface border-b border-outline-variant">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="rss_feed">rss_feed</span>
+<span class="text-headline-md font-headline-md font-black tracking-tighter text-on-surface uppercase">ROBO_FLEET</span>
+</div>
+<button class="bg-error-container text-on-error-container px-md py-xs rounded-lg font-label-caps text-label-caps active:scale-95 transition-transform duration-100 beveled-button">
+            STOP
+        </button>
+</header>
+<main class="pt-xl pb-xl px-margin max-w-7xl mx-auto">
+<!-- Header Section -->
+<div class="py-lg flex flex-col md:flex-row md:items-end justify-between gap-md">
+<div>
+<h1 class="text-display-lg font-display-lg text-on-surface">UNIT_42_HEALTH</h1>
+<p class="text-on-surface-variant font-data-mono text-data-mono flex items-center gap-sm">
+<span class="w-2 h-2 rounded-full bg-primary-container animate-pulse"></span>
+                    ACTIVE_MONITORING // STATUS: NOMINAL
+                </p>
+</div>
+<div class="flex gap-sm">
+<div class="bg-surface-container px-md py-sm border-l-2 border-primary-container">
+<span class="block text-label-caps font-label-caps text-on-surface-variant mb-xs">SESSION_TIME</span>
+<span class="text-data-mono font-data-mono text-on-surface">04:12:45</span>
+</div>
+</div>
+</div>
+<!-- Main Dashboard Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Primary Gauge: Blade Sharpness -->
+<div class="md:col-span-8 bg-surface-container border border-outline-variant p-lg relative overflow-hidden flex flex-col justify-between h-[400px]">
+<div class="flex justify-between items-start z-10">
+<div>
+<span class="text-label-caps font-label-caps text-on-surface-variant">METRIC_01</span>
+<h2 class="text-headline-md font-headline-md text-on-surface">BLADE_SHARPNESS</h2>
+</div>
+<span class="text-display-lg font-display-lg text-primary-container">82%</span>
+</div>
+<div class="flex-1 flex items-center justify-center py-lg">
+<div class="relative w-64 h-64">
+<!-- Technical Gauge Background -->
+<svg class="w-full h-full transform -rotate-90">
+<circle class="text-surface-variant" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-width="8"></circle>
+<circle class="text-primary-container" cx="128" cy="128" fill="transparent" r="110" stroke="currentColor" stroke-dasharray="691" stroke-dashoffset="124" stroke-width="12"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="material-symbols-outlined text-[64px] text-primary" data-icon="precision_manufacturing">precision_manufacturing</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-md z-10">
+<div class="bg-surface-container-low p-sm border border-outline-variant">
+<span class="block text-label-caps font-label-caps text-on-surface-variant">WEAR_RATE</span>
+<span class="text-data-mono font-data-mono">0.02%/HR</span>
+</div>
+<div class="bg-surface-container-low p-sm border border-outline-variant">
+<span class="block text-label-caps font-label-caps text-on-surface-variant">EST_REPLACEMENT</span>
+<span class="text-data-mono font-data-mono">142_HOURS</span>
+</div>
+</div>
+<!-- Background visual texture -->
+<div class="absolute -right-16 -top-16 opacity-5">
+<span class="material-symbols-outlined text-[200px]" data-icon="settings">settings</span>
+</div>
+</div>
+<!-- Side Metrics -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<!-- RPM Gauge -->
+<div class="bg-surface-container border border-outline-variant p-md flex-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">METRIC_02</span>
+<h3 class="text-on-surface font-headline-md text-headline-md mt-xs">ROTATION_SPEED</h3>
+<div class="mt-lg">
+<div class="flex justify-between items-end mb-xs">
+<span class="text-display-lg font-display-lg text-on-surface">2,840</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-base">RPM</span>
+</div>
+<div class="h-2 w-full bg-surface-variant rounded-full overflow-hidden">
+<div class="h-full bg-primary-container" style="width: 71%;"></div>
+</div>
+<div class="flex justify-between mt-xs text-[10px] font-data-mono text-on-surface-variant opacity-50">
+<span>0</span>
+<span>MAX_4000</span>
+</div>
+</div>
+</div>
+<!-- Usage Hours -->
+<div class="bg-surface-container border border-outline-variant p-md flex-1">
+<span class="text-label-caps font-label-caps text-on-surface-variant">METRIC_03</span>
+<h3 class="text-on-surface font-headline-md text-headline-md mt-xs">USAGE_HOURS</h3>
+<div class="mt-lg flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-display-lg font-display-lg text-on-surface">1,248</span>
+<span class="text-label-caps font-label-caps text-on-surface-variant">TOTAL_LIFETIME</span>
+</div>
+<span class="material-symbols-outlined text-primary-container text-[48px] opacity-20" data-icon="schedule">schedule</span>
+</div>
+</div>
+</div>
+<!-- Maintenance & Alerts Section -->
+<div class="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<!-- Alert Panel -->
+<div class="md:col-span-2 bg-surface-container border border-outline-variant">
+<div class="border-b border-outline-variant p-md bg-surface-container-high flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary text-[18px]" data-icon="warning">warning</span>
+                            MAINTENANCE_LOGS
+                        </h3>
+<button class="text-label-caps font-label-caps text-primary hover:underline">VIEW_ALL</button>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant">
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant">TIMESTAMP</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant">EVENT_TYPE</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant">SEVERITY</th>
+<th class="px-md py-sm font-label-caps text-label-caps text-on-surface-variant">ACTION</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-data-mono text-data-mono">
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-md py-sm">2023-11-20_14:30</td>
+<td class="px-md py-sm">BLADE_CLEANING_REQ</td>
+<td class="px-md py-sm"><span class="bg-primary-container/20 text-primary-container px-sm py-xs border border-primary-container/30">LOW</span></td>
+<td class="px-md py-sm text-on-surface-variant">SCHEDULED</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-md py-sm">2023-11-20_09:15</td>
+<td class="px-md py-sm">RPM_VARIANCE_DET</td>
+<td class="px-md py-sm"><span class="bg-error-container/20 text-error px-sm py-xs border border-error-container/30">CRITICAL</span></td>
+<td class="px-md py-sm text-on-surface-variant">RESOLVED</td>
+</tr>
+<tr class="hover:bg-surface-container-high transition-colors">
+<td class="px-md py-sm">2023-11-19_18:45</td>
+<td class="px-md py-sm">CALIBRATION_CHECK</td>
+<td class="px-md py-sm"><span class="bg-secondary-container/50 text-secondary px-sm py-xs border border-outline-variant">INFO</span></td>
+<td class="px-md py-sm text-on-surface-variant">COMPLETED</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Unit Schematic / Image Card -->
+<div class="bg-surface-container border border-outline-variant p-md flex flex-col">
+<span class="text-label-caps font-label-caps text-on-surface-variant mb-md">BLADE_ASSEMBLY_VIEW</span>
+<div class="flex-1 bg-surface-container-lowest border border-outline-variant relative group overflow-hidden">
+<img alt="Industrial blade assembly" class="w-full h-full object-cover opacity-40 mix-blend-luminosity group-hover:scale-110 transition-transform duration-500" data-alt="A high-precision macro shot of a heavy-duty industrial robotic blade assembly within a dark manufacturing environment. The metal components have a machined, brushed texture with sharp edges. Atmospheric, low-key lighting in charcoal and matte black is highlighted by sharp safety orange accent lights. The style is modern industrial brutalism, emphasizing mechanical power and technological precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAdinxxhtESknJMhKDwb2cI6N-TsixAlQh3yvVJQelaIb0UIFVAgtXsiF6HhFLwm1BzAyAssZjB2H01gLzGeLLuHc0lMGPPNvRAhFZjuSTtsOhRDQvDpGK5k5ek4utlec8jHOWu0Cq2xP2HEKRq0e2D0l41mPlHVqvK8-R4hVS4E4oeuKUDVg1Xngr3P9pLuXkUej2ewYHIHPTbIKA5LzsdXU_NDSgyuxruaw362NE3DjGzhDaA1i60LJ73huqibkJmjEnyQpl0HfI7"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="w-full h-px bg-primary-container/30 animate-pulse absolute"></div>
+<div class="h-full w-px bg-primary-container/30 animate-pulse absolute"></div>
+</div>
+<div class="absolute bottom-md left-md bg-surface/80 p-xs text-[10px] font-data-mono">
+                            Z-AXIS_CALIBRATED
+                        </div>
+</div>
+<button class="mt-md w-full bg-secondary-container hover:bg-surface-container-highest text-on-secondary-container py-sm font-label-caps text-label-caps transition-colors beveled-button">
+                        TRIGGER_DIAGNOSTIC
+                    </button>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-margin py-sm bg-surface-container-low border-t border-outline-variant md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="text-label-caps font-label-caps mt-xs">Status</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="tune">tune</span>
+<span class="text-label-caps font-label-caps mt-xs">Config</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-md py-xs active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="monitor_heart">monitor_heart</span>
+<span class="text-label-caps font-label-caps mt-xs">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="verified_user">verified_user</span>
+<span class="text-label-caps font-label-caps mt-xs">Security</span>
+</a>
+</nav>
+<!-- Desktop Navigation Side Bar (Simulated via shell layout logic) -->
+<aside class="hidden md:flex fixed left-0 top-xl h-[calc(100vh-theme(spacing.xl))] w-24 bg-surface border-r border-outline-variant flex-col items-center py-lg gap-lg">
+<a class="flex flex-col items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[28px]" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="text-[10px] font-label-caps">STATUS</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined text-[28px]" data-icon="tune">tune</span>
+<span class="text-[10px] font-label-caps">CONFIG</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-primary bg-primary-container/10 p-md rounded-lg border border-primary-container/20" href="#">
+<span class="material-symbols-outlined text-[28px]" data-icon="monitor_heart">monitor_heart</span>
+<span class="text-[10px] font-label-caps">HEALTH</span>
+</a>
+<a class="flex flex-col items-center gap-xs text-on-surface-variant hover:text-primary transition-colors mt-auto" href="#">
+<span class="material-symbols-outlined text-[28px]" data-icon="verified_user">verified_user</span>
+<span class="text-[10px] font-label-caps">SECURE</span>
+</a>
+</aside>
+</body></html>

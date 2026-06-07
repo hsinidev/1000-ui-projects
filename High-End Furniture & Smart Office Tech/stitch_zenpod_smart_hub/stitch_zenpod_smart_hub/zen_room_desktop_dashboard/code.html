@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Zen-Room Management Portal</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600&amp;family=Geist:wght@400&amp;family=Space+Grotesk:wght@500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131315;
+            color: #e4e2e4;
+            margin: 0;
+            overflow-x: hidden;
+        }
+        .glass-card {
+            backdrop-filter: blur(20px);
+            background: linear-gradient(180deg, rgba(255, 255, 255, 0.10) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .glass-modal {
+            backdrop-filter: blur(40px);
+            background: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.20);
+        }
+        .glow-available {
+            box-shadow: 0 0 15px 2px rgba(185, 199, 228, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e4e2e4",
+                        "on-tertiary": "#432b10",
+                        "tertiary-fixed-dim": "#e7bf99",
+                        "on-secondary-fixed-variant": "#454748",
+                        "surface-variant": "#343536",
+                        "surface-dim": "#131315",
+                        "secondary-fixed-dim": "#c5c7c8",
+                        "on-tertiary-container": "#9d7b5a",
+                        "primary-fixed-dim": "#b9c7e4",
+                        "on-tertiary-fixed-variant": "#5d4124",
+                        "primary-fixed": "#d6e3ff",
+                        "on-secondary-fixed": "#191c1d",
+                        "surface-container-high": "#2a2a2c",
+                        "secondary": "#c5c7c8",
+                        "on-primary-fixed": "#0d1c32",
+                        "on-surface": "#e4e2e4",
+                        "on-error": "#690005",
+                        "error-container": "#93000a",
+                        "primary-container": "#0a192f",
+                        "surface": "#131315",
+                        "on-primary-fixed-variant": "#39475f",
+                        "background": "#131315",
+                        "primary": "#b9c7e4",
+                        "on-secondary": "#2e3132",
+                        "on-primary-container": "#74829d",
+                        "error": "#ffb4ab",
+                        "on-tertiary-fixed": "#2b1701",
+                        "tertiary-fixed": "#ffdcbd",
+                        "tertiary-container": "#281400",
+                        "secondary-container": "#494c4d",
+                        "surface-container": "#1f1f21",
+                        "inverse-primary": "#515f78",
+                        "outline-variant": "#44474d",
+                        "inverse-surface": "#e4e2e4",
+                        "secondary-fixed": "#e1e3e4",
+                        "on-secondary-container": "#babcbd",
+                        "surface-container-lowest": "#0e0e10",
+                        "surface-tint": "#b9c7e4",
+                        "on-primary": "#233148",
+                        "on-surface-variant": "#c5c6cd",
+                        "surface-container-highest": "#343536",
+                        "surface-bright": "#39393b",
+                        "inverse-on-surface": "#303032",
+                        "outline": "#8f9097",
+                        "surface-container-low": "#1b1b1d",
+                        "tertiary": "#e7bf99"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "8px",
+                        "gutter": "24px",
+                        "container-padding": "40px",
+                        "card-gap": "16px"
+                    },
+                    "fontFamily": {
+                        "h2": ["Manrope"],
+                        "body-md": ["Geist"],
+                        "label-caps": ["Space Grotesk"],
+                        "h1": ["Manrope"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background font-body-md text-on-background min-h-screen">
+<!-- SideNavBar -->
+<aside class="h-full w-64 fixed left-0 top-0 flex flex-col py-8 px-4 bg-surface/10 backdrop-blur-[20px] border-r border-white/12 z-50">
+<div class="mb-12 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-xl glass-card flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="filter_vintage">filter_vintage</span>
+</div>
+<div>
+<h1 class="font-h2 text-[20px] font-bold text-on-surface leading-tight">Zen-Room</h1>
+<p class="font-label-caps text-[10px] text-on-surface-variant tracking-widest uppercase">Digital Silence</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-primary font-bold border-r-2 border-primary bg-white/5 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-label-caps uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-caps uppercase tracking-wider">Pod Map</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span class="font-label-caps uppercase tracking-wider">Admin Panel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span>
+<span class="font-label-caps uppercase tracking-wider">Community</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant font-medium hover:bg-white/5 hover:text-on-surface transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span class="font-label-caps uppercase tracking-wider">Help</span>
+</a>
+</nav>
+<div class="mt-auto glass-card rounded-xl p-4">
+<div class="flex items-center gap-3">
+<img alt="User Profile" class="w-10 h-10 rounded-full object-cover border border-white/10" data-alt="A professional portrait of a man with a focused expression, set against a dark, minimalist background. The lighting is dramatic and cinematic, with soft rim light defining his features, consistent with a high-end tech executive aesthetic. The color palette is muted with deep shadows and subtle midnight blue tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAOz16-vzveIiHa0xECD4AweNAJvPAv1kJdbk8J3aXOa7v6-H9Q-flDhYQk0ODURiMQg2r6L8bSadZhw4P90I5yMefrU8Kr_qNCGs09298Ta88sj3hMrdj_450cNWga4FJ3tiCBgGogjMBDzRIc97Pdj3gC1rJ_wA497Y2LpywSv4-gl6WhGz0torkcSXj3uVrqZstVN_wUFCUcHKvFh-eCW7BWHImPYn93MnbastYpNdlDkzXC0qL3vC4kTeEo9Bim50tBxgfkI6U"/>
+<div>
+<p class="font-label-caps text-on-surface">Alex Chen</p>
+<p class="text-[10px] text-on-surface-variant">Senior Architect</p>
+</div>
+</div>
+</div>
+</aside>
+<!-- TopAppBar -->
+<header class="fixed top-0 right-0 left-64 h-16 bg-surface/10 backdrop-blur-[20px] border-b border-white/12 flex justify-between items-center px-gutter z-40">
+<div class="flex items-center gap-4">
+<h2 class="font-h2 text-[18px] font-bold text-on-surface">Management Portal</h2>
+<div class="h-4 w-[1px] bg-white/10 mx-2"></div>
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-[18px]" data-icon="location_on">location_on</span>
+<span class="font-label-caps text-[11px] tracking-wider uppercase">Pod Zone 04 · London HQ</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-opacity" data-icon="notifications">notifications</span>
+<span class="absolute top-0 right-0 w-2 h-2 bg-primary rounded-full glow-available"></span>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary transition-opacity" data-icon="settings">settings</span>
+</div>
+</header>
+<!-- Main Content -->
+<main class="ml-64 pt-16 p-gutter min-h-screen custom-scrollbar">
+<div class="max-w-7xl mx-auto space-y-gutter">
+<!-- Hero Bento Section -->
+<section class="grid grid-cols-12 gap-card-gap">
+<!-- Breathe Hero -->
+<div class="col-span-8 h-[400px] glass-card rounded-3xl relative overflow-hidden group">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-40 mix-blend-luminosity scale-105 group-hover:scale-100 transition-transform duration-700" data-alt="A serene, ultra-modern office interior at twilight, featuring high-end acoustic pods with curved glass surfaces. The lighting is a soft midnight blue with glowing cyan accents. The atmosphere is quiet, focused, and technologically advanced, suggesting a high-performance workspace designed for digital silence and deep concentration." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEV_h3fP_AqQPcPNtwogofAppneHl7Xyuz7dLhpf2c0eIn00VitSnYX2xh7H_GxQnNb2Bt77RmrfBrfQ8mPo7xKeXdcHp1poAHibWrpGszR9qNHyMHIfdknOQ2P9JLqb0P86PrKt6xftBVnpQESVQA30HtjU-TdKLMuGR6r4tGKUcuaD5J2N9Pm4iwnovlxoC4bFEzNlyRlqsNx9jDKU1Us_BYX6MLies5pVV6H7wN8EE414XHaF076o_Wp4--yp7myIiw3l-N7zk"/>
+</div>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent z-10"></div>
+<div class="relative z-20 h-full p-10 flex flex-col justify-end">
+<div class="mb-4 inline-flex items-center gap-2 bg-primary/20 backdrop-blur-md px-4 py-1 rounded-full border border-primary/30 w-fit">
+<span class="w-2 h-2 bg-primary rounded-full animate-pulse glow-available"></span>
+<span class="font-label-caps text-[11px] text-primary tracking-widest uppercase">Pod Available</span>
+</div>
+<h2 class="font-h1 text-white mb-2">Find Your Focus</h2>
+<p class="font-body-lg text-on-surface-variant max-w-lg">Welcome back, Alex. Your preferred environment "Deep Work" is ready in Pod 07. Temperature 21°C, Lumina 40%.</p>
+<div class="mt-8 flex gap-4">
+<button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-label-caps uppercase tracking-wider hover:opacity-90 transition-all flex items-center gap-2 shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[20px]" data-icon="bolt">bolt</span>
+                                Quick Start
+                            </button>
+<button class="glass-card px-8 py-3 rounded-xl font-label-caps uppercase tracking-wider hover:bg-white/10 transition-all flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px]" data-icon="calendar_month">calendar_month</span>
+                                Schedule Pod
+                            </button>
+</div>
+</div>
+<!-- Breathe Visualizer Placeholder -->
+<div class="absolute top-10 right-10 z-20 flex flex-col items-center">
+<div class="w-32 h-32 rounded-full border-4 border-primary/20 flex items-center justify-center relative">
+<div class="absolute inset-0 rounded-full border-2 border-primary/40 scale-75 animate-ping"></div>
+<span class="font-label-caps text-primary text-[14px]">BREATHE</span>
+</div>
+</div>
+</div>
+<!-- Live Status Column -->
+<div class="col-span-4 h-[400px] flex flex-col gap-card-gap">
+<div class="flex-1 glass-card rounded-3xl p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-primary text-[32px]" data-icon="air">air</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase bg-white/5 px-2 py-1 rounded">Real-time</span>
+</div>
+<div>
+<p class="text-4xl font-h2 text-on-surface">98%</p>
+<p class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-widest">Air Quality Index</p>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="w-[98%] h-full bg-primary glow-available"></div>
+</div>
+</div>
+<div class="flex-1 glass-card rounded-3xl p-6 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<span class="material-symbols-outlined text-tertiary text-[32px]" data-icon="notifications_off">notifications_off</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase bg-white/5 px-2 py-1 rounded">Active</span>
+</div>
+<div>
+<p class="text-4xl font-h2 text-on-surface">-32dB</p>
+<p class="font-label-caps text-[11px] text-on-surface-variant uppercase tracking-widest">Noise Reduction</p>
+</div>
+<div class="w-full bg-white/5 h-1 rounded-full overflow-hidden">
+<div class="w-[75%] h-full bg-tertiary"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Controls Grid -->
+<section class="grid grid-cols-12 gap-card-gap">
+<!-- Climate & Lighting -->
+<div class="col-span-8 glass-card rounded-3xl p-8">
+<div class="flex justify-between items-center mb-10">
+<h3 class="font-h2 text-[24px] text-on-surface">Environment Controls</h3>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg glass-card hover:bg-white/10 text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+</button>
+<button class="p-2 rounded-lg glass-card hover:bg-white/10 text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-10">
+<!-- Temp Control -->
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="thermostat">thermostat</span>
+<span class="font-label-caps text-[12px] uppercase">Temperature</span>
+</div>
+<span class="text-xl font-h2 text-primary">22°C</span>
+</div>
+<div class="relative py-4">
+<div class="h-[4px] w-full bg-white/10 rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-0 h-[4px] w-[60%] bg-primary rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-[60%] w-6 h-6 rounded-full glass-modal border-primary/50 shadow-lg glow-available cursor-pointer"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>18°C</span>
+<span>28°C</span>
+</div>
+</div>
+<!-- Lumina Control -->
+<div class="space-y-6">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="light_mode">light_mode</span>
+<span class="font-label-caps text-[12px] uppercase">Lumina Intensity</span>
+</div>
+<span class="text-xl font-h2 text-tertiary">40%</span>
+</div>
+<div class="relative py-4">
+<div class="h-[4px] w-full bg-white/10 rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-0 h-[4px] w-[40%] bg-tertiary rounded-full"></div>
+<div class="absolute top-1/2 -translate-y-1/2 left-[40%] w-6 h-6 rounded-full glass-modal border-tertiary/50 shadow-lg cursor-pointer"></div>
+</div>
+<div class="flex justify-between text-[10px] font-label-caps text-on-surface-variant">
+<span>SOFT</span>
+<span>BRIGHT</span>
+</div>
+</div>
+</div>
+<!-- Environment Toggles -->
+<div class="mt-12 flex flex-wrap gap-4">
+<button class="px-6 py-3 rounded-2xl glass-modal border-primary/30 flex items-center gap-3 transition-all scale-105">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle" data-weight="fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-label-caps text-[12px] text-on-surface uppercase tracking-wider">Deep Work</span>
+</button>
+<button class="px-6 py-3 rounded-2xl glass-card flex items-center gap-3 hover:bg-white/10 transition-all opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="videocam">videocam</span>
+<span class="font-label-caps text-[12px] text-on-surface-variant uppercase tracking-wider">Video Call</span>
+</button>
+<button class="px-6 py-3 rounded-2xl glass-card flex items-center gap-3 hover:bg-white/10 transition-all opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="coffee">coffee</span>
+<span class="font-label-caps text-[12px] text-on-surface-variant uppercase tracking-wider">Nap / Rest</span>
+</button>
+<button class="px-6 py-3 rounded-2xl glass-card flex items-center gap-3 hover:bg-white/10 transition-all opacity-60">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="psychology">psychology</span>
+<span class="font-label-caps text-[12px] text-on-surface-variant uppercase tracking-wider">Meditation</span>
+</button>
+</div>
+</div>
+<!-- Acoustic Profile Selector -->
+<div class="col-span-4 glass-card rounded-3xl p-8">
+<h3 class="font-h2 text-[24px] text-on-surface mb-8">Acoustic Profile</h3>
+<div class="space-y-4">
+<div class="p-4 rounded-2xl bg-primary/10 border border-primary/30 flex items-center justify-between group cursor-pointer">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-primary/20 flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="waves">waves</span>
+</div>
+<div>
+<p class="font-label-caps text-[14px] text-on-surface uppercase">White Noise</p>
+<p class="text-[10px] text-on-surface-variant">Constant focus frequency</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-primary" data-icon="radio_button_checked">radio_button_checked</span>
+</div>
+<div class="p-4 rounded-2xl glass-card hover:bg-white/5 border-transparent flex items-center justify-between group cursor-pointer transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="forest">forest</span>
+</div>
+<div>
+<p class="font-label-caps text-[14px] text-on-surface-variant uppercase group-hover:text-on-surface">Rainforest</p>
+<p class="text-[10px] text-on-surface-variant">Biophilic soundscapes</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<div class="p-4 rounded-2xl glass-card hover:bg-white/5 border-transparent flex items-center justify-between group cursor-pointer transition-all">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant" data-icon="water_drop">water_drop</span>
+</div>
+<div>
+<p class="font-label-caps text-[14px] text-on-surface-variant uppercase group-hover:text-on-surface">Deep Ocean</p>
+<p class="text-[10px] text-on-surface-variant">Low frequency hum</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-on-surface-variant/30" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+</div>
+<div class="mt-8 pt-8 border-t border-white/5">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-[12px] uppercase text-on-surface-variant">Master Volume</span>
+<span class="font-h2 text-[16px] text-primary">65%</span>
+</div>
+<div class="h-[4px] w-full bg-white/10 rounded-full relative">
+<div class="absolute h-full w-[65%] bg-primary rounded-full"></div>
+</div>
+</div>
+</div>
+</section>
+<!-- Pod Map Preview -->
+<section class="glass-card rounded-3xl p-8 overflow-hidden relative min-h-[300px]">
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+<div>
+<h3 class="font-h2 text-[24px] text-on-surface">Live Pod Map</h3>
+<p class="font-body-md text-on-surface-variant">Zone 04 Floor Plan · Level 2</p>
+</div>
+<button class="mt-4 md:mt-0 font-label-caps text-primary text-[12px] flex items-center gap-2 hover:underline">
+                        EXPLORE FULL MAP
+                        <span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Mock Map Visual -->
+<div class="absolute inset-0 z-0 opacity-20 pointer-events-none">
+<img class="w-full h-full object-cover grayscale" data-alt="A top-down architectural floor plan of a modern office space, rendered with crisp white lines on a deep midnight blue background. The plan shows various pod locations and shared workspaces, with soft glowing green circles indicating available units and pulsing amber lights for occupied ones. The style is clean, technical, and high-contrast." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBu_6bReIcGpQWOXJPFRk9Z3nlKp9OmdX15MpnwtT2HmXELwmNACoFqtRlNzDExE18lKTuyK1TV8V7Pz6KD_gJVSayCzye2U_geQfT88PNHnU0hdr0JDmZwSGRCVuww__sBXM15xJ44oV87gOySXwj9zfGQjLyMnvW738IM13r-RuKyjx7Pfp21VzScr1NI1XqkNYjGDsvwAfXzMwMddr7p-RTk9ctuoddl_7TePSOusZ7S7dfdqY8xnXO6LRkyYIDYKul2Hs12Q6g"/>
+</div>
+<div class="relative z-10 grid grid-cols-4 gap-6">
+<div class="glass-modal p-4 rounded-2xl flex items-center gap-4">
+<div class="w-3 h-3 rounded-full bg-primary glow-available"></div>
+<div class="flex-1">
+<p class="font-label-caps text-[12px] text-on-surface">Pod 07</p>
+<p class="text-[10px] text-on-surface-variant">Ready to use</p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="near_me">near_me</span>
+</div>
+<div class="glass-card p-4 rounded-2xl flex items-center gap-4 border-tertiary/20">
+<div class="w-3 h-3 rounded-full bg-tertiary animate-pulse shadow-[0_0_10px_rgba(231,191,153,0.5)]"></div>
+<div class="flex-1">
+<p class="font-label-caps text-[12px] text-on-surface">Pod 12</p>
+<p class="text-[10px] text-on-surface-variant">Occupied · 45m</p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="lock">lock</span>
+</div>
+<div class="glass-modal p-4 rounded-2xl flex items-center gap-4">
+<div class="w-3 h-3 rounded-full bg-primary glow-available"></div>
+<div class="flex-1">
+<p class="font-label-caps text-[12px] text-on-surface">Pod 03</p>
+<p class="text-[10px] text-on-surface-variant">Ready to use</p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="near_me">near_me</span>
+</div>
+<div class="glass-card p-4 rounded-2xl flex items-center gap-4 opacity-50">
+<div class="w-3 h-3 rounded-full bg-on-surface-variant"></div>
+<div class="flex-1">
+<p class="font-label-caps text-[12px] text-on-surface">Pod 15</p>
+<p class="text-[10px] text-on-surface-variant">Cleaning...</p>
+</div>
+<span class="material-symbols-outlined text-[18px] text-on-surface-variant" data-icon="cleaning_services">cleaning_services</span>
+</div>
+</div>
+</section>
+</div>
+</main>
+</body></html>

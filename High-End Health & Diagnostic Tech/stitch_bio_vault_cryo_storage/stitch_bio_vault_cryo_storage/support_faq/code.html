@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-dim": "#131313",
+                    "tertiary-fixed-dim": "#c8c6c5",
+                    "surface-container-lowest": "#0e0e0e",
+                    "primary-fixed-dim": "#2ae500",
+                    "on-error-container": "#ffdad6",
+                    "on-primary-container": "#107100",
+                    "on-tertiary-container": "#626161",
+                    "on-primary-fixed-variant": "#095300",
+                    "primary-container": "#39ff14",
+                    "background": "#131313",
+                    "surface-tint": "#2ae500",
+                    "on-tertiary": "#313030",
+                    "on-secondary-fixed-variant": "#454747",
+                    "on-secondary": "#2f3131",
+                    "primary-fixed": "#79ff5b",
+                    "on-tertiary-fixed-variant": "#474746",
+                    "tertiary-container": "#e0dddc",
+                    "surface-container-low": "#1b1b1b",
+                    "outline": "#85967c",
+                    "surface-container-high": "#2a2a2a",
+                    "tertiary-fixed": "#e5e2e1",
+                    "on-error": "#690005",
+                    "surface-variant": "#353535",
+                    "secondary-container": "#454747",
+                    "surface-bright": "#393939",
+                    "error-container": "#93000a",
+                    "secondary-fixed-dim": "#c6c6c7",
+                    "secondary": "#c6c6c7",
+                    "surface": "#131313",
+                    "on-primary-fixed": "#022100",
+                    "inverse-surface": "#e2e2e2",
+                    "on-surface": "#e2e2e2",
+                    "on-primary": "#053900",
+                    "inverse-primary": "#106e00",
+                    "on-surface-variant": "#baccb0",
+                    "surface-container-highest": "#353535",
+                    "on-tertiary-fixed": "#1c1b1b",
+                    "tertiary": "#fdf9f9",
+                    "on-secondary-container": "#b4b5b5",
+                    "on-background": "#e2e2e2",
+                    "outline-variant": "#3c4b35",
+                    "primary": "#efffe3",
+                    "surface-container": "#1f1f1f",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "inverse-on-surface": "#303030",
+                    "secondary-fixed": "#e2e2e2",
+                    "error": "#ffb4ab"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "sm": "8px",
+                    "xl": "48px",
+                    "md": "16px",
+                    "lg": "24px",
+                    "margin": "32px",
+                    "unit": "4px",
+                    "xs": "4px",
+                    "gutter": "16px"
+            },
+            "fontFamily": {
+                    "label-caps": ["JetBrains Mono"],
+                    "data-lg": ["JetBrains Mono"],
+                    "headline-xl": ["Inter"],
+                    "headline-md": ["Inter"],
+                    "body-base": ["Inter"],
+                    "data-sm": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                    "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}]
+            }
+          }
+        }
+      }
+    </script>
+<style>
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #39FF14;
+            opacity: 0.3;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+        .flicker-animation-on-hover:hover {
+            animation: flicker 0.1s infinite alternate;
+        }
+        @keyframes flicker {
+            0% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-base min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background border-b border-on-surface-variant dark:border-outline-variant w-full top-0 left-0 z-50">
+<div class="flex justify-between items-center w-full px-md py-sm">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<span class="font-data-lg text-data-lg font-bold tracking-widest text-primary dark:text-primary-fixed">CELL_STORE_v1.0</span>
+</div>
+<nav class="hidden md:flex gap-lg">
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">VAULT</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">VIABILITY</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary" href="#">PROTOCOLS</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors" href="#">LEGAL</a>
+</nav>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary cursor-pointer flicker-animation-on-hover" data-icon="settings_input_component">settings_input_component</span>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-row w-full max-w-[1440px] mx-auto">
+<!-- NavigationDrawer -->
+<aside class="hidden lg:flex flex-col h-full w-64 border-r border-primary p-lg bg-background">
+<div class="flex flex-col gap-md mb-xl">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary text-xl" data-icon="account_circle">account_circle</span>
+</div>
+<div class="flex flex-col">
+<span class="font-data-lg text-data-lg text-primary leading-none">OPERATOR_082</span>
+<span class="font-data-sm text-data-sm text-secondary-fixed-dim">ENCRYPTION_LEVEL_05</span>
+</div>
+</div>
+<div class="px-sm py-xs bg-primary-container/10 border border-primary/20">
+<span class="font-label-caps text-label-caps text-primary">SYSTEM_ACTIVE</span>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-md p-md bg-primary-container text-on-primary-container font-bold border-l-4 border-primary" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">PROTOCOLS</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps">BIO_ENCRYPTION</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">SYSTEM_PULSE</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">NODE_STATUS</span>
+</a>
+<div class="mt-auto pt-xl">
+<a class="flex items-center gap-md p-md text-secondary-fixed-dim hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">SECURE_LOGOUT</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Content Canvas -->
+<section class="flex-grow p-margin overflow-y-auto">
+<div class="mb-xl flex justify-between items-end">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary mb-sm">TECHNICAL_RESOURCES</h1>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim max-w-2xl">Accessing encrypted support database. All specimen handling and security procedures must be followed with zero-tolerance for deviation. Verification required for Level 4 protocol access.</p>
+</div>
+<div class="hidden md:block p-md border border-primary bg-surface-container text-right">
+<div class="font-label-caps text-label-caps text-secondary-fixed-dim">LAST_UPDATE_SYNC</div>
+<div class="font-data-lg text-data-lg text-primary">2023.10.27_14:00_GMT</div>
+</div>
+</div>
+<!-- Bento Grid FAQ -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-0 border border-outline-variant">
+<!-- Search & Filter Header -->
+<div class="col-span-12 p-lg bg-surface-container-low border-b border-outline-variant flex flex-col md:flex-row gap-lg items-center">
+<div class="relative flex-grow w-full">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-secondary" data-icon="search">search</span>
+<input class="w-full bg-background border-b-2 border-white focus:border-primary focus:ring-0 text-primary font-data-sm px-xl py-md outline-none transition-all" placeholder="QUERY_PROTOCOL_DATABASE..." type="text"/>
+</div>
+<div class="flex gap-sm w-full md:w-auto">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-lg py-md flicker-animation-on-hover">FILTER_ALL</button>
+<button class="border border-white text-white font-label-caps text-label-caps px-lg py-md hover:bg-white hover:text-black transition-all">SECURITY</button>
+<button class="border border-white text-white font-label-caps text-label-caps px-lg py-md hover:bg-white hover:text-black transition-all">LOGISTICS</button>
+</div>
+</div>
+<!-- Primary Column: Security Protocols -->
+<div class="col-span-12 md:col-span-8 border-r border-outline-variant">
+<div class="p-lg bg-surface-container-highest border-b border-outline-variant">
+<div class="flex items-center gap-sm mb-xs">
+<span class="w-2 h-2 bg-primary"></span>
+<h2 class="font-label-caps text-label-caps text-primary">CORE_SECURITY_ENCRYPTION</h2>
+</div>
+<h3 class="font-headline-md text-headline-md text-on-background">Biometric Key Management</h3>
+</div>
+<div class="divide-y divide-outline-variant">
+<!-- FAQ ITEM 1 -->
+<div class="p-lg group hover:bg-surface-container-high transition-colors cursor-pointer scanning-line-overlay">
+<div class="flex justify-between items-start mb-md">
+<div class="font-data-lg text-data-lg text-primary">01. How is multi-sig biometric verification performed?</div>
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</div>
+<div class="font-body-base text-secondary-fixed-dim leading-relaxed">
+                                Our vaulting system utilizes a Triple-Factor Biometric (TFB) handshake. This requires a simultaneous retinal pulse scan, subcutaneous DNA verification via localized sensor, and a hardware-token-synchronized cryptographic key. Failure in any single node triggers an immediate lockout.
+                            </div>
+<div class="mt-md flex gap-md">
+<span class="font-data-sm text-data-sm text-primary-fixed-dim">REF: SEC-V4-001</span>
+<span class="font-data-sm text-data-sm text-secondary-fixed-dim">COMPLIANCE: HIPAA-XL</span>
+</div>
+</div>
+<!-- FAQ ITEM 2 -->
+<div class="p-lg group hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-md">
+<div class="font-data-lg text-data-lg text-primary">02. What is the standard response for Node Integrity failure?</div>
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</div>
+<div class="font-body-base text-secondary-fixed-dim leading-relaxed">
+                                In the event of a Node Integrity failure, the affected storage block enters "Isolation Mode." Cold-chain cooling is shifted to auxiliary power reserves, and all data transmission is rerouted through hardened satellite relays until physical inspection by a Level 5 technician.
+                            </div>
+</div>
+<!-- FAQ ITEM 3 -->
+<div class="p-lg group hover:bg-surface-container-high transition-colors cursor-pointer">
+<div class="flex justify-between items-start mb-md">
+<div class="font-data-lg text-data-lg text-primary">03. Procedure for emergency sample extraction?</div>
+<span class="material-symbols-outlined text-primary" data-icon="add">add</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Column: Specimen Handling & Support -->
+<div class="col-span-12 md:col-span-4 bg-surface-container-low flex flex-col">
+<div class="p-lg border-b border-outline-variant">
+<div class="flex items-center gap-sm mb-xs">
+<span class="w-2 h-2 bg-primary"></span>
+<h2 class="font-label-caps text-label-caps text-primary">CRYOGENIC_GUIDELINES</h2>
+</div>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim">Critical specimen maintenance procedures.</p>
+</div>
+<div class="p-lg space-y-lg">
+<!-- Handling Card -->
+<div class="border border-outline p-md relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-unit font-data-sm text-[8px] border-l border-b border-outline">SPEC_ID: CRYO-99</div>
+<h4 class="font-label-caps text-label-caps text-primary mb-sm">TEMPERATURE_STABILITY</h4>
+<div class="h-2 w-full bg-surface-variant mb-md flex gap-unit">
+<div class="h-full w-1/4 bg-primary"></div>
+<div class="h-full w-1/4 bg-primary"></div>
+<div class="h-full w-1/4 bg-primary"></div>
+<div class="h-full w-1/4 bg-surface-variant"></div>
+</div>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim">Samples must remain at -196°C. Any fluctuation above -180°C requires automated nitrogen replenishment and incident logging.</p>
+</div>
+<!-- Support Contact -->
+<div class="border border-primary bg-primary-container/5 p-md">
+<h4 class="font-label-caps text-label-caps text-primary mb-md">EMERGENCY_SUPPORT</h4>
+<div class="space-y-sm">
+<div class="flex justify-between font-data-sm">
+<span class="text-secondary">DIRECT_UPLINK:</span>
+<span class="text-on-background font-bold">+1-800-BIO-NODE</span>
+</div>
+<div class="flex justify-between font-data-sm">
+<span class="text-secondary">ENCRYPTED_MAIL:</span>
+<span class="text-on-background font-bold">ops@cellstore.sec</span>
+</div>
+<div class="flex justify-between font-data-sm">
+<span class="text-secondary">AVG_RESPONSE:</span>
+<span class="text-primary-fixed-dim">00:04:22</span>
+</div>
+</div>
+<button class="w-full mt-lg bg-primary text-on-primary font-label-caps text-label-caps py-md flicker-animation-on-hover">INITIATE_COMMS</button>
+</div>
+<!-- Visual Reference -->
+<div class="mt-auto">
+<div class="w-full aspect-video border border-outline-variant relative overflow-hidden">
+<img alt="Laboratory technician" class="w-full h-full object-cover grayscale opacity-50" data-alt="A highly clinical and sterile laboratory setting featuring a technician in a heavy-duty biohazard suit handling a glowing green specimen container. The lighting is harsh and dramatic, with deep blacks and neon green highlights reflecting off metallic surfaces and glass. The atmosphere is one of extreme scientific precision and security, styled like a futuristic medical terminal interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD42v_JteFheop0vVTCt0N6334fooW5w2Q1ouKBfUrqitH8r6KZdTUEt81Ks1JfhERqNt10tClQJjvIKP6EW5uU4up8UbqqmzdEeKOVbM-aF8DOAvwFy8dQ4DrFaExp6dUDDObUbIZC0VTsTmCdc-FoHs_h8DhYSyRXJRj1jMNob4020nVLQJUkcwxdJ8t0opkx-nIpI1U16K3IpcGQl9uVtMp7oOO3jS9DeF-fojgYsJqdIEQzJ9oiEGCGWB5DAuRdaz1VNYbMkEo"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background to-transparent opacity-60"></div>
+<div class="absolute bottom-md left-md">
+<div class="font-label-caps text-label-caps text-primary">LAB_UNIT_7_FEED</div>
+<div class="flex items-center gap-xs">
+<div class="w-2 h-2 rounded-full bg-error animate-pulse"></div>
+<span class="font-data-sm text-data-sm text-on-background">LIVE_FEED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Documentation Cards -->
+<div class="mt-xl grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="border border-outline-variant p-lg hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="description">description</span>
+<span class="font-data-sm text-data-sm text-secondary-fixed-dim">v2.4.0</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-background mb-sm">Asset Transfers</h4>
+<p class="font-body-base text-secondary-fixed-dim mb-lg">Full documentation for inter-vault physical asset movement and legal chain of custody.</p>
+<a class="font-label-caps text-label-caps text-primary flex items-center gap-sm group-hover:gap-md transition-all" href="#">
+                        DOWNLOAD_PDF <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="border border-outline-variant p-lg hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="gavel">gavel</span>
+<span class="font-data-sm text-data-sm text-secondary-fixed-dim">COMPLIANCE</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-background mb-sm">Legal Framework</h4>
+<p class="font-body-base text-secondary-fixed-dim mb-lg">Technical addendum for genetic property rights and inheritance encryption protocols.</p>
+<a class="font-label-caps text-label-caps text-primary flex items-center gap-sm group-hover:gap-md transition-all" href="#">
+                        VIEW_RESOURCES <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+<div class="border border-outline-variant p-lg hover:border-primary transition-all group">
+<div class="flex justify-between items-start mb-lg">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="biotech">biotech</span>
+<span class="font-data-sm text-data-sm text-secondary-fixed-dim">HANDLING</span>
+</div>
+<h4 class="font-headline-md text-headline-md text-on-background mb-sm">Viability Testing</h4>
+<p class="font-body-base text-secondary-fixed-dim mb-lg">Standards for quarterly biological health assessments and digital twin synchronization.</p>
+<a class="font-label-caps text-label-caps text-primary flex items-center gap-sm group-hover:gap-md transition-all" href="#">
+                        EXPLORE_GUIDE <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-background border-t border-on-surface-variant dark:border-outline-variant flex justify-around items-center py-sm">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+<span class="font-label-caps text-label-caps">VAULT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps">VIABILITY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">PROTOCOLS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-label-caps">LEGAL</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-label-caps">TRANSFER</span>
+</a>
+</nav>
+<!-- Security Badge Overlay -->
+<div class="fixed bottom-margin right-margin z-40 hidden md:block">
+<div class="border border-primary bg-background p-md font-data-sm text-data-sm text-primary shadow-[0_0_10px_rgba(57,255,20,0.2)]">
+<div class="flex items-center gap-sm mb-xs">
+<span class="material-symbols-outlined text-xs" data-icon="lock">lock</span>
+<span>ENCRYPTION_STATUS: AES-4096-BIO</span>
+</div>
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-xs" data-icon="pulse">monitor_heart</span>
+<span>SYSTEM_PULSE: STABLE (98.2%)</span>
+</div>
+</div>
+</div>
+</body></html>

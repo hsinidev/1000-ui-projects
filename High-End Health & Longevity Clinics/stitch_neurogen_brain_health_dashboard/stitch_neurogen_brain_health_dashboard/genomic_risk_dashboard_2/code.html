@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport"/>
+<title>NEURO-GEN Genomic Risk Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary-container": "#e9d6ff",
+                      "primary-fixed-dim": "#00dce5",
+                      "outline": "#849495",
+                      "surface-container-high": "#2a2a2c",
+                      "inverse-surface": "#e5e1e4",
+                      "surface-container-low": "#1c1b1d",
+                      "on-tertiary": "#38294d",
+                      "inverse-on-surface": "#313032",
+                      "surface-container-highest": "#353437",
+                      "on-primary-fixed-variant": "#004f53",
+                      "on-surface": "#e5e1e4",
+                      "secondary-fixed": "#efdbff",
+                      "inverse-primary": "#00696e",
+                      "background": "#131315",
+                      "on-tertiary-container": "#6b5a81",
+                      "surface": "#131315",
+                      "secondary": "#dab9ff",
+                      "tertiary-fixed": "#eddcff",
+                      "surface-container-lowest": "#0e0e10",
+                      "on-error-container": "#ffdad6",
+                      "secondary-container": "#8f03ff",
+                      "outline-variant": "#3a494a",
+                      "on-primary-container": "#006c71",
+                      "on-error": "#690005",
+                      "on-background": "#e5e1e4",
+                      "on-secondary-fixed-variant": "#6500b8",
+                      "primary": "#e9feff",
+                      "on-tertiary-fixed": "#231437",
+                      "tertiary": "#fff8fe",
+                      "on-secondary-fixed": "#2b0053",
+                      "on-surface-variant": "#b9caca",
+                      "primary-container": "#00f5ff",
+                      "surface-container": "#201f21",
+                      "surface-bright": "#39393b",
+                      "primary-fixed": "#63f7ff",
+                      "on-primary": "#003739",
+                      "on-secondary-container": "#f0ddff",
+                      "surface-variant": "#353437",
+                      "error-container": "#93000a",
+                      "surface-tint": "#00dce5",
+                      "on-secondary": "#470083",
+                      "surface-dim": "#131315",
+                      "error": "#ffb4ab",
+                      "on-primary-fixed": "#002021",
+                      "secondary-fixed-dim": "#dab9ff",
+                      "tertiary-fixed-dim": "#d3beeb",
+                      "on-tertiary-fixed-variant": "#4f4065"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "spacing": {
+                      "unit": "8px",
+                      "gutter": "24px",
+                      "container-max": "1440px",
+                      "margin": "40px"
+              },
+              "fontFamily": {
+                      "display-lg": ["Space Grotesk"],
+                      "label-caps": ["Space Grotesk"],
+                      "body-md": ["Inter"],
+                      "headline-md": ["Space Grotesk"],
+                      "data-mono": ["JetBrains Mono"]
+              },
+              "fontSize": {
+                      "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                      "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                      "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+            background-color: #131315;
+            color: #e5e1e4;
+            -webkit-font-smoothing: antialiased;
+        }
+        .neural-bg {
+            background-image: radial-gradient(circle at 50% 50%, rgba(143, 3, 255, 0.05) 0%, transparent 70%),
+                              linear-gradient(rgba(19, 19, 21, 0.95), rgba(19, 19, 21, 0.95));
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+        }
+        .neural-path-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M10 10 L90 90 M90 10 L10 90' stroke='rgba(0, 220, 229, 0.03)' stroke-width='0.5' fill='none'/%3E%3Ccircle cx='10' cy='10' r='1' fill='rgba(143, 3, 255, 0.1)'/%3E%3C/svg%3E");
+            background-size: 100px 100px;
+            opacity: 0.4;
+        }
+        .glow-cyan { text-shadow: 0 0 10px rgba(0, 220, 229, 0.6); }
+        .glass-card {
+            background: rgba(32, 31, 33, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(0, 220, 229, 0.15);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<div class="neural-bg"></div>
+<div class="neural-path-overlay"></div>
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-gutter py-4 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-white/10 dark:border-white/10 shadow-[0_0_15px_-5px_rgba(0,220,229,0.4)]">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full border border-primary-fixed-dim/30 p-0.5 overflow-hidden">
+<img alt="User Neural Profile" class="w-full h-full object-cover rounded-full" data-alt="A high-definition, conceptual portrait of a futuristic user profile with subtle digital circuitry glowing softly on the skin of their temple. The background is a deep, clinical charcoal grey with ethereal cyan light leaks. The aesthetic is clean, medical, and technologically advanced, echoing a premium neuro-genetics brand identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0QRgqHLazstlPgg8fQp6lYpGswk3Y9bDsYKzac4zZfgDQQy23wBTEgA0Qx_OMj3sdUdzKQVtCfgzGIwzQGmEWLhcHJL293vYJ8Qlw0HNkfzl4czdbA84Jyy1bsVj6uPx58vJNzE7MUgLq53Wg261e0mcs98c8JBqX6GCunaDzZ2cuAmeqj07U8NEpbAhacT-VpgOXIyFfbTiHwwHCDJwmXBcjk50oSNQsHUabW51xSwOG4RBWRZ39BmeKJFC0iDmWRY42TUy4S1A"/>
+</div>
+<span class="font-display-lg text-display-lg font-bold tracking-tighter text-primary-fixed-dim uppercase">NEURO-GEN</span>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-on-surface-variant hover:text-primary-fixed hover:glow-sm transition-all active:scale-95 duration-200">notifications_active</button>
+</div>
+</header>
+<main class="pt-24 pb-32 px-gutter space-y-8 max-w-[1440px] mx-auto">
+<!-- Hero Section: Neural 3D Model -->
+<section class="relative w-full aspect-square md:aspect-video flex flex-col items-center justify-center overflow-hidden rounded-xl border border-white/5 bg-gradient-to-b from-surface-container-low to-transparent">
+<div class="absolute inset-0 flex items-center justify-center">
+<img alt="Neural Optimization Zones" class="w-full h-full object-contain opacity-80" data-alt="A highly detailed 3D mesh visualization of a human brain rendered in luminous electric cyan lines against a deep black void. The frontal and parietal lobes are highlighted with intense glowing pulses of violet light, indicating active genomic optimization zones. The style is technical, medical, and cyber-biological, with a soft cyan bloom and sharp clinical precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-IejWXAb9rrqAHkkZYDUH9TRfacXZ18Z7btnGOHdl74cv18jV-zWswbPcbiTx6n3N41Cj3hphtY60453T2e1VeKgqnazNp-qiPkJsXs6nNvIvXoraGhBy_AAPUdkY-AGJIaL3upohHLf-je6tI76vCiX99RavRx4B5PU4Faul2SJfv9XloWo9UEh_GQXTDk31Qr_U-RrEN8-ifs6Tb5rQdC8KR_1yx2JWXt-ov2k4Lo3DFFydrw0elah94XUqsQGzgH6D1Am2jXs"/>
+</div>
+<div class="relative z-10 text-center space-y-2 pointer-events-none">
+<div class="inline-block px-3 py-1 rounded-full bg-primary-container/10 border border-primary-fixed-dim/30 text-primary-fixed-dim font-label-caps text-label-caps uppercase tracking-widest">
+                    Optimization Active
+                </div>
+<h1 class="font-headline-md text-headline-md text-primary-fixed-dim glow-cyan">Neural Synapse Map</h1>
+<p class="text-on-surface-variant max-w-xs mx-auto">Frontal &amp; Parietal zones synchronized at 98.4% capacity.</p>
+</div>
+<div class="absolute bottom-6 left-6 right-6 flex justify-between items-end">
+<div class="space-y-1">
+<p class="font-label-caps text-label-caps text-outline-variant uppercase">Neural Load</p>
+<p class="font-data-mono text-data-mono text-primary-fixed-dim">1.2 PetaFLOP/s</p>
+</div>
+<div class="space-y-1 text-right">
+<p class="font-label-caps text-label-caps text-outline-variant uppercase">Bio-Stability</p>
+<p class="font-data-mono text-data-mono text-secondary">Optimal</p>
+</div>
+</div>
+</section>
+<!-- Genomic Risk Dashboard Bento Grid -->
+<section class="grid grid-cols-1 md:grid-cols-3 gap-4">
+<!-- Memory Card -->
+<div class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-6">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h3 class="font-headline-md text-[24px] text-primary-fixed-dim leading-none">Memory</h3>
+<p class="text-outline-variant font-label-caps text-label-caps">LTP MARKER: RS429358</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">neurology</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="text-on-surface font-display-lg text-[32px]">Elite</span>
+<span class="text-secondary font-data-mono text-data-mono">+14% Growth</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[88%] shadow-[0_0_10px_rgba(0,220,229,0.5)]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    High density of BDNF alleles detected. Significant resilience to cognitive fatigue in memory-intensive tasks.
+                </p>
+</div>
+<!-- Focus Card -->
+<div class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-6">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h3 class="font-headline-md text-[24px] text-primary-fixed-dim leading-none">Focus</h3>
+<p class="text-outline-variant font-label-caps text-label-caps">DOPAMINE RECEPTOR: D4</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">target</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="text-on-surface font-display-lg text-[32px]">Stable</span>
+<span class="text-outline-variant font-data-mono text-data-mono">Baseline</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-[62%] shadow-[0_0_10px_rgba(218,185,255,0.5)]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Standard COMT enzyme activity. Neural noise-canceling protocols active in the prefrontal cortex during tasks.
+                </p>
+</div>
+<!-- Neuro-plasticity Card -->
+<div class="glass-card rounded-xl p-6 flex flex-col justify-between space-y-6">
+<div class="flex justify-between items-start">
+<div class="space-y-1">
+<h3 class="font-headline-md text-[24px] text-primary-fixed-dim leading-none">Plasticity</h3>
+<p class="text-outline-variant font-label-caps text-label-caps">SYNAPTIC PRUNING: C4</p>
+</div>
+<span class="material-symbols-outlined text-primary-fixed-dim" style="font-variation-settings: 'FILL' 1;">biotech</span>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-end">
+<span class="text-on-surface font-display-lg text-[32px]">High</span>
+<span class="text-primary-fixed-dim font-data-mono text-data-mono">Accelerated</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-fixed-dim w-[94%] shadow-[0_0_10px_rgba(0,220,229,0.5)]"></div>
+</div>
+</div>
+<p class="text-on-surface-variant text-sm leading-relaxed">
+                    Enhanced CREB signaling detected. Adaptive learning capacity is currently in peak regenerative phase.
+                </p>
+</div>
+</section>
+<!-- Detailed Bio-Marker Feed -->
+<section class="space-y-4">
+<h2 class="font-headline-md text-headline-md text-on-surface px-2">Sub-Marker Analysis</h2>
+<div class="space-y-3">
+<div class="flex items-center justify-between p-4 glass-card rounded-lg border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-secondary-container/20 flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined">genetics</span>
+</div>
+<div>
+<p class="text-on-surface font-medium">Metabolic Pathway Alpha</p>
+<p class="text-outline-variant text-xs font-label-caps">Marker: GRIN2B-9</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-primary-fixed-dim font-data-mono text-sm">Enhanced</p>
+<p class="text-outline-variant text-[10px] uppercase tracking-tighter">Verified 2h ago</p>
+</div>
+</div>
+<div class="flex items-center justify-between p-4 glass-card rounded-lg border-white/5">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 rounded bg-primary-container/10 flex items-center justify-center text-primary-fixed-dim">
+<span class="material-symbols-outlined">psychology</span>
+</div>
+<div>
+<p class="text-on-surface font-medium">Circadian Neural Sync</p>
+<p class="text-outline-variant text-xs font-label-caps">Marker: CLOCK-G3</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-secondary font-data-mono text-sm">Synchronized</p>
+<p class="text-outline-variant text-[10px] uppercase tracking-tighter">Verified 5h ago</p>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-3 pb-safe bg-surface-container-low/90 backdrop-blur-2xl dark:bg-surface-container-low/90 border-t border-white/5 shadow-2xl rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-primary-fixed-dim bg-primary-container/10 rounded-full px-4 py-2 transition-all active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">genetics</span>
+<span class="font-label-caps text-label-caps mt-1">Genomics</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-primary-fixed transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">psychology</span>
+<span class="font-label-caps text-label-caps mt-1">Cognitive</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-primary-fixed transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">bedtime</span>
+<span class="font-label-caps text-label-caps mt-1">Sleep</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline-variant hover:text-primary-fixed transition-colors active:scale-90 duration-300 ease-out" href="#">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-caps text-label-caps mt-1">Coach</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOMA-TWIN | BIO-AGE DASHBOARD</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#b8b8b8",
+                        "inverse-on-surface": "#2b2f49",
+                        "surface-variant": "#2f334e",
+                        "on-error": "#690005",
+                        "surface-container-lowest": "#080c25",
+                        "on-tertiary-fixed": "#151d22",
+                        "primary": "#a4e6ff",
+                        "tertiary-fixed": "#dbe4ea",
+                        "on-primary": "#003543",
+                        "secondary-fixed": "#e3e2e2",
+                        "on-primary-fixed": "#001f28",
+                        "tertiary-container": "#b9c1c8",
+                        "tertiary": "#d5dde4",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-container": "#1a1e37",
+                        "outline-variant": "#3c494e",
+                        "inverse-primary": "#00677f",
+                        "on-primary-fixed-variant": "#004e60",
+                        "secondary-fixed-dim": "#c6c6c6",
+                        "on-secondary-fixed-variant": "#464747",
+                        "tertiary-fixed-dim": "#bfc8ce",
+                        "surface-container-high": "#242842",
+                        "secondary": "#c6c6c6",
+                        "on-secondary": "#2f3131",
+                        "on-primary-container": "#00566a",
+                        "on-tertiary-container": "#474f55",
+                        "surface-container-low": "#161a33",
+                        "on-surface": "#dee0ff",
+                        "primary-fixed-dim": "#4cd6ff",
+                        "outline": "#859399",
+                        "secondary-container": "#484949",
+                        "surface-dim": "#0d112a",
+                        "surface-bright": "#343752",
+                        "primary-container": "#00d1ff",
+                        "on-tertiary": "#293137",
+                        "surface": "#0d112a",
+                        "on-error-container": "#ffdad6",
+                        "inverse-surface": "#dee0ff",
+                        "primary-fixed": "#b7eaff",
+                        "on-tertiary-fixed-variant": "#40484d",
+                        "background": "#0d112a",
+                        "on-surface-variant": "#bbc9cf",
+                        "error-container": "#93000a",
+                        "surface-tint": "#4cd6ff",
+                        "on-background": "#dee0ff",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#2f334e"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xs": "8px",
+                        "margin": "32px",
+                        "md": "24px",
+                        "base": "4px",
+                        "xl": "64px",
+                        "sm": "16px",
+                        "lg": "40px",
+                        "gutter": "20px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "label-caps": ["Inter"],
+                        "headline-lg": ["Inter"],
+                        "data-mono-sm": ["Space Mono"],
+                        "display-xl": ["Inter"],
+                        "data-mono-lg": ["Space Mono"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                        "label-caps": ["11px", {"lineHeight": "1.0", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-mono-sm": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "data-mono-lg": ["18px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(13, 17, 42, 0.6);
+            backdrop-filter: blur(16px);
+            border: 1px solid #C0C0C0;
+        }
+        .medical-glow {
+            box-shadow: 0 0 8px rgba(0, 209, 255, 0.3);
+        }
+        .corner-accent::before {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid #a4e6ff;
+            border-left: 2px solid #a4e6ff;
+        }
+        .corner-accent::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            width: 10px;
+            height: 10px;
+            border-bottom: 2px solid #a4e6ff;
+            border-right: 2px solid #a4e6ff;
+        }
+        body {
+            background-color: #0d112a;
+            color: #dee0ff;
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-sm h-16 bg-surface/60 backdrop-blur-xl border-b border-outline-variant">
+<div class="flex items-center gap-sm">
+<div class="w-10 h-10 rounded-full overflow-hidden border border-primary">
+<img alt="user_clinical_profile" class="w-full h-full object-cover" data-alt="A professional medical portrait of a patient in a high-tech clinical environment. The lighting is cold and precise with soft cyan highlights reflecting off a glass surface. The subject is framed centrally with a neutral expression, representing a high-fidelity clinical profile for a premium longevity platform." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDXmj8rujWV3-1TzOXBtS7JV6zALdlXXBL2rH6oqSyvWnuLuh3m3kpAwmbZU8kBP3XCP7KwQ01tEgYpWAy1yqM6UQZJvyX58ic7k-BOTCmFcwYwp40uvDEMKAQRFQaghU-EYDXG-6pb_cxfHdVmwi1oUoeJE1VU8feslpwgyTtE1AkCs4NZyMmtFYzoVPjhMemEjAJK8DgBDRdMR0rgx6WaOexidDRD1W83QhjlC1iCyVZ2Wb00WjjS-8floi9HnF9RhrOK9ZRXeR5Z"/>
+</div>
+<span class="font-data-mono-lg text-data-mono-lg tracking-widest text-primary">SOMA-TWIN</span>
+</div>
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary cursor-pointer hover:text-primary-fixed-dim transition-colors active:opacity-70">notifications_active</span>
+</div>
+</header>
+<div class="flex pt-16 min-h-screen">
+<!-- NavigationDrawer -->
+<aside class="hidden md:flex flex-col h-[calc(100vh-64px)] w-80 bg-surface-container-low/95 backdrop-blur-lg border-r border-outline-variant py-lg px-md sticky top-16">
+<div class="mb-xl">
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-headline-lg text-headline-lg text-primary">PATIENT_ID_772</span>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">LONGEVITY_TIER: OMEGA</div>
+<div class="font-data-mono-sm text-data-mono-sm text-primary opacity-60">LAST_SCAN: 04-24-2024</div>
+</div>
+<nav class="flex flex-col gap-base">
+<a class="flex items-center gap-sm px-sm py-md bg-surface-variant text-primary border-l-2 border-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="font-data-mono-sm text-data-mono-sm">Dashboard</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">genetics</span>
+<span class="font-data-mono-sm text-data-mono-sm">Genetic Reports</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-data-mono-sm text-data-mono-sm">Clinical Settings</span>
+</a>
+<a class="flex items-center gap-sm px-sm py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">clinical_notes</span>
+<span class="font-data-mono-sm text-data-mono-sm">Support</span>
+</a>
+<div class="mt-auto">
+<a class="flex items-center gap-sm px-sm py-md text-on-surface-variant hover:bg-surface-container-high hover:text-primary transition-all duration-300" href="#">
+<span class="material-symbols-outlined">logout</span>
+<span class="font-data-mono-sm text-data-mono-sm">Logout</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-md lg:p-lg overflow-y-auto">
+<div class="max-w-7xl mx-auto space-y-lg">
+<!-- Bio-Age Hero Comparison -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-center">
+<div class="lg:col-span-7 space-y-sm">
+<h1 class="font-label-caps text-label-caps text-primary opacity-80">BIOLOGICAL_VS_CHRONOLOGICAL</h1>
+<div class="flex items-end gap-md">
+<div>
+<div class="font-display-xl text-display-xl text-primary-container leading-none">32.4</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">BIO-AGE INDEX</div>
+</div>
+<div class="pb-base">
+<div class="font-headline-md text-headline-md text-secondary opacity-40 line-through">41.0</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mt-xs">CHRONO-AGE</div>
+</div>
+<div class="pb-base ml-auto text-right">
+<div class="text-primary font-bold text-headline-md">-8.6Y</div>
+<div class="font-data-mono-sm text-data-mono-sm text-primary opacity-60">OPTIMIZATION_DELTA</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-5 h-32 glass-panel medical-glow flex items-center justify-around px-md relative corner-accent">
+<div class="text-center">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-xs">TELOMERE_STABILITY</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">94.2%</div>
+</div>
+<div class="w-px h-12 bg-outline-variant"></div>
+<div class="text-center">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-xs">DNA_METHYLATION</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">OPTIMAL</div>
+</div>
+</div>
+</section>
+<!-- Bento Grid for Clinical Data -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- DNA Methylation Widget -->
+<div class="glass-panel p-md flex flex-col gap-sm relative corner-accent">
+<div class="flex justify-between items-center border-b border-outline-variant pb-xs">
+<span class="font-label-caps text-label-caps text-primary">DNA_METHYLATION_HEATMAP</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">settings_input_component</span>
+</div>
+<div class="flex-1 flex items-center justify-center py-sm">
+<div class="w-full aspect-square bg-gradient-to-br from-surface-container-high to-surface-dim rounded-lg border border-outline-variant flex items-center justify-center relative overflow-hidden">
+<img alt="dna_methylation" class="absolute inset-0 w-full h-full object-cover opacity-40" data-alt="A detailed scientific visualization of a DNA double helix being scanned by bright blue laser lines. The background is a dark deep indigo clinical environment with floating data points and semi-transparent medical glass interfaces. The style is hyper-modern, sterile, and high-precision." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUoP48qX-PHbiZDFe4m97PXszBH5hEkRkfTzePY-3CPwypAWVQbM9wFTRaYCFOLxmcmKO3XGIFwbAHiTrPuDSk_LxiwMzP-Ypr8tTdsMqGayRmQfkUtcHcpJST1megHFVhdFuhaoQ2woGQQ7rrScJhvX0vp7zkdp5Fb_DtymskTeNiVnA1OT4rQPLwcfTHTaeZmv3Kgm0mW1mIpZboi0ytCMoozlTubYiPsd25Y-t8xDMxlvCfWP0n-q9ZnK5hgFY9n2-no5U4V7Iy"/>
+<div class="relative z-10 font-data-mono-sm text-data-mono-sm text-primary p-xs bg-surface/80 border border-primary-container/20">
+                                    MAPPING_GENE_SET_B2
+                                </div>
+</div>
+</div>
+<div class="flex justify-between font-data-mono-sm text-data-mono-sm">
+<span class="text-on-surface-variant">CLINICAL_THRESHOLD</span>
+<span class="text-primary">&gt; 88.4%</span>
+</div>
+</div>
+<!-- Telomere Widget -->
+<div class="glass-panel p-md flex flex-col gap-sm relative corner-accent">
+<div class="flex justify-between items-center border-b border-outline-variant pb-xs">
+<span class="font-label-caps text-label-caps text-primary">TELOMERE_ATTRITION_VAL</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">insights</span>
+</div>
+<div class="space-y-md py-sm">
+<div class="flex justify-between items-end">
+<div>
+<div class="text-on-surface-variant font-data-mono-sm">CURRENT_LENGTH</div>
+<div class="font-headline-md text-headline-md text-primary">7.8 kbp</div>
+</div>
+<div class="text-right">
+<div class="text-on-surface-variant font-data-mono-sm">PERCENTILE</div>
+<div class="font-headline-md text-headline-md text-primary">92ND</div>
+</div>
+</div>
+<!-- Minimalist Chart Simulation -->
+<div class="h-24 w-full flex items-end gap-1">
+<div class="w-full bg-primary-container/20 h-[30%] border-t border-primary/40"></div>
+<div class="w-full bg-primary-container/20 h-[45%] border-t border-primary/40"></div>
+<div class="w-full bg-primary-container/20 h-[40%] border-t border-primary/40"></div>
+<div class="w-full bg-primary-container/20 h-[60%] border-t border-primary/40"></div>
+<div class="w-full bg-primary-container/20 h-[85%] border-t border-primary/40 medical-glow"></div>
+<div class="w-full bg-primary-container/10 h-[70%] border-t border-primary/20"></div>
+<div class="w-full bg-primary-container/10 h-[75%] border-t border-primary/20"></div>
+</div>
+</div>
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant text-center opacity-60">
+                            QUARTERLY_TREND: +1.2% STABILITY
+                        </div>
+</div>
+<!-- VO2 Max Chart -->
+<div class="glass-panel p-md flex flex-col gap-sm relative corner-accent lg:col-span-1">
+<div class="flex justify-between items-center border-b border-outline-variant pb-xs">
+<span class="font-label-caps text-label-caps text-primary">VO2_MAX_EFFICIENCY</span>
+<span class="material-symbols-outlined text-on-surface-variant text-sm">monitoring</span>
+</div>
+<div class="flex-1 flex flex-col justify-center gap-md">
+<div class="text-center">
+<div class="font-display-xl text-display-xl text-primary leading-tight">58.4</div>
+<div class="font-label-caps text-label-caps text-on-secondary-container">ML/KG/MIN</div>
+</div>
+<div class="grid grid-cols-2 gap-xs">
+<div class="bg-surface-variant/40 p-xs border border-outline-variant">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">LUNG_CAP</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">4.8L</div>
+</div>
+<div class="bg-surface-variant/40 p-xs border border-outline-variant">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">REST_HR</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">42BPM</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Metabolic Power Widget (Wide) -->
+<div class="md:col-span-2 glass-panel p-md flex flex-col gap-sm relative corner-accent">
+<div class="flex justify-between items-center border-b border-outline-variant pb-xs">
+<span class="font-label-caps text-label-caps text-primary">METABOLIC_POWER_SPECTRUM</span>
+<div class="flex gap-sm">
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-primary rounded-full"></span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">CURRENT</span>
+</div>
+<div class="flex items-center gap-xs">
+<span class="w-2 h-2 bg-outline rounded-full"></span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">BASELINE</span>
+</div>
+</div>
+</div>
+<div class="flex-1 h-48 w-full flex items-center justify-center relative overflow-hidden py-md">
+<img alt="metabolic_chart" class="w-full h-full object-contain opacity-70" data-alt="A clean, minimalist high-fidelity data visualization chart showing sleek neon blue wave graphs representing metabolic power. The chart sits on a dark indigo glass-like background with faint grid lines in silver. The visual language is high-end medical technology dashboard, focused on precision and clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDszmJMplAy7M1XwgvaEtz_IB34rWFOy8-m1vUmXzZkLJUad5Ojy-uXuJJXWSJP916ZglzAhb-iTzzoLnq82N4zRcN5wzGbG4asrMUWqz3xmwnf17Nha8ERKy7sSLKxSUbD87vyXlZw1QTE-a4EkwZR0ZfqIXZBNUI-Vnf4B8NzcfYcMPCsC2vl_AQF40P7tdPc16DdC89qySz2Ki9DGFtl435zJ8jGVuyk9hbQ-4G5F-vJIwRBvVyyvzhQKsrkPmp195RZlqnYkJZB"/>
+</div>
+<div class="grid grid-cols-4 gap-sm pt-xs border-t border-outline-variant">
+<div class="text-center">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">GLUCOSE_STAB</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">98%</div>
+</div>
+<div class="text-center">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">LIPID_OX</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">HIGH</div>
+</div>
+<div class="text-center">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">LAC_THRESH</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">14.2</div>
+</div>
+<div class="text-center">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">ATP_EFF</div>
+<div class="font-data-mono-lg text-data-mono-lg text-primary">0.92</div>
+</div>
+</div>
+</div>
+<!-- Clinical Findings / Alerts -->
+<div class="glass-panel p-md flex flex-col gap-md relative corner-accent bg-surface-container-high/40">
+<div class="flex items-center gap-sm text-primary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">emergency</span>
+<span class="font-label-caps text-label-caps">CRITICAL_INSIGHTS_CLUSTER</span>
+</div>
+<div class="space-y-sm">
+<div class="bg-primary/10 border border-primary/30 p-sm">
+<div class="font-data-mono-sm text-data-mono-sm text-primary mb-xs">MITOCHONDRIAL_RESERVE_HIGH</div>
+<p class="text-sm text-on-surface-variant leading-tight">Somatic cell health indices exceed the top 5% of your chronological age cohort. Maintain current NAD+ precursor protocol.</p>
+</div>
+<div class="border border-outline-variant p-sm opacity-60">
+<div class="font-data-mono-sm text-data-mono-sm text-on-surface-variant mb-xs">INFLAMMATORY_MARKERS_STABLE</div>
+<p class="text-sm text-on-surface-variant leading-tight">hs-CRP levels measured at 0.4mg/L. No acute intervention required for this cycle.</p>
+</div>
+</div>
+<button class="w-full border border-secondary text-on-surface font-label-caps text-label-caps py-sm hover:bg-primary hover:text-on-primary transition-all active:scale-95 medical-glow">
+                            GENERATE_FULL_CLINICAL_REPORT
+                        </button>
+</div>
+</div>
+<!-- Comparison Clusters (Bottom Section) -->
+<section class="space-y-md">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant">POPULATION_COMPARISON_METRICS</h2>
+<div class="grid grid-cols-2 md:grid-cols-4 gap-gutter">
+<div class="border border-outline-variant p-md bg-surface-container-low/50">
+<div class="font-data-mono-sm text-data-mono-sm text-on-secondary-container mb-xs">BRAIN_HEALTH</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">98</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">/100</span>
+</div>
+</div>
+<div class="border border-outline-variant p-md bg-surface-container-low/50">
+<div class="font-data-mono-sm text-data-mono-sm text-on-secondary-container mb-xs">HEART_RATE_VAR</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">112</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">ms</span>
+</div>
+</div>
+<div class="border border-outline-variant p-md bg-surface-container-low/50">
+<div class="font-data-mono-sm text-data-mono-sm text-on-secondary-container mb-xs">BONE_DENSITY</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">+1.8</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">Z-SCORE</span>
+</div>
+</div>
+<div class="border border-outline-variant p-md bg-surface-container-low/50">
+<div class="font-data-mono-sm text-data-mono-sm text-on-secondary-container mb-xs">SKIN_AGE_VAL</div>
+<div class="flex items-baseline gap-xs">
+<span class="font-headline-md text-headline-md text-primary">28</span>
+<span class="font-data-mono-sm text-data-mono-sm text-on-surface-variant">YEARS</span>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Spacer for bottom padding -->
+<div class="h-xl"></div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only suppression handled via CSS) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center h-20 pb-safe px-xs bg-surface/80 backdrop-blur-2xl border-t border-outline-variant">
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="view_in_ar">view_in_ar</span>
+<span class="font-label-caps text-label-caps">Explorer</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary-container drop-shadow-[0_0_8px_rgba(0,209,255,0.4)] active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-caps text-label-caps">Dashboard</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="insights">insights</span>
+<span class="font-label-caps text-label-caps">Trends</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="medical_services">medical_services</span>
+<span class="font-label-caps text-label-caps">Protocols</span>
+</div>
+<div class="flex flex-col items-center justify-center text-on-surface-variant active:scale-95 duration-200">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-label-caps text-label-caps">Vault</span>
+</div>
+</nav>
+</body></html>

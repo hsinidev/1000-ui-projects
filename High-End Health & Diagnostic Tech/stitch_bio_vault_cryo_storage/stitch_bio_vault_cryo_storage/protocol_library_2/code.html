@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELL_STORE_v1.0 | Protocol Library</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .flicker-animation-on-hover:hover {
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #39ff14;
+            box-shadow: 0 0 15px #39ff14;
+            animation: scan 4s linear infinite;
+            z-index: 10;
+        }
+        @keyframes scan {
+            0% { top: -10% }
+            100% { top: 110% }
+        }
+        body {
+            background-color: #000000;
+            color: #e2e2e2;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#131313",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed-dim": "#2ae500",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#107100",
+                        "on-tertiary-container": "#626161",
+                        "on-primary-fixed-variant": "#095300",
+                        "primary-container": "#39ff14",
+                        "background": "#131313",
+                        "surface-tint": "#2ae500",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-secondary": "#2f3131",
+                        "primary-fixed": "#79ff5b",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-container": "#e0dddc",
+                        "surface-container-low": "#1b1b1b",
+                        "outline": "#85967c",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "secondary-container": "#454747",
+                        "surface-bright": "#393939",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "secondary": "#c6c6c7",
+                        "surface": "#131313",
+                        "on-primary-fixed": "#022100",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface": "#e2e2e2",
+                        "on-primary": "#053900",
+                        "inverse-primary": "#106e00",
+                        "on-surface-variant": "#baccb0",
+                        "surface-container-highest": "#353535",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#fdf9f9",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-background": "#e2e2e2",
+                        "outline-variant": "#3c4b35",
+                        "primary": "#efffe3",
+                        "surface-container": "#1f1f1f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#303030",
+                        "secondary-fixed": "#e2e2e2",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xl": "48px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "margin": "32px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-base": ["Inter"],
+                        "data-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-background min-h-screen flex flex-col font-body-base">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background border-b border-on-surface-variant dark:border-outline-variant w-full top-0 left-0 z-50">
+<div class="flex justify-between items-center w-full px-md py-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed">security</span>
+<span class="font-data-lg text-data-lg font-bold tracking-widest text-primary dark:text-primary-fixed">CELL_STORE_v1.0</span>
+</div>
+<div class="hidden md:flex items-center gap-lg">
+<nav class="flex gap-md">
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-100" href="#">VAULT</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-100" href="#">VIABILITY</a>
+<a class="font-label-caps text-label-caps text-primary border-b-2 border-primary" href="#">PROTOCOLS</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-100" href="#">LEGAL</a>
+<a class="font-label-caps text-label-caps text-secondary hover:text-primary transition-colors duration-100" href="#">TRANSFER</a>
+</nav>
+</div>
+<button class="material-symbols-outlined text-primary dark:text-primary-fixed flicker-animation-on-hover">settings_input_component</button>
+</div>
+</header>
+<div class="flex flex-1 overflow-hidden">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden md:flex flex-col h-full w-64 border-r border-primary bg-background p-lg scanning-line-overlay">
+<div class="flex flex-col mb-xl">
+<div class="flex items-center gap-md mb-md">
+<div class="w-12 h-12 border border-primary p-unit">
+<img alt="Operator Avatar" class="w-full h-full object-cover" data-alt="A pixelated, high-contrast avatar of a medical operator wearing advanced biometric goggles. The art style is minimalist and brutalist, featuring sharp edges and a primary color palette of neon green and deep black. The background is a dark, clinical laboratory environment with glowing data streams." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfCZlAw0hkB_3X18nlX2Ni11HJewyvu0kTZDM-DAri-PCE0z4u0faNOTXfR1VyeXBxGUnhrV7tm7hmC2RaZY0HJ4L1nE5Tf3tTZenNlfC6_ux1lmSSR0G8_f6wuVvWbssFDGP7HjoEM4nN91z517olSmdKC2DlSPNljfgyfR129qmUatac7WIO5a8bZPxHQxwmxd_IidAkRVMAQmdGsP5NVxOAMtEi9VEnsxCo30ZPZ6rS7d4g2R2obdH2O9hkxS9EnWK2_DgW9sI"/>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-primary">OPERATOR_082</div>
+<div class="font-data-sm text-data-sm text-secondary">ENCRYPTION_LEVEL_05</div>
+</div>
+</div>
+<div class="font-label-caps text-[10px] text-primary-container bg-on-primary px-xs py-unit self-start">SYSTEM_ACTIVE</div>
+</div>
+<nav class="flex flex-col gap-unit">
+<a class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">hub</span> NODE_STATUS
+                </a>
+<a class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">enhanced_encryption</span> BIO_ENCRYPTION
+                </a>
+<a class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">monitor_heart</span> SYSTEM_PULSE
+                </a>
+<hr class="border-outline-variant my-md"/>
+<a class="flex items-center gap-md p-sm text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all font-label-caps text-label-caps" href="#">
+<span class="material-symbols-outlined">logout</span> SECURE_LOGOUT
+                </a>
+</nav>
+<div class="mt-auto border border-outline-variant p-sm">
+<div class="font-label-caps text-[9px] text-secondary mb-xs">TERMINAL_REF</div>
+<div class="font-data-sm text-data-sm text-primary">UX-99-ALPHA</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 overflow-y-auto bg-black p-margin relative">
+<!-- Search & Filter Bar -->
+<div class="flex flex-col md:flex-row justify-between items-end gap-lg mb-xl border-b border-surface-variant pb-lg">
+<div class="w-full md:w-1/2">
+<label class="font-label-caps text-label-caps text-primary mb-sm block">SEQUENCE_SEARCH</label>
+<div class="relative group">
+<input class="w-full bg-transparent border-b-2 border-white focus:border-primary-container text-primary font-data-lg text-data-lg py-sm px-unit outline-none transition-all placeholder:text-secondary-fixed-dim placeholder:opacity-30" placeholder="ENTER PROTOCOL ID OR SOP KEYWORD..." type="text"/>
+<div class="absolute right-0 bottom-2 material-symbols-outlined text-secondary group-focus-within:text-primary-container">search</div>
+</div>
+</div>
+<div class="flex gap-md w-full md:w-auto">
+<div class="border border-white p-unit flex items-center gap-sm px-md hover:border-primary-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[18px]">filter_list</span>
+<span class="font-label-caps text-label-caps">FILTER_STATUS</span>
+</div>
+<div class="border border-white p-unit flex items-center gap-sm px-md hover:border-primary-container cursor-pointer transition-colors">
+<span class="material-symbols-outlined text-[18px]">sort</span>
+<span class="font-label-caps text-label-caps">SORT_SEQ</span>
+</div>
+</div>
+</div>
+<!-- Protocol Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-surface-variant">
+<!-- Protocol Card 1 -->
+<div class="border-r border-b border-surface-variant p-lg hover:bg-surface-container-low transition-all group relative overflow-hidden">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-xs">SOP-01</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">REF_ID: 882-QX</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-md group-hover:text-primary-container transition-colors">CRYO_STASIS_INIT</h3>
+<p class="font-body-base text-secondary text-sm mb-lg leading-relaxed">Standard procedure for the rapid thermal reduction of cellular biological assets to -196°C using liquid nitrogen immersion protocols.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-unit">
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+</div>
+<button class="bg-primary-container text-black px-md py-unit font-label-caps text-label-caps flicker-animation-on-hover">EXECUTE</button>
+</div>
+</div>
+<!-- Protocol Card 2 -->
+<div class="border-r border-b border-surface-variant p-lg hover:bg-surface-container-low transition-all group relative overflow-hidden">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-xs">SOP-02</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">REF_ID: 104-ML</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-md group-hover:text-primary-container transition-colors">GENOME_INTEGRITY_V2</h3>
+<p class="font-body-base text-secondary text-sm mb-lg leading-relaxed">Automated verification sequence for detecting nucleotide degradation in high-value genetic markers post-transportation.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-unit">
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+</div>
+<button class="bg-transparent border border-white text-white px-md py-unit font-label-caps text-label-caps hover:bg-white hover:text-black transition-all">VIEW_DOCS</button>
+</div>
+</div>
+<!-- Protocol Card 3 -->
+<div class="border-r border-b border-surface-variant p-lg hover:bg-surface-container-low transition-all group relative overflow-hidden">
+<div class="absolute top-0 right-0 p-unit">
+<span class="material-symbols-outlined text-error text-[18px]">emergency</span>
+</div>
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-error border border-error px-xs">SOP-03</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">REF_ID: ERR-00</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-md group-hover:text-error transition-colors">CONTAINMENT_BREACH</h3>
+<p class="font-body-base text-secondary text-sm mb-lg leading-relaxed">Emergency lockout and sterilization sequence to be engaged only in the event of primary barrier failure or bio-hazard leakage.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-unit">
+<div class="w-2 h-2 bg-error"></div>
+<div class="w-2 h-2 bg-error"></div>
+<div class="w-2 h-2 bg-error"></div>
+<div class="w-2 h-2 bg-error"></div>
+</div>
+<button class="bg-error text-black px-md py-unit font-label-caps text-label-caps hover:bg-error-container transition-all">VIEW_ALPHA</button>
+</div>
+</div>
+<!-- Protocol Card 4 -->
+<div class="border-r border-b border-surface-variant p-lg hover:bg-surface-container-low transition-all group relative overflow-hidden">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-xs">SOP-04</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">REF_ID: 992-ZZ</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-md group-hover:text-primary-container transition-colors">NEURAL_MAPPING_SYX</h3>
+<p class="font-body-base text-secondary text-sm mb-lg leading-relaxed">Complex documentation for the conversion of synaptic patterns into digital storage arrays for redundant preservation.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-unit">
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+</div>
+<button class="bg-primary-container text-black px-md py-unit font-label-caps text-label-caps flicker-animation-on-hover">EXECUTE</button>
+</div>
+</div>
+<!-- Protocol Card 5 -->
+<div class="border-r border-b border-surface-variant p-lg hover:bg-surface-container-low transition-all group relative overflow-hidden">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-primary-container border border-primary-container px-xs">SOP-05</span>
+<span class="font-data-sm text-data-sm text-secondary opacity-50">REF_ID: 441-VB</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-white mb-md group-hover:text-primary-container transition-colors">RETRIEVAL_SEQ_09</h3>
+<p class="font-body-base text-secondary text-sm mb-lg leading-relaxed">Multi-stage decryption and physical extraction sequence for authorized tier-1 asset holders only.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="flex gap-unit">
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 bg-primary-container"></div>
+<div class="w-2 h-2 border border-primary-container"></div>
+</div>
+<button class="bg-transparent border border-white text-white px-md py-unit font-label-caps text-label-caps hover:bg-white hover:text-black transition-all">VIEW_DOCS</button>
+</div>
+</div>
+<!-- Protocol Card 6 (Bento style highlight) -->
+<div class="border-r border-b border-primary-container p-lg bg-surface-container-low transition-all group relative overflow-hidden scanning-line-overlay">
+<div class="flex justify-between items-start mb-lg">
+<span class="font-label-caps text-[10px] text-black bg-primary-container px-xs font-bold">ACTIVE_ENCRYPTION</span>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">enhanced_encryption</span>
+</div>
+<h3 class="font-headline-md text-headline-md text-primary-container mb-md">VAULT_LOCKDOWN_SYS</h3>
+<p class="font-body-base text-primary text-sm mb-lg leading-relaxed font-semibold">The master protocol for entire facility isolation. Updates every 4096ms via hardware random number generation.</p>
+<div class="flex items-center justify-between mt-auto">
+<div class="font-data-sm text-data-sm text-primary-container">SEQ: 0xFF-00-11-AA</div>
+<button class="bg-white text-black px-md py-unit font-label-caps text-label-caps font-bold">HARDENED_ACCESS</button>
+</div>
+</div>
+</div>
+<!-- Floating Data Indicators -->
+<div class="fixed bottom-margin right-margin flex flex-col gap-sm z-40 items-end">
+<div class="bg-background border border-primary p-md flex items-center gap-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-secondary">ENCRYPTION_STATUS</span>
+<span class="font-data-sm text-data-sm text-primary">HARDENED_AES_256</span>
+</div>
+<span class="material-symbols-outlined text-primary-container" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+</div>
+<div class="bg-background border border-outline-variant p-md flex items-center gap-md">
+<div class="flex flex-col">
+<span class="font-label-caps text-[9px] text-secondary">SYSTEM_PULSE</span>
+<span class="font-data-sm text-data-sm text-primary">72_BPM_NOMINAL</span>
+</div>
+<div class="w-4 h-4 rounded-full bg-primary-container animate-pulse shadow-[0_0_8px_#39ff14]"></div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<footer class="md:hidden fixed bottom-0 w-full z-50 border-t border-on-surface-variant dark:border-outline-variant bg-background">
+<div class="flex justify-around items-center w-full py-sm">
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined">ac_unit</span>
+<span class="font-label-caps text-label-caps">VAULT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined">biotech</span>
+<span class="font-label-caps text-label-caps">VIABILITY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit scale-95 duration-75">
+<span class="material-symbols-outlined">menu_book</span>
+<span class="font-label-caps text-label-caps">PROTOCOLS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-label-caps text-label-caps">LEGAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined">swap_horiz</span>
+<span class="font-label-caps text-label-caps">TRANSFER</span>
+</div>
+</div>
+</footer>
+</body></html>

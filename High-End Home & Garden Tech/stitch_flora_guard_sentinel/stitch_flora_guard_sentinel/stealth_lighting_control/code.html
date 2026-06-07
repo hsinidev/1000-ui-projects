@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FLORA-SECURITY | Stealth Lighting Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&amp;family=JetBrains+Mono:wght@500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary": "#293041",
+            "secondary-container": "#484949",
+            "inverse-primary": "#575e70",
+            "surface-bright": "#39393a",
+            "surface-container-high": "#2a2a2b",
+            "on-primary-fixed": "#141c2b",
+            "surface-container-lowest": "#0e0e0f",
+            "on-tertiary-fixed": "#1b1c1c",
+            "on-background": "#e4e2e3",
+            "outline": "#8f9097",
+            "on-error-container": "#ffdad6",
+            "on-tertiary-container": "#7e7d7d",
+            "on-surface": "#e4e2e3",
+            "error": "#ffb4ab",
+            "tertiary-fixed-dim": "#c8c6c6",
+            "surface-dim": "#131314",
+            "background": "#131314",
+            "secondary-fixed": "#e3e2e2",
+            "surface-container-highest": "#353436",
+            "primary-fixed-dim": "#bfc6db",
+            "on-surface-variant": "#c6c6cd",
+            "on-primary-container": "#767d90",
+            "tertiary-fixed": "#e4e2e1",
+            "on-primary-fixed-variant": "#3f4758",
+            "surface": "#131314",
+            "on-error": "#690005",
+            "on-tertiary-fixed-variant": "#474747",
+            "tertiary-container": "#121212",
+            "tertiary": "#c8c6c6",
+            "on-tertiary": "#303030",
+            "error-container": "#93000a",
+            "primary-container": "#0a1221",
+            "on-secondary": "#2f3131",
+            "on-secondary-fixed": "#1a1c1c",
+            "inverse-surface": "#e4e2e3",
+            "primary-fixed": "#dbe2f8",
+            "surface-tint": "#bfc6db",
+            "surface-container": "#1f1f21",
+            "surface-container-low": "#1b1b1d",
+            "primary": "#bfc6db",
+            "outline-variant": "#45474c",
+            "surface-variant": "#353436",
+            "secondary": "#c6c6c6",
+            "inverse-on-surface": "#303031",
+            "on-secondary-container": "#b8b8b8",
+            "on-secondary-fixed-variant": "#464747",
+            "secondary-fixed-dim": "#c6c6c6"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "panel-padding": "20px",
+            "unit": "4px",
+            "gutter": "16px",
+            "margin": "24px"
+          },
+          "fontFamily": {
+            "headline-lg": ["JetBrains Mono"],
+            "label-sm": ["JetBrains Mono"],
+            "data-display": ["JetBrains Mono"],
+            "body-md": ["Inter"],
+            "headline-xl": ["JetBrains Mono"]
+          },
+          "fontSize": {
+            "headline-lg": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+            "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+            "data-display": ["14px", {"lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "500"}],
+            "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+            "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    .glass-panel {
+      background: rgba(19, 19, 20, 0.8);
+      backdrop-filter: blur(20px);
+      border: 1px solid rgba(191, 198, 219, 0.1);
+    }
+    .silver-trim {
+      border: 1px solid rgba(191, 198, 219, 0.2);
+    }
+    .silver-aura {
+      box-shadow: 0 0 15px rgba(191, 198, 219, 0.15);
+    }
+    input[type="range"] {
+      -webkit-appearance: none;
+      background: #1f1f21;
+      height: 4px;
+      border-radius: 2px;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 16px;
+      width: 16px;
+      background: #bfc6db;
+      border-radius: 0;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(191, 198, 219, 0.4);
+    }
+    .status-chip {
+      padding: 2px 8px;
+      border: 1px solid currentColor;
+      font-size: 10px;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background min-h-screen font-body-md overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-dim/80 backdrop-blur-xl border-b border-outline-variant/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">shield</span>
+<h1 class="font-headline-lg text-headline-lg tracking-tighter text-on-surface">FLORA-SECURITY</h1>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-colors cursor-pointer">sensors</span>
+</div>
+</header>
+<main class="pt-24 pb-32 px-margin max-w-lg mx-auto">
+<!-- System Status Banner -->
+<div class="glass-panel silver-trim p-panel-padding mb-gutter flex justify-between items-center">
+<div>
+<p class="font-label-sm text-label-sm text-outline uppercase tracking-widest">System Status</p>
+<p class="font-headline-lg text-headline-lg text-primary">STEALTH ACTIVE</p>
+</div>
+<div class="status-chip text-primary border-primary/30 uppercase font-label-sm">Secure</div>
+</div>
+<!-- Zone Selector -->
+<section class="mb-gutter">
+<h2 class="font-label-sm text-label-sm text-outline uppercase mb-4 tracking-widest">Zone Selector</h2>
+<div class="grid grid-cols-2 gap-unit">
+<!-- Active Zone -->
+<button class="glass-panel silver-trim silver-aura p-4 text-left group transition-all active:scale-95">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-primary">videocam</span>
+<div class="w-2 h-2 bg-primary shadow-[0_0_8px_#bfc6db]"></div>
+</div>
+<p class="font-label-sm text-label-sm text-primary">NORTH PERIMETER</p>
+<p class="text-[10px] font-data-display text-outline mt-1">LUM: 12% | IR: ON</p>
+</button>
+<!-- Inactive Zone -->
+<button class="glass-panel border-outline-variant/20 p-4 text-left opacity-60 hover:opacity-100 transition-all active:scale-95">
+<div class="flex justify-between items-start mb-2">
+<span class="material-symbols-outlined text-outline">map</span>
+<div class="w-2 h-2 bg-outline-variant"></div>
+</div>
+<p class="font-label-sm text-label-sm text-on-surface-variant">GARDEN WALKWAY</p>
+<p class="text-[10px] font-data-display text-outline mt-1">LUM: 0% | IR: STBY</p>
+</button>
+</div>
+</section>
+<!-- Lighting Controls -->
+<section class="glass-panel silver-trim p-panel-padding mb-gutter">
+<div class="flex items-center justify-between mb-6">
+<h2 class="font-label-sm text-label-sm text-outline uppercase tracking-widest">Low-Spectrum Output</h2>
+<span class="font-data-display text-primary">340nm / 14W</span>
+</div>
+<!-- Intensity Slider -->
+<div class="mb-8">
+<div class="flex justify-between mb-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">INTENSITY</label>
+<span class="font-data-display text-on-surface">45%</span>
+</div>
+<input class="w-full cursor-pointer accent-primary" type="range" value="45"/>
+</div>
+<!-- Spectrum Slider -->
+<div>
+<div class="flex justify-between mb-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">SPECTRUM SHIFT</label>
+<span class="font-data-display text-on-surface">INFRARED</span>
+</div>
+<input class="w-full cursor-pointer accent-primary" type="range" value="80"/>
+</div>
+</section>
+<!-- Rapid Actions -->
+<section class="space-y-unit">
+<h2 class="font-label-sm text-label-sm text-outline uppercase mb-4 tracking-widest">Tactical Overrides</h2>
+<!-- Silent Alarm Toggle -->
+<div class="glass-panel silver-trim p-4 flex items-center justify-between transition-colors hover:bg-surface-container">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-on-surface-variant">notifications_off</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface">SILENT ALARM</p>
+<p class="text-[10px] font-data-display text-outline">Haptic pulse alert only</p>
+</div>
+</div>
+<div class="w-12 h-6 bg-primary-container border border-primary/30 relative cursor-pointer">
+<div class="absolute top-1 left-1 w-4 h-4 bg-primary shadow-[0_0_5px_#bfc6db]"></div>
+</div>
+</div>
+<!-- Rapid Illuminate Toggle -->
+<div class="glass-panel border-outline-variant/20 p-4 flex items-center justify-between transition-colors hover:bg-surface-container">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-error">flare</span>
+<div>
+<p class="font-label-sm text-label-sm text-on-surface">RAPID ILLUMINATE</p>
+<p class="text-[10px] font-data-display text-outline">100% visible spectrum burst</p>
+</div>
+</div>
+<div class="w-12 h-6 bg-surface-container-highest border border-outline-variant relative cursor-pointer">
+<div class="absolute top-1 right-1 w-4 h-4 bg-outline"></div>
+</div>
+</div>
+</section>
+<!-- Tactical Map Placeholder -->
+<div class="mt-8 relative h-48 w-full overflow-hidden silver-trim">
+<img alt="Perimeter Map" class="w-full h-full object-cover opacity-40 grayscale" data-alt="A dark, high-contrast aerial satellite view of an industrial facility at night with glowing blue perimeter lines and infrared heat map overlays. The aesthetic is military surveillance with sharp graphical data elements, thin silver grids, and a deep midnight blue color palette. Precise technical annotations indicate sensor points and gate locations in a monospaced font." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDnVWl8EoWTLkj1rinhdA2n8yVeHqeB31M1AcfsV3thIrc_bY0HIXt26Lvcl_R1XfEgVYiIFH-ZQS6z4txnyktEdZ4idbtitAM6xl40v8-4A7g3y5LKDJEnr5mGVJXkKOPHXnA1w4mwiHznAW3AfTwaS5vwYGqbzqmzVs-gLdvt_X1fV25_RJkVxxnR1XyvR6B04b4C9VfnkfWvhc7Wq8PydePB3yQiP4XJtOfqIJYAUt86xDPWojWe-XE9RZ-vpFnZPmb4htW7Ay0t"/>
+<div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+<div class="absolute top-4 left-4 glass-panel px-2 py-1 silver-trim">
+<p class="font-data-display text-[10px] text-primary">LIVE TELEMETRY: 04.22.91</p>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-2 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/20 z-50">
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">map</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Map</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">videocam</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Feeds</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">notification_important</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Alerts</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary brightness-125 active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">wb_twilight</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Lights</span>
+</a>
+<a class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors active:scale-90 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Archive</span>
+</a>
+</nav>
+</body></html>

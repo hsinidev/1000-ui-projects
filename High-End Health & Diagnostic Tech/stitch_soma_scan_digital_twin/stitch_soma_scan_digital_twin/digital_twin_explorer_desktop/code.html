@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SOMA-SCAN | Digital Twin Explorer</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+        }
+        .glass-panel {
+            background: rgba(18, 20, 20, 0.7);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(144, 144, 150, 0.15);
+        }
+        .glow-blue {
+            filter: drop-shadow(0 0 8px rgba(162, 231, 255, 0.4));
+        }
+        body {
+            background-color: #121414;
+            color: #e3e2e2;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-bright": "#38393a",
+                        "primary": "#c3c6d7",
+                        "outline-variant": "#46464c",
+                        "surface-container-high": "#292a2a",
+                        "on-surface-variant": "#c7c6cc",
+                        "on-secondary-fixed-variant": "#004e5f",
+                        "tertiary-container": "#170c01",
+                        "surface-tint": "#c3c6d7",
+                        "on-primary-container": "#777b8a",
+                        "on-primary-fixed-variant": "#434654",
+                        "surface-container-low": "#1a1c1c",
+                        "surface-container": "#1e2020",
+                        "on-error-container": "#ffdad6",
+                        "primary-fixed": "#dfe2f3",
+                        "surface-container-highest": "#333535",
+                        "error": "#ffb4ab",
+                        "surface-variant": "#333535",
+                        "surface": "#121414",
+                        "on-tertiary": "#3c2e1b",
+                        "on-secondary": "#003642",
+                        "tertiary-fixed-dim": "#dbc3a8",
+                        "surface-container-lowest": "#0d0e0f",
+                        "on-tertiary-fixed-variant": "#544430",
+                        "on-primary": "#2c303d",
+                        "on-tertiary-fixed": "#261908",
+                        "primary-fixed-dim": "#c3c6d7",
+                        "on-tertiary-container": "#8c7861",
+                        "inverse-primary": "#5a5e6d",
+                        "surface-dim": "#121414",
+                        "inverse-on-surface": "#2f3131",
+                        "secondary-fixed": "#b4ebff",
+                        "outline": "#909096",
+                        "on-surface": "#e3e2e2",
+                        "on-secondary-fixed": "#001f27",
+                        "background": "#121414",
+                        "primary-container": "#0a0e1a",
+                        "on-error": "#690005",
+                        "on-secondary-container": "#005669",
+                        "on-primary-fixed": "#171b28",
+                        "secondary": "#a2e7ff",
+                        "error-container": "#93000a",
+                        "tertiary-fixed": "#f8dec3",
+                        "tertiary": "#dbc3a8",
+                        "inverse-surface": "#e3e2e2",
+                        "on-background": "#e3e2e2",
+                        "secondary-fixed-dim": "#3cd7ff",
+                        "secondary-container": "#00d2fd"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "unit": "4px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "margin-page": "64px"
+                    },
+                    "fontFamily": {
+                        "data-mono": ["JetBrains Mono"],
+                        "headline-lg": ["Space Grotesk"],
+                        "body-sm": ["Inter"],
+                        "display-xl": ["Space Grotesk"],
+                        "body-main": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-mono": ["13px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                        "display-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-main": ["16px", {"lineHeight": "1.6", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+</head>
+<body class="overflow-hidden font-body-main text-body-main">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex items-center justify-between px-margin-page h-16 bg-surface/80 backdrop-blur-xl dark:bg-surface/80 border-b border-outline-variant/15 shadow-[0_0_20px_rgba(162,231,255,0.1)]">
+<div class="flex items-center gap-stack-md">
+<span class="material-symbols-outlined text-secondary" data-icon="clinical_notes">clinical_notes</span>
+<h1 class="font-headline-lg text-headline-lg font-bold text-on-surface tracking-tighter">SOMA-SCAN</h1>
+</div>
+<nav class="hidden md:flex items-center gap-gutter">
+<a class="font-data-mono text-data-mono uppercase text-secondary transition-colors drop-shadow-[0_0_8px_rgba(162,231,255,0.5)]" href="#">Digital Twin</a>
+<a class="font-data-mono text-data-mono uppercase text-outline opacity-60 hover:opacity-100 transition-opacity" href="#">Reports</a>
+<a class="font-data-mono text-data-mono uppercase text-outline opacity-60 hover:opacity-100 transition-opacity" href="#">Trends</a>
+<a class="font-data-mono text-data-mono uppercase text-outline opacity-60 hover:opacity-100 transition-opacity" href="#">Profile</a>
+</nav>
+<div class="flex items-center gap-stack-md">
+<div class="h-8 w-8 rounded-full bg-secondary-container/20 border border-secondary/30 flex items-center justify-center overflow-hidden">
+<img alt="Profile" data-alt="A clean, high-resolution portrait of a medical professional in a futuristic clinic. The individual has a focused, intelligent expression, wearing a sleek charcoal grey medical uniform. The background is a soft-focus laboratory with glowing blue interfaces and cold clinical lighting, maintaining a premium medical longevity aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPlkdjQ-OvcOapRU_Xeg1bVroMVQESsLtiItx-GJF7cRebZ4e-ijeCILqlYwO6r-ho8okZ4bm4QYLK5z1TjuFvwQnCBf7PLozTMDHW4uYYbsmVV9AH03p36K32QkUiuYQg_OZOS5gHXu6PeQCSxRD7hCi-j2b4w7PYGu9FIVhXyWYxbTUvW3f9HyrVSFaBj-Te0o-saWP0KTqwwxAGwHCBE39JzBQCMrCy7WKJ47j4zBeh-DvFMZt5sfrZFbCE7EEFkldIA6ouMxg"/>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- Left Navigation Drawer (Anatomy Layers) -->
+<aside class="h-full w-80 flex flex-col py-stack-lg bg-surface-container-high dark:bg-surface-container-high border-r border-outline-variant/20 shadow-2xl z-40">
+<div class="px-gutter mb-stack-lg">
+<h3 class="font-data-mono text-data-mono uppercase text-outline mb-2">System Vault</h3>
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-secondary" data-icon="lock" style="font-variation-settings: 'FILL' 1;">lock</span>
+<div>
+<p class="font-headline-lg text-body-main font-bold text-on-surface">Soma-Vault Secured</p>
+<p class="text-xs font-data-mono text-outline">ID: SS-99284-X</p>
+</div>
+</div>
+</div>
+<nav class="flex-1 px-4 space-y-1">
+<div class="px-4 py-3 bg-secondary-container/20 text-secondary-fixed border-l-2 border-secondary-fixed flex items-center gap-4 transition-all duration-300">
+<span class="material-symbols-outlined" data-icon="body_system">body_system</span>
+<span class="font-body-main text-body-main">Skeletal System</span>
+</div>
+<div class="px-4 py-3 text-on-surface-variant hover:bg-surface-bright/10 flex items-center gap-4 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="vital_signs">vital_signs</span>
+<span class="font-body-main text-body-main">Muscular Integrity</span>
+</div>
+<div class="px-4 py-3 text-on-surface-variant hover:bg-surface-bright/10 flex items-center gap-4 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="history">history</span>
+<span class="font-body-main text-body-main">Neural Pathways</span>
+</div>
+<div class="px-4 py-3 text-on-surface-variant hover:bg-surface-bright/10 flex items-center gap-4 transition-all duration-300 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-main text-body-main">Organ Metrics</span>
+</div>
+</nav>
+<div class="px-gutter pt-stack-lg mt-auto border-t border-outline-variant/10">
+<div class="flex items-center justify-between text-xs font-data-mono text-outline mb-4">
+<span>BIO-SYNC STATUS</span>
+<span class="text-secondary glow-blue">ACTIVE</span>
+</div>
+<div class="h-1 w-full bg-surface-container-highest overflow-hidden">
+<div class="h-full bg-secondary w-2/3 glow-blue"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content (Digital Twin Viewer) -->
+<main class="flex-1 relative bg-surface overflow-hidden">
+<!-- 3D Viewer Simulation -->
+<div class="absolute inset-0 z-0">
+<div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_rgba(0,210,253,0.08)_0%,_rgba(18,20,20,1)_80%)]"></div>
+<img alt="Anatomical Twin" class="w-full h-full object-contain opacity-80" data-alt="A highly detailed 3D digital anatomical twin of a human body, glowing in translucent cyan and medical-grade blue against a deep charcoal-indigo background. The render shows intricate skeletal structures and major vascular pathways through a glassmorphic aesthetic. The lighting is cold and clinical, emphasizing technical precision and scientific depth, with soft volumetric light beams intersecting the silhouette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCzAaQ_6IrnsGzapUliUwMH-cYDMcAdPgl6Gdg_o63gxJXy7lfB60XgtuoXwMHc_8qGK39Ab7ed7pTL97FnHkY6YFuzP2DyOip5SfU_id3GLU-zhVtLwv4RxYCq7eFO1AC_QgwhL8Io4rEw0jvPU8UhPE029InjId2SQGHmqpqf6cdTI_omLas8t3g7lFllkZC2Kwi4bZsZPRsNv5NdHAO2tcW9YdMyOFOgf6A3qS0WbeA2y_a7_mHuR4L8dPjnFc7n7p8Tg3y9XeM"/>
+</div>
+<!-- UI Overlay: Top Metrics -->
+<div class="absolute top-8 left-8 right-8 flex justify-between items-start z-10 pointer-events-none">
+<div class="pointer-events-auto">
+<div class="glass-panel p-stack-md rounded-xl">
+<div class="flex items-center gap-2 mb-1">
+<div class="w-2 h-2 rounded-full bg-secondary glow-blue"></div>
+<span class="font-data-mono text-[11px] text-outline uppercase tracking-widest">Digital Twin Active</span>
+</div>
+<h2 class="font-display-xl text-headline-lg text-on-surface">Subject-99284</h2>
+<div class="flex gap-4 mt-stack-md">
+<div class="border-l border-secondary/30 pl-3">
+<p class="text-xs font-data-mono text-outline">VO2 MAX</p>
+<p class="font-headline-lg text-xl text-secondary">54.2</p>
+</div>
+<div class="border-l border-secondary/30 pl-3">
+<p class="text-xs font-data-mono text-outline">BIO-AGE</p>
+<p class="font-headline-lg text-xl text-secondary">31.4</p>
+</div>
+</div>
+</div>
+</div>
+<div class="pointer-events-auto flex flex-col gap-4">
+<button class="glass-panel h-12 px-6 rounded-full flex items-center gap-3 text-secondary hover:bg-secondary/10 transition-colors border-secondary/20">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="font-data-mono text-xs uppercase tracking-tighter">Live Capture</span>
+</button>
+<button class="glass-panel h-12 px-6 rounded-full flex items-center gap-3 text-on-surface hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined" data-icon="share">share</span>
+<span class="font-data-mono text-xs uppercase tracking-tighter">Export Data</span>
+</button>
+</div>
+</div>
+<!-- UI Overlay: Bottom Controls -->
+<div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10">
+<div class="glass-panel p-2 rounded-full flex items-center gap-2">
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="zoom_in">zoom_in</span>
+</button>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="zoom_out">zoom_out</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/30 mx-2"></div>
+<button class="w-12 h-12 rounded-full bg-secondary text-on-secondary flex items-center justify-center glow-blue">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+<div class="h-6 w-px bg-outline-variant/30 mx-2"></div>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="rotate_90_degrees_ccw">rotate_90_degrees_ccw</span>
+</button>
+<button class="w-12 h-12 rounded-full flex items-center justify-center text-on-surface hover:bg-surface-bright/20 transition-colors">
+<span class="material-symbols-outlined" data-icon="layers">layers</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Right Sidebar (Telemetry & Biomarkers) -->
+<aside class="h-full w-96 bg-surface-container-low border-l border-outline-variant/20 flex flex-col z-40 overflow-y-auto">
+<div class="p-gutter border-b border-outline-variant/15">
+<h3 class="font-data-mono text-data-mono uppercase text-secondary mb-4 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="query_stats">query_stats</span>
+                    Telemetry Stream
+                </h3>
+<!-- Real-time Chart Simulation -->
+<div class="h-32 w-full glass-panel rounded-xl relative overflow-hidden mb-gutter">
+<div class="absolute inset-0 flex items-end gap-1 px-4">
+<div class="w-full bg-secondary/20 h-1/2"></div>
+<div class="w-full bg-secondary/30 h-2/3"></div>
+<div class="w-full bg-secondary/40 h-1/2"></div>
+<div class="w-full bg-secondary/20 h-3/4"></div>
+<div class="w-full bg-secondary/60 h-2/3"></div>
+<div class="w-full bg-secondary/40 h-1/2"></div>
+<div class="w-full bg-secondary/20 h-5/6"></div>
+</div>
+<div class="absolute top-2 left-4 text-[10px] font-data-mono text-outline">HEART RATE VARIABILITY (HRV)</div>
+<div class="absolute top-2 right-4 text-[10px] font-data-mono text-secondary">64 MS</div>
+</div>
+<div class="space-y-stack-md">
+<!-- Biomarker Item -->
+<div class="flex items-center justify-between p-stack-md glass-panel rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="ecg_heart">ecg_heart</span>
+<div>
+<p class="text-xs font-data-mono text-outline">BPM</p>
+<p class="font-headline-lg text-lg text-on-surface">72</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-data-mono text-outline">STABLE</p>
+<div class="flex gap-1 mt-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary/30"></div>
+<div class="w-1 h-3 bg-secondary/30"></div>
+</div>
+</div>
+</div>
+<!-- Biomarker Item -->
+<div class="flex items-center justify-between p-stack-md glass-panel rounded-xl">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-outline" data-icon="device_thermostat">device_thermostat</span>
+<div>
+<p class="text-xs font-data-mono text-outline">CORE TEMP</p>
+<p class="font-headline-lg text-lg text-on-surface">36.8°C</p>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[10px] font-data-mono text-outline">OPTIMAL</p>
+<div class="flex gap-1 mt-1">
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary"></div>
+<div class="w-1 h-3 bg-secondary/30"></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="p-gutter">
+<h3 class="font-data-mono text-data-mono uppercase text-outline mb-4">Anomalies Detected</h3>
+<div class="glass-panel p-4 rounded-xl border-error/20 bg-error/5 relative overflow-hidden">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-error"></div>
+<div class="flex gap-3">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div>
+<p class="text-xs font-data-mono text-error uppercase">Slight Joint Inflammation</p>
+<p class="text-xs text-on-surface-variant mt-1">L4-L5 Lumbar region shows minor fluid accumulation.</p>
+<button class="mt-3 text-xs font-data-mono text-secondary underline">View Detailed Slice</button>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-auto p-gutter bg-surface-container-highest/20">
+<div class="flex items-center justify-between mb-4">
+<span class="font-data-mono text-[10px] text-outline">LAST SYNC: 12 OCT 23</span>
+<span class="font-data-mono text-[10px] text-outline">14:02 GMT</span>
+</div>
+<button class="w-full h-12 bg-white text-black font-data-mono text-xs uppercase font-bold tracking-widest hover:bg-secondary transition-colors glow-blue">
+                    Run Full System Scan
+                </button>
+</div>
+</aside>
+</div>
+<!-- Hidden Mobile Navigation (As per Shared Components rules) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 rounded-t-xl bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-outline-variant/10 shadow-[0_-4px_24px_rgba(0,0,0,0.4)] flex justify-around items-center h-20 px-stack-md">
+<div class="flex flex-col items-center justify-center text-secondary drop-shadow-[0_0_8px_rgba(162,231,255,0.5)]">
+<span class="material-symbols-outlined" data-icon="body_system">body_system</span>
+<span class="font-data-mono text-[10px] uppercase mt-1">Twin</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline opacity-60">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-data-mono text-[10px] uppercase mt-1">Reports</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline opacity-60">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-data-mono text-[10px] uppercase mt-1">Trends</span>
+</div>
+<div class="flex flex-col items-center justify-center text-outline opacity-60">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-data-mono text-[10px] uppercase mt-1">Profile</span>
+</div>
+</nav>
+</body></html>

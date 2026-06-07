@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELL_STORE_v1.0 | Operator Logs</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "surface-dim": "#131313",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "surface-container-lowest": "#0e0e0e",
+                        "primary-fixed-dim": "#2ae500",
+                        "on-error-container": "#ffdad6",
+                        "on-primary-container": "#107100",
+                        "on-tertiary-container": "#626161",
+                        "on-primary-fixed-variant": "#095300",
+                        "primary-container": "#39ff14",
+                        "background": "#131313",
+                        "surface-tint": "#2ae500",
+                        "on-tertiary": "#313030",
+                        "on-secondary-fixed-variant": "#454747",
+                        "on-secondary": "#2f3131",
+                        "primary-fixed": "#79ff5b",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "tertiary-container": "#e0dddc",
+                        "surface-container-low": "#1b1b1b",
+                        "outline": "#85967c",
+                        "surface-container-high": "#2a2a2a",
+                        "tertiary-fixed": "#e5e2e1",
+                        "on-error": "#690005",
+                        "surface-variant": "#353535",
+                        "secondary-container": "#454747",
+                        "surface-bright": "#393939",
+                        "error-container": "#93000a",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "secondary": "#c6c6c7",
+                        "surface": "#131313",
+                        "on-primary-fixed": "#022100",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface": "#e2e2e2",
+                        "on-primary": "#053900",
+                        "inverse-primary": "#106e00",
+                        "on-surface-variant": "#baccb0",
+                        "surface-container-highest": "#353535",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#fdf9f9",
+                        "on-secondary-container": "#b4b5b5",
+                        "on-background": "#e2e2e2",
+                        "outline-variant": "#3c4b35",
+                        "primary": "#efffe3",
+                        "surface-container": "#1f1f1f",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "inverse-on-surface": "#303030",
+                        "secondary-fixed": "#e2e2e2",
+                        "error": "#ffb4ab"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "8px",
+                        "xl": "48px",
+                        "md": "16px",
+                        "lg": "24px",
+                        "margin": "32px",
+                        "unit": "4px",
+                        "xs": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["JetBrains Mono"],
+                        "data-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-base": ["Inter"],
+                        "data-sm": ["JetBrains Mono"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body { background-color: #000000; color: #e2e2e2; }
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #39ff14;
+            box-shadow: 0 0 15px #39ff14;
+            animation: scan 4s linear infinite;
+            opacity: 0.3;
+        }
+        @keyframes scan {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+        .flicker-animation-on-hover:hover {
+            animation: flicker 0.1s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+        .segmented-progress {
+            display: flex;
+            gap: 2px;
+        }
+        .progress-block {
+            width: 8px;
+            height: 16px;
+            background: #3c4b35;
+        }
+        .progress-block.active {
+            background: #39ff14;
+            box-shadow: 0 0 5px #39ff14;
+        }
+    </style>
+</head>
+<body class="font-body-base text-body-base bg-background selection:bg-primary-container selection:text-on-primary-container">
+<!-- TopAppBar -->
+<header class="w-full top-0 left-0 border-b border-on-surface-variant dark:border-outline-variant flex justify-between items-center px-md py-sm bg-background z-50 sticky">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-data-lg text-data-lg font-bold tracking-widest text-primary">CELL_STORE_v1.0</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-lg mr-lg">
+<span class="font-label-caps text-label-caps text-secondary uppercase cursor-pointer hover:text-primary transition-colors">VAULT</span>
+<span class="font-label-caps text-label-caps text-secondary uppercase cursor-pointer hover:text-primary transition-colors">VIABILITY</span>
+<span class="font-label-caps text-label-caps text-primary border-b-2 border-primary uppercase cursor-pointer">PROTOCOLS</span>
+<span class="font-label-caps text-label-caps text-secondary uppercase cursor-pointer hover:text-primary transition-colors">LEGAL</span>
+</div>
+<span class="material-symbols-outlined text-primary cursor-pointer flicker-animation-on-hover" data-icon="settings_input_component">settings_input_component</span>
+</div>
+</header>
+<div class="flex min-h-screen">
+<!-- NavigationDrawer -->
+<aside class="hidden lg:flex flex-col h-full w-64 border-r border-primary p-lg bg-background sticky top-[60px]">
+<div class="mb-xl">
+<div class="flex items-center gap-md mb-md">
+<div class="w-12 h-12 border border-primary p-unit">
+<img alt="Operator Avatar" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD7Cp7qS9Mhqw0rsix-fYMg7vvEKNHsWXAP8OysBb93wNA1TPwGB9za0j3UOS52LozZaz7roJ_gN-3CBwnBZnRG5_yx7QS6Pi_-qQh-O-nltRDCRu9yraIo3lZjW-AmMX0Gts8lqWNJe6GKLgImQ7oPAcOg0P4qUszLxe3ed5SWBlg2-eUK181Un3DHgmwXaHVKvByxR4V-1VT3toDGDPvgr6K1D3TP0CpYQiZ0k2KSwpyix4eR8zwsgTUvHDN28kreTImqMfwoKng"/>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-primary">OPERATOR_082</p>
+<p class="font-data-sm text-data-sm text-secondary">ENCRYPTION_LEVEL_05</p>
+</div>
+</div>
+<div class="px-sm py-xs border border-outline-variant inline-block">
+<p class="font-data-sm text-data-sm text-primary-fixed-dim">SYSTEM_ACTIVE</p>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<a class="flex items-center gap-md p-md text-secondary hover:bg-surface-container-high transition-all scanning-line-overlay" href="#">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps uppercase">SYSTEM_PULSE</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps uppercase">NODE_STATUS</span>
+</a>
+<a class="flex items-center gap-md p-md text-secondary hover:bg-surface-container-high transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps uppercase">BIO_ENCRYPTION</span>
+</a>
+<div class="mt-xl pt-xl border-t border-outline-variant">
+<a class="flex items-center gap-md p-md text-secondary hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps uppercase">SECURE_LOGOUT</span>
+</a>
+</div>
+</nav>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 p-margin lg:p-xl bg-surface-container-lowest">
+<div class="max-w-6xl mx-auto">
+<!-- Header Section -->
+<div class="mb-xl flex flex-col md:flex-row justify-between items-end gap-md">
+<div>
+<div class="flex items-center gap-sm mb-xs">
+<span class="font-data-sm text-data-sm text-primary">NODE_REF: 4492-X-LOG</span>
+</div>
+<h2 class="font-headline-xl text-headline-xl text-primary uppercase">Observation Central</h2>
+</div>
+<div class="border border-outline-variant p-md bg-background">
+<p class="font-label-caps text-label-caps text-secondary mb-xs">SPECIMEN INTEGRITY</p>
+<div class="segmented-progress">
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block active"></div>
+<div class="progress-block"></div>
+<div class="progress-block"></div>
+<div class="progress-block"></div>
+</div>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-12 gap-0 border border-outline-variant bg-outline-variant">
+<!-- Left Column: Entry Form -->
+<section class="col-span-12 lg:col-span-5 bg-background p-lg border-r border-outline-variant">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-primary uppercase">Submit Entry</h3>
+<span class="font-data-sm text-data-sm text-secondary">#LOG_FORM_02</span>
+</div>
+<form class="space-y-lg">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase">Specimen ID</label>
+<input class="w-full bg-transparent border-b-2 border-on-surface-variant focus:border-primary-container outline-none py-sm font-data-lg text-data-lg text-primary placeholder:opacity-30" placeholder="CRY_882_ALPHA" type="text"/>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase">Observation Data</label>
+<textarea class="w-full bg-transparent border-b-2 border-on-surface-variant focus:border-primary-container outline-none py-sm font-body-base text-on-surface placeholder:opacity-30 resize-none" placeholder="Document all micro-cellular fluctuations..." rows="6"></textarea>
+</div>
+<div class="grid grid-cols-2 gap-md">
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase">Log Priority</label>
+<select class="w-full bg-background border border-outline-variant text-primary font-data-sm p-sm focus:border-primary-container outline-none">
+<option>ROUTINE</option>
+<option>ELEVATED</option>
+<option>CRITICAL</option>
+</select>
+</div>
+<div class="space-y-xs">
+<label class="font-label-caps text-label-caps text-secondary uppercase">Peer Verification</label>
+<div class="flex items-center h-[42px]">
+<input class="accent-primary-container h-5 w-5 bg-background border-primary" id="verify" type="checkbox"/>
+<label class="ml-md font-data-sm text-data-sm text-secondary" for="verify">REQUIRED</label>
+</div>
+</div>
+</div>
+<button class="w-full bg-primary-container text-on-primary-container font-label-caps p-md uppercase font-bold flicker-animation-on-hover transition-transform active:scale-95 flex justify-center items-center gap-md" type="submit">
+<span class="material-symbols-outlined" data-icon="publish">publish</span>
+                                COMMENCE ENCRYPTION &amp; BROADCAST
+                            </button>
+</form>
+</section>
+<!-- Right Column: Activity Feed -->
+<section class="col-span-12 lg:col-span-7 bg-surface-container-low p-lg flex flex-col">
+<div class="flex justify-between items-center mb-lg">
+<h3 class="font-headline-md text-headline-md text-primary uppercase">Recent Observations</h3>
+<div class="flex gap-sm">
+<button class="p-xs border border-outline-variant hover:border-primary text-secondary hover:text-primary"><span class="material-symbols-outlined" data-icon="filter_list">filter_list</span></button>
+<button class="p-xs border border-outline-variant hover:border-primary text-secondary hover:text-primary"><span class="material-symbols-outlined" data-icon="refresh">refresh</span></button>
+</div>
+</div>
+<!-- Comment Feed -->
+<div class="flex-1 space-y-md overflow-y-auto pr-md max-h-[600px] custom-scrollbar">
+<!-- Comment Item -->
+<div class="border border-outline-variant bg-background p-md relative scanning-line-overlay">
+<div class="absolute top-0 right-0 p-xs bg-outline-variant font-data-sm text-[10px] text-primary">ID: 992-K</div>
+<div class="flex items-start gap-md">
+<div class="w-10 h-10 border border-primary-fixed-dim p-[2px] flex-shrink-0">
+<img alt="Operator" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCQiQvmJfwpQycbKC_XLOIx4GBH71dbWzY7Fu5jZIKs4U9tKtLILogLelnNJGqRVVlZt0C0YCnxmFkCFnOrTHche2zHZ-Q-8o2rlT5gu8jflZ9BI7YvZeKTV0xGUO_FwfZjOCaCfiiwjkzEAj-3kXmV8PZz1U1R-su0VJ39PPum-faQ2Z_tTfE4XC9giRJKQ4T2D6k4enVjZDAx61FFUl0cRlP47mmLtnk4QkgCi46Knma9TTLW6CjXWj_WtAIQ91Z6_VpPWT7SRRs"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-baseline mb-xs">
+<p class="font-label-caps text-label-caps text-primary">OPERATOR_044</p>
+<span class="font-data-sm text-[10px] text-secondary">14:02 UTC // 12-OCT</span>
+</div>
+<p class="text-on-surface text-sm border-l-2 border-primary-fixed-dim pl-md italic">
+                                            "Specimen CRY_882_ALPHA shows 4.2% increased mitochondrial activity. Recommending cooling sub-cycle to stabilize membrane."
+                                        </p>
+<div class="mt-md flex gap-md">
+<button class="font-label-caps text-[9px] text-secondary hover:text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="verified_user">verified_user</span> VERIFY (3)
+                                            </button>
+<button class="font-label-caps text-[9px] text-secondary hover:text-primary flex items-center gap-xs">
+<span class="material-symbols-outlined text-[14px]" data-icon="chat_bubble_outline">chat_bubble_outline</span> REVIEW
+                                            </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Comment Item (System Notification) -->
+<div class="border border-error-container bg-background/50 p-md border-l-4">
+<div class="flex items-start gap-md">
+<span class="material-symbols-outlined text-error" data-icon="warning">warning</span>
+<div class="flex-1">
+<p class="font-label-caps text-label-caps text-error mb-xs">SYSTEM_PULSE_ALERT</p>
+<p class="text-on-surface text-sm">
+                                            Unrecognized peer review attempt from terminal Node_X7. Security handshake failed. Logging event.
+                                        </p>
+</div>
+</div>
+</div>
+<!-- Comment Item -->
+<div class="border border-outline-variant bg-background p-md relative">
+<div class="absolute top-0 right-0 p-xs bg-outline-variant font-data-sm text-[10px] text-primary">ID: 987-L</div>
+<div class="flex items-start gap-md">
+<div class="w-10 h-10 border border-secondary p-[2px] flex-shrink-0">
+<img alt="Reviewer" class="w-full h-full object-cover grayscale" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0BqRGYetD14spTxveviEZzlGtoAyjLMFqMsYmRzwu-9551MLeK0bn30d678TlqAR2NRey_XEO6QtOxJG-8ouB3sfor3irdQ2NjXLmsca5q9IcbxMCVz15GANIw9MthaJrNaS1kwCy7kR61p92mFOMgWh4zZI3no5unFknjRzoU3gh9t4c_EKeS0Gf_ygCJtwAlQiOhkbpYspVbEGW1cqysuW8sHnZ7gc3QDOM_73t8E9at5HRD0hOsx9vOj0TsIicTfgkmXJd9Fk"/>
+</div>
+<div class="flex-1">
+<div class="flex justify-between items-baseline mb-xs">
+<p class="font-label-caps text-label-caps text-secondary">REVIEWER_BETA</p>
+<span class="font-data-sm text-[10px] text-secondary">09:15 UTC // 12-OCT</span>
+</div>
+<p class="text-on-surface-variant text-sm">
+                                            Protocol 08-B confirmed. All storage parameters are within legal variance for Tier-2 bio-assets.
+                                        </p>
+</div>
+</div>
+</div>
+<!-- Image Attachment Log -->
+<div class="border border-outline-variant bg-background p-md">
+<div class="mb-sm">
+<p class="font-label-caps text-label-caps text-primary">BIO_SCAN_ATTACHMENT</p>
+</div>
+<div class="w-full h-48 border border-outline-variant overflow-hidden relative group">
+<img class="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500" data-alt="A high-contrast macro photographic scan of biological cellular structures under a microscope. The image is rendered in deep shades of laboratory green and obsidian black, emphasizing the crystalline and organic complexity of a cell specimen. Sharp neon light highlights the cell wall edges, creating a clinical and futuristic aesthetic. The mood is scientific, precise, and highly secured." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCUzOPQWsSzUFOXGLG9RuT_lQvfKuHCJqj2gTJ8M8Z3At2Yo72CFl3SiTpx_jCBhnzgovu9u_8ojXEO0IIUrD9UUepIi1uHBqT-sKOqo8KxytPF3V2hdFAiT_uvlumgDeCszxFlwv8pRJr6Ulf8VzHWqOrB9V-NjWDWyTxVTbmYXJQ3pbSi0vY7wjA4GN9ugCSaUkZv22Bf9S-r5HUQ_ED8ZG9BeEoMWquWBYonNQkf4uqA1ElgI9aPIvF80tFB8hrVVRI34M1ycyw"/>
+<div class="absolute inset-0 bg-primary/10 pointer-events-none mix-blend-overlay"></div>
+<div class="absolute bottom-2 left-2 px-sm py-unit bg-black text-primary font-data-sm text-[10px]">TIMESTAMP: 2023.10.12.08:00:22</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Status Bar -->
+<div class="mt-lg grid grid-cols-1 md:grid-cols-3 gap-lg">
+<div class="border border-outline-variant p-md flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="hub">hub</span>
+<div>
+<p class="font-label-caps text-[9px] text-secondary uppercase">Connected Nodes</p>
+<p class="font-data-sm text-data-sm text-primary">12 ACTIVE / 0 LAGGING</p>
+</div>
+</div>
+<div class="border border-outline-variant p-md flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="encrypted">encrypted</span>
+<div>
+<p class="font-label-caps text-[9px] text-secondary uppercase">Encryption Status</p>
+<p class="font-data-sm text-data-sm text-primary">AES-512-BIT QUANTUM</p>
+</div>
+</div>
+<div class="border border-outline-variant p-md flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="timer">timer</span>
+<div>
+<p class="font-label-caps text-[9px] text-secondary uppercase">System Uptime</p>
+<p class="font-data-sm text-data-sm text-primary">99.9992% // 142D 08H</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 border-t border-on-surface-variant dark:border-outline-variant flex justify-around items-center py-sm bg-background">
+<div class="flex flex-col items-center justify-center text-secondary p-unit opacity-60">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+<span class="font-label-caps text-[8px]">VAULT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-unit opacity-60">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-[8px]">VIABILITY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-[8px]">PROTOCOLS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-unit opacity-60">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-[8px]">LEGAL</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary p-unit opacity-60">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-[8px]">TRANSFER</span>
+</div>
+</nav>
+</body></html>

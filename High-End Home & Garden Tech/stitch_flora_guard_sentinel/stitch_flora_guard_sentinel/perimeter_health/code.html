@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>FLORA-SECURITY | Perimeter Health Dashboard</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#293041",
+                    "secondary-container": "#484949",
+                    "inverse-primary": "#575e70",
+                    "surface-bright": "#39393a",
+                    "surface-container-high": "#2a2a2b",
+                    "on-primary-fixed": "#141c2b",
+                    "surface-container-lowest": "#0e0e0f",
+                    "on-tertiary-fixed": "#1b1c1c",
+                    "on-background": "#e4e2e3",
+                    "outline": "#8f9097",
+                    "on-error-container": "#ffdad6",
+                    "on-tertiary-container": "#7e7d7d",
+                    "on-surface": "#e4e2e3",
+                    "error": "#ffb4ab",
+                    "tertiary-fixed-dim": "#c8c6c6",
+                    "surface-dim": "#131314",
+                    "background": "#131314",
+                    "secondary-fixed": "#e3e2e2",
+                    "surface-container-highest": "#353436",
+                    "primary-fixed-dim": "#bfc6db",
+                    "on-surface-variant": "#c6c6cd",
+                    "on-primary-container": "#767d90",
+                    "tertiary-fixed": "#e4e2e1",
+                    "on-primary-fixed-variant": "#3f4758",
+                    "surface": "#131314",
+                    "on-error": "#690005",
+                    "on-tertiary-fixed-variant": "#474747",
+                    "tertiary-container": "#121212",
+                    "tertiary": "#c8c6c6",
+                    "on-tertiary": "#303030",
+                    "error-container": "#93000a",
+                    "primary-container": "#0a1221",
+                    "on-secondary": "#2f3131",
+                    "on-secondary-fixed": "#1a1c1c",
+                    "inverse-surface": "#e4e2e3",
+                    "primary-fixed": "#dbe2f8",
+                    "surface-tint": "#bfc6db",
+                    "surface-container": "#1f1f21",
+                    "surface-container-low": "#1b1b1d",
+                    "primary": "#bfc6db",
+                    "outline-variant": "#45474c",
+                    "surface-variant": "#353436",
+                    "secondary": "#c6c6c6",
+                    "inverse-on-surface": "#303031",
+                    "on-secondary-container": "#b8b8b8",
+                    "on-secondary-fixed-variant": "#464747",
+                    "secondary-fixed-dim": "#c6c6c6",
+                    "neon-green": "#39FF14",
+                    "alert-red": "#FF3131",
+                    "silver": "#C0C0C0",
+                    "midnight": "#0a1221"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "panel-padding": "20px",
+                    "unit": "4px",
+                    "gutter": "16px",
+                    "margin": "24px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["JetBrains Mono"],
+                    "label-sm": ["JetBrains Mono"],
+                    "data-display": ["JetBrains Mono"],
+                    "body-md": ["Inter"],
+                    "headline-xl": ["JetBrains Mono"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "600"}],
+                    "data-display": ["14px", {"lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "500"}],
+                    "body-md": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "headline-xl": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-panel {
+            background: rgba(19, 19, 20, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(192, 192, 192, 0.2);
+        }
+        .silver-trim {
+            border: 1px solid rgba(192, 192, 192, 0.4);
+        }
+        .neon-glow {
+            box-shadow: 0 0 10px rgba(57, 255, 20, 0.3);
+        }
+        .alert-pulse {
+            animation: pulse-red 2s infinite;
+        }
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(255, 49, 49, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(255, 49, 49, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(255, 49, 49, 0); }
+        }
+        .scanline {
+            background: linear-gradient(to bottom, transparent 50%, rgba(57, 255, 20, 0.05) 50%);
+            background-size: 100% 4px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md selection:bg-primary selection:text-on-primary min-h-screen pb-24">
+<!-- TopAppBar -->
+<header class="fixed top-0 w-full z-50 flex justify-between items-center px-panel-padding h-16 bg-surface-dim/80 backdrop-blur-xl border-b border-white/20">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary" data-icon="shield">shield</span>
+<h1 class="font-headline-lg text-headline-lg tracking-tighter text-on-surface">FLORA-SECURITY</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="flex items-center justify-center p-2 rounded hover:bg-white/5 transition-all duration-200">
+<span class="material-symbols-outlined text-primary" data-icon="sensors">sensors</span>
+</button>
+</div>
+</header>
+<main class="pt-20 px-4 max-w-4xl mx-auto space-y-6">
+<!-- Live Situation Map Panel -->
+<section class="relative w-full aspect-square md:aspect-video rounded-xl overflow-hidden glass-panel silver-trim shadow-2xl">
+<div class="absolute inset-0 z-0">
+<img class="w-full h-full object-cover opacity-60 grayscale brightness-50" data-alt="A top-down high-security thermal satellite view of a complex industrial perimeter at night. Dark forest areas surround a sharp metallic fence line. Overlaid on the image are technical vector lines in neon green representing active laser sensors and small digital telemetry data boxes. The overall mood is cold, tactical, and surveillance-heavy." data-location="Industrial Campus Perimeter" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDUc8Ae9iuLmHod2JaTKTPWosi0KJi--hOxz9WjoGZGCstpQ2rtqE8QW1dmifEJFxRWDVNx3T0OGVPJI_SctQdcFI5zYX1I_KxErqnIUGSPoe-tCBwXE_kxUMJpxj1gnjRkdiPlto_YedkqhA1l35wfBRN6DRxFHaBkp8W7wGMrpxTEvI8kQ5Zhgu4TLZRaXH1voMt93PPyejpTwPiLUjYTvIrnuM9h5bPKc9LdPg0uaI5qM5EUvC6PzY0LbSips3G8FLyWcfhdLZ3t"/>
+</div>
+<!-- Map HUD Overlays -->
+<div class="absolute inset-0 pointer-events-none p-4 flex flex-col justify-between">
+<div class="flex justify-between items-start">
+<div class="bg-black/60 backdrop-blur-md p-2 rounded-lg border border-neon-green/30">
+<p class="font-label-sm text-label-sm text-neon-green uppercase flex items-center gap-2">
+<span class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></span>
+                            Live Feed: Sector-04
+                        </p>
+<p class="font-data-display text-data-display text-silver/80 mt-1">LAT: 52.3791 | LON: 4.8994</p>
+</div>
+<div class="flex flex-col gap-2 pointer-events-auto">
+<button class="bg-silver text-midnight p-2 rounded shadow-lg flex items-center justify-center hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="bg-silver text-midnight p-2 rounded shadow-lg flex items-center justify-center hover:bg-white transition-colors">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+<!-- Laser Tripwire Visualization -->
+<div class="absolute inset-0 flex items-center justify-center">
+<svg class="w-full h-full opacity-70" viewbox="0 0 400 300">
+<!-- Secure Lines -->
+<path d="M 50 50 L 350 50" fill="transparent" stroke="#39FF14" stroke-dasharray="4 2" stroke-width="1.5"></path>
+<path d="M 350 50 L 350 250" fill="transparent" stroke="#39FF14" stroke-dasharray="4 2" stroke-width="1.5"></path>
+<!-- Breach Zone -->
+<path class="animate-pulse" d="M 350 250 L 50 250" fill="transparent" stroke="#FF3131" stroke-width="2.5"></path>
+<circle class="animate-ping" cx="200" cy="250" fill="#FF3131" r="8"></circle>
+<path d="M 50 250 L 50 50" fill="transparent" stroke="#39FF14" stroke-dasharray="4 2" stroke-width="1.5"></path>
+</svg>
+</div>
+<div class="flex justify-between items-end">
+<div class="glass-panel p-3 rounded-lg border-l-4 border-alert-red">
+<p class="font-label-sm text-label-sm text-alert-red uppercase">Breach Detected</p>
+<p class="font-data-display text-data-display text-on-surface">Sector-04 | HEDGE_LIDAR_22</p>
+</div>
+<div class="pointer-events-auto">
+<button class="bg-silver text-midnight px-4 py-2 font-label-sm text-label-sm flex items-center gap-2 rounded uppercase shadow-xl hover:brightness-110 active:scale-95 transition-all">
+<span class="material-symbols-outlined text-[18px]" data-icon="videocam">videocam</span>
+                            High-Res Feed
+                        </button>
+</div>
+</div>
+</div>
+<div class="absolute inset-0 scanline pointer-events-none"></div>
+</section>
+<!-- Monitoring Section -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Active Alerts -->
+<div class="space-y-4">
+<h3 class="font-label-sm text-label-sm text-outline flex items-center gap-2 px-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="warning">warning</span>
+                    ACTIVE ALERTS
+                </h3>
+<!-- Alert Card 1 (Critical) -->
+<div class="glass-panel p-4 border-l-4 border-alert-red relative overflow-hidden alert-pulse">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-headline-lg text-headline-lg text-on-surface leading-tight">PERIMETER BREACH</p>
+<p class="font-label-sm text-label-sm text-alert-red mt-1">IMMEDIATE INTERVENTION REQUIRED</p>
+</div>
+<span class="font-data-display text-data-display text-silver/60">02:41:09</span>
+</div>
+<div class="flex items-center gap-4 mt-4 pt-4 border-t border-white/10">
+<div>
+<p class="font-label-sm text-label-sm text-outline">SENSOR_ID</p>
+<p class="font-data-display text-data-display">HEDGE_LIDAR_22</p>
+</div>
+<div>
+<p class="font-label-sm text-label-sm text-outline">OBJECT_TYPE</p>
+<p class="font-data-display text-data-display">BIOLOGICAL_X</p>
+</div>
+</div>
+</div>
+<!-- Alert Card 2 (System) -->
+<div class="glass-panel p-4 silver-trim">
+<div class="flex justify-between items-start mb-2">
+<div>
+<p class="font-headline-lg text-headline-lg text-on-surface leading-tight">SYSTEM WARNING</p>
+<p class="font-label-sm text-label-sm text-silver mt-1">BATTERY LOW - SECTOR 09</p>
+</div>
+<span class="font-data-display text-data-display text-silver/60">02:38:44</span>
+</div>
+</div>
+</div>
+<!-- Health Status Panel -->
+<div class="space-y-4">
+<h3 class="font-label-sm text-label-sm text-outline flex items-center gap-2 px-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="health_and_safety">health_and_safety</span>
+                    SYSTEM HEALTH
+                </h3>
+<div class="glass-panel p-4 silver-trim h-full">
+<div class="space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-data-display text-data-display">Laser Grid Stability</span>
+<span class="font-label-sm text-label-sm text-neon-green">94% NOMINAL</span>
+</div>
+<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+<div class="bg-neon-green h-full w-[94%]"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-data-display text-data-display">Vegetation Interference</span>
+<span class="font-label-sm text-label-sm text-silver">LOW RISK</span>
+</div>
+<div class="w-full bg-white/10 h-1 rounded-full overflow-hidden">
+<div class="bg-silver h-full w-[12%]"></div>
+</div>
+<div class="grid grid-cols-2 gap-3 pt-4">
+<div class="bg-surface-container p-3 rounded silver-trim">
+<p class="font-label-sm text-label-sm text-outline">NODES ACTIVE</p>
+<p class="font-headline-lg text-headline-lg text-primary">128/130</p>
+</div>
+<div class="bg-surface-container p-3 rounded silver-trim">
+<p class="font-label-sm text-label-sm text-outline">SCAN RATE</p>
+<p class="font-headline-lg text-headline-lg text-primary">60 Hz</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Quick Access Feeds -->
+<section class="space-y-4">
+<h3 class="font-label-sm text-label-sm text-outline flex items-center gap-2 px-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="videocam">videocam</span>
+                SECONDARY FEEDS
+            </h3>
+<div class="grid grid-cols-3 gap-2">
+<div class="aspect-video glass-panel silver-trim overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-80 transition-opacity" data-alt="A static night-vision security camera view of a garden fence line. The image is monochrome green with high digital noise. Technical text at the top reads 'CAM-01 NORTH'. The lighting is surreal and high-contrast, emphasizing surveillance technology." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAPrOgUsmd9a-mM8WQdlBGC2t-us-PATvt82uzOMXm2_knbz1_7tXTeLEtQiJfkRJe4R-m5p_0DYKw3mYmItafPlJsLvv9xKvj9dTUj5j_GMjNwWmf4KBxEedYDlcc8DkGEBn2pq9ou1cKjic_NxK9VYzC6fmrNRY4kAuO5fkXvQOHWb479uD8q_qnoJ25FhwZFNH6_iOW_tjcS-iKLdX9nenCEonyOGN1v_qaD9KVHuTJleOI4FkYsXW9Zd4-Ix8CuStKTZpYPwZsK"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white" data-icon="play_circle">play_circle</span>
+</div>
+<span class="absolute bottom-1 right-1 font-label-sm text-[10px] text-white/50 px-1 bg-black/40">CAM-01</span>
+</div>
+<div class="aspect-video glass-panel silver-trim overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-80 transition-opacity" data-alt="A CCTV angle showing an empty parking lot under harsh fluorescent lighting at night. The image has a blueish security camera tint with scanline effects. At the corner of the frame, there are digital date and time stamps in a bright white technical font." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD-5vsUBjb9Zq38ByXo0dFq4pQZtsVtbZ2gHgIh_N1PRwkh3WMUFfy1Z_Q4g4V3NvFwQbqfoCs3Tk8p-iIfEzs4qILhy26kzzyswZx800anyKYwQQxu2PnqT690Mwxh45R5IQWXtA08EbJnaHpksIaNzd32E4jJo3t4qDqAea99kAXWpeWKzvEtQAJpgnKYmB7rHaGFRMNh-21rG0duSXK24EGKoGq05nNiCkgdC0he2u53lnlVOUxUJuyVjldeDuhNNsf4fEjyrce6"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white" data-icon="play_circle">play_circle</span>
+</div>
+<span class="absolute bottom-1 right-1 font-label-sm text-[10px] text-white/50 px-1 bg-black/40">CAM-02</span>
+</div>
+<div class="aspect-video glass-panel silver-trim overflow-hidden relative group cursor-pointer">
+<img class="w-full h-full object-cover grayscale opacity-50 group-hover:opacity-80 transition-opacity" data-alt="Close-up surveillance shot of high-tech security sensors mounted on a brick wall. The image is heavily processed with a midnight blue overlay and technical data graphics. Sharp silver highlights catch the moonlight, giving it an industrial, authoritative aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJgIUMILynnMEVkzd1GA2EJp_-_vp9K5pDcK0SEEZ6tsmDBE_wrgMq3QuLODhXQWXK983pcRN8hnz9wOe8MsvH-PnyUTuojSjE3HN6fL4sNLl8ZkHdA8Aw2CLb-qH8dJzKRqgCrWfb198WMunoUV06l4QiPWPNecCFVF6W2zig_7lM6Q1r0o7x0H7JHfqdYA5HZa2EqBvZfG3CNR3cjr-Czqemm7OOBBtQINKjMeUSAt4MG-GqE8Li37l9LZ3Y07DuhCA8ub5abEDf"/>
+<div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40">
+<span class="material-symbols-outlined text-white" data-icon="play_circle">play_circle</span>
+</div>
+<span class="absolute bottom-1 right-1 font-label-sm text-[10px] text-white/50 px-1 bg-black/40">CAM-03</span>
+</div>
+</div>
+</section>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full flex justify-around items-center h-20 px-4 pb-2 bg-surface-container-lowest/90 backdrop-blur-2xl border-t border-white/10 z-50">
+<button class="flex flex-col items-center justify-center text-primary dark:text-primary brightness-125">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Map</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Feeds</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="notification_important">notification_important</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Alerts</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="wb_twilight">wb_twilight</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Lights</span>
+</button>
+<button class="flex flex-col items-center justify-center text-outline dark:text-outline hover:text-on-surface transition-colors">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+<span class="font-label-sm text-label-sm uppercase mt-1">Archive</span>
+</button>
+</nav>
+<!-- Contextual FAB (Only on main dashboard) -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-silver text-midnight rounded shadow-2xl flex items-center justify-center active:scale-90 transition-transform duration-150 z-40 border border-white/20">
+<span class="material-symbols-outlined" data-icon="broadcast_on_home" data-weight="fill">broadcast_on_home</span>
+</button>
+</body></html>

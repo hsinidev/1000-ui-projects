@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CELL_STORE_v1.0 | VAULT_STATUS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(57, 255, 20, 0.05), transparent);
+            pointer-events: none;
+        }
+        .flicker-animation-on-hover:hover {
+            opacity: 0.8;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #39ff14;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "tertiary": "#fdf9f9",
+                      "secondary-fixed": "#e2e2e2",
+                      "on-tertiary-fixed": "#1c1b1b",
+                      "on-primary-fixed": "#022100",
+                      "secondary": "#c6c6c7",
+                      "secondary-container": "#454747",
+                      "inverse-primary": "#106e00",
+                      "on-primary": "#053900",
+                      "tertiary-fixed": "#e5e2e1",
+                      "primary-fixed": "#79ff5b",
+                      "surface-tint": "#2ae500",
+                      "on-error": "#690005",
+                      "on-tertiary-container": "#626161",
+                      "primary-container": "#39ff14",
+                      "primary-fixed-dim": "#2ae500",
+                      "tertiary-fixed-dim": "#c8c6c5",
+                      "background": "#131313",
+                      "surface-container-high": "#2a2a2a",
+                      "on-tertiary": "#313030",
+                      "surface-container-highest": "#353535",
+                      "secondary-fixed-dim": "#c6c6c7",
+                      "error": "#ffb4ab",
+                      "primary": "#efffe3",
+                      "on-secondary": "#2f3131",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-fixed-variant": "#095300",
+                      "surface-container-low": "#1b1b1b",
+                      "on-secondary-container": "#b4b5b5",
+                      "error-container": "#93000a",
+                      "on-error-container": "#ffdad6",
+                      "on-tertiary-fixed-variant": "#474746",
+                      "surface-dim": "#131313",
+                      "on-surface": "#e2e2e2",
+                      "on-background": "#e2e2e2",
+                      "surface": "#131313",
+                      "inverse-surface": "#e2e2e2",
+                      "on-surface-variant": "#baccb0",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "surface-variant": "#353535",
+                      "outline": "#85967c",
+                      "tertiary-container": "#e0dddc",
+                      "on-primary-container": "#107100",
+                      "inverse-on-surface": "#303030",
+                      "surface-bright": "#393939",
+                      "outline-variant": "#3c4b35",
+                      "surface-container": "#1f1f1f",
+                      "on-secondary-fixed-variant": "#454747"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "md": "16px",
+                      "unit": "4px",
+                      "sm": "8px",
+                      "margin": "32px",
+                      "xs": "4px",
+                      "gutter": "16px",
+                      "xl": "48px",
+                      "lg": "24px"
+              },
+              "fontFamily": {
+                      "data-sm": ["JetBrains Mono"],
+                      "label-caps": ["JetBrains Mono"],
+                      "body-base": ["Inter"],
+                      "headline-md": ["Inter"],
+                      "data-lg": ["JetBrains Mono"],
+                      "headline-xl": ["Inter"]
+              },
+              "fontSize": {
+                      "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                      "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                      "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                      "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base custom-scrollbar min-h-screen flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background border-b border-on-surface-variant dark:border-outline-variant flex justify-between items-center w-full px-md py-sm sticky top-0 z-50">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed" data-icon="security">security</span>
+<span class="font-data-lg text-data-lg font-bold tracking-widest text-primary dark:text-primary-fixed">CELL_STORE_v1.0</span>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md">
+<button class="font-label-caps text-label-caps text-primary flicker-animation-on-hover">VAULT</button>
+<button class="font-label-caps text-label-caps text-secondary flicker-animation-on-hover">VIABILITY</button>
+<button class="font-label-caps text-label-caps text-secondary flicker-animation-on-hover">PROTOCOLS</button>
+</div>
+<span class="material-symbols-outlined text-primary dark:text-primary-fixed cursor-pointer" data-icon="settings_input_component">settings_input_component</span>
+</div>
+</header>
+<main class="flex-grow flex flex-col md:flex-row h-[calc(100vh-120px)] overflow-hidden">
+<!-- NavigationDrawer (Sidebar) -->
+<aside class="hidden md:flex flex-col h-full p-lg bg-background border-r border-primary w-64 scanning-line-overlay">
+<div class="mb-xl flex items-center gap-sm">
+<div class="w-10 h-10 border border-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-primary" data-icon="person">person</span>
+</div>
+<div>
+<div class="font-label-caps text-label-caps text-primary">OPERATOR_082</div>
+<div class="font-data-sm text-data-sm text-secondary">LVL_05</div>
+</div>
+</div>
+<nav class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm p-unit text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+<span class="font-label-caps text-label-caps">SYSTEM_PULSE</span>
+</div>
+<div class="flex items-center gap-sm p-unit bg-primary-container text-on-primary-container font-bold border-l-4 border-primary cursor-pointer">
+<span class="material-symbols-outlined" data-icon="hub">hub</span>
+<span class="font-label-caps text-label-caps">NODE_STATUS</span>
+</div>
+<div class="flex items-center gap-sm p-unit text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="enhanced_encryption">enhanced_encryption</span>
+<span class="font-label-caps text-label-caps">BIO_ENCRYPTION</span>
+</div>
+<div class="mt-xl flex items-center gap-sm p-unit text-secondary-fixed-dim hover:text-primary hover:bg-surface-container-high transition-all cursor-pointer">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-caps text-label-caps">SECURE_LOGOUT</span>
+</div>
+</nav>
+<div class="mt-auto border border-outline-variant p-sm">
+<div class="font-label-caps text-[8px] text-primary">SYSTEM_ACTIVE</div>
+<div class="h-1 bg-surface-container-highest mt-unit">
+<div class="h-full bg-primary-container w-3/4"></div>
+</div>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-grow p-margin overflow-y-auto custom-scrollbar">
+<!-- Sample-Health Notifications -->
+<div class="mb-lg flex flex-col md:flex-row gap-md">
+<div class="flex-grow border-l-4 border-primary bg-surface-container-low p-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="check_circle">check_circle</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary">NOTIFICATION_ID: 992-ALPHA</p>
+<p class="font-body-base text-on-surface">Sample Health: OPTIMAL. All canisters within variance.</p>
+</div>
+</div>
+<span class="font-data-sm text-data-sm text-secondary">0.02ms ago</span>
+</div>
+<div class="flex-grow border-l-4 border-primary-container bg-surface-container-low p-md flex items-center justify-between">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary-container" data-icon="refresh">refresh</span>
+<div>
+<p class="font-label-caps text-label-caps text-primary-container">NOTIFICATION_ID: 104-BETA</p>
+<p class="font-body-base text-on-surface">Auto-balancing LN2 levels in Sector 7.</p>
+</div>
+</div>
+<span class="font-data-sm text-data-sm text-secondary">2.41ms ago</span>
+</div>
+</div>
+<!-- Bento Grid Layout -->
+<div class="grid grid-cols-1 md:grid-cols-12 gap-gutter">
+<!-- Large Status Visualization -->
+<div class="md:col-span-8 border border-primary bg-black p-lg relative scanning-line-overlay">
+<div class="absolute top-sm right-sm font-data-sm text-data-sm text-primary opacity-50">VAULT_REF: 8820-X</div>
+<div class="mb-xl">
+<h1 class="font-headline-xl text-headline-xl text-primary mb-xs">VAULT_STATUS</h1>
+<p class="font-label-caps text-label-caps text-secondary tracking-[0.4em]">MAIN_STORAGE_FACILITY_UNIT_01</p>
+</div>
+<div class="flex flex-col md:flex-row items-end gap-xl">
+<div class="flex-shrink-0">
+<div class="font-label-caps text-label-caps text-secondary mb-unit">REAL-TIME_TEMP</div>
+<div class="flex items-baseline">
+<span class="font-headline-xl text-[72px] font-bold text-primary">-196</span>
+<span class="font-headline-md text-headline-md text-primary ml-sm">°C</span>
+</div>
+</div>
+<div class="flex-grow w-full">
+<div class="font-label-caps text-label-caps text-secondary mb-sm">CRYOGENIC_STABILITY_INDEX</div>
+<div class="grid grid-cols-20 gap-unit h-8">
+<!-- Segmented blocks as per design system -->
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-primary-container border border-black h-full"></div>
+<div class="bg-surface-container-highest border border-black h-full"></div>
+<div class="bg-surface-container-highest border border-black h-full"></div>
+</div>
+</div>
+</div>
+<div class="mt-xl pt-lg border-t border-outline-variant flex justify-between items-center">
+<div class="flex gap-lg">
+<div>
+<div class="font-label-caps text-[8px] text-secondary">SECURITY_PROTOCOL</div>
+<div class="font-data-lg text-data-lg text-primary font-bold">HARDENED</div>
+</div>
+<div>
+<div class="font-label-caps text-[8px] text-secondary">ENCRYPTION_LAYER</div>
+<div class="font-data-lg text-data-lg text-on-surface">RSA_4096</div>
+</div>
+</div>
+<button class="bg-primary-container text-on-primary px-lg py-sm font-label-caps text-label-caps flicker-animation-on-hover uppercase">MANAGE_LEVELS</button>
+</div>
+</div>
+<!-- Cryo-Status Badge & Interactive Panel -->
+<div class="md:col-span-4 flex flex-col gap-gutter">
+<div class="border border-white bg-black p-md flex flex-col items-center justify-center aspect-square text-center scanning-line-overlay">
+<div class="absolute top-sm left-sm font-label-caps text-label-caps text-primary">CRYO_AUTH</div>
+<div class="w-32 h-32 rounded-full border-4 border-dashed border-primary flex items-center justify-center mb-md group cursor-pointer hover:border-solid hover:shadow-[0_0_15px_rgba(57,255,20,0.6)] transition-all">
+<span class="material-symbols-outlined text-primary text-[48px]" data-icon="ac_unit" style="font-variation-settings: 'FILL' 1;">ac_unit</span>
+</div>
+<h2 class="font-data-lg text-data-lg text-primary mb-xs">ACTIVE_CHILL</h2>
+<p class="font-data-sm text-data-sm text-secondary">Press to cycle compression</p>
+</div>
+<div class="border border-outline-variant bg-surface-container-low p-md flex-grow">
+<div class="font-label-caps text-label-caps text-primary mb-md">TELEMETRY_LOG</div>
+<div class="space-y-sm">
+<div class="flex justify-between font-data-sm text-data-sm border-b border-outline-variant pb-xs">
+<span class="text-secondary">08:00:21</span>
+<span class="text-on-surface">TEMP_SYNC_COMPLETE</span>
+</div>
+<div class="flex justify-between font-data-sm text-data-sm border-b border-outline-variant pb-xs">
+<span class="text-secondary">08:05:44</span>
+<span class="text-on-surface">BIO_FLOW_BALANCED</span>
+</div>
+<div class="flex justify-between font-data-sm text-data-sm border-b border-outline-variant pb-xs">
+<span class="text-secondary">08:12:01</span>
+<span class="text-primary">NITRO_REF_OK</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Stats Cluster -->
+<div class="md:col-span-3 border border-outline-variant p-md">
+<div class="font-label-caps text-label-caps text-secondary mb-sm">TOTAL_SAMPLES</div>
+<div class="font-headline-md text-headline-md text-on-surface">14,209</div>
+</div>
+<div class="md:col-span-3 border border-outline-variant p-md">
+<div class="font-label-caps text-label-caps text-secondary mb-sm">VAULT_OCCUPANCY</div>
+<div class="font-headline-md text-headline-md text-on-surface">62.4%</div>
+</div>
+<div class="md:col-span-6 border border-primary bg-primary-container p-md flex items-center justify-between">
+<div>
+<div class="font-label-caps text-label-caps text-on-primary">SYSTEM_INTEGRITY</div>
+<div class="font-headline-md text-headline-md text-on-primary">99.98%</div>
+</div>
+<span class="material-symbols-outlined text-on-primary text-[40px]" data-icon="shield_with_heart" style="font-variation-settings: 'FILL' 1;">shield_with_heart</span>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 flex justify-around items-center py-sm bg-background border-t border-on-surface-variant dark:border-outline-variant">
+<div class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+<span class="font-label-caps text-label-caps">VAULT</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps">VIABILITY</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">PROTOCOLS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-label-caps">TRANSFER</span>
+</div>
+</nav>
+<!-- Security Badge (Floating) -->
+<div class="fixed bottom-xl right-margin hidden md:block border border-primary bg-black p-sm z-40 backdrop-blur-sm">
+<div class="flex items-center gap-sm">
+<div class="w-2 h-2 bg-primary-container animate-pulse"></div>
+<div class="font-data-sm text-data-sm text-primary uppercase">Encryption: AES_XTS_ALPHA</div>
+</div>
+<div class="font-label-caps text-[8px] text-secondary mt-xs">PULSE_SIGNAL: STABLE [102ms]</div>
+</div>
+</body></html>

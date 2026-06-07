@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ROBO_FLEET Security &amp; Geofencing</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&amp;family=Geist:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #131313;
+        }
+        .custom-inner-bevel {
+            box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.5);
+        }
+        .orange-glow-focus:focus-within {
+            box-shadow: 0 0 0 2px #ff6b00;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-surface": "#e5e2e1",
+                        "surface-container-low": "#1c1b1b",
+                        "primary-fixed-dim": "#ffb693",
+                        "surface-container-high": "#2a2a2a",
+                        "secondary": "#c8c6c6",
+                        "on-primary-container": "#572000",
+                        "on-secondary": "#303030",
+                        "on-tertiary-container": "#313131",
+                        "primary-container": "#ff6b00",
+                        "surface-bright": "#393939",
+                        "on-tertiary": "#303030",
+                        "outline": "#a98a7d",
+                        "secondary-container": "#474747",
+                        "surface-dim": "#131313",
+                        "inverse-surface": "#e5e2e1",
+                        "primary-fixed": "#ffdbcc",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface": "#131313",
+                        "on-error-container": "#ffdad6",
+                        "on-background": "#e5e2e1",
+                        "error": "#ffb4ab",
+                        "surface-container-highest": "#353534",
+                        "background": "#131313",
+                        "on-surface-variant": "#e2bfb0",
+                        "error-container": "#93000a",
+                        "surface-tint": "#ffb693",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed": "#1b1b1c",
+                        "primary": "#ffb693",
+                        "on-secondary-container": "#b6b5b4",
+                        "inverse-on-surface": "#313030",
+                        "surface-variant": "#353534",
+                        "on-error": "#690005",
+                        "on-primary-fixed": "#351000",
+                        "secondary-fixed": "#e4e2e1",
+                        "on-primary": "#561f00",
+                        "tertiary-fixed": "#e5e2e1",
+                        "surface-container": "#201f1f",
+                        "outline-variant": "#5a4136",
+                        "inverse-primary": "#a04100",
+                        "tertiary-container": "#9a9898",
+                        "tertiary": "#c8c6c5",
+                        "on-secondary-fixed": "#1b1c1c",
+                        "on-secondary-fixed-variant": "#474747",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#7a3000",
+                        "secondary-fixed-dim": "#c8c6c6"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "xl": "48px",
+                        "lg": "24px",
+                        "sm": "8px",
+                        "xs": "4px",
+                        "margin": "20px",
+                        "md": "16px",
+                        "base": "4px",
+                        "gutter": "16px"
+                    },
+                    "fontFamily": {
+                        "label-caps": ["Geist"],
+                        "data-mono": ["Geist"],
+                        "display-lg": ["Inter"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"]
+                    },
+                    "fontSize": {
+                        "label-caps": ["12px", {"lineHeight": "1.0", "letterSpacing": "0.08em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "display-lg": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="fixed top-0 left-0 w-full z-50 bg-surface text-primary border-b border-outline-variant flex justify-between items-center px-lg h-xl">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-primary" data-icon="rss_feed">rss_feed</span>
+<h1 class="text-headline-md font-headline-md font-black tracking-tighter text-on-surface">ROBO_FLEET</h1>
+</div>
+<button class="bg-error-container text-on-error-container px-md py-xs font-label-caps text-label-caps rounded-lg hover:bg-surface-container-high transition-colors active:scale-95 duration-100">
+            STOP
+        </button>
+</header>
+<main class="pt-xl pb-[100px] min-h-screen">
+<!-- Dashboard Content -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter p-margin">
+<!-- Map-based Interface Section -->
+<section class="lg:col-span-8 flex flex-col gap-gutter">
+<div class="bg-surface-container rounded-xl overflow-hidden border border-outline-variant relative group">
+<div class="absolute top-md left-md z-10 flex flex-col gap-sm">
+<div class="bg-surface-container-high/90 p-xs rounded-lg border border-outline-variant backdrop-blur flex flex-col gap-base">
+<button class="p-sm hover:bg-primary-container hover:text-on-primary-container rounded transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+</button>
+<button class="p-sm hover:bg-primary-container hover:text-on-primary-container rounded transition-all active:scale-90">
+<span class="material-symbols-outlined" data-icon="remove">remove</span>
+</button>
+</div>
+<div class="bg-surface-container-high/90 p-xs rounded-lg border border-outline-variant backdrop-blur">
+<button class="p-sm hover:bg-primary-container hover:text-on-primary-container rounded transition-all active:scale-90 flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="polyline">polyline</span>
+</button>
+</div>
+</div>
+<!-- Map Image -->
+<div class="w-full h-[500px] bg-surface-container-lowest relative">
+<img class="w-full h-full object-cover opacity-60 grayscale brightness-75" data-alt="A detailed, high-contrast dark mode satellite map of an industrial complex at night. The interface features glowing Safety Orange polygonal geofence boundaries overlaying the dark terrain. The aesthetic is highly technical, with sharp vector lines and translucent charcoal overlays. Subtle digital noise and grid lines enhance the industrial-sleek monitor feel, while a singular pulsing blue dot indicates a robot unit's real-time position within the fence." data-location="Industrial Zone" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD3PTRcdES2SxpHv3ohUKeClfww133_obf-CeiF_JRndf2Zw0U9Kv4YJ5PmKekihMR6EVNzCLmWqWi6llyD_gerUUvloi1wLNGG1qMkaMLWwAmNEv2KqxCISIY2YuliTsO3bCrIgWBvbVv1aPfeUX42AZhNGPBOMqZv2HP2pH29veDR1ahbyZDLMeif4oTZc6vN8EbziuLj74XYwxt3FPlMslwkMcxCp5h00fBbAHlNDSQdSPQ__3u4FVefRiy_MJfNPUvcZNR3CQ7t"/>
+<!-- Geofence Overlay Simulation -->
+<div class="absolute inset-0 pointer-events-none">
+<svg class="w-full h-full opacity-80" preserveaspectratio="none" viewbox="0 0 100 100">
+<polygon fill="rgba(255, 107, 0, 0.1)" points="20,20 80,25 85,70 15,75" stroke="#ff6b00" stroke-dasharray="1,1" stroke-width="0.5"></polygon>
+</svg>
+</div>
+</div>
+<div class="p-md flex justify-between items-center bg-surface-container-high border-t border-outline-variant">
+<div>
+<h2 class="font-headline-md text-on-surface">VIRTUAL_FENCE_01</h2>
+<p class="text-label-caps font-label-caps text-on-surface-variant uppercase">Status: ACTIVE • Perimeter: 1,240m</p>
+</div>
+<button class="bg-primary-container text-on-primary-container px-lg py-sm rounded-lg font-label-caps text-label-caps custom-inner-bevel hover:brightness-110 active:scale-95 transition-all">
+                            EDIT BOUNDARIES
+                        </button>
+</div>
+</div>
+<!-- GPS Tracking Logs -->
+<div class="bg-surface-container rounded-xl border border-outline-variant overflow-hidden">
+<div class="p-md border-b border-outline-variant bg-surface-container-low flex justify-between items-center">
+<h3 class="font-headline-md text-on-surface flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="history">history</span>
+                            GPS_TELEMETRY_LOG
+                        </h3>
+<span class="text-data-mono font-data-mono text-primary bg-primary-container/10 px-sm py-xs border border-primary/20 rounded">LIVE_SYNC</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-high/50 text-label-caps font-label-caps text-on-surface-variant border-b border-outline-variant">
+<th class="p-md">TIMESTAMP</th>
+<th class="p-md">COORDINATES</th>
+<th class="p-md">HEADING</th>
+<th class="p-md">VELOCITY</th>
+<th class="p-md">SIGNAL</th>
+</tr>
+</thead>
+<tbody class="text-data-mono font-data-mono divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="p-md">14:22:01.44</td>
+<td class="p-md">45.523°N, 122.676°W</td>
+<td class="p-md">182° S</td>
+<td class="p-md">1.2 m/s</td>
+<td class="p-md text-primary">98%</td>
+</tr>
+<tr class="bg-surface-container-high/20 hover:bg-surface-container-highest transition-colors">
+<td class="p-md">14:21:58.12</td>
+<td class="p-md">45.524°N, 122.675°W</td>
+<td class="p-md">180° S</td>
+<td class="p-md">1.5 m/s</td>
+<td class="p-md text-primary">97%</td>
+</tr>
+<tr class="hover:bg-surface-container-highest transition-colors">
+<td class="p-md">14:21:55.90</td>
+<td class="p-md">45.525°N, 122.674°W</td>
+<td class="p-md">178° S</td>
+<td class="p-md">1.4 m/s</td>
+<td class="p-md text-primary">99%</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<!-- Sidebar Controls -->
+<aside class="lg:col-span-4 flex flex-col gap-gutter">
+<!-- Alarm Status Toggles -->
+<div class="bg-surface-container rounded-xl border border-outline-variant p-md">
+<div class="flex items-center gap-sm mb-lg">
+<div class="h-2 w-2 rounded-full bg-primary animate-pulse"></div>
+<h3 class="font-headline-md text-on-surface">SECURITY_MATRIX</h3>
+</div>
+<div class="space-y-sm">
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-lg flex items-center justify-between group hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="notifications_active">notifications_active</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">MASTER ALARM</p>
+<p class="text-[10px] text-on-surface-variant uppercase">External Siren Enabled</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</div>
+</div>
+<div class="bg-surface-container-low border border-outline-variant p-md rounded-lg flex items-center justify-between group hover:border-primary/50 transition-colors">
+<div class="flex items-center gap-md">
+<span class="material-symbols-outlined text-on-surface-variant group-hover:text-primary" data-icon="lock">lock</span>
+<div>
+<p class="font-label-caps text-label-caps text-on-surface">DRIVE LOCKOUT</p>
+<p class="text-[10px] text-on-surface-variant uppercase">Override Prevention</p>
+</div>
+</div>
+<div class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-11 h-6 bg-surface-container-highest rounded-full peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary-container"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Push Notification Settings -->
+<div class="bg-surface-container rounded-xl border border-outline-variant p-md">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant mb-md tracking-widest">ALERT_PROFILES</h3>
+<div class="space-y-md">
+<div class="flex flex-col gap-xs">
+<div class="flex justify-between items-center">
+<span class="text-data-mono font-data-mono">UNIT_STUCK_CRITICAL</span>
+<span class="text-primary material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-tight">Instant push notification and SMS dispatch when drivetrain torque exceeds 90% with zero movement.</p>
+<div class="w-full bg-surface-container-lowest h-1 rounded mt-xs">
+<div class="bg-primary h-full w-full rounded"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs pt-sm border-t border-outline-variant/30">
+<div class="flex justify-between items-center">
+<span class="text-data-mono font-data-mono">THEFT_GEO_BREACH</span>
+<span class="text-primary material-symbols-outlined" data-icon="check_circle" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-tight">Emergency beacon activation if unit exits boundary while in 'REST' state.</p>
+<div class="w-full bg-surface-container-lowest h-1 rounded mt-xs">
+<div class="bg-primary h-full w-[75%] rounded"></div>
+</div>
+</div>
+<div class="flex flex-col gap-xs pt-sm border-t border-outline-variant/30">
+<div class="flex justify-between items-center">
+<span class="text-data-mono font-data-mono">LOW_BATTERY_RECOVERY</span>
+<span class="text-on-surface-variant material-symbols-outlined" data-icon="radio_button_unchecked">radio_button_unchecked</span>
+</div>
+<p class="text-[11px] text-on-surface-variant leading-tight">Reminder when unit remains below 15% charge for more than 30 minutes.</p>
+</div>
+</div>
+<button class="w-full mt-lg border border-outline-variant text-on-surface py-sm rounded-lg font-label-caps text-label-caps hover:bg-surface-container-high transition-all active:scale-95 flex items-center justify-center gap-sm">
+<span class="material-symbols-outlined text-[18px]" data-icon="settings">settings</span>
+                        MANAGE_NOTIFICATIONS
+                    </button>
+</div>
+<!-- Unit Diagnostic Quick Card -->
+<div class="bg-gradient-to-br from-surface-container-high to-surface-container p-[1px] rounded-xl overflow-hidden">
+<div class="bg-surface-container-low p-md rounded-[11px] h-full">
+<div class="flex justify-between items-start mb-md">
+<div>
+<h4 class="text-data-mono font-data-mono text-primary">UNIT_AX-9</h4>
+<p class="text-[10px] text-on-surface-variant">SERIAL: RBT-99021-FF</p>
+</div>
+<div class="px-xs py-[2px] bg-primary-container/20 border border-primary/40 text-primary text-[10px] rounded font-bold">SECURED</div>
+</div>
+<div class="flex justify-around items-center py-sm">
+<div class="text-center">
+<div class="w-12 h-12 rounded-full border-2 border-primary flex items-center justify-center mb-xs">
+<span class="text-data-mono text-[12px] font-bold">88%</span>
+</div>
+<span class="text-[9px] text-on-surface-variant uppercase">Power</span>
+</div>
+<div class="text-center">
+<div class="w-12 h-12 rounded-full border-2 border-outline-variant flex items-center justify-center mb-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="signal_cellular_4_bar">signal_cellular_4_bar</span>
+</div>
+<span class="text-[9px] text-on-surface-variant uppercase">Link</span>
+</div>
+<div class="text-center">
+<div class="w-12 h-12 rounded-full border-2 border-outline-variant flex items-center justify-center mb-xs">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="temp_preferences_custom">temp_preferences_custom</span>
+</div>
+<span class="text-[9px] text-on-surface-variant uppercase">Thermal</span>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 left-0 w-full z-50 bg-surface-container-low border-t border-outline-variant flex justify-around items-center px-margin py-sm">
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="precision_manufacturing">precision_manufacturing</span>
+<span class="text-label-caps font-label-caps">Status</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="tune">tune</span>
+<span class="text-label-caps font-label-caps">Config</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant p-sm hover:text-primary transition-all active:scale-90 duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="monitor_heart">monitor_heart</span>
+<span class="text-label-caps font-label-caps">Health</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-primary-container text-on-primary-container rounded-full px-md py-xs active:scale-90 transition-transform duration-200" href="#">
+<span class="material-symbols-outlined text-[24px]" data-icon="verified_user">verified_user</span>
+<span class="text-label-caps font-label-caps">Security</span>
+</a>
+</nav>
+</body></html>

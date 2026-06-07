@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanning-line-overlay {
+            position: relative;
+            overflow: hidden;
+        }
+        .scanning-line-overlay::after {
+            content: "";
+            position: absolute;
+            top: -100%;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: #39FF14;
+            opacity: 0.3;
+            box-shadow: 0 0 8px #39FF14;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -5%; }
+            100% { top: 105%; }
+        }
+        .flicker-animation-on-hover:hover {
+            animation: flicker 0.15s infinite;
+        }
+        @keyframes flicker {
+            0% { opacity: 1; }
+            50% { opacity: 0.8; }
+            100% { opacity: 1; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#fdf9f9",
+                        "secondary-fixed": "#e2e2e2",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "on-primary-fixed": "#022100",
+                        "secondary": "#c6c6c7",
+                        "secondary-container": "#454747",
+                        "inverse-primary": "#106e00",
+                        "on-primary": "#053900",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary-fixed": "#79ff5b",
+                        "surface-tint": "#2ae500",
+                        "on-error": "#690005",
+                        "on-tertiary-container": "#626161",
+                        "primary-container": "#39ff14",
+                        "primary-fixed-dim": "#2ae500",
+                        "tertiary-fixed-dim": "#c8c6c5",
+                        "background": "#131313",
+                        "surface-container-high": "#2a2a2a",
+                        "on-tertiary": "#313030",
+                        "surface-container-highest": "#353535",
+                        "secondary-fixed-dim": "#c6c6c7",
+                        "error": "#ffb4ab",
+                        "primary": "#efffe3",
+                        "on-secondary": "#2f3131",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary-fixed-variant": "#095300",
+                        "surface-container-low": "#1b1b1b",
+                        "on-secondary-container": "#b4b5b5",
+                        "error-container": "#93000a",
+                        "on-error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#474746",
+                        "surface-dim": "#131313",
+                        "on-surface": "#e2e2e2",
+                        "on-background": "#e2e2e2",
+                        "surface": "#131313",
+                        "inverse-surface": "#e2e2e2",
+                        "on-surface-variant": "#baccb0",
+                        "on-secondary-fixed": "#1a1c1c",
+                        "surface-variant": "#353535",
+                        "outline": "#85967c",
+                        "tertiary-container": "#e0dddc",
+                        "on-primary-container": "#107100",
+                        "inverse-on-surface": "#303030",
+                        "surface-bright": "#393939",
+                        "outline-variant": "#3c4b35",
+                        "surface-container": "#1f1f1f",
+                        "on-secondary-fixed-variant": "#454747"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "md": "16px",
+                        "unit": "4px",
+                        "sm": "8px",
+                        "margin": "32px",
+                        "xs": "4px",
+                        "gutter": "16px",
+                        "xl": "48px",
+                        "lg": "24px"
+                    },
+                    "fontFamily": {
+                        "data-sm": ["JetBrains Mono"],
+                        "label-caps": ["JetBrains Mono"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "data-lg": ["JetBrains Mono"],
+                        "headline-xl": ["Inter"]
+                    },
+                    "fontSize": {
+                        "data-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "400"}],
+                        "label-caps": ["10px", {"lineHeight": "1", "letterSpacing": "0.2em", "fontWeight": "700"}],
+                        "body-base": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "data-lg": ["18px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-background font-body-base min-h-screen pb-24 md:pb-0">
+<!-- TopAppBar -->
+<header class="bg-background dark:bg-background border-b border-on-surface-variant dark:border-outline-variant flex justify-between items-center w-full px-md py-sm sticky top-0 z-50">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="security">security</span>
+<h1 class="font-data-lg text-data-lg font-bold tracking-widest text-primary dark:text-primary-fixed uppercase">CELL_STORE_v1.0</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex gap-md">
+<span class="font-data-sm text-data-sm text-secondary hover:text-primary cursor-pointer transition-colors duration-100">VAULT</span>
+<span class="font-data-sm text-data-sm text-secondary hover:text-primary cursor-pointer transition-colors duration-100">VIABILITY</span>
+<span class="font-data-sm text-data-sm text-primary cursor-pointer">PROTOCOLS</span>
+<span class="font-data-sm text-data-sm text-secondary hover:text-primary cursor-pointer transition-colors duration-100">TRANSFER</span>
+</div>
+<button class="material-symbols-outlined text-primary flicker-animation-on-hover" data-icon="settings_input_component">settings_input_component</button>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto px-margin py-lg grid grid-cols-12 gap-0 border-x border-outline-variant min-h-[calc(100vh-60px)]">
+<!-- Header & Security Status -->
+<section class="col-span-12 border-b border-outline-variant pb-lg mb-lg flex flex-col md:flex-row justify-between items-end gap-md">
+<div>
+<p class="font-label-caps text-label-caps text-primary mb-xs">LIBRARY_INDEX_4401</p>
+<h2 class="font-headline-xl text-headline-xl uppercase tracking-tighter">Protocol Library</h2>
+</div>
+<div class="border border-primary p-md bg-surface-container-low min-w-[240px] scanning-line-overlay">
+<div class="flex justify-between items-center mb-xs">
+<span class="font-label-caps text-label-caps text-secondary">ENCRYPTION_STATUS</span>
+<span class="font-data-sm text-data-sm text-primary-fixed">HARDENED</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-label-caps text-label-caps text-secondary">SYSTEM_PULSE</span>
+<span class="font-data-sm text-data-sm text-primary-fixed">ACTIVE_98.2%</span>
+</div>
+</div>
+</section>
+<!-- Search and Filter Bar -->
+<section class="col-span-12 grid grid-cols-1 md:grid-cols-4 gap-gutter mb-xl">
+<div class="md:col-span-2 relative">
+<label class="font-label-caps text-label-caps text-secondary absolute -top-3 left-0">SEARCH_KEYWORD</label>
+<input class="w-full bg-transparent border-b-2 border-on-surface-variant focus:border-primary-fixed outline-none py-sm font-data-sm text-data-sm text-on-surface transition-all placeholder:text-surface-container-highest" placeholder="QUERY PROTOCOL ID OR TYPE..." type="text"/>
+</div>
+<div class="relative">
+<label class="font-label-caps text-label-caps text-secondary absolute -top-3 left-0">CELL_TYPE</label>
+<select class="w-full bg-transparent border-b-2 border-on-surface-variant focus:border-primary-fixed outline-none py-sm font-data-sm text-data-sm text-on-surface appearance-none cursor-pointer">
+<option class="bg-background">ALL_CELL_TYPES</option>
+<option class="bg-background">MESENCHYMAL</option>
+<option class="bg-background">HEMATOPOIETIC</option>
+<option class="bg-background">NEURAL_PROGENITOR</option>
+</select>
+</div>
+<div class="relative">
+<label class="font-label-caps text-label-caps text-secondary absolute -top-3 left-0">TREATMENT_AREA</label>
+<select class="w-full bg-transparent border-b-2 border-on-surface-variant focus:border-primary-fixed outline-none py-sm font-data-sm text-data-sm text-on-surface appearance-none cursor-pointer">
+<option class="bg-background">ALL_AREAS</option>
+<option class="bg-background">NEUROLOGY</option>
+<option class="bg-background">ORTHOPEDICS</option>
+<option class="bg-background">CARDIOLOGY</option>
+</select>
+</div>
+</section>
+<!-- Protocol Grid -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-0 border-t border-l border-outline-variant">
+<!-- Protocol Card 1 -->
+<div class="border-r border-b border-outline-variant p-lg group hover:bg-surface-container-low transition-all cursor-pointer relative">
+<span class="absolute top-sm right-sm font-data-sm text-data-sm text-secondary-fixed-dim">ID: MSC-9920</span>
+<div class="mb-xl">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-md" data-icon="biotech">biotech</span>
+<h3 class="font-headline-md text-headline-md uppercase mb-sm">Neural Stem Retrieval</h3>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim line-clamp-2">Standardized cryo-extraction protocol for adult neural progenitor cells. Requires Level 4 Bio-Containment.</p>
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STORAGE_TEMP</span>
+<span class="font-data-sm text-data-sm text-primary">-196°C</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STABILITY</span>
+<div class="flex gap-1">
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-surface-container-highest"></div>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full py-sm bg-primary-container text-on-primary-container font-data-sm text-data-sm font-bold uppercase tracking-widest flicker-animation-on-hover">View Full Specs</button>
+</div>
+<!-- Protocol Card 2 -->
+<div class="border-r border-b border-outline-variant p-lg group hover:bg-surface-container-low transition-all cursor-pointer relative">
+<span class="absolute top-sm right-sm font-data-sm text-data-sm text-secondary-fixed-dim">ID: HEM-4412</span>
+<div class="mb-xl">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-md" data-icon="bloodtype">bloodtype</span>
+<h3 class="font-headline-md text-headline-md uppercase mb-sm">Hematopoietic Expansion</h3>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim line-clamp-2">Ex-vivo expansion protocol for CD34+ cells using specialized growth factor cocktails.</p>
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">INCUBATION</span>
+<span class="font-data-sm text-data-sm text-primary">14 DAYS</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STABILITY</span>
+<div class="flex gap-1">
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full py-sm border border-on-surface text-on-surface font-data-sm text-data-sm font-bold uppercase tracking-widest hover:bg-on-surface hover:text-background transition-all">Request Access</button>
+</div>
+<!-- Protocol Card 3 -->
+<div class="border-r border-b border-outline-variant p-lg group hover:bg-surface-container-low transition-all cursor-pointer relative">
+<span class="absolute top-sm right-sm font-data-sm text-data-sm text-secondary-fixed-dim">ID: CRD-0051</span>
+<div class="mb-xl">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-md" data-icon="ecg_heart">ecg_heart</span>
+<h3 class="font-headline-md text-headline-md uppercase mb-sm">Myocardial Application</h3>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim line-clamp-2">Direct injection protocols for ischemic tissue repair. Precise volumetric guidance included.</p>
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">PRECISION</span>
+<span class="font-data-sm text-data-sm text-primary">+/- 0.01ML</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STABILITY</span>
+<div class="flex gap-1">
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-surface-container-highest"></div>
+<div class="w-3 h-2 bg-surface-container-highest"></div>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full py-sm border border-on-surface text-on-surface font-data-sm text-data-sm font-bold uppercase tracking-widest hover:bg-on-surface hover:text-background transition-all">Download PDF</button>
+</div>
+<!-- Protocol Card 4 -->
+<div class="border-r border-b border-outline-variant p-lg group hover:bg-surface-container-low transition-all cursor-pointer relative">
+<span class="absolute top-sm right-sm font-data-sm text-data-sm text-secondary-fixed-dim">ID: PTH-1088</span>
+<div class="mb-xl">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-md" data-icon="microscope">magnification_small</span>
+<h3 class="font-headline-md text-headline-md uppercase mb-sm">Histology Verification</h3>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim line-clamp-2">Post-thaw verification steps to ensure cellular integrity prior to patient re-introduction.</p>
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">AUTH_LEVEL</span>
+<span class="font-data-sm text-data-sm text-primary">ADMIN_03</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STABILITY</span>
+<div class="flex gap-1">
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full py-sm border border-on-surface text-on-surface font-data-sm text-data-sm font-bold uppercase tracking-widest hover:bg-on-surface hover:text-background transition-all">Verify Node</button>
+</div>
+<!-- Protocol Card 5 -->
+<div class="border-r border-b border-outline-variant p-lg group hover:bg-surface-container-low transition-all cursor-pointer relative">
+<span class="absolute top-sm right-sm font-data-sm text-data-sm text-secondary-fixed-dim">ID: GEN-2290</span>
+<div class="mb-xl">
+<span class="material-symbols-outlined text-primary-fixed text-4xl mb-md" data-icon="genetics">genetics</span>
+<h3 class="font-headline-md text-headline-md uppercase mb-sm">Genetic Profiling</h3>
+<p class="font-data-sm text-data-sm text-secondary-fixed-dim line-clamp-2">Automated sequencing protocols for verifying genetic stability over long-term storage.</p>
+</div>
+<div class="flex flex-col gap-sm border-t border-outline-variant pt-md">
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">SEQUENCING</span>
+<span class="font-data-sm text-data-sm text-primary">48H_FULL</span>
+</div>
+<div class="flex justify-between">
+<span class="font-label-caps text-label-caps text-secondary">STABILITY</span>
+<div class="flex gap-1">
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-primary"></div>
+<div class="w-3 h-2 bg-surface-container-highest"></div>
+</div>
+</div>
+</div>
+<button class="mt-xl w-full py-sm border border-on-surface text-on-surface font-data-sm text-data-sm font-bold uppercase tracking-widest hover:bg-on-surface hover:text-background transition-all">Open Terminal</button>
+</div>
+<!-- Empty State / Add Protocol -->
+<div class="border-r border-b border-outline-variant p-lg flex flex-col items-center justify-center text-center opacity-60 hover:opacity-100 transition-opacity cursor-pointer">
+<span class="material-symbols-outlined text-5xl mb-md" data-icon="add_box">add_box</span>
+<p class="font-label-caps text-label-caps uppercase tracking-widest">Submit New Protocol</p>
+<p class="font-data-sm text-data-sm mt-sm">Requires Peer-Review Approval</p>
+</div>
+</div>
+<!-- Featured Instruction Image Section (Asymmetric) -->
+<section class="col-span-12 mt-xl border border-outline-variant flex flex-col md:flex-row overflow-hidden">
+<div class="md:w-1/2 p-xl flex flex-col justify-center">
+<span class="font-label-caps text-label-caps text-primary mb-md">VISUAL_RETRIEVAL_GUIDE_v2</span>
+<h2 class="font-headline-md text-headline-md uppercase mb-lg">Sterile Retrieval Sequence</h2>
+<p class="text-secondary-fixed-dim font-body-base mb-xl max-w-md">Our high-resolution visualization for the aseptic retrieval of cryogenically stored mesenchymal stem cells. This guide ensures zero-contamination risk during transfer to clinical application units.</p>
+<div class="flex gap-md">
+<button class="px-lg py-sm bg-primary-container text-on-primary-container font-data-sm text-data-sm font-bold uppercase flicker-animation-on-hover">Launch VR Module</button>
+<button class="px-lg py-sm border border-on-surface text-on-surface font-data-sm text-data-sm font-bold uppercase hover:bg-on-surface hover:text-background transition-colors">Download Frames</button>
+</div>
+</div>
+<div class="md:w-1/2 min-h-[400px] bg-surface-container-low scanning-line-overlay">
+<img class="w-full h-full object-cover grayscale opacity-80 hover:grayscale-0 transition-all duration-700" data-alt="A clinical, high-tech laboratory environment with a focus on a robotic arm extracting a glowing green vial from a cryogenic storage tank. The lighting is low-key with neon green highlights, and the background features blurred medical monitors with data displays. The overall atmosphere is cold, precise, and ultra-modern, adhering to a brutalist and scientific aesthetic with stark contrasts." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD_13C1XXykAkokWikFsxvferiiM0omrWsXmw7gLBFbYVATG9Feup_1D02DOhV6Ti_AE335BMXBxKVjoX7kNHM0ENUeEEY054lpk3pDHZ-fK4z-jQy6xd5Wr_gF7c7ONREW8haXF2Me1z0crHKrOfjPPhy7vxW4KyeiNCSJKoI0wZVgIxPXcAXb2CfnQmDgxd9_YXFpSg5lRKRTI-MPLwhaOeYAMiU5-VIByNNVhFyUHAPTvT9B8pZ5f9LDU_PZEnjBmxXiGEJd_DE"/>
+</div>
+</section>
+</main>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="md:hidden fixed bottom-0 w-full z-50 bg-background border-t border-on-surface-variant dark:border-outline-variant flex justify-around items-center py-sm">
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="ac_unit">ac_unit</span>
+<span class="font-label-caps text-label-caps">VAULT</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="biotech">biotech</span>
+<span class="font-label-caps text-label-caps">VIABILITY</span>
+</a>
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed border-2 border-primary shadow-[0_0_10px_rgba(57,255,20,0.5)] p-unit scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="menu_book">menu_book</span>
+<span class="font-label-caps text-label-caps">PROTOCOLS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+<span class="font-label-caps text-label-caps">LEGAL</span>
+</a>
+<a class="flex flex-col items-center justify-center text-secondary dark:text-secondary-fixed p-unit opacity-60 hover:opacity-100 scale-95 duration-75" href="#">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-label-caps">TRANSFER</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f7f9fc;
+        }
+        .glass-surface {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .glass-modal {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 10px 30px -10px rgba(0, 174, 239, 0.1);
+        }
+        .liquid-pill {
+            background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(0, 174, 239, 0.1) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .liquid-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: rgba(0, 174, 239, 0.15);
+            border-top: 2px solid #00aeef;
+        }
+        .pulse-line {
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: dash 5s linear infinite;
+        }
+        @keyframes dash {
+            to { stroke-dashoffset: 0; }
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                "on-secondary": "#ffffff",
+                "primary-fixed-dim": "#82cfff",
+                "surface-container-high": "#e6e8eb",
+                "error": "#ba1a1a",
+                "surface-dim": "#d8dadd",
+                "inverse-primary": "#82cfff",
+                "primary": "#00658d",
+                "outline-variant": "#bdc8d1",
+                "surface-variant": "#e0e3e6",
+                "on-error-container": "#93000a",
+                "secondary-fixed": "#d2e6ef",
+                "on-secondary-fixed-variant": "#374951",
+                "inverse-surface": "#2d3133",
+                "surface-container": "#eceef1",
+                "tertiary": "#8d4f00",
+                "outline": "#6e7881",
+                "primary-container": "#00aeef",
+                "background": "#f7f9fc",
+                "surface-tint": "#00658d",
+                "on-primary-fixed": "#001e2d",
+                "inverse-on-surface": "#eff1f4",
+                "surface-container-low": "#f2f4f7",
+                "on-surface-variant": "#3e4850",
+                "surface-container-lowest": "#ffffff",
+                "on-surface": "#191c1e",
+                "error-container": "#ffdad6",
+                "tertiary-container": "#ea8c21",
+                "on-tertiary-fixed": "#2d1600",
+                "on-error": "#ffffff",
+                "on-secondary-container": "#55676f",
+                "tertiary-fixed-dim": "#ffb876",
+                "secondary": "#4f6169",
+                "on-tertiary": "#ffffff",
+                "secondary-fixed-dim": "#b6cad2",
+                "on-secondary-fixed": "#0b1e24",
+                "surface-bright": "#f7f9fc",
+                "on-background": "#191c1e",
+                "secondary-container": "#d2e6ef",
+                "surface": "#f7f9fc",
+                "tertiary-fixed": "#ffdcc0",
+                "on-primary": "#ffffff",
+                "on-tertiary-container": "#572f00",
+                "on-tertiary-fixed-variant": "#6b3b00",
+                "on-primary-fixed-variant": "#004c6b",
+                "surface-container-highest": "#e0e3e6",
+                "primary-fixed": "#c6e7ff",
+                "on-primary-container": "#003e58"
+              },
+              "borderRadius": {
+                "DEFAULT": "0.25rem",
+                "lg": "0.5rem",
+                "xl": "0.75rem",
+                "full": "9999px"
+              },
+              "spacing": {
+                "xl": "32px",
+                "lg": "24px",
+                "xs": "4px",
+                "section-gap": "40px",
+                "unit": "4px",
+                "sm": "8px",
+                "md": "16px",
+                "container-padding": "20px"
+              },
+              "fontFamily": {
+                "h3": ["Inter"],
+                "label-caps": ["Inter"],
+                "data-display": ["Inter"],
+                "body-md": ["Inter"],
+                "h2": ["Inter"],
+                "h1": ["Inter"],
+                "body-lg": ["Inter"]
+              },
+              "fontSize": {
+                "h3": ["20px", {"lineHeight": "28px", "fontWeight": "500"}],
+                "label-caps": ["12px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                "data-display": ["48px", {"lineHeight": "48px", "letterSpacing": "-0.04em", "fontWeight": "300"}],
+                "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                "h2": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                "h1": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-2xl border-r border-white/20 flex flex-col p-md gap-sm shadow-md z-50">
+<div class="mb-xl px-sm">
+<h1 class="font-h3 text-h3 text-primary dark:text-primary-fixed-dim">Breathe-Ease</h1>
+<p class="font-label-caps text-label-caps text-on-surface-variant">Clinical Portal</p>
+</div>
+<nav class="flex-1 space-y-xs">
+<!-- Dashboard Active -->
+<a class="flex items-center gap-md px-md py-sm bg-primary-container text-on-primary-container rounded-lg font-semibold duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span class="font-body-md text-body-md">Dashboard</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 hover:translate-x-1 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-body-md text-body-md">Spirometry Logs</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 hover:translate-x-1 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="air">air</span>
+<span class="font-body-md text-body-md">Hyperbaric Sessions</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 hover:translate-x-1 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="map">map</span>
+<span class="font-body-md text-body-md">Air Quality Map</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 hover:translate-x-1 transition-all rounded-lg duration-200 ease-in-out" href="#">
+<span class="material-symbols-outlined" data-icon="trending_up">trending_up</span>
+<span class="font-body-md text-body-md">Recovery Progress</span>
+</a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/20 pt-md space-y-xs">
+<button class="w-full bg-primary text-on-primary font-h3 text-sm py-md rounded-xl shadow-sm cursor-pointer active:scale-95 transition-transform">
+                Start Session
+            </button>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="support_agent">support_agent</span>
+<span class="font-body-md text-body-md">Support</span>
+</a>
+<a class="flex items-center gap-md px-md py-sm text-on-surface-variant hover:bg-surface-container-high/50 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span class="font-body-md text-body-md">Settings</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-40 bg-surface/70 dark:bg-surface-dim/70 backdrop-blur-xl border-b border-white/20 px-lg py-md flex justify-between items-center w-full shadow-sm">
+<div class="flex items-center gap-lg">
+<div class="relative">
+<span class="absolute left-md top-1/2 -translate-y-1/2 material-symbols-outlined text-outline" data-icon="search">search</span>
+<input class="pl-xl pr-md py-sm rounded-full border-none bg-surface-container-low focus:ring-2 focus:ring-primary-container w-64 text-sm" placeholder="Search patient data..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-md">
+<button class="flex items-center gap-sm px-md py-xs text-on-surface-variant hover:bg-primary-container/10 transition-colors rounded-full cursor-pointer active:scale-95">
+<span class="material-symbols-outlined" data-icon="swap_horiz">swap_horiz</span>
+<span class="font-label-caps text-label-caps uppercase">Switch Profile</span>
+</button>
+<div class="flex gap-sm">
+<span class="material-symbols-outlined p-sm rounded-full hover:bg-primary-container/10 cursor-pointer" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined p-sm rounded-full hover:bg-primary-container/10 cursor-pointer" data-icon="settings">settings</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-primary-container/20 border border-primary/10 overflow-hidden">
+<img alt="Clinician avatar" class="w-full h-full object-cover" data-alt="A professional close-up portrait of a female clinician in a clean white medical environment. The lighting is bright and airy, reflecting a modern healthcare setting with a calm and trustworthy mood. The background is softly blurred to keep focus on the clinician's friendly expression, matching a minimalist clinical aesthetic with soft sky blue accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBCVia2m2tMnPgu8ElcxQIDa9Wn3UXWGSS1F7L3H0A5zMw8LdCsG0_u6pf9oNrTMlR7Cj-KY9yLh4M7Nr2s5Gl__Cv8DSo0AhS7w_hDO6tLAj2PS9-bFInfl5R__SsiVIbVChfhanXX3_Dmgzl-RTd6_SDvX74oG92_JQhAugS4AKkrU9pxHTF9F4amBxN5rVDtddarQnnOPVlY5t-i9CP0Dw9_S1rxyjI4--43QRUIqT6xf2K8Kz0xgOwck1MUl_twvLgmVnOjlfQ"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="p-lg flex flex-col gap-section-gap max-w-[1600px] mx-auto w-full">
+<!-- Dashboard Header -->
+<section class="flex flex-col gap-sm">
+<div class="flex items-center gap-sm">
+<div class="px-md py-xs bg-primary-container/10 rounded-full text-primary font-bold text-xs uppercase tracking-wider">Clinical Dashboard</div>
+<span class="text-outline-variant">•</span>
+<span class="text-on-surface-variant font-medium">Monday, June 24</span>
+</div>
+<h2 class="font-h1 text-h1 text-on-surface">Welcome back, Dr. Aris.</h2>
+</section>
+<!-- Hero Bento Grid -->
+<div class="grid grid-cols-12 gap-lg h-full">
+<!-- Central Breathing Rhythm Visualization -->
+<div class="col-span-12 lg:col-span-8 glass-surface rounded-xl p-lg flex flex-col gap-md relative overflow-hidden h-[400px]">
+<div class="flex justify-between items-start">
+<div>
+<h3 class="font-h2 text-h2 text-on-surface">Breathing Rhythm</h3>
+<p class="text-on-surface-variant font-body-md">Live physiological monitoring — Patient: John Doe</p>
+</div>
+<div class="flex gap-xs">
+<span class="px-md py-sm bg-green-100 text-green-700 rounded-full text-xs font-bold flex items-center gap-xs">
+<span class="w-2 h-2 bg-green-500 rounded-full"></span> STABLE
+                            </span>
+</div>
+</div>
+<div class="flex-1 flex items-center justify-center relative">
+<svg class="w-full h-48" viewbox="0 0 1000 200">
+<path class="pulse-line" d="M0,100 C50,100 100,50 150,50 C200,50 250,150 300,150 C350,150 400,100 450,100 C500,100 550,40 600,40 C650,40 700,160 750,160 C800,160 850,100 900,100 L1000,100" fill="none" stroke="#00aeef" stroke-width="3" style="filter: drop-shadow(0 0 8px rgba(0,174,239,0.5))"></path>
+<path d="M0,105 C50,105 100,55 150,55 C200,55 250,155 300,155 C350,155 400,105 450,105 C500,105 550,45 600,45 C650,45 700,165 750,165 C800,165 850,105 900,105 L1000,105" fill="none" opacity="0.3" stroke="#00aeef" stroke-width="1"></path>
+</svg>
+</div>
+<div class="grid grid-cols-4 gap-md pt-md border-t border-outline-variant/10">
+<div class="text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant">INHALATION</p>
+<p class="font-data-display text-2xl text-primary">2.4s</p>
+</div>
+<div class="text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant">EXHALATION</p>
+<p class="font-data-display text-2xl text-primary">3.1s</p>
+</div>
+<div class="text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant">VOLUME</p>
+<p class="font-data-display text-2xl text-primary">480ml</p>
+</div>
+<div class="text-center">
+<p class="font-label-caps text-label-caps text-on-surface-variant">RR</p>
+<p class="font-data-display text-2xl text-primary">12bpm</p>
+</div>
+</div>
+</div>
+<!-- Summary Widgets Column -->
+<div class="col-span-12 lg:col-span-4 flex flex-col gap-lg">
+<!-- Local Air Quality -->
+<div class="glass-surface rounded-xl p-lg flex flex-col gap-md">
+<div class="flex justify-between items-center">
+<h3 class="font-h3 text-h3">Local Air Quality</h3>
+<span class="material-symbols-outlined text-primary" data-icon="location_on">location_on</span>
+</div>
+<div class="flex items-end gap-md">
+<div class="w-16 h-32 rounded-full border-2 border-primary/20 liquid-pill">
+<div class="liquid-wave" style="height: 35%;"></div>
+</div>
+<div class="flex-1">
+<p class="font-data-display text-primary text-4xl">32</p>
+<p class="font-body-md text-on-surface-variant">AQI: Excellent</p>
+<div class="mt-md space-y-xs">
+<div class="flex justify-between text-xs">
+<span class="text-outline">PM2.5</span>
+<span class="font-bold">4.2 µg/m³</span>
+</div>
+<div class="flex justify-between text-xs">
+<span class="text-outline">Humidity</span>
+<span class="font-bold">45%</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Vital Capacity Trends -->
+<div class="glass-surface rounded-xl p-lg flex flex-col gap-md flex-1">
+<div class="flex justify-between items-center">
+<h3 class="font-h3 text-h3">Vital Capacity</h3>
+<span class="material-symbols-outlined text-primary" data-icon="trending_up">trending_up</span>
+</div>
+<div class="flex-1 flex items-center justify-center p-md">
+<img alt="Trend graph" class="w-full h-24 object-contain opacity-50 mix-blend-multiply" data-alt="A minimalist, clean line chart depicting health data trends on a grid. The line is a soft sky blue with glowing nodes at peak points. The background is white with very subtle gray grid lines, maintaining a professional clinical aesthetic and clear data visualization style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDV79wzqcXeMBaye4MxBVB8medp4-7LeifVJtmmwE-6zZ56J3SBwm1lwNe9FSrBgg0tDfSTie9jaM9iAiHAuPCTVDdVWirbQLL53zhsBDmQS1o2FQVMUGcPzrJC1phJRqN7lU3KlphH1VAGU56O2dQGl80jDL1iDCK2N2j-8h7ef7m9jbebWQtpNGhURevKbXregTJEkxSYhx63kx0gUycZxpjB3unf_oP0P--YGXF-6HPPDRkxh1qsZueqmlAFPqP3xIDPxKa0OKY"/>
+</div>
+<div class="flex justify-between items-center bg-primary-container/5 p-sm rounded-lg">
+<p class="text-xs font-label-caps text-primary">7-DAY INCREASE</p>
+<p class="font-bold text-primary">+12.4%</p>
+</div>
+</div>
+</div>
+<!-- Quick Action Tiles -->
+<div class="col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-lg">
+<button class="glass-surface group hover:bg-primary transition-all duration-300 rounded-xl p-lg flex items-center gap-md border-b-4 border-primary shadow-sm cursor-pointer active:scale-95 text-left">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 group-hover:bg-white/20 flex items-center justify-center text-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="monitor_heart">monitor_heart</span>
+</div>
+<div>
+<p class="font-h3 text-on-surface group-hover:text-white transition-colors">Start Spirometry</p>
+<p class="text-xs text-on-surface-variant group-hover:text-white/80 uppercase">Initiate baseline test</p>
+</div>
+</button>
+<button class="glass-surface group hover:bg-primary transition-all duration-300 rounded-xl p-lg flex items-center gap-md border-b-4 border-primary shadow-sm cursor-pointer active:scale-95 text-left">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 group-hover:bg-white/20 flex items-center justify-center text-primary group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="therapeutic_replace">find_replace</span>
+</div>
+<div>
+<p class="font-h3 text-on-surface group-hover:text-white transition-colors">New Hyperbaric</p>
+<p class="text-xs text-on-surface-variant group-hover:text-white/80 uppercase">Schedule O2 Session</p>
+</div>
+</button>
+<button class="glass-surface group hover:bg-primary-container transition-all duration-300 rounded-xl p-lg flex items-center gap-md border-b-4 border-primary-container shadow-sm cursor-pointer active:scale-95 text-left">
+<div class="w-12 h-12 rounded-xl bg-primary-container/20 group-hover:bg-white/20 flex items-center justify-center text-primary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="medical_information">medical_information</span>
+</div>
+<div>
+<p class="font-h3 text-on-surface group-hover:text-white transition-colors">Patient Records</p>
+<p class="text-xs text-on-surface-variant group-hover:text-white/80 uppercase">Access clinical history</p>
+</div>
+</button>
+<button class="glass-surface group hover:bg-tertiary-container transition-all duration-300 rounded-xl p-lg flex items-center gap-md border-b-4 border-tertiary-container shadow-sm cursor-pointer active:scale-95 text-left">
+<div class="w-12 h-12 rounded-xl bg-tertiary-container/10 group-hover:bg-white/20 flex items-center justify-center text-tertiary-container group-hover:text-white transition-colors">
+<span class="material-symbols-outlined" data-icon="warning">warning</span>
+</div>
+<div>
+<p class="font-h3 text-on-surface group-hover:text-white transition-colors">Review Alerts</p>
+<p class="text-xs text-on-surface-variant group-hover:text-white/80 uppercase">3 Urgent Notifications</p>
+</div>
+</button>
+</div>
+<!-- Clinical Comments Feed -->
+<div class="col-span-12 lg:col-span-12 glass-surface rounded-xl p-lg flex flex-col gap-lg">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-md">
+<h3 class="font-h2 text-h2">Clinical Comments</h3>
+<span class="px-md py-xs bg-primary-container text-white rounded-full text-xs font-bold">NEW NOTES</span>
+</div>
+<button class="text-primary font-bold text-sm hover:underline cursor-pointer">View Archive</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-md">
+<div class="p-md rounded-xl bg-surface-container-low border border-white/40 flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="person">person</span>
+</div>
+<span class="font-bold text-sm">Dr. Sarah Miller</span>
+</div>
+<span class="text-xs text-on-surface-variant">2h ago</span>
+</div>
+<p class="text-sm text-secondary italic">"Patient showing significant improvement in forced expiratory volume. Recommend increasing session intensity."</p>
+</div>
+<div class="p-md rounded-xl bg-surface-container-low border border-white/40 flex flex-col gap-sm">
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="person">person</span>
+</div>
+<span class="font-bold text-sm">RN. David Chen</span>
+</div>
+<span class="text-xs text-on-surface-variant">5h ago</span>
+</div>
+<p class="text-sm text-secondary italic">"Observed minor cough during the second cycle. Monitored SpO2, remained stable at 98% throughout."</p>
+</div>
+<div class="p-md rounded-xl bg-white border border-primary/20 shadow-sm flex flex-col gap-sm relative overflow-hidden">
+<div class="absolute top-0 right-0 p-xs bg-primary-container text-white">
+<span class="material-symbols-outlined text-xs" data-icon="push_pin">push_pin</span>
+</div>
+<div class="flex justify-between items-center">
+<div class="flex items-center gap-sm">
+<div class="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+<span class="material-symbols-outlined text-sm text-primary" data-icon="person">person</span>
+</div>
+<span class="font-bold text-sm">System Alert</span>
+</div>
+<span class="text-xs text-on-surface-variant">Today</span>
+</div>
+<p class="text-sm text-on-surface font-medium">Monthly baseline report generated. Readiness for step-down therapy protocols confirmed.</p>
+</div>
+</div>
+<div class="flex gap-md mt-sm">
+<input class="flex-1 bg-surface-container-low rounded-xl px-md border-none focus:ring-1 focus:ring-primary text-sm" placeholder="Add a clinical note..." type="text"/>
+<button class="bg-primary text-white px-lg py-sm rounded-xl font-bold active:scale-95 transition-transform">Post Note</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-auto w-full py-xl bg-surface-container-low dark:bg-surface-dim border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-center px-lg">
+<div class="flex flex-col gap-xs items-center md:items-start">
+<p class="font-h3 text-h3 text-primary">Breathe-Ease</p>
+<p class="font-label-caps text-label-caps text-secondary dark:text-secondary-fixed-dim">© 2024 Breathe-Ease Clinical Solutions</p>
+</div>
+<div class="flex gap-xl mt-md md:mt-0">
+<a class="font-label-caps text-label-caps text-on-secondary-container hover:text-primary transition-colors cursor-pointer" href="#">Privacy Policy</a>
+<a class="font-label-caps text-label-caps text-on-secondary-container hover:text-primary transition-colors cursor-pointer" href="#">Terms of Service</a>
+<a class="font-label-caps text-label-caps text-on-secondary-container hover:text-primary transition-colors cursor-pointer" href="#">Support</a>
+<a class="font-label-caps text-label-caps text-on-secondary-container hover:text-primary transition-colors cursor-pointer" href="#">Medical Disclaimer</a>
+</div>
+</footer>
+</main>
+</body></html>

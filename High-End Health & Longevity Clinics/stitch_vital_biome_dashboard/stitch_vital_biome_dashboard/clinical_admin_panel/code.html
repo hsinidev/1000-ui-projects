@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gut-Biome Clinical Admin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&amp;family=Geist:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "outline-variant": "#c3c8c1",
+                        "surface-container": "#ebefe4",
+                        "on-secondary-fixed-variant": "#474743",
+                        "outline": "#737872",
+                        "tertiary-container": "#575959",
+                        "on-primary-container": "#c0d5c2",
+                        "surface-bright": "#f7fbef",
+                        "inverse-on-surface": "#eef2e7",
+                        "on-surface-variant": "#434843",
+                        "on-secondary-fixed": "#1c1c19",
+                        "inverse-surface": "#2d322a",
+                        "surface-variant": "#e0e4d9",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-error-container": "#93000a",
+                        "surface-dim": "#d7dcd0",
+                        "on-surface": "#181d16",
+                        "surface": "#f7fbef",
+                        "on-background": "#181d16",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#394b3d",
+                        "primary": "#334537",
+                        "on-secondary": "#ffffff",
+                        "surface-container-low": "#f1f5e9",
+                        "on-secondary-container": "#656461",
+                        "error-container": "#ffdad6",
+                        "surface-container-highest": "#e0e4d9",
+                        "on-tertiary": "#ffffff",
+                        "surface-container-high": "#e5eade",
+                        "secondary-fixed-dim": "#c9c6c2",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#506354",
+                        "on-error": "#ffffff",
+                        "primary-container": "#4a5d4e",
+                        "on-tertiary-container": "#cfd0d0",
+                        "primary-fixed-dim": "#b7ccb9",
+                        "background": "#f7fbef",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "tertiary": "#404242",
+                        "secondary-container": "#e5e2dd",
+                        "secondary": "#5f5e5b",
+                        "on-primary-fixed": "#0e1f13",
+                        "secondary-fixed": "#e5e2dd",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "tertiary-fixed": "#e2e2e2",
+                        "primary-fixed": "#d3e8d5",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#b7ccb9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-padding": "32px",
+                        "card-gap": "24px",
+                        "unit": "8px",
+                        "section-margin": "64px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Geist"],
+                        "label-sm": ["Geist"],
+                        "h2": ["EB Garamond"],
+                        "data-display": ["Geist"],
+                        "h1": ["EB Garamond"],
+                        "h3": ["EB Garamond"],
+                        "body-lg": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "500"}],
+                        "data-display": ["14px", {"lineHeight": "1.0", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "500"}],
+                        "h3": ["24px", {"lineHeight": "1.3", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .neumorphic-flat {
+            background: #f7fbef;
+            box-shadow: -6px -6px 12px rgba(255, 255, 255, 1), 6px 6px 12px rgba(74, 93, 78, 0.08);
+        }
+        .neumorphic-pressed {
+            background: #f7fbef;
+            box-shadow: inset -3px -3px 6px rgba(255, 255, 255, 1), inset 3px 3px 6px rgba(74, 93, 78, 0.12);
+        }
+        .neumorphic-card-hover:hover {
+            box-shadow: -2px -2px 5px rgba(255, 255, 255, 1), 2px 2px 5px rgba(74, 93, 78, 0.12);
+            transform: translateY(1px);
+        }
+        body {
+            background-color: #f7fbef;
+        }
+    </style>
+</head>
+<body class="min-h-screen text-on-surface font-body-md overflow-x-hidden">
+<!-- Top Navigation -->
+<header class="flex justify-between items-center px-container-padding py-unit w-full docked full-width top-0 bg-surface shadow-[-6px_-6px_12px_rgba(255,255,255,1),6px_6px_12px_rgba(74,93,78,0.08)] sticky z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-primary text-3xl" data-icon="biotech">biotech</span>
+<h1 class="font-h2 text-h2 text-primary">Gut-Biome</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="neumorphic-pressed px-4 py-2 flex items-center gap-2 rounded-full">
+<span class="material-symbols-outlined text-on-surface-variant text-xl" data-icon="search">search</span>
+<input class="bg-transparent border-none focus:ring-0 text-sm w-48" placeholder="Search patients..." type="text"/>
+</div>
+<div class="w-10 h-10 rounded-full neumorphic-flat p-0.5">
+<img alt="Doctor Profile" class="w-full h-full rounded-full object-cover" data-alt="A professional close-up portrait of a female physician in a clinical setting, wearing a white lab coat. The lighting is soft and natural, emphasizing a trustworthy and clinical atmosphere. The background is a blurred high-end medical facility with moss green accents that match the Gut-Biome brand aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB7DYMm1psGAGD-wu-Q161TB8sN_wBFLCCSo_y3Xty7_xxCLnddPo2OuU8KvGJU1FOZUcEcFSXQ3FSBXV2UOIZhCi5Ssko8gHd10IHqpc2iXyVVQ3I-_kOkbDa-1wKYJ_r3AfkWYO3Sl8q7VHQVBIW-N6a5eLXPU5goJdMXhsDl0dLR4-nTc7yb8_GYvWhJ7HR7NJth7JzdT84vy4uUYsSLSqZ9SHB9gmew6F-lwz67Mgxxu2Geed8-DM3vPeGQkvwlPAuuvUu2ND27"/>
+</div>
+</div>
+</header>
+<div class="flex min-h-[calc(100vh-64px)]">
+<!-- Sidebar Navigation -->
+<nav class="hidden md:flex flex-col h-auto p-container-padding gap-gutter w-80 bg-surface shadow-[6px_0px_12px_rgba(74,93,78,0.08)]">
+<div class="mb-4">
+<p class="font-label-sm text-on-surface-variant uppercase tracking-widest px-4">Clinical Overview</p>
+</div>
+<a class="flex items-center gap-4 px-4 py-3 text-primary font-bold bg-surface-container-low rounded-lg transition-all neumorphic-pressed" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>Patient List</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span>Cohort Analysis</span>
+</a>
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="assignment">assignment</span>
+<span>Protocols</span>
+</a>
+<div class="mt-auto pt-8 border-t border-outline-variant/20">
+<a class="flex items-center gap-4 px-4 py-3 text-on-surface-variant hover:bg-surface-container-high rounded-lg transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+<span>Admin Settings</span>
+</a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<main class="flex-1 p-container-padding pb-32">
+<!-- Dashboard Stats Header -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-card-gap mb-section-margin">
+<div class="neumorphic-flat p-6 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-2">Total Patients</p>
+<h3 class="text-h3 font-h3 text-primary">1,284</h3>
+<div class="flex items-center gap-1 mt-2 text-primary text-xs">
+<span class="material-symbols-outlined text-sm" data-icon="trending_up">trending_up</span>
+<span>12% from last month</span>
+</div>
+</div>
+<div class="neumorphic-flat p-6 rounded-xl border-l-4 border-error/40">
+<p class="text-label-sm text-on-surface-variant mb-2">Urgent Alerts</p>
+<h3 class="text-h3 font-h3 text-error">24</h3>
+<p class="text-on-surface-variant text-xs mt-2">Critical dysbiosis detected</p>
+</div>
+<div class="neumorphic-flat p-6 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-2">Avg. Diversity Index</p>
+<h3 class="text-h3 font-h3 text-primary">72.4%</h3>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full mt-3 overflow-hidden">
+<div class="h-full bg-primary w-[72%]"></div>
+</div>
+</div>
+<div class="neumorphic-flat p-6 rounded-xl">
+<p class="text-label-sm text-on-surface-variant mb-2">Active Protocols</p>
+<h3 class="text-h3 font-h3 text-primary">15</h3>
+<p class="text-on-surface-variant text-xs mt-2">Compliance: 88%</p>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-card-gap">
+<!-- Patient List (Main Table) -->
+<div class="lg:col-span-2 space-y-gutter">
+<div class="flex justify-between items-end">
+<h2 class="font-h2 text-h2 text-primary">Priority Patients</h2>
+<button class="text-primary text-sm font-bold flex items-center gap-1 px-4 py-2 rounded-lg neumorphic-flat neumorphic-card-hover">
+                            View All Patients
+                            <span class="material-symbols-outlined text-sm" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+<div class="neumorphic-flat rounded-xl overflow-hidden">
+<table class="w-full text-left">
+<thead class="bg-surface-container-low text-on-surface-variant font-label-sm uppercase tracking-tighter">
+<tr>
+<th class="px-6 py-4">Patient Profile</th>
+<th class="px-6 py-4">Status</th>
+<th class="px-6 py-4">Microbiome Health</th>
+<th class="px-6 py-4 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/10">
+<!-- Patient Row 1 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full neumorphic-pressed p-0.5">
+<img alt="Patient" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A detailed digital photographic portrait of a middle-aged man with short dark hair, presented in a clean clinical style. The lighting is bright and high-key, using soft shadows to create a calm, medical atmosphere. The aesthetic is modern and professional, utilizing the Gut-Biome signature palette of moss green and sandy off-white in the background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1iLq_gslUUiMdHj_JvVbd34KOl0KQ1jURNkpTL10XxxBaJorfuwPOnvr5vZzAkoiVfNyw1mtWpXhK2PLm01qEwz8ymkIkzq4bHhCGAKUW-Eh8_QVyDRd-EQrYTmPDAMK6kzBGnDUc0ylIQtw3RczLmrd-2wX6RqKFAzvkRx3dQQEyfR5OHxdAHHtoos_2CiAD8IaObQbyTfA7rgyYxgl06VtIvStEcuQx4e-PUUigcNJgTWvEnyKMyQAMVVIltaWEYwxLHY4rpuLF"/>
+</div>
+<div>
+<p class="font-bold text-primary">Marcus Thorne</p>
+<p class="text-xs text-on-surface-variant">ID: GB-2291 • Last test: 2d ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-error-container text-on-error-container uppercase">Critical Dysbiosis</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden max-w-[80px]">
+<div class="h-full bg-error w-[28%]"></div>
+</div>
+<span class="text-xs font-data-display">28%</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-primary-container p-2 rounded-lg neumorphic-flat neumorphic-card-hover" data-icon="clinical_notes">clinical_notes</button>
+</td>
+</tr>
+<!-- Patient Row 2 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full neumorphic-pressed p-0.5">
+<img alt="Patient" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A portrait of a young professional woman with a soft, friendly expression, captured in a clinical studio setting. The lighting is airy and diffused, characteristic of a high-end medical portal. The background features subtle organic textures and moss green botanical elements, maintaining a sophisticated and sterile yet approachable feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBBg-FwCkZ3JL6EhiSzRNO0MyfTUCY3X7zA5tYTUreqirr_W3Rq_t180GV2_JdQZoBHgVpJKO8pDNRe70pVFpdNH08j91B0E9ziF0pQU8fcX7BSY8LO72m30UKE2YA_wlxc4m9nlZabUXN0-evAsQgKdwMnfNqB04FMLERFo_VnSppctCUzGIR4Q61C6qdOWyXPoCRRUMeNlC72Kg55LEQO7UNWKxb5srWAhPiKeQ3a-9mNyAFYGAQiTKbfUyM1JcynyI2BJO8jqd98"/>
+</div>
+<div>
+<p class="font-bold text-primary">Elena Rodriguez</p>
+<p class="text-xs text-on-surface-variant">ID: GB-8842 • Last test: 5d ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-surface-container text-on-surface-variant uppercase">Improving</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden max-w-[80px]">
+<div class="h-full bg-primary w-[64%]"></div>
+</div>
+<span class="text-xs font-data-display">64%</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-primary-container p-2 rounded-lg neumorphic-flat neumorphic-card-hover" data-icon="clinical_notes">clinical_notes</button>
+</td>
+</tr>
+<!-- Patient Row 3 -->
+<tr class="hover:bg-surface-container-lowest transition-colors group">
+<td class="px-6 py-5">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full neumorphic-pressed p-0.5">
+<img alt="Patient" class="w-full h-full rounded-full object-cover grayscale group-hover:grayscale-0 transition-all" data-alt="A medical-style headshot of an elderly woman, focusing on a serene and patient expression. The composition is clean and centered, illuminated by bright, clinical lighting that emphasizes clarity. The background is a minimalist medical environment with soft green and tan tones that align with the neumorphic design tokens." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCej1Hxt6cg0N4ec3R21j3Y6mEfSwmGILQasm33W-voHuPqeJmPluwgg5xFL03ryG1IDFUjhd2qQQDItwLwA4ccJJOIYvexQLw6Bc9GSZa0TAIlzo-4bsCSGfiE5AsU7OMgpou04XnUm2Ofxrii2U0r7n4fixN2STDHRTPhXG0-0d6FnPSVliDHKFusmyGVfw5W1H8LDSmyiYzVGM5X6TCj1LkE3oFvbRLeyNU-g7Zs_NnzpyrlGDY9UjvwKNVUJqopr2SWmAThFOc7"/>
+</div>
+<div>
+<p class="font-bold text-primary">Sarah Jenkins</p>
+<p class="text-xs text-on-surface-variant">ID: GB-4110 • Last test: 12h ago</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-5">
+<span class="px-3 py-1 rounded-full text-[10px] font-bold bg-primary-fixed text-on-primary-fixed-variant uppercase">Stable</span>
+</td>
+<td class="px-6 py-5">
+<div class="flex items-center gap-2">
+<div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden max-w-[80px]">
+<div class="h-full bg-primary w-[82%]"></div>
+</div>
+<span class="text-xs font-data-display">82%</span>
+</div>
+</td>
+<td class="px-6 py-5 text-right">
+<button class="material-symbols-outlined text-primary-container p-2 rounded-lg neumorphic-flat neumorphic-card-hover" data-icon="clinical_notes">clinical_notes</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Protocol Management -->
+<div class="mt-8">
+<div class="flex items-center gap-3 mb-6">
+<span class="material-symbols-outlined text-primary" data-icon="science">science</span>
+<h2 class="font-h3 text-h3 text-primary">Global Protocol Management</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+<div class="neumorphic-flat p-6 rounded-xl border-t-4 border-primary/20">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-bold text-primary">Restorative Flora v4</h4>
+<span class="text-xs px-2 py-1 bg-surface-container rounded font-bold">ACTIVE</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-6">Designed for post-antibiotic recovery and Bifidobacterium augmentation.</p>
+<div class="flex justify-between items-center text-xs">
+<span class="text-on-surface-variant">412 Patients Enrolled</span>
+<button class="text-primary font-bold">Edit Parameters</button>
+</div>
+</div>
+<div class="neumorphic-flat p-6 rounded-xl border-t-4 border-secondary/20">
+<div class="flex justify-between items-start mb-4">
+<h4 class="font-bold text-primary">Anti-Inflammatory Core</h4>
+<span class="text-xs px-2 py-1 bg-surface-container rounded font-bold">BETA</span>
+</div>
+<p class="text-sm text-on-surface-variant mb-6">Focuses on butyrate-producing bacteria and intestinal wall integrity.</p>
+<div class="flex justify-between items-center text-xs">
+<span class="text-on-surface-variant">88 Patients Enrolled</span>
+<button class="text-primary font-bold">Edit Parameters</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Cohort Analytics & Trends -->
+<div class="space-y-gutter">
+<h2 class="font-h3 text-h3 text-primary">Cohort Insights</h2>
+<!-- Diversity Trend Neumorphic Card -->
+<div class="neumorphic-flat p-6 rounded-xl">
+<p class="font-bold text-sm text-primary mb-6">Microbial Diversity Trend (Avg)</p>
+<div class="h-48 w-full flex items-end justify-between px-2 relative">
+<!-- Faux Chart Lines -->
+<div class="absolute inset-0 flex flex-col justify-between py-2 opacity-20">
+<div class="w-full border-t border-outline"></div>
+<div class="w-full border-t border-outline"></div>
+<div class="w-full border-t border-outline"></div>
+</div>
+<!-- Bars -->
+<div class="w-4 bg-primary/20 rounded-t-sm h-[40%] transition-all hover:bg-primary"></div>
+<div class="w-4 bg-primary/20 rounded-t-sm h-[55%] transition-all hover:bg-primary"></div>
+<div class="w-4 bg-primary/30 rounded-t-sm h-[50%] transition-all hover:bg-primary"></div>
+<div class="w-4 bg-primary/40 rounded-t-sm h-[65%] transition-all hover:bg-primary"></div>
+<div class="w-4 bg-primary/60 rounded-t-sm h-[75%] transition-all hover:bg-primary"></div>
+<div class="w-4 bg-primary rounded-t-sm h-[85%] transition-all shadow-[0_-4px_12px_rgba(51,69,55,0.3)]"></div>
+</div>
+<div class="flex justify-between mt-4 text-[10px] text-on-surface-variant uppercase tracking-widest">
+<span>Week 1</span>
+<span>Week 2</span>
+<span>Week 3</span>
+<span>Week 4</span>
+<span>Week 5</span>
+<span>Today</span>
+</div>
+</div>
+<!-- Bacterial Composition Breakdown -->
+<div class="neumorphic-flat p-6 rounded-xl">
+<p class="font-bold text-sm text-primary mb-4">Cohort Phyla Distribution</p>
+<div class="space-y-4">
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface-variant">Bacteroidetes</span>
+<span class="font-bold">42%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary w-[42%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface-variant">Firmicutes</span>
+<span class="font-bold">38%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-primary-container w-[38%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-xs mb-1">
+<span class="text-on-surface-variant">Actinobacteria</span>
+<span class="font-bold">12%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
+<div class="h-full bg-secondary-container w-[12%]"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Protocol Effectiveness Card -->
+<div class="neumorphic-flat p-6 rounded-xl relative overflow-hidden group">
+<div class="absolute -right-4 -top-4 opacity-5 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-8xl" data-icon="bolt">bolt</span>
+</div>
+<h4 class="font-bold text-primary mb-2">Insight of the Week</h4>
+<p class="text-xs leading-relaxed text-on-surface-variant">Patients on the <strong>Restorative Flora v4</strong> protocol are showing a 22% faster recovery of <i>Akkermansia</i> populations compared to the control group.</p>
+<button class="mt-4 w-full py-2 text-xs font-bold text-primary-container border border-primary/10 rounded-lg hover:bg-primary hover:text-white transition-all">Download Report</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Mobile Navigation Shell -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 flex justify-around items-center px-4 pb-8 pt-4 bg-surface shadow-[-6px_-6px_12px_rgba(255,255,255,1),6px_6px_12px_rgba(74,93,78,0.08)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-primary dark:text-primary-fixed shadow-[inset_-3px_-3px_6px_rgba(255,255,255,1),inset_3px_3px_6px_rgba(74,93,78,0.12)] rounded-xl px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="deceased">deceased</span>
+<span class="font-label-sm text-label-sm">Ecosystem</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-sm text-label-sm">Tracker</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="query_stats">query_stats</span>
+<span class="font-label-sm text-label-sm">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant dark:text-on-surface-variant px-4 py-1" href="#">
+<span class="material-symbols-outlined" data-icon="science">science</span>
+<span class="font-label-sm text-label-sm">Science</span>
+</a>
+</nav>
+<!-- Floating Action Button - Only for Primary Screens -->
+<button class="fixed bottom-24 right-8 md:bottom-12 md:right-12 w-14 h-14 bg-primary text-white rounded-full shadow-lg flex items-center justify-center hover:scale-105 active:scale-95 transition-transform z-40">
+<span class="material-symbols-outlined text-3xl" data-icon="add">add</span>
+</button>
+</body></html>

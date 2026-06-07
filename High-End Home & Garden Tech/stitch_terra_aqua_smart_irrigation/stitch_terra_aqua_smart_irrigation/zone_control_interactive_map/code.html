@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Terra-Aqua | Zone Control</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&amp;family=Inter:wght@400;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "error-container": "#ffdad6",
+                    "secondary": "#446464",
+                    "surface-variant": "#e0e2ed",
+                    "surface-container-low": "#f1f3fe",
+                    "secondary-container": "#c6e9e9",
+                    "surface-container": "#ebedf8",
+                    "secondary-fixed-dim": "#abcdcd",
+                    "surface": "#f9f9ff",
+                    "on-surface": "#181c23",
+                    "on-surface-variant": "#414754",
+                    "on-error-container": "#93000a",
+                    "primary-fixed": "#d7e2ff",
+                    "outline": "#717786",
+                    "on-secondary-container": "#4a6a6a",
+                    "on-tertiary": "#ffffff",
+                    "outline-variant": "#c1c6d7",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#ffb693",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-fixed": "#002020",
+                    "inverse-surface": "#2d3039",
+                    "surface-container-high": "#e6e8f3",
+                    "on-primary-fixed-variant": "#004590",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#001b3f",
+                    "inverse-primary": "#abc7ff",
+                    "tertiary-container": "#c45100",
+                    "on-tertiary-fixed-variant": "#7a2f00",
+                    "surface-tint": "#005cbc",
+                    "inverse-on-surface": "#eef0fb",
+                    "surface-bright": "#f9f9ff",
+                    "background": "#f9f9ff",
+                    "secondary-fixed": "#c6e9e9",
+                    "on-tertiary-fixed": "#351000",
+                    "tertiary-fixed": "#ffdbcc",
+                    "surface-dim": "#d7dae4",
+                    "primary-container": "#0072e5",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#fffbff",
+                    "primary": "#005ab7",
+                    "surface-container-highest": "#e0e2ed",
+                    "primary-fixed-dim": "#abc7ff",
+                    "on-primary-container": "#fefcff",
+                    "tertiary": "#9d3f00",
+                    "on-primary": "#ffffff",
+                    "on-background": "#181c23",
+                    "on-secondary-fixed-variant": "#2c4c4c"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "lg": "2.5rem",
+                    "margin": "2rem",
+                    "md": "1.5rem",
+                    "sm": "1rem",
+                    "xl": "4rem",
+                    "gutter": "1.5rem",
+                    "unit": "8px",
+                    "xs": "0.5rem"
+            },
+            "fontFamily": {
+                    "body-md": ["Inter"],
+                    "h2": ["Montserrat"],
+                    "label-sm": ["Inter"],
+                    "h1": ["Montserrat"],
+                    "body-lg": ["Inter"],
+                    "h3": ["Montserrat"]
+            },
+            "fontSize": {
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "h1": ["48px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .glass-card {
+            background: rgba(249, 249, 255, 0.75);
+            backdrop-filter: blur(24px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .liquid-fill {
+            background: linear-gradient(90deg, #c6e9e9 0%, #0072e5 100%);
+        }
+        .glow-active {
+            box-shadow: 0 0 15px rgba(0, 92, 188, 0.3);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-md overflow-hidden h-screen flex flex-col">
+<!-- TopAppBar Shell -->
+<header class="fixed top-0 z-50 w-full px-margin py-xs h-16 flex justify-between items-center bg-surface/70 backdrop-blur-xl border-b border-outline-variant/30 shadow-sm">
+<div class="flex items-center gap-sm">
+<span class="material-symbols-outlined text-primary" data-icon="waves">waves</span>
+<h1 class="font-h2 text-h2 tracking-tight text-primary">Terra-Aqua</h1>
+</div>
+<div class="flex items-center gap-md">
+<div class="hidden md:flex items-center gap-gutter mr-md">
+<span class="font-label-sm text-label-sm text-primary uppercase cursor-pointer transition-opacity hover:opacity-80">Dashboard</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase cursor-pointer transition-opacity hover:opacity-80">Analytics</span>
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase cursor-pointer transition-opacity hover:opacity-80">Settings</span>
+</div>
+<div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center overflow-hidden border border-outline-variant/30">
+<img alt="Profile" class="w-full h-full object-cover" data-alt="A professional portrait of an estate manager in a luxury setting, soft natural light, minimalist background with clean lines. The image follows a high-key light mode aesthetic with soft focus, reflecting a sense of reliable and sophisticated management in a modern environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDAIft04U8NQSNdhd_gx7CTZE-MI8HiDTcAUZUqdXLrmIX5EiELTzU2gztZpX_5aKvdRIthcK92ash8DCqv_xDmwuwmV5Oy4R710CdrWpiZJpSvaTFydK9sHRojZGxgbFklKMbAeLHskRYKnC_NUq_Y4ZvidPlpS2P05vAAJk4xL6RBVu6kdKmGT9BqbEXV-1ARL8hCzOBGAAetZwIAqXQZP2gEfGy-k7e2osu29-i_2-Y2tMSZRZF8ZPyU291pPj7r72r9qIpRghk"/>
+</div>
+</div>
+</header>
+<!-- Main Canvas: Interactive Map -->
+<main class="relative flex-grow w-full mt-16 overflow-hidden">
+<!-- Leak Detection Banner (Prominent/Conditional) -->
+<div class="absolute top-4 left-1/2 -translate-x-1/2 z-40 w-[90%] md:w-auto">
+<div class="bg-error-container text-on-error-container px-md py-sm rounded-xl shadow-lg border border-error/20 flex items-center gap-sm animate-pulse">
+<span class="material-symbols-outlined" data-icon="warning" style="font-variation-settings: 'FILL' 1;">warning</span>
+<div class="flex flex-col">
+<span class="font-label-sm text-label-sm font-bold uppercase tracking-wider">System Alert</span>
+<p class="font-body-md text-sm">Real-time Leak Detection: Pressure drop in North Orchard Zone.</p>
+</div>
+<button class="ml-auto bg-error text-on-error px-sm py-xs rounded-lg text-xs font-bold transition-transform active:scale-95">REPAIR MODE</button>
+</div>
+</div>
+<!-- Full Screen Estate Map Placeholder -->
+<div class="absolute inset-0 z-0 bg-surface-container">
+<img class="w-full h-full object-cover opacity-60 mix-blend-multiply" data-alt="An expansive aerial view of a luxurious residential estate with perfectly manicured emerald green lawns, geometric garden beds, and architectural water features. The lighting is bright, midday sun, creating clean shadows and a high-fidelity, professional landscape photography style that feels refreshing and organized." data-location="Luxury Estate Landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD0QYYs_5L0fD1sEFz1JNGO5EFvAilhFLzrIwjOY9tklxCl66UBog7V5X9-qnMVBjnDYFFGuSEj87R9d239qyMoeitAVDyOgeq74kug2xU-6VV1IncGxhO-3T9yR31Fpk01PQt5crjaldackD0sI7rizlS44SzQSJa12o92poQvbcOw-sOVaXxOtfiPAkEglxnkGGWbIOLTWPR4Uk-tGhW0U9UU8F-m3pUmVEnDFFONr6V9hnt7Yn2qC6K0stAsrdu3SJbgiYAPdiU"/>
+<!-- Zone Overlays (Interactive Map Hotspots) -->
+<div class="absolute inset-0">
+<!-- Zone 1: West Lawn -->
+<div class="absolute top-1/4 left-1/4 -translate-x-1/2 -translate-y-1/2">
+<div class="glass-card p-sm rounded-xl shadow-xl w-48 border border-white/50 glow-active">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase">West Lawn</span>
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Status: Active</span>
+<span class="text-xs text-primary font-bold">12.5 GPM</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative p-0.5 cursor-pointer">
+<div class="w-5 h-5 bg-white rounded-full absolute right-0.5 shadow-sm"></div>
+</div>
+</div>
+<div class="mt-xs w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="liquid-fill h-full w-[70%]"></div>
+</div>
+</div>
+</div>
+<!-- Zone 2: Rose Garden -->
+<div class="absolute top-[15%] right-1/4 translate-x-1/2">
+<div class="glass-card p-sm rounded-xl shadow-md w-48 border border-white/20">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Rose Garden</span>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Status: Idle</span>
+<span class="text-xs text-outline font-bold">Next: 06:00 AM</span>
+</div>
+<div class="w-12 h-6 bg-outline-variant/30 rounded-full relative p-0.5 cursor-pointer">
+<div class="w-5 h-5 bg-white rounded-full absolute left-0.5 shadow-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Zone 3: North Orchard (The Leaking one) -->
+<div class="absolute top-[40%] right-[10%]">
+<div class="glass-card p-sm rounded-xl shadow-xl w-48 border-2 border-error/40 bg-error-container/20">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-sm text-label-sm text-error uppercase font-bold">North Orchard</span>
+<span class="material-symbols-outlined text-error text-sm" data-icon="error_outline">error_outline</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-error font-medium">Status: LEAK</span>
+<span class="text-xs text-error font-bold">Inhibited</span>
+</div>
+<div class="w-12 h-6 bg-error/20 rounded-full relative p-0.5">
+<div class="w-5 h-5 bg-white rounded-full absolute left-0.5 shadow-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Zone 4: Infinity Pool Deck -->
+<div class="absolute bottom-[30%] left-[10%]">
+<div class="glass-card p-sm rounded-xl shadow-md w-48 border border-white/20">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Pool Deck</span>
+<div class="w-2 h-2 rounded-full bg-outline-variant"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Status: Idle</span>
+<span class="text-xs text-outline font-bold">Manual Only</span>
+</div>
+<div class="w-12 h-6 bg-outline-variant/30 rounded-full relative p-0.5 cursor-pointer">
+<div class="w-5 h-5 bg-white rounded-full absolute left-0.5 shadow-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Zone 5: Main Entry -->
+<div class="absolute bottom-[20%] right-[30%]">
+<div class="glass-card p-sm rounded-xl shadow-xl w-48 border border-white/50 glow-active">
+<div class="flex justify-between items-start mb-xs">
+<span class="font-label-sm text-label-sm text-primary uppercase">Main Entry</span>
+<div class="w-2 h-2 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex flex-col">
+<span class="text-xs text-on-surface-variant font-medium">Status: Active</span>
+<span class="text-xs text-primary font-bold">8.2 GPM</span>
+</div>
+<div class="w-12 h-6 bg-primary rounded-full relative p-0.5 cursor-pointer">
+<div class="w-5 h-5 bg-white rounded-full absolute right-0.5 shadow-sm"></div>
+</div>
+</div>
+<div class="mt-xs w-full h-1 bg-surface-container rounded-full overflow-hidden">
+<div class="liquid-fill h-full w-[45%]"></div>
+</div>
+</div>
+</div>
+<!-- Zone 6, 7, 8: Background clusters for visual depth -->
+<div class="absolute top-[60%] left-[45%] opacity-40 scale-75">
+<div class="glass-card p-sm rounded-xl shadow-md w-48 border border-white/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">East Terrace</span>
+</div>
+</div>
+<div class="absolute bottom-[40%] right-[45%] opacity-40 scale-75">
+<div class="glass-card p-sm rounded-xl shadow-md w-48 border border-white/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Tennis Court</span>
+</div>
+</div>
+<div class="absolute top-[80%] left-[60%] opacity-40 scale-75">
+<div class="glass-card p-sm rounded-xl shadow-md w-48 border border-white/20">
+<span class="font-label-sm text-label-sm text-on-surface-variant uppercase">Privacy Hedge</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Legend / Overview Overlay -->
+<div class="absolute bottom-24 left-margin z-40 hidden md:block">
+<div class="glass-card p-md rounded-2xl shadow-2xl border border-white/40 flex flex-col gap-sm w-64">
+<h3 class="font-h3 text-primary text-sm flex items-center gap-xs">
+<span class="material-symbols-outlined text-sm" data-icon="info">info</span>
+                    Estate Overview
+                </h3>
+<div class="grid grid-cols-2 gap-sm">
+<div class="bg-surface-container p-xs rounded-lg flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase">Active Zones</span>
+<span class="text-h3 font-h3 text-primary">2 / 8</span>
+</div>
+<div class="bg-surface-container p-xs rounded-lg flex flex-col">
+<span class="text-[10px] text-on-surface-variant font-bold uppercase">Moisture Avg</span>
+<span class="text-h3 font-h3 text-primary">68%</span>
+</div>
+</div>
+<div class="flex items-center justify-between text-xs font-medium border-t border-outline-variant/30 pt-xs mt-xs">
+<span class="text-on-surface-variant">Scheduled Water</span>
+<span class="text-primary">120 gal</span>
+</div>
+</div>
+</div>
+<!-- Floating Controls -->
+<div class="absolute bottom-24 right-margin z-40">
+<button class="w-14 h-14 bg-primary text-on-primary rounded-full shadow-2xl flex items-center justify-center transition-transform hover:scale-105 active:scale-95 group">
+<span class="material-symbols-outlined group-hover:rotate-90 transition-transform" data-icon="add">add</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar Shell -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 pb-6 pt-2 bg-surface/80 backdrop-blur-2xl border-t border-outline-variant/20 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] rounded-t-xl">
+<a class="flex flex-col items-center justify-center text-primary bg-secondary-container/50 rounded-full px-4 py-1 scale-90" href="#">
+<span class="material-symbols-outlined" data-icon="map" style="font-variation-settings: 'FILL' 1;">map</span>
+<span class="font-label-sm text-label-sm">Zones</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="opacity">opacity</span>
+<span class="font-label-sm text-label-sm">Moisture</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="wb_cloudy">wb_cloudy</span>
+<span class="font-label-sm text-label-sm">Schedule</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant opacity-60 hover:text-primary transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="bar_chart">bar_chart</span>
+<span class="font-label-sm text-label-sm">Reports</span>
+</a>
+</nav>
+</body></html>
