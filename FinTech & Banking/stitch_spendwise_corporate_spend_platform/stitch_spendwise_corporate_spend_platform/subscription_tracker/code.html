@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SpendWise - Subscription Tracker</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+                  "tertiary": "#924628",
+                  "surface-container-highest": "#dee4e1",
+                  "background": "#f5faf8",
+                  "on-tertiary-fixed-variant": "#773215",
+                  "on-primary-fixed": "#00201d",
+                  "outline-variant": "#bcc9c6",
+                  "secondary-fixed": "#d5e3fc",
+                  "secondary-container": "#d5e3fc",
+                  "on-error": "#ffffff",
+                  "primary-fixed": "#89f5e7",
+                  "on-background": "#171d1c",
+                  "primary": "#00685f",
+                  "tertiary-container": "#b05e3d",
+                  "surface-container": "#eaefed",
+                  "on-tertiary-container": "#fffbff",
+                  "surface-variant": "#dee4e1",
+                  "tertiary-fixed-dim": "#ffb59a",
+                  "error": "#ba1a1a",
+                  "on-surface": "#171d1c",
+                  "secondary-fixed-dim": "#b9c7df",
+                  "tertiary-fixed": "#ffdbce",
+                  "surface-container-low": "#f0f5f2",
+                  "on-surface-variant": "#3d4947",
+                  "secondary": "#515f74",
+                  "primary-container": "#008378",
+                  "surface-bright": "#f5faf8",
+                  "error-container": "#ffdad6",
+                  "on-primary": "#ffffff",
+                  "inverse-on-surface": "#edf2f0",
+                  "on-primary-fixed-variant": "#005049",
+                  "on-secondary-container": "#57657a",
+                  "on-tertiary-fixed": "#370e00",
+                  "surface-tint": "#006a61",
+                  "outline": "#6d7a77",
+                  "surface-dim": "#d6dbd9",
+                  "surface-container-lowest": "#ffffff",
+                  "on-primary-container": "#f4fffc",
+                  "on-tertiary": "#ffffff",
+                  "inverse-primary": "#6bd8cb",
+                  "on-secondary-fixed-variant": "#3a485b",
+                  "primary-fixed-dim": "#6bd8cb",
+                  "surface": "#f5faf8",
+                  "surface-container-high": "#e4e9e7",
+                  "inverse-surface": "#2c3130",
+                  "on-secondary-fixed": "#0d1c2e",
+                  "on-secondary": "#ffffff",
+                  "on-error-container": "#93000a"
+          },
+          "borderRadius": {
+                  "DEFAULT": "0.125rem",
+                  "lg": "0.25rem",
+                  "xl": "0.5rem",
+                  "full": "0.75rem"
+          },
+          "spacing": {
+                  "margin": "2rem",
+                  "base_unit": "4px",
+                  "gutter": "1rem",
+                  "grid_columns": "12",
+                  "container_max_width": "1440px"
+          },
+          "fontFamily": {
+                  "body-base": ["Inter"],
+                  "display-sm": ["Inter"],
+                  "h1": ["Inter"],
+                  "display-lg": ["Inter"],
+                  "body-sm": ["Inter"],
+                  "label-caps": ["Inter"],
+                  "tabular-nums": ["Inter"]
+          },
+          "fontSize": {
+                  "body-base": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                  "display-sm": ["24px", {"lineHeight": "32px", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                  "h1": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                  "display-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                  "body-sm": ["13px", {"lineHeight": "18px", "fontWeight": "400"}],
+                  "label-caps": ["11px", {"lineHeight": "16px", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                  "tabular-nums": ["14px", {"lineHeight": "20px", "fontWeight": "500"}]
+          }
+        },
+      },
+    }
+  </script>
+<style>
+    body { font-family: 'Inter', sans-serif; }
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    .bento-card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0px 2px 4px rgba(15, 23, 42, 0.05);
+      transition: border-color 0.2s ease;
+    }
+    .bento-card:hover {
+      border-color: #00685f;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-white text-on-surface min-h-screen pb-20">
+<!-- TopAppBar -->
+<header class="w-full top-0 sticky bg-white dark:bg-slate-900 border-b border-slate-200 dark:border-slate-800 shadow-sm z-50 flex items-center justify-between px-4 h-14">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="User Profile" data-alt="A professional headshot of a corporate executive in a modern office environment. The lighting is soft and natural, emphasizing a bright, professional atmosphere. The color palette is composed of clean whites, subtle teals, and professional slate greys. The overall aesthetic is minimalist and high-tech, fitting for a financial platform user profile." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnTuLA9ts1bNxtn0T2DlqiQfVCc0E88DDRrUWlBdbnNql5fa8AuKm0mxPBiQW8nlnTrstOx-e-8h6dwacUCc0vxM_VkQGALeqiNqsQa1E7Sq8g-v6HIhLmKcZswUd824R9DCwuMaFp2RBYmaMBsXIkrF3vIjk_HlBuIi3p1jhqDf0gLH2uYr4VIMrU9J53_H_h5L2Q6HQDvldWATaR3R4MCSswm__M1WUJwUVys5biR7niwEFjKVEgpy9xus60LMrPrXMLVb6L_Z95"/>
+</div>
+<h1 class="text-xl font-bold text-teal-600 dark:text-teal-400 tracking-tight">SpendWise</h1>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-slate-500 hover:bg-slate-50 rounded-full transition-colors active:opacity-80">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+</div>
+</header>
+<main class="max-w-[1440px] mx-auto p-4 md:p-8">
+<!-- Page Header & Breadcrumbs -->
+<nav class="mb-6">
+<div class="flex items-center gap-2 text-slate-400 font-label-caps uppercase">
+<span>Finance</span>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span class="text-teal-600">Subscriptions</span>
+</div>
+<h2 class="font-display-lg text-display-lg mt-2 text-slate-900">SaaS Optimization</h2>
+</nav>
+<!-- Bento Grid Analytics -->
+<div class="grid grid-cols-12 gap-6 mb-8">
+<!-- Total Waste Module (4 Columns) -->
+<div class="col-span-12 md:col-span-4 bento-card p-6 flex flex-col justify-between min-h-[200px]">
+<div>
+<p class="font-label-caps text-label-caps text-slate-500 uppercase">Estimated Monthly Waste</p>
+<p class="font-display-lg text-display-lg text-error mt-2">$2,480.00</p>
+</div>
+<div class="flex items-center gap-2 text-error text-body-sm font-medium">
+<span class="material-symbols-outlined text-[18px]">trending_up</span>
+<span>12% increase from last month</span>
+</div>
+</div>
+<!-- Subscription Waste Chart (8 Columns) -->
+<div class="col-span-12 md:col-span-8 bento-card p-6 min-h-[200px]">
+<div class="flex justify-between items-start mb-6">
+<div>
+<p class="font-label-caps text-label-caps text-slate-500 uppercase">Usage Analytics</p>
+<h3 class="font-h1 text-h1 text-slate-900">Subscription Waste Distribution</h3>
+</div>
+<button class="flex items-center gap-1 text-teal-600 font-label-caps uppercase hover:underline">
+<span class="material-symbols-outlined text-[16px]">download</span>
+            Export Report
+          </button>
+</div>
+<div class="flex h-32 items-end gap-3 px-2">
+<!-- Mock Chart Bars -->
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg relative group h-[80%]">
+<div class="absolute bottom-0 w-full bg-error/20 h-[30%] rounded-t-sm"></div>
+<div class="absolute bottom-0 w-full bg-teal-600 h-[70%] rounded-t-sm"></div>
+</div>
+<span class="font-label-caps text-[9px] text-slate-400">DESIGN</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg relative h-[95%]">
+<div class="absolute bottom-0 w-full bg-error/20 h-[60%] rounded-t-sm"></div>
+<div class="absolute bottom-0 w-full bg-teal-600 h-[40%] rounded-t-sm"></div>
+</div>
+<span class="font-label-caps text-[9px] text-slate-400">DEV OPS</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg relative h-[65%]">
+<div class="absolute bottom-0 w-full bg-error/20 h-[10%] rounded-t-sm"></div>
+<div class="absolute bottom-0 w-full bg-teal-600 h-[90%] rounded-t-sm"></div>
+</div>
+<span class="font-label-caps text-[9px] text-slate-400">SALES</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg relative h-[85%]">
+<div class="absolute bottom-0 w-full bg-error/20 h-[45%] rounded-t-sm"></div>
+<div class="absolute bottom-0 w-full bg-teal-600 h-[55%] rounded-t-sm"></div>
+</div>
+<span class="font-label-caps text-[9px] text-slate-400">HR</span>
+</div>
+<div class="flex-1 flex flex-col items-center gap-2">
+<div class="w-full bg-slate-100 rounded-t-lg relative h-[50%]">
+<div class="absolute bottom-0 w-full bg-error/20 h-[15%] rounded-t-sm"></div>
+<div class="absolute bottom-0 w-full bg-teal-600 h-[85%] rounded-t-sm"></div>
+</div>
+<span class="font-label-caps text-[9px] text-slate-400">LEGAL</span>
+</div>
+</div>
+<div class="mt-4 flex gap-4">
+<div class="flex items-center gap-1.5">
+<div class="w-3 h-3 bg-teal-600 rounded-full"></div>
+<span class="text-body-sm text-slate-500">Active Seats</span>
+</div>
+<div class="flex items-center gap-1.5">
+<div class="w-3 h-3 bg-error/40 rounded-full"></div>
+<span class="text-body-sm text-slate-500">Unused/Waste</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Active Subscriptions Ledger -->
+<div class="bento-card">
+<div class="p-6 border-b border-slate-100 flex justify-between items-center">
+<h3 class="font-h1 text-h1 text-slate-900">Active SaaS Subscriptions</h3>
+<div class="flex gap-2">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-[20px]">search</span>
+<input class="pl-10 pr-4 py-2 border border-slate-200 rounded-lg text-body-sm focus:ring-teal-500 focus:border-teal-500" placeholder="Filter SaaS..." type="text"/>
+</div>
+</div>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50 border-b border-slate-100">
+<th class="px-6 py-4 font-label-caps text-label-caps text-slate-500 uppercase">Platform</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-slate-500 uppercase">Monthly Cost</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-slate-500 uppercase">Seat Usage</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-slate-500 uppercase">Efficiency</th>
+<th class="px-6 py-4 font-label-caps text-label-caps text-slate-500 uppercase text-right">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<!-- Row 1 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">deployed_code</span>
+</div>
+<div>
+<p class="font-tabular-nums text-slate-900">Figma Professional</p>
+<p class="text-body-sm text-slate-500">Design Ops • 42 Seats</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-tabular-nums text-slate-700">$630.00</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between text-[11px] font-medium text-slate-500">
+<span>32/42</span>
+<span>76%</span>
+</div>
+<div class="h-1 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-teal-600 w-[76%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-yellow-50 text-yellow-700 text-[11px] font-bold rounded uppercase">Suboptimal</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-teal-600 hover:text-teal-800 font-label-caps uppercase text-[12px]">Manage</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">terminal</span>
+</div>
+<div>
+<p class="font-tabular-nums text-slate-900">GitHub Enterprise</p>
+<p class="text-body-sm text-slate-500">Engineering • 120 Seats</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-tabular-nums text-slate-700">$2,520.00</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between text-[11px] font-medium text-slate-500">
+<span>118/120</span>
+<span>98%</span>
+</div>
+<div class="h-1 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-teal-600 w-[98%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-teal-50 text-teal-700 text-[11px] font-bold rounded uppercase">Optimal</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-teal-600 hover:text-teal-800 font-label-caps uppercase text-[12px]">Manage</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">hub</span>
+</div>
+<div>
+<p class="font-tabular-nums text-slate-900">Salesforce CRM</p>
+<p class="text-body-sm text-slate-500">Sales • 15 Seats</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-tabular-nums text-slate-700">$3,750.00</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between text-[11px] font-medium text-slate-500">
+<span>6/15</span>
+<span>40%</span>
+</div>
+<div class="h-1 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-error w-[40%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-error-container text-on-error-container text-[11px] font-bold rounded uppercase">Critical Waste</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-teal-600 hover:text-teal-800 font-label-caps uppercase text-[12px]">Manage</button>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-slate-50/50 transition-colors">
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 bg-slate-100 rounded flex items-center justify-center">
+<span class="material-symbols-outlined text-slate-600">alternate_email</span>
+</div>
+<div>
+<p class="font-tabular-nums text-slate-900">Slack Enterprise</p>
+<p class="text-body-sm text-slate-500">Workspace • 250 Seats</p>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 font-tabular-nums text-slate-700">$3,125.00</td>
+<td class="px-6 py-4">
+<div class="flex flex-col gap-1 w-32">
+<div class="flex justify-between text-[11px] font-medium text-slate-500">
+<span>230/250</span>
+<span>92%</span>
+</div>
+<div class="h-1 bg-slate-100 rounded-full overflow-hidden">
+<div class="h-full bg-teal-600 w-[92%]"></div>
+</div>
+</div>
+</td>
+<td class="px-6 py-4">
+<span class="px-2 py-1 bg-teal-50 text-teal-700 text-[11px] font-bold rounded uppercase">Optimal</span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-teal-600 hover:text-teal-800 font-label-caps uppercase text-[12px]">Manage</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 border-t border-slate-100 flex justify-center">
+<button class="text-body-sm font-medium text-slate-500 hover:text-teal-600 flex items-center gap-1 transition-colors">
+          View All Subscriptions
+          <span class="material-symbols-outlined text-[18px]">expand_more</span>
+</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-t border-slate-200 dark:border-slate-800 shadow-[0_-2px_10px_rgba(15,23,42,0.05)] flex justify-around items-center h-16 px-2 pb-safe">
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 dark:hover:text-teal-300 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span class="text-[11px] font-medium tracking-wide uppercase">Overview</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 dark:hover:text-teal-300 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">center_focus_strong</span>
+<span class="text-[11px] font-medium tracking-wide uppercase">Scan</span>
+</a>
+<a class="flex flex-col items-center justify-center text-teal-600 dark:text-teal-400 hover:text-teal-500 dark:hover:text-teal-300 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">subscriptions</span>
+<span class="text-[11px] font-medium tracking-wide uppercase">SaaS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 dark:text-slate-500 hover:text-teal-500 dark:hover:text-teal-300 active:scale-95 transition-transform duration-150" href="#">
+<span class="material-symbols-outlined">fact_check</span>
+<span class="text-[11px] font-medium tracking-wide uppercase">Approvals</span>
+</a>
+</nav>
+</body></html>

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VAULT_COMMAND_v1.0 | Admin Command Center</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary-fixed": "#e2e2e2",
+                        "tertiary-fixed-dim": "#c6c6c6",
+                        "primary-container": "#e3e2e0",
+                        "inverse-on-surface": "#303030",
+                        "inverse-surface": "#e4e2e2",
+                        "primary-fixed-dim": "#c7c6c4",
+                        "on-primary-fixed-variant": "#464746",
+                        "on-secondary-fixed": "#001c3a",
+                        "outline": "#8e918e",
+                        "surface-container-highest": "#343535",
+                        "background": "#131314",
+                        "primary": "#ffffff",
+                        "on-primary": "#303130",
+                        "on-background": "#e4e2e2",
+                        "surface-container-low": "#1b1c1c",
+                        "secondary": "#afc8f0",
+                        "tertiary-container": "#e2e2e2",
+                        "on-tertiary-fixed": "#1b1b1b",
+                        "surface-tint": "#c7c6c4",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-tertiary-fixed-variant": "#474747",
+                        "on-error": "#690005",
+                        "secondary-container": "#2f486a",
+                        "surface-container-high": "#2a2a2a",
+                        "surface-dim": "#131314",
+                        "surface-variant": "#343535",
+                        "on-tertiary": "#303030",
+                        "outline-variant": "#444845",
+                        "on-surface-variant": "#c4c7c4",
+                        "secondary-fixed": "#d4e3ff",
+                        "error-container": "#93000a",
+                        "primary-fixed": "#e3e2e0",
+                        "on-tertiary-container": "#646464",
+                        "surface": "#131314",
+                        "secondary-fixed-dim": "#afc8f0",
+                        "surface-container": "#1f2020",
+                        "on-secondary-fixed-variant": "#2f486a",
+                        "on-error-container": "#ffdad6",
+                        "on-secondary-container": "#9eb7de",
+                        "on-primary-fixed": "#1b1c1b",
+                        "tertiary": "#ffffff",
+                        "on-surface": "#e4e2e2",
+                        "error": "#ffb4ab",
+                        "inverse-primary": "#5e5e5d",
+                        "surface-bright": "#393939",
+                        "on-secondary": "#163152",
+                        "on-primary-container": "#646463"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "unit": "4px",
+                        "container-padding": "20px",
+                        "border-width-thin": "1px",
+                        "stack-gap": "12px",
+                        "armored-inset": "4px",
+                        "section-margin": "32px",
+                        "border-width-thick": "3px"
+                    },
+                    "fontFamily": {
+                        "monospace-data": ["Space Grotesk"],
+                        "body-md": ["Inter"],
+                        "h1": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "monospace-data": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "500"}],
+                        "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "h1": ["32px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "body-lg": ["18px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "h2": ["24px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .clip-path-notch {
+            clip-path: polygon(0 0, 90% 0, 100% 20%, 100% 100%, 0 100%);
+        }
+        .metallic-finish {
+            background: linear-gradient(145deg, #2a2a2a 0%, #1f2020 100%);
+        }
+        .scanline {
+            background: linear-gradient(to bottom, rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body class="bg-black text-on-surface font-body-md selection:bg-tertiary-fixed selection:text-black overflow-hidden">
+<!-- TOP APP BAR -->
+<header class="fixed top-0 left-0 right-0 h-16 flex justify-between items-center px-6 bg-[#001F3F] border-b-[3px] border-[#E5E4E2] z-50">
+<div class="flex items-center">
+<span class="text-xl font-black text-[#E5E4E2] border-r-4 border-[#E5E4E2] pr-4 font-mono uppercase tracking-tighter">VAULT_COMMAND_v1.0</span>
+<div class="ml-6 flex items-center gap-4 hidden md:flex">
+<span class="font-monospace-data text-monospace-data text-[#E5E4E2] bg-[#001F3F] border-b-2 border-[#E5E4E2] px-4 py-1">ADMIN_OPS</span>
+<span class="font-monospace-data text-monospace-data text-slate-400 hover:bg-[#E5E4E2] hover:text-black transition-colors duration-75 px-4 py-1 cursor-pointer">NETWORK_STATUS</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E5E4E2]">security</span>
+<span class="material-symbols-outlined text-[#E5E4E2]">lock_person</span>
+<span class="material-symbols-outlined text-[#E5E4E2]">settings_input_component</span>
+</div>
+<div class="h-8 w-8 border-2 border-[#E5E4E2] bg-[#E5E4E2] flex items-center justify-center">
+<span class="material-symbols-outlined text-black text-sm">person</span>
+</div>
+</div>
+</header>
+<!-- SIDE NAV BAR -->
+<aside class="fixed left-0 top-0 h-full w-64 flex flex-col pt-16 bg-[#001F3F] border-r-[3px] border-[#E5E4E2] z-40 hidden md:flex">
+<div class="p-6 border-b border-slate-700 mb-1">
+<p class="font-monospace-data text-label-caps text-[#E5E4E2]">ADM_AUTH_LEVEL_4</p>
+<p class="font-monospace-data text-[10px] text-green-400 flex items-center gap-2">
+<span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                SECURE_SESSION_ACTIVE
+            </p>
+</div>
+<nav class="flex-grow py-4 overflow-y-auto">
+<div class="bg-[#E5E4E2] text-black border-l-8 border-white p-4 clip-path-notch flex items-center gap-4 mb-1 cursor-pointer">
+<span class="material-symbols-outlined" data-weight="fill">admin_panel_settings</span>
+<span class="font-monospace-data text-xs font-bold">ADMIN_OPS</span>
+</div>
+<div class="text-[#E5E4E2] opacity-70 p-4 border-l-4 border-transparent hover:opacity-100 hover:border-[#E5E4E2] flex items-center gap-4 mb-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined">account_balance_wallet</span>
+<span class="font-monospace-data text-xs font-bold">ASSET_CONTROL</span>
+</div>
+<div class="text-[#E5E4E2] opacity-70 p-4 border-l-4 border-transparent hover:opacity-100 hover:border-[#E5E4E2] flex items-center gap-4 mb-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined">gavel</span>
+<span class="font-monospace-data text-xs font-bold">ESCROW_LOGS</span>
+</div>
+<div class="text-[#E5E4E2] opacity-70 p-4 border-l-4 border-transparent hover:opacity-100 hover:border-[#E5E4E2] flex items-center gap-4 mb-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined">security</span>
+<span class="font-monospace-data text-xs font-bold">CUSTODIAL_CORE</span>
+</div>
+<div class="text-[#E5E4E2] opacity-70 p-4 border-l-4 border-transparent hover:opacity-100 hover:border-[#E5E4E2] flex items-center gap-4 mb-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined">shield</span>
+<span class="font-monospace-data text-xs font-bold">POLICY_ENGINE</span>
+</div>
+<div class="text-[#E5E4E2] opacity-70 p-4 border-l-4 border-transparent hover:opacity-100 hover:border-[#E5E4E2] flex items-center gap-4 mb-1 cursor-pointer transition-all">
+<span class="material-symbols-outlined">storage</span>
+<span class="font-monospace-data text-xs font-bold">DATA_VAULT</span>
+</div>
+</nav>
+<div class="p-6 border-t border-slate-700">
+<div class="text-[#E5E4E2] opacity-70 flex items-center gap-4 cursor-pointer hover:text-red-400 transition-colors">
+<span class="material-symbols-outlined">power_settings_new</span>
+<span class="font-monospace-data text-xs font-bold">SYSTEM_LOGOUT</span>
+</div>
+</div>
+</aside>
+<!-- MAIN CONTENT AREA -->
+<main class="md:ml-64 pt-16 pb-12 min-h-screen overflow-y-auto px-6 bg-black">
+<div class="max-w-[1600px] mx-auto py-8">
+<!-- HEADER SECTION -->
+<div class="flex justify-between items-end mb-8">
+<div>
+<h1 class="font-h1 text-h1 text-[#E5E4E2] uppercase">COMMAND_CENTER</h1>
+<p class="font-monospace-data text-slate-400 mt-2">SYSTEM_UPTIME: 142:54:12:09 // GLOBAL_THREAT_LEVEL: LOW</p>
+</div>
+<div class="flex gap-4">
+<button class="bg-[#E5E4E2] text-black px-6 py-3 font-monospace-data font-bold text-xs clip-path-notch border-[3px] border-[#E5E4E2] active:translate-y-0.5 hover:bg-white transition-all">
+                        INITIATE_PULSE_SYNC
+                    </button>
+<button class="bg-red-900 text-[#E5E4E2] px-6 py-3 font-monospace-data font-bold text-xs clip-path-notch border-[3px] border-red-500 active:translate-y-0.5 hover:bg-red-800 transition-all">
+                        EMERGENCY_LOCKDOWN
+                    </button>
+</div>
+</div>
+<!-- BENTO GRID DASHBOARD -->
+<div class="grid grid-cols-12 gap-6">
+<!-- VAULT STATUS (Large Armored Container) -->
+<div class="col-span-12 lg:col-span-8 bg-[#001F3F] border-[3px] border-[#E5E4E2] p-6 relative overflow-hidden">
+<div class="absolute top-0 left-0 bg-[#E5E4E2] text-black px-4 py-1 font-monospace-data text-[10px] font-bold">GLOBAL_VAULT_DISTRIBUTION</div>
+<div class="grid grid-cols-3 gap-6 mt-6">
+<div class="col-span-2 relative min-h-[300px]">
+<img class="w-full h-full object-cover opacity-40 mix-blend-overlay border border-slate-700" data-alt="A sophisticated global data visualization map displayed on a high-tech screen, showing interconnected nodes and pulsing energy lines representing secure data transfer routes. The visual style is dark and industrial, with deep blues and platinum silver accents. Soft, focused lighting highlights the intricate mesh network across a stylized globe, conveying a sense of global security and unyielding digital surveillance in a military-grade command center environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBs0H01jHN6yUecgC9MAikdtbP47T-yPtNFe0agpKe_6mB-lm2lW-XRuAl9bU-VI9d1T_fQ5oFRQQ0bcMsQtQaYD9PDRupLVoqOO6O1gfQ4xSV47NxBR-Er2HEAJgxQkVpg_35sVFMb9th94mwQregW-4QtcA8Vqwm_0JtzQJlTMnYqGZXdgfnR-QwE8TJiPZkLSXE-EyzhH-9Ciz_y_lagFFt1ltbL1LlSb2sfTitpF8D9RPsOaw9c93SUfgR45eD140pYWo7tpFI"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="material-symbols-outlined text-[#E5E4E2] text-6xl opacity-20">language</span>
+</div>
+</div>
+<div class="flex flex-col gap-4">
+<div class="bg-black/50 border border-[#E5E4E2]/30 p-4">
+<p class="font-monospace-data text-slate-400 text-[10px]">TOTAL_ASSETS_SECURED</p>
+<p class="font-h2 text-h2 text-[#E5E4E2] tracking-tighter">$14.2B</p>
+<div class="w-full bg-slate-800 h-1 mt-2">
+<div class="bg-green-400 h-full w-3/4"></div>
+</div>
+</div>
+<div class="bg-black/50 border border-[#E5E4E2]/30 p-4">
+<p class="font-monospace-data text-slate-400 text-[10px]">VAULT_HEALTH_INDEX</p>
+<p class="font-h2 text-h2 text-green-400 tracking-tighter">99.998%</p>
+<p class="font-monospace-data text-[10px] text-green-400/50 mt-1">OPTIMAL_OPERATIONAL_STATE</p>
+</div>
+<div class="bg-black/50 border border-[#E5E4E2]/30 p-4">
+<p class="font-monospace-data text-slate-400 text-[10px]">ACTIVE_SESSIONS</p>
+<p class="font-h2 text-h2 text-[#E5E4E2] tracking-tighter">1,024</p>
+<p class="font-monospace-data text-[10px] text-slate-500 mt-1">PEAK_THRESHOLD: 2,500</p>
+</div>
+</div>
+</div>
+</div>
+<!-- SYSTEM HEALTH (Armored Column) -->
+<div class="col-span-12 lg:col-span-4 bg-[#001F3F] border-[3px] border-[#E5E4E2] p-6 relative">
+<div class="absolute top-0 left-0 bg-[#E5E4E2] text-black px-4 py-1 font-monospace-data text-[10px] font-bold">CORE_HEALTH_METRICS</div>
+<div class="mt-6 flex flex-col gap-6">
+<div class="space-y-2">
+<div class="flex justify-between items-center px-2">
+<span class="font-monospace-data text-xs text-[#E5E4E2]">ENCRYPTION_ENGINE</span>
+<span class="font-monospace-data text-xs text-[#E5E4E2]">88%</span>
+</div>
+<div class="h-8 bg-black border border-slate-700 p-1">
+<div class="h-full bg-slate-500 w-[88%] relative">
+<div class="absolute inset-0 scanline opacity-30"></div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-2">
+<span class="font-monospace-data text-xs text-[#E5E4E2]">HSM_THROUGHPUT</span>
+<span class="font-monospace-data text-xs text-[#E5E4E2]">42%</span>
+</div>
+<div class="h-8 bg-black border border-slate-700 p-1">
+<div class="h-full bg-slate-500 w-[42%] relative">
+<div class="absolute inset-0 scanline opacity-30"></div>
+</div>
+</div>
+</div>
+<div class="space-y-2">
+<div class="flex justify-between items-center px-2">
+<span class="font-monospace-data text-xs text-[#E5E4E2]">NETWORK_LATENCY</span>
+<span class="font-monospace-data text-xs text-green-400">0.04ms</span>
+</div>
+<div class="h-8 bg-black border border-slate-700 p-1">
+<div class="h-full bg-green-400/50 w-[12%] relative">
+<div class="absolute inset-0 scanline opacity-30"></div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-4 border-t border-slate-700 space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E5E4E2] text-sm">database</span>
+<span class="font-monospace-data text-[11px] text-slate-400">DATA_REDUNDANCY</span>
+</div>
+<span class="px-2 py-0.5 bg-green-900/30 text-green-400 text-[10px] font-bold border border-green-400">TRIPLE_ACTIVE</span>
+</div>
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#E5E4E2] text-sm">verified_user</span>
+<span class="font-monospace-data text-[11px] text-slate-400">MFA_ENFORCEMENT</span>
+</div>
+<span class="px-2 py-0.5 bg-green-900/30 text-green-400 text-[10px] font-bold border border-green-400">STRICT</span>
+</div>
+</div>
+</div>
+</div>
+<!-- CUSTODIAL PERMISSIONS (Middle Block) -->
+<div class="col-span-12 lg:col-span-6 bg-[#001F3F] border-[3px] border-[#E5E4E2] p-6 relative">
+<div class="absolute top-0 left-0 bg-[#E5E4E2] text-black px-4 py-1 font-monospace-data text-[10px] font-bold">CUSTODIAL_ACCESS_REGISTRY</div>
+<div class="mt-6">
+<table class="w-full font-monospace-data text-[12px]">
+<thead>
+<tr class="text-slate-500 text-left border-b border-slate-700">
+<th class="pb-2 font-bold uppercase">ENTITY_ID</th>
+<th class="pb-2 font-bold uppercase">AUTH_LEVEL</th>
+<th class="pb-2 font-bold uppercase">STATUS</th>
+<th class="pb-2 font-bold uppercase text-right">ACTION</th>
+</tr>
+</thead>
+<tbody class="text-[#E5E4E2]">
+<tr class="border-b border-slate-800/50 hover:bg-black/30 transition-colors">
+<td class="py-3">USR_9921_ALPHA</td>
+<td class="py-3">LEVEL_05</td>
+<td class="py-3"><span class="text-green-400">● ACTIVE</span></td>
+<td class="py-3 text-right"><span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">edit</span></td>
+</tr>
+<tr class="border-b border-slate-800/50 hover:bg-black/30 transition-colors">
+<td class="py-3">EXT_CORP_ZULU</td>
+<td class="py-3">LEVEL_02</td>
+<td class="py-3"><span class="text-yellow-400">● PENDING</span></td>
+<td class="py-3 text-right"><span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">edit</span></td>
+</tr>
+<tr class="border-b border-slate-800/50 hover:bg-black/30 transition-colors">
+<td class="py-3">ADM_CORE_DELTA</td>
+<td class="py-3">LEVEL_09</td>
+<td class="py-3"><span class="text-green-400">● ACTIVE</span></td>
+<td class="py-3 text-right"><span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">edit</span></td>
+</tr>
+<tr class="border-b border-slate-800/50 hover:bg-black/30 transition-colors">
+<td class="py-3">SVC_KMS_ROTATION</td>
+<td class="py-3">SYSTEM</td>
+<td class="py-3"><span class="text-green-400">● ACTIVE</span></td>
+<td class="py-3 text-right"><span class="material-symbols-outlined text-sm cursor-pointer hover:text-white">edit</span></td>
+</tr>
+</tbody>
+</table>
+<button class="w-full mt-4 bg-slate-800 text-[#E5E4E2] py-2 text-[10px] font-bold border border-slate-600 hover:bg-slate-700 transition-all uppercase">
+                            VIEW_ALL_CUSTODIANS
+                        </button>
+</div>
+</div>
+<!-- REAL-TIME SECURITY LOG (Massive Block) -->
+<div class="col-span-12 lg:col-span-6 bg-[#001F3F] border-[3px] border-[#E5E4E2] p-6 relative flex flex-col h-[400px]">
+<div class="absolute top-0 left-0 bg-[#E5E4E2] text-black px-4 py-1 font-monospace-data text-[10px] font-bold">REAL_TIME_SECURITY_STREAM</div>
+<div class="mt-6 flex-grow overflow-y-auto font-monospace-data text-[11px] bg-black border border-slate-800 p-4 scrollbar-hide">
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:22:01]</span>
+<span class="text-green-400 shrink-0">AUTH_SUCCESS:</span>
+<span class="text-slate-300">USER_ID_921 AUTHORIZED AT GATEWAY_7</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:22:04]</span>
+<span class="text-blue-400 shrink-0">KEY_ROTATION:</span>
+<span class="text-slate-300">SYSTEM_WIDE_ROTATION_SUCCESSFUL // SHA_512</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:22:15]</span>
+<span class="text-yellow-400 shrink-0">CONN_INFO:</span>
+<span class="text-slate-300">NEW_CONNECTION_FROM_IP: 192.168.1.104 // TOKYO_NODE</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:22:28]</span>
+<span class="text-green-400 shrink-0">HEARTBEAT:</span>
+<span class="text-slate-300">COLD_STORAGE_VAULT_01_SECURED</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:22:45]</span>
+<span class="text-red-400 shrink-0">BLOCK_EVENT:</span>
+<span class="text-slate-300">UNAUTHORIZED_API_CALL_FROM_UNKNOWN_SOURCE // BLOCKED</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:23:02]</span>
+<span class="text-green-400 shrink-0">AUTH_SUCCESS:</span>
+<span class="text-slate-300">ROOT_ADMIN_SESSION_INITIATED // SESSION_ID_99218</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:23:10]</span>
+<span class="text-slate-400 shrink-0">CUSTODY_TX:</span>
+<span class="text-slate-300">TRANSFER_COMPLETE: 50.00_BTC -&gt; VAULT_DELTA</span>
+</div>
+<div class="flex gap-4 border-b border-slate-900 py-1 hover:bg-slate-900/50">
+<span class="text-slate-500 shrink-0">[14:23:15]</span>
+<span class="text-green-400 shrink-0">HSM_SYNC:</span>
+<span class="text-slate-300">SIGNING_NODES_IN_CONSENSUS</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- FOOTER -->
+<footer class="flex justify-between items-center px-8 py-2 w-full fixed bottom-0 bg-black border-t-[3px] border-[#E5E4E2] z-50">
+<div class="flex items-center gap-6">
+<span class="font-monospace-data text-[10px] tracking-widest text-[#E5E4E2] font-bold">©2024 DEFENSIVE_ARCH_SYS_CUSTODY. ALL_RIGHTS_RESERVED.</span>
+<div class="hidden md:flex gap-4 text-slate-500 font-monospace-data text-[10px]">
+<span class="hover:text-white underline cursor-pointer">TERMINAL_V1.2</span>
+<span class="hover:text-white underline cursor-pointer">SECURITY_PROTOCOL</span>
+<span class="hover:text-white underline cursor-pointer">ENCRYPTION_STANDARDS</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="text-[#E5E4E2] font-monospace-data text-[10px]">NODE_ID: LEDGER_SECURE_PHOENIX_01</span>
+<div class="w-3 h-3 bg-green-500 rounded-full border border-white"></div>
+</div>
+</footer>
+<!-- INTERACTION LAYER (Floating elements or overlays) -->
+<div class="fixed inset-0 scanline opacity-10 pointer-events-none z-[100]"></div>
+</body></html>

@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LexAutomation | Document Editor</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-surface": "#131b2e",
+                    "surface": "#faf8ff",
+                    "secondary-fixed-dim": "#c6c5cf",
+                    "primary": "#00216e",
+                    "on-surface-variant": "#444653",
+                    "tertiary-container": "#393f45",
+                    "surface-bright": "#faf8ff",
+                    "surface-variant": "#dae2fd",
+                    "on-error": "#ffffff",
+                    "inverse-on-surface": "#eef0ff",
+                    "on-error-container": "#93000a",
+                    "on-primary-container": "#8ea6ff",
+                    "on-secondary-fixed": "#1a1b22",
+                    "surface-container-high": "#e2e7ff",
+                    "surface-container": "#eaedff",
+                    "surface-container-lowest": "#ffffff",
+                    "on-secondary-container": "#63646c",
+                    "tertiary-fixed": "#dde3eb",
+                    "surface-container-highest": "#dae2fd",
+                    "outline-variant": "#c4c5d5",
+                    "on-background": "#131b2e",
+                    "tertiary-fixed-dim": "#c1c7cf",
+                    "on-tertiary-container": "#a4aab2",
+                    "on-tertiary": "#ffffff",
+                    "primary-fixed-dim": "#b6c4ff",
+                    "primary-fixed": "#dce1ff",
+                    "on-primary-fixed": "#001550",
+                    "inverse-surface": "#283044",
+                    "surface-tint": "#3456c1",
+                    "secondary-fixed": "#e3e1ec",
+                    "primary-container": "#0033a0",
+                    "secondary-container": "#e3e1ec",
+                    "on-primary-fixed-variant": "#133ca8",
+                    "surface-dim": "#d2d9f4",
+                    "on-secondary-fixed-variant": "#46464e",
+                    "error": "#ba1a1a",
+                    "tertiary": "#23292f",
+                    "on-tertiary-fixed": "#161c22",
+                    "on-secondary": "#ffffff",
+                    "secondary": "#5d5e66",
+                    "background": "#faf8ff",
+                    "on-tertiary-fixed-variant": "#41474e",
+                    "surface-container-low": "#f2f3ff",
+                    "outline": "#747684",
+                    "error-container": "#ffdad6",
+                    "inverse-primary": "#b6c4ff",
+                    "on-primary": "#ffffff"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "stack-sm": "12px",
+                    "container-max-width": "1280px",
+                    "margin": "32px",
+                    "base": "8px",
+                    "stack-md": "24px",
+                    "stack-lg": "48px",
+                    "gutter": "24px"
+            },
+            "fontFamily": {
+                    "h3": ["Public Sans"],
+                    "body-md": ["Public Sans"],
+                    "body-lg": ["Public Sans"],
+                    "label-caps": ["Public Sans"],
+                    "button": ["Public Sans"],
+                    "h1": ["Public Sans"],
+                    "h2": ["Public Sans"]
+            },
+            "fontSize": {
+                    "h3": ["24px", {"lineHeight": "1.4", "letterSpacing": "0", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "letterSpacing": "0", "fontWeight": "400"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "button": ["14px", {"lineHeight": "1", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "h1": ["40px", {"lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "h2": ["32px", {"lineHeight": "1.3", "letterSpacing": "-0.01em", "fontWeight": "600"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .security-shadow {
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        .progress-header-blue { border-top: 2px solid #3456c1; }
+        .document-canvas { height: calc(100vh - 64px); }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #c6c5cf; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar (Shared Component Logic) -->
+<header class="bg-surface-container-lowest dark:bg-on-surface border-b border-secondary-fixed shadow-sm flex justify-between items-center w-full px-margin h-16 ml-0 sticky top-0 z-50">
+<div class="flex items-center gap-base">
+<span class="material-symbols-outlined text-primary font-h2 text-h2 font-bold" data-icon="description">description</span>
+<h1 class="font-h2 text-h2 font-bold text-primary dark:text-primary-fixed uppercase tracking-wider">LexAutomation</h1>
+</div>
+<div class="flex items-center gap-gutter">
+<div class="flex gap-stack-sm">
+<button class="flex items-center gap-2 px-4 py-2 border border-outline-variant text-primary font-button uppercase hover:bg-surface-container transition-colors security-shadow">
+<span class="material-symbols-outlined text-[20px]" data-icon="history">history</span>
+                    Version History
+                </button>
+<button class="bg-primary text-on-primary px-8 py-2 font-button uppercase tracking-wider security-shadow hover:opacity-90 active:scale-95 transition-all">
+                    Sign Action
+                </button>
+</div>
+<div class="flex items-center gap-stack-sm border-l border-outline-variant pl-gutter">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary transition-colors" data-icon="notifications">notifications</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary transition-colors" data-icon="apps">apps</span>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Professional user portrait" class="w-full h-full object-cover" data-alt="A professional headshot of a mid-40s male legal executive with a confident smile, wearing a sharp navy blue suit and a crisp white shirt. The background is a blurred high-end law firm office with soft morning sunlight streaming through large windows. The lighting is clean and sophisticated, matching an institutional modernism aesthetic with high contrast and professional clarity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBV59nzaexYGkzp5wI-IVdinU6qUQHKiC7OYLVrgpB6UvPw39hBOxmMetVjGrmR11NCI4N5Ncn1IuB4BVUcxGMx1_PGPdjRVnoyCdJ1z-Dba5sA-f5nHoGhynwFV9Eus58wP24zU4lfMUp9QvVdOaBBMO1xLB7xdn6BhKfoxlyut8AuqjFKjWdJLTRrpispHcfbPjtlBuxV-BgYbqc4jtOVZ_riSyWgTBxAYd-OX9fa1y2u7cVhrMKlc28mGnp3gok7HLsIsdT_ZFo"/>
+</div>
+</div>
+</div>
+</header>
+<main class="flex w-full document-canvas">
+<!-- Document Navigation / Left Sidebar (Minimalist) -->
+<aside class="w-16 bg-on-surface border-r border-outline-variant flex flex-col items-center py-base gap-stack-md shrink-0">
+<div class="p-2 text-primary-fixed bg-primary-container font-bold rounded-lg cursor-pointer">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+</div>
+<div class="p-2 text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="folder_open">folder_open</span>
+</div>
+<div class="p-2 text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="gavel">gavel</span>
+</div>
+<div class="mt-auto p-2 text-secondary-fixed-dim hover:text-surface-container-lowest transition-colors duration-200 cursor-pointer">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</div>
+</aside>
+<!-- Main Editor Area -->
+<section class="flex-grow bg-surface-container-low overflow-y-auto p-margin flex justify-center">
+<div class="w-full max-w-[850px] bg-white border border-outline-variant security-shadow p-stack-lg min-h-[1100px] mb-margin">
+<!-- Document Header -->
+<div class="border-b border-outline-variant pb-stack-md mb-stack-md text-center">
+<h2 class="font-h3 text-h3 text-on-surface mb-2">SIMPLE AGREEMENT FOR FUTURE EQUITY (SAFE)</h2>
+<p class="font-label-caps text-on-surface-variant">STANDARD TEMPLATE — LEXAUTOMATION VERIFIED</p>
+</div>
+<!-- Document Content -->
+<div class="space-y-stack-md text-on-surface leading-relaxed font-body-md">
+<p>THIS CERTIFIES THAT in exchange for the payment by <span class="bg-surface-variant px-2 py-0.5 rounded border border-primary-fixed-dim font-bold text-primary">INVESTOR_NAME</span> (the “Investor”) of <span class="bg-surface-variant px-2 py-0.5 rounded border border-primary-fixed-dim font-bold text-primary">$[AMOUNT]</span> (the “Purchase Amount”) on or about <span class="bg-surface-variant px-2 py-0.5 rounded border border-primary-fixed-dim font-bold text-primary">[DATE]</span>, <span class="bg-surface-variant px-2 py-0.5 rounded border border-primary-fixed-dim font-bold text-primary">COMPANY_NAME</span>, a Delaware corporation (the “Company”), hereby issues to the Investor the right to certain shares of the Company’s capital stock, subject to the terms set forth below.</p>
+<div class="p-stack-sm border-l-4 border-primary bg-surface-container-low my-stack-md relative group">
+<span class="absolute -left-12 top-0 opacity-0 group-hover:opacity-100 transition-opacity">
+<button class="bg-primary text-white p-1 rounded-full"><span class="material-symbols-outlined text-[16px]" data-icon="add_comment">add_comment</span></button>
+</span>
+<h4 class="font-label-caps mb-2 text-primary">1. Events</h4>
+<p class="font-body-md">(a) <span class="font-bold underline">Equity Financing</span>. If there is an Equity Financing before the expiration or termination of this instrument, the Company will automatically issue to the Investor a number of shares of SAFE Preferred Stock equal to the Purchase Amount divided by the Conversion Price.</p>
+</div>
+<p>(b) <span class="font-bold underline">Liquidity Event</span>. If there is a Liquidity Event before the expiration or termination of this instrument, the Investor will, at its option, either (i) receive a cash payment equal to the Purchase Amount (subject to the following paragraph) or (ii) automatically receive from the Company a number of shares of Common Stock equal to the Purchase Amount divided by the Liquidity Price, if the Investor fails to select the cash option.</p>
+<p>(c) <span class="font-bold underline">Dissolution Event</span>. If there is a Dissolution Event before this instrument expires or terminates, the Company will pay an amount equal to the Purchase Amount, due and payable to the Investor immediately prior to, or concurrent with, the consummation of the Dissolution Event.</p>
+<div class="mt-stack-lg pt-stack-lg border-t border-outline-variant grid grid-cols-2 gap-stack-lg">
+<div>
+<p class="font-label-caps text-on-surface-variant mb-stack-md">COMPANY SIGNATURE</p>
+<div class="h-24 bg-surface-container border border-outline-variant border-dashed flex items-center justify-center text-on-secondary-container">
+                                Pending CEO Signature
+                            </div>
+</div>
+<div>
+<p class="font-label-caps text-on-surface-variant mb-stack-md">INVESTOR SIGNATURE</p>
+<div class="h-24 bg-surface-container border border-outline-variant border-dashed flex items-center justify-center text-on-secondary-container">
+                                Pending Investor Signature
+                            </div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Sidebar (Comments & FAQ) -->
+<aside class="w-[400px] bg-white border-l border-outline-variant flex flex-col shrink-0">
+<!-- Tabs -->
+<div class="flex border-b border-outline-variant">
+<button class="flex-1 py-4 font-label-caps text-primary border-b-2 border-primary bg-surface-container-low">Comments (3)</button>
+<button class="flex-1 py-4 font-label-caps text-secondary hover:bg-surface-container transition-colors">Clause FAQ</button>
+</div>
+<!-- Scrollable Content -->
+<div class="flex-grow overflow-y-auto p-base space-y-stack-sm">
+<!-- Comment Card 1 -->
+<div class="p-stack-sm border border-outline-variant progress-header-blue bg-white security-shadow">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<img alt="Expert avatar" class="w-6 h-6 rounded-full" data-alt="A professional close-up of a female legal expert in her 30s with glasses, looking focused and knowledgeable. She is in a bright, modern office with soft-focus architectural elements in the background. The lighting is balanced and crisp, evoking an atmosphere of trust and precision in a corporate legal environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBClg2cZbh9ceRO2VzGyc3ikb2LiKB04AIW05uVxO3hqCRFUatJnw2KU8JYHkqnKl0cotdbqT3wGYc_ogkBa6XLecQ11Pbg7yOTxb1I-4e4lcwZwsfOw_aVdXrQ4BGbLyAwZP1w3ShlrDJmBMTd16h8BpEpNLau1zFCXOndHGr8VYW7oaeiO5NZL8CgX3alD3svfaa33-BFx8RgUJ5CFfuGPlfwfqaZqmfrnqOXxEAeSzaU3U6qO-GMrWRItho_dxL7BFWN38nK-f8"/>
+<span class="font-button text-[13px] text-on-surface">Sarah Jennings, JD</span>
+</div>
+<span class="text-[10px] text-on-surface-variant uppercase font-bold">Legal Expert</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-2">The definition of 'Liquidity Event' here matches the 2024 NVCA updates. Ensure your cap table is ready for the conversion triggers.</p>
+<div class="flex items-center gap-stack-sm border-t border-outline-variant pt-2 mt-2">
+<button class="text-[12px] font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="reply">reply</span> Reply
+                        </button>
+<button class="text-[12px] font-bold text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="thumb_up">thumb_up</span> 2
+                        </button>
+</div>
+</div>
+<!-- Comment Card 2 -->
+<div class="p-stack-sm border border-outline-variant progress-header-blue bg-white security-shadow">
+<div class="flex justify-between items-start mb-2">
+<div class="flex items-center gap-2">
+<div class="w-6 h-6 rounded-full bg-primary-container text-white flex items-center justify-center font-bold text-[10px]">MJ</div>
+<span class="font-button text-[13px] text-on-surface">Marcus Jensen</span>
+</div>
+<span class="text-[10px] text-on-surface-variant uppercase font-bold">Investor</span>
+</div>
+<p class="text-body-md text-on-surface-variant mb-2">Can we adjust the Valuation Cap to $12M to better reflect the current pre-seed market traction?</p>
+<div class="flex items-center gap-stack-sm border-t border-outline-variant pt-2 mt-2">
+<button class="text-[12px] font-bold text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="reply">reply</span> Reply
+                        </button>
+</div>
+</div>
+<!-- FAQ Snippet (Contextual) -->
+<div class="mt-stack-md p-stack-sm bg-surface-container border border-outline-variant">
+<div class="flex items-center gap-2 mb-2 text-primary">
+<span class="material-symbols-outlined text-[18px]" data-icon="help_center">help_center</span>
+<span class="font-label-caps">Quick Clause FAQ</span>
+</div>
+<h5 class="font-button text-on-surface mb-1">What is a SAFE Note?</h5>
+<p class="text-[13px] text-on-surface-variant leading-snug">A Simple Agreement for Future Equity is a convertible security that allows investors to buy stock in a future priced round.</p>
+<a class="text-[12px] text-primary font-bold mt-2 inline-block" href="#">Read Full Documentation →</a>
+</div>
+</div>
+<!-- Comment Input -->
+<div class="p-stack-sm border-t border-outline-variant bg-surface-container-lowest">
+<div class="relative">
+<textarea class="w-full border border-outline-variant p-3 text-body-md focus:ring-2 focus:ring-primary focus:outline-none min-h-[100px] resize-none" placeholder="Add a comment or question..."></textarea>
+<button class="absolute bottom-3 right-3 bg-primary text-on-primary p-2 flex items-center justify-center security-shadow">
+<span class="material-symbols-outlined" data-icon="send">send</span>
+</button>
+</div>
+<div class="flex justify-between items-center mt-2 px-1">
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary" data-icon="attach_file">attach_file</span>
+<span class="material-symbols-outlined text-secondary cursor-pointer hover:text-primary" data-icon="alternate_email">alternate_email</span>
+</div>
+<span class="font-label-caps text-on-surface-variant opacity-60">Visible to: Both Parties</span>
+</div>
+</div>
+</aside>
+</main>
+<!-- Floating Action for Mobile / Support (Shared Component FAB Logic suppressed as per Task/Details screen rule, but keeping a help trigger) -->
+<div class="fixed bottom-margin right-margin">
+<button class="bg-on-surface text-surface-container-lowest w-12 h-12 flex items-center justify-center shadow-lg hover:bg-primary transition-all">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+</button>
+</div>
+</body></html>

@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            color: #e4e2e1;
+            overflow-x: hidden;
+        }
+        /* Synthetic Scanline Texture */
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0.15;
+        }
+        .crt-glow-cyan {
+            box-shadow: 0 0 4px #00dce6;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for technical density */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2E2E2E;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dce6;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#00dce6",
+                      "on-secondary-fixed": "#1b1c1c",
+                      "inverse-on-surface": "#303030",
+                      "tertiary-fixed": "#ffe173",
+                      "surface-container-highest": "#353535",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#474747",
+                      "on-tertiary-fixed-variant": "#554500",
+                      "on-primary-fixed-variant": "#004f53",
+                      "surface-bright": "#393939",
+                      "on-secondary-container": "#b9b8b8",
+                      "secondary-fixed-dim": "#c8c6c6",
+                      "outline": "#849495",
+                      "surface-variant": "#353535",
+                      "on-background": "#e4e2e1",
+                      "secondary-fixed": "#e4e2e2",
+                      "on-tertiary": "#3b2f00",
+                      "surface-container": "#1f2020",
+                      "on-surface": "#e4e2e1",
+                      "on-tertiary-container": "#725e00",
+                      "surface-container-high": "#2a2a2a",
+                      "surface": "#131313",
+                      "primary-fixed": "#6ff6ff",
+                      "on-secondary": "#303030",
+                      "secondary": "#c8c6c6",
+                      "tertiary": "#fff7e9",
+                      "inverse-primary": "#00696f",
+                      "outline-variant": "#3a494b",
+                      "primary-container": "#00f3ff",
+                      "inverse-surface": "#e4e2e1",
+                      "tertiary-container": "#ffd93d",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#e8c426",
+                      "surface-container-low": "#1b1c1c",
+                      "primary-fixed-dim": "#00dce6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-container": "#006b71",
+                      "primary": "#e3fdff",
+                      "background": "#131313",
+                      "on-primary": "#00373a",
+                      "error-container": "#93000a",
+                      "surface-dim": "#131313",
+                      "on-tertiary-fixed": "#221b00",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-fixed": "#002022",
+                      "secondary-container": "#494949",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "0px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin": "24px",
+                      "container-max": "1440px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "technical-data": ["monospace"],
+                      "headline-xl": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-base": ["Inter"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "technical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-surface font-body-base text-on-surface">
+<div class="scanline-overlay"></div>
+<!-- Top Navigation -->
+<header class="fixed top-0 z-50 flex justify-between items-center w-full px-margin h-16 bg-surface border-b border-outline-variant font-technical-data text-technical-data uppercase">
+<div class="font-headline-md text-headline-md tracking-tighter text-primary-fixed-dim">
+            BETA_OS // COMMAND_CENTER
+        </div>
+<div class="flex items-center gap-6">
+<div class="relative group">
+<input class="bg-surface border-b border-outline-variant py-1 px-2 text-technical-data focus:outline-none focus:border-primary-fixed-dim transition-all w-64 placeholder:text-on-surface-variant/50" placeholder="QUERY_FEEDBACK..." type="text"/>
+<span class="absolute right-2 top-1.5 material-symbols-outlined text-primary-fixed-dim">search</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-2 transition-all">dns</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-2 transition-all">memory</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-2 transition-all">wifi_tethering</span>
+</div>
+</div>
+</header>
+<div class="flex h-screen pt-16">
+<!-- Sidebar Navigation -->
+<aside class="hidden md:flex flex-col gap-unit p-unit h-full w-64 bg-surface border-r border-outline-variant font-technical-data text-technical-data uppercase">
+<div class="p-4 border-b border-outline-variant mb-4">
+<div class="font-label-caps text-label-caps text-on-surface-variant">BETA_KERNEL_v1.0</div>
+<div class="text-[10px] text-primary-fixed-dim animate-pulse mt-1">STATUS: OPTIMAL</div>
+</div>
+<nav class="flex flex-col flex-1">
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">settings_input_component</span>
+                    Nodes
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">terminal</span>
+                    Logs
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-fixed-dim text-on-primary-fixed border-l-4 border-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined">feedback</span>
+                    Feedback
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">analytics</span>
+                    Analytics
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">admin_panel_settings</span>
+                    Admin Panel
+                </a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">help</span>
+                    FAQ
+                </a>
+</nav>
+<div class="p-margin">
+<button class="w-full bg-primary-fixed-dim text-on-primary-fixed py-3 font-label-caps tracking-widest hover:brightness-110 crt-glow-cyan transition-all">
+                    INITIATE_SCAN
+                </button>
+</div>
+</aside>
+<!-- Main Content Area: Two Column Feed -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Column: Feedback Feed -->
+<section class="w-2/5 flex flex-col border-r border-outline-variant overflow-y-auto bg-surface-container-lowest">
+<div class="sticky top-0 bg-surface/90 backdrop-blur-md border-b border-outline-variant p-margin flex justify-between items-center z-10">
+<span class="font-label-caps text-on-surface-variant">ACTIVE_TICKETS [42]</span>
+<span class="material-symbols-outlined text-primary-fixed-dim text-sm">filter_list</span>
+</div>
+<!-- Feedback Item 1 (Selected) -->
+<div class="p-margin border-b border-primary-fixed-dim bg-primary-fixed-dim/5 cursor-pointer relative">
+<div class="absolute left-0 top-0 bottom-0 w-1 bg-primary-fixed-dim"></div>
+<div class="flex justify-between items-start mb-2">
+<span class="font-technical-data text-[10px] text-primary-fixed-dim bg-primary-fixed-dim/10 px-1">ID: FF-0892</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">24m ago</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">KERNEL_PANIC: MEMORY_LEAK_0X42</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 font-technical-data">System stability compromised during heavy I/O operations on the primary node. Observed stack overflow in the telemetry service...</p>
+<div class="mt-4 flex items-center gap-4">
+<div class="flex items-center gap-1 text-primary-fixed-dim">
+<span class="material-symbols-outlined text-xs">forum</span>
+<span class="font-technical-data text-[11px]">12 REPLIES</span>
+</div>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-xs">priority_high</span>
+<span class="font-technical-data text-[11px]">CRITICAL</span>
+</div>
+</div>
+</div>
+<!-- Feedback Item 2 -->
+<div class="p-margin border-b border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-technical-data text-[10px] text-on-surface-variant bg-outline-variant/20 px-1">ID: FF-0891</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">1h ago</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">UI_GLITCH: NAVIGATION_LAG</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 font-technical-data">Frame drops noticed when switching between "Nodes" and "Analytics" viewports on high-resolution displays.</p>
+<div class="mt-4 flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant group-hover:text-primary-fixed-dim">
+<span class="material-symbols-outlined text-xs">forum</span>
+<span class="font-technical-data text-[11px]">03 REPLIES</span>
+</div>
+<div class="flex items-center gap-1 text-outline">
+<span class="material-symbols-outlined text-xs">low_priority</span>
+<span class="font-technical-data text-[11px]">MINOR</span>
+</div>
+</div>
+</div>
+<!-- Feedback Item 3 -->
+<div class="p-margin border-b border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-technical-data text-[10px] text-on-surface-variant bg-outline-variant/20 px-1">ID: FF-0890</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">4h ago</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">FEATURE_REQ: RAW_LOG_EXPORT</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 font-technical-data">Requesting the ability to export terminal logs in .json format for external parser processing.</p>
+<div class="mt-4 flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant group-hover:text-primary-fixed-dim">
+<span class="material-symbols-outlined text-xs">forum</span>
+<span class="font-technical-data text-[11px]">08 REPLIES</span>
+</div>
+<div class="flex items-center gap-1 text-tertiary-fixed-dim">
+<span class="material-symbols-outlined text-xs">bolt</span>
+<span class="font-technical-data text-[11px]">ENHANCEMENT</span>
+</div>
+</div>
+</div>
+<!-- Feedback Item 4 -->
+<div class="p-margin border-b border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-2">
+<span class="font-technical-data text-[10px] text-on-surface-variant bg-outline-variant/20 px-1">ID: FF-0889</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">1d ago</span>
+</div>
+<h3 class="font-label-caps text-on-surface mb-2">AUTH_FAILURE: KEY_INVALIDATION</h3>
+<p class="text-sm text-on-surface-variant line-clamp-2 font-technical-data">Unexpected session timeouts occurring every 15 minutes instead of the configured 60-minute interval.</p>
+<div class="mt-4 flex items-center gap-4">
+<div class="flex items-center gap-1 text-on-surface-variant group-hover:text-primary-fixed-dim">
+<span class="material-symbols-outlined text-xs">forum</span>
+<span class="font-technical-data text-[11px]">21 REPLIES</span>
+</div>
+<div class="flex items-center gap-1 text-on-tertiary-container">
+<span class="material-symbols-outlined text-xs">priority_high</span>
+<span class="font-technical-data text-[11px]">CRITICAL</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Active Comment Thread -->
+<section class="flex-1 flex flex-col overflow-hidden bg-surface">
+<!-- Header of the selected item -->
+<div class="p-8 border-b border-outline-variant bg-surface-container-low">
+<div class="flex justify-between items-start mb-4">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<span class="bg-error-container text-on-error-container px-2 py-0.5 font-technical-data text-[10px]">BUG_REPORT</span>
+<span class="text-on-surface-variant font-technical-data text-[12px]">SUBMITTED BY: OPERATOR_9221</span>
+</div>
+<h1 class="font-headline-md text-primary-fixed-dim tracking-tight">KERNEL_PANIC: MEMORY_LEAK_0X42</h1>
+</div>
+<div class="flex gap-2">
+<button class="border border-outline-variant px-4 py-2 font-label-caps text-on-surface-variant hover:border-primary-fixed-dim hover:text-primary-fixed-dim transition-all">ASSIGN_TICKET</button>
+<button class="border border-outline-variant px-4 py-2 font-label-caps text-on-surface-variant hover:border-primary-fixed-dim hover:text-primary-fixed-dim transition-all">CLOSE_THREAD</button>
+</div>
+</div>
+<div class="bg-black/40 p-4 border-l-2 border-primary-fixed-dim font-technical-data text-sm leading-relaxed text-on-surface-variant">
+                        $ SYSTEM_LOG_DUMP: Critical memory leak detected in the core telemetry listener. <br/>
+                        $ ERROR_ADDR: 0x42ff001a <br/>
+                        $ STACK_TRACE: [REDACTED] <br/>
+                        The memory usage climbs linearly at 256MB/min until the watchdog triggers a hard reboot. Please investigate the heap allocation in the buffer management module.
+                    </div>
+</div>
+<!-- Thread Content -->
+<div class="flex-1 overflow-y-auto p-8 space-y-8 bg-[radial-gradient(circle_at_top_right,_#1a1a1a_0%,_#131313_100%)]">
+<!-- Root Comment -->
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-outline-variant/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-fixed-dim">account_circle</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-on-surface">DEV_M_CHEN</span>
+<span class="bg-primary-fixed-dim text-on-primary-fixed text-[8px] font-technical-data px-1 px-1">DEV_TAG</span>
+<span class="text-[10px] text-on-surface-variant font-technical-data">09:42:15 UTC</span>
+</div>
+<div class="border border-outline-variant p-4 text-sm font-technical-data text-on-surface-variant leading-relaxed bg-surface-container/50">
+                                Investigating. It looks like the circular buffer isn't clearing the tail pointer correctly after high-frequency bursts. I'll run a local reproduction suite.
+                            </div>
+<div class="flex gap-4 text-[10px] font-technical-data text-on-surface-variant">
+<button class="hover:text-primary-fixed-dim uppercase">[ UPVOTE_22 ]</button>
+<button class="hover:text-primary-fixed-dim uppercase">[ REPLY ]</button>
+</div>
+<!-- Nested Reply -->
+<div class="pl-8 pt-4 space-y-4">
+<div class="flex gap-4">
+<div class="w-8 h-8 bg-outline-variant/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-primary-fixed-dim">account_circle</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-on-surface">SR_ARCH_J_DOE</span>
+<span class="bg-primary-fixed-dim text-on-primary-fixed text-[8px] font-technical-data px-1">DEV_TAG</span>
+<span class="text-[10px] text-on-surface-variant font-technical-data">10:05:32 UTC</span>
+</div>
+<div class="border border-outline-variant p-4 text-sm font-technical-data text-on-surface-variant bg-surface-container-high/30">
+                                            @DEV_M_CHEN, check the `telemetry_buffer.c` line 144. The lock contention might be preventing the cleanup thread from executing properly.
+                                        </div>
+<div class="flex gap-4 text-[10px] font-technical-data text-on-surface-variant">
+<button class="hover:text-primary-fixed-dim uppercase">[ UPVOTE_05 ]</button>
+<button class="hover:text-primary-fixed-dim uppercase">[ REPLY ]</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Another Comment -->
+<div class="flex gap-4">
+<div class="w-10 h-10 bg-outline-variant/30 flex items-center justify-center shrink-0">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div class="flex-1 space-y-2">
+<div class="flex items-center gap-3">
+<span class="font-label-caps text-on-surface">OPERATOR_334</span>
+<span class="text-[10px] text-on-surface-variant font-technical-data">11:12:01 UTC</span>
+</div>
+<div class="border border-outline-variant p-4 text-sm font-technical-data text-on-surface-variant leading-relaxed">
+                                Noticed the same on Cluster B-7. Reverting to v0.9.8 temporarily stabilized our node.
+                            </div>
+<div class="flex gap-4 text-[10px] font-technical-data text-on-surface-variant">
+<button class="hover:text-primary-fixed-dim uppercase">[ UPVOTE_14 ]</button>
+<button class="hover:text-primary-fixed-dim uppercase">[ REPLY ]</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Command-Line Comment Input -->
+<div class="p-6 bg-surface-container-lowest border-t border-outline-variant">
+<div class="relative flex items-center border border-outline-variant bg-black p-3 group focus-within:border-primary-fixed-dim transition-all crt-glow-cyan">
+<span class="text-primary-fixed-dim font-technical-data mr-3 shrink-0">BETA_OS:~/COMM_MOD/REPLY_0X42$</span>
+<input class="bg-transparent border-none focus:ring-0 w-full font-technical-data text-primary-fixed-dim placeholder:text-primary-fixed-dim/20" placeholder="TYPE_MESSAGE_HERE..." type="text"/>
+<div class="flex items-center gap-4 text-primary-fixed-dim shrink-0">
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary-fixed-dim/10 p-1">attach_file</span>
+<span class="material-symbols-outlined cursor-pointer hover:bg-primary-fixed-dim/10 p-1">send</span>
+</div>
+<!-- Blinking cursor simulation -->
+<div class="absolute right-[112px] w-2 h-5 bg-primary-fixed-dim/50 animate-pulse pointer-events-none"></div>
+</div>
+<div class="mt-2 flex justify-between text-[9px] font-technical-data text-on-surface-variant uppercase tracking-widest">
+<span>MARKDOWN_SUPPORTED: TRUE</span>
+<span>CONNECTION: SECURE_SSH_TLS</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Status Bar / Footer Overlay -->
+<footer class="fixed bottom-0 left-0 right-0 h-8 bg-surface-container-high border-t border-outline-variant flex items-center px-4 justify-between font-technical-data text-[10px] text-on-surface-variant z-50">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-primary-fixed-dim"></span> SYSTEM_LIVE</span>
+<span>Uptime: 432:12:09</span>
+<span class="text-primary-fixed-dim">CPU: 12%</span>
+<span class="text-tertiary-fixed-dim">MEM: 84% (WATCHDOG_ACTIVE)</span>
+</div>
+<div class="flex items-center gap-4">
+<span>TERMINAL_SESSION: xterm-256color</span>
+<span class="bg-primary-fixed-dim/10 px-2 py-0.5 text-primary-fixed-dim">REGION: US-EAST-SYS-42</span>
+</div>
+</footer>
+</body></html>

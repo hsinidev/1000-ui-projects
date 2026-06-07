@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Synthetic Texture Overlay */
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.1;
+        }
+        /* Glow Effect for Active Borders */
+        .glow-cyan {
+            box-shadow: 0 0 4px #00dce6;
+        }
+        /* Custom Scrollbar for Terminal aesthetic */
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a494b;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00dce6;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#00dce6",
+                      "on-secondary-fixed": "#1b1c1c",
+                      "inverse-on-surface": "#303030",
+                      "tertiary-fixed": "#ffe173",
+                      "surface-container-highest": "#353535",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#474747",
+                      "on-tertiary-fixed-variant": "#554500",
+                      "on-primary-fixed-variant": "#004f53",
+                      "surface-bright": "#393939",
+                      "on-secondary-container": "#b9b8b8",
+                      "secondary-fixed-dim": "#c8c6c6",
+                      "outline": "#849495",
+                      "surface-variant": "#353535",
+                      "on-background": "#e4e2e1",
+                      "secondary-fixed": "#e4e2e2",
+                      "on-tertiary": "#3b2f00",
+                      "surface-container": "#1f2020",
+                      "on-surface": "#e4e2e1",
+                      "on-tertiary-container": "#725e00",
+                      "surface-container-high": "#2a2a2a",
+                      "surface": "#131313",
+                      "primary-fixed": "#6ff6ff",
+                      "on-secondary": "#303030",
+                      "secondary": "#c8c6c6",
+                      "tertiary": "#fff7e9",
+                      "inverse-primary": "#00696f",
+                      "outline-variant": "#3a494b",
+                      "primary-container": "#00f3ff",
+                      "inverse-surface": "#e4e2e1",
+                      "tertiary-container": "#ffd93d",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#e8c426",
+                      "surface-container-low": "#1b1c1c",
+                      "primary-fixed-dim": "#00dce6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-container": "#006b71",
+                      "primary": "#e3fdff",
+                      "background": "#131313",
+                      "on-primary": "#00373a",
+                      "error-container": "#93000a",
+                      "surface-dim": "#131313",
+                      "on-tertiary-fixed": "#221b00",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-fixed": "#002022",
+                      "secondary-container": "#494949",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0px",
+                      "lg": "0px",
+                      "xl": "0px",
+                      "full": "0px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin": "24px",
+                      "container-max": "1440px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "technical-data": ["monospace"],
+                      "headline-xl": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-base": ["Inter"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "technical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface font-body-base overflow-x-hidden selection:bg-primary-fixed-dim selection:text-on-primary-fixed">
+<div class="scanline-overlay"></div>
+<!-- Layout Container -->
+<div class="flex h-screen w-full">
+<!-- SideNavBar -->
+<aside class="hidden md:flex flex-col gap-unit p-unit h-full w-64 bg-surface border-r border-outline-variant">
+<div class="p-margin border-b border-outline-variant mb-4">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-1">BETA_KERNEL_v1.0</div>
+<div class="font-technical-data text-technical-data text-primary-fixed-dim flex items-center gap-2">
+<span class="w-2 h-2 bg-primary-fixed-dim inline-block animate-pulse"></span>
+                    STATUS: OPTIMAL
+                </div>
+</div>
+<nav class="flex-grow flex flex-col gap-unit">
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings_input_component">settings_input_component</span>
+<span>Nodes</span>
+</a>
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span>Logs</span>
+</a>
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="feedback">feedback</span>
+<span>Feedback</span>
+</a>
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span>Analytics</span>
+</a>
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span>Admin Panel</span>
+</a>
+<!-- Active Tab: FAQ -->
+<a class="flex items-center gap-3 p-4 font-technical-data text-technical-data uppercase bg-primary-fixed-dim text-on-primary-fixed border-l-4 border-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined" data-icon="help">help</span>
+<span>FAQ</span>
+</a>
+</nav>
+<div class="p-margin border-t border-outline-variant">
+<button class="w-full bg-primary-fixed-dim text-on-primary-fixed p-3 font-technical-data text-technical-data uppercase hover:glow-cyan transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="sync">sync</span>
+                    INITIATE_SCAN
+                </button>
+</div>
+</aside>
+<!-- Main Content Area -->
+<div class="flex-grow flex flex-col overflow-hidden">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center w-full px-margin h-16 bg-surface border-b border-outline-variant sticky top-0 z-50">
+<div class="font-headline-md text-headline-md tracking-tighter text-primary-fixed-dim uppercase">
+                    BETA_OS // COMMAND_CENTER
+                </div>
+<div class="flex items-center gap-margin">
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim transition-all" data-icon="dns">dns</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim transition-all" data-icon="memory">memory</span>
+<span class="material-symbols-outlined text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim transition-all" data-icon="wifi_tethering">wifi_tethering</span>
+</div>
+<div class="h-8 w-px bg-outline-variant"></div>
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-surface-container-highest border border-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant text-[18px]" data-icon="person">person</span>
+</div>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-grow overflow-y-auto bg-background p-margin">
+<div class="max-w-5xl mx-auto">
+<!-- Search Header -->
+<section class="mb-12">
+<div class="mb-2 font-label-caps text-label-caps text-primary-fixed-dim">MODULE_04: KNOWLEDGE_BASE</div>
+<h1 class="font-headline-xl text-headline-xl text-on-surface uppercase mb-8">System Repository // FAQ</h1>
+<div class="relative group">
+<div class="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="terminal">terminal</span>
+</div>
+<input class="w-full bg-surface-container-lowest border-b-2 border-outline-variant focus:border-primary-fixed-dim p-6 pl-14 text-headline-md font-technical-data placeholder:text-outline-variant focus:ring-0 focus:outline-none transition-all" placeholder="QUERY_SYSTEM_DOCS..." type="text"/>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex gap-2">
+<span class="bg-surface-container-high px-2 py-1 text-label-caps font-technical-data text-outline">AUTO-COMPLETE_ON</span>
+</div>
+</div>
+<div class="mt-2 font-technical-data text-technical-data text-outline-variant flex gap-4">
+<span>SUGGESTED: [ERR_NULL_POINTER]</span>
+<span>[CONNECT_TIMEOUT]</span>
+<span>[KERNEL_PANIC]</span>
+</div>
+</section>
+<!-- Knowledge Grid -->
+<div class="grid grid-cols-12 gap-gutter items-start">
+<!-- Left: Categories (Bento Style) -->
+<div class="col-span-12 lg:col-span-8 space-y-gutter">
+<!-- Section: Connectivity -->
+<div class="border border-outline-variant bg-surface-container overflow-hidden">
+<div class="bg-surface-container-high p-4 border-b border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="router">router</span>
+<span class="font-label-caps text-label-caps text-on-surface">01_CONNECTIVITY_PROTOCOLS</span>
+</div>
+<span class="font-technical-data text-technical-data text-outline-variant">STATUS: VERIFIED</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<details class="group">
+<summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-primary-fixed-dim/5 transition-all">
+<span class="font-headline-md text-on-surface uppercase text-lg">Warp-Link Latency Spikes</span>
+<span class="material-symbols-outlined text-outline-variant group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-base text-on-surface-variant border-t border-outline-variant/30 pt-4">
+<p class="mb-4">Latency spikes in Warp-Link nodes are often caused by asynchronous buffer overflows in the kernel gateway. Operators should check the `sub_latency` logs for any signs of packet fragmentation.</p>
+<div class="bg-surface-container-lowest p-4 font-technical-data text-technical-data border border-outline-variant text-primary-fixed-dim">
+                                                $ net_stat --warp-link --diag --node-id=0x4FF
+                                            </div>
+</div>
+</details>
+<details class="group">
+<summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-primary-fixed-dim/5 transition-all">
+<span class="font-headline-md text-on-surface uppercase text-lg">DNS Resolution in Cold Zones</span>
+<span class="material-symbols-outlined text-outline-variant group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-base text-on-surface-variant border-t border-outline-variant/30 pt-4">
+                                            DNS resolution failure typically occurs when the static routing table is wiped during a cryogenic reboot. Ensure `config.dns_primary` is hardcoded to the local mirror.
+                                        </div>
+</details>
+</div>
+</div>
+<!-- Section: Kernel Errors -->
+<div class="border border-primary-fixed-dim glow-cyan bg-surface-container overflow-hidden">
+<div class="bg-primary-fixed-dim/10 p-4 border-b border-primary-fixed-dim flex justify-between items-center">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-primary-fixed-dim" data-icon="bug_report" data-weight="fill" style="font-variation-settings: 'FILL' 1;">bug_report</span>
+<span class="font-label-caps text-label-caps text-primary-fixed-dim">02_KERNEL_CRITICAL_EXCEPTIONS</span>
+</div>
+<span class="font-technical-data text-technical-data text-primary-fixed-dim animate-pulse">MONITORING_ACTIVE</span>
+</div>
+<div class="divide-y divide-outline-variant">
+<details class="group" open="">
+<summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-primary-fixed-dim/5 transition-all">
+<span class="font-headline-md text-on-surface uppercase text-lg">Handling [ERR_SYSTEM_OVERLOAD]</span>
+<span class="material-symbols-outlined text-primary-fixed-dim group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-base text-on-surface-variant border-t border-primary-fixed-dim/30 pt-4">
+<p class="mb-4">This error triggers when the neural processing unit (NPU) exceeds its thermal threshold. Immediate action: Initiate a manual cooling cycle or shed non-critical threads.</p>
+<ul class="list-none space-y-2 font-technical-data text-technical-data text-secondary-fixed">
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary-fixed-dim"></span> THREAD_TERMINATE(0x9)</li>
+<li class="flex items-center gap-2"><span class="w-1 h-1 bg-primary-fixed-dim"></span> THERMAL_VENT_ACTIVATE()</li>
+</ul>
+</div>
+</details>
+<details class="group">
+<summary class="flex justify-between items-center p-6 cursor-pointer hover:bg-primary-fixed-dim/5 transition-all">
+<span class="font-headline-md text-on-surface uppercase text-lg">Memory Leak in Debugger v1.2</span>
+<span class="material-symbols-outlined text-outline-variant group-open:rotate-180 transition-transform" data-icon="expand_more">expand_more</span>
+</summary>
+<div class="px-6 pb-6 font-body-base text-on-surface-variant border-t border-outline-variant/30 pt-4">
+                                            Update to v1.3.1-beta immediately. The garbage collector in v1.2 fails to reclaim memory assigned to transient UI overlays.
+                                        </div>
+</details>
+</div>
+</div>
+</div>
+<!-- Right: Sidebar Actions -->
+<div class="col-span-12 lg:col-span-4 space-y-gutter">
+<!-- Documentation Request Card -->
+<div class="bg-surface border border-outline-variant p-6">
+<div class="font-label-caps text-label-caps text-on-surface-variant mb-4">SYSTEM_EXTENSIONS</div>
+<h3 class="font-headline-md text-headline-md text-on-surface uppercase mb-4 leading-tight">Request Documentation</h3>
+<p class="font-body-base text-on-surface-variant mb-6 text-sm">Cannot find the technical parameters for your node? Submit a formal request to the Kernel Archive.</p>
+<button class="w-full border border-primary-fixed-dim text-primary-fixed-dim py-4 font-technical-data uppercase hover:bg-primary-fixed-dim hover:text-on-primary-fixed transition-all flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-sm" data-icon="description">description</span>
+                                    SUBMIT_TICKET_v4
+                                </button>
+</div>
+<!-- System Status Mini-Module -->
+<div class="bg-surface-container-lowest border border-outline-variant">
+<div class="border-b border-outline-variant p-3 font-label-caps text-label-caps text-outline-variant">LIVE_DATAFEED</div>
+<div class="p-4 space-y-4">
+<div class="flex justify-between items-center">
+<span class="font-technical-data text-technical-data text-on-surface">Uptime</span>
+<span class="font-technical-data text-technical-data text-primary-fixed-dim">99.98%</span>
+</div>
+<div class="w-full h-2 bg-surface-container-high">
+<div class="h-full bg-primary-fixed-dim w-4/5"></div>
+</div>
+<div class="flex justify-between items-center">
+<span class="font-technical-data text-technical-data text-on-surface">Global Sync</span>
+<span class="font-technical-data text-technical-data text-tertiary-fixed">782ms</span>
+</div>
+</div>
+</div>
+<!-- Image Context -->
+<div class="border border-outline-variant bg-surface h-48 overflow-hidden relative group">
+<img alt="Technical interface" class="w-full h-full object-cover grayscale brightness-50 contrast-125" data-alt="A gritty, close-up photograph of a vintage military-grade computer server room with cables spilling out from exposed metal panels. The lighting is dim, punctuated by glowing turquoise and cyber-cyan LED indicators that cast a sharp neon light over the matte black hardware. The atmosphere is industrial and dense, filled with high-tech equipment and technical complexity. The visual style follows a brutalist technical aesthetic with sharp edges and no softness." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA9kl4j0gc6fQnvvurg4027LqIO0NkNpdkBvgM6XooxRAVH2LxswGuZ9av0umpIwdi2FeOeEfgIqYWDhfHhhJGqjMwDsbST6sFcpfeCuL8LikvM545dhSpLoYyqBux_tHFdJy2Cec216OitUghgOKIUYZGjYNMnrLdsHpKi0rFUncYeor42gBP8OqN3jaA6Y3d646mBgoIkUqsW4lG1rblTXup-95jW7RyuM2_Eo2iEV3cgvhoJ4ZFhBlM3fiLmJZywiiox-FZHrF4"/>
+<div class="absolute inset-0 bg-primary-fixed-dim/10 mix-blend-overlay"></div>
+<div class="absolute bottom-4 left-4">
+<div class="bg-background/80 backdrop-blur-sm border border-primary-fixed-dim p-2 font-technical-data text-[10px] text-primary-fixed-dim">
+                                        LOCATION: ARCHIVE_CLUSTER_7
+                                    </div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Nav Grid (Mobile only fallback concept) -->
+<div class="md:hidden mt-12 grid grid-cols-3 border-t border-outline-variant">
+<div class="p-4 flex flex-col items-center gap-1 text-primary-fixed-dim border-r border-outline-variant">
+<span class="material-symbols-outlined" data-icon="home">home</span>
+<span class="font-label-caps text-[10px]">HOME</span>
+</div>
+<div class="p-4 flex flex-col items-center gap-1 text-on-surface-variant border-r border-outline-variant">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-label-caps text-[10px]">QUERY</span>
+</div>
+<div class="p-4 flex flex-col items-center gap-1 text-on-surface-variant">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+<span class="font-label-caps text-[10px]">USER</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Terminal Status Bar -->
+<footer class="h-8 bg-surface-container-low border-t border-outline-variant px-margin flex items-center justify-between font-technical-data text-[10px] uppercase text-outline-variant">
+<div class="flex items-center gap-margin">
+<span class="text-primary-fixed-dim">CONNECTED: NODE_ALFA_ZERO</span>
+<span>PACKETS: 1.2GB/s</span>
+<span class="flex items-center gap-1">
+<span class="w-1.5 h-1.5 bg-tertiary-fixed rounded-full"></span>
+                        SYNC_PENDING
+                    </span>
+</div>
+<div class="flex items-center gap-margin">
+<span>SECURE_SHELL: RSA_4096</span>
+<span class="text-on-surface-variant">© 2024 BETA_CORP // CORE_NULL</span>
+</div>
+</footer>
+</div>
+</div>
+</body></html>

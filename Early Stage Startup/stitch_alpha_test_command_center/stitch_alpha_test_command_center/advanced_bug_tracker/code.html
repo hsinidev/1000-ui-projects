@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>BETA_OS // COMMAND_CENTER - BUG_TRACKER</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #131313;
+            background-image: linear-gradient(rgba(46, 46, 46, 0.03) 1px, transparent 1px);
+            background-size: 100% 2px;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .scanline-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+            background-size: 100% 4px, 3px 100%;
+            pointer-events: none;
+            z-index: 9999;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #131313;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #2E2E2E;
+        }
+        .glow-cyan {
+            box-shadow: 0 0 4px #00dce6;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface-tint": "#00dce6",
+                      "on-secondary-fixed": "#1b1c1c",
+                      "inverse-on-surface": "#303030",
+                      "tertiary-fixed": "#ffe173",
+                      "surface-container-highest": "#353535",
+                      "on-error-container": "#ffdad6",
+                      "on-secondary-fixed-variant": "#474747",
+                      "on-tertiary-fixed-variant": "#554500",
+                      "on-primary-fixed-variant": "#004f53",
+                      "surface-bright": "#393939",
+                      "on-secondary-container": "#b9b8b8",
+                      "secondary-fixed-dim": "#c8c6c6",
+                      "outline": "#849495",
+                      "surface-variant": "#353535",
+                      "on-background": "#e4e2e1",
+                      "secondary-fixed": "#e4e2e2",
+                      "on-tertiary": "#3b2f00",
+                      "surface-container": "#1f2020",
+                      "on-surface": "#e4e2e1",
+                      "on-tertiary-container": "#725e00",
+                      "surface-container-high": "#2a2a2a",
+                      "surface": "#131313",
+                      "primary-fixed": "#6ff6ff",
+                      "on-secondary": "#303030",
+                      "secondary": "#c8c6c6",
+                      "tertiary": "#fff7e9",
+                      "inverse-primary": "#00696f",
+                      "outline-variant": "#3a494b",
+                      "primary-container": "#00f3ff",
+                      "inverse-surface": "#e4e2e1",
+                      "tertiary-container": "#ffd93d",
+                      "on-error": "#690005",
+                      "tertiary-fixed-dim": "#e8c426",
+                      "surface-container-low": "#1b1c1c",
+                      "primary-fixed-dim": "#00dce6",
+                      "on-surface-variant": "#b9cacb",
+                      "on-primary-container": "#006b71",
+                      "primary": "#e3fdff",
+                      "background": "#131313",
+                      "on-primary": "#00373a",
+                      "error-container": "#93000a",
+                      "surface-dim": "#131313",
+                      "on-tertiary-fixed": "#221b00",
+                      "surface-container-lowest": "#0e0e0e",
+                      "on-primary-fixed": "#002022",
+                      "secondary-container": "#494949",
+                      "error": "#ffb4ab"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0rem",
+                      "lg": "0rem",
+                      "xl": "0rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "unit": "4px",
+                      "margin": "24px",
+                      "container-max": "1440px",
+                      "gutter": "16px"
+              },
+              "fontFamily": {
+                      "technical-data": ["monospace"],
+                      "headline-xl": ["Space Grotesk"],
+                      "headline-md": ["Space Grotesk"],
+                      "body-base": ["Inter"],
+                      "label-caps": ["Space Grotesk"]
+              },
+              "fontSize": {
+                      "technical-data": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                      "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.05em", "fontWeight": "700"}],
+                      "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                      "body-base": ["16px", {"lineHeight": "1.6", "letterSpacing": "0.01em", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}]
+              }
+            },
+          },
+        }
+    </script>
+</head>
+<body class="bg-background text-on-surface flex h-screen overflow-hidden">
+<div class="scanline-overlay"></div>
+<!-- SideNavBar (Shared Component) -->
+<aside class="flex flex-col gap-unit p-unit h-full bg-surface border-r border-outline-variant w-64 shrink-0">
+<div class="p-margin border-b border-outline-variant mb-unit">
+<h2 class="font-label-caps text-label-caps text-on-surface-variant uppercase tracking-widest">BETA_KERNEL_v1.0</h2>
+<p class="font-technical-data text-[10px] text-primary-fixed-dim mt-1">STATUS: OPTIMAL</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-4 py-3 bg-primary-fixed-dim text-on-primary-fixed border-l-4 border-primary-fixed-dim" href="#">
+<span class="material-symbols-outlined text-[18px]">settings_input_component</span>
+<span class="font-technical-data text-technical-data uppercase">Nodes</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px]">terminal</span>
+<span class="font-technical-data text-technical-data uppercase">Logs</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">feedback</span>
+<span class="font-technical-data text-technical-data uppercase">Feedback</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">analytics</span>
+<span class="font-technical-data text-technical-data uppercase">Analytics</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+<span class="font-technical-data text-technical-data uppercase">Admin Panel</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 text-on-surface-variant border-l-4 border-transparent hover:border-primary-fixed-dim hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined text-[18px]">help</span>
+<span class="font-technical-data text-technical-data uppercase">FAQ</span>
+</a>
+</nav>
+<div class="p-unit mt-auto">
+<button class="w-full bg-primary-fixed-dim text-on-primary-fixed font-label-caps text-label-caps py-4 tracking-widest hover:glow-cyan transition-all">
+                INITIATE_SCAN
+            </button>
+<div class="mt-4 flex items-center gap-2 p-2 bg-surface-container">
+<div class="w-8 h-8 bg-outline-variant flex items-center justify-center">
+<span class="material-symbols-outlined text-sm">person</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-caps text-[10px]">Operator Signature</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">ID: 0x8FA2</span>
+</div>
+</div>
+</div>
+</aside>
+<div class="flex flex-col flex-1 min-w-0 h-full">
+<!-- TopAppBar (Shared Component) -->
+<header class="flex justify-between items-center w-full px-margin h-16 bg-surface border-b border-outline-variant shrink-0">
+<div class="flex items-center gap-4">
+<h1 class="font-headline-md text-headline-md tracking-tighter text-primary-fixed-dim uppercase">BETA_OS // COMMAND_CENTER</h1>
+<div class="h-4 w-[1px] bg-outline-variant"></div>
+<span class="font-technical-data text-technical-data text-on-surface-variant">TRACE_MODULE:ACTIVE</span>
+</div>
+<div class="flex items-center gap-margin">
+<div class="relative">
+<input class="bg-surface-container-lowest border-0 border-b border-outline-variant text-technical-data font-technical-data text-on-surface placeholder:text-outline-variant focus:ring-0 focus:border-primary-fixed-dim w-64 py-1 px-0" placeholder="QUERY_DATABASE..." type="text"/>
+<span class="material-symbols-outlined absolute right-0 top-1/2 -translate-y-1/2 text-on-surface-variant text-[18px]">search</span>
+</div>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-1">dns</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-1">memory</span>
+<span class="material-symbols-outlined text-primary-fixed-dim cursor-pointer hover:bg-primary-fixed-dim/10 p-1">wifi_tethering</span>
+</div>
+</div>
+</header>
+<main class="flex flex-1 overflow-hidden">
+<!-- Bug List Filtered by Severity -->
+<section class="w-80 border-r border-outline-variant bg-surface flex flex-col shrink-0">
+<div class="p-4 border-b border-outline-variant bg-surface-container-low">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-label-caps text-label-caps text-on-surface-variant">INCIDENT_QUEUES</h3>
+<span class="font-technical-data text-[10px] bg-error/20 text-error px-2 py-0.5">3 CRITICAL</span>
+</div>
+<div class="flex gap-1">
+<button class="flex-1 bg-surface-container-highest border border-outline-variant text-[10px] font-label-caps py-1 text-on-surface">ALL</button>
+<button class="flex-1 border border-error text-[10px] font-label-caps py-1 text-error">CRIT</button>
+<button class="flex-1 border border-outline-variant text-[10px] font-label-caps py-1 text-on-surface-variant">WARN</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar">
+<!-- Bug Item Active -->
+<div class="p-4 border-b border-outline-variant border-l-4 border-l-primary-fixed-dim bg-surface-container-high cursor-pointer">
+<div class="flex justify-between items-start mb-1">
+<span class="font-technical-data text-[10px] text-primary-fixed-dim">BUG-77291</span>
+<span class="font-technical-data text-[10px] text-error">[SEV_0]</span>
+</div>
+<h4 class="font-label-caps text-on-surface text-[13px] leading-tight mb-2">MEMORY_LEAK:VRAM_SATURATION_ON_SHADERS</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-error"></span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">ALLOC_ERROR // 0xCC29</span>
+</div>
+</div>
+<!-- Bug Item -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-1">
+<span class="font-technical-data text-[10px] text-on-surface-variant group-hover:text-primary-fixed-dim">BUG-77295</span>
+<span class="font-technical-data text-[10px] text-error">[SEV_0]</span>
+</div>
+<h4 class="font-label-caps text-on-surface text-[13px] leading-tight mb-2">KERNEL_PANIC:UI_THREAD_DEADLOCK</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-error"></span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">THREAD_HANG // 0xAA11</span>
+</div>
+</div>
+<!-- Bug Item -->
+<div class="p-4 border-b border-outline-variant hover:bg-surface-container transition-colors cursor-pointer group">
+<div class="flex justify-between items-start mb-1">
+<span class="font-technical-data text-[10px] text-on-surface-variant group-hover:text-primary-fixed-dim">BUG-77301</span>
+<span class="font-technical-data text-[10px] text-tertiary-fixed-dim">[SEV_1]</span>
+</div>
+<h4 class="font-label-caps text-on-surface text-[13px] leading-tight mb-2">IO_EXCEPTION:DISK_WRITE_THROTTLE</h4>
+<div class="flex items-center gap-2">
+<span class="w-2 h-2 bg-tertiary-fixed-dim"></span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">FILESYSTEM // 0x88BC</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Main Pane: Selected Bug Details -->
+<section class="flex-1 bg-background overflow-y-auto custom-scrollbar flex flex-col">
+<!-- Detail Header -->
+<div class="p-margin border-b border-outline-variant bg-surface-container-low flex justify-between items-end">
+<div class="space-y-2">
+<div class="flex items-center gap-4 font-technical-data text-technical-data">
+<span class="text-primary-fixed-dim">[ ACTIVE_TICKET ]</span>
+<span class="text-on-surface-variant">REPORTED: 2024.05.21 // 14:22:01</span>
+</div>
+<h2 class="font-headline-md text-headline-md text-on-surface leading-none">MEMORY_LEAK: VRAM_SATURATION_ON_SHADERS</h2>
+<div class="flex gap-2">
+<span class="border border-error px-2 py-0.5 text-[10px] font-label-caps text-error">CRITICAL_PRIORITY</span>
+<span class="border border-outline-variant px-2 py-0.5 text-[10px] font-label-caps text-on-surface-variant">CORE_RENDERER</span>
+<span class="border border-outline-variant px-2 py-0.5 text-[10px] font-label-caps text-on-surface-variant">VULKAN_API</span>
+</div>
+</div>
+<div class="flex gap-unit">
+<button class="bg-primary-fixed-dim text-on-primary-fixed font-label-caps text-label-caps px-4 py-2 hover:glow-cyan transition-all">ASSIGN_OPERATOR</button>
+<button class="border border-outline-variant text-on-surface font-label-caps text-label-caps px-4 py-2 hover:bg-surface-container-high">CLOSE_CASE</button>
+</div>
+</div>
+<!-- Diagnostic Grids -->
+<div class="p-margin grid grid-cols-12 gap-gutter">
+<!-- VRAM Saturation Graph -->
+<div class="col-span-8 border border-outline-variant bg-surface relative overflow-hidden">
+<div class="h-8 border-b border-outline-variant px-3 flex items-center justify-between bg-surface-container-highest">
+<span class="font-label-caps text-[10px] text-on-surface-variant uppercase">TELEMETRY // VRAM_UTILIZATION_LIVE</span>
+<span class="font-technical-data text-[10px] text-primary-fixed-dim">98.4% CAPTURED</span>
+</div>
+<div class="p-4 h-64 flex items-end gap-1">
+<!-- Bar Charts Simulator -->
+<div class="flex-1 bg-surface-container-high h-[20%]"></div>
+<div class="flex-1 bg-surface-container-high h-[25%]"></div>
+<div class="flex-1 bg-surface-container-high h-[40%]"></div>
+<div class="flex-1 bg-surface-container-high h-[35%]"></div>
+<div class="flex-1 bg-surface-container-high h-[60%]"></div>
+<div class="flex-1 bg-surface-container-high h-[55%]"></div>
+<div class="flex-1 bg-primary-fixed-dim/40 h-[80%] border-t border-primary-fixed-dim"></div>
+<div class="flex-1 bg-primary-fixed-dim/50 h-[85%] border-t border-primary-fixed-dim"></div>
+<div class="flex-1 bg-primary-fixed-dim/70 h-[95%] border-t border-primary-fixed-dim glow-cyan"></div>
+<div class="flex-1 bg-error/40 h-[98%] border-t border-error"></div>
+<div class="flex-1 bg-error/60 h-[100%] border-t border-error"></div>
+<div class="flex-1 bg-error/50 h-[92%] border-t border-error"></div>
+</div>
+<div class="absolute inset-0 pointer-events-none border-4 border-error/10 opacity-20"></div>
+</div>
+<!-- System Specs -->
+<div class="col-span-4 border border-outline-variant bg-surface">
+<div class="h-8 border-b border-outline-variant px-3 flex items-center bg-surface-container-highest">
+<span class="font-label-caps text-[10px] text-on-surface-variant">HOST_ENVIRONMENT</span>
+</div>
+<div class="p-4 font-technical-data text-technical-data space-y-4">
+<div class="flex justify-between">
+<span class="text-on-surface-variant uppercase">Architecture:</span>
+<span class="text-on-surface">X86_64_STABLE</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant uppercase">Runtime:</span>
+<span class="text-on-surface">BETA_KERNEL_v1.0.4</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant uppercase">GPU_ID:</span>
+<span class="text-on-surface">NV_RTX_4090_PRO</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant uppercase">Driver:</span>
+<span class="text-on-surface">VULKAN_1.3.2</span>
+</div>
+<div class="pt-4 border-t border-outline-variant">
+<p class="text-[10px] text-on-surface-variant mb-2">REPRODUCTION_STEPS:</p>
+<p class="text-[12px] leading-relaxed">
+                                    1. Initialize Scene 04A<br/>
+                                    2. Inject Procedural Shaders<br/>
+                                    3. Force Buffer Overflow
+                                </p>
+</div>
+</div>
+</div>
+<!-- Terminal Log Attachment -->
+<div class="col-span-12 border border-outline-variant bg-[#0A0A0A]">
+<div class="h-8 border-b border-outline-variant px-3 flex items-center justify-between bg-surface-container-highest">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">attachment</span>
+<span class="font-label-caps text-[10px] text-on-surface-variant">ATTACHED_STDOUT: log_dump_vram_overflow.sh</span>
+</div>
+<span class="font-technical-data text-[10px] text-primary-fixed-dim cursor-pointer hover:underline">[ DOWNLOAD_RAW ]</span>
+</div>
+<div class="p-4 font-technical-data text-technical-data h-48 overflow-y-auto custom-scrollbar">
+<p class="text-on-surface-variant">[0.001] INIT_VULKAN_INSTANCE: SUCCESS</p>
+<p class="text-on-surface-variant">[0.024] ALLOC_DEVICE_MEMORY: 2048MB</p>
+<p class="text-on-surface-variant">[0.089] LOAD_SHADER_MODULE: "fx_volumetric_01.spv"</p>
+<p class="text-on-surface-variant">[0.112] LOAD_SHADER_MODULE: "fx_volumetric_02.spv"</p>
+<p class="text-error font-bold">[1.450] WARN: HEAP_USAGE_CRITICAL (92%)</p>
+<p class="text-error font-bold">[1.512] ERR: VK_ERROR_OUT_OF_DEVICE_MEMORY</p>
+<p class="text-on-surface-variant">[1.513] STACK_TRACE_DUMP:</p>
+<p class="text-on-surface-variant ml-4">0x0045AF2: Renderer::CommitShaders()</p>
+<p class="text-on-surface-variant ml-4">0x0045BB1: Renderer::RenderFrame()</p>
+<p class="text-on-surface-variant ml-4">0x0046CC9: Core::MainLoop()</p>
+<p class="text-primary-fixed-dim">[1.515] SIG_KILL_SENT: SYSTEM_PROTECTION_ACTIVE</p>
+</div>
+</div>
+<!-- Threaded Developer Discussion -->
+<div class="col-span-12 border border-outline-variant bg-surface">
+<div class="h-8 border-b border-outline-variant px-3 flex items-center bg-surface-container-highest">
+<span class="font-label-caps text-[10px] text-on-surface-variant">OPERATOR_LOG // DISCUSSION_THREAD</span>
+</div>
+<div class="p-margin space-y-margin">
+<!-- Comment -->
+<div class="flex gap-4">
+<div class="w-10 h-10 border border-outline-variant shrink-0 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex justify-between">
+<span class="font-label-caps text-[11px] text-primary-fixed-dim">SR_DEV_XENA</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">2024.05.21 // 15:45</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface">Looks like the volumetric shaders aren't flushing the previous heap allocation before requesting a new block. This only occurs in Vulkan 1.3.2 instances on RTX hardware.</p>
+<div class="flex gap-3 pt-2">
+<span class="font-technical-data text-[10px] text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim uppercase">[ REPLY ]</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim uppercase">[ ACKNOWLEDGE ]</span>
+</div>
+</div>
+</div>
+<!-- Nested Comment -->
+<div class="flex gap-4 ml-14">
+<div class="w-10 h-10 border border-outline-variant shrink-0 bg-surface-container-highest flex items-center justify-center">
+<span class="material-symbols-outlined text-on-surface-variant">person</span>
+</div>
+<div class="flex-1 space-y-1">
+<div class="flex justify-between">
+<span class="font-label-caps text-[11px] text-primary-fixed-dim">SYSTEM_ARCHITECT_RAVEN</span>
+<span class="font-technical-data text-[10px] text-on-surface-variant">2024.05.21 // 16:12</span>
+</div>
+<p class="font-body-base text-body-base text-on-surface">Confirming. I've initiated a patch to the memory pool management. Deploying to DevBranch for testing in T-minus 2 hours.</p>
+<div class="flex gap-3 pt-2">
+<span class="font-technical-data text-[10px] text-on-surface-variant cursor-pointer hover:text-primary-fixed-dim uppercase">[ REPLY ]</span>
+</div>
+</div>
+</div>
+<!-- Comment Input -->
+<div class="pt-margin border-t border-outline-variant">
+<label class="font-label-caps text-label-caps text-on-surface-variant mb-2 block uppercase">APPEND_NOTE</label>
+<div class="relative">
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant font-technical-data text-technical-data text-on-surface p-3 focus:ring-0 focus:border-primary-fixed-dim resize-none" placeholder="INPUT_LOG_DATA..." rows="3"></textarea>
+<button class="absolute bottom-3 right-3 bg-primary-fixed-dim text-on-primary-fixed font-label-caps text-[10px] px-3 py-1 uppercase hover:glow-cyan transition-all">SUBMIT</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+<!-- Status Bar (Global) -->
+<footer class="fixed bottom-0 left-0 right-0 h-6 bg-surface-container-highest border-t border-outline-variant z-50 flex items-center justify-between px-4 text-[9px] font-technical-data text-on-surface-variant">
+<div class="flex gap-4 items-center">
+<span class="flex items-center gap-1"><span class="w-2 h-2 bg-primary-fixed-dim animate-pulse"></span> SYSTEM_ONLINE</span>
+<span>ENCRYPTION: AES-512_ACTIVE</span>
+<span>LATENCY: 12ms</span>
+</div>
+<div class="flex gap-4 items-center">
+<span class="text-primary-fixed-dim">RESOURCES: 42.1%</span>
+<span>Uptime: 242:15:09</span>
+<span class="text-on-surface">COMMAND_CENTER v1.0.4-STABLE</span>
+</div>
+</footer>
+</body></html>
