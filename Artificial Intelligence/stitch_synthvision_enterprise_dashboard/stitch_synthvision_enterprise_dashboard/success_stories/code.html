@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0F1113;
+            background-image: 
+                linear-gradient(to right, #1A1C1E 1px, transparent 1px),
+                linear-gradient(to bottom, #1A1C1E 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF0000, transparent);
+            box-shadow: 0 0 8px #FF0000;
+        }
+        .hud-bracket {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-color: #FF0000;
+        }
+        .hud-top-left { top: 8px; left: 8px; border-top-width: 2px; border-left-width: 2px; }
+        .hud-top-right { top: 8px; right: 8px; border-top-width: 2px; border-right-width: 2px; }
+        .hud-bottom-left { bottom: 8px; left: 8px; border-bottom-width: 2px; border-left-width: 2px; }
+        .hud-bottom-right { bottom: 8px; right: 8px; border-bottom-width: 2px; border-right-width: 2px; }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1e",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#262a2f",
+                        "primary-fixed": "#e2e2e5",
+                        "background": "#0F1113",
+                        "on-primary-fixed-variant": "#454749",
+                        "inverse-on-surface": "#2d3136",
+                        "tertiary": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "secondary-fixed-dim": "#ffb3b2",
+                        "on-secondary-container": "#5b000f",
+                        "on-primary": "#2f3133",
+                        "error-container": "#93000a",
+                        "on-surface": "#e0e2e9",
+                        "secondary": "#ffb3b2",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-surface-variant": "#c5c6ca",
+                        "inverse-surface": "#e0e2e9",
+                        "error": "#ffb4ab",
+                        "surface-container-low": "#181c21",
+                        "surface-tint": "#c6c6c9",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "outline": "#8f9194",
+                        "on-primary-container": "#838486",
+                        "surface": "#101418",
+                        "surface-bright": "#36393f",
+                        "on-tertiary-container": "#838484",
+                        "on-secondary-fixed": "#410008",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-secondary-fixed-variant": "#92001e",
+                        "on-background": "#e0e2e9",
+                        "secondary-fixed": "#ffdad8",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary": "#680012",
+                        "surface-dim": "#101418",
+                        "surface-container-lowest": "#0a0f13",
+                        "tertiary-container": "#1a1c1c",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c9",
+                        "surface-variant": "#31353a",
+                        "secondary-container": "#ff525c",
+                        "inverse-primary": "#5d5e61",
+                        "surface-container-highest": "#31353a",
+                        "primary": "#c6c6c9",
+                        "surface-container": "#1c2025",
+                        "primary-container": "#1a1c1e",
+                        "outline-variant": "#44474a"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "data-mono": ["Space Grotesk"],
+                        "body-reg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-reg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background text-on-surface font-body-reg min-h-screen flex flex-col">
+<!-- TopAppBar from JSON -->
+<header class="bg-[#0F1113] docked full-width top-0 border-b border-[#1A1C1E] flex justify-between items-center w-full px-4 h-16 sticky z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#FF0000] cursor-crosshair active:invert" style="font-variation-settings: 'FILL' 0;">visibility</span>
+<span class="font-['Space_Grotesk'] tracking-widest font-black uppercase text-xl text-[#FF0000]">SYNTH_VISION</span>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="font-['Space_Grotesk'] tracking-tighter font-bold uppercase text-white hover:bg-[#FF0000] hover:text-white transition-colors duration-75 px-2 py-1" href="#">SOLUTIONS</a>
+<a class="font-['Space_Grotesk'] tracking-tighter font-bold uppercase text-[#FF0000] hover:bg-[#FF0000] hover:text-white transition-colors duration-75 px-2 py-1" href="#">SUCCESS</a>
+<a class="font-['Space_Grotesk'] tracking-tighter font-bold uppercase text-white hover:bg-[#FF0000] hover:text-white transition-colors duration-75 px-2 py-1" href="#">INFRA</a>
+</nav>
+<span class="material-symbols-outlined text-[#FF0000] cursor-crosshair active:invert">notifications_active</span>
+</div>
+</header>
+<main class="flex-grow container mx-auto px-4 md:px-8 py-12">
+<!-- Page Title & Header -->
+<div class="mb-12 border-l-4 border-[#FF0000] pl-6">
+<h1 class="font-headline-xl text-headline-xl text-white uppercase mb-2">OPERATIONAL_EXCELLENCE</h1>
+<p class="font-data-mono text-data-mono text-outline uppercase tracking-widest">Case Study Repository // Enterprise Deployments</p>
+</div>
+<!-- Case Studies Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter bg-[#1A1C1E] border border-[#1A1C1E]">
+<!-- Case Study 1: Security -->
+<div class="bg-[#0F1113] p-4 flex flex-col border border-[#1A1C1E] hover:border-[#FF0000] transition-colors group">
+<div class="relative w-full aspect-video mb-4 overflow-hidden bg-[#1A1C1E]">
+<img alt="Security surveillance" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A high-tech security monitoring room with multiple digital screens displaying thermal imaging and architectural blueprints. The atmosphere is professional and moody, with deep gunmetal grey tones and sharp laser red interface highlights. Large digital overlays with tracking crosshairs and identification data appear over a dark airport terminal scene. The lighting is clinical and focused." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtsxoLSEn59tzg0t_KOi_mF-2lRmQi_bPUtbKtBtpTI4Q0xUWLa5ffFVcsKeH8lVPsXXKQb7yXChnOhJfiGky1nrzjqY6uzlrrw4kJfVcUtMvOTBCDPpZCer3xYMe49tmB9OTex6TnWr8CKZEmBu-2N1qr3-5BeLn1Xg8EVQllJ8qd5aj83_ko1Zl5JqFY-9UJe1c7iuN32njQa7PzkLadCh2e5p05f8MePsdFNOoRfyUI-1hLeAUm6WZkf0nN3NxCWAokLtsoD40"/>
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none">
+<div class="hud-bracket hud-top-left"></div>
+<div class="hud-bracket hud-top-right"></div>
+<div class="hud-bracket hud-bottom-left"></div>
+<div class="hud-bracket hud-bottom-right"></div>
+</div>
+<div class="absolute top-4 left-4 bg-[#FF0000] text-white font-label-caps text-label-caps px-2 py-1">LIVE_SECURE</div>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[#FF0000]" style="font-variation-settings: 'FILL' 1;">security</span>
+<h3 class="font-headline-md text-headline-md text-white uppercase">NEON_CITADEL_SEC</h3>
+</div>
+<p class="font-body-reg text-on-surface-variant mb-6 flex-grow">Perimeter surveillance and threat detection for tier-1 aviation hubs. Real-time anomaly filtering and identity verification.</p>
+<div class="grid grid-cols-2 gap-2 border-t border-[#1A1C1E] pt-4">
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">ACCURACY</p>
+<p class="font-data-mono text-xl text-[#FF0000] font-black">99.8%</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">LATENCY</p>
+<p class="font-data-mono text-xl text-white font-black">12MS</p>
+</div>
+</div>
+</div>
+<!-- Case Study 2: Manufacturing -->
+<div class="bg-[#0F1113] p-4 flex flex-col border border-[#1A1C1E] hover:border-[#FF0000] transition-colors group">
+<div class="relative w-full aspect-video mb-4 overflow-hidden bg-[#1A1C1E]">
+<img alt="Robotic manufacturing" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="An industrial manufacturing floor with orange robotic arms precisely assembling complex machinery. The scene is rendered in a brutalist digital style with high-contrast shadows and sharp geometric lines. Gunmetal grey metal surfaces reflect bright red light from nearby scanning sensors. Detailed technical HUD elements showing component coordinates and assembly status are overlaid on the robotic joint." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD6CfqaOQ_3om8TaTI7s_ozTVMei_aSM3Oby_GVLDTcE7UaLzajoEicqJRSHWQSDQ7a0fUHUNBNyeN78hURkyqrkTTksKwEjIdzu-nJBSiSiHJTFdpRJNnoTGS_a09KPkrMCM2J_T4fKyjvBNuKDxp5Yb6TajFAq83wE5vFuIYLqUiqnnKw2-yWUhjGMp9Z6RY3Qy3QP9vCuaYlBUYDwch3EXNQ7mYB44oVk_ujx9xoPnOAKICwoh1P378vOLQgCznzqci89v3497Q"/>
+<div class="absolute bottom-4 right-4 flex gap-1">
+<div class="w-1 h-1 bg-[#FF0000]"></div>
+<div class="w-1 h-1 bg-white"></div>
+<div class="w-1 h-1 bg-white"></div>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[#FF0000]" style="font-variation-settings: 'FILL' 1;">factory</span>
+<h3 class="font-headline-md text-headline-md text-white uppercase">KINETIC_FLOW_MFG</h3>
+</div>
+<p class="font-body-reg text-on-surface-variant mb-6 flex-grow">Automated defect detection and assembly line synchronization for precision hardware manufacturing facilities.</p>
+<div class="grid grid-cols-2 gap-2 border-t border-[#1A1C1E] pt-4">
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">DEFECT_REDUCTION</p>
+<p class="font-data-mono text-xl text-[#FF0000] font-black">42.5%</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">THROUGHPUT</p>
+<p class="font-data-mono text-xl text-white font-black">+18%</p>
+</div>
+</div>
+</div>
+<!-- Case Study 3: Retail -->
+<div class="bg-[#0F1113] p-4 flex flex-col border border-[#1A1C1E] hover:border-[#FF0000] transition-colors group">
+<div class="relative w-full aspect-video mb-4 overflow-hidden bg-[#1A1C1E]">
+<img alt="Modern retail space" class="w-full h-full object-cover opacity-60 grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="A futuristic, high-end retail environment with minimalist product displays and sleek dark flooring. The perspective is from a security camera, showing Heat-map data as red and blue gradients across the floor. Stylized digital silhouettes of shoppers are tracked with white rectangular bounding boxes and unique ID tags. The overall aesthetic is clean and surgical, utilizing a strict gunmetal and laser red color palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDyPv07nkFr8NOHoSEraZjaQkdBtwkHrm1tuRITr3lysLJrmCUviCAFdc1H6RQNRU9somAwJ8sPvR5RglNaLmsI_tz7oF3_ROG3eJDKXAfL0ZBl-VwrwMJT1FHojjXJBQ7eIqRaMS4q_3OzTgpgu5V4j6eHnI7denioqelAs9-UHYD_YEA1v_ZASKtWoW4BAb8ocGdWImuAjeSCLDJid0Pv9EcSIifFiseRMG0oJ5Tf9NpC-IS1H5k312gtiGbCTN0mrTaftlTbWLA"/>
+<div class="absolute top-0 right-0 p-2">
+<span class="material-symbols-outlined text-white text-xs animate-pulse">radio_button_checked</span>
+</div>
+</div>
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[#FF0000]" style="font-variation-settings: 'FILL' 1;">shopping_cart</span>
+<h3 class="font-headline-md text-headline-md text-white uppercase">AXIS_RETAIL_GRID</h3>
+</div>
+<p class="font-body-reg text-on-surface-variant mb-6 flex-grow">Behavioral analytics and inventory tracking for flagship logistics centers. Seamless checkout-free experience infrastructure.</p>
+<div class="grid grid-cols-2 gap-2 border-t border-[#1A1C1E] pt-4">
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">CONVERSION_LIFT</p>
+<p class="font-data-mono text-xl text-[#FF0000] font-black">24.1%</p>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-outline mb-1">SHRINK_REDUCTION</p>
+<p class="font-data-mono text-xl text-white font-black">68%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Global Metrics Banner -->
+<div class="mt-12 bg-[#1A1C1E] p-8 border border-[#FF0000] relative overflow-hidden">
+<div class="scanning-line absolute top-0 left-0 w-full"></div>
+<div class="flex flex-col md:flex-row justify-between items-center gap-8 relative z-10">
+<div class="text-center md:text-left">
+<h4 class="font-headline-md text-headline-md text-white uppercase mb-1">NETWORK_STATUS: OPTIMAL</h4>
+<p class="font-data-mono text-data-mono text-outline">AGGREGATED PERFORMANCE DATA ACROSS 1,400+ GLOBAL NODES</p>
+</div>
+<div class="flex gap-12">
+<div class="text-center">
+<p class="font-data-mono text-3xl text-white font-black">2.4PB</p>
+<p class="font-label-caps text-label-caps text-outline">DATA_PROCESSED</p>
+</div>
+<div class="text-center">
+<p class="font-data-mono text-3xl text-[#FF0000] font-black">100%</p>
+<p class="font-label-caps text-label-caps text-outline">UPTIME_RELIABILITY</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar from JSON -->
+<footer class="bg-[#0F1113] docked full-width bottom-0 border-t border-[#1A1C1E] fixed bottom-0 left-0 w-full z-50 h-20 flex justify-around items-center">
+<button class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-1">sensors</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">ANALYTICS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-1">model_training</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">TRAINING</span>
+</button>
+<button class="flex flex-col items-center justify-center text-[#FF0000] border-t-2 border-[#FF0000] bg-[#1A1C1E] h-full w-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">verified_user</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">SUCCESS</span>
+</button>
+<button class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform">
+<span class="material-symbols-outlined mb-1">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">SDK</span>
+</button>
+</footer>
+<!-- Content spacer for fixed footer -->
+<div class="h-24"></div>
+</body></html>

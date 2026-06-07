@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LegalBot - Document Analysis</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,500;0,600;0,700;1,400&amp;family=Work+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar for professional feel */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #C0C0C0; border-radius: 2px; }
+        
+        /* Parchment texture simulation */
+        .bg-parchment {
+            background-color: #fcf9f8;
+            background-image: radial-gradient(#eae7e7 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "surface": "#fcf9f8",
+                      "surface-container-high": "#eae7e7",
+                      "inverse-surface": "#303030",
+                      "on-secondary-fixed": "#1a1c1c",
+                      "on-secondary": "#ffffff",
+                      "on-error-container": "#93000a",
+                      "on-primary-container": "#708ab5",
+                      "on-tertiary": "#ffffff",
+                      "inverse-primary": "#aec7f6",
+                      "on-secondary-fixed-variant": "#464747",
+                      "primary-fixed-dim": "#aec7f6",
+                      "outline": "#74777f",
+                      "surface-dim": "#dcd9d9",
+                      "surface-container-lowest": "#ffffff",
+                      "on-primary-fixed-variant": "#2d476f",
+                      "on-secondary-container": "#626363",
+                      "on-tertiary-fixed": "#1b1d0e",
+                      "surface-tint": "#465f88",
+                      "on-surface-variant": "#44474e",
+                      "secondary": "#5d5e5f",
+                      "surface-bright": "#fcf9f8",
+                      "primary-container": "#002147",
+                      "error-container": "#ffdad6",
+                      "on-primary": "#ffffff",
+                      "inverse-on-surface": "#f3f0f0",
+                      "on-tertiary-container": "#898b75",
+                      "tertiary-fixed-dim": "#c8c8b0",
+                      "surface-variant": "#e4e2e1",
+                      "error": "#ba1a1a",
+                      "on-surface": "#1b1c1c",
+                      "secondary-fixed-dim": "#c6c6c6",
+                      "surface-container-low": "#f6f3f2",
+                      "tertiary-fixed": "#e4e4cc",
+                      "outline-variant": "#c4c6cf",
+                      "on-primary-fixed": "#001b3d",
+                      "on-tertiary-fixed-variant": "#474836",
+                      "secondary-fixed": "#e3e2e2",
+                      "secondary-container": "#e0dfdf",
+                      "on-error": "#ffffff",
+                      "primary-fixed": "#d6e3ff",
+                      "on-background": "#1b1c1c",
+                      "primary": "#000a1e",
+                      "surface-container": "#f0eded",
+                      "tertiary-container": "#212313",
+                      "surface-container-highest": "#e4e2e1",
+                      "tertiary": "#0b0c02",
+                      "background": "#fcf9f8",
+                      "risk-high": "#ba1a1a",
+                      "risk-medium": "#b8860b",
+                      "silver": "#C0C0C0"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.125rem",
+                      "lg": "0.25rem",
+                      "xl": "0.5rem",
+                      "full": "0.75rem"
+              },
+              "fontFamily": {
+                      "code-snippet": ["monospace"],
+                      "headline-md": ["Newsreader"],
+                      "headline-sm": ["Newsreader"],
+                      "body-md": ["Work Sans"],
+                      "label-caps": ["Work Sans"],
+                      "body-lg": ["Work Sans"],
+                      "display-lg": ["Newsreader"]
+              },
+              "fontSize": {
+                      "code-snippet": ["14px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "headline-md": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                      "headline-sm": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                      "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                      "label-caps": ["12px", {"lineHeight": "1.4", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                      "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                      "display-lg": ["48px", {"lineHeight": "1.1", "fontWeight": "600"}]
+              }
+            },
+          },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-surface font-body-md text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TopAppBar -->
+<header class="flex justify-between items-center px-6 py-3 w-full fixed top-0 z-50 bg-slate-50 border-b border-slate-300">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-blue-900" data-icon="gavel">gavel</span>
+<h1 class="text-xl font-bold text-blue-900 uppercase tracking-widest">LegalBot</h1>
+</div>
+<div class="flex gap-4">
+<button class="material-symbols-outlined text-blue-900 hover:bg-slate-200/50 transition-colors p-2 rounded" data-icon="camera_alt">camera_alt</button>
+<button class="material-symbols-outlined text-blue-900 hover:bg-slate-200/50 transition-colors p-2 rounded" data-icon="search">search</button>
+</div>
+</header>
+<main class="pt-20 pb-24 px-4 max-w-lg mx-auto">
+<!-- AI Summary Brief Section -->
+<section class="mb-8">
+<div class="bg-surface-container border border-silver p-6 rounded-lg shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="font-label-caps text-label-caps text-on-secondary-container px-2 py-1 bg-silver/20 border border-silver rounded">Case ID: LB-992-MSA</span>
+<span class="font-label-caps text-label-caps text-risk-high font-bold">4 CRITICAL RISKS</span>
+</div>
+<h2 class="font-headline-sm text-headline-sm text-primary mb-2">Analysis: MSA_Vendor_Draft.pdf</h2>
+<p class="font-body-md text-body-md text-on-surface-variant leading-relaxed">
+                    AI screening has identified <strong class="text-primary">Indemnification</strong> and <strong class="text-primary">Limitation of Liability</strong> as the primary risk vectors in this document. Termination clauses are unusually favorable to the vendor.
+                </p>
+<div class="mt-4 flex gap-2">
+<button class="bg-primary text-on-primary font-label-caps text-label-caps px-4 py-2 flex items-center gap-2 active:opacity-70 transition-all">
+<span class="material-symbols-outlined text-sm" data-icon="auto_awesome">auto_awesome</span>
+                        FULL BRIEF
+                    </button>
+</div>
+</div>
+</section>
+<!-- Document Viewer (Parchment Texture) -->
+<section class="bg-parchment border border-silver shadow-inner overflow-hidden min-h-[600px] flex flex-col">
+<div class="bg-surface-container-high border-b border-silver px-4 py-2 flex justify-between items-center">
+<span class="font-label-caps text-[10px] tracking-widest text-on-surface">PAGE 1 OF 12</span>
+<span class="font-label-caps text-[10px] tracking-widest text-on-surface">CONFIDENTIAL</span>
+</div>
+<div class="p-8 space-y-8">
+<!-- Clause 1 (Standard) -->
+<div>
+<h3 class="font-headline-sm text-lg text-primary mb-3">1. DEFINITIONS</h3>
+<p class="font-body-md text-sm text-secondary leading-loose">
+                        "Services" shall mean the technological legal assistance provided by the Platform as specified in Exhibit A. "Client Data" means all information, data and other content, in any form or medium, that is collected, downloaded or otherwise received...
+                    </p>
+</div>
+<!-- Clause 2 (High Risk) -->
+<div class="relative pl-6 border-l-4 border-risk-high bg-risk-high/5 py-4">
+<div class="absolute -left-3 top-4 bg-risk-high text-white rounded-full p-1 border-2 border-surface">
+<span class="material-symbols-outlined text-[14px]" data-icon="priority_high">priority_high</span>
+</div>
+<h3 class="font-headline-sm text-lg text-primary mb-2">4.2 INDEMNIFICATION BY CLIENT</h3>
+<p class="font-body-md text-sm text-on-surface leading-loose">
+                        The Client shall <span class="bg-risk-high/20 border-b-2 border-risk-high font-semibold">indemnify, defend and hold harmless the Provider and its affiliates from and against any and all losses, damages, liabilities, costs (including reasonable attorneys' fees)</span> resulting from any third-party claim, suit, action or proceeding arising out of or related to Client's use of the Services...
+                    </p>
+<div class="mt-3 inline-flex items-center gap-2 bg-surface border border-risk-high/30 px-3 py-1 text-[11px] font-bold text-risk-high uppercase">
+<span class="material-symbols-outlined text-xs" data-icon="warning">warning</span>
+                        Extensive Liability Transfer
+                    </div>
+</div>
+<!-- Clause 3 (Medium Risk) -->
+<div class="relative pl-6 border-l-4 border-risk-medium bg-risk-medium/5 py-4">
+<div class="absolute -left-3 top-4 bg-risk-medium text-white rounded-full p-1 border-2 border-surface">
+<span class="material-symbols-outlined text-[14px]" data-icon="report">report</span>
+</div>
+<h3 class="font-headline-sm text-lg text-primary mb-2">9. TERMINATION FOR CONVENIENCE</h3>
+<p class="font-body-md text-sm text-on-surface leading-loose">
+                        Provider may <span class="bg-risk-medium/20 border-b-2 border-risk-medium font-semibold">terminate this Agreement at any time, for any reason, upon thirty (30) days' written notice</span> to the Client. Client shall remain responsible for all fees incurred through the date of termination...
+                    </p>
+</div>
+<!-- More document text -->
+<div>
+<h3 class="font-headline-sm text-lg text-primary mb-3">10. INTELLECTUAL PROPERTY</h3>
+<p class="font-body-md text-sm text-secondary leading-loose">
+                        Subject to the terms and conditions of this Agreement, Provider hereby grants to Client a non-exclusive, non-transferable right to access and use the Services during the Term solely for Client's internal business purposes...
+                    </p>
+</div>
+</div>
+<!-- Document Footer Style -->
+<div class="mt-auto p-8 pt-0 opacity-40">
+<div class="border-t border-silver pt-4 flex justify-between">
+<span class="font-label-caps text-[10px]">MSA_VENDOR_DRAFT_V2.0</span>
+<span class="font-label-caps text-[10px]">© 2024 LEGAL PRACTITIONER CORP</span>
+</div>
+</div>
+</section>
+<!-- Contextual Document Action -->
+<div class="mt-6 flex justify-center">
+<button class="flex items-center gap-3 px-6 py-4 bg-primary text-on-primary rounded-xl shadow-lg border border-primary-container active:scale-95 transition-transform duration-150">
+<span class="material-symbols-outlined" data-icon="edit_note">edit_note</span>
+<span class="font-label-caps font-bold">GENERATE REDLINES</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 pb-safe bg-white bg-opacity-95 backdrop-blur-sm border-t border-slate-200 shadow-inner">
+<a class="flex flex-col items-center justify-center text-blue-900 scale-105" href="#">
+<span class="material-symbols-outlined" data-icon="description">description</span>
+<span class="font-sans text-[10px] font-bold uppercase tracking-tighter">Analysis</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 grayscale" href="#">
+<span class="material-symbols-outlined" data-icon="search">search</span>
+<span class="font-sans text-[10px] font-bold uppercase tracking-tighter">Research</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 grayscale" href="#">
+<span class="material-symbols-outlined" data-icon="analytics">analytics</span>
+<span class="font-sans text-[10px] font-bold uppercase tracking-tighter">Predictor</span>
+</a>
+<a class="flex flex-col items-center justify-center text-slate-400 grayscale" href="#">
+<span class="material-symbols-outlined" data-icon="lock">lock</span>
+<span class="font-sans text-[10px] font-bold uppercase tracking-tighter">Vault</span>
+</a>
+</nav>
+<!-- FAB (Suppressed on Details usually, but relevant for 'Scan New' in this context) -->
+<button class="fixed bottom-20 right-6 w-14 h-14 bg-primary-container text-on-primary-container rounded-full shadow-2xl flex items-center justify-center active:scale-90 transition-transform">
+<span class="material-symbols-outlined text-3xl" data-icon="add_a_photo">add_a_photo</span>
+</button>
+<!-- Visual Polish: Content Divider -->
+<div class="hidden lg:block fixed left-0 top-0 h-full w-1 border-r border-silver"></div>
+</body></html>

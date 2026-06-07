@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "surface-container-lowest": "#0a0f13",
+                    "surface-container-highest": "#31353a",
+                    "primary-fixed-dim": "#c6c6c9",
+                    "on-tertiary-fixed": "#1a1c1c",
+                    "on-secondary-container": "#5b000f",
+                    "on-background": "#e0e2e9",
+                    "on-secondary": "#680012",
+                    "surface-container": "#1c2025",
+                    "surface-variant": "#31353a",
+                    "error-container": "#93000a",
+                    "tertiary-fixed": "#e2e2e2",
+                    "primary-fixed": "#e2e2e5",
+                    "on-surface-variant": "#c5c6ca",
+                    "outline-variant": "#44474a",
+                    "surface": "#101418",
+                    "surface-tint": "#c6c6c9",
+                    "secondary": "#ffb3b2",
+                    "on-tertiary": "#2f3131",
+                    "surface-container-high": "#262a2f",
+                    "background": "#101418",
+                    "surface-container-low": "#181c21",
+                    "on-primary": "#2f3133",
+                    "surface-bright": "#36393f",
+                    "surface-dim": "#101418",
+                    "on-error-container": "#ffdad6",
+                    "tertiary-container": "#1a1c1c",
+                    "on-secondary-fixed-variant": "#92001e",
+                    "secondary-container": "#ff525c",
+                    "on-secondary-fixed": "#410008",
+                    "on-error": "#690005",
+                    "error": "#ffb4ab",
+                    "on-tertiary-fixed-variant": "#454747",
+                    "inverse-surface": "#e0e2e9",
+                    "outline": "#8f9194",
+                    "primary": "#c6c6c9",
+                    "on-surface": "#e0e2e9",
+                    "tertiary": "#c6c6c7",
+                    "inverse-on-surface": "#2d3136",
+                    "on-tertiary-container": "#838484",
+                    "on-primary-fixed-variant": "#454749",
+                    "secondary-fixed-dim": "#ffb3b2",
+                    "secondary-fixed": "#ffdad8",
+                    "on-primary-container": "#838486",
+                    "primary-container": "#1a1c1e",
+                    "tertiary-fixed-dim": "#c6c6c7",
+                    "on-primary-fixed": "#1a1c1e",
+                    "inverse-primary": "#5d5e61"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin-md": "32px",
+                    "gutter": "1px",
+                    "margin-sm": "16px",
+                    "grid-size": "64px",
+                    "unit": "4px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Space Grotesk"],
+                    "label-caps": ["Space Grotesk"],
+                    "body-reg": ["Inter"],
+                    "headline-md": ["Space Grotesk"],
+                    "data-mono": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                    "body-reg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}],
+                    "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #0F1113;
+            background-image: linear-gradient(#1A1C1E 1px, transparent 1px), linear-gradient(90deg, #1A1C1E 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF0000, transparent);
+            box-shadow: 0 0 10px #FF0000;
+            position: absolute;
+            width: 100%;
+            z-index: 10;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0F1113;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #FF0000;
+        }
+        @keyframes scan {
+            0% { top: 0%; }
+            100% { top: 100%; }
+        }
+        .animate-scan {
+            animation: scan 3s linear infinite;
+        }
+        .glitch-hover:hover {
+            text-shadow: 2px 0 #FF0000, -2px 0 #00FFFF;
+        }
+    </style>
+</head>
+<body class="text-on-background selection:bg-secondary-container selection:text-on-secondary-container h-screen overflow-hidden flex flex-col">
+<!-- TopAppBar -->
+<header class="bg-[#0F1113] border-b border-[#1A1C1E] flex justify-between items-center w-full px-4 h-16 z-50">
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-[#FF0000]" data-icon="visibility">visibility</span>
+<h1 class="text-xl font-black text-[#FF0000] tracking-widest font-['Space_Grotesk'] uppercase">SYNTH_VISION</h1>
+</div>
+<div class="flex items-center gap-6">
+<nav class="hidden md:flex gap-8">
+<a class="text-[#FF0000] font-['Space_Grotesk'] text-[12px] font-bold tracking-tighter uppercase" href="#">ANALYTICS</a>
+<a class="text-white hover:text-[#FF0000] font-['Space_Grotesk'] text-[12px] font-bold tracking-tighter uppercase transition-colors" href="#">TRAINING</a>
+<a class="text-white hover:text-[#FF0000] font-['Space_Grotesk'] text-[12px] font-bold tracking-tighter uppercase transition-colors" href="#">SUCCESS</a>
+<a class="text-white hover:text-[#FF0000] font-['Space_Grotesk'] text-[12px] font-bold tracking-tighter uppercase transition-colors" href="#">SDK</a>
+</nav>
+<div class="h-8 w-[1px] bg-[#1A1C1E]"></div>
+<button class="cursor-crosshair active:invert transition-colors">
+<span class="material-symbols-outlined text-[#FF0000]" data-icon="notifications_active">notifications_active</span>
+</button>
+</div>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex overflow-hidden">
+<!-- Left Column: Video Grids -->
+<section class="flex-1 overflow-y-auto p-4 custom-scrollbar">
+<div class="grid grid-cols-2 gap-4">
+<!-- Camera Feed 1 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-[#FF0000] animate-pulse"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5">CAM_01 // SEC_NORTH_PERIMETER</span>
+</div>
+<div class="scanning-line animate-scan"></div>
+<!-- Bounding Box Example -->
+<div class="absolute border-2 border-[#FF0000] top-[20%] left-[30%] w-[15%] h-[40%] z-20">
+<div class="absolute -top-6 left-0 bg-[#FF0000] text-white text-[10px] px-1 font-data-mono">HUMAN_DET: 98.4%</div>
+<div class="absolute -top-1 -left-1 w-2 h-2 border-t-2 border-l-2 border-white"></div>
+<div class="absolute -bottom-1 -right-1 w-2 h-2 border-b-2 border-r-2 border-white"></div>
+</div>
+<img class="w-full h-full object-cover opacity-80 grayscale contrast-125" data-alt="A grainy, high-contrast industrial surveillance camera feed showing a cold, concrete factory loading dock at night. The scene is illuminated by harsh, flickering overhead mercury-vapor lamps, creating long, dramatic shadows. Digital overlays including technical crosshairs and red diagnostic bounding boxes frame a solitary figure. The overall aesthetic is gritty, brutalist, and high-tech." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBLvWHJOrKc5njSTyGAH433K_2Nd1nQ_7w2WIL2OJtt2GvP3SZw82QJFpRkSCnDVtXiCZijr-1v7g28B3ydBxdaHOY0cyUj5rhNuY1VlOjnthEFuoK9wRTH3ezM5wis0SrDlQxYsOTPx_LW1WYMWg046qpm__vOWIyxATjmeipD7IeB1VYsaElBkjfO9d53eGZWJiE1jPhjRxI804ssP1Wod2jF-LMTnQ9M_U2MBKVmeLACPQmMZLJFl3auCt-WZpwOSY7z6HzgpcY"/>
+<div class="absolute bottom-2 right-2 flex gap-2">
+<span class="text-[10px] font-data-mono text-primary bg-black/40 px-1 border border-outline-variant">FPS: 60.0</span>
+<span class="text-[10px] font-data-mono text-primary bg-black/40 px-1 border border-outline-variant">LAT: 12ms</span>
+</div>
+</div>
+<!-- Camera Feed 2 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-[#FF0000] animate-pulse"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5">CAM_02 // ASSEMBLY_LINE_04</span>
+</div>
+<div class="scanning-line animate-scan" style="animation-delay: 1s;"></div>
+<img class="w-full h-full object-cover opacity-70 grayscale" data-alt="A wide-angle technical view of a high-speed robotic assembly line in a cleanroom environment. The image is processed with a cool blue and gunmetal grey tint, highlighting the mechanical precision of the robotic arms. A horizontal red laser scanning line is superimposed over the image, creating a sense of real-time machine vision analysis. The atmosphere is clinical and efficient." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDkUdF_KfPtywy9F8KKVqHxO547P2Qz7GmgpJxI8HN_YYvsGmwr1bNyO9Q-KROCxurVcJP2aeB9WmXxZgvzJQcslPTk0nDQ2P4Mr3lS967rEbq1mxIMrfCzoAoeI0FR7KPYu5_vtmQ5-ToZoWmjjw904g21wcI7PoErTLmW4OIlsXXO1DSgIS1pCJwqIZtVazEPvNcPnF10L7RDSViYypoHKsCKZK9E2uEyTRlAUTtmvSGjI2siE4T8Y7XcgiIHlrcIzffHLwwbocU"/>
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none opacity-40">
+<span class="material-symbols-outlined text-white text-6xl">filter_center_focus</span>
+</div>
+</div>
+<!-- Camera Feed 3 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-[#FF0000] animate-pulse"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5">CAM_03 // LOBBY_MAIN_ENTRANCE</span>
+</div>
+<div class="scanning-line animate-scan" style="animation-delay: 0.5s;"></div>
+<div class="absolute border-2 border-[#FF0000] top-[40%] left-[60%] w-[10%] h-[20%] z-20">
+<div class="absolute -top-6 left-0 bg-[#FF0000] text-white text-[10px] px-1 font-data-mono">THREAT: 0.02%</div>
+</div>
+<img class="w-full h-full object-cover opacity-70 grayscale contrast-150" data-alt="A security camera perspective of a minimalist, brutalist office lobby with dark polished floors and massive concrete pillars. The lighting is low and moody, with sharp highlights from recessed architectural fixtures. The digital view includes high-density data telemetry on the edges and a vibrant red scanning line moving across the frame. The visual style is architectural, clean, and imposing." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCas9JoG-pMC39RoTtRTQcmoHf2QxE9BK0dkHjryiZaiFEX6lBgQzdZjsJmt8rwNsbXgcWPm9mFcnINssCbXCyJugAqhyc4-YrOxgildBQqxbavRU2cU0Y5o7vqb8AsszE_WHhym5eodg8OnO1upB0-_kbyo6L4H6sm2mdsTaRWrCtrZaGaU3Mlb7rBFf5YxolYXRIl-BdNkEPVzT-isJiI0uvHHGYycGAqAfuP-27Vhrqd_caaxnxJZ7xn0p5a1VF2FWDRKJ6l_pc"/>
+</div>
+<!-- Camera Feed 4 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-zinc-500"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5 text-zinc-500">CAM_04 // STORAGE_D_OFFLINE</span>
+</div>
+<div class="w-full h-full bg-[#0a0f13] flex flex-col items-center justify-center border-2 border-dashed border-[#1A1C1E]">
+<span class="material-symbols-outlined text-[#1A1C1E] text-4xl mb-2">signal_disconnected</span>
+<span class="text-[10px] font-data-mono text-[#44474a] uppercase">RECONNECTING...</span>
+</div>
+</div>
+<!-- Camera Feed 5 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-[#FF0000] animate-pulse"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5">CAM_05 // DATA_CENTER_RACK_09</span>
+</div>
+<img class="w-full h-full object-cover opacity-70 grayscale" data-alt="A technical interior view of a server room with endless rows of data racks glowing with hundreds of tiny blue and white LEDs. The scene is captured through a digital interface with sharp red accents and geometric HUD elements. A vertical scanning line illuminates the metallic surfaces of the server enclosures. The mood is highly technological, precise, and secure." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCRuNkkPOLTnj_hzK0OZBrIiedZKzawWr43Wht3hH-1AdZkot_zuDwpgGiyX88vE6OPkR8qArhruikBz6IixYp0Ys_66gB4TH0lsOxhYgKbPuRJuZcYavo3gcWLHjh_snQ1JoPzsA9LhXV-URJ_tyl5PZlRmE3Hz6SOcM646a0seWSYGo0kczLvJTCvXSPUoLQxhhCW2jZkeWgaZPplaHMm6I1qKRDNTWuMNcwcYhwnKeZwIJKmqQCAUpj2RM7fRn1APiysiZRFzXM"/>
+</div>
+<!-- Camera Feed 6 -->
+<div class="relative bg-surface-container border border-[#1A1C1E] aspect-video group cursor-crosshair">
+<div class="absolute top-2 left-2 z-20 flex items-center gap-2">
+<div class="w-2 h-2 bg-[#FF0000] animate-pulse"></div>
+<span class="text-[10px] font-data-mono font-bold uppercase tracking-widest bg-black/60 px-2 py-0.5">CAM_06 // PARKING_Z_SOUTH</span>
+</div>
+<img class="w-full h-full object-cover opacity-70 grayscale" data-alt="A desolate underground parking garage at night, viewed through a high-definition security camera. The space is constructed of raw concrete with bright red piping running across the ceiling. The lighting is sparse, creating pockets of deep shadow. Digital tracking overlays identify structural points and potential movement. The aesthetic is industrial, stark, and surveilled." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCcIITrfuUgjNyBc6f7bQ6JveVgDAcIufHt2j5cSDtAaImvBVEOhYyOXAdUpr7gIhiWFnb9FlSZwUMtwby_pqj9YnETbLQ5KKNiBtUH-HJtgMSZ54CAHHZl84wGwpoPXNqt8NGF59gIh_4VeYUL7oLAzLFACOEolv1EEDJ3nlXsYmZNfZCuo9bo0e8s7kMz-ovsXuGIfz1zrSPwc6X08zmXvWuiYGNHbVSH4E7AXkXQdrn1bs7xNrYJA2_exopayo5HjhQ4KSaqmHs"/>
+</div>
+</div>
+<!-- Event Stream (Bottom of Left Column) -->
+<div class="mt-4 border border-[#1A1C1E] bg-[#0A0F13] h-48 flex flex-col">
+<div class="px-4 py-2 border-b border-[#1A1C1E] flex justify-between items-center">
+<h3 class="font-label-caps text-label-caps text-primary tracking-widest uppercase">EVENT_STREAM_LIVE</h3>
+<span class="text-[10px] font-data-mono text-[#FF0000] flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]" data-weight="fill">fiber_manual_record</span> SYNC_ACTIVE
+                    </span>
+</div>
+<div class="flex-1 overflow-y-auto custom-scrollbar p-2 font-data-mono text-[11px] leading-relaxed">
+<div class="flex gap-4 py-1 border-b border-[#1A1C1E]/30 text-[#FF0000]">
+<span class="w-20">[ 14:22:01 ]</span>
+<span class="w-24">ALERT_LVL_02</span>
+<span>UNAUTHORIZED_ENTRY_POINT // CAM_01 // SEC_NORTH_PERIMETER</span>
+</div>
+<div class="flex gap-4 py-1 border-b border-[#1A1C1E]/30 text-primary">
+<span class="w-20 text-zinc-500">[ 14:21:58 ]</span>
+<span class="w-24">INFO_SIGNAL</span>
+<span>PATTERN_MATCH_92% // OBJECT_CLASS: VEHICLE // CAM_06</span>
+</div>
+<div class="flex gap-4 py-1 border-b border-[#1A1C1E]/30 text-primary">
+<span class="w-20 text-zinc-500">[ 14:21:45 ]</span>
+<span class="w-24">INFO_SIGNAL</span>
+<span>MOTION_DETECTED // ZONE_04 // ASSEMBLY_LINE_04</span>
+</div>
+<div class="flex gap-4 py-1 border-b border-[#1A1C1E]/30 text-zinc-500">
+<span class="w-20">[ 14:21:30 ]</span>
+<span class="w-24">SYSTEM_LOG</span>
+<span>RE-INDEXING_METADATA_CACHES // CORE_STORAGE_NODE_03</span>
+</div>
+<div class="flex gap-4 py-1 border-b border-[#1A1C1E]/30 text-primary">
+<span class="w-20 text-zinc-500">[ 14:21:12 ]</span>
+<span class="w-24">INFO_SIGNAL</span>
+<span>USER_LOGIN // ADM_01_ROOT // PORT_3202</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Right Column: Telemetry & Status -->
+<aside class="w-[320px] bg-[#0A0F13] border-l border-[#1A1C1E] flex flex-col">
+<!-- Global Status -->
+<div class="p-4 border-b border-[#1A1C1E]">
+<div class="flex justify-between items-center mb-4">
+<h2 class="font-label-caps text-label-caps text-zinc-500">SYSTEM_HEALTH</h2>
+<span class="text-[10px] bg-white text-black px-2 py-0.5 font-bold">STABLE</span>
+</div>
+<div class="grid grid-cols-2 gap-2">
+<div class="bg-[#1A1C1E] p-2 border border-[#31353A]">
+<p class="text-[9px] text-zinc-500 uppercase">GPU_LOAD</p>
+<p class="font-headline-md text-headline-md text-primary leading-none">88.4%</p>
+</div>
+<div class="bg-[#1A1C1E] p-2 border border-[#31353A]">
+<p class="text-[9px] text-zinc-500 uppercase">INF_SPEED</p>
+<p class="font-headline-md text-headline-md text-primary leading-none">14ms</p>
+</div>
+</div>
+</div>
+<!-- Detailed Telemetry -->
+<div class="flex-1 overflow-y-auto custom-scrollbar p-4">
+<div class="mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[16px] text-[#FF0000]">analytics</span>
+<h3 class="font-label-caps text-label-caps text-primary">TRAFFIC_DENSITY</h3>
+</div>
+<div class="space-y-3">
+<div class="bg-[#1A1C1E] h-12 relative flex items-center px-4 overflow-hidden">
+<div class="absolute left-0 top-0 h-full bg-[#FF0000]/10 border-r border-[#FF0000]" style="width: 72%;"></div>
+<span class="relative z-10 font-data-mono text-[11px] text-white">NORTH_SECTOR: 72%</span>
+</div>
+<div class="bg-[#1A1C1E] h-12 relative flex items-center px-4 overflow-hidden">
+<div class="absolute left-0 top-0 h-full bg-[#FF0000]/10 border-r border-[#FF0000]" style="width: 31%;"></div>
+<span class="relative z-10 font-data-mono text-[11px] text-white">SOUTH_SECTOR: 31%</span>
+</div>
+<div class="bg-[#1A1C1E] h-12 relative flex items-center px-4 overflow-hidden">
+<div class="absolute left-0 top-0 h-full bg-[#FF0000]/10 border-r border-[#FF0000]" style="width: 55%;"></div>
+<span class="relative z-10 font-data-mono text-[11px] text-white">CENTRAL_HUB: 55%</span>
+</div>
+</div>
+</div>
+<div class="mb-6">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-[16px] text-[#FF0000]">memory</span>
+<h3 class="font-label-caps text-label-caps text-primary">OBJECT_REGISTRY</h3>
+</div>
+<ul class="font-data-mono text-[11px] space-y-1">
+<li class="flex justify-between py-1 border-b border-[#1A1C1E]">
+<span class="text-zinc-500">ID:9920</span>
+<span class="text-white">PERSON</span>
+<span class="text-[#FF0000]">CAM_01</span>
+</li>
+<li class="flex justify-between py-1 border-b border-[#1A1C1E]">
+<span class="text-zinc-500">ID:9921</span>
+<span class="text-white">HARDHAT</span>
+<span class="text-[#FF0000]">CAM_01</span>
+</li>
+<li class="flex justify-between py-1 border-b border-[#1A1C1E]">
+<span class="text-zinc-500">ID:9924</span>
+<span class="text-white">VEHICLE</span>
+<span class="text-[#FF0000]">CAM_06</span>
+</li>
+<li class="flex justify-between py-1 border-b border-[#1A1C1E]">
+<span class="text-zinc-500">ID:9928</span>
+<span class="text-white">CRATE_L3</span>
+<span class="text-[#FF0000]">CAM_02</span>
+</li>
+</ul>
+</div>
+<div class="bg-surface-container border border-[#FF0000]/30 p-4 relative overflow-hidden">
+<div class="absolute -right-4 -top-4 opacity-5">
+<span class="material-symbols-outlined text-9xl">warning</span>
+</div>
+<p class="text-[10px] font-data-mono text-[#FF0000] mb-1 font-bold">NETWORK_CONGESTION</p>
+<p class="text-[11px] font-body-reg text-on-surface-variant leading-tight">Packet loss detected on Node_04. Switching to failover protocol in 3s.</p>
+</div>
+</div>
+<!-- Footer Action -->
+<div class="p-4 border-t border-[#1A1C1E]">
+<button class="w-full bg-[#FF0000] text-white font-label-caps text-label-caps py-4 tracking-widest hover:invert transition-all active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-weight="fill">bolt</span>
+                    INITIATE_LOCKDOWN
+                </button>
+</div>
+</aside>
+</main>
+<!-- BottomNavBar (Mobile Shell, Hidden on Desktop) -->
+<nav class="md:hidden fixed bottom-0 left-0 w-full z-50 h-20 flex justify-around items-center bg-[#0F1113] border-t border-[#1A1C1E]">
+<div class="flex flex-col items-center justify-center text-[#FF0000] border-t-2 border-[#FF0000] bg-[#1A1C1E] h-full w-full">
+<span class="material-symbols-outlined" data-icon="sensors">sensors</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter mt-1">ANALYTICS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-zinc-500 hover:text-white hover:bg-[#1A1C1E] h-full w-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="model_training">model_training</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter mt-1">TRAINING</span>
+</div>
+<div class="flex flex-col items-center justify-center text-zinc-500 hover:text-white hover:bg-[#1A1C1E] h-full w-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="verified_user">verified_user</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter mt-1">SUCCESS</span>
+</div>
+<div class="flex flex-col items-center justify-center text-zinc-500 hover:text-white hover:bg-[#1A1C1E] h-full w-full active:scale-95 transition-transform">
+<span class="material-symbols-outlined" data-icon="terminal">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter mt-1">SDK</span>
+</div>
+</nav>
+</body></html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SYNTH_VISION | REAL-TIME ANALYTICS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        body {
+            background-color: #0F1113;
+            background-image: 
+                linear-gradient(to right, #1A1C1E 1px, transparent 1px),
+                linear-gradient(to bottom, #1A1C1E 1px, transparent 1px);
+            background-size: 64px 64px;
+        }
+        .scanning-line {
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #FF0000, transparent);
+            box-shadow: 0 0 8px #FF0000;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+            animation: scan 3s linear infinite;
+        }
+        @keyframes scan {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(100%); }
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed": "#1a1c1e",
+                        "on-error-container": "#ffdad6",
+                        "surface-container-high": "#262a2f",
+                        "primary-fixed": "#e2e2e5",
+                        "background": "#0F1113",
+                        "on-primary-fixed-variant": "#454749",
+                        "inverse-on-surface": "#2d3136",
+                        "tertiary": "#c6c6c7",
+                        "on-tertiary": "#2f3131",
+                        "secondary-fixed-dim": "#ffb3b2",
+                        "on-secondary-container": "#5b000f",
+                        "on-primary": "#2f3133",
+                        "error-container": "#93000a",
+                        "on-surface": "#e0e2e9",
+                        "secondary": "#ffb3b2",
+                        "tertiary-fixed": "#e2e2e2",
+                        "on-surface-variant": "#c5c6ca",
+                        "inverse-surface": "#e0e2e9",
+                        "error": "#FF0000",
+                        "surface-container-low": "#181c21",
+                        "surface-tint": "#c6c6c9",
+                        "on-tertiary-fixed": "#1a1c1c",
+                        "outline": "#8f9194",
+                        "on-primary-container": "#838486",
+                        "surface": "#101418",
+                        "surface-bright": "#36393f",
+                        "on-tertiary-container": "#838484",
+                        "on-secondary-fixed": "#410008",
+                        "tertiary-fixed-dim": "#c6c6c7",
+                        "on-secondary-fixed-variant": "#92001e",
+                        "on-background": "#e0e2e9",
+                        "secondary-fixed": "#ffdad8",
+                        "on-tertiary-fixed-variant": "#454747",
+                        "on-secondary": "#680012",
+                        "surface-dim": "#101418",
+                        "surface-container-lowest": "#0a0f13",
+                        "tertiary-container": "#1a1c1c",
+                        "on-error": "#690005",
+                        "primary-fixed-dim": "#c6c6c9",
+                        "surface-variant": "#31353a",
+                        "secondary-container": "#ff525c",
+                        "inverse-primary": "#5d5e61",
+                        "surface-container-highest": "#31353a",
+                        "primary": "#c6c6c9",
+                        "surface-container": "#1c2025",
+                        "primary-container": "#1a1c1e",
+                        "outline-variant": "#44474a"
+                    },
+                    "fontFamily": {
+                        "headline-xl": ["Space Grotesk"],
+                        "label-caps": ["Space Grotesk"],
+                        "headline-md": ["Space Grotesk"],
+                        "data-mono": ["Space Grotesk"],
+                        "body-reg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "headline-xl": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.15em", "fontWeight": "700"}],
+                        "headline-md": ["24px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.1em", "fontWeight": "500"}],
+                        "body-reg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0", "fontWeight": "400"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="min-h-screen text-on-surface">
+<header class="bg-[#0F1113] border-b border-[#1A1C1E] flex justify-between items-center w-full px-4 h-16 sticky top-0 z-50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[#FF0000]" data-icon="visibility">visibility</span>
+<h1 class="text-xl font-black text-[#FF0000] tracking-widest font-['Space_Grotesk'] uppercase">SYNTH_VISION</h1>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden md:flex gap-6 mr-6">
+<span class="font-label-caps text-label-caps text-[#FF0000]">ANALYTICS</span>
+<span class="font-label-caps text-label-caps text-white/50 hover:text-white cursor-crosshair">TRAINING</span>
+<span class="font-label-caps text-label-caps text-white/50 hover:text-white cursor-crosshair">SUCCESS</span>
+</div>
+<button class="material-symbols-outlined text-white p-2 hover:bg-[#FF0000] hover:text-white transition-colors duration-75" data-icon="notifications_active">notifications_active</button>
+</div>
+</header>
+<main class="p-4 md:p-8 max-w-[1600px] mx-auto pb-32">
+<div class="flex flex-col md:flex-row justify-between items-end mb-8 border-b border-[#1A1C1E] pb-4">
+<div>
+<p class="text-[#FF0000] font-label-caps text-label-caps mb-1">SYSTEM_STATUS: ACTIVE</p>
+<h2 class="font-headline-xl text-headline-xl uppercase">Real-Time Feed</h2>
+</div>
+<div class="flex gap-2 mt-4 md:mt-0">
+<div class="bg-surface-container px-3 py-1 border border-[#1A1C1E] flex items-center gap-2">
+<span class="w-2 h-2 bg-[#FF0000] rounded-full animate-pulse"></span>
+<span class="font-data-mono text-data-mono uppercase">Live_01</span>
+</div>
+<div class="bg-surface-container px-3 py-1 border border-[#1A1C1E] flex items-center gap-2">
+<span class="font-data-mono text-data-mono text-white/40">LATENCY: 14ms</span>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-1 bg-[#1A1C1E] border border-[#1A1C1E]">
+<section class="lg:col-span-8 bg-background relative overflow-hidden group">
+<div class="aspect-video w-full relative">
+<img class="w-full h-full object-cover opacity-60 grayscale" data-alt="A high-angle surveillance view of a busy industrial shipping terminal at night. The scene is rendered in a desaturated, high-contrast gunmetal grey palette with sharp digital clarity. Overlaid on the video are bright laser red bounding boxes highlighting moving containers and robotic arms. A thin horizontal red scanning line moves vertically across the frame, simulating active computer vision processing in a futuristic command center atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBEsk7s6WcFGyGT9SwUTni6sz3H3PboyrAQILhdd8rdFF2h3Tn9s4MLWHrUXNjG-6iUsQ8KL75mI5lQ-bCflr0RSlu_tEPdBgG7SiVCSgX1YlXuMZiUabmInjHBy4nb5hqrbSfuWYx0iZJA_13yhJwKWPi6wWmYIzIFVPLVfwEgszUFqi1IRsnx9oEXI7eIzSIJ0bQKVNX7VqkR90V9QRgOv4eoW7FG6UnE8VIpU9MbP_hR0em0yWuG6dahzXaOSC3TyQuDbDN47GM"/>
+<div class="scanning-line"></div>
+<div class="absolute inset-0 pointer-events-none p-6">
+<div class="absolute top-1/4 left-1/3 border-2 border-[#FF0000] w-48 h-32">
+<div class="absolute -top-6 left-0 bg-[#FF0000] text-white px-2 py-0.5 font-data-mono text-[10px] flex items-center gap-2">
+<span>HUMAN_DETECTED</span>
+<span class="font-bold">98.4%</span>
+</div>
+<div class="absolute -top-[1px] -left-[1px] w-4 h-4 border-t-2 border-l-2 border-white"></div>
+<div class="absolute -bottom-[1px] -right-[1px] w-4 h-4 border-b-2 border-r-2 border-white"></div>
+</div>
+<div class="absolute bottom-1/3 right-1/4 border-2 border-[#FF0000] w-24 h-24">
+<div class="absolute -top-6 left-0 bg-[#FF0000] text-white px-2 py-0.5 font-data-mono text-[10px] flex items-center gap-2">
+<span>ASSET_M04</span>
+<span class="font-bold">72.1%</span>
+</div>
+</div>
+</div>
+<div class="absolute bottom-4 left-4 flex gap-2">
+<div class="bg-black/80 backdrop-blur-md p-4 border border-[#FF0000]/30 min-w-[200px]">
+<p class="text-[10px] text-[#FF0000] font-label-caps mb-1">TELEMETRY_LOG</p>
+<div class="font-data-mono text-[11px] space-y-1">
+<p class="text-white/60">POS_X: 1042.882</p>
+<p class="text-white/60">POS_Y: 0214.119</p>
+<p class="text-white/60 text-[#FF0000]">MOTION_DETECTED: TRUE</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<aside class="lg:col-span-4 flex flex-col bg-background">
+<div class="p-4 border-b border-[#1A1C1E] bg-surface-container">
+<h3 class="font-label-caps text-label-caps text-[#FF0000]">EVENT_STREAM</h3>
+</div>
+<div class="flex-1 overflow-y-auto max-h-[500px] lg:max-h-full">
+<div class="p-4 border-b border-[#1A1C1E] bg-[#1A1C1E]/30 flex gap-4 items-start">
+<div class="bg-[#FF0000] p-1 shrink-0">
+<span class="material-symbols-outlined text-white text-sm" data-icon="warning">warning</span>
+</div>
+<div class="space-y-1">
+<p class="font-data-mono text-sm">SEC_ZONE_B BREACH</p>
+<p class="text-[10px] text-white/40 uppercase">Timestamp: 14:22:01:04</p>
+<p class="text-xs text-white/70">Unauthorized personnel detected in restricted loading area 04.</p>
+</div>
+</div>
+<div class="p-4 border-b border-[#1A1C1E] flex gap-4 items-start">
+<div class="bg-white/10 p-1 shrink-0">
+<span class="material-symbols-outlined text-white text-sm" data-icon="info">info</span>
+</div>
+<div class="space-y-1">
+<p class="font-data-mono text-sm">ASSET_IDLE_TIMEOUT</p>
+<p class="text-[10px] text-white/40 uppercase">Timestamp: 14:21:44:12</p>
+<p class="text-xs text-white/70">Forklift Unit_09 stationary for &gt; 300 seconds.</p>
+</div>
+</div>
+<div class="p-4 border-b border-[#1A1C1E] bg-[#FF0000]/10 flex gap-4 items-start">
+<div class="bg-[#FF0000] p-1 shrink-0">
+<span class="material-symbols-outlined text-white text-sm" data-icon="emergency">emergency</span>
+</div>
+<div class="space-y-1">
+<p class="font-data-mono text-sm">THERMAL_ANOMALY</p>
+<p class="text-[10px] text-white/40 uppercase">Timestamp: 14:20:11:09</p>
+<p class="text-xs text-[#FF0000]">Critical: Heat signature spike in Server Row 02.</p>
+</div>
+</div>
+<div class="p-4 border-b border-[#1A1C1E] flex gap-4 items-start">
+<div class="bg-white/10 p-1 shrink-0">
+<span class="material-symbols-outlined text-white text-sm" data-icon="verified">verified</span>
+</div>
+<div class="space-y-1">
+<p class="font-data-mono text-sm">SHIFT_ROTATION_SYNC</p>
+<p class="text-[10px] text-white/40 uppercase">Timestamp: 14:15:00:00</p>
+<p class="text-xs text-white/70">Model updated for night-shift operational parameters.</p>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+<div class="bg-surface-container border border-[#1A1C1E] p-6">
+<p class="text-[10px] text-white/40 font-label-caps mb-2">DETECTIONS_24H</p>
+<p class="font-headline-md text-headline-md">14,204</p>
+<div class="mt-4 h-1 bg-[#1A1C1E] relative">
+<div class="absolute left-0 top-0 h-full bg-[#FF0000] w-[65%]"></div>
+</div>
+<p class="text-[10px] mt-2 text-[#FF0000] font-data-mono">+12.4% FROM MEAN</p>
+</div>
+<div class="bg-surface-container border border-[#1A1C1E] p-6">
+<p class="text-[10px] text-white/40 font-label-caps mb-2">AVG_CONFIDENCE</p>
+<p class="font-headline-md text-headline-md text-[#FF0000]">94.2%</p>
+<div class="mt-4 flex gap-1">
+<div class="h-4 w-1 bg-[#FF0000]"></div>
+<div class="h-4 w-1 bg-[#FF0000]"></div>
+<div class="h-4 w-1 bg-[#FF0000]"></div>
+<div class="h-4 w-1 bg-[#FF0000]"></div>
+<div class="h-4 w-1 bg-[#FF0000]/30"></div>
+</div>
+<p class="text-[10px] mt-2 text-white/40 font-data-mono">STABLE_THROUGHPUT</p>
+</div>
+<div class="bg-surface-container border border-[#1A1C1E] p-6">
+<p class="text-[10px] text-white/40 font-label-caps mb-2">ACTIVE_MODELS</p>
+<p class="font-headline-md text-headline-md">12 / 16</p>
+<div class="flex flex-wrap gap-2 mt-4">
+<span class="text-[8px] border border-[#FF0000] px-1 text-[#FF0000]">YOLO_V8</span>
+<span class="text-[8px] border border-white/20 px-1 text-white/40">POSE_EST</span>
+<span class="text-[8px] border border-white/20 px-1 text-white/40">ANOM_DET</span>
+</div>
+</div>
+<div class="bg-surface-container border border-[#1A1C1E] p-6 flex flex-col justify-center items-center">
+<span class="material-symbols-outlined text-[#FF0000] text-4xl mb-2" data-icon="terminal">terminal</span>
+<p class="font-label-caps text-label-caps">SDK_CONSOLE</p>
+<p class="text-[10px] text-white/40 mt-1 uppercase">Root Access: Required</p>
+</div>
+</div>
+<div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-1">
+<div class="aspect-video relative border border-[#1A1C1E] grayscale hover:grayscale-0 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A futuristic warehouse interior view from a high-mounted security camera. The lighting is moody and industrial with deep blue-grey shadows and sharp white highlights. A red digital scan overlay sweeps across the center of the frame. The style is technical and clinical, representing SynthVision's precision monitoring software interface for large scale logistics hubs." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCx08ZFzwfXe4ov-YYMhzWSJAicClJ5h5VyTLDaBdT4P696iVfb2kK_-FvEqFVU1t0bGvwfI2uzDCEvYuVe2O6AMjfllnxSTCFooyiOSsfXdVjXXIqLgVd96XB91iDRd0R9H7zDXZMlvHjZ99sqy7RJNu5xfiUI7fOSkluNiwZuxVdXpLJjRKxJ1nG03w37oU-5ueu8IrN-L8FABUIRapJSBfJTbWKcp9nn2cuI5awc9V0qAoaALKx9dMqJH6Y8ThsdjY28zxqEbVk"/>
+<div class="absolute top-2 left-2 bg-black/60 px-1 text-[8px] font-data-mono">CAM_02</div>
+</div>
+<div class="aspect-video relative border border-[#1A1C1E] grayscale hover:grayscale-0 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A computer vision data analysis dashboard showing multiple thermal imaging feeds of machinery in a high-tech manufacturing plant. The color palette is dominated by dark gunmetal grey and vibrant laser red accents highlighting heat anomalies. The mood is intense and highly professional, depicting a system that provides mission-critical data in a futuristic industrial environment." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCGjE_1qW2pulLhUliaVABpJfDcgYwCixi-CpUYVkQIOBhtE5GrOWOYHUy6OsPj1m1HM0vMJY8k9zLC8May36ufUzqYoYq3uuuej15Eipw4N2gbRqJ9-Ise4dMGe2nqDlrkMThrZHdJKLu4QTzYnuXQn90Sy7tfD50S6_LeEToyaBh_2wAq2vti71CTtXGElLPYbKtSZKgSw4taQ4cBUA00HNYejz8CpJfsNa87KO7xCG1abfLTbSX28yFFDumg_O-ig-5o0DpcJPE"/>
+<div class="absolute top-2 left-2 bg-black/60 px-1 text-[8px] font-data-mono">CAM_03</div>
+</div>
+<div class="aspect-video relative border border-[#1A1C1E] grayscale hover:grayscale-0 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A close up shot of high-tech server racks in a darkened room, illuminated by rows of glowing red and green status LEDs. Digital data strings and coordinate maps are faintly reflected on the metallic surfaces. The aesthetic is clean, technical, and brutalist, emphasizing the power and reliability of modern computer vision hardware infrastructures." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCdZcjzrXTyB_WUqQNOpayR4LWCMAX-nTI5_sF0KJT2qGU0feUknLA_99PUwUgE0hSK6mU2uVlhwcLS4UhE0rOE7_BeBKgmjHRfDkfUGwHujE32wOrTnyTwjhHK0mOII8Wwo0-yfhQdg8obfP06CXRzWqO0Qu7p2jOSeNnQOjeWIGwqXCev1MncK4Fw_IolW1zJSFLQm7hqnQ0aB0psiDDQkhATiRTdeLg3Uh3DcIbecTWG60NxLvJEt4_SzxxJ7O5WwPJaidTcsZ0"/>
+<div class="absolute top-2 left-2 bg-black/60 px-1 text-[8px] font-data-mono">CAM_04</div>
+</div>
+<div class="aspect-video relative border border-[#1A1C1E] grayscale hover:grayscale-0 transition-all cursor-pointer">
+<img class="w-full h-full object-cover" data-alt="A view through a robotic arm's integrated camera as it performs a high-precision task in an automated laboratory. The visual is sharp and clinical with gunmetal grey machinery and a bright laser red focus point on the workspace. The digital UI features monospaced text and minimalist structural borders typical of a high-end SynthVision analytics interface." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwoW8p4u1-c45mim9cSafs23xyiIFKiPGUSck9uqWs2Vs6zS1hrzRX8Tscpt6R519bA6_M1xG3cNwfvYtP1SoJjmxBPRhX4MqdMtlRYPrCQ9yUwORLG3uTQHftjseeIbFPZIP1o2jQR9Jq22RsFcvZtAl0mfzxDhmihFRd-q5SXRy-78K1xr3slbHJbr4tAa7Om9tR4ZiOjnPUfA_Plk7diI2xVXQWWgVlF_4morHrljByxy5ZlFS8QwVONAUPB6JxJmkgUAFQeXk"/>
+<div class="absolute top-2 left-2 bg-black/60 px-1 text-[8px] font-data-mono">CAM_05</div>
+</div>
+</div>
+</main>
+<nav class="fixed bottom-0 left-0 w-full z-50 h-20 bg-[#0F1113] border-t border-[#1A1C1E] flex justify-around items-center">
+<a class="flex flex-col items-center justify-center text-[#FF0000] border-t-2 border-[#FF0000] bg-[#1A1C1E] h-full w-full active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="sensors">sensors</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">ANALYTICS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="model_training">model_training</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">TRAINING</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="verified_user">verified_user</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">SUCCESS</span>
+</a>
+<a class="flex flex-col items-center justify-center text-zinc-500 h-full w-full hover:text-white hover:bg-[#1A1C1E] active:scale-95 transition-transform" href="#">
+<span class="material-symbols-outlined mb-1" data-icon="terminal">terminal</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold uppercase tracking-tighter">SDK</span>
+</a>
+</nav>
+</body></html>
