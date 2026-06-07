@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TerraSteward | Parcel Management Panel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,200..800&amp;family=Public+Sans:wght@100..900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .soil-shadow {
+            box-shadow: 0 20px 25px -5px rgba(44, 22, 14, 0.1), 0 8px 10px -6px rgba(44, 22, 14, 0.1);
+        }
+        body {
+            background-color: #fafaec; /* Matching background token */
+        }
+    </style>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "background": "#fafaec",
+                    "on-primary-fixed-variant": "#274e3d",
+                    "inverse-on-surface": "#f1f2e4",
+                    "tertiary": "#262621",
+                    "on-primary-fixed": "#002114",
+                    "on-error-container": "#93000a",
+                    "surface-container-high": "#e9e9db",
+                    "primary-fixed": "#c1ecd4",
+                    "on-secondary-container": "#795950",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed-dim": "#e7bdb1",
+                    "on-tertiary": "#ffffff",
+                    "tertiary-fixed": "#e5e2da",
+                    "on-surface-variant": "#414844",
+                    "inverse-surface": "#2f3128",
+                    "on-surface": "#1a1c14",
+                    "error-container": "#ffdad6",
+                    "secondary": "#77574d",
+                    "outline": "#717973",
+                    "on-tertiary-fixed": "#1c1c17",
+                    "on-primary-container": "#86af99",
+                    "surface-container-low": "#f4f4e7",
+                    "error": "#ba1a1a",
+                    "surface-tint": "#3f6653",
+                    "surface-bright": "#fafaec",
+                    "on-tertiary-container": "#a8a69e",
+                    "on-secondary-fixed": "#2c160e",
+                    "tertiary-fixed-dim": "#c9c6be",
+                    "surface": "#fafaec",
+                    "on-background": "#1a1c14",
+                    "secondary-fixed": "#ffdbd0",
+                    "on-tertiary-fixed-variant": "#474741",
+                    "surface-dim": "#dadbcd",
+                    "on-secondary": "#ffffff",
+                    "on-secondary-fixed-variant": "#5d4037",
+                    "tertiary-container": "#3c3c36",
+                    "surface-variant": "#e3e3d6",
+                    "primary-fixed-dim": "#a5d0b9",
+                    "on-error": "#ffffff",
+                    "secondary-container": "#fed3c7",
+                    "surface-container-highest": "#e3e3d6",
+                    "inverse-primary": "#a5d0b9",
+                    "surface-container-lowest": "#ffffff",
+                    "primary-container": "#1b4332",
+                    "outline-variant": "#c1c8c2",
+                    "primary": "#012d1d",
+                    "surface-container": "#eeefe1"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.125rem",
+                    "lg": "0.25rem",
+                    "xl": "0.5rem",
+                    "full": "0.75rem"
+            },
+            "spacing": {
+                    "margin-edge": "48px",
+                    "gutter": "24px",
+                    "unit": "8px",
+                    "container-max": "1440px"
+            },
+            "fontFamily": {
+                    "headline-xl": ["Newsreader"],
+                    "label-sm": ["Public Sans"],
+                    "headline-lg": ["Newsreader"],
+                    "data-mono": ["Public Sans"],
+                    "headline-md": ["Newsreader"],
+                    "body-lg": ["Public Sans"],
+                    "body-md": ["Public Sans"]
+            },
+            "fontSize": {
+                    "headline-xl": ["48px", {"lineHeight": "1.1", "fontWeight": "600"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "letterSpacing": "0.05em", "fontWeight": "700"}],
+                    "headline-lg": ["32px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "600"}],
+                    "headline-md": ["24px", {"lineHeight": "1.3", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "400"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}]
+            }
+          },
+        },
+      }
+    </script>
+</head>
+<body class="bg-background text-on-background font-body-md">
+<!-- TopNavBar -->
+<nav class="bg-[#F9F7F2] dark:bg-stone-950 flex justify-between items-center w-full px-6 h-16 z-50 sticky top-0 border-b border-[#201C18]/20 dark:border-stone-800">
+<div class="flex items-center gap-8">
+<span class="text-2xl font-bold font-headline-xl text-[#1B4332] dark:text-emerald-400">TerraSteward</span>
+<div class="relative hidden md:flex items-center">
+<span class="material-symbols-outlined absolute left-3 text-stone-400">search</span>
+<input class="bg-stone-200/30 border-none rounded-sm pl-10 pr-4 py-1.5 focus:ring-1 focus:ring-primary-container text-sm w-64" placeholder="Search parcels..." type="text"/>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition-colors duration-200">
+<span class="material-symbols-outlined text-[#1B4332] dark:text-emerald-500">notifications</span>
+</button>
+<button class="p-2 hover:bg-stone-200/50 dark:hover:bg-stone-800 transition-colors duration-200">
+<span class="material-symbols-outlined text-[#1B4332] dark:text-emerald-500">help_outline</span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-stone-300">
+<span class="font-headline-md text-base text-[#1B4332]">Profile</span>
+<div class="w-8 h-8 rounded-full bg-stone-300 overflow-hidden">
+<img alt="User avatar" data-alt="A professional headshot of a senior estate manager in a crisp white shirt, captured with soft natural studio lighting. The background is a clean, minimalist off-white, reflecting a modern corporate aesthetic. The mood is authoritative and trustworthy, aligned with high-end land stewardship and financial technology brands." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA33hEu_Or9cK2AtBUYlch97f2wYXZrw3IoqH_pVzaB4N6GWOEvygOAzY_jlg9EfEiDOkC8QHgTAte-oMnFxL0MBkLB2iM4a1A4D9Cz_nZX4a6Qc88wx9A7hWOCXsNYgZOV3CFmo-NnhlQ16WyMLZeHPXlVMkDCmNuS7kEuizPv97uLvozmRcsaRDSWy4evh60Bo34tBZRDHxlXOup_mjVTg7aQkPLOqdYxu3L3mzRQLj55be7RN953XVDWr2SLP1oW9SLRmpiri6oE"/>
+</div>
+</div>
+</div>
+</nav>
+<div class="flex">
+<!-- SideNavBar -->
+<aside class="bg-[#F2EFE9] dark:bg-stone-900 flex flex-col fixed left-0 top-16 h-[calc(100vh-64px)] w-64 py-4 px-3 gap-2 border-r border-[#201C18]/10 dark:border-stone-800 z-40 hidden md:flex">
+<div class="px-3 py-4 mb-4">
+<h2 class="text-lg font-black text-[#1B4332] font-headline-md">Admin Console</h2>
+<p class="text-xs text-stone-500 font-label-sm">Estate Management</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 bg-[#1B4332] text-[#F9F7F2] rounded-sm font-semibold font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">landscape</span>
+<span>Land Parcels</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">description</span>
+<span>Lease Agreements</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">layers</span>
+<span>GIS Mapping</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">payments</span>
+<span>Financial Reports</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">agriculture</span>
+<span>Stewardship</span>
+</a>
+</nav>
+<button class="mt-4 mx-3 bg-[#1B4332] text-white py-2.5 rounded-sm font-headline-md text-sm hover:opacity-90 transition-opacity">
+                Add New Parcel
+            </button>
+<div class="mt-auto border-t border-stone-300/50 pt-4 space-y-1">
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span>Settings</span>
+</a>
+<a class="flex items-center gap-3 px-3 py-2 text-stone-700 dark:text-stone-300 hover:bg-stone-200/40 hover:translate-x-1 transition-transform duration-150 font-newsreader tracking-tight" href="#">
+<span class="material-symbols-outlined">contact_support</span>
+<span>Support</span>
+</a>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 md:ml-64 p-8 bg-background min-h-screen">
+<header class="mb-12 flex justify-between items-end">
+<div>
+<h1 class="font-headline-xl text-headline-xl text-primary">Parcel Management</h1>
+<p class="font-body-lg text-body-lg text-secondary mt-2">Oversee listing performance and agricultural health metrics.</p>
+</div>
+<div class="flex gap-4">
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-2.5 font-label-sm rounded-sm hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-sm">download</span>
+                        EXPORT CSV
+                    </button>
+</div>
+</header>
+<!-- Filters Bar -->
+<section class="bg-surface-container-low p-6 border border-outline-variant mb-8">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant block uppercase tracking-wider">Parcel ID</label>
+<input class="w-full bg-background/50 border-0 border-b border-outline focus:ring-0 focus:border-primary px-0 py-2 font-data-mono" placeholder="e.g. AGRO-2024-XJ" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant block uppercase tracking-wider">Location</label>
+<input class="w-full bg-background/50 border-0 border-b border-outline focus:ring-0 focus:border-primary px-0 py-2 font-data-mono" placeholder="Region or County" type="text"/>
+</div>
+<div class="space-y-2">
+<label class="font-label-sm text-on-surface-variant block uppercase tracking-wider">Status</label>
+<select class="w-full bg-background/50 border-0 border-b border-outline focus:ring-0 focus:border-primary px-0 py-2 font-data-mono">
+<option>All Statuses</option>
+<option>Available</option>
+<option>Leased</option>
+<option>Under Review</option>
+</select>
+</div>
+<div class="flex items-end">
+<button class="w-full border border-primary text-primary px-6 py-2.5 font-label-sm rounded-sm hover:bg-primary/5 transition-all">
+                            APPLY FILTERS
+                        </button>
+</div>
+</div>
+</section>
+<!-- Content Area: Table & Preview -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Table View -->
+<div class="lg:col-span-8 bg-surface border border-outline-variant overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant">
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">Parcel details</th>
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">Acreage</th>
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">SQI</th>
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">Last Yield</th>
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">Rent/mo</th>
+<th class="p-4 font-label-sm text-on-surface-variant uppercase">Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/30">
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group bg-surface-container-highest/20">
+<td class="p-4">
+<div class="font-headline-md text-base text-primary">North Ridge Plains</div>
+<div class="font-data-mono text-xs text-on-surface-variant">ID: AG-4829-NR</div>
+</td>
+<td class="p-4 font-data-mono text-on-surface">420.5 ac</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold rounded-full">84.2</span>
+</td>
+<td class="p-4 font-data-mono text-on-surface">182 bu/ac</td>
+<td class="p-4 font-data-mono text-on-surface">$12,400</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-[#1B4332] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1B4332]"></span> Leased
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="p-4">
+<div class="font-headline-md text-base text-primary">Willow Creek Basin</div>
+<div class="font-data-mono text-xs text-on-surface-variant">ID: AG-9912-WC</div>
+</td>
+<td class="p-4 font-data-mono text-on-surface">115.0 ac</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-tertiary-fixed text-on-tertiary-fixed-variant text-xs font-bold rounded-full">72.8</span>
+</td>
+<td class="p-4 font-data-mono text-on-surface">164 bu/ac</td>
+<td class="p-4 font-data-mono text-on-surface">$4,200</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-secondary uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span> Available
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="p-4">
+<div class="font-headline-md text-base text-primary">East Highlands Estate</div>
+<div class="font-data-mono text-xs text-on-surface-variant">ID: AG-3301-EH</div>
+</td>
+<td class="p-4 font-data-mono text-on-surface">890.2 ac</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-primary-fixed text-on-primary-fixed-variant text-xs font-bold rounded-full">91.5</span>
+</td>
+<td class="p-4 font-data-mono text-on-surface">205 bu/ac</td>
+<td class="p-4 font-data-mono text-on-surface">$28,000</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-[#1B4332] uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-[#1B4332]"></span> Leased
+                                        </span>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors cursor-pointer group">
+<td class="p-4">
+<div class="font-headline-md text-base text-primary">Sunken Meadow Valley</div>
+<div class="font-data-mono text-xs text-on-surface-variant">ID: AG-0056-SM</div>
+</td>
+<td class="p-4 font-data-mono text-on-surface">54.0 ac</td>
+<td class="p-4">
+<span class="px-2 py-1 bg-error-container text-on-error-container text-xs font-bold rounded-full">48.1</span>
+</td>
+<td class="p-4 font-data-mono text-on-surface">N/A</td>
+<td class="p-4 font-data-mono text-on-surface">$1,850</td>
+<td class="p-4">
+<span class="flex items-center gap-1.5 text-xs font-bold text-tertiary uppercase">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span> Under Review
+                                        </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="p-4 bg-surface-container-low flex justify-between items-center border-t border-outline-variant">
+<span class="font-label-sm text-on-surface-variant uppercase">Showing 4 of 128 Parcels</span>
+<div class="flex gap-2">
+<button class="p-2 border border-outline-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-2 border border-outline-variant hover:bg-surface-container transition-colors"><span class="material-symbols-outlined">chevron_right</span></button>
+</div>
+</div>
+</div>
+<!-- Preview Card -->
+<div class="lg:col-span-4 space-y-gutter">
+<div class="bg-surface-container-lowest border border-outline-variant soil-shadow p-0 overflow-hidden">
+<div class="h-48 w-full bg-stone-300 relative">
+<img alt="Drone view of agricultural land" class="w-full h-full object-cover" data-alt="A high-resolution aerial drone photograph of sprawling North Ridge Plains farmland during the golden hour. The landscape shows perfectly geometric crop rows in shades of deep emerald and sage green, intersected by a narrow dirt path. The lighting is warm and directional, casting long soft shadows that emphasize the texture of the soil. The overall mood is peaceful, professional, and reflects high-value land stewardship." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAqyJJbn30H-1q2G4D48Uc8A8U1Gil56IDbSjJvAg9L1U4wWwAeb62LopMalCWkEleplUo2edkUtSDj4VPBzIiVlojpVdv3WRBR5O0pUcgG5C-h6QiOz_pfdBB6yjT06fzQoty7rvKWLYSoNJZlmu0TFkvnC330rmB4HCzgF04XzWlzDSArEXRq5qidwgTggtpu0oh2cJd_fvvGC9nbEA5B5xu5aSAj4_Qmv0eKOmsLKCKJJoYxb_gBryDhgsSFgO2NVaKsI13L9QhA"/>
+<div class="absolute top-4 right-4 px-3 py-1 bg-primary text-on-primary font-label-sm text-[10px] uppercase tracking-widest">Selected</div>
+</div>
+<div class="p-6">
+<div class="flex justify-between items-start mb-4">
+<h3 class="font-headline-lg text-headline-md text-primary">North Ridge Plains</h3>
+<div class="text-right">
+<span class="block font-headline-md text-primary">$12,400</span>
+<span class="font-label-sm text-[10px] text-on-surface-variant uppercase">Per Month</span>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-8">
+<div class="p-3 bg-surface-container border border-outline-variant/30">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Soil Quality Index</span>
+<span class="font-headline-md text-lg text-primary">84.2 <span class="text-xs font-body-md text-secondary">/ 100</span></span>
+</div>
+<div class="p-3 bg-surface-container border border-outline-variant/30">
+<span class="block font-label-sm text-[10px] text-on-surface-variant uppercase mb-1">Total Acreage</span>
+<span class="font-headline-md text-lg text-primary">420.5 <span class="text-xs font-body-md text-secondary">AC</span></span>
+</div>
+</div>
+<div class="space-y-3">
+<button class="w-full flex items-center justify-center gap-3 bg-primary text-on-primary py-3 font-label-sm rounded-sm hover:opacity-90 transition-all">
+<span class="material-symbols-outlined text-base">edit</span>
+                                    EDIT PARCEL
+                                </button>
+<button class="w-full flex items-center justify-center gap-3 border border-secondary text-secondary py-3 font-label-sm rounded-sm hover:bg-secondary/5 transition-all">
+<span class="material-symbols-outlined text-base">analytics</span>
+                                    VIEW SOIL ANALYSIS
+                                </button>
+<button class="w-full flex items-center justify-center gap-3 border border-secondary text-secondary py-3 font-label-sm rounded-sm hover:bg-secondary/5 transition-all">
+<span class="material-symbols-outlined text-base">cloud_upload</span>
+                                    UPLOAD DRONE IMAGERY
+                                </button>
+</div>
+</div>
+<div class="p-6 border-t border-outline-variant bg-surface-container-low">
+<h4 class="font-label-sm text-xs text-on-surface-variant uppercase mb-4">Location Context</h4>
+<div class="w-full h-32 bg-stone-200 rounded-sm relative overflow-hidden">
+<img class="w-full h-full object-cover opacity-50 grayscale" data-alt="A detailed satellite mapping view showing topographic contours and parcel boundaries over a rural landscape. The map uses a sophisticated palette of muted earth tones—sands, clays, and sage greens—with crisp white boundary lines. The visual style is technical and precise, evoking the feel of professional GIS mapping software used for institutional land management." data-location="Nebraska" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBFO7BH1Bwd9HqOZifrUaS2BHr8pzYvef8ClBt-CIndn8QeUDtKlKyiFNNXR_Y9-dxGX5a-MFNqSMGpxI5fMGOKKFfEIFuv45VoXBV9SF5z8ppveSI_KuUMouSxrltQsPzzVj1XyKKtQdg-b2xQ-pMhxMnoda5Ou1EeDwAbOhaw1Yd0MHVAXeTgfbXC4T_1abASkC-mSASSHIMpjB7uKq4xI7nPLfg0R15E_Xdr1CaX3PCuQwUIwf2fnBbHGvWdmEUW7jmfCvH6HvxA"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<div class="bg-primary-container text-white px-3 py-1 rounded-full text-[10px] font-bold">VIEW GIS MAP</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
